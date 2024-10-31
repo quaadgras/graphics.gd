@@ -450,7 +450,7 @@ func generate() error {
 	fmt.Fprintln(core, `package gd`)
 	fmt.Fprintln(core)
 	fmt.Fprintln(core, `import "reflect"`)
-	fmt.Fprintln(core, `import "grow.graphics/gd/internal/discreet"`)
+	fmt.Fprintln(core, `import "grow.graphics/gd/internal/pointers"`)
 	fmt.Fprintln(core, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(core)
 
@@ -464,7 +464,7 @@ func generate() error {
 	fmt.Fprintln(all, `package gd`)
 	fmt.Fprintln(all)
 	fmt.Fprintln(all, `import "reflect"`)
-	fmt.Fprintln(all, `import "grow.graphics/gd/internal/discreet"`)
+	fmt.Fprintln(all, `import "grow.graphics/gd/internal/pointers"`)
 	fmt.Fprintln(all, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(all)
 
@@ -528,20 +528,20 @@ func generate() error {
 		for _, arg := range utility.Arguments {
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(core, "\tcallframe.Arg(frame, discreet.Get(%v))\n", fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
 				continue
 			}
 			argType := classDB.convertType("internal", arg.Meta, arg.Type)
 			_, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(core, "\tcallframe.Arg(frame, discreet.Get(%v))\n", fixReserved(arg.Name))
+				fmt.Fprintf(core, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
 			} else {
 				fmt.Fprintf(core, "\tcallframe.Arg(frame, %v)\n", fixReserved(arg.Name))
 			}
 		}
 		if utility.IsVararg {
 			fmt.Fprintf(core, "\tfor _, arg := range args {\n")
-			fmt.Fprintf(core, "\t\tcallframe.Arg(frame, discreet.Get(arg))\n")
+			fmt.Fprintf(core, "\t\tcallframe.Arg(frame, pointers.Get(arg))\n")
 			fmt.Fprintf(core, "\t}\n")
 		}
 		if isPtr {
@@ -559,7 +559,7 @@ func generate() error {
 			if ok || result == "Object" {
 				fmt.Fprintf(core, "\tvar ret %v = PointerMustAssertInstanceID(r_ret.Get())\n", result)
 			} else {
-				fmt.Fprintf(core, "\tvar ret = discreet.New[%v](r_ret.Get())\n", result)
+				fmt.Fprintf(core, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}
 		} else {
 			if result != "" {
@@ -683,7 +683,7 @@ func generate() error {
 			genEnum(pkg, w, nil, class.Name, enum)
 		}
 		if class.Name != "Object" && class.Name != "RefCounted" {
-			fmt.Fprintf(w, "type %[1]v discreet.PointerNamed[%[1]v, [3]uintptr, [1]discreet.Type]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
+			fmt.Fprintf(w, "type %[1]v pointers.PointerNamed[%[1]v, [3]uintptr, [1]pointers.Type]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
 			fmt.Fprintf(w, "func (self %[1]v) Free() { Object(self).Free() }\n", class.Name)
 		}
 		if class.Inherits != "" {
@@ -804,9 +804,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			if isPtr {
 				_, ok := classDB[result]
 				if ok || result == "gd.Object" {
-					ret = fmt.Sprintf("discreet.End(%s.AsPointer())", ret)
+					ret = fmt.Sprintf("pointers.End(%s.AsPointer())", ret)
 				} else {
-					ret = fmt.Sprintf("discreet.End(%s)", ret)
+					ret = fmt.Sprintf("pointers.End(%s)", ret)
 				}
 			}
 			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
@@ -845,7 +845,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "args ..."+prefix+"Variant")
 	}
 	fmt.Fprintf(w, ") %v {\n", result)
-	var self = "discreet.Get(self)[0]"
+	var self = "pointers.Get(self)[0]"
 	if !method.IsStatic {
 		if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {
 			fmt.Fprintf(w, "\tvar self = *selfPtr\n")
@@ -857,9 +857,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if ok {
 			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
 			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, discreet.End(%v.AsPointer())[0])\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.End(%v.AsPointer())[0])\n", fixReserved(arg.Name))
 			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, discreet.Get(%v.AsPointer())[0])\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v.AsPointer())[0])\n", fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}
@@ -869,14 +869,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
 		_, argIsPtr := classDB.isPointer(argType)
 		if argIsPtr {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, discreet.Get(%v))\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
 		} else {
 			fmt.Fprintf(w, "\tcallframe.Arg(frame, %v)\n", fixReserved(arg.Name))
 		}
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
-		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, discreet.Get(arg))\n")
+		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, pointers.Get(arg))\n")
 		fmt.Fprintf(w, "\t}\n")
 	}
 	if isPtr {
@@ -892,7 +892,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if strings.HasPrefix(class.Name, "Packed") {
 			var self = "0"
 			if !method.IsStatic {
-				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, discreet.Get(self))\n")
+				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
 				self = "p_self.Uintptr()"
 			}
 			if method.IsVararg {
@@ -900,10 +900,10 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else {
 				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
 			}
-			fmt.Fprintf(w, "\tdiscreet.Set(selfPtr, p_self.Get())\n")
+			fmt.Fprintf(w, "\tpointers.Set(selfPtr, p_self.Get())\n")
 		} else {
 			if !method.IsStatic {
-				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, discreet.Get(self))\n")
+				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
 				self = "p_self.Uintptr()"
 			}
 			if method.IsVararg {
@@ -935,11 +935,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 		} else {
 			if strings.HasPrefix(result, "ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = discreet.New[Array](r_ret.Get())\n")
+				fmt.Fprint(w, "\tvar ret = pointers.New[Array](r_ret.Get())\n")
 			} else if strings.HasPrefix(result, "gd.ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = discreet.New[gd.Array](r_ret.Get())\n")
+				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
 			} else {
-				fmt.Fprintf(w, "\tvar ret = discreet.New[%v](r_ret.Get())\n", result)
+				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}
 		}
 	} else if result != "" {

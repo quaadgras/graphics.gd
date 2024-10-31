@@ -2,10 +2,11 @@ package SkeletonIK3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/SkeletonModifier3D"
 import "grow.graphics/gd/gdclass/Node3D"
@@ -15,7 +16,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member SkeletonModifier3D.influence] property.
@@ -38,169 +40,175 @@ skeleton_ik_node.set_influence(0.5)
 # Apply zero IK effect (a value at or below 0.01 also removes bones_global_pose_override on Skeleton)
 skeleton_ik_node.set_influence(0.0)
 [/codeblock]
-
 */
-type Go [1]classdb.SkeletonIK3D
+type Instance [1]classdb.SkeletonIK3D
 
 /*
 Returns the parent [Skeleton3D] Node that was present when SkeletonIK entered the [SceneTree]. Returns null if the parent node was not a [Skeleton3D] Node when SkeletonIK3D entered the [SceneTree].
 */
-func (self Go) GetParentSkeleton() gdclass.Skeleton3D {
+func (self Instance) GetParentSkeleton() gdclass.Skeleton3D {
 	return gdclass.Skeleton3D(class(self).GetParentSkeleton())
 }
 
 /*
 Returns [code]true[/code] if SkeletonIK is applying IK effects on continues frames to the [Skeleton3D] bones. Returns [code]false[/code] if SkeletonIK is stopped or [method start] was used with the [code]one_time[/code] parameter set to [code]true[/code].
 */
-func (self Go) IsRunning() bool {
+func (self Instance) IsRunning() bool {
 	return bool(class(self).IsRunning())
 }
 
 /*
 Starts applying IK effects on each frame to the [Skeleton3D] bones but will only take effect starting on the next frame. If [param one_time] is [code]true[/code], this will take effect immediately but also reset on the next frame.
 */
-func (self Go) Start() {
+func (self Instance) Start() {
 	class(self).Start(false)
 }
 
 /*
 Stops applying IK effects on each frame to the [Skeleton3D] bones and also calls [method Skeleton3D.clear_bones_global_pose_override] to remove existing overrides on all bones.
 */
-func (self Go) Stop() {
+func (self Instance) Stop() {
 	class(self).Stop()
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.SkeletonIK3D
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonIK3D"))
-	return Go{classdb.SkeletonIK3D(object)}
+	return Instance{classdb.SkeletonIK3D(object)}
 }
 
-func (self Go) RootBone() string {
-		return string(class(self).GetRootBone().String())
+func (self Instance) RootBone() string {
+	return string(class(self).GetRootBone().String())
 }
 
-func (self Go) SetRootBone(value string) {
+func (self Instance) SetRootBone(value string) {
 	class(self).SetRootBone(gd.NewStringName(value))
 }
 
-func (self Go) TipBone() string {
-		return string(class(self).GetTipBone().String())
+func (self Instance) TipBone() string {
+	return string(class(self).GetTipBone().String())
 }
 
-func (self Go) SetTipBone(value string) {
+func (self Instance) SetTipBone(value string) {
 	class(self).SetTipBone(gd.NewStringName(value))
 }
 
-func (self Go) Target() gd.Transform3D {
-		return gd.Transform3D(class(self).GetTargetTransform())
+func (self Instance) Target() gd.Transform3D {
+	return gd.Transform3D(class(self).GetTargetTransform())
 }
 
-func (self Go) SetTarget(value gd.Transform3D) {
+func (self Instance) SetTarget(value gd.Transform3D) {
 	class(self).SetTargetTransform(value)
 }
 
-func (self Go) OverrideTipBasis() bool {
-		return bool(class(self).IsOverrideTipBasis())
+func (self Instance) OverrideTipBasis() bool {
+	return bool(class(self).IsOverrideTipBasis())
 }
 
-func (self Go) SetOverrideTipBasis(value bool) {
+func (self Instance) SetOverrideTipBasis(value bool) {
 	class(self).SetOverrideTipBasis(value)
 }
 
-func (self Go) UseMagnet() bool {
-		return bool(class(self).IsUsingMagnet())
+func (self Instance) UseMagnet() bool {
+	return bool(class(self).IsUsingMagnet())
 }
 
-func (self Go) SetUseMagnet(value bool) {
+func (self Instance) SetUseMagnet(value bool) {
 	class(self).SetUseMagnet(value)
 }
 
-func (self Go) Magnet() gd.Vector3 {
-		return gd.Vector3(class(self).GetMagnetPosition())
+func (self Instance) Magnet() gd.Vector3 {
+	return gd.Vector3(class(self).GetMagnetPosition())
 }
 
-func (self Go) SetMagnet(value gd.Vector3) {
+func (self Instance) SetMagnet(value gd.Vector3) {
 	class(self).SetMagnetPosition(value)
 }
 
-func (self Go) TargetNode() string {
-		return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNode() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Go) SetTargetNode(value string) {
+func (self Instance) SetTargetNode(value string) {
 	class(self).SetTargetNode(gd.NewString(value).NodePath())
 }
 
-func (self Go) MinDistance() float64 {
-		return float64(float64(class(self).GetMinDistance()))
+func (self Instance) MinDistance() float64 {
+	return float64(float64(class(self).GetMinDistance()))
 }
 
-func (self Go) SetMinDistance(value float64) {
+func (self Instance) SetMinDistance(value float64) {
 	class(self).SetMinDistance(gd.Float(value))
 }
 
-func (self Go) MaxIterations() int {
-		return int(int(class(self).GetMaxIterations()))
+func (self Instance) MaxIterations() int {
+	return int(int(class(self).GetMaxIterations()))
 }
 
-func (self Go) SetMaxIterations(value int) {
+func (self Instance) SetMaxIterations(value int) {
 	class(self).SetMaxIterations(gd.Int(value))
 }
 
-func (self Go) Interpolation() float64 {
-		return float64(float64(class(self).GetInterpolation()))
+func (self Instance) Interpolation() float64 {
+	return float64(float64(class(self).GetInterpolation()))
 }
 
-func (self Go) SetInterpolation(value float64) {
+func (self Instance) SetInterpolation(value float64) {
 	class(self).SetInterpolation(gd.Float(value))
 }
 
 //go:nosplit
-func (self class) SetRootBone(root_bone gd.StringName)  {
+func (self class) SetRootBone(root_bone gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(root_bone))
+	callframe.Arg(frame, pointers.Get(root_bone))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_root_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetRootBone() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_root_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTipBone(tip_bone gd.StringName)  {
+func (self class) SetTipBone(tip_bone gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(tip_bone))
+	callframe.Arg(frame, pointers.Get(tip_bone))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_tip_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTipBone() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_tip_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTargetTransform(target gd.Transform3D)  {
+func (self class) SetTargetTransform(target gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, target)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_target_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTargetTransform() gd.Transform3D {
 	var frame = callframe.New()
@@ -210,31 +218,35 @@ func (self class) GetTargetTransform() gd.Transform3D {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTargetNode(node gd.NodePath)  {
+func (self class) SetTargetNode(node gd.NodePath) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(node))
+	callframe.Arg(frame, pointers.Get(node))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTargetNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.NodePath](r_ret.Get())
+	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetOverrideTipBasis(override bool)  {
+func (self class) SetOverrideTipBasis(override bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, override)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_override_tip_basis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsOverrideTipBasis() bool {
 	var frame = callframe.New()
@@ -244,14 +256,16 @@ func (self class) IsOverrideTipBasis() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetUseMagnet(use bool)  {
+func (self class) SetUseMagnet(use bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_use_magnet, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsUsingMagnet() bool {
 	var frame = callframe.New()
@@ -261,14 +275,16 @@ func (self class) IsUsingMagnet() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetMagnetPosition(local_position gd.Vector3)  {
+func (self class) SetMagnetPosition(local_position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_magnet_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMagnetPosition() gd.Vector3 {
 	var frame = callframe.New()
@@ -278,6 +294,7 @@ func (self class) GetMagnetPosition() gd.Vector3 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the parent [Skeleton3D] Node that was present when SkeletonIK entered the [SceneTree]. Returns null if the parent node was not a [Skeleton3D] Node when SkeletonIK3D entered the [SceneTree].
 */
@@ -290,6 +307,7 @@ func (self class) GetParentSkeleton() gdclass.Skeleton3D {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if SkeletonIK is applying IK effects on continues frames to the [Skeleton3D] bones. Returns [code]false[/code] if SkeletonIK is stopped or [method start] was used with the [code]one_time[/code] parameter set to [code]true[/code].
 */
@@ -302,14 +320,16 @@ func (self class) IsRunning() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetMinDistance(min_distance gd.Float)  {
+func (self class) SetMinDistance(min_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_distance)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_min_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMinDistance() gd.Float {
 	var frame = callframe.New()
@@ -319,14 +339,16 @@ func (self class) GetMinDistance() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetMaxIterations(iterations gd.Int)  {
+func (self class) SetMaxIterations(iterations gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, iterations)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_max_iterations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMaxIterations() gd.Int {
 	var frame = callframe.New()
@@ -336,35 +358,39 @@ func (self class) GetMaxIterations() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Starts applying IK effects on each frame to the [Skeleton3D] bones but will only take effect starting on the next frame. If [param one_time] is [code]true[/code], this will take effect immediately but also reset on the next frame.
 */
 //go:nosplit
-func (self class) Start(one_time bool)  {
+func (self class) Start(one_time bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, one_time)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Stops applying IK effects on each frame to the [Skeleton3D] bones and also calls [method Skeleton3D.clear_bones_global_pose_override] to remove existing overrides on all bones.
 */
 //go:nosplit
-func (self class) Stop()  {
+func (self class) Stop() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
-func (self class) SetInterpolation(interpolation gd.Float)  {
+func (self class) SetInterpolation(interpolation gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetInterpolation() gd.Float {
 	var frame = callframe.New()
@@ -374,24 +400,32 @@ func (self class) GetInterpolation() gd.Float {
 	frame.Free()
 	return ret
 }
-func (self class) AsSkeletonIK3D() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsSkeletonIK3D() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsSkeletonModifier3D() SkeletonModifier3D.GD { return *((*SkeletonModifier3D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsSkeletonModifier3D() SkeletonModifier3D.Go { return *((*SkeletonModifier3D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode3D() Node3D.GD { return *((*Node3D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode3D() Node3D.Go { return *((*Node3D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonIK3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSkeletonIK3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
+	return *((*SkeletonModifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return *((*SkeletonModifier3D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsSkeletonModifier3D(), name)
+	default:
+		return gd.VirtualByName(self.AsSkeletonModifier3D(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsSkeletonModifier3D(), name)
+	default:
+		return gd.VirtualByName(self.AsSkeletonModifier3D(), name)
 	}
 }
-func init() {classdb.Register("SkeletonIK3D", func(ptr gd.Object) any { return classdb.SkeletonIK3D(ptr) })}
+func init() {
+	classdb.Register("SkeletonIK3D", func(ptr gd.Object) any { return classdb.SkeletonIK3D(ptr) })
+}

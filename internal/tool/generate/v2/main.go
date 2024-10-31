@@ -42,20 +42,24 @@ func generate() error {
 			}
 		}
 	}
-	if err := os.MkdirAll("./gdenums", 0755); err != nil {
+	if err := os.MkdirAll("./gdconst", 0755); err != nil {
 		return xray.New(err)
 	}
-	enums, err := os.Create("./gdenums/enums.go")
+	enums, err := os.Create("./gdconst/const.go")
 	if err != nil {
 		return xray.New(err)
 	}
-	fmt.Fprintln(enums, `package gdenums`)
+	fmt.Fprintln(enums, `package gdconst`)
 	fmt.Fprintln(enums)
 	for _, enum := range spec.GlobalEnums {
 		generateEnum(enums, "", enum, "")
 		fmt.Fprintln(enums)
 	}
 	defer enums.Close()
+	var global_enums = make(map[string]gdjson.Enum)
+	for _, enum := range spec.GlobalEnums {
+		global_enums[enum.Name] = enum
+	}
 	for i, class := range spec.Classes {
 		var pkg = "internal"
 		if !inCore(class.Name) {
@@ -86,7 +90,7 @@ func generate() error {
 			continue
 		}
 		fmt.Fprintf(file, "type %s = [1]classdb.%[1]s\n", class.Name)
-		if err := classDB.generateObjectPackage(class, singletons[class.Name]); err != nil {
+		if err := classDB.generateObjectPackage(class, singletons[class.Name], global_enums); err != nil {
 			return xray.New(err)
 		}
 	}
@@ -122,7 +126,7 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 	fmt.Fprintf(code, ")\n")
 }
 
-func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool) error {
+func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool, global_enums map[string]gdjson.Enum) error {
 	if err := os.MkdirAll("./gdclass/"+class.Name, 0755); err != nil {
 		return xray.New(err)
 	}
@@ -137,10 +141,11 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		fmt.Fprintln(file, `import "sync"`)
 	}
 	fmt.Fprintln(file, `import "reflect"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/internal/discreet"`)
+	fmt.Fprintln(file, `import "grow.graphics/gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/gdclass"`)
+	fmt.Fprintln(file, `import "grow.graphics/gd/gdconst"`)
 	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
 	var imported = make(map[string]bool)
 	if class.Inherits != "" {
@@ -156,8 +161,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	fmt.Fprintln(file, "var _ gdclass.Engine")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
-	fmt.Fprintln(file, "var _ = discreet.Root")
+	fmt.Fprintln(file, "var _ = pointers.Root")
+	fmt.Fprintln(file, "var _ gdconst.Side")
 	fmt.Fprintln(file)
+	var local_enums = make(map[string]bool)
 	if class.Description != "" {
 		fmt.Fprintln(file, "/*")
 		fmt.Fprint(file, strings.Replace(class.Description, "*/", "", -1))
@@ -203,7 +210,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		fmt.Fprintf(file, "\tself = *(*gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
 		fmt.Fprintf(file, "}\n")
 	} else {
-		fmt.Fprintf(file, "type Go [1]classdb.%s\n", class.Name)
+		fmt.Fprintf(file, "type Instance [1]classdb.%s\n", class.Name)
 	}
 	var getter_setters = make(map[string]bool)
 	for _, property := range class.Properties {
@@ -220,16 +227,16 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 		}
 		classDB.simpleCall(file, class, method, singleton)
 	}
-	fmt.Fprintf(file, `// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.`)
+	fmt.Fprintf(file, `// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.`)
 	if singleton {
-		fmt.Fprintf(file, "\nfunc GD() class { once.Do(singleton); return self }\n")
+		fmt.Fprintf(file, "\nfunc Advanced() class { once.Do(singleton); return self }\n")
 	} else {
-		fmt.Fprintf(file, "\ntype GD = class\n")
+		fmt.Fprintf(file, "\ntype Advanced = class\n")
 	}
 	fmt.Fprintf(file, "type class [1]classdb.%s\n", class.Name)
 	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
 	if !singleton {
-		fmt.Fprintln(file, "func (self Go) AsObject() gd.Object { return self[0].AsObject() }")
+		fmt.Fprintln(file, "func (self Instance) AsObject() gd.Object { return self[0].AsObject() }")
 	}
 	if !singleton {
 		classDB.new(file, class)
@@ -245,8 +252,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	if class.Inherits != "" {
 		var i = 1
 		if !singleton {
-			fmt.Fprintf(file, "\nfunc (self class) As%[1]v() GD { return *((*GD)(unsafe.Pointer(&self))) }\n", class.Name)
-			fmt.Fprintf(file, "func (self Go) As%[1]v() Go { return *((*Go)(unsafe.Pointer(&self))) }\n", class.Name)
+			fmt.Fprintf(file, "\nfunc (self class) As%[1]v() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }\n", class.Name)
+			fmt.Fprintf(file, "func (self Instance) As%[1]v() Instance { return *((*Instance)(unsafe.Pointer(&self))) }\n", class.Name)
 		}
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" {
@@ -257,20 +264,20 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 			if super.Name == "RefCounted" {
 				fmt.Fprintf(file, "func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }\n")
 				if !singleton {
-					fmt.Fprintf(file, "func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }\n")
+					fmt.Fprintf(file, "func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }\n")
 				}
 			} else {
-				fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.GD { return *((*%[2]v.GD)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
+				fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return *((*%[2]v.Advanced)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
 				if !singleton {
-					fmt.Fprintf(file, "func (self Go) As%[2]v() %[2]v.Go { return *((*%[2]v.Go)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
+					fmt.Fprintf(file, "func (self Instance) As%[2]v() %[2]v.Instance { return *((*%[2]v.Instance)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
 				}
 			}
 			i++
 			super = classDB[super.Inherits]
 		}
 	}
-	for _, self := range []string{"class", "Go"} {
-		if self == "Go" && singleton {
+	for _, self := range []string{"class", "Instance"} {
+		if self == "Instance" && singleton {
 			continue
 		}
 		fmt.Fprintf(file, "\nfunc (self %s) Virtual(name string) reflect.Value {\n", self)
@@ -291,8 +298,27 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool)
 	fmt.Fprintf(file, `func init() {`)
 	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return classdb.%[1]s(ptr) })`, class.Name)
 	fmt.Fprintf(file, "}\n")
+
+	for _, method := range class.Methods {
+		for _, argument := range method.Arguments {
+			name := strings.TrimPrefix(argument.Type, "enum::")
+			name = strings.TrimPrefix(name, "bitfield::")
+			if _, ok := global_enums[name]; ok {
+				local_enums[name] = true
+			}
+		}
+		name := strings.TrimPrefix(method.ReturnValue.Type, "enum::")
+		name = strings.TrimPrefix(name, "bitfield::")
+		if _, ok := global_enums[name]; ok {
+			local_enums[name] = true
+		}
+	}
 	for _, enum := range class.Enums {
 		generateEnum(file, class.Name, enum, "classdb.")
 	}
+	/*for _, key := range slices.Sorted(maps.Keys(local_enums)) {
+	enum := global_enums[key]
+	generateEnum(file, "", enum, "gd.")
+	}*/
 	return nil
 }

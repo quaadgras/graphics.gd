@@ -2,17 +2,19 @@ package EditorScript
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Scripts extending this class and implementing its [method _run] method can be executed from the Script Editor's [b]File > Run[/b] menu option (or by pressing [kbd]Ctrl + Shift + X[/kbd]) while the editor is running. This is useful for adding custom in-editor functionality to Godot. For more complex additions, consider using [EditorPlugin]s instead.
@@ -24,79 +26,85 @@ Scripts extending this class and implementing its [method _run] method can be ex
 extends EditorScript
 
 func _run():
-    print("Hello from the Godot Editor!")
+
+	print("Hello from the Godot Editor!")
+
 [/gdscript]
 [csharp]
 using Godot;
 
 [Tool]
 public partial class HelloEditor : EditorScript
-{
-    public override void _Run()
-    {
-        GD.Print("Hello from the Godot Editor!");
-    }
-}
+
+	{
+	    public override void _Run()
+	    {
+	        GD.Print("Hello from the Godot Editor!");
+	    }
+	}
+
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] The script is run in the Editor context, which means the output is visible in the console window started with the Editor (stdout) instead of the usual Godot [b]Output[/b] dock.
 [b]Note:[/b] EditorScript is [RefCounted], meaning it is destroyed when nothing references it. This can cause errors during asynchronous operations if there are no references to the script.
+
 	// EditorScript methods that can be overridden by a [Class] that extends it.
 	type EditorScript interface {
 		//This method is executed by the Editor when [b]File > Run[/b] is used.
-		Run() 
+		Run()
 	}
-
 */
-type Go [1]classdb.EditorScript
+type Instance [1]classdb.EditorScript
 
 /*
 This method is executed by the Editor when [b]File > Run[/b] is used.
 */
-func (Go) _run(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+func (Instance) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
-impl(self)
+		impl(self)
 	}
 }
 
 /*
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
-func (self Go) AddRootNode(node gdclass.Node) {
+func (self Instance) AddRootNode(node gdclass.Node) {
 	class(self).AddRootNode(node)
 }
 
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
-func (self Go) GetScene() gdclass.Node {
+func (self Instance) GetScene() gdclass.Node {
 	return gdclass.Node(class(self).GetScene())
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
-func (self Go) GetEditorInterface() gdclass.EditorInterface {
+func (self Instance) GetEditorInterface() gdclass.EditorInterface {
 	return gdclass.EditorInterface(class(self).GetEditorInterface())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.EditorScript
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScript"))
-	return Go{classdb.EditorScript(object)}
+	return Instance{classdb.EditorScript(object)}
 }
 
 /*
 This method is executed by the Editor when [b]File > Run[/b] is used.
 */
-func (class) _run(impl func(ptr unsafe.Pointer) , api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+func (class) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
-impl(self)
+		impl(self)
 	}
 }
 
@@ -104,13 +112,14 @@ impl(self)
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
 //go:nosplit
-func (self class) AddRootNode(node gdclass.Node)  {
+func (self class) AddRootNode(node gdclass.Node) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
@@ -123,6 +132,7 @@ func (self class) GetScene() gdclass.Node {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the [EditorInterface] singleton instance.
 */
@@ -135,22 +145,28 @@ func (self class) GetEditorInterface() gdclass.EditorInterface {
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorScript() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsEditorScript() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsEditorScript() Advanced       { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorScript() Instance    { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	case "_run": return reflect.ValueOf(self._run);
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	case "_run":
+		return reflect.ValueOf(self._run)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	case "_run": return reflect.ValueOf(self._run);
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	case "_run":
+		return reflect.ValueOf(self._run)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("EditorScript", func(ptr gd.Object) any { return classdb.EditorScript(ptr) })}
+func init() {
+	classdb.Register("EditorScript", func(ptr gd.Object) any { return classdb.EditorScript(ptr) })
+}

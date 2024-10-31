@@ -2,17 +2,19 @@ package Thread
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A unit of execution in a process. Can run methods on [Object]s simultaneously. The use of synchronization via [Mutex] or [Semaphore] is advised if working with shared objects.
@@ -21,9 +23,8 @@ To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s referen
 - It must not have any [Mutex] objects locked.
 - It must not be waiting on any [Semaphore] objects.
 - [method wait_to_finish] should have been called on it.
-
 */
-type Go [1]classdb.Thread
+type Instance [1]classdb.Thread
 
 /*
 Starts a new [Thread] that calls [param callable].
@@ -31,21 +32,21 @@ If the method takes some arguments, you can pass them using [method Callable.bin
 The [param priority] of the [Thread] can be changed by passing a value from the [enum Priority] enum.
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
-func (self Go) Start(callable gd.Callable) gd.Error {
+func (self Instance) Start(callable gd.Callable) gd.Error {
 	return gd.Error(class(self).Start(callable, 1))
 }
 
 /*
 Returns the current [Thread]'s ID, uniquely identifying it among all threads. If the [Thread] has not started running or if [method wait_to_finish] has been called, this returns an empty string.
 */
-func (self Go) GetId() string {
+func (self Instance) GetId() string {
 	return string(class(self).GetId().String())
 }
 
 /*
 Returns [code]true[/code] if this [Thread] has been started. Once started, this will return [code]true[/code] until it is joined using [method wait_to_finish]. For checking if a [Thread] is still executing its task, use [method is_alive].
 */
-func (self Go) IsStarted() bool {
+func (self Instance) IsStarted() bool {
 	return bool(class(self).IsStarted())
 }
 
@@ -53,7 +54,7 @@ func (self Go) IsStarted() bool {
 Returns [code]true[/code] if this [Thread] is currently running the provided function. This is useful for determining if [method wait_to_finish] can be called without blocking the calling thread.
 To check if a [Thread] is joinable, use [method is_started].
 */
-func (self Go) IsAlive() bool {
+func (self Instance) IsAlive() bool {
 	return bool(class(self).IsAlive())
 }
 
@@ -62,7 +63,7 @@ Joins the [Thread] and waits for it to finish. Returns the output of the [Callab
 Should either be used when you want to retrieve the value returned from the method called by the [Thread] or before freeing the instance that contains the [Thread].
 To determine if this can be called without blocking the calling thread, check if [method is_alive] is [code]false[/code].
 */
-func (self Go) WaitToFinish() gd.Variant {
+func (self Instance) WaitToFinish() gd.Variant {
 	return gd.Variant(class(self).WaitToFinish())
 }
 
@@ -75,17 +76,19 @@ Because of that, there may be cases where the user may want to disable them ([pa
 [b]Note:[/b] This is useful for scripts running on either arbitrary [Thread] objects or tasks submitted to the [WorkerThreadPool]. It doesn't apply to code running during [Node] group processing, where the checks will be always performed.
 [b]Note:[/b] Even in the case of having disabled the checks in a [WorkerThreadPool] task, there's no need to re-enable them at the end. The engine will do so.
 */
-func (self Go) SetThreadSafetyChecksEnabled(enabled bool) {
+func (self Instance) SetThreadSafetyChecksEnabled(enabled bool) {
 	class(self).SetThreadSafetyChecksEnabled(enabled)
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.Thread
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Thread"))
-	return Go{classdb.Thread(object)}
+	return Instance{classdb.Thread(object)}
 }
 
 /*
@@ -97,7 +100,7 @@ Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 //go:nosplit
 func (self class) Start(callable gd.Callable, priority classdb.ThreadPriority) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(callable))
+	callframe.Arg(frame, pointers.Get(callable))
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -105,6 +108,7 @@ func (self class) Start(callable gd.Callable, priority classdb.ThreadPriority) i
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the current [Thread]'s ID, uniquely identifying it among all threads. If the [Thread] has not started running or if [method wait_to_finish] has been called, this returns an empty string.
 */
@@ -113,10 +117,11 @@ func (self class) GetId() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_get_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if this [Thread] has been started. Once started, this will return [code]true[/code] until it is joined using [method wait_to_finish]. For checking if a [Thread] is still executing its task, use [method is_alive].
 */
@@ -129,6 +134,7 @@ func (self class) IsStarted() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if this [Thread] is currently running the provided function. This is useful for determining if [method wait_to_finish] can be called without blocking the calling thread.
 To check if a [Thread] is joinable, use [method is_started].
@@ -142,6 +148,7 @@ func (self class) IsAlive() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Joins the [Thread] and waits for it to finish. Returns the output of the [Callable] passed to [method start].
 Should either be used when you want to retrieve the value returned from the method called by the [Thread] or before freeing the instance that contains the [Thread].
@@ -152,10 +159,11 @@ func (self class) WaitToFinish() gd.Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_wait_to_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Variant](r_ret.Get())
+	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Sets whether the thread safety checks the engine normally performs in methods of certain classes (e.g., [Node]) should happen [b]on the current thread[/b].
 The default, for every thread, is that they are enabled (as if called with [param enabled] being [code]true[/code]).
@@ -166,37 +174,40 @@ Because of that, there may be cases where the user may want to disable them ([pa
 [b]Note:[/b] Even in the case of having disabled the checks in a [WorkerThreadPool] task, there's no need to re-enable them at the end. The engine will do so.
 */
 //go:nosplit
-func (self class) SetThreadSafetyChecksEnabled(enabled bool)  {
+func (self class) SetThreadSafetyChecksEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self class) AsThread() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsThread() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsThread() Advanced             { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsThread() Instance          { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("Thread", func(ptr gd.Object) any { return classdb.Thread(ptr) })}
+func init() { classdb.Register("Thread", func(ptr gd.Object) any { return classdb.Thread(ptr) }) }
+
 type Priority = classdb.ThreadPriority
 
 const (
-/*A thread running with lower priority than normally.*/
+	/*A thread running with lower priority than normally.*/
 	PriorityLow Priority = 0
-/*A thread with a standard priority.*/
+	/*A thread with a standard priority.*/
 	PriorityNormal Priority = 1
-/*A thread running with higher priority than normally.*/
+	/*A thread running with higher priority than normally.*/
 	PriorityHigh Priority = 2
 )

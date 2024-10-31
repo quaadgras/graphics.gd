@@ -3,24 +3,26 @@ package IP
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
-
 */
 var self gdclass.IP
 var once sync.Once
+
 func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.IP)
 	self = *(*gdclass.IP)(unsafe.Pointer(&obj))
@@ -94,12 +96,14 @@ func GetLocalAddresses() []string {
 Returns all network adapters as an array.
 Each adapter is a dictionary of the form:
 [codeblock]
-{
-    "index": "1", # Interface index.
-    "name": "eth0", # Interface name.
-    "friendly": "Ethernet One", # A friendly name (might be empty).
-    "addresses": ["192.168.1.101"], # An array of IP addresses associated to this interface.
-}
+
+	{
+	    "index": "1", # Interface index.
+	    "name": "eth0", # Interface name.
+	    "friendly": "Ethernet One", # A friendly name (might be empty).
+	    "addresses": ["192.168.1.101"], # An array of IP addresses associated to this interface.
+	}
+
 [/codeblock]
 */
 func GetLocalInterfaces() gd.Array {
@@ -114,9 +118,12 @@ func ClearCache() {
 	once.Do(singleton)
 	class(self).ClearCache(gd.NewString(""))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-func GD() class { once.Do(singleton); return self }
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+func Advanced() class { once.Do(singleton); return self }
+
 type class [1]classdb.IP
+
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
 /*
@@ -125,35 +132,37 @@ Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type met
 //go:nosplit
 func (self class) ResolveHostname(host gd.String, ip_type classdb.IPType) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(host))
+	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
 //go:nosplit
 func (self class) ResolveHostnameAddresses(host gd.String, ip_type classdb.IPType) gd.PackedStringArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(host))
+	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
 //go:nosplit
 func (self class) ResolveHostnameQueueItem(host gd.String, ip_type classdb.IPType) gd.Int {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(host))
+	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -161,6 +170,7 @@ func (self class) ResolveHostnameQueueItem(host gd.String, ip_type classdb.IPTyp
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a queued hostname's status as a [enum ResolverStatus] constant, given its queue [param id].
 */
@@ -174,6 +184,7 @@ func (self class) GetResolveItemStatus(id gd.Int) classdb.IPResolverStatus {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a queued hostname's IP address, given its queue [param id]. Returns an empty string on error or if resolution hasn't happened yet (see [method get_resolve_item_status]).
 */
@@ -183,10 +194,11 @@ func (self class) GetResolveItemAddress(id gd.Int) gd.String {
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
@@ -196,21 +208,23 @@ func (self class) GetResolveItemAddresses(id gd.Int) gd.Array {
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Removes a given item [param id] from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
 */
 //go:nosplit
-func (self class) EraseResolveItem(id gd.Int)  {
+func (self class) EraseResolveItem(id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_erase_resolve_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
@@ -219,10 +233,11 @@ func (self class) GetLocalAddresses() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns all network adapters as an array.
 Each adapter is a dictionary of the form:
@@ -240,48 +255,52 @@ func (self class) GetLocalInterfaces() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Removes all of a [param hostname]'s cached references. If no [param hostname] is given, all cached IP addresses are removed.
 */
 //go:nosplit
-func (self class) ClearCache(hostname gd.String)  {
+func (self class) ClearCache(hostname gd.String) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(hostname))
+	callframe.Arg(frame, pointers.Get(hostname))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("IP", func(ptr gd.Object) any { return classdb.IP(ptr) })}
+func init() { classdb.Register("IP", func(ptr gd.Object) any { return classdb.IP(ptr) }) }
+
 type ResolverStatus = classdb.IPResolverStatus
 
 const (
-/*DNS hostname resolver status: No status.*/
+	/*DNS hostname resolver status: No status.*/
 	ResolverStatusNone ResolverStatus = 0
-/*DNS hostname resolver status: Waiting.*/
+	/*DNS hostname resolver status: Waiting.*/
 	ResolverStatusWaiting ResolverStatus = 1
-/*DNS hostname resolver status: Done.*/
+	/*DNS hostname resolver status: Done.*/
 	ResolverStatusDone ResolverStatus = 2
-/*DNS hostname resolver status: Error.*/
+	/*DNS hostname resolver status: Error.*/
 	ResolverStatusError ResolverStatus = 3
 )
+
 type Type = classdb.IPType
 
 const (
-/*Address type: None.*/
+	/*Address type: None.*/
 	TypeNone Type = 0
-/*Address type: Internet protocol version 4 (IPv4).*/
+	/*Address type: Internet protocol version 4 (IPv4).*/
 	TypeIpv4 Type = 1
-/*Address type: Internet protocol version 6 (IPv6).*/
+	/*Address type: Internet protocol version 6 (IPv6).*/
 	TypeIpv6 Type = 2
-/*Address type: Any.*/
+	/*Address type: Any.*/
 	TypeAny Type = 3
 )

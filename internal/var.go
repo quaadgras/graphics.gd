@@ -6,13 +6,11 @@ import (
 	"reflect"
 
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 	"grow.graphics/uc"
 	"grow.graphics/xy"
 
-	vector2 "grow.graphics/gd/gdmaths/Vector2"
-	vector2i "grow.graphics/gd/gdmaths/Vector2i"
-	vector3 "grow.graphics/gd/gdmaths/Vector3"
+	float "grow.graphics/gd/variant/Float"
 )
 
 type Bool = bool
@@ -20,11 +18,11 @@ type Bool = bool
 type (
 	Float       = float64
 	Int         = int64
-	Vector2     = vector2.XY
-	Vector2i    = vector2i.XY
+	Vector2     = struct{ X, Y float.X }
+	Vector2i    = struct{ X, Y int32 }
 	Rect2       = xy.Rect2
 	Rect2i      = xy.Rect2i
-	Vector3     = vector3.XYZ
+	Vector3     = struct{ X, Y, Z float.X }
 	Vector3i    = xy.Vector3i
 	Transform2D = xy.Transform2D
 	Vector4     = xy.Vector4
@@ -47,7 +45,7 @@ type (
 type RID uint64
 
 func (c Callable) Free() {
-	ptr, ok := discreet.End(c)
+	ptr, ok := pointers.End(c)
 	if !ok {
 		return
 	}

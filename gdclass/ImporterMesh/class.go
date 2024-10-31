@@ -2,10 +2,11 @@ package ImporterMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Resource"
 
@@ -13,47 +14,47 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
 Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [method clear], followed by [method add_surface] for each surface.
-
 */
-type Go [1]classdb.ImporterMesh
+type Instance [1]classdb.ImporterMesh
 
 /*
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
-func (self Go) AddBlendShape(name string) {
+func (self Instance) AddBlendShape(name string) {
 	class(self).AddBlendShape(gd.NewString(name))
 }
 
 /*
 Returns the number of blend shapes that the mesh holds.
 */
-func (self Go) GetBlendShapeCount() int {
+func (self Instance) GetBlendShapeCount() int {
 	return int(int(class(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the name of the blend shape at this index.
 */
-func (self Go) GetBlendShapeName(blend_shape_idx int) string {
+func (self Instance) GetBlendShapeName(blend_shape_idx int) string {
 	return string(class(self).GetBlendShapeName(gd.Int(blend_shape_idx)).String())
 }
 
 /*
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
-func (self Go) SetBlendShapeMode(mode classdb.MeshBlendShapeMode) {
+func (self Instance) SetBlendShapeMode(mode classdb.MeshBlendShapeMode) {
 	class(self).SetBlendShapeMode(mode)
 }
 
 /*
 Returns the blend shape mode for this Mesh.
 */
-func (self Go) GetBlendShapeMode() classdb.MeshBlendShapeMode {
+func (self Instance) GetBlendShapeMode() classdb.MeshBlendShapeMode {
 	return classdb.MeshBlendShapeMode(class(self).GetBlendShapeMode())
 }
 
@@ -66,91 +67,91 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Go) AddSurface(primitive classdb.MeshPrimitiveType, arrays gd.Array) {
+func (self Instance) AddSurface(primitive classdb.MeshPrimitiveType, arrays gd.Array) {
 	class(self).AddSurface(primitive, arrays, ([1]gd.Array{}[0]), ([1]gd.Dictionary{}[0]), ([1]gdclass.Material{}[0]), gd.NewString(""), gd.Int(0))
 }
 
 /*
 Returns the number of surfaces that the mesh holds.
 */
-func (self Go) GetSurfaceCount() int {
+func (self Instance) GetSurfaceCount() int {
 	return int(int(class(self).GetSurfaceCount()))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
-func (self Go) GetSurfacePrimitiveType(surface_idx int) classdb.MeshPrimitiveType {
+func (self Instance) GetSurfacePrimitiveType(surface_idx int) classdb.MeshPrimitiveType {
 	return classdb.MeshPrimitiveType(class(self).GetSurfacePrimitiveType(gd.Int(surface_idx)))
 }
 
 /*
 Gets the name assigned to this surface.
 */
-func (self Go) GetSurfaceName(surface_idx int) string {
+func (self Instance) GetSurfaceName(surface_idx int) string {
 	return string(class(self).GetSurfaceName(gd.Int(surface_idx)).String())
 }
 
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
-func (self Go) GetSurfaceArrays(surface_idx int) gd.Array {
+func (self Instance) GetSurfaceArrays(surface_idx int) gd.Array {
 	return gd.Array(class(self).GetSurfaceArrays(gd.Int(surface_idx)))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Go) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) gd.Array {
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) gd.Array {
 	return gd.Array(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))
 }
 
 /*
 Returns the number of lods that the mesh holds on a given surface.
 */
-func (self Go) GetSurfaceLodCount(surface_idx int) int {
+func (self Instance) GetSurfaceLodCount(surface_idx int) int {
 	return int(int(class(self).GetSurfaceLodCount(gd.Int(surface_idx))))
 }
 
 /*
 Returns the screen ratio which activates a lod for a surface.
 */
-func (self Go) GetSurfaceLodSize(surface_idx int, lod_idx int) float64 {
+func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) float64 {
 	return float64(float64(class(self).GetSurfaceLodSize(gd.Int(surface_idx), gd.Int(lod_idx))))
 }
 
 /*
 Returns the index buffer of a lod for a surface.
 */
-func (self Go) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 {
+func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 {
 	return []int32(class(self).GetSurfaceLodIndices(gd.Int(surface_idx), gd.Int(lod_idx)).AsSlice())
 }
 
 /*
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
-func (self Go) GetSurfaceMaterial(surface_idx int) gdclass.Material {
+func (self Instance) GetSurfaceMaterial(surface_idx int) gdclass.Material {
 	return gdclass.Material(class(self).GetSurfaceMaterial(gd.Int(surface_idx)))
 }
 
 /*
 Returns the format of the surface that the mesh holds.
 */
-func (self Go) GetSurfaceFormat(surface_idx int) int {
+func (self Instance) GetSurfaceFormat(surface_idx int) int {
 	return int(int(class(self).GetSurfaceFormat(gd.Int(surface_idx))))
 }
 
 /*
 Sets a name for a given surface.
 */
-func (self Go) SetSurfaceName(surface_idx int, name string) {
+func (self Instance) SetSurfaceName(surface_idx int, name string) {
 	class(self).SetSurfaceName(gd.Int(surface_idx), gd.NewString(name))
 }
 
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
-func (self Go) SetSurfaceMaterial(surface_idx int, material gdclass.Material) {
+func (self Instance) SetSurfaceMaterial(surface_idx int, material gdclass.Material) {
 	class(self).SetSurfaceMaterial(gd.Int(surface_idx), material)
 }
 
@@ -160,7 +161,7 @@ Generates all lods for this ImporterMesh.
 The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Go) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array gd.Array) {
+func (self Instance) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array gd.Array) {
 	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), bone_transform_array)
 }
 
@@ -169,51 +170,54 @@ Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh]
 This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
-func (self Go) GetMesh() gdclass.ArrayMesh {
+func (self Instance) GetMesh() gdclass.ArrayMesh {
 	return gdclass.ArrayMesh(class(self).GetMesh(([1]gdclass.ArrayMesh{}[0])))
 }
 
 /*
 Removes all surfaces and blend shapes from this [ImporterMesh].
 */
-func (self Go) Clear() {
+func (self Instance) Clear() {
 	class(self).Clear()
 }
 
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Go) SetLightmapSizeHint(size gd.Vector2i) {
+func (self Instance) SetLightmapSizeHint(size gd.Vector2i) {
 	class(self).SetLightmapSizeHint(size)
 }
 
 /*
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Go) GetLightmapSizeHint() gd.Vector2i {
+func (self Instance) GetLightmapSizeHint() gd.Vector2i {
 	return gd.Vector2i(class(self).GetLightmapSizeHint())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.ImporterMesh
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMesh"))
-	return Go{classdb.ImporterMesh(object)}
+	return Instance{classdb.ImporterMesh(object)}
 }
 
 /*
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
 //go:nosplit
-func (self class) AddBlendShape(name gd.String)  {
+func (self class) AddBlendShape(name gd.String) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the number of blend shapes that the mesh holds.
 */
@@ -226,6 +230,7 @@ func (self class) GetBlendShapeCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the name of the blend shape at this index.
 */
@@ -235,21 +240,23 @@ func (self class) GetBlendShapeName(blend_shape_idx gd.Int) gd.String {
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
 //go:nosplit
-func (self class) SetBlendShapeMode(mode classdb.MeshBlendShapeMode)  {
+func (self class) SetBlendShapeMode(mode classdb.MeshBlendShapeMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the blend shape mode for this Mesh.
 */
@@ -262,6 +269,7 @@ func (self class) GetBlendShapeMode() classdb.MeshBlendShapeMode {
 	frame.Free()
 	return ret
 }
+
 /*
 Creates a new surface. [method Mesh.get_surface_count] will become the [code]surf_idx[/code] for this new surface.
 Surfaces are created to be rendered using a [param primitive], which may be any of the values defined in [enum Mesh.PrimitiveType].
@@ -272,19 +280,20 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive classdb.MeshPrimitiveType, arrays gd.Array, blend_shapes gd.Array, lods gd.Dictionary, material gdclass.Material, name gd.String, flags gd.Int)  {
+func (self class) AddSurface(primitive classdb.MeshPrimitiveType, arrays gd.Array, blend_shapes gd.Array, lods gd.Dictionary, material gdclass.Material, name gd.String, flags gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
-	callframe.Arg(frame, discreet.Get(arrays))
-	callframe.Arg(frame, discreet.Get(blend_shapes))
-	callframe.Arg(frame, discreet.Get(lods))
-	callframe.Arg(frame, discreet.Get(material[0])[0])
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(arrays))
+	callframe.Arg(frame, pointers.Get(blend_shapes))
+	callframe.Arg(frame, pointers.Get(lods))
+	callframe.Arg(frame, pointers.Get(material[0])[0])
+	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, flags)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_add_surface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the number of surfaces that the mesh holds.
 */
@@ -297,6 +306,7 @@ func (self class) GetSurfaceCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
@@ -310,6 +320,7 @@ func (self class) GetSurfacePrimitiveType(surface_idx gd.Int) classdb.MeshPrimit
 	frame.Free()
 	return ret
 }
+
 /*
 Gets the name assigned to this surface.
 */
@@ -319,10 +330,11 @@ func (self class) GetSurfaceName(surface_idx gd.Int) gd.String {
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
@@ -332,10 +344,11 @@ func (self class) GetSurfaceArrays(surface_idx gd.Int) gd.Array {
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
@@ -346,10 +359,11 @@ func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the number of lods that the mesh holds on a given surface.
 */
@@ -363,6 +377,7 @@ func (self class) GetSurfaceLodCount(surface_idx gd.Int) gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the screen ratio which activates a lod for a surface.
 */
@@ -377,6 +392,7 @@ func (self class) GetSurfaceLodSize(surface_idx gd.Int, lod_idx gd.Int) gd.Float
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the index buffer of a lod for a surface.
 */
@@ -387,10 +403,11 @@ func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) gd.Pa
 	callframe.Arg(frame, lod_idx)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_lod_indices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedInt32Array](r_ret.Get())
+	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
@@ -404,6 +421,7 @@ func (self class) GetSurfaceMaterial(surface_idx gd.Int) gdclass.Material {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the format of the surface that the mesh holds.
 */
@@ -417,30 +435,33 @@ func (self class) GetSurfaceFormat(surface_idx gd.Int) gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String)  {
+func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_set_surface_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
 //go:nosplit
-func (self class) SetSurfaceMaterial(surface_idx gd.Int, material gdclass.Material)  {
+func (self class) SetSurfaceMaterial(surface_idx gd.Int, material gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
-	callframe.Arg(frame, discreet.Get(material[0])[0])
+	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_set_surface_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Generates all lods for this ImporterMesh.
 [param normal_merge_angle] and [param normal_split_angle] are in degrees and used in the same way as the importer settings in [code]lods[/code]. As a good default, use 25 and 60 respectively.
@@ -448,15 +469,16 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
 //go:nosplit
-func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array gd.Array)  {
+func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_merge_angle)
 	callframe.Arg(frame, normal_split_angle)
-	callframe.Arg(frame, discreet.Get(bone_transform_array))
+	callframe.Arg(frame, pointers.Get(bone_transform_array))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_generate_lods, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh].
 This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
@@ -465,34 +487,37 @@ If not yet cached and [param base_mesh] is provided, [param base_mesh] will be u
 //go:nosplit
 func (self class) GetMesh(base_mesh gdclass.ArrayMesh) gdclass.ArrayMesh {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(base_mesh[0])[0])
+	callframe.Arg(frame, pointers.Get(base_mesh[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = gdclass.ArrayMesh{classdb.ArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
+
 /*
 Removes all surfaces and blend shapes from this [ImporterMesh].
 */
 //go:nosplit
-func (self class) Clear()  {
+func (self class) Clear() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 //go:nosplit
-func (self class) SetLightmapSizeHint(size gd.Vector2i)  {
+func (self class) SetLightmapSizeHint(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_set_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
@@ -505,22 +530,30 @@ func (self class) GetLightmapSizeHint() gd.Vector2i {
 	frame.Free()
 	return ret
 }
-func (self class) AsImporterMesh() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsImporterMesh() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsImporterMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsImporterMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("ImporterMesh", func(ptr gd.Object) any { return classdb.ImporterMesh(ptr) })}
+func init() {
+	classdb.Register("ImporterMesh", func(ptr gd.Object) any { return classdb.ImporterMesh(ptr) })
+}

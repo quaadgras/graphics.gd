@@ -2,10 +2,11 @@ package RibbonTrailMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/PrimitiveMesh"
 import "grow.graphics/gd/gdclass/Mesh"
@@ -15,80 +16,83 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 [RibbonTrailMesh] represents a straight ribbon-shaped mesh with variable width. The ribbon is composed of a number of flat or cross-shaped sections, each with the same [member section_length] and number of [member section_segments]. A [member curve] is sampled along the total length of the ribbon, meaning that the curve determines the size of the ribbon along its length.
 This primitive mesh is usually used for particle trails.
-
 */
-type Go [1]classdb.RibbonTrailMesh
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+type Instance [1]classdb.RibbonTrailMesh
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.RibbonTrailMesh
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RibbonTrailMesh"))
-	return Go{classdb.RibbonTrailMesh(object)}
+	return Instance{classdb.RibbonTrailMesh(object)}
 }
 
-func (self Go) Shape() classdb.RibbonTrailMeshShape {
-		return classdb.RibbonTrailMeshShape(class(self).GetShape())
+func (self Instance) Shape() classdb.RibbonTrailMeshShape {
+	return classdb.RibbonTrailMeshShape(class(self).GetShape())
 }
 
-func (self Go) SetShape(value classdb.RibbonTrailMeshShape) {
+func (self Instance) SetShape(value classdb.RibbonTrailMeshShape) {
 	class(self).SetShape(value)
 }
 
-func (self Go) Size() float64 {
-		return float64(float64(class(self).GetSize()))
+func (self Instance) Size() float64 {
+	return float64(float64(class(self).GetSize()))
 }
 
-func (self Go) SetSize(value float64) {
+func (self Instance) SetSize(value float64) {
 	class(self).SetSize(gd.Float(value))
 }
 
-func (self Go) Sections() int {
-		return int(int(class(self).GetSections()))
+func (self Instance) Sections() int {
+	return int(int(class(self).GetSections()))
 }
 
-func (self Go) SetSections(value int) {
+func (self Instance) SetSections(value int) {
 	class(self).SetSections(gd.Int(value))
 }
 
-func (self Go) SectionLength() float64 {
-		return float64(float64(class(self).GetSectionLength()))
+func (self Instance) SectionLength() float64 {
+	return float64(float64(class(self).GetSectionLength()))
 }
 
-func (self Go) SetSectionLength(value float64) {
+func (self Instance) SetSectionLength(value float64) {
 	class(self).SetSectionLength(gd.Float(value))
 }
 
-func (self Go) SectionSegments() int {
-		return int(int(class(self).GetSectionSegments()))
+func (self Instance) SectionSegments() int {
+	return int(int(class(self).GetSectionSegments()))
 }
 
-func (self Go) SetSectionSegments(value int) {
+func (self Instance) SetSectionSegments(value int) {
 	class(self).SetSectionSegments(gd.Int(value))
 }
 
-func (self Go) Curve() gdclass.Curve {
-		return gdclass.Curve(class(self).GetCurve())
+func (self Instance) Curve() gdclass.Curve {
+	return gdclass.Curve(class(self).GetCurve())
 }
 
-func (self Go) SetCurve(value gdclass.Curve) {
+func (self Instance) SetCurve(value gdclass.Curve) {
 	class(self).SetCurve(value)
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Float)  {
+func (self class) SetSize(size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSize() gd.Float {
 	var frame = callframe.New()
@@ -98,14 +102,16 @@ func (self class) GetSize() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetSections(sections gd.Int)  {
+func (self class) SetSections(sections gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sections)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_sections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSections() gd.Int {
 	var frame = callframe.New()
@@ -115,14 +121,16 @@ func (self class) GetSections() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetSectionLength(section_length gd.Float)  {
+func (self class) SetSectionLength(section_length gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, section_length)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_section_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSectionLength() gd.Float {
 	var frame = callframe.New()
@@ -132,14 +140,16 @@ func (self class) GetSectionLength() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetSectionSegments(section_segments gd.Int)  {
+func (self class) SetSectionSegments(section_segments gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, section_segments)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_section_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSectionSegments() gd.Int {
 	var frame = callframe.New()
@@ -149,14 +159,16 @@ func (self class) GetSectionSegments() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetCurve(curve gdclass.Curve)  {
+func (self class) SetCurve(curve gdclass.Curve) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(curve[0])[0])
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetCurve() gdclass.Curve {
 	var frame = callframe.New()
@@ -166,14 +178,16 @@ func (self class) GetCurve() gdclass.Curve {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetShape(shape classdb.RibbonTrailMeshShape)  {
+func (self class) SetShape(shape classdb.RibbonTrailMeshShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetShape() classdb.RibbonTrailMeshShape {
 	var frame = callframe.New()
@@ -183,34 +197,47 @@ func (self class) GetShape() classdb.RibbonTrailMeshShape {
 	frame.Free()
 	return ret
 }
-func (self class) AsRibbonTrailMesh() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsRibbonTrailMesh() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsPrimitiveMesh() PrimitiveMesh.GD { return *((*PrimitiveMesh.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsPrimitiveMesh() PrimitiveMesh.Go { return *((*PrimitiveMesh.Go)(unsafe.Pointer(&self))) }
-func (self class) AsMesh() Mesh.GD { return *((*Mesh.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsMesh() Mesh.Go { return *((*Mesh.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRibbonTrailMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRibbonTrailMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
+	return *((*PrimitiveMesh.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
+	return *((*PrimitiveMesh.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsMesh() Mesh.Advanced    { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMesh() Mesh.Instance { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsPrimitiveMesh(), name)
+	default:
+		return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsPrimitiveMesh(), name)
+	default:
+		return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() {classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any { return classdb.RibbonTrailMesh(ptr) })}
+func init() {
+	classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any { return classdb.RibbonTrailMesh(ptr) })
+}
+
 type Shape = classdb.RibbonTrailMeshShape
 
 const (
-/*Gives the mesh a single flat face.*/
+	/*Gives the mesh a single flat face.*/
 	ShapeFlat Shape = 0
-/*Gives the mesh two perpendicular flat faces, making a cross shape.*/
+	/*Gives the mesh two perpendicular flat faces, making a cross shape.*/
 	ShapeCross Shape = 1
 )

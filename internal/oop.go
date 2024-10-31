@@ -7,17 +7,17 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 )
 
 type NotificationType int32
 
 func PointerWithOwnershipTransferredToGo(ptr [1]uintptr) Object {
-	return discreet.New[Object]([3]uintptr{ptr[0]})
+	return pointers.New[Object]([3]uintptr{ptr[0]})
 }
 
 func PointerWithOwnershipTransferredToGodot(ptr Object) uintptr {
-	raw, _ := discreet.End(ptr)
+	raw, _ := pointers.End(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
@@ -28,13 +28,13 @@ func PointerMustAssertInstanceID(ptr [1]uintptr) Object {
 	if ptr == ([1]uintptr{}) {
 		return Object{}
 	}
-	initial := discreet.New[Object]([3]uintptr{ptr[0]})
-	discreet.Set(&initial, [3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(initial))})
+	initial := pointers.New[Object]([3]uintptr{ptr[0]})
+	pointers.Set(&initial, [3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(initial))})
 	return initial
 }
 
 func PointerLifetimeBoundTo(obj Object, ptr [1]uintptr) Object {
-	return discreet.New[Object]([3]uintptr{ptr[0], 0})
+	return pointers.New[Object]([3]uintptr{ptr[0], 0})
 }
 
 func (self Object) AsObject() Object {
@@ -42,14 +42,14 @@ func (self Object) AsObject() Object {
 }
 
 func (self RefCounted) Free() {
-	_, ok := discreet.End(self)
+	_, ok := pointers.End(self)
 	if !ok {
 		return
 	}
 }
 
 func (self Object) Free() {
-	_, ok := discreet.End(self)
+	_, ok := pointers.End(self)
 	if !ok {
 		return
 	}
@@ -68,10 +68,6 @@ func (self Object) Free() {
 type Class[T, S IsClass] struct {
 	_     [0]*T
 	super S
-}
-
-type ExtensionClass interface {
-	PointerToClass
 }
 
 func (class Class[T, S]) AsObject() Object {
@@ -111,11 +107,11 @@ func classNameOf(rtype reflect.Type) string {
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T IsClass](class IsClass) (T, bool) {
-	if ref, ok := Global.Instances[discreet.Get(class.AsObject())[0]].(T); ok {
-		extension := any(ref).(ExtensionClass)
-		extension.SetPointer(class.AsObject())
-		return ref, true
-	}
+	/*if ref, ok := Global.Instances[pointers.Get(class.AsObject())[0]].(T); ok {
+	extension := any(ref).(ExtensionClass)
+	extension.SetPointer(class.AsObject())
+	return ref, true
+	}*/
 	var zero T
 	var rtype = reflect.TypeOf([0]T{}).Elem()
 	if rtype.Kind() == reflect.Pointer {
@@ -123,7 +119,7 @@ func As[T IsClass](class IsClass) (T, bool) {
 	}
 	var classtag = Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype)))
 	casted := Global.Object.CastTo(class.AsObject(), classtag)
-	if casted != (Object{}) && discreet.Get(casted) != ([3]uintptr{}) {
+	if casted != (Object{}) && pointers.Get(casted) != ([3]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	return zero, false
@@ -138,7 +134,7 @@ func as[T any](v Variant) T {
 	if obj, ok := val.(IsClass); ok {
 		var classtag = Global.ClassDB.GetClassTag(obj.AsObject().GetClass().StringName())
 		casted := Global.Object.CastTo(obj.AsObject(), classtag)
-		if casted != (Object{}) && discreet.Get(casted) != ([3]uintptr{}) {
+		if casted != (Object{}) && pointers.Get(casted) != ([3]uintptr{}) {
 			any(&zero).(PointerToClass).SetPointer(casted)
 		}
 		return zero

@@ -1,16 +1,16 @@
-package discreet_test
+package pointers_test
 
 import (
 	"testing"
 
-	"grow.graphics/gd/internal/discreet"
 	"grow.graphics/gd/internal/mmm"
+	"grow.graphics/gd/internal/pointers"
 )
 
-type MyPointer discreet.PointerNamed[MyPointer, [1]uintptr, [1]discreet.Type]
+type MyPointer pointers.PointerNamed[MyPointer, [1]uintptr, [1]pointers.Type]
 
 func (p MyPointer) Free() {
-	if ptr, ok := discreet.End(p); ok {
+	if ptr, ok := pointers.End(p); ok {
 		_ = ptr // free the pointer
 	}
 }
@@ -18,31 +18,28 @@ func (p MyPointer) Free() {
 func TestPointer(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		if i%5 == 0 {
-			discreet.Cycle()
-			discreet.MarkAndSweep()
+			pointers.Cycle()
+			pointers.MarkAndSweep()
 		}
-		var p = discreet.New[MyPointer]([1]uintptr{1})
-		if discreet.Get(p) != [1]uintptr{1} {
+		var p = pointers.New[MyPointer]([1]uintptr{1})
+		if pointers.Get(p) != [1]uintptr{1} {
 			t.Fatal("bad")
 		}
 	}
 }
 
 func BenchmarkDiscrete(b *testing.B) {
-
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		if i%512 == 0 {
-			discreet.Cycle()
-			discreet.MarkAndSweep()
+			pointers.Cycle()
+			pointers.MarkAndSweep()
 		}
-		var p = discreet.New[MyPointer]([1]uintptr{1})
-		if discreet.Get(p) != [1]uintptr{1} {
+		var p = pointers.New[MyPointer]([1]uintptr{1})
+		if pointers.Get(p) != [1]uintptr{1} {
 			b.Fatal("bad")
 		}
-
 	}
-
 }
 
 type MmmPointer mmm.Pointer[struct{}, MmmPointer, [1]uintptr]

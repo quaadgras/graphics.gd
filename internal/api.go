@@ -5,8 +5,9 @@ package gd
 import (
 	"unsafe"
 
+	"grow.graphics/gd/gdconst"
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 
 	"runtime.link/api"
 )
@@ -177,21 +178,20 @@ type API struct {
 	refCountedClassTag ClassTag
 
 	// extensions instances are mapped here.
-	Instances  map[uintptr]ExtensionClass
 	Singletons singletons
 }
 
-type Packed[T any, P discreet.PointerType] interface {
+type Packed[T any, P pointers.PointerType] interface {
 	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
 		PackedFloat64Array | PackedStringArray |
 		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
-	discreet.Pointer[T, [2]uintptr, P]
+	pointers.Pointer[T, [2]uintptr, P]
 	Len() int
 }
 
-type PackedFunctionsFor[T Packed[T, P], V any, P discreet.PointerType] struct {
+type PackedFunctionsFor[T Packed[T, P], V any, P pointers.PointerType] struct {
 	Index         func(T, Int) V
 	SetIndex      func(T, Int, V)
 	CopyAsSlice   func(T) []V
@@ -304,9 +304,9 @@ type PropertyInfo struct {
 	Type       VariantType
 	Name       StringName
 	ClassName  StringName
-	Hint       PropertyHint
+	Hint       gdconst.PropertyHint
 	HintString String
-	Usage      PropertyUsageFlags
+	Usage      gdconst.PropertyUsageFlags
 }
 
 type MethodInfo struct {
@@ -349,7 +349,7 @@ type ObjectInterface interface {
 	Free()
 }
 
-type ExtensionClassCallVirtualFunc func(ExtensionClass, UnsafeArgs, UnsafeBack)
+type ExtensionClassCallVirtualFunc func(any, UnsafeArgs, UnsafeBack)
 
 type ClassMethodArgumentMetadata uint32
 

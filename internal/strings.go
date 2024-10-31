@@ -6,32 +6,32 @@ import (
 	"unsafe"
 
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 )
 
 func (s String) StringName() StringName {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Global.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[StringName](raw)
+	return pointers.New[StringName](raw)
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
 func (s String) Copy() String {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var ret = callframe.Ret[[1]uintptr](frame)
 	Global.typeset.creation.String[1](ret.Uintptr(), frame.Array(0))
 	var raw = ret.Get()
 	frame.Free()
-	return discreet.New[String](raw)
+	return pointers.New[String](raw)
 }
 
 func (s String) Free() {
-	ptr, ok := discreet.End(s)
+	ptr, ok := pointers.End(s)
 	if !ok {
 		return
 	}
@@ -42,7 +42,7 @@ func (s String) Free() {
 
 func (s *String) Append(other String) {
 	modified := Global.Strings.Append(*s, other)
-	discreet.End(*s)
+	pointers.End(*s)
 	*s = modified
 }
 
@@ -54,7 +54,7 @@ func (s String) Len() int { return int(s.Length()) }
 func (s String) Cap() int { return int(s.Length()) }
 
 func (s String) String() string {
-	if discreet.Get(s) == ([1]uintptr{}) {
+	if pointers.Get(s) == ([1]uintptr{}) {
 		return ""
 	}
 	return Global.Strings.Get(s)
@@ -62,36 +62,36 @@ func (s String) String() string {
 
 func (Godot *API) StringFromStringName(s StringName) String {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Godot.typeset.creation.String[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[String](raw)
+	return pointers.New[String](raw)
 }
 
 func (Godot *API) StringFromNodePath(s NodePath) String {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Godot.typeset.creation.String[3](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[String](raw)
+	return pointers.New[String](raw)
 }
 
 func NewStringNameFromString(s String) StringName {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Global.typeset.creation.StringName[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[StringName](raw)
+	return pointers.New[StringName](raw)
 }
 
 func (s StringName) Free() {
-	ptr, ok := discreet.End(s)
+	ptr, ok := pointers.End(s)
 	if !ok {
 		return
 	}
@@ -101,7 +101,7 @@ func (s StringName) Free() {
 }
 
 func (s StringName) String() string {
-	if discreet.Get(s) == ([1]uintptr{}) {
+	if pointers.Get(s) == ([1]uintptr{}) {
 		return ""
 	}
 	var tmp = Global.StringFromStringName(s)
@@ -110,12 +110,12 @@ func (s StringName) String() string {
 
 func (s String) NodePath() NodePath {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(s))
+	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Global.typeset.creation.NodePath[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[NodePath](raw)
+	return pointers.New[NodePath](raw)
 }
 
 func (n NodePath) String() string {
@@ -123,7 +123,7 @@ func (n NodePath) String() string {
 }
 
 func (n NodePath) Free() {
-	ptr, ok := discreet.End(n)
+	ptr, ok := pointers.End(n)
 	if !ok {
 		return
 	}

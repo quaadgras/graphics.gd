@@ -2,10 +2,11 @@ package FlowContainer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Container"
 import "grow.graphics/gd/gdclass/Control"
@@ -16,59 +17,61 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A container that arranges its child controls horizontally or vertically and wraps them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.
-
 */
-type Go [1]classdb.FlowContainer
+type Instance [1]classdb.FlowContainer
 
 /*
 Returns the current line count.
 */
-func (self Go) GetLineCount() int {
+func (self Instance) GetLineCount() int {
 	return int(int(class(self).GetLineCount()))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.FlowContainer
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FlowContainer"))
-	return Go{classdb.FlowContainer(object)}
+	return Instance{classdb.FlowContainer(object)}
 }
 
-func (self Go) Alignment() classdb.FlowContainerAlignmentMode {
-		return classdb.FlowContainerAlignmentMode(class(self).GetAlignment())
+func (self Instance) Alignment() classdb.FlowContainerAlignmentMode {
+	return classdb.FlowContainerAlignmentMode(class(self).GetAlignment())
 }
 
-func (self Go) SetAlignment(value classdb.FlowContainerAlignmentMode) {
+func (self Instance) SetAlignment(value classdb.FlowContainerAlignmentMode) {
 	class(self).SetAlignment(value)
 }
 
-func (self Go) LastWrapAlignment() classdb.FlowContainerLastWrapAlignmentMode {
-		return classdb.FlowContainerLastWrapAlignmentMode(class(self).GetLastWrapAlignment())
+func (self Instance) LastWrapAlignment() classdb.FlowContainerLastWrapAlignmentMode {
+	return classdb.FlowContainerLastWrapAlignmentMode(class(self).GetLastWrapAlignment())
 }
 
-func (self Go) SetLastWrapAlignment(value classdb.FlowContainerLastWrapAlignmentMode) {
+func (self Instance) SetLastWrapAlignment(value classdb.FlowContainerLastWrapAlignmentMode) {
 	class(self).SetLastWrapAlignment(value)
 }
 
-func (self Go) Vertical() bool {
-		return bool(class(self).IsVertical())
+func (self Instance) Vertical() bool {
+	return bool(class(self).IsVertical())
 }
 
-func (self Go) SetVertical(value bool) {
+func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }
 
-func (self Go) ReverseFill() bool {
-		return bool(class(self).IsReverseFill())
+func (self Instance) ReverseFill() bool {
+	return bool(class(self).IsReverseFill())
 }
 
-func (self Go) SetReverseFill(value bool) {
+func (self Instance) SetReverseFill(value bool) {
 	class(self).SetReverseFill(value)
 }
 
@@ -84,14 +87,16 @@ func (self class) GetLineCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAlignment(alignment classdb.FlowContainerAlignmentMode)  {
+func (self class) SetAlignment(alignment classdb.FlowContainerAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetAlignment() classdb.FlowContainerAlignmentMode {
 	var frame = callframe.New()
@@ -101,14 +106,16 @@ func (self class) GetAlignment() classdb.FlowContainerAlignmentMode {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetLastWrapAlignment(last_wrap_alignment classdb.FlowContainerLastWrapAlignmentMode)  {
+func (self class) SetLastWrapAlignment(last_wrap_alignment classdb.FlowContainerLastWrapAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, last_wrap_alignment)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetLastWrapAlignment() classdb.FlowContainerLastWrapAlignmentMode {
 	var frame = callframe.New()
@@ -118,14 +125,16 @@ func (self class) GetLastWrapAlignment() classdb.FlowContainerLastWrapAlignmentM
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVertical(vertical bool)  {
+func (self class) SetVertical(vertical bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsVertical() bool {
 	var frame = callframe.New()
@@ -135,14 +144,16 @@ func (self class) IsVertical() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetReverseFill(reverse_fill bool)  {
+func (self class) SetReverseFill(reverse_fill bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, reverse_fill)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsReverseFill() bool {
 	var frame = callframe.New()
@@ -152,48 +163,64 @@ func (self class) IsReverseFill() bool {
 	frame.Free()
 	return ret
 }
-func (self class) AsFlowContainer() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsFlowContainer() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsContainer() Container.GD { return *((*Container.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsContainer() Container.Go { return *((*Container.Go)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.GD { return *((*Control.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsControl() Control.Go { return *((*Control.Go)(unsafe.Pointer(&self))) }
-func (self class) AsCanvasItem() CanvasItem.GD { return *((*CanvasItem.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCanvasItem() CanvasItem.Go { return *((*CanvasItem.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsFlowContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFlowContainer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsContainer() Container.Advanced {
+	return *((*Container.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsContainer() Container.Instance {
+	return *((*Container.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsControl() Control.Instance {
+	return *((*Control.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsCanvasItem() CanvasItem.Advanced {
+	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsCanvasItem() CanvasItem.Instance {
+	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsContainer(), name)
+	default:
+		return gd.VirtualByName(self.AsContainer(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsContainer(), name)
+	default:
+		return gd.VirtualByName(self.AsContainer(), name)
 	}
 }
-func init() {classdb.Register("FlowContainer", func(ptr gd.Object) any { return classdb.FlowContainer(ptr) })}
+func init() {
+	classdb.Register("FlowContainer", func(ptr gd.Object) any { return classdb.FlowContainer(ptr) })
+}
+
 type AlignmentMode = classdb.FlowContainerAlignmentMode
 
 const (
-/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
+	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
 	AlignmentBegin AlignmentMode = 0
-/*The child controls will be centered in the container.*/
+	/*The child controls will be centered in the container.*/
 	AlignmentCenter AlignmentMode = 1
-/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
+	/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
 	AlignmentEnd AlignmentMode = 2
 )
+
 type LastWrapAlignmentMode = classdb.FlowContainerLastWrapAlignmentMode
 
 const (
-/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/
+	/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/
 	LastWrapAlignmentInherit LastWrapAlignmentMode = 0
-/*The last partially filled row or column will wrap aligned to the beginning of the previous row or column.*/
+	/*The last partially filled row or column will wrap aligned to the beginning of the previous row or column.*/
 	LastWrapAlignmentBegin LastWrapAlignmentMode = 1
-/*The last partially filled row or column will wrap aligned to the center of the previous row or column.*/
+	/*The last partially filled row or column will wrap aligned to the center of the previous row or column.*/
 	LastWrapAlignmentCenter LastWrapAlignmentMode = 2
-/*The last partially filled row or column will wrap aligned to the end of the previous row or column.*/
+	/*The last partially filled row or column will wrap aligned to the end of the previous row or column.*/
 	LastWrapAlignmentEnd LastWrapAlignmentMode = 3
 )

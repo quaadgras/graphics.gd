@@ -1,6 +1,4 @@
-//go:build !generate
-
-package gd
+package gdextension
 
 import (
 	"fmt"
@@ -12,7 +10,7 @@ import (
 // registerSignals registers [Signal[T]] fields as signals emittable by the class,
 // when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
-func registerSignals(class StringName, rtype reflect.Type) {
+func registerSignals(class gd.StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
 		name := field.Name
@@ -63,7 +61,7 @@ type signalChan struct {
 	rvalue reflect.Value
 }
 
-func manageSignals(instance Int, signals []signalChan) {
+func manageSignals(instance gd.Int, signals []signalChan) {
 	var cases = make([]reflect.SelectCase, len(signals))
 	for i, signal := range signals {
 		cases[i] = reflect.SelectCase{

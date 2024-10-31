@@ -2,10 +2,11 @@ package ImporterMeshInstance3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Node3D"
 import "grow.graphics/gd/gdclass/Node"
@@ -14,107 +15,111 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
-type Go [1]classdb.ImporterMeshInstance3D
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+type Instance [1]classdb.ImporterMeshInstance3D
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.ImporterMeshInstance3D
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMeshInstance3D"))
-	return Go{classdb.ImporterMeshInstance3D(object)}
+	return Instance{classdb.ImporterMeshInstance3D(object)}
 }
 
-func (self Go) Mesh() gdclass.ImporterMesh {
-		return gdclass.ImporterMesh(class(self).GetMesh())
+func (self Instance) Mesh() gdclass.ImporterMesh {
+	return gdclass.ImporterMesh(class(self).GetMesh())
 }
 
-func (self Go) SetMesh(value gdclass.ImporterMesh) {
+func (self Instance) SetMesh(value gdclass.ImporterMesh) {
 	class(self).SetMesh(value)
 }
 
-func (self Go) Skin() gdclass.Skin {
-		return gdclass.Skin(class(self).GetSkin())
+func (self Instance) Skin() gdclass.Skin {
+	return gdclass.Skin(class(self).GetSkin())
 }
 
-func (self Go) SetSkin(value gdclass.Skin) {
+func (self Instance) SetSkin(value gdclass.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Go) SkeletonPath() string {
-		return string(class(self).GetSkeletonPath().String())
+func (self Instance) SkeletonPath() string {
+	return string(class(self).GetSkeletonPath().String())
 }
 
-func (self Go) SetSkeletonPath(value string) {
+func (self Instance) SetSkeletonPath(value string) {
 	class(self).SetSkeletonPath(gd.NewString(value).NodePath())
 }
 
-func (self Go) LayerMask() int {
-		return int(int(class(self).GetLayerMask()))
+func (self Instance) LayerMask() int {
+	return int(int(class(self).GetLayerMask()))
 }
 
-func (self Go) SetLayerMask(value int) {
+func (self Instance) SetLayerMask(value int) {
 	class(self).SetLayerMask(gd.Int(value))
 }
 
-func (self Go) CastShadow() classdb.GeometryInstance3DShadowCastingSetting {
-		return classdb.GeometryInstance3DShadowCastingSetting(class(self).GetCastShadowsSetting())
+func (self Instance) CastShadow() classdb.GeometryInstance3DShadowCastingSetting {
+	return classdb.GeometryInstance3DShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
-func (self Go) SetCastShadow(value classdb.GeometryInstance3DShadowCastingSetting) {
+func (self Instance) SetCastShadow(value classdb.GeometryInstance3DShadowCastingSetting) {
 	class(self).SetCastShadowsSetting(value)
 }
 
-func (self Go) VisibilityRangeBegin() float64 {
-		return float64(float64(class(self).GetVisibilityRangeBegin()))
+func (self Instance) VisibilityRangeBegin() float64 {
+	return float64(float64(class(self).GetVisibilityRangeBegin()))
 }
 
-func (self Go) SetVisibilityRangeBegin(value float64) {
+func (self Instance) SetVisibilityRangeBegin(value float64) {
 	class(self).SetVisibilityRangeBegin(gd.Float(value))
 }
 
-func (self Go) VisibilityRangeBeginMargin() float64 {
-		return float64(float64(class(self).GetVisibilityRangeBeginMargin()))
+func (self Instance) VisibilityRangeBeginMargin() float64 {
+	return float64(float64(class(self).GetVisibilityRangeBeginMargin()))
 }
 
-func (self Go) SetVisibilityRangeBeginMargin(value float64) {
+func (self Instance) SetVisibilityRangeBeginMargin(value float64) {
 	class(self).SetVisibilityRangeBeginMargin(gd.Float(value))
 }
 
-func (self Go) VisibilityRangeEnd() float64 {
-		return float64(float64(class(self).GetVisibilityRangeEnd()))
+func (self Instance) VisibilityRangeEnd() float64 {
+	return float64(float64(class(self).GetVisibilityRangeEnd()))
 }
 
-func (self Go) SetVisibilityRangeEnd(value float64) {
+func (self Instance) SetVisibilityRangeEnd(value float64) {
 	class(self).SetVisibilityRangeEnd(gd.Float(value))
 }
 
-func (self Go) VisibilityRangeEndMargin() float64 {
-		return float64(float64(class(self).GetVisibilityRangeEndMargin()))
+func (self Instance) VisibilityRangeEndMargin() float64 {
+	return float64(float64(class(self).GetVisibilityRangeEndMargin()))
 }
 
-func (self Go) SetVisibilityRangeEndMargin(value float64) {
+func (self Instance) SetVisibilityRangeEndMargin(value float64) {
 	class(self).SetVisibilityRangeEndMargin(gd.Float(value))
 }
 
-func (self Go) VisibilityRangeFadeMode() classdb.GeometryInstance3DVisibilityRangeFadeMode {
-		return classdb.GeometryInstance3DVisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
+func (self Instance) VisibilityRangeFadeMode() classdb.GeometryInstance3DVisibilityRangeFadeMode {
+	return classdb.GeometryInstance3DVisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
-func (self Go) SetVisibilityRangeFadeMode(value classdb.GeometryInstance3DVisibilityRangeFadeMode) {
+func (self Instance) SetVisibilityRangeFadeMode(value classdb.GeometryInstance3DVisibilityRangeFadeMode) {
 	class(self).SetVisibilityRangeFadeMode(value)
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh gdclass.ImporterMesh)  {
+func (self class) SetMesh(mesh gdclass.ImporterMesh) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(mesh[0])[0])
+	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMesh() gdclass.ImporterMesh {
 	var frame = callframe.New()
@@ -124,14 +129,16 @@ func (self class) GetMesh() gdclass.ImporterMesh {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetSkin(skin gdclass.Skin)  {
+func (self class) SetSkin(skin gdclass.Skin) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(skin[0])[0])
+	callframe.Arg(frame, pointers.Get(skin[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSkin() gdclass.Skin {
 	var frame = callframe.New()
@@ -141,31 +148,35 @@ func (self class) GetSkin() gdclass.Skin {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetSkeletonPath(skeleton_path gd.NodePath)  {
+func (self class) SetSkeletonPath(skeleton_path gd.NodePath) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(skeleton_path))
+	callframe.Arg(frame, pointers.Get(skeleton_path))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSkeletonPath() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.NodePath](r_ret.Get())
+	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetLayerMask(layer_mask gd.Int)  {
+func (self class) SetLayerMask(layer_mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_mask)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_layer_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetLayerMask() gd.Int {
 	var frame = callframe.New()
@@ -175,14 +186,16 @@ func (self class) GetLayerMask() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetCastShadowsSetting(shadow_casting_setting classdb.GeometryInstance3DShadowCastingSetting)  {
+func (self class) SetCastShadowsSetting(shadow_casting_setting classdb.GeometryInstance3DShadowCastingSetting) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shadow_casting_setting)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetCastShadowsSetting() classdb.GeometryInstance3DShadowCastingSetting {
 	var frame = callframe.New()
@@ -192,14 +205,16 @@ func (self class) GetCastShadowsSetting() classdb.GeometryInstance3DShadowCastin
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityRangeEndMargin(distance gd.Float)  {
+func (self class) SetVisibilityRangeEndMargin(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_visibility_range_end_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityRangeEndMargin() gd.Float {
 	var frame = callframe.New()
@@ -209,14 +224,16 @@ func (self class) GetVisibilityRangeEndMargin() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityRangeEnd(distance gd.Float)  {
+func (self class) SetVisibilityRangeEnd(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_visibility_range_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityRangeEnd() gd.Float {
 	var frame = callframe.New()
@@ -226,14 +243,16 @@ func (self class) GetVisibilityRangeEnd() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityRangeBeginMargin(distance gd.Float)  {
+func (self class) SetVisibilityRangeBeginMargin(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_visibility_range_begin_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityRangeBeginMargin() gd.Float {
 	var frame = callframe.New()
@@ -243,14 +262,16 @@ func (self class) GetVisibilityRangeBeginMargin() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityRangeBegin(distance gd.Float)  {
+func (self class) SetVisibilityRangeBegin(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_visibility_range_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityRangeBegin() gd.Float {
 	var frame = callframe.New()
@@ -260,14 +281,16 @@ func (self class) GetVisibilityRangeBegin() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityRangeFadeMode(mode classdb.GeometryInstance3DVisibilityRangeFadeMode)  {
+func (self class) SetVisibilityRangeFadeMode(mode classdb.GeometryInstance3DVisibilityRangeFadeMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_visibility_range_fade_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityRangeFadeMode() classdb.GeometryInstance3DVisibilityRangeFadeMode {
 	var frame = callframe.New()
@@ -277,22 +300,28 @@ func (self class) GetVisibilityRangeFadeMode() classdb.GeometryInstance3DVisibil
 	frame.Free()
 	return ret
 }
-func (self class) AsImporterMeshInstance3D() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsImporterMeshInstance3D() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode3D() Node3D.GD { return *((*Node3D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode3D() Node3D.Go { return *((*Node3D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsImporterMeshInstance3D() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsImporterMeshInstance3D() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode3D(), name)
+	default:
+		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode3D(), name)
+	default:
+		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() {classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any { return classdb.ImporterMeshInstance3D(ptr) })}
+func init() {
+	classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any { return classdb.ImporterMeshInstance3D(ptr) })
+}

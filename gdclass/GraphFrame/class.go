@@ -2,10 +2,11 @@ package GraphFrame
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/GraphElement"
 import "grow.graphics/gd/gdclass/Container"
@@ -17,97 +18,101 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 GraphFrame is a special [GraphElement] to which other [GraphElement]s can be attached. It can be configured to automatically resize to enclose all attached [GraphElement]s. If the frame is moved, all the attached [GraphElement]s inside it will be moved as well.
 A GraphFrame is always kept behind the connection layer and other [GraphElement]s inside a [GraphEdit].
-
 */
-type Go [1]classdb.GraphFrame
+type Instance [1]classdb.GraphFrame
 
 /*
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default.
 This can be used to add custom controls to the title bar such as option or close buttons.
 */
-func (self Go) GetTitlebarHbox() gdclass.HBoxContainer {
+func (self Instance) GetTitlebarHbox() gdclass.HBoxContainer {
 	return gdclass.HBoxContainer(class(self).GetTitlebarHbox())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.GraphFrame
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphFrame"))
-	return Go{classdb.GraphFrame(object)}
+	return Instance{classdb.GraphFrame(object)}
 }
 
-func (self Go) Title() string {
-		return string(class(self).GetTitle().String())
+func (self Instance) Title() string {
+	return string(class(self).GetTitle().String())
 }
 
-func (self Go) SetTitle(value string) {
+func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(gd.NewString(value))
 }
 
-func (self Go) AutoshrinkEnabled() bool {
-		return bool(class(self).IsAutoshrinkEnabled())
+func (self Instance) AutoshrinkEnabled() bool {
+	return bool(class(self).IsAutoshrinkEnabled())
 }
 
-func (self Go) SetAutoshrinkEnabled(value bool) {
+func (self Instance) SetAutoshrinkEnabled(value bool) {
 	class(self).SetAutoshrinkEnabled(value)
 }
 
-func (self Go) AutoshrinkMargin() int {
-		return int(int(class(self).GetAutoshrinkMargin()))
+func (self Instance) AutoshrinkMargin() int {
+	return int(int(class(self).GetAutoshrinkMargin()))
 }
 
-func (self Go) SetAutoshrinkMargin(value int) {
+func (self Instance) SetAutoshrinkMargin(value int) {
 	class(self).SetAutoshrinkMargin(gd.Int(value))
 }
 
-func (self Go) DragMargin() int {
-		return int(int(class(self).GetDragMargin()))
+func (self Instance) DragMargin() int {
+	return int(int(class(self).GetDragMargin()))
 }
 
-func (self Go) SetDragMargin(value int) {
+func (self Instance) SetDragMargin(value int) {
 	class(self).SetDragMargin(gd.Int(value))
 }
 
-func (self Go) TintColorEnabled() bool {
-		return bool(class(self).IsTintColorEnabled())
+func (self Instance) TintColorEnabled() bool {
+	return bool(class(self).IsTintColorEnabled())
 }
 
-func (self Go) SetTintColorEnabled(value bool) {
+func (self Instance) SetTintColorEnabled(value bool) {
 	class(self).SetTintColorEnabled(value)
 }
 
-func (self Go) TintColor() gd.Color {
-		return gd.Color(class(self).GetTintColor())
+func (self Instance) TintColor() gd.Color {
+	return gd.Color(class(self).GetTintColor())
 }
 
-func (self Go) SetTintColor(value gd.Color) {
+func (self Instance) SetTintColor(value gd.Color) {
 	class(self).SetTintColor(value)
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String)  {
+func (self class) SetTitle(title gd.String) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(title))
+	callframe.Arg(frame, pointers.Get(title))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTitle() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default.
 This can be used to add custom controls to the title bar such as option or close buttons.
@@ -121,14 +126,16 @@ func (self class) GetTitlebarHbox() gdclass.HBoxContainer {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAutoshrinkEnabled(shrink bool)  {
+func (self class) SetAutoshrinkEnabled(shrink bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shrink)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_autoshrink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsAutoshrinkEnabled() bool {
 	var frame = callframe.New()
@@ -138,14 +145,16 @@ func (self class) IsAutoshrinkEnabled() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int)  {
+func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, autoshrink_margin)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_autoshrink_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetAutoshrinkMargin() gd.Int {
 	var frame = callframe.New()
@@ -155,14 +164,16 @@ func (self class) GetAutoshrinkMargin() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetDragMargin(drag_margin gd.Int)  {
+func (self class) SetDragMargin(drag_margin gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, drag_margin)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_drag_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetDragMargin() gd.Int {
 	var frame = callframe.New()
@@ -172,14 +183,16 @@ func (self class) GetDragMargin() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTintColorEnabled(enable bool)  {
+func (self class) SetTintColorEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_tint_color_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsTintColorEnabled() bool {
 	var frame = callframe.New()
@@ -189,14 +202,16 @@ func (self class) IsTintColorEnabled() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTintColor(color gd.Color)  {
+func (self class) SetTintColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_set_tint_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTintColor() gd.Color {
 	var frame = callframe.New()
@@ -206,33 +221,50 @@ func (self class) GetTintColor() gd.Color {
 	frame.Free()
 	return ret
 }
-func (self Go) OnAutoshrinkChanged(cb func()) {
+func (self Instance) OnAutoshrinkChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("autoshrink_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsGraphFrame() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsGraphFrame() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsGraphElement() GraphElement.GD { return *((*GraphElement.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsGraphElement() GraphElement.Go { return *((*GraphElement.Go)(unsafe.Pointer(&self))) }
-func (self class) AsContainer() Container.GD { return *((*Container.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsContainer() Container.Go { return *((*Container.Go)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.GD { return *((*Control.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsControl() Control.Go { return *((*Control.Go)(unsafe.Pointer(&self))) }
-func (self class) AsCanvasItem() CanvasItem.GD { return *((*CanvasItem.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCanvasItem() CanvasItem.Go { return *((*CanvasItem.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsGraphFrame() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsGraphFrame() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsGraphElement() GraphElement.Advanced {
+	return *((*GraphElement.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsGraphElement() GraphElement.Instance {
+	return *((*GraphElement.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsContainer() Container.Advanced {
+	return *((*Container.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsContainer() Container.Instance {
+	return *((*Container.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsControl() Control.Instance {
+	return *((*Control.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsCanvasItem() CanvasItem.Advanced {
+	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsCanvasItem() CanvasItem.Instance {
+	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsGraphElement(), name)
+	default:
+		return gd.VirtualByName(self.AsGraphElement(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsGraphElement(), name)
+	default:
+		return gd.VirtualByName(self.AsGraphElement(), name)
 	}
 }
-func init() {classdb.Register("GraphFrame", func(ptr gd.Object) any { return classdb.GraphFrame(ptr) })}
+func init() {
+	classdb.Register("GraphFrame", func(ptr gd.Object) any { return classdb.GraphFrame(ptr) })
+}

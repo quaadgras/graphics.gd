@@ -1,14 +1,15 @@
-//go:build !generate
-
-package gd
+package gdextension
 
 import (
 	"fmt"
 	"reflect"
 	"strings"
+	"sync"
+	"unsafe"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
 	"grow.graphics/gd/gdclass"
 	"grow.graphics/gd/gdclass/EditorPlugin"
 	"grow.graphics/gd/gdclass/Engine"
@@ -17,21 +18,33 @@ import (
 	"grow.graphics/gd/gdclass/ProjectSettings"
 	"grow.graphics/gd/gdclass/Script"
 	"grow.graphics/gd/gdclass/ScriptLanguage"
+	"grow.graphics/gd/variant/StringName"
+
 	gd "grow.graphics/gd/internal"
 	classdb "grow.graphics/gd/internal/classdb"
-	"grow.graphics/gd/internal/discreet"
-	"grow.graphics/gd/internal/mmm"
+	"grow.graphics/gd/internal/pointers"
 )
-
-type onFree mmm.Pointer[func(), onFree, [0]uintptr]
-
-func (cb onFree) Free() {
-	(*mmm.API(cb))()
-	mmm.End(cb)
-}
 
 // Tool can be embedded inside a struct to make it run in the editor.
 type Tool interface{ tool() }
+
+// Class can be embedded inside of a struct to represent a new Class type.
+// The extended class will be available by calling the [Class.Super] method.
+type Class[T, S gd.IsClass] struct {
+	gd.Class[T, S]
+}
+
+func (class *Class[T, S]) setObject(obj gd.Object) {
+	*(*gd.Object)(unsafe.Pointer(class.Super())) = obj
+}
+
+type isClass interface {
+	gd.IsClass
+
+	setObject(gd.Object)
+}
+
+var instances sync.Map
 
 /*
 RegisterClass registers a struct available for use inside Godot
@@ -69,53 +82,63 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
-
-	// Support 'gd' tag for renaming the class within Godot.
-	var rename = classNameOf(classType)
-
+	var rename = classNameOf(classType) // support 'gd' tag for renaming the class within Godot.
 	var tool = false
-	switch {
-	case superType.Implements(reflect.TypeFor[interface{ AsScript() Script.Go }]()),
-		superType.Implements(reflect.TypeFor[interface{ AsEditorPlugin() EditorPlugin.Go }]()),
-		superType.Implements(reflect.TypeFor[interface{ AsScriptLanguage() ScriptLanguage.Go }]()),
-		classType.Implements(reflect.TypeFor[Tool]()):
+	var super Parent
+	switch any(super).(type) {
+	case interface{ AsScript() Script.Instance },
+		interface{ AsEditorPlugin() EditorPlugin.Instance },
+		interface {
+			AsScriptLanguage() ScriptLanguage.Instance
+		}:
 		tool = true
 	}
-
-	var className = gd.NewStringName(rename)
-	var superName = gd.NewStringName(classNameOf(superType))
-
+	var reference Struct
+	var className = pointers.Pin(StringName.New(rename))
+	var superName = pointers.Pin(StringName.New(classNameOf(superType)))
 	gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName,
 		&classImplementation{
-			Name:  className,
-			Super: superName,
-			Type:  classType,
-			Tool:  tool,
-			Value: reflect.New(classType).Interface().(gd.ExtensionClass),
+			Name:           className,
+			Super:          superName,
+			Type:           classType,
+			Tool:           tool,
+			VirtualMethods: reference.Virtual,
 		})
-	_ = func() {
+	gd.RegisterCleanup(func() {
 		gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
-	}
-	//mmm.Pin[onFree](godot.Lifetime, &unregister, [0]uintptr{})
-
+		className.Free()
+		superName.Free()
+	})
 	registerSignals(className, classType)
 	registerMethods(className, classType)
-
-	if superType.Implements(reflect.TypeOf([0]interface {
-		AsMainLoop() MainLoop.Go
-	}{}).Elem()) {
+	if _, ok := any(super).(interface {
+		AsMainLoop() MainLoop.Instance
+	}); ok {
 		main_loop_type := gd.NewString("application/run/main_loop_type")
-		ProjectSettings.GD().SetInitialValue(main_loop_type, gd.NewVariant(className))
-		ProjectSettings.GD().SetSetting(main_loop_type, gd.NewVariant(className))
+		ProjectSettings.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
+		ProjectSettings.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
 	}
+	if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
+		registrator.OnRegister()
+	}
+}
 
-	type onRegister interface {
-		OnRegister()
+func classNameOf(rtype reflect.Type) string {
+	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
+		return classNameOf(rtype.Elem())
 	}
-	if reflect.PointerTo(classType).Implements(reflect.TypeFor[onRegister]()) {
-		impl := reflect.New(classType).Interface().(onRegister)
-		impl.OnRegister()
+	if rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
+		if rtype.Field(0).Anonymous {
+			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
+				return rename
+			}
+		}
+		if rtype.Name() == "" && rtype.Field(0).Anonymous {
+			return classNameOf(rtype.Field(0).Type)
+		}
+		return strings.TrimPrefix(rtype.Name(), "class")
 	}
+	return ""
 }
 
 func convertName(fnName string) string {
@@ -135,14 +158,14 @@ func convertName(fnName string) string {
 }
 
 type classImplementation struct {
-	Name  StringName
-	Super StringName
+	Name  gd.StringName
+	Super gd.StringName
 
 	Tool bool
 
 	Type reflect.Type
 
-	Value gd.ExtensionClass
+	VirtualMethods func(string) reflect.Value
 }
 
 var _ gd.ClassInterface = classImplementation{}
@@ -159,7 +182,7 @@ func (class classImplementation) IsExposed() bool {
 	return true // TODO return false if the Go type is not exported.
 }
 
-func (class classImplementation) CreateInstance() Object {
+func (class classImplementation) CreateInstance() gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
 	instance := class.reloadInstance(super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
@@ -168,16 +191,16 @@ func (class classImplementation) CreateInstance() Object {
 	return super
 }
 
-func (class classImplementation) ReloadInstance(super Object) gd.ObjectInterface {
+func (class classImplementation) ReloadInstance(super gd.Object) gd.ObjectInterface {
 	return class.reloadInstance(super)
 }
 
-func (class classImplementation) reloadInstance(super Object) gd.ObjectInterface {
+func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterface {
 	var value = reflect.New(class.Type)
-	extensionClass := value.Interface().(gd.ExtensionClass)
-	extensionClass.SetPointer(super)
+	extensionClass := value.Interface().(isClass)
+	extensionClass.setObject(super)
 
-	gd.Global.Instances[discreet.Get(super)[0]] = extensionClass
+	instances.Store(pointers.Get(super)[0], extensionClass)
 
 	value = value.Elem()
 
@@ -196,20 +219,6 @@ func (class classImplementation) reloadInstance(super Object) gd.ObjectInterface
 			name = tag
 		}
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
-		if setter, ok := rvalue.Interface().(isSignal); ok {
-			signal := gd.NewSignalOf(super, gd.NewStringName(name))
-			setter.setSignal(signal)
-			emit := rvalue.Elem().FieldByName("Emit")
-			fnType := emit.Type()
-			emit.Set(reflect.MakeFunc(fnType, func(args []reflect.Value) (results []reflect.Value) {
-				var variants = make([]gd.Variant, 0, len(args))
-				for _, arg := range args {
-					variants = append(variants, gd.NewVariant(arg.Interface()))
-				}
-				signal.Emit(variants...)
-				return nil
-			}))
-		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
 			signal := gd.NewSignalOf(super, gd.NewStringName(name))
 			ch := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, field.Type.Elem()), 0)
@@ -224,18 +233,18 @@ func (class classImplementation) reloadInstance(super Object) gd.ObjectInterface
 		go manageSignals(super.AsObject().GetInstanceId(), signals)
 	}
 	return &instanceImplementation{
-		object:   discreet.Get(super)[0],
-		Value:    value.Addr().Interface().(gd.ExtensionClass),
+		object:   pointers.Get(super)[0],
+		Value:    value.Addr().Interface().(isClass),
 		signals:  signals,
 		isEditor: !class.Tool && Engine.IsEditorHint(),
 	}
 }
 
-func (class classImplementation) GetVirtual(name StringName) any {
+func (class classImplementation) GetVirtual(name gd.StringName) any {
 	if !class.Tool && Engine.IsEditorHint() {
 		return nil
 	}
-	var virtual = gd.VirtualByName(class.Value, name.String())
+	var virtual = class.VirtualMethods(name.String())
 	if !virtual.IsValid() {
 		return nil
 	}
@@ -264,7 +273,7 @@ func (class classImplementation) GetVirtual(name StringName) any {
 
 type instanceImplementation struct {
 	object   uintptr
-	Value    gd.ExtensionClass
+	Value    isClass
 	signals  []signalChan
 	isEditor bool
 }
@@ -273,7 +282,7 @@ var lastGC int
 
 func (instance *instanceImplementation) setupForCall() func() {
 	if frame := Engine.GetFramesDrawn(); frame > lastGC {
-		discreet.MarkAndSweep()
+		pointers.MarkAndSweep()
 	}
 	return func() {}
 }
@@ -287,7 +296,7 @@ func (instance *instanceImplementation) OnCreate() {
 	}
 }
 
-func (instance *instanceImplementation) Set(name StringName, value gd.Variant) bool {
+func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
 	if impl, ok := instance.Value.(interface {
 		Set(gd.StringName, gd.Variant) gd.Bool
 	}); ok {
@@ -348,9 +357,9 @@ func (instance *instanceImplementation) Set(name StringName, value gd.Variant) b
 	return true
 }
 
-func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) {
+func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, bool) {
 	if impl, ok := instance.Value.(interface {
-		Get(StringName) gd.Variant
+		Get(gd.StringName) gd.Variant
 	}); ok {
 		defer instance.setupForCall()()
 		return impl.Get(name), true
@@ -369,9 +378,6 @@ func (instance *instanceImplementation) Get(name StringName) (gd.Variant, bool) 
 		if !field.IsValid() {
 			return gd.Variant{}, false
 		}
-	}
-	if reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]isSignal{}).Elem()) {
-		return gd.Variant{}, false
 	}
 	return gd.NewVariant(field.Interface()), true
 }
@@ -398,7 +404,7 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 	return list
 }
 
-func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool {
+func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bool {
 	if impl, ok := instance.Value.(interface {
 		PropertyCanRevert(gd.StringName) gd.Bool
 	}); ok {
@@ -423,7 +429,7 @@ func (instance *instanceImplementation) PropertyCanRevert(name StringName) bool 
 	_, ok = field.Tag.Lookup("default")
 	return ok
 }
-func (instance *instanceImplementation) PropertyGetRevert(name StringName) (gd.Variant, bool) {
+func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (gd.Variant, bool) {
 	if impl, ok := instance.Value.(interface {
 		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
 	}); ok {
@@ -455,7 +461,7 @@ func (instance *instanceImplementation) PropertyGetRevert(name StringName) (gd.V
 	return gd.NewVariant(value.Elem().Interface()), true
 }
 
-func (instance *instanceImplementation) ValidateProperty(name StringName, info *gd.PropertyInfo) bool {
+func (instance *instanceImplementation) ValidateProperty(name gd.StringName, info *gd.PropertyInfo) bool {
 	defer instance.setupForCall()()
 	switch validate := instance.Value.(type) {
 	case interface {
@@ -473,31 +479,31 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 	if !instance.isEditor {
 		defer instance.setupForCall()()
 		switch notify := instance.Value.(type) {
-		case interface{ Notification(NotificationType) }:
-			notify.Notification(NotificationType(what))
+		case interface{ Notification(gd.NotificationType) }:
+			notify.Notification(gd.NotificationType(what))
 		default:
 		}
 	}
 }
 
-func (instance *instanceImplementation) ToString() (String, bool) {
+func (instance *instanceImplementation) ToString() (gd.String, bool) {
 	defer instance.setupForCall()()
 	switch onfree := instance.Value.(type) {
 	case interface{ ToString() gd.String }:
 		return onfree.ToString(), true
 	}
-	return String{}, false
+	return gd.String{}, false
 }
 
 func (instance *instanceImplementation) Reference()   {}
 func (instance *instanceImplementation) Unreference() {}
 
-func (instance *instanceImplementation) CallVirtual(name StringName, virtual any, args gd.UnsafeArgs, back gd.UnsafeBack) {
+func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.UnsafeArgs, back gd.UnsafeBack) {
 	defer instance.setupForCall()()
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 
-func (instance *instanceImplementation) GetRID() RID {
+func (instance *instanceImplementation) GetRID() gd.RID {
 	return 0
 }
 
@@ -505,7 +511,7 @@ func (instance *instanceImplementation) Free() {
 	for _, signal := range instance.signals {
 		signal.rvalue.Close()
 	}
-	delete(gd.Global.Instances, instance.object)
+	instances.Delete(instance.object)
 	defer instance.setupForCall()()
 	switch onfree := instance.Value.(type) {
 	case interface{ OnFree() }:
@@ -542,7 +548,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	type isNode interface {
 		gd.PointerToClass
 
-		AsNode() Node.Go
+		AsNode() Node.Instance
 	}
 	nodeType := reflect.TypeOf([0]isNode{}).Elem()
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
@@ -573,9 +579,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		name = tag
 	}
 	path := gd.NewString(name).NodePath()
-	if !Node.GD(parent).HasNode(path) {
+	if !Node.Advanced(parent).HasNode(path) {
 		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(classNameOf(field.Type)))
-		native, ok := gd.Global.Instances[discreet.Get(child)[0]]
+		native, ok := instances.Load(pointers.Get(child)[0])
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
@@ -584,20 +590,20 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		if !field.IsExported() {
 			mode = Node.InternalModeFront
 		}
-		Node.GD(class.AsNode()).SetName(gd.NewString(field.Name))
+		Node.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
 		var adding gdclass.Node = gdclass.Node{classdb.Node(class.AsObject())}
-		Node.GD(parent).AddChild(adding, true, mode)
-		Node.GD(class.AsNode()).SetOwner(owner)
+		Node.Advanced(parent).AddChild(adding, true, mode)
+		Node.Advanced(class.AsNode()).SetOwner(owner)
 		return
 	}
-	var node = Node.GD(parent).GetNode(path)
+	var node = Node.Advanced(parent).GetNode(path)
 	if name := node[0].AsObject().GetClass().String(); name != classNameOf(field.Type) {
 		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 	}
-	ref, native := gd.Global.Instances[discreet.Get(node[0])[0]]
+	ref, native := instances.Load(pointers.Get(node[0])[0])
 	if native {
 		rvalue.Elem().Set(reflect.ValueOf(ref))
-		discreet.End(node[0])
+		pointers.End(node[0])
 	} else {
 		//class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(node[0].AsPointer())))
 	}

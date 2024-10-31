@@ -2,10 +2,11 @@ package VideoStreamPlayer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Control"
 import "grow.graphics/gd/gdclass/CanvasItem"
@@ -15,20 +16,20 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A control used for playback of [VideoStream] resources.
 Supported video formats are [url=https://www.theora.org/]Ogg Theora[/url] ([code].ogv[/code], [VideoStreamTheora]) and any format exposed via a GDExtension plugin.
 [b]Warning:[/b] On Web, video playback [i]will[/i] perform poorly due to missing architecture-specific assembly optimizations.
-
 */
-type Go [1]classdb.VideoStreamPlayer
+type Instance [1]classdb.VideoStreamPlayer
 
 /*
 Starts the video playback from the beginning. If the video is paused, this will not unpause the video.
 */
-func (self Go) Play() {
+func (self Instance) Play() {
 	class(self).Play()
 }
 
@@ -36,7 +37,7 @@ func (self Go) Play() {
 Stops the video playback and sets the stream position to 0.
 [b]Note:[/b] Although the stream position will be set to 0, the first frame of the video stream won't become the current frame.
 */
-func (self Go) Stop() {
+func (self Instance) Stop() {
 	class(self).Stop()
 }
 
@@ -44,14 +45,14 @@ func (self Go) Stop() {
 Returns [code]true[/code] if the video is playing.
 [b]Note:[/b] The video is still considered playing if paused during playback.
 */
-func (self Go) IsPlaying() bool {
+func (self Instance) IsPlaying() bool {
 	return bool(class(self).IsPlaying())
 }
 
 /*
 Returns the video stream's name, or [code]"<No Stream>"[/code] if no video stream is assigned.
 */
-func (self Go) GetStreamName() string {
+func (self Instance) GetStreamName() string {
 	return string(class(self).GetStreamName().String())
 }
 
@@ -59,122 +60,125 @@ func (self Go) GetStreamName() string {
 The length of the current stream, in seconds.
 [b]Note:[/b] For [VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
-func (self Go) GetStreamLength() float64 {
+func (self Instance) GetStreamLength() float64 {
 	return float64(float64(class(self).GetStreamLength()))
 }
 
 /*
 Returns the current frame as a [Texture2D].
 */
-func (self Go) GetVideoTexture() gdclass.Texture2D {
+func (self Instance) GetVideoTexture() gdclass.Texture2D {
 	return gdclass.Texture2D(class(self).GetVideoTexture())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.VideoStreamPlayer
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamPlayer"))
-	return Go{classdb.VideoStreamPlayer(object)}
+	return Instance{classdb.VideoStreamPlayer(object)}
 }
 
-func (self Go) AudioTrack() int {
-		return int(int(class(self).GetAudioTrack()))
+func (self Instance) AudioTrack() int {
+	return int(int(class(self).GetAudioTrack()))
 }
 
-func (self Go) SetAudioTrack(value int) {
+func (self Instance) SetAudioTrack(value int) {
 	class(self).SetAudioTrack(gd.Int(value))
 }
 
-func (self Go) Stream() gdclass.VideoStream {
-		return gdclass.VideoStream(class(self).GetStream())
+func (self Instance) Stream() gdclass.VideoStream {
+	return gdclass.VideoStream(class(self).GetStream())
 }
 
-func (self Go) SetStream(value gdclass.VideoStream) {
+func (self Instance) SetStream(value gdclass.VideoStream) {
 	class(self).SetStream(value)
 }
 
-func (self Go) VolumeDb() float64 {
-		return float64(float64(class(self).GetVolumeDb()))
+func (self Instance) VolumeDb() float64 {
+	return float64(float64(class(self).GetVolumeDb()))
 }
 
-func (self Go) SetVolumeDb(value float64) {
+func (self Instance) SetVolumeDb(value float64) {
 	class(self).SetVolumeDb(gd.Float(value))
 }
 
-func (self Go) Volume() float64 {
-		return float64(float64(class(self).GetVolume()))
+func (self Instance) Volume() float64 {
+	return float64(float64(class(self).GetVolume()))
 }
 
-func (self Go) SetVolume(value float64) {
+func (self Instance) SetVolume(value float64) {
 	class(self).SetVolume(gd.Float(value))
 }
 
-func (self Go) Autoplay() bool {
-		return bool(class(self).HasAutoplay())
+func (self Instance) Autoplay() bool {
+	return bool(class(self).HasAutoplay())
 }
 
-func (self Go) SetAutoplay(value bool) {
+func (self Instance) SetAutoplay(value bool) {
 	class(self).SetAutoplay(value)
 }
 
-func (self Go) Paused() bool {
-		return bool(class(self).IsPaused())
+func (self Instance) Paused() bool {
+	return bool(class(self).IsPaused())
 }
 
-func (self Go) SetPaused(value bool) {
+func (self Instance) SetPaused(value bool) {
 	class(self).SetPaused(value)
 }
 
-func (self Go) Expand() bool {
-		return bool(class(self).HasExpand())
+func (self Instance) Expand() bool {
+	return bool(class(self).HasExpand())
 }
 
-func (self Go) SetExpand(value bool) {
+func (self Instance) SetExpand(value bool) {
 	class(self).SetExpand(value)
 }
 
-func (self Go) Loop() bool {
-		return bool(class(self).HasLoop())
+func (self Instance) Loop() bool {
+	return bool(class(self).HasLoop())
 }
 
-func (self Go) SetLoop(value bool) {
+func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
-func (self Go) BufferingMsec() int {
-		return int(int(class(self).GetBufferingMsec()))
+func (self Instance) BufferingMsec() int {
+	return int(int(class(self).GetBufferingMsec()))
 }
 
-func (self Go) SetBufferingMsec(value int) {
+func (self Instance) SetBufferingMsec(value int) {
 	class(self).SetBufferingMsec(gd.Int(value))
 }
 
-func (self Go) StreamPosition() float64 {
-		return float64(float64(class(self).GetStreamPosition()))
+func (self Instance) StreamPosition() float64 {
+	return float64(float64(class(self).GetStreamPosition()))
 }
 
-func (self Go) SetStreamPosition(value float64) {
+func (self Instance) SetStreamPosition(value float64) {
 	class(self).SetStreamPosition(gd.Float(value))
 }
 
-func (self Go) Bus() string {
-		return string(class(self).GetBus().String())
+func (self Instance) Bus() string {
+	return string(class(self).GetBus().String())
 }
 
-func (self Go) SetBus(value string) {
+func (self Instance) SetBus(value string) {
 	class(self).SetBus(gd.NewStringName(value))
 }
 
 //go:nosplit
-func (self class) SetStream(stream gdclass.VideoStream)  {
+func (self class) SetStream(stream gdclass.VideoStream) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(stream[0])[0])
+	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetStream() gdclass.VideoStream {
 	var frame = callframe.New()
@@ -184,27 +188,30 @@ func (self class) GetStream() gdclass.VideoStream {
 	frame.Free()
 	return ret
 }
+
 /*
 Starts the video playback from the beginning. If the video is paused, this will not unpause the video.
 */
 //go:nosplit
-func (self class) Play()  {
+func (self class) Play() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_play, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Stops the video playback and sets the stream position to 0.
 [b]Note:[/b] Although the stream position will be set to 0, the first frame of the video stream won't become the current frame.
 */
 //go:nosplit
-func (self class) Stop()  {
+func (self class) Stop() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if the video is playing.
 [b]Note:[/b] The video is still considered playing if paused during playback.
@@ -218,14 +225,16 @@ func (self class) IsPlaying() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetPaused(paused bool)  {
+func (self class) SetPaused(paused bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, paused)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_paused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsPaused() bool {
 	var frame = callframe.New()
@@ -235,14 +244,16 @@ func (self class) IsPaused() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetLoop(loop bool)  {
+func (self class) SetLoop(loop bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) HasLoop() bool {
 	var frame = callframe.New()
@@ -252,14 +263,16 @@ func (self class) HasLoop() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVolume(volume gd.Float)  {
+func (self class) SetVolume(volume gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, volume)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_volume, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVolume() gd.Float {
 	var frame = callframe.New()
@@ -269,14 +282,16 @@ func (self class) GetVolume() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVolumeDb(db gd.Float)  {
+func (self class) SetVolumeDb(db gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_volume_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVolumeDb() gd.Float {
 	var frame = callframe.New()
@@ -286,14 +301,16 @@ func (self class) GetVolumeDb() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAudioTrack(track gd.Int)  {
+func (self class) SetAudioTrack(track gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_audio_track, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetAudioTrack() gd.Int {
 	var frame = callframe.New()
@@ -303,6 +320,7 @@ func (self class) GetAudioTrack() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the video stream's name, or [code]"<No Stream>"[/code] if no video stream is assigned.
 */
@@ -311,10 +329,11 @@ func (self class) GetStreamName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 The length of the current stream, in seconds.
 [b]Note:[/b] For [VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
@@ -328,14 +347,16 @@ func (self class) GetStreamLength() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetStreamPosition(position gd.Float)  {
+func (self class) SetStreamPosition(position gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_stream_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetStreamPosition() gd.Float {
 	var frame = callframe.New()
@@ -345,14 +366,16 @@ func (self class) GetStreamPosition() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAutoplay(enabled bool)  {
+func (self class) SetAutoplay(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) HasAutoplay() bool {
 	var frame = callframe.New()
@@ -362,14 +385,16 @@ func (self class) HasAutoplay() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetExpand(enable bool)  {
+func (self class) SetExpand(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_expand, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) HasExpand() bool {
 	var frame = callframe.New()
@@ -379,14 +404,16 @@ func (self class) HasExpand() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetBufferingMsec(msec gd.Int)  {
+func (self class) SetBufferingMsec(msec gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_buffering_msec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetBufferingMsec() gd.Int {
 	var frame = callframe.New()
@@ -396,23 +423,26 @@ func (self class) GetBufferingMsec() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetBus(bus gd.StringName)  {
+func (self class) SetBus(bus gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(bus))
+	callframe.Arg(frame, pointers.Get(bus))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_set_bus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetBus() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayer.Bind_get_bus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the current frame as a [Texture2D].
 */
@@ -425,29 +455,38 @@ func (self class) GetVideoTexture() gdclass.Texture2D {
 	frame.Free()
 	return ret
 }
-func (self Go) OnFinished(cb func()) {
+func (self Instance) OnFinished(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsVideoStreamPlayer() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsVideoStreamPlayer() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.GD { return *((*Control.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsControl() Control.Go { return *((*Control.Go)(unsafe.Pointer(&self))) }
-func (self class) AsCanvasItem() CanvasItem.GD { return *((*CanvasItem.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCanvasItem() CanvasItem.Go { return *((*CanvasItem.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsVideoStreamPlayer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsVideoStreamPlayer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced      { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsControl() Control.Instance {
+	return *((*Control.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsCanvasItem() CanvasItem.Advanced {
+	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsCanvasItem() CanvasItem.Instance {
+	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsControl(), name)
+	default:
+		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsControl(), name)
+	default:
+		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() {classdb.Register("VideoStreamPlayer", func(ptr gd.Object) any { return classdb.VideoStreamPlayer(ptr) })}
+func init() {
+	classdb.Register("VideoStreamPlayer", func(ptr gd.Object) any { return classdb.VideoStreamPlayer(ptr) })
+}

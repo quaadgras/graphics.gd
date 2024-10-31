@@ -2,10 +2,11 @@ package CompressedTexture2DArray
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/CompressedTextureLayered"
 import "grow.graphics/gd/gdclass/TextureLayered"
@@ -16,7 +17,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A texture array that is loaded from a [code].ctexarray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2DArray] can use one of 4 compression methods:
@@ -28,41 +30,62 @@ A texture array that is loaded from a [code].ctexarray[/code] file. This file fo
 Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b]Lossless[/b] and [b]Lossy[/b] compression methods will reduce the required storage on disk, but they will not reduce memory usage on the GPU as the texture is sent to the GPU uncompressed.
 Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
 See [Texture2DArray] for a general description of texture arrays.
-
 */
-type Go [1]classdb.CompressedTexture2DArray
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+type Instance [1]classdb.CompressedTexture2DArray
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.CompressedTexture2DArray
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedTexture2DArray"))
-	return Go{classdb.CompressedTexture2DArray(object)}
+	return Instance{classdb.CompressedTexture2DArray(object)}
 }
 
-func (self class) AsCompressedTexture2DArray() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCompressedTexture2DArray() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsCompressedTextureLayered() CompressedTextureLayered.GD { return *((*CompressedTextureLayered.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCompressedTextureLayered() CompressedTextureLayered.Go { return *((*CompressedTextureLayered.Go)(unsafe.Pointer(&self))) }
-func (self class) AsTextureLayered() TextureLayered.GD { return *((*TextureLayered.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsTextureLayered() TextureLayered.Go { return *((*TextureLayered.Go)(unsafe.Pointer(&self))) }
-func (self class) AsTexture() Texture.GD { return *((*Texture.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsTexture() Texture.Go { return *((*Texture.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsCompressedTexture2DArray() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCompressedTexture2DArray() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsCompressedTextureLayered() CompressedTextureLayered.Advanced {
+	return *((*CompressedTextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsCompressedTextureLayered() CompressedTextureLayered.Instance {
+	return *((*CompressedTextureLayered.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsTextureLayered() TextureLayered.Advanced {
+	return *((*TextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsTextureLayered() TextureLayered.Instance {
+	return *((*TextureLayered.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTexture() Texture.Instance {
+	return *((*Texture.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsCompressedTextureLayered(), name)
+	default:
+		return gd.VirtualByName(self.AsCompressedTextureLayered(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsCompressedTextureLayered(), name)
+	default:
+		return gd.VirtualByName(self.AsCompressedTextureLayered(), name)
 	}
 }
-func init() {classdb.Register("CompressedTexture2DArray", func(ptr gd.Object) any { return classdb.CompressedTexture2DArray(ptr) })}
+func init() {
+	classdb.Register("CompressedTexture2DArray", func(ptr gd.Object) any { return classdb.CompressedTexture2DArray(ptr) })
+}

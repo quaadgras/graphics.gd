@@ -3,24 +3,26 @@ package Engine
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
-
 */
 var self gdclass.Engine
 var once sync.Once
+
 func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.Engine)
 	self = *(*gdclass.Engine)(unsafe.Pointer(&obj))
@@ -57,19 +59,23 @@ This method can be used to run expensive logic less often without relying on a [
 [codeblocks]
 [gdscript]
 func _physics_process(_delta):
-    if Engine.get_physics_frames() % 2 == 0:
-        pass # Run expensive logic only once every 2 physics frames here.
+
+	if Engine.get_physics_frames() % 2 == 0:
+	    pass # Run expensive logic only once every 2 physics frames here.
+
 [/gdscript]
 [csharp]
 public override void _PhysicsProcess(double delta)
-{
-    base._PhysicsProcess(delta);
 
-    if (Engine.GetPhysicsFrames() % 2 == 0)
-    {
-        // Run expensive logic only once every 2 physics frames here.
-    }
-}
+	{
+	    base._PhysicsProcess(delta);
+
+	    if (Engine.GetPhysicsFrames() % 2 == 0)
+	    {
+	        // Run expensive logic only once every 2 physics frames here.
+	    }
+	}
+
 [/csharp]
 [/codeblocks]
 */
@@ -84,19 +90,23 @@ This method can be used to run expensive logic less often without relying on a [
 [codeblocks]
 [gdscript]
 func _process(_delta):
-    if Engine.get_process_frames() % 5 == 0:
-        pass # Run expensive logic only once every 5 process (render) frames here.
+
+	if Engine.get_process_frames() % 5 == 0:
+	    pass # Run expensive logic only once every 5 process (render) frames here.
+
 [/gdscript]
 [csharp]
 public override void _Process(double delta)
-{
-    base._Process(delta);
 
-    if (Engine.GetProcessFrames() % 5 == 0)
-    {
-        // Run expensive logic only once every 5 process (render) frames here.
-    }
-}
+	{
+	    base._Process(delta);
+
+	    if (Engine.GetProcessFrames() % 5 == 0)
+	    {
+	        // Run expensive logic only once every 5 process (render) frames here.
+	    }
+	}
+
 [/csharp]
 [/codeblocks]
 */
@@ -130,19 +140,27 @@ The [code]hex[/code] value is encoded as follows, from left to right: one byte f
 [codeblocks]
 [gdscript]
 if Engine.get_version_info().hex >= 0x040100:
-    pass # Do things specific to version 4.1 or later.
+
+	pass # Do things specific to version 4.1 or later.
+
 else:
-    pass # Do things specific to versions before 4.1.
+
+	pass # Do things specific to versions before 4.1.
+
 [/gdscript]
 [csharp]
 if ((int)Engine.GetVersionInfo()["hex"] >= 0x040100)
-{
-    // Do things specific to version 4.1 or later.
-}
+
+	{
+	    // Do things specific to version 4.1 or later.
+	}
+
 else
-{
-    // Do things specific to versions before 4.1.
-}
+
+	{
+	    // Do things specific to versions before 4.1.
+	}
+
 [/csharp]
 [/codeblocks]
 */
@@ -202,15 +220,23 @@ To detect whether the current build is 64-bit, you can use the fact that all 64-
 [codeblocks]
 [gdscript]
 if "64" in Engine.get_architecture_name():
-    print("Running a 64-bit build of Godot.")
+
+	print("Running a 64-bit build of Godot.")
+
 else:
-    print("Running a 32-bit build of Godot.")
+
+	print("Running a 32-bit build of Godot.")
+
 [/gdscript]
 [csharp]
 if (Engine.GetArchitectureName().Contains("64"))
-    GD.Print("Running a 64-bit build of Godot.");
+
+	GD.Print("Running a 64-bit build of Godot.");
+
 else
-    GD.Print("Running a 32-bit build of Godot.");
+
+	GD.Print("Running a 32-bit build of Godot.");
+
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method does [i]not[/i] return the name of the system's CPU architecture (like [method OS.get_processor_name]). For example, when running an [code]x86_32[/code] Godot binary on an [code]x86_64[/code] system, the returned value will still be [code]"x86_32"[/code].
@@ -224,15 +250,19 @@ func GetArchitectureName() string {
 Returns [code]true[/code] if the engine is inside the fixed physics process step of the main loop.
 [codeblock]
 func _enter_tree():
-    # Depending on when the node is added to the tree,
-    # prints either "true" or "false".
-    print(Engine.is_in_physics_frame())
+
+	# Depending on when the node is added to the tree,
+	# prints either "true" or "false".
+	print(Engine.is_in_physics_frame())
 
 func _process(delta):
-    print(Engine.is_in_physics_frame()) # Prints false
+
+	print(Engine.is_in_physics_frame()) # Prints false
 
 func _physics_process(delta):
-    print(Engine.is_in_physics_frame()) # Prints true
+
+	print(Engine.is_in_physics_frame()) # Prints true
+
 [/codeblock]
 */
 func IsInPhysicsFrame() bool {
@@ -340,15 +370,23 @@ Returns [code]true[/code] if the script is currently running inside the editor, 
 [codeblocks]
 [gdscript]
 if Engine.is_editor_hint():
-    draw_gizmos()
+
+	draw_gizmos()
+
 else:
-    simulate_physics()
+
+	simulate_physics()
+
 [/gdscript]
 [csharp]
 if (Engine.IsEditorHint())
-    DrawGizmos();
+
+	DrawGizmos();
+
 else
-    SimulatePhysics();
+
+	SimulatePhysics();
+
 [/csharp]
 [/codeblocks]
 See [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]Running code in the editor[/url] in the documentation for more information.
@@ -366,13 +404,16 @@ func GetWriteMoviePath() string {
 	once.Do(singleton)
 	return string(class(self).GetWriteMoviePath().String())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-func GD() class { once.Do(singleton); return self }
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+func Advanced() class { once.Do(singleton); return self }
+
 type class [1]classdb.Engine
+
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
 func PrintErrorMessages() bool {
-		return bool(class(self).IsPrintingErrorMessages())
+	return bool(class(self).IsPrintingErrorMessages())
 }
 
 func SetPrintErrorMessages(value bool) {
@@ -380,7 +421,7 @@ func SetPrintErrorMessages(value bool) {
 }
 
 func PhysicsTicksPerSecond() int {
-		return int(int(class(self).GetPhysicsTicksPerSecond()))
+	return int(int(class(self).GetPhysicsTicksPerSecond()))
 }
 
 func SetPhysicsTicksPerSecond(value int) {
@@ -388,7 +429,7 @@ func SetPhysicsTicksPerSecond(value int) {
 }
 
 func MaxPhysicsStepsPerFrame() int {
-		return int(int(class(self).GetMaxPhysicsStepsPerFrame()))
+	return int(int(class(self).GetMaxPhysicsStepsPerFrame()))
 }
 
 func SetMaxPhysicsStepsPerFrame(value int) {
@@ -396,7 +437,7 @@ func SetMaxPhysicsStepsPerFrame(value int) {
 }
 
 func MaxFps() int {
-		return int(int(class(self).GetMaxFps()))
+	return int(int(class(self).GetMaxFps()))
 }
 
 func SetMaxFps(value int) {
@@ -404,7 +445,7 @@ func SetMaxFps(value int) {
 }
 
 func TimeScale() float64 {
-		return float64(float64(class(self).GetTimeScale()))
+	return float64(float64(class(self).GetTimeScale()))
 }
 
 func SetTimeScale(value float64) {
@@ -412,7 +453,7 @@ func SetTimeScale(value float64) {
 }
 
 func PhysicsJitterFix() float64 {
-		return float64(float64(class(self).GetPhysicsJitterFix()))
+	return float64(float64(class(self).GetPhysicsJitterFix()))
 }
 
 func SetPhysicsJitterFix(value float64) {
@@ -420,13 +461,14 @@ func SetPhysicsJitterFix(value float64) {
 }
 
 //go:nosplit
-func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int)  {
+func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_ticks_per_second)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_physics_ticks_per_second, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetPhysicsTicksPerSecond() gd.Int {
 	var frame = callframe.New()
@@ -436,14 +478,16 @@ func (self class) GetPhysicsTicksPerSecond() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int)  {
+func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_physics_steps)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_max_physics_steps_per_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMaxPhysicsStepsPerFrame() gd.Int {
 	var frame = callframe.New()
@@ -453,14 +497,16 @@ func (self class) GetMaxPhysicsStepsPerFrame() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float)  {
+func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_jitter_fix)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_physics_jitter_fix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetPhysicsJitterFix() gd.Float {
 	var frame = callframe.New()
@@ -470,6 +516,7 @@ func (self class) GetPhysicsJitterFix() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
 */
@@ -482,14 +529,16 @@ func (self class) GetPhysicsInterpolationFraction() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetMaxFps(max_fps gd.Int)  {
+func (self class) SetMaxFps(max_fps gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_fps)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_max_fps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetMaxFps() gd.Int {
 	var frame = callframe.New()
@@ -499,14 +548,16 @@ func (self class) GetMaxFps() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTimeScale(time_scale gd.Float)  {
+func (self class) SetTimeScale(time_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_scale)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_time_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTimeScale() gd.Float {
 	var frame = callframe.New()
@@ -516,6 +567,7 @@ func (self class) GetTimeScale() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the total number of frames drawn since the engine started.
 [b]Note:[/b] On headless platforms, or if rendering is disabled with [code]--disable-render-loop[/code] via command line, this method always returns [code]0[/code]. See also [method get_process_frames].
@@ -529,6 +581,7 @@ func (self class) GetFramesDrawn() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the average frames rendered every second (FPS), also known as the framerate.
 */
@@ -541,6 +594,7 @@ func (self class) GetFramesPerSecond() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the total number of frames passed since the engine started. This number is increased every [b]physics frame[/b]. See also [method get_process_frames].
 This method can be used to run expensive logic less often without relying on a [Timer]:
@@ -572,6 +626,7 @@ func (self class) GetPhysicsFrames() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the total number of frames passed since the engine started. This number is increased every [b]process frame[/b], regardless of whether the render loop is enabled. See also [method get_frames_drawn] and [method get_physics_frames].
 This method can be used to run expensive logic less often without relying on a [Timer]:
@@ -603,6 +658,7 @@ func (self class) GetProcessFrames() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and is the same as [method Node.get_tree].
 [b]Note:[/b] The type instantiated as the main loop can changed with [member ProjectSettings.application/run/main_loop_type].
@@ -616,6 +672,7 @@ func (self class) GetMainLoop() gdclass.MainLoop {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the current engine version information as a [Dictionary] containing the following entries:
 - [code]major[/code] - Major version number as an int;
@@ -653,10 +710,11 @@ func (self class) GetVersionInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_version_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Dictionary](r_ret.Get())
+	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
@@ -665,10 +723,11 @@ func (self class) GetAuthorInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_author_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Dictionary](r_ret.Get())
+	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns an [Array] of dictionaries with copyright information for every component of Godot's source code.
 Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/code] array of dictionaries. It describes the component in detail with the following entries:
@@ -681,10 +740,11 @@ func (self class) GetCopyrightInfo() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_copyright_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of strings:
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
@@ -694,10 +754,11 @@ func (self class) GetDonorInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_donor_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Dictionary](r_ret.Get())
+	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
@@ -706,10 +767,11 @@ func (self class) GetLicenseInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Dictionary](r_ret.Get())
+	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the full Godot license text.
 */
@@ -718,10 +780,11 @@ func (self class) GetLicenseText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the name of the CPU architecture the Godot binary was built for. Possible return values include [code]"x86_64"[/code], [code]"x86_32"[/code], [code]"arm64"[/code], [code]"arm32"[/code], [code]"rv64"[/code], [code]"riscv"[/code], [code]"ppc64"[/code], [code]"ppc"[/code], [code]"wasm64"[/code], and [code]"wasm32"[/code].
 To detect whether the current build is 64-bit, you can use the fact that all 64-bit architecture names contain [code]64[/code] in their name:
@@ -746,10 +809,11 @@ func (self class) GetArchitectureName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_architecture_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the engine is inside the fixed physics process step of the main loop.
 [codeblock]
@@ -774,6 +838,7 @@ func (self class) IsInPhysicsFrame() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if a singleton with the given [param name] exists in the global scope. See also [method get_singleton].
 [codeblocks]
@@ -795,13 +860,14 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
 //go:nosplit
 func (self class) HasSingleton(name gd.StringName) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_has_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the global singleton with the given [param name], or [code]null[/code] if it does not exist. Often used for plugins. See also [method has_singleton] and [method get_singleton_list].
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
@@ -809,36 +875,39 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 //go:nosplit
 func (self class) GetSingleton(name gd.StringName) gd.Object {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
 //go:nosplit
-func (self class) RegisterSingleton(name gd.StringName, instance gd.Object)  {
+func (self class) RegisterSingleton(name gd.StringName, instance gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(instance))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Removes the singleton registered under [param name]. The singleton object is [i]not[/i] freed. Only works with user-defined singletons registered with [method register_singleton].
 */
 //go:nosplit
-func (self class) UnregisterSingleton(name gd.StringName)  {
+func (self class) UnregisterSingleton(name gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_unregister_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns a list of names of all available global singletons. See also [method get_singleton].
 */
@@ -847,10 +916,11 @@ func (self class) GetSingletonList() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Registers a [ScriptLanguage] instance to be available with [code]ScriptServer[/code].
 Returns:
@@ -868,6 +938,7 @@ func (self class) RegisterScriptLanguage(language gdclass.ScriptLanguage) int64 
 	frame.Free()
 	return ret
 }
+
 /*
 Unregisters the [ScriptLanguage] instance from [code]ScriptServer[/code].
 Returns:
@@ -877,13 +948,14 @@ Returns:
 //go:nosplit
 func (self class) UnregisterScriptLanguage(language gdclass.ScriptLanguage) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(language[0])[0])
+	callframe.Arg(frame, pointers.Get(language[0])[0])
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_unregister_script_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the number of available script languages. Use with [method get_script_language].
 */
@@ -896,6 +968,7 @@ func (self class) GetScriptLanguageCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns an instance of a [ScriptLanguage] with the given [param index].
 */
@@ -909,6 +982,7 @@ func (self class) GetScriptLanguage(index gd.Int) gdclass.ScriptLanguage {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the script is currently running inside the editor, otherwise returns [code]false[/code]. This is useful for [code]@tool[/code] scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
 [codeblocks]
@@ -937,6 +1011,7 @@ func (self class) IsEditorHint() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [member ProjectSettings.editor/movie_writer/movie_file].
 */
@@ -945,18 +1020,20 @@ func (self class) GetWriteMoviePath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_write_movie_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetPrintErrorMessages(enabled bool)  {
+func (self class) SetPrintErrorMessages(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_set_print_error_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsPrintingErrorMessages() bool {
 	var frame = callframe.New()
@@ -968,7 +1045,8 @@ func (self class) IsPrintingErrorMessages() bool {
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("Engine", func(ptr gd.Object) any { return classdb.Engine(ptr) })}
+func init() { classdb.Register("Engine", func(ptr gd.Object) any { return classdb.Engine(ptr) }) }

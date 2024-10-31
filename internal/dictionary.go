@@ -2,7 +2,7 @@ package gd
 
 import (
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 )
 
 func (d Dictionary) Index(key Variant) Variant {
@@ -14,7 +14,7 @@ func (d Dictionary) SetIndex(key Variant, value Variant) {
 }
 
 func (d Dictionary) Free() {
-	if ptr, ok := discreet.End(d); ok {
+	if ptr, ok := pointers.End(d); ok {
 		var frame = callframe.New()
 		Global.typeset.destruct.Dictionary(callframe.Arg(frame, ptr).Uintptr())
 		frame.Free()
@@ -27,5 +27,5 @@ func NewDictionary() Dictionary {
 	Global.typeset.creation.Dictionary[0](r_ret.Uintptr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[Dictionary]([1]uintptr{raw})
+	return pointers.New[Dictionary]([1]uintptr{raw})
 }

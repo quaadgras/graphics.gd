@@ -4,7 +4,7 @@ import (
 	"iter"
 
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 )
 
 func (a Array) Index(index Int) Variant {
@@ -17,10 +17,10 @@ func (a Array) SetIndex(index Int, value Variant) {
 
 func (a Array) isArray() {}
 
-func (a Array) end() { discreet.End(a) }
+func (a Array) end() { pointers.End(a) }
 
 func (a Array) Free() {
-	if ptr, ok := discreet.End(a); ok {
+	if ptr, ok := pointers.End(a); ok {
 		var frame = callframe.New()
 		Global.typeset.destruct.Array(callframe.Arg(frame, ptr).Uintptr())
 		frame.Free()
@@ -43,5 +43,5 @@ func NewArray() Array {
 	Global.typeset.creation.Array[0](r_ret.Uintptr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[Array]([1]uintptr{raw})
+	return pointers.New[Array]([1]uintptr{raw})
 }

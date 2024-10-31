@@ -3,24 +3,26 @@ package InputMap
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Manages all [InputEventAction] which can be created/modified from the project settings menu [b]Project > Project Settings > Input Map[/b] or in code with [method add_action] and [method action_add_event]. See [method Node._input].
-
 */
 var self gdclass.InputMap
 var once sync.Once
+
 func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.InputMap)
 	self = *(*gdclass.InputMap)(unsafe.Pointer(&obj))
@@ -132,9 +134,12 @@ func LoadFromProjectSettings() {
 	once.Do(singleton)
 	class(self).LoadFromProjectSettings()
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-func GD() class { once.Do(singleton); return self }
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+func Advanced() class { once.Do(singleton); return self }
+
 type class [1]classdb.InputMap
+
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
 /*
@@ -143,13 +148,14 @@ Returns [code]true[/code] if the [InputMap] has a registered action with the giv
 //go:nosplit
 func (self class) HasAction(action gd.StringName) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_has_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns an array of all actions in the [InputMap].
 */
@@ -158,108 +164,117 @@ func (self class) GetActions() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Adds an empty action to the [InputMap] with a configurable [param deadzone].
 An [InputEvent] can then be added to this action with [method action_add_event].
 */
 //go:nosplit
-func (self class) AddAction(action gd.StringName, deadzone gd.Float)  {
+func (self class) AddAction(action gd.StringName, deadzone gd.Float) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, deadzone)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_add_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Removes an action from the [InputMap].
 */
 //go:nosplit
-func (self class) EraseAction(action gd.StringName)  {
+func (self class) EraseAction(action gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_erase_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Sets a deadzone value for the action.
 */
 //go:nosplit
-func (self class) ActionSetDeadzone(action gd.StringName, deadzone gd.Float)  {
+func (self class) ActionSetDeadzone(action gd.StringName, deadzone gd.Float) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, deadzone)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_set_deadzone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionGetDeadzone(action gd.StringName) gd.Float {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 */
 //go:nosplit
-func (self class) ActionAddEvent(action gd.StringName, event gdclass.InputEvent)  {
+func (self class) ActionAddEvent(action gd.StringName, event gdclass.InputEvent) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
-	callframe.Arg(frame, discreet.Get(event[0])[0])
+	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_add_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if the action has the given [InputEvent] associated with it.
 */
 //go:nosplit
 func (self class) ActionHasEvent(action gd.StringName, event gdclass.InputEvent) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
-	callframe.Arg(frame, discreet.Get(event[0])[0])
+	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_has_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Removes an [InputEvent] from an action.
 */
 //go:nosplit
-func (self class) ActionEraseEvent(action gd.StringName, event gdclass.InputEvent)  {
+func (self class) ActionEraseEvent(action gd.StringName, event gdclass.InputEvent) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
-	callframe.Arg(frame, discreet.Get(event[0])[0])
+	callframe.Arg(frame, pointers.Get(action))
+	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Removes all events from an action.
 */
 //go:nosplit
-func (self class) ActionEraseEvents(action gd.StringName)  {
+func (self class) ActionEraseEvents(action gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns an array of [InputEvent]s associated with a given action.
 [b]Note:[/b] When used in the editor (e.g. a tool script or [EditorPlugin]), this method will return events for the editor action. If you want to access your project's input binds from the editor, read the [code]input/*[/code] settings from [ProjectSettings].
@@ -267,13 +282,14 @@ Returns an array of [InputEvent]s associated with a given action.
 //go:nosplit
 func (self class) ActionGetEvents(action gd.StringName) gd.Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
@@ -281,8 +297,8 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 //go:nosplit
 func (self class) EventIsAction(event gdclass.InputEvent, action gd.StringName, exact_match bool) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(event[0])[0])
-	callframe.Arg(frame, discreet.Get(action))
+	callframe.Arg(frame, pointers.Get(event[0])[0])
+	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_event_is_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -290,11 +306,12 @@ func (self class) EventIsAction(event gdclass.InputEvent, action gd.StringName, 
 	frame.Free()
 	return ret
 }
+
 /*
 Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSettings].
 */
 //go:nosplit
-func (self class) LoadFromProjectSettings()  {
+func (self class) LoadFromProjectSettings() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_load_from_project_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -302,7 +319,8 @@ func (self class) LoadFromProjectSettings()  {
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("InputMap", func(ptr gd.Object) any { return classdb.InputMap(ptr) })}
+func init() { classdb.Register("InputMap", func(ptr gd.Object) any { return classdb.InputMap(ptr) }) }

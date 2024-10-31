@@ -187,7 +187,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 			if hasHost {
 				return "classdb." + host + sub
 			} else {
-				return "gd." + gdType
+				return "gdconst." + gdType
 			}
 		}
 

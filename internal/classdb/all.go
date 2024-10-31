@@ -4,30 +4,31 @@
 package gd
 
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import gd "grow.graphics/gd/internal"
 
-
 type AESContextMode int64
-type AESContext discreet.PointerNamed[AESContext, [3]uintptr, [1]discreet.Type]
-func (self AESContext) Free() { Object(self).Free() }
+type AESContext pointers.PointerNamed[AESContext, [3]uintptr, [1]pointers.Type]
 
+func (self AESContext) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AESContext) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AESContext) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AStar2D discreet.PointerNamed[AStar2D, [3]uintptr, [1]discreet.Type]
-func (self AStar2D) Free() { Object(self).Free() }
 
+type AStar2D pointers.PointerNamed[AStar2D, [3]uintptr, [1]pointers.Type]
+
+func (self AStar2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AStar2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AStar2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AStar3D discreet.PointerNamed[AStar3D, [3]uintptr, [1]discreet.Type]
-func (self AStar3D) Free() { Object(self).Free() }
 
+type AStar3D pointers.PointerNamed[AStar3D, [3]uintptr, [1]pointers.Type]
+
+func (self AStar3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AStar3D) AsObject() gd.Object { return gd.Object(self) }
@@ -39,57 +40,63 @@ type AStarGrid2DHeuristic int64
 type AStarGrid2DDiagonalMode int64
 
 type AStarGrid2DCellShape int64
-type AStarGrid2D discreet.PointerNamed[AStarGrid2D, [3]uintptr, [1]discreet.Type]
-func (self AStarGrid2D) Free() { Object(self).Free() }
+type AStarGrid2D pointers.PointerNamed[AStarGrid2D, [3]uintptr, [1]pointers.Type]
 
+func (self AStarGrid2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AStarGrid2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AStarGrid2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AcceptDialog discreet.PointerNamed[AcceptDialog, [3]uintptr, [1]discreet.Type]
-func (self AcceptDialog) Free() { Object(self).Free() }
 
+type AcceptDialog pointers.PointerNamed[AcceptDialog, [3]uintptr, [1]pointers.Type]
+
+func (self AcceptDialog) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AcceptDialog) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AcceptDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimatableBody2D discreet.PointerNamed[AnimatableBody2D, [3]uintptr, [1]discreet.Type]
-func (self AnimatableBody2D) Free() { Object(self).Free() }
 
+type AnimatableBody2D pointers.PointerNamed[AnimatableBody2D, [3]uintptr, [1]pointers.Type]
+
+func (self AnimatableBody2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimatableBody2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimatableBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimatableBody3D discreet.PointerNamed[AnimatableBody3D, [3]uintptr, [1]discreet.Type]
-func (self AnimatableBody3D) Free() { Object(self).Free() }
 
+type AnimatableBody3D pointers.PointerNamed[AnimatableBody3D, [3]uintptr, [1]pointers.Type]
+
+func (self AnimatableBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimatableBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimatableBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimatedSprite2D discreet.PointerNamed[AnimatedSprite2D, [3]uintptr, [1]discreet.Type]
-func (self AnimatedSprite2D) Free() { Object(self).Free() }
 
+type AnimatedSprite2D pointers.PointerNamed[AnimatedSprite2D, [3]uintptr, [1]pointers.Type]
+
+func (self AnimatedSprite2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimatedSprite2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimatedSprite2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimatedSprite3D discreet.PointerNamed[AnimatedSprite3D, [3]uintptr, [1]discreet.Type]
-func (self AnimatedSprite3D) Free() { Object(self).Free() }
 
+type AnimatedSprite3D pointers.PointerNamed[AnimatedSprite3D, [3]uintptr, [1]pointers.Type]
+
+func (self AnimatedSprite3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimatedSprite3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimatedSprite3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimatedTexture discreet.PointerNamed[AnimatedTexture, [3]uintptr, [1]discreet.Type]
-func (self AnimatedTexture) Free() { Object(self).Free() }
 
+type AnimatedTexture pointers.PointerNamed[AnimatedTexture, [3]uintptr, [1]pointers.Type]
+
+func (self AnimatedTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimatedTexture) AsObject() gd.Object { return gd.Object(self) }
@@ -107,17 +114,18 @@ type AnimationLoopMode int64
 type AnimationLoopedFlag int64
 
 type AnimationFindMode int64
-type Animation discreet.PointerNamed[Animation, [3]uintptr, [1]discreet.Type]
-func (self Animation) Free() { Object(self).Free() }
+type Animation pointers.PointerNamed[Animation, [3]uintptr, [1]pointers.Type]
 
+func (self Animation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Animation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Animation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationLibrary discreet.PointerNamed[AnimationLibrary, [3]uintptr, [1]discreet.Type]
-func (self AnimationLibrary) Free() { Object(self).Free() }
 
+type AnimationLibrary pointers.PointerNamed[AnimationLibrary, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationLibrary) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationLibrary) AsObject() gd.Object { return gd.Object(self) }
@@ -129,9 +137,9 @@ type AnimationMixerAnimationCallbackModeProcess int64
 type AnimationMixerAnimationCallbackModeMethod int64
 
 type AnimationMixerAnimationCallbackModeDiscrete int64
-type AnimationMixer discreet.PointerNamed[AnimationMixer, [3]uintptr, [1]discreet.Type]
-func (self AnimationMixer) Free() { Object(self).Free() }
+type AnimationMixer pointers.PointerNamed[AnimationMixer, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationMixer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationMixer) AsObject() gd.Object { return gd.Object(self) }
@@ -139,25 +147,27 @@ func (self AnimationMixer) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationMixer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationNodeFilterAction int64
-type AnimationNode discreet.PointerNamed[AnimationNode, [3]uintptr, [1]discreet.Type]
-func (self AnimationNode) Free() { Object(self).Free() }
+type AnimationNode pointers.PointerNamed[AnimationNode, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNode) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNode) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeAdd2 discreet.PointerNamed[AnimationNodeAdd2, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeAdd2) Free() { Object(self).Free() }
 
+type AnimationNodeAdd2 pointers.PointerNamed[AnimationNodeAdd2, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeAdd2) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeAdd2) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeAdd2) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeAdd3 discreet.PointerNamed[AnimationNodeAdd3, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeAdd3) Free() { Object(self).Free() }
 
+type AnimationNodeAdd3 pointers.PointerNamed[AnimationNodeAdd3, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeAdd3) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeAdd3) AsObject() gd.Object { return gd.Object(self) }
@@ -165,25 +175,27 @@ func (self AnimationNodeAdd3) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationNodeAdd3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationNodeAnimationPlayMode int64
-type AnimationNodeAnimation discreet.PointerNamed[AnimationNodeAnimation, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeAnimation) Free() { Object(self).Free() }
+type AnimationNodeAnimation pointers.PointerNamed[AnimationNodeAnimation, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeAnimation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeAnimation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeAnimation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeBlend2 discreet.PointerNamed[AnimationNodeBlend2, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeBlend2) Free() { Object(self).Free() }
 
+type AnimationNodeBlend2 pointers.PointerNamed[AnimationNodeBlend2, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeBlend2) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeBlend2) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeBlend2) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeBlend3 discreet.PointerNamed[AnimationNodeBlend3, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeBlend3) Free() { Object(self).Free() }
 
+type AnimationNodeBlend3 pointers.PointerNamed[AnimationNodeBlend3, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeBlend3) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeBlend3) AsObject() gd.Object { return gd.Object(self) }
@@ -191,9 +203,9 @@ func (self AnimationNodeBlend3) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationNodeBlend3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationNodeBlendSpace1DBlendMode int64
-type AnimationNodeBlendSpace1D discreet.PointerNamed[AnimationNodeBlendSpace1D, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeBlendSpace1D) Free() { Object(self).Free() }
+type AnimationNodeBlendSpace1D pointers.PointerNamed[AnimationNodeBlendSpace1D, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeBlendSpace1D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeBlendSpace1D) AsObject() gd.Object { return gd.Object(self) }
@@ -201,17 +213,18 @@ func (self AnimationNodeBlendSpace1D) AsObject() gd.Object { return gd.Object(se
 func (self AnimationNodeBlendSpace1D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationNodeBlendSpace2DBlendMode int64
-type AnimationNodeBlendSpace2D discreet.PointerNamed[AnimationNodeBlendSpace2D, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeBlendSpace2D) Free() { Object(self).Free() }
+type AnimationNodeBlendSpace2D pointers.PointerNamed[AnimationNodeBlendSpace2D, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeBlendSpace2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeBlendSpace2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeBlendSpace2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeBlendTree discreet.PointerNamed[AnimationNodeBlendTree, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeBlendTree) Free() { Object(self).Free() }
 
+type AnimationNodeBlendTree pointers.PointerNamed[AnimationNodeBlendTree, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeBlendTree) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeBlendTree) AsObject() gd.Object { return gd.Object(self) }
@@ -221,17 +234,18 @@ func (self AnimationNodeBlendTree) Virtual(name string) reflect.Value { return r
 type AnimationNodeOneShotOneShotRequest int64
 
 type AnimationNodeOneShotMixMode int64
-type AnimationNodeOneShot discreet.PointerNamed[AnimationNodeOneShot, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeOneShot) Free() { Object(self).Free() }
+type AnimationNodeOneShot pointers.PointerNamed[AnimationNodeOneShot, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeOneShot) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeOneShot) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeOneShot) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeOutput discreet.PointerNamed[AnimationNodeOutput, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeOutput) Free() { Object(self).Free() }
 
+type AnimationNodeOutput pointers.PointerNamed[AnimationNodeOutput, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeOutput) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeOutput) AsObject() gd.Object { return gd.Object(self) }
@@ -239,69 +253,79 @@ func (self AnimationNodeOutput) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationNodeOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationNodeStateMachineStateMachineType int64
-type AnimationNodeStateMachine discreet.PointerNamed[AnimationNodeStateMachine, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeStateMachine) Free() { Object(self).Free() }
+type AnimationNodeStateMachine pointers.PointerNamed[AnimationNodeStateMachine, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeStateMachine) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeStateMachine) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeStateMachine) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeStateMachinePlayback discreet.PointerNamed[AnimationNodeStateMachinePlayback, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeStateMachinePlayback) Free() { Object(self).Free() }
 
+type AnimationNodeStateMachinePlayback pointers.PointerNamed[AnimationNodeStateMachinePlayback, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeStateMachinePlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeStateMachinePlayback) AsObject() gd.Object { return gd.Object(self) }
 
-func (self AnimationNodeStateMachinePlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self AnimationNodeStateMachinePlayback) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type AnimationNodeStateMachineTransitionSwitchMode int64
 
 type AnimationNodeStateMachineTransitionAdvanceMode int64
-type AnimationNodeStateMachineTransition discreet.PointerNamed[AnimationNodeStateMachineTransition, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeStateMachineTransition) Free() { Object(self).Free() }
+type AnimationNodeStateMachineTransition pointers.PointerNamed[AnimationNodeStateMachineTransition, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationNodeStateMachineTransition) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeStateMachineTransition) AsObject() gd.Object { return gd.Object(self) }
 
-func (self AnimationNodeStateMachineTransition) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeSub2 discreet.PointerNamed[AnimationNodeSub2, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeSub2) Free() { Object(self).Free() }
+func (self AnimationNodeStateMachineTransition) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type AnimationNodeSub2 pointers.PointerNamed[AnimationNodeSub2, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeSub2) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeSub2) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeSub2) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeSync discreet.PointerNamed[AnimationNodeSync, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeSync) Free() { Object(self).Free() }
 
+type AnimationNodeSync pointers.PointerNamed[AnimationNodeSync, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeSync) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeSync) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeSync) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeTimeScale discreet.PointerNamed[AnimationNodeTimeScale, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeTimeScale) Free() { Object(self).Free() }
 
+type AnimationNodeTimeScale pointers.PointerNamed[AnimationNodeTimeScale, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeTimeScale) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeTimeScale) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeTimeScale) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeTimeSeek discreet.PointerNamed[AnimationNodeTimeSeek, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeTimeSeek) Free() { Object(self).Free() }
 
+type AnimationNodeTimeSeek pointers.PointerNamed[AnimationNodeTimeSeek, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeTimeSeek) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeTimeSeek) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationNodeTimeSeek) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationNodeTransition discreet.PointerNamed[AnimationNodeTransition, [3]uintptr, [1]discreet.Type]
-func (self AnimationNodeTransition) Free() { Object(self).Free() }
 
+type AnimationNodeTransition pointers.PointerNamed[AnimationNodeTransition, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationNodeTransition) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationNodeTransition) AsObject() gd.Object { return gd.Object(self) }
@@ -311,17 +335,18 @@ func (self AnimationNodeTransition) Virtual(name string) reflect.Value { return 
 type AnimationPlayerAnimationProcessCallback int64
 
 type AnimationPlayerAnimationMethodCallMode int64
-type AnimationPlayer discreet.PointerNamed[AnimationPlayer, [3]uintptr, [1]discreet.Type]
-func (self AnimationPlayer) Free() { Object(self).Free() }
+type AnimationPlayer pointers.PointerNamed[AnimationPlayer, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationPlayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationPlayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AnimationPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AnimationRootNode discreet.PointerNamed[AnimationRootNode, [3]uintptr, [1]discreet.Type]
-func (self AnimationRootNode) Free() { Object(self).Free() }
 
+type AnimationRootNode pointers.PointerNamed[AnimationRootNode, [3]uintptr, [1]pointers.Type]
+
+func (self AnimationRootNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationRootNode) AsObject() gd.Object { return gd.Object(self) }
@@ -329,9 +354,9 @@ func (self AnimationRootNode) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationRootNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AnimationTreeAnimationProcessCallback int64
-type AnimationTree discreet.PointerNamed[AnimationTree, [3]uintptr, [1]discreet.Type]
-func (self AnimationTree) Free() { Object(self).Free() }
+type AnimationTree pointers.PointerNamed[AnimationTree, [3]uintptr, [1]pointers.Type]
 
+func (self AnimationTree) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AnimationTree) AsObject() gd.Object { return gd.Object(self) }
@@ -339,9 +364,9 @@ func (self AnimationTree) AsObject() gd.Object { return gd.Object(self) }
 func (self AnimationTree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Area2DSpaceOverride int64
-type Area2D discreet.PointerNamed[Area2D, [3]uintptr, [1]discreet.Type]
-func (self Area2D) Free() { Object(self).Free() }
+type Area2D pointers.PointerNamed[Area2D, [3]uintptr, [1]pointers.Type]
 
+func (self Area2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Area2D) AsObject() gd.Object { return gd.Object(self) }
@@ -349,25 +374,27 @@ func (self Area2D) AsObject() gd.Object { return gd.Object(self) }
 func (self Area2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Area3DSpaceOverride int64
-type Area3D discreet.PointerNamed[Area3D, [3]uintptr, [1]discreet.Type]
-func (self Area3D) Free() { Object(self).Free() }
+type Area3D pointers.PointerNamed[Area3D, [3]uintptr, [1]pointers.Type]
 
+func (self Area3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Area3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Area3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ArrayMesh discreet.PointerNamed[ArrayMesh, [3]uintptr, [1]discreet.Type]
-func (self ArrayMesh) Free() { Object(self).Free() }
 
+type ArrayMesh pointers.PointerNamed[ArrayMesh, [3]uintptr, [1]pointers.Type]
+
+func (self ArrayMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ArrayMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ArrayMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ArrayOccluder3D discreet.PointerNamed[ArrayOccluder3D, [3]uintptr, [1]discreet.Type]
-func (self ArrayOccluder3D) Free() { Object(self).Free() }
 
+type ArrayOccluder3D pointers.PointerNamed[ArrayOccluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self ArrayOccluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ArrayOccluder3D) AsObject() gd.Object { return gd.Object(self) }
@@ -377,89 +404,99 @@ func (self ArrayOccluder3D) Virtual(name string) reflect.Value { return reflect.
 type AspectRatioContainerStretchMode int64
 
 type AspectRatioContainerAlignmentMode int64
-type AspectRatioContainer discreet.PointerNamed[AspectRatioContainer, [3]uintptr, [1]discreet.Type]
-func (self AspectRatioContainer) Free() { Object(self).Free() }
+type AspectRatioContainer pointers.PointerNamed[AspectRatioContainer, [3]uintptr, [1]pointers.Type]
 
+func (self AspectRatioContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AspectRatioContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AspectRatioContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AtlasTexture discreet.PointerNamed[AtlasTexture, [3]uintptr, [1]discreet.Type]
-func (self AtlasTexture) Free() { Object(self).Free() }
 
+type AtlasTexture pointers.PointerNamed[AtlasTexture, [3]uintptr, [1]pointers.Type]
+
+func (self AtlasTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AtlasTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AtlasTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioBusLayout discreet.PointerNamed[AudioBusLayout, [3]uintptr, [1]discreet.Type]
-func (self AudioBusLayout) Free() { Object(self).Free() }
 
+type AudioBusLayout pointers.PointerNamed[AudioBusLayout, [3]uintptr, [1]pointers.Type]
+
+func (self AudioBusLayout) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioBusLayout) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioBusLayout) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffect discreet.PointerNamed[AudioEffect, [3]uintptr, [1]discreet.Type]
-func (self AudioEffect) Free() { Object(self).Free() }
 
+type AudioEffect pointers.PointerNamed[AudioEffect, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffect) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffect) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectAmplify discreet.PointerNamed[AudioEffectAmplify, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectAmplify) Free() { Object(self).Free() }
 
+type AudioEffectAmplify pointers.PointerNamed[AudioEffectAmplify, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectAmplify) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectAmplify) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectAmplify) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectBandLimitFilter discreet.PointerNamed[AudioEffectBandLimitFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectBandLimitFilter) Free() { Object(self).Free() }
 
+type AudioEffectBandLimitFilter pointers.PointerNamed[AudioEffectBandLimitFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectBandLimitFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectBandLimitFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectBandLimitFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectBandPassFilter discreet.PointerNamed[AudioEffectBandPassFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectBandPassFilter) Free() { Object(self).Free() }
 
+type AudioEffectBandPassFilter pointers.PointerNamed[AudioEffectBandPassFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectBandPassFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectBandPassFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectBandPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectCapture discreet.PointerNamed[AudioEffectCapture, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectCapture) Free() { Object(self).Free() }
 
+type AudioEffectCapture pointers.PointerNamed[AudioEffectCapture, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectCapture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectCapture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectCapture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectChorus discreet.PointerNamed[AudioEffectChorus, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectChorus) Free() { Object(self).Free() }
 
+type AudioEffectChorus pointers.PointerNamed[AudioEffectChorus, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectChorus) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectChorus) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectChorus) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectCompressor discreet.PointerNamed[AudioEffectCompressor, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectCompressor) Free() { Object(self).Free() }
 
+type AudioEffectCompressor pointers.PointerNamed[AudioEffectCompressor, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectCompressor) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectCompressor) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectCompressor) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectDelay discreet.PointerNamed[AudioEffectDelay, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectDelay) Free() { Object(self).Free() }
 
+type AudioEffectDelay pointers.PointerNamed[AudioEffectDelay, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectDelay) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectDelay) AsObject() gd.Object { return gd.Object(self) }
@@ -467,41 +504,45 @@ func (self AudioEffectDelay) AsObject() gd.Object { return gd.Object(self) }
 func (self AudioEffectDelay) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioEffectDistortionMode int64
-type AudioEffectDistortion discreet.PointerNamed[AudioEffectDistortion, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectDistortion) Free() { Object(self).Free() }
+type AudioEffectDistortion pointers.PointerNamed[AudioEffectDistortion, [3]uintptr, [1]pointers.Type]
 
+func (self AudioEffectDistortion) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectDistortion) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectDistortion) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectEQ discreet.PointerNamed[AudioEffectEQ, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectEQ) Free() { Object(self).Free() }
 
+type AudioEffectEQ pointers.PointerNamed[AudioEffectEQ, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectEQ) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectEQ) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectEQ) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectEQ10 discreet.PointerNamed[AudioEffectEQ10, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectEQ10) Free() { Object(self).Free() }
 
+type AudioEffectEQ10 pointers.PointerNamed[AudioEffectEQ10, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectEQ10) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectEQ10) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectEQ10) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectEQ21 discreet.PointerNamed[AudioEffectEQ21, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectEQ21) Free() { Object(self).Free() }
 
+type AudioEffectEQ21 pointers.PointerNamed[AudioEffectEQ21, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectEQ21) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectEQ21) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectEQ21) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectEQ6 discreet.PointerNamed[AudioEffectEQ6, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectEQ6) Free() { Object(self).Free() }
 
+type AudioEffectEQ6 pointers.PointerNamed[AudioEffectEQ6, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectEQ6) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectEQ6) AsObject() gd.Object { return gd.Object(self) }
@@ -509,89 +550,99 @@ func (self AudioEffectEQ6) AsObject() gd.Object { return gd.Object(self) }
 func (self AudioEffectEQ6) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioEffectFilterFilterDB int64
-type AudioEffectFilter discreet.PointerNamed[AudioEffectFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectFilter) Free() { Object(self).Free() }
+type AudioEffectFilter pointers.PointerNamed[AudioEffectFilter, [3]uintptr, [1]pointers.Type]
 
+func (self AudioEffectFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectHardLimiter discreet.PointerNamed[AudioEffectHardLimiter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectHardLimiter) Free() { Object(self).Free() }
 
+type AudioEffectHardLimiter pointers.PointerNamed[AudioEffectHardLimiter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectHardLimiter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectHardLimiter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectHardLimiter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectHighPassFilter discreet.PointerNamed[AudioEffectHighPassFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectHighPassFilter) Free() { Object(self).Free() }
 
+type AudioEffectHighPassFilter pointers.PointerNamed[AudioEffectHighPassFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectHighPassFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectHighPassFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectHighPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectHighShelfFilter discreet.PointerNamed[AudioEffectHighShelfFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectHighShelfFilter) Free() { Object(self).Free() }
 
+type AudioEffectHighShelfFilter pointers.PointerNamed[AudioEffectHighShelfFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectHighShelfFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectHighShelfFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectHighShelfFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectInstance discreet.PointerNamed[AudioEffectInstance, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectInstance) Free() { Object(self).Free() }
 
+type AudioEffectInstance pointers.PointerNamed[AudioEffectInstance, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectInstance) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectInstance) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectInstance) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectLimiter discreet.PointerNamed[AudioEffectLimiter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectLimiter) Free() { Object(self).Free() }
 
+type AudioEffectLimiter pointers.PointerNamed[AudioEffectLimiter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectLimiter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectLimiter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectLimiter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectLowPassFilter discreet.PointerNamed[AudioEffectLowPassFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectLowPassFilter) Free() { Object(self).Free() }
 
+type AudioEffectLowPassFilter pointers.PointerNamed[AudioEffectLowPassFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectLowPassFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectLowPassFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectLowPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectLowShelfFilter discreet.PointerNamed[AudioEffectLowShelfFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectLowShelfFilter) Free() { Object(self).Free() }
 
+type AudioEffectLowShelfFilter pointers.PointerNamed[AudioEffectLowShelfFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectLowShelfFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectLowShelfFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectLowShelfFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectNotchFilter discreet.PointerNamed[AudioEffectNotchFilter, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectNotchFilter) Free() { Object(self).Free() }
 
+type AudioEffectNotchFilter pointers.PointerNamed[AudioEffectNotchFilter, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectNotchFilter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectNotchFilter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectNotchFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectPanner discreet.PointerNamed[AudioEffectPanner, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectPanner) Free() { Object(self).Free() }
 
+type AudioEffectPanner pointers.PointerNamed[AudioEffectPanner, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectPanner) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectPanner) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectPanner) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectPhaser discreet.PointerNamed[AudioEffectPhaser, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectPhaser) Free() { Object(self).Free() }
 
+type AudioEffectPhaser pointers.PointerNamed[AudioEffectPhaser, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectPhaser) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectPhaser) AsObject() gd.Object { return gd.Object(self) }
@@ -599,25 +650,27 @@ func (self AudioEffectPhaser) AsObject() gd.Object { return gd.Object(self) }
 func (self AudioEffectPhaser) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioEffectPitchShiftFFTSize int64
-type AudioEffectPitchShift discreet.PointerNamed[AudioEffectPitchShift, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectPitchShift) Free() { Object(self).Free() }
+type AudioEffectPitchShift pointers.PointerNamed[AudioEffectPitchShift, [3]uintptr, [1]pointers.Type]
 
+func (self AudioEffectPitchShift) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectPitchShift) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectPitchShift) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectRecord discreet.PointerNamed[AudioEffectRecord, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectRecord) Free() { Object(self).Free() }
 
+type AudioEffectRecord pointers.PointerNamed[AudioEffectRecord, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectRecord) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectRecord) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectRecord) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectReverb discreet.PointerNamed[AudioEffectReverb, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectReverb) Free() { Object(self).Free() }
 
+type AudioEffectReverb pointers.PointerNamed[AudioEffectReverb, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectReverb) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectReverb) AsObject() gd.Object { return gd.Object(self) }
@@ -625,9 +678,9 @@ func (self AudioEffectReverb) AsObject() gd.Object { return gd.Object(self) }
 func (self AudioEffectReverb) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioEffectSpectrumAnalyzerFFTSize int64
-type AudioEffectSpectrumAnalyzer discreet.PointerNamed[AudioEffectSpectrumAnalyzer, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectSpectrumAnalyzer) Free() { Object(self).Free() }
+type AudioEffectSpectrumAnalyzer pointers.PointerNamed[AudioEffectSpectrumAnalyzer, [3]uintptr, [1]pointers.Type]
 
+func (self AudioEffectSpectrumAnalyzer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectSpectrumAnalyzer) AsObject() gd.Object { return gd.Object(self) }
@@ -635,49 +688,56 @@ func (self AudioEffectSpectrumAnalyzer) AsObject() gd.Object { return gd.Object(
 func (self AudioEffectSpectrumAnalyzer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioEffectSpectrumAnalyzerInstanceMagnitudeMode int64
-type AudioEffectSpectrumAnalyzerInstance discreet.PointerNamed[AudioEffectSpectrumAnalyzerInstance, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectSpectrumAnalyzerInstance) Free() { Object(self).Free() }
+type AudioEffectSpectrumAnalyzerInstance pointers.PointerNamed[AudioEffectSpectrumAnalyzerInstance, [3]uintptr, [1]pointers.Type]
 
+func (self AudioEffectSpectrumAnalyzerInstance) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectSpectrumAnalyzerInstance) AsObject() gd.Object { return gd.Object(self) }
 
-func (self AudioEffectSpectrumAnalyzerInstance) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioEffectStereoEnhance discreet.PointerNamed[AudioEffectStereoEnhance, [3]uintptr, [1]discreet.Type]
-func (self AudioEffectStereoEnhance) Free() { Object(self).Free() }
+func (self AudioEffectSpectrumAnalyzerInstance) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type AudioEffectStereoEnhance pointers.PointerNamed[AudioEffectStereoEnhance, [3]uintptr, [1]pointers.Type]
+
+func (self AudioEffectStereoEnhance) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioEffectStereoEnhance) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioEffectStereoEnhance) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioListener2D discreet.PointerNamed[AudioListener2D, [3]uintptr, [1]discreet.Type]
-func (self AudioListener2D) Free() { Object(self).Free() }
 
+type AudioListener2D pointers.PointerNamed[AudioListener2D, [3]uintptr, [1]pointers.Type]
+
+func (self AudioListener2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioListener2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioListener2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioListener3D discreet.PointerNamed[AudioListener3D, [3]uintptr, [1]discreet.Type]
-func (self AudioListener3D) Free() { Object(self).Free() }
 
+type AudioListener3D pointers.PointerNamed[AudioListener3D, [3]uintptr, [1]pointers.Type]
+
+func (self AudioListener3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioListener3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioListener3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioSample discreet.PointerNamed[AudioSample, [3]uintptr, [1]discreet.Type]
-func (self AudioSample) Free() { Object(self).Free() }
 
+type AudioSample pointers.PointerNamed[AudioSample, [3]uintptr, [1]pointers.Type]
+
+func (self AudioSample) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioSample) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioSample) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioSamplePlayback discreet.PointerNamed[AudioSamplePlayback, [3]uintptr, [1]discreet.Type]
-func (self AudioSamplePlayback) Free() { Object(self).Free() }
 
+type AudioSamplePlayback pointers.PointerNamed[AudioSamplePlayback, [3]uintptr, [1]pointers.Type]
+
+func (self AudioSamplePlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioSamplePlayback) AsObject() gd.Object { return gd.Object(self) }
@@ -687,33 +747,36 @@ func (self AudioSamplePlayback) Virtual(name string) reflect.Value { return refl
 type AudioServerSpeakerMode int64
 
 type AudioServerPlaybackType int64
-type AudioServer discreet.PointerNamed[AudioServer, [3]uintptr, [1]discreet.Type]
-func (self AudioServer) Free() { Object(self).Free() }
+type AudioServer pointers.PointerNamed[AudioServer, [3]uintptr, [1]pointers.Type]
 
+func (self AudioServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStream discreet.PointerNamed[AudioStream, [3]uintptr, [1]discreet.Type]
-func (self AudioStream) Free() { Object(self).Free() }
 
+type AudioStream pointers.PointerNamed[AudioStream, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStream) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStream) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStream) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamGenerator discreet.PointerNamed[AudioStreamGenerator, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamGenerator) Free() { Object(self).Free() }
 
+type AudioStreamGenerator pointers.PointerNamed[AudioStreamGenerator, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamGenerator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamGenerator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamGeneratorPlayback discreet.PointerNamed[AudioStreamGeneratorPlayback, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamGeneratorPlayback) Free() { Object(self).Free() }
 
+type AudioStreamGeneratorPlayback pointers.PointerNamed[AudioStreamGeneratorPlayback, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamGeneratorPlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamGeneratorPlayback) AsObject() gd.Object { return gd.Object(self) }
@@ -727,107 +790,120 @@ type AudioStreamInteractiveTransitionToTime int64
 type AudioStreamInteractiveFadeMode int64
 
 type AudioStreamInteractiveAutoAdvanceMode int64
-type AudioStreamInteractive discreet.PointerNamed[AudioStreamInteractive, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamInteractive) Free() { Object(self).Free() }
+type AudioStreamInteractive pointers.PointerNamed[AudioStreamInteractive, [3]uintptr, [1]pointers.Type]
 
+func (self AudioStreamInteractive) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamInteractive) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamInteractive) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamMP3 discreet.PointerNamed[AudioStreamMP3, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamMP3) Free() { Object(self).Free() }
 
+type AudioStreamMP3 pointers.PointerNamed[AudioStreamMP3, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamMP3) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamMP3) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamMP3) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamMicrophone discreet.PointerNamed[AudioStreamMicrophone, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamMicrophone) Free() { Object(self).Free() }
 
+type AudioStreamMicrophone pointers.PointerNamed[AudioStreamMicrophone, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamMicrophone) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamMicrophone) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamMicrophone) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamOggVorbis discreet.PointerNamed[AudioStreamOggVorbis, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamOggVorbis) Free() { Object(self).Free() }
 
+type AudioStreamOggVorbis pointers.PointerNamed[AudioStreamOggVorbis, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamOggVorbis) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamOggVorbis) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlayback discreet.PointerNamed[AudioStreamPlayback, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlayback) Free() { Object(self).Free() }
 
+type AudioStreamPlayback pointers.PointerNamed[AudioStreamPlayback, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlayback) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackInteractive discreet.PointerNamed[AudioStreamPlaybackInteractive, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackInteractive) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackInteractive pointers.PointerNamed[AudioStreamPlaybackInteractive, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackInteractive) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackInteractive) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaybackInteractive) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackOggVorbis discreet.PointerNamed[AudioStreamPlaybackOggVorbis, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackOggVorbis) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackOggVorbis pointers.PointerNamed[AudioStreamPlaybackOggVorbis, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackOggVorbis) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackOggVorbis) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaybackOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackPlaylist discreet.PointerNamed[AudioStreamPlaybackPlaylist, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackPlaylist) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackPlaylist pointers.PointerNamed[AudioStreamPlaybackPlaylist, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackPlaylist) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackPlaylist) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaybackPlaylist) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackPolyphonic discreet.PointerNamed[AudioStreamPlaybackPolyphonic, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackPolyphonic) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackPolyphonic pointers.PointerNamed[AudioStreamPlaybackPolyphonic, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackPolyphonic) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackPolyphonic) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaybackPolyphonic) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackResampled discreet.PointerNamed[AudioStreamPlaybackResampled, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackResampled) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackResampled pointers.PointerNamed[AudioStreamPlaybackResampled, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackResampled) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackResampled) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaybackResampled) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaybackSynchronized discreet.PointerNamed[AudioStreamPlaybackSynchronized, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaybackSynchronized) Free() { Object(self).Free() }
 
+type AudioStreamPlaybackSynchronized pointers.PointerNamed[AudioStreamPlaybackSynchronized, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaybackSynchronized) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaybackSynchronized) AsObject() gd.Object { return gd.Object(self) }
 
-func (self AudioStreamPlaybackSynchronized) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self AudioStreamPlaybackSynchronized) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type AudioStreamPlayerMixTarget int64
-type AudioStreamPlayer discreet.PointerNamed[AudioStreamPlayer, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlayer) Free() { Object(self).Free() }
+type AudioStreamPlayer pointers.PointerNamed[AudioStreamPlayer, [3]uintptr, [1]pointers.Type]
 
+func (self AudioStreamPlayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlayer2D discreet.PointerNamed[AudioStreamPlayer2D, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlayer2D) Free() { Object(self).Free() }
 
+type AudioStreamPlayer2D pointers.PointerNamed[AudioStreamPlayer2D, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlayer2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlayer2D) AsObject() gd.Object { return gd.Object(self) }
@@ -837,25 +913,27 @@ func (self AudioStreamPlayer2D) Virtual(name string) reflect.Value { return refl
 type AudioStreamPlayer3DAttenuationModel int64
 
 type AudioStreamPlayer3DDopplerTracking int64
-type AudioStreamPlayer3D discreet.PointerNamed[AudioStreamPlayer3D, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlayer3D) Free() { Object(self).Free() }
+type AudioStreamPlayer3D pointers.PointerNamed[AudioStreamPlayer3D, [3]uintptr, [1]pointers.Type]
 
+func (self AudioStreamPlayer3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlayer3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlayer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPlaylist discreet.PointerNamed[AudioStreamPlaylist, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPlaylist) Free() { Object(self).Free() }
 
+type AudioStreamPlaylist pointers.PointerNamed[AudioStreamPlaylist, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPlaylist) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPlaylist) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamPlaylist) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamPolyphonic discreet.PointerNamed[AudioStreamPolyphonic, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamPolyphonic) Free() { Object(self).Free() }
 
+type AudioStreamPolyphonic pointers.PointerNamed[AudioStreamPolyphonic, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamPolyphonic) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamPolyphonic) AsObject() gd.Object { return gd.Object(self) }
@@ -863,17 +941,18 @@ func (self AudioStreamPolyphonic) AsObject() gd.Object { return gd.Object(self) 
 func (self AudioStreamPolyphonic) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type AudioStreamRandomizerPlaybackMode int64
-type AudioStreamRandomizer discreet.PointerNamed[AudioStreamRandomizer, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamRandomizer) Free() { Object(self).Free() }
+type AudioStreamRandomizer pointers.PointerNamed[AudioStreamRandomizer, [3]uintptr, [1]pointers.Type]
 
+func (self AudioStreamRandomizer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamRandomizer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self AudioStreamRandomizer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type AudioStreamSynchronized discreet.PointerNamed[AudioStreamSynchronized, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamSynchronized) Free() { Object(self).Free() }
 
+type AudioStreamSynchronized pointers.PointerNamed[AudioStreamSynchronized, [3]uintptr, [1]pointers.Type]
+
+func (self AudioStreamSynchronized) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamSynchronized) AsObject() gd.Object { return gd.Object(self) }
@@ -883,9 +962,9 @@ func (self AudioStreamSynchronized) Virtual(name string) reflect.Value { return 
 type AudioStreamWAVFormat int64
 
 type AudioStreamWAVLoopMode int64
-type AudioStreamWAV discreet.PointerNamed[AudioStreamWAV, [3]uintptr, [1]discreet.Type]
-func (self AudioStreamWAV) Free() { Object(self).Free() }
+type AudioStreamWAV pointers.PointerNamed[AudioStreamWAV, [3]uintptr, [1]pointers.Type]
 
+func (self AudioStreamWAV) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self AudioStreamWAV) AsObject() gd.Object { return gd.Object(self) }
@@ -893,9 +972,9 @@ func (self AudioStreamWAV) AsObject() gd.Object { return gd.Object(self) }
 func (self AudioStreamWAV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type BackBufferCopyCopyMode int64
-type BackBufferCopy discreet.PointerNamed[BackBufferCopy, [3]uintptr, [1]discreet.Type]
-func (self BackBufferCopy) Free() { Object(self).Free() }
+type BackBufferCopy pointers.PointerNamed[BackBufferCopy, [3]uintptr, [1]pointers.Type]
 
+func (self BackBufferCopy) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BackBufferCopy) AsObject() gd.Object { return gd.Object(self) }
@@ -905,9 +984,9 @@ func (self BackBufferCopy) Virtual(name string) reflect.Value { return reflect.V
 type BaseButtonDrawMode int64
 
 type BaseButtonActionMode int64
-type BaseButton discreet.PointerNamed[BaseButton, [3]uintptr, [1]discreet.Type]
-func (self BaseButton) Free() { Object(self).Free() }
+type BaseButton pointers.PointerNamed[BaseButton, [3]uintptr, [1]pointers.Type]
 
+func (self BaseButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BaseButton) AsObject() gd.Object { return gd.Object(self) }
@@ -947,41 +1026,45 @@ type BaseMaterial3DTextureChannel int64
 type BaseMaterial3DEmissionOperator int64
 
 type BaseMaterial3DDistanceFadeMode int64
-type BaseMaterial3D discreet.PointerNamed[BaseMaterial3D, [3]uintptr, [1]discreet.Type]
-func (self BaseMaterial3D) Free() { Object(self).Free() }
+type BaseMaterial3D pointers.PointerNamed[BaseMaterial3D, [3]uintptr, [1]pointers.Type]
 
+func (self BaseMaterial3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BaseMaterial3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BaseMaterial3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BitMap discreet.PointerNamed[BitMap, [3]uintptr, [1]discreet.Type]
-func (self BitMap) Free() { Object(self).Free() }
 
+type BitMap pointers.PointerNamed[BitMap, [3]uintptr, [1]pointers.Type]
+
+func (self BitMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BitMap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Bone2D discreet.PointerNamed[Bone2D, [3]uintptr, [1]discreet.Type]
-func (self Bone2D) Free() { Object(self).Free() }
 
+type Bone2D pointers.PointerNamed[Bone2D, [3]uintptr, [1]pointers.Type]
+
+func (self Bone2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Bone2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Bone2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BoneAttachment3D discreet.PointerNamed[BoneAttachment3D, [3]uintptr, [1]discreet.Type]
-func (self BoneAttachment3D) Free() { Object(self).Free() }
 
+type BoneAttachment3D pointers.PointerNamed[BoneAttachment3D, [3]uintptr, [1]pointers.Type]
+
+func (self BoneAttachment3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoneAttachment3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BoneAttachment3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BoneMap discreet.PointerNamed[BoneMap, [3]uintptr, [1]discreet.Type]
-func (self BoneMap) Free() { Object(self).Free() }
 
+type BoneMap pointers.PointerNamed[BoneMap, [3]uintptr, [1]pointers.Type]
+
+func (self BoneMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoneMap) AsObject() gd.Object { return gd.Object(self) }
@@ -989,49 +1072,54 @@ func (self BoneMap) AsObject() gd.Object { return gd.Object(self) }
 func (self BoneMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type BoxContainerAlignmentMode int64
-type BoxContainer discreet.PointerNamed[BoxContainer, [3]uintptr, [1]discreet.Type]
-func (self BoxContainer) Free() { Object(self).Free() }
+type BoxContainer pointers.PointerNamed[BoxContainer, [3]uintptr, [1]pointers.Type]
 
+func (self BoxContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoxContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BoxMesh discreet.PointerNamed[BoxMesh, [3]uintptr, [1]discreet.Type]
-func (self BoxMesh) Free() { Object(self).Free() }
 
+type BoxMesh pointers.PointerNamed[BoxMesh, [3]uintptr, [1]pointers.Type]
+
+func (self BoxMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoxMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BoxMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BoxOccluder3D discreet.PointerNamed[BoxOccluder3D, [3]uintptr, [1]discreet.Type]
-func (self BoxOccluder3D) Free() { Object(self).Free() }
 
+type BoxOccluder3D pointers.PointerNamed[BoxOccluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self BoxOccluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoxOccluder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BoxOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type BoxShape3D discreet.PointerNamed[BoxShape3D, [3]uintptr, [1]discreet.Type]
-func (self BoxShape3D) Free() { Object(self).Free() }
 
+type BoxShape3D pointers.PointerNamed[BoxShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self BoxShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self BoxShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self BoxShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Button discreet.PointerNamed[Button, [3]uintptr, [1]discreet.Type]
-func (self Button) Free() { Object(self).Free() }
 
+type Button pointers.PointerNamed[Button, [3]uintptr, [1]pointers.Type]
+
+func (self Button) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Button) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Button) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ButtonGroup discreet.PointerNamed[ButtonGroup, [3]uintptr, [1]discreet.Type]
-func (self ButtonGroup) Free() { Object(self).Free() }
 
+type ButtonGroup pointers.PointerNamed[ButtonGroup, [3]uintptr, [1]pointers.Type]
+
+func (self ButtonGroup) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ButtonGroup) AsObject() gd.Object { return gd.Object(self) }
@@ -1045,9 +1133,9 @@ type CPUParticles2DParameter int64
 type CPUParticles2DParticleFlags int64
 
 type CPUParticles2DEmissionShape int64
-type CPUParticles2D discreet.PointerNamed[CPUParticles2D, [3]uintptr, [1]discreet.Type]
-func (self CPUParticles2D) Free() { Object(self).Free() }
+type CPUParticles2D pointers.PointerNamed[CPUParticles2D, [3]uintptr, [1]pointers.Type]
 
+func (self CPUParticles2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CPUParticles2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1061,41 +1149,45 @@ type CPUParticles3DParameter int64
 type CPUParticles3DParticleFlags int64
 
 type CPUParticles3DEmissionShape int64
-type CPUParticles3D discreet.PointerNamed[CPUParticles3D, [3]uintptr, [1]discreet.Type]
-func (self CPUParticles3D) Free() { Object(self).Free() }
+type CPUParticles3D pointers.PointerNamed[CPUParticles3D, [3]uintptr, [1]pointers.Type]
 
+func (self CPUParticles3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CPUParticles3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CPUParticles3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGBox3D discreet.PointerNamed[CSGBox3D, [3]uintptr, [1]discreet.Type]
-func (self CSGBox3D) Free() { Object(self).Free() }
 
+type CSGBox3D pointers.PointerNamed[CSGBox3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGBox3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGBox3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGBox3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGCombiner3D discreet.PointerNamed[CSGCombiner3D, [3]uintptr, [1]discreet.Type]
-func (self CSGCombiner3D) Free() { Object(self).Free() }
 
+type CSGCombiner3D pointers.PointerNamed[CSGCombiner3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGCombiner3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGCombiner3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGCombiner3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGCylinder3D discreet.PointerNamed[CSGCylinder3D, [3]uintptr, [1]discreet.Type]
-func (self CSGCylinder3D) Free() { Object(self).Free() }
 
+type CSGCylinder3D pointers.PointerNamed[CSGCylinder3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGCylinder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGCylinder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGCylinder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGMesh3D discreet.PointerNamed[CSGMesh3D, [3]uintptr, [1]discreet.Type]
-func (self CSGMesh3D) Free() { Object(self).Free() }
 
+type CSGMesh3D pointers.PointerNamed[CSGMesh3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGMesh3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGMesh3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1107,17 +1199,18 @@ type CSGPolygon3DMode int64
 type CSGPolygon3DPathRotation int64
 
 type CSGPolygon3DPathIntervalType int64
-type CSGPolygon3D discreet.PointerNamed[CSGPolygon3D, [3]uintptr, [1]discreet.Type]
-func (self CSGPolygon3D) Free() { Object(self).Free() }
+type CSGPolygon3D pointers.PointerNamed[CSGPolygon3D, [3]uintptr, [1]pointers.Type]
 
+func (self CSGPolygon3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGPolygon3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGPolygon3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGPrimitive3D discreet.PointerNamed[CSGPrimitive3D, [3]uintptr, [1]discreet.Type]
-func (self CSGPrimitive3D) Free() { Object(self).Free() }
 
+type CSGPrimitive3D pointers.PointerNamed[CSGPrimitive3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGPrimitive3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGPrimitive3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1125,33 +1218,36 @@ func (self CSGPrimitive3D) AsObject() gd.Object { return gd.Object(self) }
 func (self CSGPrimitive3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CSGShape3DOperation int64
-type CSGShape3D discreet.PointerNamed[CSGShape3D, [3]uintptr, [1]discreet.Type]
-func (self CSGShape3D) Free() { Object(self).Free() }
+type CSGShape3D pointers.PointerNamed[CSGShape3D, [3]uintptr, [1]pointers.Type]
 
+func (self CSGShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGSphere3D discreet.PointerNamed[CSGSphere3D, [3]uintptr, [1]discreet.Type]
-func (self CSGSphere3D) Free() { Object(self).Free() }
 
+type CSGSphere3D pointers.PointerNamed[CSGSphere3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGSphere3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGSphere3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CSGTorus3D discreet.PointerNamed[CSGTorus3D, [3]uintptr, [1]discreet.Type]
-func (self CSGTorus3D) Free() { Object(self).Free() }
 
+type CSGTorus3D pointers.PointerNamed[CSGTorus3D, [3]uintptr, [1]pointers.Type]
+
+func (self CSGTorus3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CSGTorus3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CSGTorus3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CallbackTweener discreet.PointerNamed[CallbackTweener, [3]uintptr, [1]discreet.Type]
-func (self CallbackTweener) Free() { Object(self).Free() }
 
+type CallbackTweener pointers.PointerNamed[CallbackTweener, [3]uintptr, [1]pointers.Type]
+
+func (self CallbackTweener) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CallbackTweener) AsObject() gd.Object { return gd.Object(self) }
@@ -1161,9 +1257,9 @@ func (self CallbackTweener) Virtual(name string) reflect.Value { return reflect.
 type Camera2DAnchorMode int64
 
 type Camera2DCamera2DProcessCallback int64
-type Camera2D discreet.PointerNamed[Camera2D, [3]uintptr, [1]discreet.Type]
-func (self Camera2D) Free() { Object(self).Free() }
+type Camera2D pointers.PointerNamed[Camera2D, [3]uintptr, [1]pointers.Type]
 
+func (self Camera2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Camera2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1175,33 +1271,36 @@ type Camera3DProjectionType int64
 type Camera3DKeepAspect int64
 
 type Camera3DDopplerTracking int64
-type Camera3D discreet.PointerNamed[Camera3D, [3]uintptr, [1]discreet.Type]
-func (self Camera3D) Free() { Object(self).Free() }
+type Camera3D pointers.PointerNamed[Camera3D, [3]uintptr, [1]pointers.Type]
 
+func (self Camera3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Camera3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Camera3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CameraAttributes discreet.PointerNamed[CameraAttributes, [3]uintptr, [1]discreet.Type]
-func (self CameraAttributes) Free() { Object(self).Free() }
 
+type CameraAttributes pointers.PointerNamed[CameraAttributes, [3]uintptr, [1]pointers.Type]
+
+func (self CameraAttributes) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraAttributes) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CameraAttributes) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CameraAttributesPhysical discreet.PointerNamed[CameraAttributesPhysical, [3]uintptr, [1]discreet.Type]
-func (self CameraAttributesPhysical) Free() { Object(self).Free() }
 
+type CameraAttributesPhysical pointers.PointerNamed[CameraAttributesPhysical, [3]uintptr, [1]pointers.Type]
+
+func (self CameraAttributesPhysical) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraAttributesPhysical) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CameraAttributesPhysical) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CameraAttributesPractical discreet.PointerNamed[CameraAttributesPractical, [3]uintptr, [1]discreet.Type]
-func (self CameraAttributesPractical) Free() { Object(self).Free() }
 
+type CameraAttributesPractical pointers.PointerNamed[CameraAttributesPractical, [3]uintptr, [1]pointers.Type]
+
+func (self CameraAttributesPractical) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraAttributesPractical) AsObject() gd.Object { return gd.Object(self) }
@@ -1211,9 +1310,9 @@ func (self CameraAttributesPractical) Virtual(name string) reflect.Value { retur
 type CameraFeedFeedDataType int64
 
 type CameraFeedFeedPosition int64
-type CameraFeed discreet.PointerNamed[CameraFeed, [3]uintptr, [1]discreet.Type]
-func (self CameraFeed) Free() { Object(self).Free() }
+type CameraFeed pointers.PointerNamed[CameraFeed, [3]uintptr, [1]pointers.Type]
 
+func (self CameraFeed) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraFeed) AsObject() gd.Object { return gd.Object(self) }
@@ -1221,25 +1320,27 @@ func (self CameraFeed) AsObject() gd.Object { return gd.Object(self) }
 func (self CameraFeed) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CameraServerFeedImage int64
-type CameraServer discreet.PointerNamed[CameraServer, [3]uintptr, [1]discreet.Type]
-func (self CameraServer) Free() { Object(self).Free() }
+type CameraServer pointers.PointerNamed[CameraServer, [3]uintptr, [1]pointers.Type]
 
+func (self CameraServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CameraServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CameraTexture discreet.PointerNamed[CameraTexture, [3]uintptr, [1]discreet.Type]
-func (self CameraTexture) Free() { Object(self).Free() }
 
+type CameraTexture pointers.PointerNamed[CameraTexture, [3]uintptr, [1]pointers.Type]
+
+func (self CameraTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CameraTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CameraTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CanvasGroup discreet.PointerNamed[CanvasGroup, [3]uintptr, [1]discreet.Type]
-func (self CanvasGroup) Free() { Object(self).Free() }
 
+type CanvasGroup pointers.PointerNamed[CanvasGroup, [3]uintptr, [1]pointers.Type]
+
+func (self CanvasGroup) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasGroup) AsObject() gd.Object { return gd.Object(self) }
@@ -1251,9 +1352,9 @@ type CanvasItemTextureFilter int64
 type CanvasItemTextureRepeat int64
 
 type CanvasItemClipChildrenMode int64
-type CanvasItem discreet.PointerNamed[CanvasItem, [3]uintptr, [1]discreet.Type]
-func (self CanvasItem) Free() { Object(self).Free() }
+type CanvasItem pointers.PointerNamed[CanvasItem, [3]uintptr, [1]pointers.Type]
 
+func (self CanvasItem) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasItem) AsObject() gd.Object { return gd.Object(self) }
@@ -1263,73 +1364,81 @@ func (self CanvasItem) Virtual(name string) reflect.Value { return reflect.Value
 type CanvasItemMaterialBlendMode int64
 
 type CanvasItemMaterialLightMode int64
-type CanvasItemMaterial discreet.PointerNamed[CanvasItemMaterial, [3]uintptr, [1]discreet.Type]
-func (self CanvasItemMaterial) Free() { Object(self).Free() }
+type CanvasItemMaterial pointers.PointerNamed[CanvasItemMaterial, [3]uintptr, [1]pointers.Type]
 
+func (self CanvasItemMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasItemMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CanvasItemMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CanvasLayer discreet.PointerNamed[CanvasLayer, [3]uintptr, [1]discreet.Type]
-func (self CanvasLayer) Free() { Object(self).Free() }
 
+type CanvasLayer pointers.PointerNamed[CanvasLayer, [3]uintptr, [1]pointers.Type]
+
+func (self CanvasLayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasLayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CanvasLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CanvasModulate discreet.PointerNamed[CanvasModulate, [3]uintptr, [1]discreet.Type]
-func (self CanvasModulate) Free() { Object(self).Free() }
 
+type CanvasModulate pointers.PointerNamed[CanvasModulate, [3]uintptr, [1]pointers.Type]
+
+func (self CanvasModulate) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasModulate) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CanvasModulate) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CanvasTexture discreet.PointerNamed[CanvasTexture, [3]uintptr, [1]discreet.Type]
-func (self CanvasTexture) Free() { Object(self).Free() }
 
+type CanvasTexture pointers.PointerNamed[CanvasTexture, [3]uintptr, [1]pointers.Type]
+
+func (self CanvasTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CanvasTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CanvasTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CapsuleMesh discreet.PointerNamed[CapsuleMesh, [3]uintptr, [1]discreet.Type]
-func (self CapsuleMesh) Free() { Object(self).Free() }
 
+type CapsuleMesh pointers.PointerNamed[CapsuleMesh, [3]uintptr, [1]pointers.Type]
+
+func (self CapsuleMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CapsuleMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CapsuleMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CapsuleShape2D discreet.PointerNamed[CapsuleShape2D, [3]uintptr, [1]discreet.Type]
-func (self CapsuleShape2D) Free() { Object(self).Free() }
 
+type CapsuleShape2D pointers.PointerNamed[CapsuleShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self CapsuleShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CapsuleShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CapsuleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CapsuleShape3D discreet.PointerNamed[CapsuleShape3D, [3]uintptr, [1]discreet.Type]
-func (self CapsuleShape3D) Free() { Object(self).Free() }
 
+type CapsuleShape3D pointers.PointerNamed[CapsuleShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self CapsuleShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CapsuleShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CapsuleShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CenterContainer discreet.PointerNamed[CenterContainer, [3]uintptr, [1]discreet.Type]
-func (self CenterContainer) Free() { Object(self).Free() }
 
+type CenterContainer pointers.PointerNamed[CenterContainer, [3]uintptr, [1]pointers.Type]
+
+func (self CenterContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CenterContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CenterContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CharFXTransform discreet.PointerNamed[CharFXTransform, [3]uintptr, [1]discreet.Type]
-func (self CharFXTransform) Free() { Object(self).Free() }
 
+type CharFXTransform pointers.PointerNamed[CharFXTransform, [3]uintptr, [1]pointers.Type]
+
+func (self CharFXTransform) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CharFXTransform) AsObject() gd.Object { return gd.Object(self) }
@@ -1339,9 +1448,9 @@ func (self CharFXTransform) Virtual(name string) reflect.Value { return reflect.
 type CharacterBody2DMotionMode int64
 
 type CharacterBody2DPlatformOnLeave int64
-type CharacterBody2D discreet.PointerNamed[CharacterBody2D, [3]uintptr, [1]discreet.Type]
-func (self CharacterBody2D) Free() { Object(self).Free() }
+type CharacterBody2D pointers.PointerNamed[CharacterBody2D, [3]uintptr, [1]pointers.Type]
 
+func (self CharacterBody2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CharacterBody2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1351,41 +1460,45 @@ func (self CharacterBody2D) Virtual(name string) reflect.Value { return reflect.
 type CharacterBody3DMotionMode int64
 
 type CharacterBody3DPlatformOnLeave int64
-type CharacterBody3D discreet.PointerNamed[CharacterBody3D, [3]uintptr, [1]discreet.Type]
-func (self CharacterBody3D) Free() { Object(self).Free() }
+type CharacterBody3D pointers.PointerNamed[CharacterBody3D, [3]uintptr, [1]pointers.Type]
 
+func (self CharacterBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CharacterBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CharacterBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CheckBox discreet.PointerNamed[CheckBox, [3]uintptr, [1]discreet.Type]
-func (self CheckBox) Free() { Object(self).Free() }
 
+type CheckBox pointers.PointerNamed[CheckBox, [3]uintptr, [1]pointers.Type]
+
+func (self CheckBox) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CheckBox) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CheckBox) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CheckButton discreet.PointerNamed[CheckButton, [3]uintptr, [1]discreet.Type]
-func (self CheckButton) Free() { Object(self).Free() }
 
+type CheckButton pointers.PointerNamed[CheckButton, [3]uintptr, [1]pointers.Type]
+
+func (self CheckButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CheckButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CheckButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CircleShape2D discreet.PointerNamed[CircleShape2D, [3]uintptr, [1]discreet.Type]
-func (self CircleShape2D) Free() { Object(self).Free() }
 
+type CircleShape2D pointers.PointerNamed[CircleShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self CircleShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CircleShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CircleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ClassDB discreet.PointerNamed[ClassDB, [3]uintptr, [1]discreet.Type]
-func (self ClassDB) Free() { Object(self).Free() }
 
+type ClassDB pointers.PointerNamed[ClassDB, [3]uintptr, [1]pointers.Type]
+
+func (self ClassDB) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ClassDB) AsObject() gd.Object { return gd.Object(self) }
@@ -1395,17 +1508,18 @@ func (self ClassDB) Virtual(name string) reflect.Value { return reflect.Value{} 
 type CodeEditCodeCompletionKind int64
 
 type CodeEditCodeCompletionLocation int64
-type CodeEdit discreet.PointerNamed[CodeEdit, [3]uintptr, [1]discreet.Type]
-func (self CodeEdit) Free() { Object(self).Free() }
+type CodeEdit pointers.PointerNamed[CodeEdit, [3]uintptr, [1]pointers.Type]
 
+func (self CodeEdit) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CodeEdit) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CodeEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CodeHighlighter discreet.PointerNamed[CodeHighlighter, [3]uintptr, [1]discreet.Type]
-func (self CodeHighlighter) Free() { Object(self).Free() }
 
+type CodeHighlighter pointers.PointerNamed[CodeHighlighter, [3]uintptr, [1]pointers.Type]
+
+func (self CodeHighlighter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CodeHighlighter) AsObject() gd.Object { return gd.Object(self) }
@@ -1413,9 +1527,9 @@ func (self CodeHighlighter) AsObject() gd.Object { return gd.Object(self) }
 func (self CodeHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CollisionObject2DDisableMode int64
-type CollisionObject2D discreet.PointerNamed[CollisionObject2D, [3]uintptr, [1]discreet.Type]
-func (self CollisionObject2D) Free() { Object(self).Free() }
+type CollisionObject2D pointers.PointerNamed[CollisionObject2D, [3]uintptr, [1]pointers.Type]
 
+func (self CollisionObject2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionObject2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1423,9 +1537,9 @@ func (self CollisionObject2D) AsObject() gd.Object { return gd.Object(self) }
 func (self CollisionObject2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CollisionObject3DDisableMode int64
-type CollisionObject3D discreet.PointerNamed[CollisionObject3D, [3]uintptr, [1]discreet.Type]
-func (self CollisionObject3D) Free() { Object(self).Free() }
+type CollisionObject3D pointers.PointerNamed[CollisionObject3D, [3]uintptr, [1]pointers.Type]
 
+func (self CollisionObject3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionObject3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1433,33 +1547,36 @@ func (self CollisionObject3D) AsObject() gd.Object { return gd.Object(self) }
 func (self CollisionObject3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CollisionPolygon2DBuildMode int64
-type CollisionPolygon2D discreet.PointerNamed[CollisionPolygon2D, [3]uintptr, [1]discreet.Type]
-func (self CollisionPolygon2D) Free() { Object(self).Free() }
+type CollisionPolygon2D pointers.PointerNamed[CollisionPolygon2D, [3]uintptr, [1]pointers.Type]
 
+func (self CollisionPolygon2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionPolygon2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CollisionPolygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CollisionPolygon3D discreet.PointerNamed[CollisionPolygon3D, [3]uintptr, [1]discreet.Type]
-func (self CollisionPolygon3D) Free() { Object(self).Free() }
 
+type CollisionPolygon3D pointers.PointerNamed[CollisionPolygon3D, [3]uintptr, [1]pointers.Type]
+
+func (self CollisionPolygon3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionPolygon3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CollisionPolygon3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CollisionShape2D discreet.PointerNamed[CollisionShape2D, [3]uintptr, [1]discreet.Type]
-func (self CollisionShape2D) Free() { Object(self).Free() }
 
+type CollisionShape2D pointers.PointerNamed[CollisionShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self CollisionShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CollisionShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CollisionShape3D discreet.PointerNamed[CollisionShape3D, [3]uintptr, [1]discreet.Type]
-func (self CollisionShape3D) Free() { Object(self).Free() }
 
+type CollisionShape3D pointers.PointerNamed[CollisionShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self CollisionShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CollisionShape3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1469,33 +1586,36 @@ func (self CollisionShape3D) Virtual(name string) reflect.Value { return reflect
 type ColorPickerColorModeType int64
 
 type ColorPickerPickerShapeType int64
-type ColorPicker discreet.PointerNamed[ColorPicker, [3]uintptr, [1]discreet.Type]
-func (self ColorPicker) Free() { Object(self).Free() }
+type ColorPicker pointers.PointerNamed[ColorPicker, [3]uintptr, [1]pointers.Type]
 
+func (self ColorPicker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ColorPicker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ColorPicker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ColorPickerButton discreet.PointerNamed[ColorPickerButton, [3]uintptr, [1]discreet.Type]
-func (self ColorPickerButton) Free() { Object(self).Free() }
 
+type ColorPickerButton pointers.PointerNamed[ColorPickerButton, [3]uintptr, [1]pointers.Type]
+
+func (self ColorPickerButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ColorPickerButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ColorPickerButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ColorRect discreet.PointerNamed[ColorRect, [3]uintptr, [1]discreet.Type]
-func (self ColorRect) Free() { Object(self).Free() }
 
+type ColorRect pointers.PointerNamed[ColorRect, [3]uintptr, [1]pointers.Type]
+
+func (self ColorRect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ColorRect) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ColorRect) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Compositor discreet.PointerNamed[Compositor, [3]uintptr, [1]discreet.Type]
-func (self Compositor) Free() { Object(self).Free() }
 
+type Compositor pointers.PointerNamed[Compositor, [3]uintptr, [1]pointers.Type]
+
+func (self Compositor) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Compositor) AsObject() gd.Object { return gd.Object(self) }
@@ -1503,73 +1623,81 @@ func (self Compositor) AsObject() gd.Object { return gd.Object(self) }
 func (self Compositor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CompositorEffectEffectCallbackType int64
-type CompositorEffect discreet.PointerNamed[CompositorEffect, [3]uintptr, [1]discreet.Type]
-func (self CompositorEffect) Free() { Object(self).Free() }
+type CompositorEffect pointers.PointerNamed[CompositorEffect, [3]uintptr, [1]pointers.Type]
 
+func (self CompositorEffect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompositorEffect) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompositorEffect) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedCubemap discreet.PointerNamed[CompressedCubemap, [3]uintptr, [1]discreet.Type]
-func (self CompressedCubemap) Free() { Object(self).Free() }
 
+type CompressedCubemap pointers.PointerNamed[CompressedCubemap, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedCubemap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedCubemap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedCubemapArray discreet.PointerNamed[CompressedCubemapArray, [3]uintptr, [1]discreet.Type]
-func (self CompressedCubemapArray) Free() { Object(self).Free() }
 
+type CompressedCubemapArray pointers.PointerNamed[CompressedCubemapArray, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedCubemapArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedCubemapArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedCubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedTexture2D discreet.PointerNamed[CompressedTexture2D, [3]uintptr, [1]discreet.Type]
-func (self CompressedTexture2D) Free() { Object(self).Free() }
 
+type CompressedTexture2D pointers.PointerNamed[CompressedTexture2D, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedTexture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedTexture2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedTexture2DArray discreet.PointerNamed[CompressedTexture2DArray, [3]uintptr, [1]discreet.Type]
-func (self CompressedTexture2DArray) Free() { Object(self).Free() }
 
+type CompressedTexture2DArray pointers.PointerNamed[CompressedTexture2DArray, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedTexture2DArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedTexture2DArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedTexture3D discreet.PointerNamed[CompressedTexture3D, [3]uintptr, [1]discreet.Type]
-func (self CompressedTexture3D) Free() { Object(self).Free() }
 
+type CompressedTexture3D pointers.PointerNamed[CompressedTexture3D, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedTexture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedTexture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CompressedTextureLayered discreet.PointerNamed[CompressedTextureLayered, [3]uintptr, [1]discreet.Type]
-func (self CompressedTextureLayered) Free() { Object(self).Free() }
 
+type CompressedTextureLayered pointers.PointerNamed[CompressedTextureLayered, [3]uintptr, [1]pointers.Type]
+
+func (self CompressedTextureLayered) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CompressedTextureLayered) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CompressedTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConcavePolygonShape2D discreet.PointerNamed[ConcavePolygonShape2D, [3]uintptr, [1]discreet.Type]
-func (self ConcavePolygonShape2D) Free() { Object(self).Free() }
 
+type ConcavePolygonShape2D pointers.PointerNamed[ConcavePolygonShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self ConcavePolygonShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConcavePolygonShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConcavePolygonShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConcavePolygonShape3D discreet.PointerNamed[ConcavePolygonShape3D, [3]uintptr, [1]discreet.Type]
-func (self ConcavePolygonShape3D) Free() { Object(self).Free() }
 
+type ConcavePolygonShape3D pointers.PointerNamed[ConcavePolygonShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self ConcavePolygonShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConcavePolygonShape3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1577,33 +1705,36 @@ func (self ConcavePolygonShape3D) AsObject() gd.Object { return gd.Object(self) 
 func (self ConcavePolygonShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ConeTwistJoint3DParam int64
-type ConeTwistJoint3D discreet.PointerNamed[ConeTwistJoint3D, [3]uintptr, [1]discreet.Type]
-func (self ConeTwistJoint3D) Free() { Object(self).Free() }
+type ConeTwistJoint3D pointers.PointerNamed[ConeTwistJoint3D, [3]uintptr, [1]pointers.Type]
 
+func (self ConeTwistJoint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConeTwistJoint3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConeTwistJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConfigFile discreet.PointerNamed[ConfigFile, [3]uintptr, [1]discreet.Type]
-func (self ConfigFile) Free() { Object(self).Free() }
 
+type ConfigFile pointers.PointerNamed[ConfigFile, [3]uintptr, [1]pointers.Type]
+
+func (self ConfigFile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConfigFile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConfigFile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConfirmationDialog discreet.PointerNamed[ConfirmationDialog, [3]uintptr, [1]discreet.Type]
-func (self ConfirmationDialog) Free() { Object(self).Free() }
 
+type ConfirmationDialog pointers.PointerNamed[ConfirmationDialog, [3]uintptr, [1]pointers.Type]
+
+func (self ConfirmationDialog) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConfirmationDialog) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConfirmationDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Container discreet.PointerNamed[Container, [3]uintptr, [1]discreet.Type]
-func (self Container) Free() { Object(self).Free() }
 
+type Container pointers.PointerNamed[Container, [3]uintptr, [1]pointers.Type]
+
+func (self Container) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Container) AsObject() gd.Object { return gd.Object(self) }
@@ -1629,57 +1760,63 @@ type ControlAnchor int64
 type ControlLayoutDirection int64
 
 type ControlTextDirection int64
-type Control discreet.PointerNamed[Control, [3]uintptr, [1]discreet.Type]
-func (self Control) Free() { Object(self).Free() }
+type Control pointers.PointerNamed[Control, [3]uintptr, [1]pointers.Type]
 
+func (self Control) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Control) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Control) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConvexPolygonShape2D discreet.PointerNamed[ConvexPolygonShape2D, [3]uintptr, [1]discreet.Type]
-func (self ConvexPolygonShape2D) Free() { Object(self).Free() }
 
+type ConvexPolygonShape2D pointers.PointerNamed[ConvexPolygonShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self ConvexPolygonShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConvexPolygonShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConvexPolygonShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ConvexPolygonShape3D discreet.PointerNamed[ConvexPolygonShape3D, [3]uintptr, [1]discreet.Type]
-func (self ConvexPolygonShape3D) Free() { Object(self).Free() }
 
+type ConvexPolygonShape3D pointers.PointerNamed[ConvexPolygonShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self ConvexPolygonShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ConvexPolygonShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ConvexPolygonShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Crypto discreet.PointerNamed[Crypto, [3]uintptr, [1]discreet.Type]
-func (self Crypto) Free() { Object(self).Free() }
 
+type Crypto pointers.PointerNamed[Crypto, [3]uintptr, [1]pointers.Type]
+
+func (self Crypto) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Crypto) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Crypto) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CryptoKey discreet.PointerNamed[CryptoKey, [3]uintptr, [1]discreet.Type]
-func (self CryptoKey) Free() { Object(self).Free() }
 
+type CryptoKey pointers.PointerNamed[CryptoKey, [3]uintptr, [1]pointers.Type]
+
+func (self CryptoKey) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CryptoKey) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CryptoKey) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Cubemap discreet.PointerNamed[Cubemap, [3]uintptr, [1]discreet.Type]
-func (self Cubemap) Free() { Object(self).Free() }
 
+type Cubemap pointers.PointerNamed[Cubemap, [3]uintptr, [1]pointers.Type]
+
+func (self Cubemap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Cubemap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Cubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CubemapArray discreet.PointerNamed[CubemapArray, [3]uintptr, [1]discreet.Type]
-func (self CubemapArray) Free() { Object(self).Free() }
 
+type CubemapArray pointers.PointerNamed[CubemapArray, [3]uintptr, [1]pointers.Type]
+
+func (self CubemapArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CubemapArray) AsObject() gd.Object { return gd.Object(self) }
@@ -1687,25 +1824,27 @@ func (self CubemapArray) AsObject() gd.Object { return gd.Object(self) }
 func (self CubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CurveTangentMode int64
-type Curve discreet.PointerNamed[Curve, [3]uintptr, [1]discreet.Type]
-func (self Curve) Free() { Object(self).Free() }
+type Curve pointers.PointerNamed[Curve, [3]uintptr, [1]pointers.Type]
 
+func (self Curve) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Curve) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Curve) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Curve2D discreet.PointerNamed[Curve2D, [3]uintptr, [1]discreet.Type]
-func (self Curve2D) Free() { Object(self).Free() }
 
+type Curve2D pointers.PointerNamed[Curve2D, [3]uintptr, [1]pointers.Type]
+
+func (self Curve2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Curve2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Curve2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Curve3D discreet.PointerNamed[Curve3D, [3]uintptr, [1]discreet.Type]
-func (self Curve3D) Free() { Object(self).Free() }
 
+type Curve3D pointers.PointerNamed[Curve3D, [3]uintptr, [1]pointers.Type]
+
+func (self Curve3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Curve3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1713,49 +1852,54 @@ func (self Curve3D) AsObject() gd.Object { return gd.Object(self) }
 func (self Curve3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CurveTextureTextureMode int64
-type CurveTexture discreet.PointerNamed[CurveTexture, [3]uintptr, [1]discreet.Type]
-func (self CurveTexture) Free() { Object(self).Free() }
+type CurveTexture pointers.PointerNamed[CurveTexture, [3]uintptr, [1]pointers.Type]
 
+func (self CurveTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CurveTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CurveTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CurveXYZTexture discreet.PointerNamed[CurveXYZTexture, [3]uintptr, [1]discreet.Type]
-func (self CurveXYZTexture) Free() { Object(self).Free() }
 
+type CurveXYZTexture pointers.PointerNamed[CurveXYZTexture, [3]uintptr, [1]pointers.Type]
+
+func (self CurveXYZTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CurveXYZTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CurveXYZTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CylinderMesh discreet.PointerNamed[CylinderMesh, [3]uintptr, [1]discreet.Type]
-func (self CylinderMesh) Free() { Object(self).Free() }
 
+type CylinderMesh pointers.PointerNamed[CylinderMesh, [3]uintptr, [1]pointers.Type]
+
+func (self CylinderMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CylinderMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CylinderMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type CylinderShape3D discreet.PointerNamed[CylinderShape3D, [3]uintptr, [1]discreet.Type]
-func (self CylinderShape3D) Free() { Object(self).Free() }
 
+type CylinderShape3D pointers.PointerNamed[CylinderShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self CylinderShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self CylinderShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self CylinderShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type DTLSServer discreet.PointerNamed[DTLSServer, [3]uintptr, [1]discreet.Type]
-func (self DTLSServer) Free() { Object(self).Free() }
 
+type DTLSServer pointers.PointerNamed[DTLSServer, [3]uintptr, [1]pointers.Type]
+
+func (self DTLSServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DTLSServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self DTLSServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type DampedSpringJoint2D discreet.PointerNamed[DampedSpringJoint2D, [3]uintptr, [1]discreet.Type]
-func (self DampedSpringJoint2D) Free() { Object(self).Free() }
 
+type DampedSpringJoint2D pointers.PointerNamed[DampedSpringJoint2D, [3]uintptr, [1]pointers.Type]
+
+func (self DampedSpringJoint2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DampedSpringJoint2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1763,25 +1907,27 @@ func (self DampedSpringJoint2D) AsObject() gd.Object { return gd.Object(self) }
 func (self DampedSpringJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type DecalDecalTexture int64
-type Decal discreet.PointerNamed[Decal, [3]uintptr, [1]discreet.Type]
-func (self Decal) Free() { Object(self).Free() }
+type Decal pointers.PointerNamed[Decal, [3]uintptr, [1]pointers.Type]
 
+func (self Decal) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Decal) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Decal) Virtual(name string) reflect.Value { return reflect.Value{} }
-type DirAccess discreet.PointerNamed[DirAccess, [3]uintptr, [1]discreet.Type]
-func (self DirAccess) Free() { Object(self).Free() }
 
+type DirAccess pointers.PointerNamed[DirAccess, [3]uintptr, [1]pointers.Type]
+
+func (self DirAccess) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DirAccess) AsObject() gd.Object { return gd.Object(self) }
 
 func (self DirAccess) Virtual(name string) reflect.Value { return reflect.Value{} }
-type DirectionalLight2D discreet.PointerNamed[DirectionalLight2D, [3]uintptr, [1]discreet.Type]
-func (self DirectionalLight2D) Free() { Object(self).Free() }
 
+type DirectionalLight2D pointers.PointerNamed[DirectionalLight2D, [3]uintptr, [1]pointers.Type]
+
+func (self DirectionalLight2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DirectionalLight2D) AsObject() gd.Object { return gd.Object(self) }
@@ -1791,9 +1937,9 @@ func (self DirectionalLight2D) Virtual(name string) reflect.Value { return refle
 type DirectionalLight3DShadowMode int64
 
 type DirectionalLight3DSkyMode int64
-type DirectionalLight3D discreet.PointerNamed[DirectionalLight3D, [3]uintptr, [1]discreet.Type]
-func (self DirectionalLight3D) Free() { Object(self).Free() }
+type DirectionalLight3D pointers.PointerNamed[DirectionalLight3D, [3]uintptr, [1]pointers.Type]
 
+func (self DirectionalLight3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DirectionalLight3D) AsObject() gd.Object { return gd.Object(self) }
@@ -1823,9 +1969,9 @@ type DisplayServerVSyncMode int64
 type DisplayServerHandleType int64
 
 type DisplayServerTTSUtteranceEvent int64
-type DisplayServer discreet.PointerNamed[DisplayServer, [3]uintptr, [1]discreet.Type]
-func (self DisplayServer) Free() { Object(self).Free() }
+type DisplayServer pointers.PointerNamed[DisplayServer, [3]uintptr, [1]pointers.Type]
 
+func (self DisplayServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self DisplayServer) AsObject() gd.Object { return gd.Object(self) }
@@ -1837,17 +1983,18 @@ type ENetConnectionCompressionMode int64
 type ENetConnectionEventType int64
 
 type ENetConnectionHostStatistic int64
-type ENetConnection discreet.PointerNamed[ENetConnection, [3]uintptr, [1]discreet.Type]
-func (self ENetConnection) Free() { Object(self).Free() }
+type ENetConnection pointers.PointerNamed[ENetConnection, [3]uintptr, [1]pointers.Type]
 
+func (self ENetConnection) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ENetConnection) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ENetConnection) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ENetMultiplayerPeer discreet.PointerNamed[ENetMultiplayerPeer, [3]uintptr, [1]discreet.Type]
-func (self ENetMultiplayerPeer) Free() { Object(self).Free() }
 
+type ENetMultiplayerPeer pointers.PointerNamed[ENetMultiplayerPeer, [3]uintptr, [1]pointers.Type]
+
+func (self ENetMultiplayerPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ENetMultiplayerPeer) AsObject() gd.Object { return gd.Object(self) }
@@ -1857,105 +2004,117 @@ func (self ENetMultiplayerPeer) Virtual(name string) reflect.Value { return refl
 type ENetPacketPeerPeerState int64
 
 type ENetPacketPeerPeerStatistic int64
-type ENetPacketPeer discreet.PointerNamed[ENetPacketPeer, [3]uintptr, [1]discreet.Type]
-func (self ENetPacketPeer) Free() { Object(self).Free() }
+type ENetPacketPeer pointers.PointerNamed[ENetPacketPeer, [3]uintptr, [1]pointers.Type]
 
+func (self ENetPacketPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ENetPacketPeer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ENetPacketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorCommandPalette discreet.PointerNamed[EditorCommandPalette, [3]uintptr, [1]discreet.Type]
-func (self EditorCommandPalette) Free() { Object(self).Free() }
 
+type EditorCommandPalette pointers.PointerNamed[EditorCommandPalette, [3]uintptr, [1]pointers.Type]
+
+func (self EditorCommandPalette) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorCommandPalette) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorCommandPalette) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorDebuggerPlugin discreet.PointerNamed[EditorDebuggerPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorDebuggerPlugin) Free() { Object(self).Free() }
 
+type EditorDebuggerPlugin pointers.PointerNamed[EditorDebuggerPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorDebuggerPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorDebuggerPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorDebuggerPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorDebuggerSession discreet.PointerNamed[EditorDebuggerSession, [3]uintptr, [1]discreet.Type]
-func (self EditorDebuggerSession) Free() { Object(self).Free() }
 
+type EditorDebuggerSession pointers.PointerNamed[EditorDebuggerSession, [3]uintptr, [1]pointers.Type]
+
+func (self EditorDebuggerSession) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorDebuggerSession) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorDebuggerSession) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatform discreet.PointerNamed[EditorExportPlatform, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatform) Free() { Object(self).Free() }
 
+type EditorExportPlatform pointers.PointerNamed[EditorExportPlatform, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatform) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatform) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatform) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformAndroid discreet.PointerNamed[EditorExportPlatformAndroid, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformAndroid) Free() { Object(self).Free() }
 
+type EditorExportPlatformAndroid pointers.PointerNamed[EditorExportPlatformAndroid, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformAndroid) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformAndroid) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformAndroid) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformIOS discreet.PointerNamed[EditorExportPlatformIOS, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformIOS) Free() { Object(self).Free() }
 
+type EditorExportPlatformIOS pointers.PointerNamed[EditorExportPlatformIOS, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformIOS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformIOS) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformIOS) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformLinuxBSD discreet.PointerNamed[EditorExportPlatformLinuxBSD, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformLinuxBSD) Free() { Object(self).Free() }
 
+type EditorExportPlatformLinuxBSD pointers.PointerNamed[EditorExportPlatformLinuxBSD, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformLinuxBSD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformLinuxBSD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformLinuxBSD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformMacOS discreet.PointerNamed[EditorExportPlatformMacOS, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformMacOS) Free() { Object(self).Free() }
 
+type EditorExportPlatformMacOS pointers.PointerNamed[EditorExportPlatformMacOS, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformMacOS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformMacOS) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformMacOS) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformPC discreet.PointerNamed[EditorExportPlatformPC, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformPC) Free() { Object(self).Free() }
 
+type EditorExportPlatformPC pointers.PointerNamed[EditorExportPlatformPC, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformPC) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformPC) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformPC) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformWeb discreet.PointerNamed[EditorExportPlatformWeb, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformWeb) Free() { Object(self).Free() }
 
+type EditorExportPlatformWeb pointers.PointerNamed[EditorExportPlatformWeb, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformWeb) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformWeb) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformWeb) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlatformWindows discreet.PointerNamed[EditorExportPlatformWindows, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlatformWindows) Free() { Object(self).Free() }
 
+type EditorExportPlatformWindows pointers.PointerNamed[EditorExportPlatformWindows, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlatformWindows) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlatformWindows) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorExportPlatformWindows) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorExportPlugin discreet.PointerNamed[EditorExportPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorExportPlugin) Free() { Object(self).Free() }
 
+type EditorExportPlugin pointers.PointerNamed[EditorExportPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorExportPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorExportPlugin) AsObject() gd.Object { return gd.Object(self) }
@@ -1963,9 +2122,9 @@ func (self EditorExportPlugin) AsObject() gd.Object { return gd.Object(self) }
 func (self EditorExportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EditorFeatureProfileFeature int64
-type EditorFeatureProfile discreet.PointerNamed[EditorFeatureProfile, [3]uintptr, [1]discreet.Type]
-func (self EditorFeatureProfile) Free() { Object(self).Free() }
+type EditorFeatureProfile pointers.PointerNamed[EditorFeatureProfile, [3]uintptr, [1]pointers.Type]
 
+func (self EditorFeatureProfile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorFeatureProfile) AsObject() gd.Object { return gd.Object(self) }
@@ -1977,89 +2136,101 @@ type EditorFileDialogFileMode int64
 type EditorFileDialogAccess int64
 
 type EditorFileDialogDisplayMode int64
-type EditorFileDialog discreet.PointerNamed[EditorFileDialog, [3]uintptr, [1]discreet.Type]
-func (self EditorFileDialog) Free() { Object(self).Free() }
+type EditorFileDialog pointers.PointerNamed[EditorFileDialog, [3]uintptr, [1]pointers.Type]
 
+func (self EditorFileDialog) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorFileDialog) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorFileDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorFileSystem discreet.PointerNamed[EditorFileSystem, [3]uintptr, [1]discreet.Type]
-func (self EditorFileSystem) Free() { Object(self).Free() }
 
+type EditorFileSystem pointers.PointerNamed[EditorFileSystem, [3]uintptr, [1]pointers.Type]
+
+func (self EditorFileSystem) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorFileSystem) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorFileSystem) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorFileSystemDirectory discreet.PointerNamed[EditorFileSystemDirectory, [3]uintptr, [1]discreet.Type]
-func (self EditorFileSystemDirectory) Free() { Object(self).Free() }
 
+type EditorFileSystemDirectory pointers.PointerNamed[EditorFileSystemDirectory, [3]uintptr, [1]pointers.Type]
+
+func (self EditorFileSystemDirectory) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorFileSystemDirectory) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorFileSystemDirectory) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorFileSystemImportFormatSupportQuery discreet.PointerNamed[EditorFileSystemImportFormatSupportQuery, [3]uintptr, [1]discreet.Type]
-func (self EditorFileSystemImportFormatSupportQuery) Free() { Object(self).Free() }
 
+type EditorFileSystemImportFormatSupportQuery pointers.PointerNamed[EditorFileSystemImportFormatSupportQuery, [3]uintptr, [1]pointers.Type]
+
+func (self EditorFileSystemImportFormatSupportQuery) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorFileSystemImportFormatSupportQuery) AsObject() gd.Object { return gd.Object(self) }
 
-func (self EditorFileSystemImportFormatSupportQuery) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorImportPlugin discreet.PointerNamed[EditorImportPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorImportPlugin) Free() { Object(self).Free() }
+func (self EditorFileSystemImportFormatSupportQuery) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type EditorImportPlugin pointers.PointerNamed[EditorImportPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorImportPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorImportPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorImportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorInspector discreet.PointerNamed[EditorInspector, [3]uintptr, [1]discreet.Type]
-func (self EditorInspector) Free() { Object(self).Free() }
 
+type EditorInspector pointers.PointerNamed[EditorInspector, [3]uintptr, [1]pointers.Type]
+
+func (self EditorInspector) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorInspector) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorInspector) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorInspectorPlugin discreet.PointerNamed[EditorInspectorPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorInspectorPlugin) Free() { Object(self).Free() }
 
+type EditorInspectorPlugin pointers.PointerNamed[EditorInspectorPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorInspectorPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorInspectorPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorInspectorPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorInterface discreet.PointerNamed[EditorInterface, [3]uintptr, [1]discreet.Type]
-func (self EditorInterface) Free() { Object(self).Free() }
 
+type EditorInterface pointers.PointerNamed[EditorInterface, [3]uintptr, [1]pointers.Type]
+
+func (self EditorInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorInterface) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorNode3DGizmo discreet.PointerNamed[EditorNode3DGizmo, [3]uintptr, [1]discreet.Type]
-func (self EditorNode3DGizmo) Free() { Object(self).Free() }
 
+type EditorNode3DGizmo pointers.PointerNamed[EditorNode3DGizmo, [3]uintptr, [1]pointers.Type]
+
+func (self EditorNode3DGizmo) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorNode3DGizmo) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorNode3DGizmo) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorNode3DGizmoPlugin discreet.PointerNamed[EditorNode3DGizmoPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorNode3DGizmoPlugin) Free() { Object(self).Free() }
 
+type EditorNode3DGizmoPlugin pointers.PointerNamed[EditorNode3DGizmoPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorNode3DGizmoPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorNode3DGizmoPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorNode3DGizmoPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorPaths discreet.PointerNamed[EditorPaths, [3]uintptr, [1]discreet.Type]
-func (self EditorPaths) Free() { Object(self).Free() }
 
+type EditorPaths pointers.PointerNamed[EditorPaths, [3]uintptr, [1]pointers.Type]
+
+func (self EditorPaths) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorPaths) AsObject() gd.Object { return gd.Object(self) }
@@ -2071,105 +2242,119 @@ type EditorPluginCustomControlContainer int64
 type EditorPluginDockSlot int64
 
 type EditorPluginAfterGUIInput int64
-type EditorPlugin discreet.PointerNamed[EditorPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorPlugin) Free() { Object(self).Free() }
+type EditorPlugin pointers.PointerNamed[EditorPlugin, [3]uintptr, [1]pointers.Type]
 
+func (self EditorPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorProperty discreet.PointerNamed[EditorProperty, [3]uintptr, [1]discreet.Type]
-func (self EditorProperty) Free() { Object(self).Free() }
 
+type EditorProperty pointers.PointerNamed[EditorProperty, [3]uintptr, [1]pointers.Type]
+
+func (self EditorProperty) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorProperty) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorProperty) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorResourceConversionPlugin discreet.PointerNamed[EditorResourceConversionPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorResourceConversionPlugin) Free() { Object(self).Free() }
 
+type EditorResourceConversionPlugin pointers.PointerNamed[EditorResourceConversionPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorResourceConversionPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorResourceConversionPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorResourceConversionPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorResourcePicker discreet.PointerNamed[EditorResourcePicker, [3]uintptr, [1]discreet.Type]
-func (self EditorResourcePicker) Free() { Object(self).Free() }
 
+type EditorResourcePicker pointers.PointerNamed[EditorResourcePicker, [3]uintptr, [1]pointers.Type]
+
+func (self EditorResourcePicker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorResourcePicker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorResourcePicker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorResourcePreview discreet.PointerNamed[EditorResourcePreview, [3]uintptr, [1]discreet.Type]
-func (self EditorResourcePreview) Free() { Object(self).Free() }
 
+type EditorResourcePreview pointers.PointerNamed[EditorResourcePreview, [3]uintptr, [1]pointers.Type]
+
+func (self EditorResourcePreview) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorResourcePreview) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorResourcePreview) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorResourcePreviewGenerator discreet.PointerNamed[EditorResourcePreviewGenerator, [3]uintptr, [1]discreet.Type]
-func (self EditorResourcePreviewGenerator) Free() { Object(self).Free() }
 
+type EditorResourcePreviewGenerator pointers.PointerNamed[EditorResourcePreviewGenerator, [3]uintptr, [1]pointers.Type]
+
+func (self EditorResourcePreviewGenerator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorResourcePreviewGenerator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorResourcePreviewGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorResourceTooltipPlugin discreet.PointerNamed[EditorResourceTooltipPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorResourceTooltipPlugin) Free() { Object(self).Free() }
 
+type EditorResourceTooltipPlugin pointers.PointerNamed[EditorResourceTooltipPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorResourceTooltipPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorResourceTooltipPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorResourceTooltipPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSceneFormatImporter discreet.PointerNamed[EditorSceneFormatImporter, [3]uintptr, [1]discreet.Type]
-func (self EditorSceneFormatImporter) Free() { Object(self).Free() }
 
+type EditorSceneFormatImporter pointers.PointerNamed[EditorSceneFormatImporter, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSceneFormatImporter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSceneFormatImporter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSceneFormatImporter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSceneFormatImporterBlend discreet.PointerNamed[EditorSceneFormatImporterBlend, [3]uintptr, [1]discreet.Type]
-func (self EditorSceneFormatImporterBlend) Free() { Object(self).Free() }
 
+type EditorSceneFormatImporterBlend pointers.PointerNamed[EditorSceneFormatImporterBlend, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSceneFormatImporterBlend) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSceneFormatImporterBlend) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSceneFormatImporterBlend) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSceneFormatImporterFBX2GLTF discreet.PointerNamed[EditorSceneFormatImporterFBX2GLTF, [3]uintptr, [1]discreet.Type]
-func (self EditorSceneFormatImporterFBX2GLTF) Free() { Object(self).Free() }
 
+type EditorSceneFormatImporterFBX2GLTF pointers.PointerNamed[EditorSceneFormatImporterFBX2GLTF, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSceneFormatImporterFBX2GLTF) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSceneFormatImporterFBX2GLTF) AsObject() gd.Object { return gd.Object(self) }
 
-func (self EditorSceneFormatImporterFBX2GLTF) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSceneFormatImporterGLTF discreet.PointerNamed[EditorSceneFormatImporterGLTF, [3]uintptr, [1]discreet.Type]
-func (self EditorSceneFormatImporterGLTF) Free() { Object(self).Free() }
+func (self EditorSceneFormatImporterFBX2GLTF) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type EditorSceneFormatImporterGLTF pointers.PointerNamed[EditorSceneFormatImporterGLTF, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSceneFormatImporterGLTF) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSceneFormatImporterGLTF) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSceneFormatImporterGLTF) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSceneFormatImporterUFBX discreet.PointerNamed[EditorSceneFormatImporterUFBX, [3]uintptr, [1]discreet.Type]
-func (self EditorSceneFormatImporterUFBX) Free() { Object(self).Free() }
 
+type EditorSceneFormatImporterUFBX pointers.PointerNamed[EditorSceneFormatImporterUFBX, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSceneFormatImporterUFBX) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSceneFormatImporterUFBX) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSceneFormatImporterUFBX) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorScenePostImport discreet.PointerNamed[EditorScenePostImport, [3]uintptr, [1]discreet.Type]
-func (self EditorScenePostImport) Free() { Object(self).Free() }
 
+type EditorScenePostImport pointers.PointerNamed[EditorScenePostImport, [3]uintptr, [1]pointers.Type]
+
+func (self EditorScenePostImport) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorScenePostImport) AsObject() gd.Object { return gd.Object(self) }
@@ -2177,65 +2362,72 @@ func (self EditorScenePostImport) AsObject() gd.Object { return gd.Object(self) 
 func (self EditorScenePostImport) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EditorScenePostImportPluginInternalImportCategory int64
-type EditorScenePostImportPlugin discreet.PointerNamed[EditorScenePostImportPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorScenePostImportPlugin) Free() { Object(self).Free() }
+type EditorScenePostImportPlugin pointers.PointerNamed[EditorScenePostImportPlugin, [3]uintptr, [1]pointers.Type]
 
+func (self EditorScenePostImportPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorScenePostImportPlugin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorScenePostImportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorScript discreet.PointerNamed[EditorScript, [3]uintptr, [1]discreet.Type]
-func (self EditorScript) Free() { Object(self).Free() }
 
+type EditorScript pointers.PointerNamed[EditorScript, [3]uintptr, [1]pointers.Type]
+
+func (self EditorScript) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorScript) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorScript) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorScriptPicker discreet.PointerNamed[EditorScriptPicker, [3]uintptr, [1]discreet.Type]
-func (self EditorScriptPicker) Free() { Object(self).Free() }
 
+type EditorScriptPicker pointers.PointerNamed[EditorScriptPicker, [3]uintptr, [1]pointers.Type]
+
+func (self EditorScriptPicker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorScriptPicker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorScriptPicker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSelection discreet.PointerNamed[EditorSelection, [3]uintptr, [1]discreet.Type]
-func (self EditorSelection) Free() { Object(self).Free() }
 
+type EditorSelection pointers.PointerNamed[EditorSelection, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSelection) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSelection) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSelection) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSettings discreet.PointerNamed[EditorSettings, [3]uintptr, [1]discreet.Type]
-func (self EditorSettings) Free() { Object(self).Free() }
 
+type EditorSettings pointers.PointerNamed[EditorSettings, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSettings) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSettings) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSpinSlider discreet.PointerNamed[EditorSpinSlider, [3]uintptr, [1]discreet.Type]
-func (self EditorSpinSlider) Free() { Object(self).Free() }
 
+type EditorSpinSlider pointers.PointerNamed[EditorSpinSlider, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSpinSlider) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSpinSlider) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSpinSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorSyntaxHighlighter discreet.PointerNamed[EditorSyntaxHighlighter, [3]uintptr, [1]discreet.Type]
-func (self EditorSyntaxHighlighter) Free() { Object(self).Free() }
 
+type EditorSyntaxHighlighter pointers.PointerNamed[EditorSyntaxHighlighter, [3]uintptr, [1]pointers.Type]
+
+func (self EditorSyntaxHighlighter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorSyntaxHighlighter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorSyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EditorTranslationParserPlugin discreet.PointerNamed[EditorTranslationParserPlugin, [3]uintptr, [1]discreet.Type]
-func (self EditorTranslationParserPlugin) Free() { Object(self).Free() }
 
+type EditorTranslationParserPlugin pointers.PointerNamed[EditorTranslationParserPlugin, [3]uintptr, [1]pointers.Type]
+
+func (self EditorTranslationParserPlugin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorTranslationParserPlugin) AsObject() gd.Object { return gd.Object(self) }
@@ -2243,9 +2435,9 @@ func (self EditorTranslationParserPlugin) AsObject() gd.Object { return gd.Objec
 func (self EditorTranslationParserPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EditorUndoRedoManagerSpecialHistory int64
-type EditorUndoRedoManager discreet.PointerNamed[EditorUndoRedoManager, [3]uintptr, [1]discreet.Type]
-func (self EditorUndoRedoManager) Free() { Object(self).Free() }
+type EditorUndoRedoManager pointers.PointerNamed[EditorUndoRedoManager, [3]uintptr, [1]pointers.Type]
 
+func (self EditorUndoRedoManager) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorUndoRedoManager) AsObject() gd.Object { return gd.Object(self) }
@@ -2255,41 +2447,45 @@ func (self EditorUndoRedoManager) Virtual(name string) reflect.Value { return re
 type EditorVCSInterfaceChangeType int64
 
 type EditorVCSInterfaceTreeArea int64
-type EditorVCSInterface discreet.PointerNamed[EditorVCSInterface, [3]uintptr, [1]discreet.Type]
-func (self EditorVCSInterface) Free() { Object(self).Free() }
+type EditorVCSInterface pointers.PointerNamed[EditorVCSInterface, [3]uintptr, [1]pointers.Type]
 
+func (self EditorVCSInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EditorVCSInterface) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EditorVCSInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EncodedObjectAsID discreet.PointerNamed[EncodedObjectAsID, [3]uintptr, [1]discreet.Type]
-func (self EncodedObjectAsID) Free() { Object(self).Free() }
 
+type EncodedObjectAsID pointers.PointerNamed[EncodedObjectAsID, [3]uintptr, [1]pointers.Type]
+
+func (self EncodedObjectAsID) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EncodedObjectAsID) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EncodedObjectAsID) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Engine discreet.PointerNamed[Engine, [3]uintptr, [1]discreet.Type]
-func (self Engine) Free() { Object(self).Free() }
 
+type Engine pointers.PointerNamed[Engine, [3]uintptr, [1]pointers.Type]
+
+func (self Engine) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Engine) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Engine) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EngineDebugger discreet.PointerNamed[EngineDebugger, [3]uintptr, [1]discreet.Type]
-func (self EngineDebugger) Free() { Object(self).Free() }
 
+type EngineDebugger pointers.PointerNamed[EngineDebugger, [3]uintptr, [1]pointers.Type]
+
+func (self EngineDebugger) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EngineDebugger) AsObject() gd.Object { return gd.Object(self) }
 
 func (self EngineDebugger) Virtual(name string) reflect.Value { return reflect.Value{} }
-type EngineProfiler discreet.PointerNamed[EngineProfiler, [3]uintptr, [1]discreet.Type]
-func (self EngineProfiler) Free() { Object(self).Free() }
 
+type EngineProfiler pointers.PointerNamed[EngineProfiler, [3]uintptr, [1]pointers.Type]
+
+func (self EngineProfiler) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self EngineProfiler) AsObject() gd.Object { return gd.Object(self) }
@@ -2309,33 +2505,36 @@ type EnvironmentGlowBlendMode int64
 type EnvironmentFogMode int64
 
 type EnvironmentSDFGIYScale int64
-type Environment discreet.PointerNamed[Environment, [3]uintptr, [1]discreet.Type]
-func (self Environment) Free() { Object(self).Free() }
+type Environment pointers.PointerNamed[Environment, [3]uintptr, [1]pointers.Type]
 
+func (self Environment) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Environment) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Environment) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Expression discreet.PointerNamed[Expression, [3]uintptr, [1]discreet.Type]
-func (self Expression) Free() { Object(self).Free() }
 
+type Expression pointers.PointerNamed[Expression, [3]uintptr, [1]pointers.Type]
+
+func (self Expression) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Expression) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Expression) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FBXDocument discreet.PointerNamed[FBXDocument, [3]uintptr, [1]discreet.Type]
-func (self FBXDocument) Free() { Object(self).Free() }
 
+type FBXDocument pointers.PointerNamed[FBXDocument, [3]uintptr, [1]pointers.Type]
+
+func (self FBXDocument) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FBXDocument) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FBXDocument) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FBXState discreet.PointerNamed[FBXState, [3]uintptr, [1]discreet.Type]
-func (self FBXState) Free() { Object(self).Free() }
 
+type FBXState pointers.PointerNamed[FBXState, [3]uintptr, [1]pointers.Type]
+
+func (self FBXState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FBXState) AsObject() gd.Object { return gd.Object(self) }
@@ -2353,9 +2552,9 @@ type FastNoiseLiteCellularReturnType int64
 type FastNoiseLiteDomainWarpType int64
 
 type FastNoiseLiteDomainWarpFractalType int64
-type FastNoiseLite discreet.PointerNamed[FastNoiseLite, [3]uintptr, [1]discreet.Type]
-func (self FastNoiseLite) Free() { Object(self).Free() }
+type FastNoiseLite pointers.PointerNamed[FastNoiseLite, [3]uintptr, [1]pointers.Type]
 
+func (self FastNoiseLite) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FastNoiseLite) AsObject() gd.Object { return gd.Object(self) }
@@ -2367,9 +2566,9 @@ type FileAccessModeFlags int64
 type FileAccessCompressionMode int64
 
 type FileAccessUnixPermissionFlags int64
-type FileAccess discreet.PointerNamed[FileAccess, [3]uintptr, [1]discreet.Type]
-func (self FileAccess) Free() { Object(self).Free() }
+type FileAccess pointers.PointerNamed[FileAccess, [3]uintptr, [1]pointers.Type]
 
+func (self FileAccess) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FileAccess) AsObject() gd.Object { return gd.Object(self) }
@@ -2379,17 +2578,18 @@ func (self FileAccess) Virtual(name string) reflect.Value { return reflect.Value
 type FileDialogFileMode int64
 
 type FileDialogAccess int64
-type FileDialog discreet.PointerNamed[FileDialog, [3]uintptr, [1]discreet.Type]
-func (self FileDialog) Free() { Object(self).Free() }
+type FileDialog pointers.PointerNamed[FileDialog, [3]uintptr, [1]pointers.Type]
 
+func (self FileDialog) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FileDialog) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FileDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FileSystemDock discreet.PointerNamed[FileSystemDock, [3]uintptr, [1]discreet.Type]
-func (self FileSystemDock) Free() { Object(self).Free() }
 
+type FileSystemDock pointers.PointerNamed[FileSystemDock, [3]uintptr, [1]pointers.Type]
+
+func (self FileSystemDock) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FileSystemDock) AsObject() gd.Object { return gd.Object(self) }
@@ -2399,57 +2599,63 @@ func (self FileSystemDock) Virtual(name string) reflect.Value { return reflect.V
 type FlowContainerAlignmentMode int64
 
 type FlowContainerLastWrapAlignmentMode int64
-type FlowContainer discreet.PointerNamed[FlowContainer, [3]uintptr, [1]discreet.Type]
-func (self FlowContainer) Free() { Object(self).Free() }
+type FlowContainer pointers.PointerNamed[FlowContainer, [3]uintptr, [1]pointers.Type]
 
+func (self FlowContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FlowContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FogMaterial discreet.PointerNamed[FogMaterial, [3]uintptr, [1]discreet.Type]
-func (self FogMaterial) Free() { Object(self).Free() }
 
+type FogMaterial pointers.PointerNamed[FogMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self FogMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FogMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FogMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FogVolume discreet.PointerNamed[FogVolume, [3]uintptr, [1]discreet.Type]
-func (self FogVolume) Free() { Object(self).Free() }
 
+type FogVolume pointers.PointerNamed[FogVolume, [3]uintptr, [1]pointers.Type]
+
+func (self FogVolume) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FogVolume) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FogVolume) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Font discreet.PointerNamed[Font, [3]uintptr, [1]discreet.Type]
-func (self Font) Free() { Object(self).Free() }
 
+type Font pointers.PointerNamed[Font, [3]uintptr, [1]pointers.Type]
+
+func (self Font) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Font) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Font) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FontFile discreet.PointerNamed[FontFile, [3]uintptr, [1]discreet.Type]
-func (self FontFile) Free() { Object(self).Free() }
 
+type FontFile pointers.PointerNamed[FontFile, [3]uintptr, [1]pointers.Type]
+
+func (self FontFile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FontFile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FontFile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FontVariation discreet.PointerNamed[FontVariation, [3]uintptr, [1]discreet.Type]
-func (self FontVariation) Free() { Object(self).Free() }
 
+type FontVariation pointers.PointerNamed[FontVariation, [3]uintptr, [1]pointers.Type]
+
+func (self FontVariation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FontVariation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self FontVariation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type FramebufferCacheRD discreet.PointerNamed[FramebufferCacheRD, [3]uintptr, [1]discreet.Type]
-func (self FramebufferCacheRD) Free() { Object(self).Free() }
 
+type FramebufferCacheRD pointers.PointerNamed[FramebufferCacheRD, [3]uintptr, [1]pointers.Type]
+
+func (self FramebufferCacheRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self FramebufferCacheRD) AsObject() gd.Object { return gd.Object(self) }
@@ -2459,18 +2665,19 @@ func (self FramebufferCacheRD) Virtual(name string) reflect.Value { return refle
 type GDExtensionInitializationLevel int64
 
 const (
-/*The library is initialized at the same time as the core features of the engine.*/
+	/*The library is initialized at the same time as the core features of the engine.*/
 	GDExtensionInitializationLevelCore GDExtensionInitializationLevel = 0
-/*The library is initialized at the same time as the engine's servers (such as [RenderingServer] or [PhysicsServer3D]).*/
+	/*The library is initialized at the same time as the engine's servers (such as [RenderingServer] or [PhysicsServer3D]).*/
 	GDExtensionInitializationLevelServers GDExtensionInitializationLevel = 1
-/*The library is initialized at the same time as the engine's scene-related classes.*/
+	/*The library is initialized at the same time as the engine's scene-related classes.*/
 	GDExtensionInitializationLevelScene GDExtensionInitializationLevel = 2
-/*The library is initialized at the same time as the engine's editor classes. Only happens when loading the GDExtension in the editor.*/
+	/*The library is initialized at the same time as the engine's editor classes. Only happens when loading the GDExtension in the editor.*/
 	GDExtensionInitializationLevelEditor GDExtensionInitializationLevel = 3
 )
-type GDExtension discreet.PointerNamed[GDExtension, [3]uintptr, [1]discreet.Type]
-func (self GDExtension) Free() { Object(self).Free() }
 
+type GDExtension pointers.PointerNamed[GDExtension, [3]uintptr, [1]pointers.Type]
+
+func (self GDExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GDExtension) AsObject() gd.Object { return gd.Object(self) }
@@ -2478,17 +2685,18 @@ func (self GDExtension) AsObject() gd.Object { return gd.Object(self) }
 func (self GDExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type GDExtensionManagerLoadStatus int64
-type GDExtensionManager discreet.PointerNamed[GDExtensionManager, [3]uintptr, [1]discreet.Type]
-func (self GDExtensionManager) Free() { Object(self).Free() }
+type GDExtensionManager pointers.PointerNamed[GDExtensionManager, [3]uintptr, [1]pointers.Type]
 
+func (self GDExtensionManager) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GDExtensionManager) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GDExtensionManager) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GDScript discreet.PointerNamed[GDScript, [3]uintptr, [1]discreet.Type]
-func (self GDScript) Free() { Object(self).Free() }
 
+type GDScript pointers.PointerNamed[GDScript, [3]uintptr, [1]pointers.Type]
+
+func (self GDScript) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GDScript) AsObject() gd.Object { return gd.Object(self) }
@@ -2496,33 +2704,36 @@ func (self GDScript) AsObject() gd.Object { return gd.Object(self) }
 func (self GDScript) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type GLTFAccessorGLTFAccessorType int64
-type GLTFAccessor discreet.PointerNamed[GLTFAccessor, [3]uintptr, [1]discreet.Type]
-func (self GLTFAccessor) Free() { Object(self).Free() }
+type GLTFAccessor pointers.PointerNamed[GLTFAccessor, [3]uintptr, [1]pointers.Type]
 
+func (self GLTFAccessor) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFAccessor) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFAccessor) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFAnimation discreet.PointerNamed[GLTFAnimation, [3]uintptr, [1]discreet.Type]
-func (self GLTFAnimation) Free() { Object(self).Free() }
 
+type GLTFAnimation pointers.PointerNamed[GLTFAnimation, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFAnimation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFAnimation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFAnimation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFBufferView discreet.PointerNamed[GLTFBufferView, [3]uintptr, [1]discreet.Type]
-func (self GLTFBufferView) Free() { Object(self).Free() }
 
+type GLTFBufferView pointers.PointerNamed[GLTFBufferView, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFBufferView) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFBufferView) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFBufferView) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFCamera discreet.PointerNamed[GLTFCamera, [3]uintptr, [1]discreet.Type]
-func (self GLTFCamera) Free() { Object(self).Free() }
 
+type GLTFCamera pointers.PointerNamed[GLTFCamera, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFCamera) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFCamera) AsObject() gd.Object { return gd.Object(self) }
@@ -2530,113 +2741,128 @@ func (self GLTFCamera) AsObject() gd.Object { return gd.Object(self) }
 func (self GLTFCamera) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type GLTFDocumentRootNodeMode int64
-type GLTFDocument discreet.PointerNamed[GLTFDocument, [3]uintptr, [1]discreet.Type]
-func (self GLTFDocument) Free() { Object(self).Free() }
+type GLTFDocument pointers.PointerNamed[GLTFDocument, [3]uintptr, [1]pointers.Type]
 
+func (self GLTFDocument) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFDocument) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFDocument) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFDocumentExtension discreet.PointerNamed[GLTFDocumentExtension, [3]uintptr, [1]discreet.Type]
-func (self GLTFDocumentExtension) Free() { Object(self).Free() }
 
+type GLTFDocumentExtension pointers.PointerNamed[GLTFDocumentExtension, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFDocumentExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFDocumentExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFDocumentExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFDocumentExtensionConvertImporterMesh discreet.PointerNamed[GLTFDocumentExtensionConvertImporterMesh, [3]uintptr, [1]discreet.Type]
-func (self GLTFDocumentExtensionConvertImporterMesh) Free() { Object(self).Free() }
 
+type GLTFDocumentExtensionConvertImporterMesh pointers.PointerNamed[GLTFDocumentExtensionConvertImporterMesh, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFDocumentExtensionConvertImporterMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFDocumentExtensionConvertImporterMesh) AsObject() gd.Object { return gd.Object(self) }
 
-func (self GLTFDocumentExtensionConvertImporterMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFLight discreet.PointerNamed[GLTFLight, [3]uintptr, [1]discreet.Type]
-func (self GLTFLight) Free() { Object(self).Free() }
+func (self GLTFDocumentExtensionConvertImporterMesh) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type GLTFLight pointers.PointerNamed[GLTFLight, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFLight) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFLight) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFLight) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFMesh discreet.PointerNamed[GLTFMesh, [3]uintptr, [1]discreet.Type]
-func (self GLTFMesh) Free() { Object(self).Free() }
 
+type GLTFMesh pointers.PointerNamed[GLTFMesh, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFNode discreet.PointerNamed[GLTFNode, [3]uintptr, [1]discreet.Type]
-func (self GLTFNode) Free() { Object(self).Free() }
 
+type GLTFNode pointers.PointerNamed[GLTFNode, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFNode) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFNode) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFPhysicsBody discreet.PointerNamed[GLTFPhysicsBody, [3]uintptr, [1]discreet.Type]
-func (self GLTFPhysicsBody) Free() { Object(self).Free() }
 
+type GLTFPhysicsBody pointers.PointerNamed[GLTFPhysicsBody, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFPhysicsBody) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFPhysicsBody) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFPhysicsBody) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFPhysicsShape discreet.PointerNamed[GLTFPhysicsShape, [3]uintptr, [1]discreet.Type]
-func (self GLTFPhysicsShape) Free() { Object(self).Free() }
 
+type GLTFPhysicsShape pointers.PointerNamed[GLTFPhysicsShape, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFPhysicsShape) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFPhysicsShape) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFPhysicsShape) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFSkeleton discreet.PointerNamed[GLTFSkeleton, [3]uintptr, [1]discreet.Type]
-func (self GLTFSkeleton) Free() { Object(self).Free() }
 
+type GLTFSkeleton pointers.PointerNamed[GLTFSkeleton, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFSkeleton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFSkeleton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFSkeleton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFSkin discreet.PointerNamed[GLTFSkin, [3]uintptr, [1]discreet.Type]
-func (self GLTFSkin) Free() { Object(self).Free() }
 
+type GLTFSkin pointers.PointerNamed[GLTFSkin, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFSkin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFSkin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFSkin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFSpecGloss discreet.PointerNamed[GLTFSpecGloss, [3]uintptr, [1]discreet.Type]
-func (self GLTFSpecGloss) Free() { Object(self).Free() }
 
+type GLTFSpecGloss pointers.PointerNamed[GLTFSpecGloss, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFSpecGloss) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFSpecGloss) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFSpecGloss) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFState discreet.PointerNamed[GLTFState, [3]uintptr, [1]discreet.Type]
-func (self GLTFState) Free() { Object(self).Free() }
 
+type GLTFState pointers.PointerNamed[GLTFState, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFTexture discreet.PointerNamed[GLTFTexture, [3]uintptr, [1]discreet.Type]
-func (self GLTFTexture) Free() { Object(self).Free() }
 
+type GLTFTexture pointers.PointerNamed[GLTFTexture, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GLTFTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GLTFTextureSampler discreet.PointerNamed[GLTFTextureSampler, [3]uintptr, [1]discreet.Type]
-func (self GLTFTextureSampler) Free() { Object(self).Free() }
 
+type GLTFTextureSampler pointers.PointerNamed[GLTFTextureSampler, [3]uintptr, [1]pointers.Type]
+
+func (self GLTFTextureSampler) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GLTFTextureSampler) AsObject() gd.Object { return gd.Object(self) }
@@ -2646,9 +2872,9 @@ func (self GLTFTextureSampler) Virtual(name string) reflect.Value { return refle
 type GPUParticles2DDrawOrder int64
 
 type GPUParticles2DEmitFlags int64
-type GPUParticles2D discreet.PointerNamed[GPUParticles2D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticles2D) Free() { Object(self).Free() }
+type GPUParticles2D pointers.PointerNamed[GPUParticles2D, [3]uintptr, [1]pointers.Type]
 
+func (self GPUParticles2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticles2D) AsObject() gd.Object { return gd.Object(self) }
@@ -2660,57 +2886,65 @@ type GPUParticles3DDrawOrder int64
 type GPUParticles3DEmitFlags int64
 
 type GPUParticles3DTransformAlign int64
-type GPUParticles3D discreet.PointerNamed[GPUParticles3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticles3D) Free() { Object(self).Free() }
+type GPUParticles3D pointers.PointerNamed[GPUParticles3D, [3]uintptr, [1]pointers.Type]
 
+func (self GPUParticles3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticles3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticles3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesAttractor3D discreet.PointerNamed[GPUParticlesAttractor3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesAttractor3D) Free() { Object(self).Free() }
 
+type GPUParticlesAttractor3D pointers.PointerNamed[GPUParticlesAttractor3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesAttractor3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesAttractor3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticlesAttractor3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesAttractorBox3D discreet.PointerNamed[GPUParticlesAttractorBox3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesAttractorBox3D) Free() { Object(self).Free() }
 
+type GPUParticlesAttractorBox3D pointers.PointerNamed[GPUParticlesAttractorBox3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesAttractorBox3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesAttractorBox3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticlesAttractorBox3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesAttractorSphere3D discreet.PointerNamed[GPUParticlesAttractorSphere3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesAttractorSphere3D) Free() { Object(self).Free() }
 
+type GPUParticlesAttractorSphere3D pointers.PointerNamed[GPUParticlesAttractorSphere3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesAttractorSphere3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesAttractorSphere3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticlesAttractorSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesAttractorVectorField3D discreet.PointerNamed[GPUParticlesAttractorVectorField3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesAttractorVectorField3D) Free() { Object(self).Free() }
 
+type GPUParticlesAttractorVectorField3D pointers.PointerNamed[GPUParticlesAttractorVectorField3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesAttractorVectorField3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesAttractorVectorField3D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self GPUParticlesAttractorVectorField3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesCollision3D discreet.PointerNamed[GPUParticlesCollision3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesCollision3D) Free() { Object(self).Free() }
+func (self GPUParticlesAttractorVectorField3D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type GPUParticlesCollision3D pointers.PointerNamed[GPUParticlesCollision3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesCollision3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesCollision3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticlesCollision3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesCollisionBox3D discreet.PointerNamed[GPUParticlesCollisionBox3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesCollisionBox3D) Free() { Object(self).Free() }
 
+type GPUParticlesCollisionBox3D pointers.PointerNamed[GPUParticlesCollisionBox3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesCollisionBox3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesCollisionBox3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2720,27 +2954,30 @@ func (self GPUParticlesCollisionBox3D) Virtual(name string) reflect.Value { retu
 type GPUParticlesCollisionHeightField3DResolution int64
 
 type GPUParticlesCollisionHeightField3DUpdateMode int64
-type GPUParticlesCollisionHeightField3D discreet.PointerNamed[GPUParticlesCollisionHeightField3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesCollisionHeightField3D) Free() { Object(self).Free() }
+type GPUParticlesCollisionHeightField3D pointers.PointerNamed[GPUParticlesCollisionHeightField3D, [3]uintptr, [1]pointers.Type]
 
+func (self GPUParticlesCollisionHeightField3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesCollisionHeightField3D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self GPUParticlesCollisionHeightField3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self GPUParticlesCollisionHeightField3D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type GPUParticlesCollisionSDF3DResolution int64
-type GPUParticlesCollisionSDF3D discreet.PointerNamed[GPUParticlesCollisionSDF3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesCollisionSDF3D) Free() { Object(self).Free() }
+type GPUParticlesCollisionSDF3D pointers.PointerNamed[GPUParticlesCollisionSDF3D, [3]uintptr, [1]pointers.Type]
 
+func (self GPUParticlesCollisionSDF3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesCollisionSDF3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GPUParticlesCollisionSDF3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GPUParticlesCollisionSphere3D discreet.PointerNamed[GPUParticlesCollisionSphere3D, [3]uintptr, [1]discreet.Type]
-func (self GPUParticlesCollisionSphere3D) Free() { Object(self).Free() }
 
+type GPUParticlesCollisionSphere3D pointers.PointerNamed[GPUParticlesCollisionSphere3D, [3]uintptr, [1]pointers.Type]
+
+func (self GPUParticlesCollisionSphere3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GPUParticlesCollisionSphere3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2750,9 +2987,9 @@ func (self GPUParticlesCollisionSphere3D) Virtual(name string) reflect.Value { r
 type Generic6DOFJoint3DParam int64
 
 type Generic6DOFJoint3DFlag int64
-type Generic6DOFJoint3D discreet.PointerNamed[Generic6DOFJoint3D, [3]uintptr, [1]discreet.Type]
-func (self Generic6DOFJoint3D) Free() { Object(self).Free() }
+type Generic6DOFJoint3D pointers.PointerNamed[Generic6DOFJoint3D, [3]uintptr, [1]pointers.Type]
 
+func (self Generic6DOFJoint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Generic6DOFJoint3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2764,17 +3001,18 @@ type Geometry2DPolyBooleanOperation int64
 type Geometry2DPolyJoinType int64
 
 type Geometry2DPolyEndType int64
-type Geometry2D discreet.PointerNamed[Geometry2D, [3]uintptr, [1]discreet.Type]
-func (self Geometry2D) Free() { Object(self).Free() }
+type Geometry2D pointers.PointerNamed[Geometry2D, [3]uintptr, [1]pointers.Type]
 
+func (self Geometry2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Geometry2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Geometry2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Geometry3D discreet.PointerNamed[Geometry3D, [3]uintptr, [1]discreet.Type]
-func (self Geometry3D) Free() { Object(self).Free() }
 
+type Geometry3D pointers.PointerNamed[Geometry3D, [3]uintptr, [1]pointers.Type]
+
+func (self Geometry3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Geometry3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2788,9 +3026,9 @@ type GeometryInstance3DGIMode int64
 type GeometryInstance3DLightmapScale int64
 
 type GeometryInstance3DVisibilityRangeFadeMode int64
-type GeometryInstance3D discreet.PointerNamed[GeometryInstance3D, [3]uintptr, [1]discreet.Type]
-func (self GeometryInstance3D) Free() { Object(self).Free() }
+type GeometryInstance3D pointers.PointerNamed[GeometryInstance3D, [3]uintptr, [1]pointers.Type]
 
+func (self GeometryInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GeometryInstance3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2800,17 +3038,18 @@ func (self GeometryInstance3D) Virtual(name string) reflect.Value { return refle
 type GradientInterpolationMode int64
 
 type GradientColorSpace int64
-type Gradient discreet.PointerNamed[Gradient, [3]uintptr, [1]discreet.Type]
-func (self Gradient) Free() { Object(self).Free() }
+type Gradient pointers.PointerNamed[Gradient, [3]uintptr, [1]pointers.Type]
 
+func (self Gradient) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Gradient) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Gradient) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GradientTexture1D discreet.PointerNamed[GradientTexture1D, [3]uintptr, [1]discreet.Type]
-func (self GradientTexture1D) Free() { Object(self).Free() }
 
+type GradientTexture1D pointers.PointerNamed[GradientTexture1D, [3]uintptr, [1]pointers.Type]
+
+func (self GradientTexture1D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GradientTexture1D) AsObject() gd.Object { return gd.Object(self) }
@@ -2820,9 +3059,9 @@ func (self GradientTexture1D) Virtual(name string) reflect.Value { return reflec
 type GradientTexture2DFill int64
 
 type GradientTexture2DRepeat int64
-type GradientTexture2D discreet.PointerNamed[GradientTexture2D, [3]uintptr, [1]discreet.Type]
-func (self GradientTexture2D) Free() { Object(self).Free() }
+type GradientTexture2D pointers.PointerNamed[GradientTexture2D, [3]uintptr, [1]pointers.Type]
 
+func (self GradientTexture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GradientTexture2D) AsObject() gd.Object { return gd.Object(self) }
@@ -2832,113 +3071,126 @@ func (self GradientTexture2D) Virtual(name string) reflect.Value { return reflec
 type GraphEditPanningScheme int64
 
 type GraphEditGridPattern int64
-type GraphEdit discreet.PointerNamed[GraphEdit, [3]uintptr, [1]discreet.Type]
-func (self GraphEdit) Free() { Object(self).Free() }
+type GraphEdit pointers.PointerNamed[GraphEdit, [3]uintptr, [1]pointers.Type]
 
+func (self GraphEdit) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GraphEdit) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GraphEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GraphElement discreet.PointerNamed[GraphElement, [3]uintptr, [1]discreet.Type]
-func (self GraphElement) Free() { Object(self).Free() }
 
+type GraphElement pointers.PointerNamed[GraphElement, [3]uintptr, [1]pointers.Type]
+
+func (self GraphElement) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GraphElement) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GraphElement) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GraphFrame discreet.PointerNamed[GraphFrame, [3]uintptr, [1]discreet.Type]
-func (self GraphFrame) Free() { Object(self).Free() }
 
+type GraphFrame pointers.PointerNamed[GraphFrame, [3]uintptr, [1]pointers.Type]
+
+func (self GraphFrame) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GraphFrame) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GraphFrame) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GraphNode discreet.PointerNamed[GraphNode, [3]uintptr, [1]discreet.Type]
-func (self GraphNode) Free() { Object(self).Free() }
 
+type GraphNode pointers.PointerNamed[GraphNode, [3]uintptr, [1]pointers.Type]
+
+func (self GraphNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GraphNode) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GraphNode) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GridContainer discreet.PointerNamed[GridContainer, [3]uintptr, [1]discreet.Type]
-func (self GridContainer) Free() { Object(self).Free() }
 
+type GridContainer pointers.PointerNamed[GridContainer, [3]uintptr, [1]pointers.Type]
+
+func (self GridContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GridContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GridContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GridMap discreet.PointerNamed[GridMap, [3]uintptr, [1]discreet.Type]
-func (self GridMap) Free() { Object(self).Free() }
 
+type GridMap pointers.PointerNamed[GridMap, [3]uintptr, [1]pointers.Type]
+
+func (self GridMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GridMap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GridMap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type GrooveJoint2D discreet.PointerNamed[GrooveJoint2D, [3]uintptr, [1]discreet.Type]
-func (self GrooveJoint2D) Free() { Object(self).Free() }
 
+type GrooveJoint2D pointers.PointerNamed[GrooveJoint2D, [3]uintptr, [1]pointers.Type]
+
+func (self GrooveJoint2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self GrooveJoint2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self GrooveJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HBoxContainer discreet.PointerNamed[HBoxContainer, [3]uintptr, [1]discreet.Type]
-func (self HBoxContainer) Free() { Object(self).Free() }
 
+type HBoxContainer pointers.PointerNamed[HBoxContainer, [3]uintptr, [1]pointers.Type]
+
+func (self HBoxContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HBoxContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HBoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HFlowContainer discreet.PointerNamed[HFlowContainer, [3]uintptr, [1]discreet.Type]
-func (self HFlowContainer) Free() { Object(self).Free() }
 
+type HFlowContainer pointers.PointerNamed[HFlowContainer, [3]uintptr, [1]pointers.Type]
+
+func (self HFlowContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HFlowContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HFlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HMACContext discreet.PointerNamed[HMACContext, [3]uintptr, [1]discreet.Type]
-func (self HMACContext) Free() { Object(self).Free() }
 
+type HMACContext pointers.PointerNamed[HMACContext, [3]uintptr, [1]pointers.Type]
+
+func (self HMACContext) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HMACContext) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HMACContext) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HScrollBar discreet.PointerNamed[HScrollBar, [3]uintptr, [1]discreet.Type]
-func (self HScrollBar) Free() { Object(self).Free() }
 
+type HScrollBar pointers.PointerNamed[HScrollBar, [3]uintptr, [1]pointers.Type]
+
+func (self HScrollBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HScrollBar) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HSeparator discreet.PointerNamed[HSeparator, [3]uintptr, [1]discreet.Type]
-func (self HSeparator) Free() { Object(self).Free() }
 
+type HSeparator pointers.PointerNamed[HSeparator, [3]uintptr, [1]pointers.Type]
+
+func (self HSeparator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HSeparator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HSeparator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HSlider discreet.PointerNamed[HSlider, [3]uintptr, [1]discreet.Type]
-func (self HSlider) Free() { Object(self).Free() }
 
+type HSlider pointers.PointerNamed[HSlider, [3]uintptr, [1]pointers.Type]
+
+func (self HSlider) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HSlider) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HSplitContainer discreet.PointerNamed[HSplitContainer, [3]uintptr, [1]discreet.Type]
-func (self HSplitContainer) Free() { Object(self).Free() }
 
+type HSplitContainer pointers.PointerNamed[HSplitContainer, [3]uintptr, [1]pointers.Type]
+
+func (self HSplitContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HSplitContainer) AsObject() gd.Object { return gd.Object(self) }
@@ -2950,9 +3202,9 @@ type HTTPClientMethod int64
 type HTTPClientStatus int64
 
 type HTTPClientResponseCode int64
-type HTTPClient discreet.PointerNamed[HTTPClient, [3]uintptr, [1]discreet.Type]
-func (self HTTPClient) Free() { Object(self).Free() }
+type HTTPClient pointers.PointerNamed[HTTPClient, [3]uintptr, [1]pointers.Type]
 
+func (self HTTPClient) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HTTPClient) AsObject() gd.Object { return gd.Object(self) }
@@ -2960,9 +3212,9 @@ func (self HTTPClient) AsObject() gd.Object { return gd.Object(self) }
 func (self HTTPClient) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type HTTPRequestResult int64
-type HTTPRequest discreet.PointerNamed[HTTPRequest, [3]uintptr, [1]discreet.Type]
-func (self HTTPRequest) Free() { Object(self).Free() }
+type HTTPRequest pointers.PointerNamed[HTTPRequest, [3]uintptr, [1]pointers.Type]
 
+func (self HTTPRequest) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HTTPRequest) AsObject() gd.Object { return gd.Object(self) }
@@ -2970,17 +3222,18 @@ func (self HTTPRequest) AsObject() gd.Object { return gd.Object(self) }
 func (self HTTPRequest) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type HashingContextHashType int64
-type HashingContext discreet.PointerNamed[HashingContext, [3]uintptr, [1]discreet.Type]
-func (self HashingContext) Free() { Object(self).Free() }
+type HashingContext pointers.PointerNamed[HashingContext, [3]uintptr, [1]pointers.Type]
 
+func (self HashingContext) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HashingContext) AsObject() gd.Object { return gd.Object(self) }
 
 func (self HashingContext) Virtual(name string) reflect.Value { return reflect.Value{} }
-type HeightMapShape3D discreet.PointerNamed[HeightMapShape3D, [3]uintptr, [1]discreet.Type]
-func (self HeightMapShape3D) Free() { Object(self).Free() }
 
+type HeightMapShape3D pointers.PointerNamed[HeightMapShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self HeightMapShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HeightMapShape3D) AsObject() gd.Object { return gd.Object(self) }
@@ -2990,9 +3243,9 @@ func (self HeightMapShape3D) Virtual(name string) reflect.Value { return reflect
 type HingeJoint3DParam int64
 
 type HingeJoint3DFlag int64
-type HingeJoint3D discreet.PointerNamed[HingeJoint3D, [3]uintptr, [1]discreet.Type]
-func (self HingeJoint3D) Free() { Object(self).Free() }
+type HingeJoint3D pointers.PointerNamed[HingeJoint3D, [3]uintptr, [1]pointers.Type]
 
+func (self HingeJoint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self HingeJoint3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3002,9 +3255,9 @@ func (self HingeJoint3D) Virtual(name string) reflect.Value { return reflect.Val
 type IPResolverStatus int64
 
 type IPType int64
-type IP discreet.PointerNamed[IP, [3]uintptr, [1]discreet.Type]
-func (self IP) Free() { Object(self).Free() }
+type IP pointers.PointerNamed[IP, [3]uintptr, [1]pointers.Type]
 
+func (self IP) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self IP) AsObject() gd.Object { return gd.Object(self) }
@@ -3024,9 +3277,9 @@ type ImageUsedChannels int64
 type ImageCompressSource int64
 
 type ImageASTCFormat int64
-type Image discreet.PointerNamed[Image, [3]uintptr, [1]discreet.Type]
-func (self Image) Free() { Object(self).Free() }
+type Image pointers.PointerNamed[Image, [3]uintptr, [1]pointers.Type]
 
+func (self Image) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Image) AsObject() gd.Object { return gd.Object(self) }
@@ -3034,65 +3287,72 @@ func (self Image) AsObject() gd.Object { return gd.Object(self) }
 func (self Image) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ImageFormatLoaderLoaderFlags int64
-type ImageFormatLoader discreet.PointerNamed[ImageFormatLoader, [3]uintptr, [1]discreet.Type]
-func (self ImageFormatLoader) Free() { Object(self).Free() }
+type ImageFormatLoader pointers.PointerNamed[ImageFormatLoader, [3]uintptr, [1]pointers.Type]
 
+func (self ImageFormatLoader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImageFormatLoader) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImageFormatLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImageFormatLoaderExtension discreet.PointerNamed[ImageFormatLoaderExtension, [3]uintptr, [1]discreet.Type]
-func (self ImageFormatLoaderExtension) Free() { Object(self).Free() }
 
+type ImageFormatLoaderExtension pointers.PointerNamed[ImageFormatLoaderExtension, [3]uintptr, [1]pointers.Type]
+
+func (self ImageFormatLoaderExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImageFormatLoaderExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImageFormatLoaderExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImageTexture discreet.PointerNamed[ImageTexture, [3]uintptr, [1]discreet.Type]
-func (self ImageTexture) Free() { Object(self).Free() }
 
+type ImageTexture pointers.PointerNamed[ImageTexture, [3]uintptr, [1]pointers.Type]
+
+func (self ImageTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImageTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImageTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImageTexture3D discreet.PointerNamed[ImageTexture3D, [3]uintptr, [1]discreet.Type]
-func (self ImageTexture3D) Free() { Object(self).Free() }
 
+type ImageTexture3D pointers.PointerNamed[ImageTexture3D, [3]uintptr, [1]pointers.Type]
+
+func (self ImageTexture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImageTexture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImageTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImageTextureLayered discreet.PointerNamed[ImageTextureLayered, [3]uintptr, [1]discreet.Type]
-func (self ImageTextureLayered) Free() { Object(self).Free() }
 
+type ImageTextureLayered pointers.PointerNamed[ImageTextureLayered, [3]uintptr, [1]pointers.Type]
+
+func (self ImageTextureLayered) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImageTextureLayered) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImageTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImmediateMesh discreet.PointerNamed[ImmediateMesh, [3]uintptr, [1]discreet.Type]
-func (self ImmediateMesh) Free() { Object(self).Free() }
 
+type ImmediateMesh pointers.PointerNamed[ImmediateMesh, [3]uintptr, [1]pointers.Type]
+
+func (self ImmediateMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImmediateMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImmediateMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImporterMesh discreet.PointerNamed[ImporterMesh, [3]uintptr, [1]discreet.Type]
-func (self ImporterMesh) Free() { Object(self).Free() }
 
+type ImporterMesh pointers.PointerNamed[ImporterMesh, [3]uintptr, [1]pointers.Type]
+
+func (self ImporterMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImporterMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ImporterMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ImporterMeshInstance3D discreet.PointerNamed[ImporterMeshInstance3D, [3]uintptr, [1]discreet.Type]
-func (self ImporterMeshInstance3D) Free() { Object(self).Free() }
 
+type ImporterMeshInstance3D pointers.PointerNamed[ImporterMeshInstance3D, [3]uintptr, [1]pointers.Type]
+
+func (self ImporterMeshInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ImporterMeshInstance3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3102,169 +3362,189 @@ func (self ImporterMeshInstance3D) Virtual(name string) reflect.Value { return r
 type InputMouseMode int64
 
 type InputCursorShape int64
-type Input discreet.PointerNamed[Input, [3]uintptr, [1]discreet.Type]
-func (self Input) Free() { Object(self).Free() }
+type Input pointers.PointerNamed[Input, [3]uintptr, [1]pointers.Type]
 
+func (self Input) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Input) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Input) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEvent discreet.PointerNamed[InputEvent, [3]uintptr, [1]discreet.Type]
-func (self InputEvent) Free() { Object(self).Free() }
 
+type InputEvent pointers.PointerNamed[InputEvent, [3]uintptr, [1]pointers.Type]
+
+func (self InputEvent) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEvent) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEvent) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventAction discreet.PointerNamed[InputEventAction, [3]uintptr, [1]discreet.Type]
-func (self InputEventAction) Free() { Object(self).Free() }
 
+type InputEventAction pointers.PointerNamed[InputEventAction, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventAction) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventAction) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventAction) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventFromWindow discreet.PointerNamed[InputEventFromWindow, [3]uintptr, [1]discreet.Type]
-func (self InputEventFromWindow) Free() { Object(self).Free() }
 
+type InputEventFromWindow pointers.PointerNamed[InputEventFromWindow, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventFromWindow) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventFromWindow) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventFromWindow) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventGesture discreet.PointerNamed[InputEventGesture, [3]uintptr, [1]discreet.Type]
-func (self InputEventGesture) Free() { Object(self).Free() }
 
+type InputEventGesture pointers.PointerNamed[InputEventGesture, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventGesture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventGesture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventJoypadButton discreet.PointerNamed[InputEventJoypadButton, [3]uintptr, [1]discreet.Type]
-func (self InputEventJoypadButton) Free() { Object(self).Free() }
 
+type InputEventJoypadButton pointers.PointerNamed[InputEventJoypadButton, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventJoypadButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventJoypadButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventJoypadButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventJoypadMotion discreet.PointerNamed[InputEventJoypadMotion, [3]uintptr, [1]discreet.Type]
-func (self InputEventJoypadMotion) Free() { Object(self).Free() }
 
+type InputEventJoypadMotion pointers.PointerNamed[InputEventJoypadMotion, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventJoypadMotion) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventJoypadMotion) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventJoypadMotion) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventKey discreet.PointerNamed[InputEventKey, [3]uintptr, [1]discreet.Type]
-func (self InputEventKey) Free() { Object(self).Free() }
 
+type InputEventKey pointers.PointerNamed[InputEventKey, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventKey) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventKey) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventKey) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventMIDI discreet.PointerNamed[InputEventMIDI, [3]uintptr, [1]discreet.Type]
-func (self InputEventMIDI) Free() { Object(self).Free() }
 
+type InputEventMIDI pointers.PointerNamed[InputEventMIDI, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventMIDI) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventMIDI) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventMIDI) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventMagnifyGesture discreet.PointerNamed[InputEventMagnifyGesture, [3]uintptr, [1]discreet.Type]
-func (self InputEventMagnifyGesture) Free() { Object(self).Free() }
 
+type InputEventMagnifyGesture pointers.PointerNamed[InputEventMagnifyGesture, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventMagnifyGesture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventMagnifyGesture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventMagnifyGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventMouse discreet.PointerNamed[InputEventMouse, [3]uintptr, [1]discreet.Type]
-func (self InputEventMouse) Free() { Object(self).Free() }
 
+type InputEventMouse pointers.PointerNamed[InputEventMouse, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventMouse) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventMouse) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventMouse) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventMouseButton discreet.PointerNamed[InputEventMouseButton, [3]uintptr, [1]discreet.Type]
-func (self InputEventMouseButton) Free() { Object(self).Free() }
 
+type InputEventMouseButton pointers.PointerNamed[InputEventMouseButton, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventMouseButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventMouseButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventMouseButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventMouseMotion discreet.PointerNamed[InputEventMouseMotion, [3]uintptr, [1]discreet.Type]
-func (self InputEventMouseMotion) Free() { Object(self).Free() }
 
+type InputEventMouseMotion pointers.PointerNamed[InputEventMouseMotion, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventMouseMotion) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventMouseMotion) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventMouseMotion) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventPanGesture discreet.PointerNamed[InputEventPanGesture, [3]uintptr, [1]discreet.Type]
-func (self InputEventPanGesture) Free() { Object(self).Free() }
 
+type InputEventPanGesture pointers.PointerNamed[InputEventPanGesture, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventPanGesture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventPanGesture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventPanGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventScreenDrag discreet.PointerNamed[InputEventScreenDrag, [3]uintptr, [1]discreet.Type]
-func (self InputEventScreenDrag) Free() { Object(self).Free() }
 
+type InputEventScreenDrag pointers.PointerNamed[InputEventScreenDrag, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventScreenDrag) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventScreenDrag) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventScreenDrag) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventScreenTouch discreet.PointerNamed[InputEventScreenTouch, [3]uintptr, [1]discreet.Type]
-func (self InputEventScreenTouch) Free() { Object(self).Free() }
 
+type InputEventScreenTouch pointers.PointerNamed[InputEventScreenTouch, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventScreenTouch) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventScreenTouch) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventScreenTouch) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventShortcut discreet.PointerNamed[InputEventShortcut, [3]uintptr, [1]discreet.Type]
-func (self InputEventShortcut) Free() { Object(self).Free() }
 
+type InputEventShortcut pointers.PointerNamed[InputEventShortcut, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventShortcut) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventShortcut) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventShortcut) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputEventWithModifiers discreet.PointerNamed[InputEventWithModifiers, [3]uintptr, [1]discreet.Type]
-func (self InputEventWithModifiers) Free() { Object(self).Free() }
 
+type InputEventWithModifiers pointers.PointerNamed[InputEventWithModifiers, [3]uintptr, [1]pointers.Type]
+
+func (self InputEventWithModifiers) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputEventWithModifiers) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputEventWithModifiers) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InputMap discreet.PointerNamed[InputMap, [3]uintptr, [1]discreet.Type]
-func (self InputMap) Free() { Object(self).Free() }
 
+type InputMap pointers.PointerNamed[InputMap, [3]uintptr, [1]pointers.Type]
+
+func (self InputMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InputMap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InputMap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type InstancePlaceholder discreet.PointerNamed[InstancePlaceholder, [3]uintptr, [1]discreet.Type]
-func (self InstancePlaceholder) Free() { Object(self).Free() }
 
+type InstancePlaceholder pointers.PointerNamed[InstancePlaceholder, [3]uintptr, [1]pointers.Type]
+
+func (self InstancePlaceholder) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self InstancePlaceholder) AsObject() gd.Object { return gd.Object(self) }
 
 func (self InstancePlaceholder) Virtual(name string) reflect.Value { return reflect.Value{} }
-type IntervalTweener discreet.PointerNamed[IntervalTweener, [3]uintptr, [1]discreet.Type]
-func (self IntervalTweener) Free() { Object(self).Free() }
 
+type IntervalTweener pointers.PointerNamed[IntervalTweener, [3]uintptr, [1]pointers.Type]
+
+func (self IntervalTweener) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self IntervalTweener) AsObject() gd.Object { return gd.Object(self) }
@@ -3274,25 +3554,27 @@ func (self IntervalTweener) Virtual(name string) reflect.Value { return reflect.
 type ItemListIconMode int64
 
 type ItemListSelectMode int64
-type ItemList discreet.PointerNamed[ItemList, [3]uintptr, [1]discreet.Type]
-func (self ItemList) Free() { Object(self).Free() }
+type ItemList pointers.PointerNamed[ItemList, [3]uintptr, [1]pointers.Type]
 
+func (self ItemList) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ItemList) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ItemList) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JNISingleton discreet.PointerNamed[JNISingleton, [3]uintptr, [1]discreet.Type]
-func (self JNISingleton) Free() { Object(self).Free() }
 
+type JNISingleton pointers.PointerNamed[JNISingleton, [3]uintptr, [1]pointers.Type]
+
+func (self JNISingleton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JNISingleton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JNISingleton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JSON discreet.PointerNamed[JSON, [3]uintptr, [1]discreet.Type]
-func (self JSON) Free() { Object(self).Free() }
 
+type JSON pointers.PointerNamed[JSON, [3]uintptr, [1]pointers.Type]
+
+func (self JSON) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JSON) AsObject() gd.Object { return gd.Object(self) }
@@ -3300,81 +3582,90 @@ func (self JSON) AsObject() gd.Object { return gd.Object(self) }
 func (self JSON) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type JSONRPCErrorCode int64
-type JSONRPC discreet.PointerNamed[JSONRPC, [3]uintptr, [1]discreet.Type]
-func (self JSONRPC) Free() { Object(self).Free() }
+type JSONRPC pointers.PointerNamed[JSONRPC, [3]uintptr, [1]pointers.Type]
 
+func (self JSONRPC) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JSONRPC) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JSONRPC) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JavaClass discreet.PointerNamed[JavaClass, [3]uintptr, [1]discreet.Type]
-func (self JavaClass) Free() { Object(self).Free() }
 
+type JavaClass pointers.PointerNamed[JavaClass, [3]uintptr, [1]pointers.Type]
+
+func (self JavaClass) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JavaClass) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JavaClass) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JavaClassWrapper discreet.PointerNamed[JavaClassWrapper, [3]uintptr, [1]discreet.Type]
-func (self JavaClassWrapper) Free() { Object(self).Free() }
 
+type JavaClassWrapper pointers.PointerNamed[JavaClassWrapper, [3]uintptr, [1]pointers.Type]
+
+func (self JavaClassWrapper) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JavaClassWrapper) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JavaClassWrapper) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JavaScriptBridge discreet.PointerNamed[JavaScriptBridge, [3]uintptr, [1]discreet.Type]
-func (self JavaScriptBridge) Free() { Object(self).Free() }
 
+type JavaScriptBridge pointers.PointerNamed[JavaScriptBridge, [3]uintptr, [1]pointers.Type]
+
+func (self JavaScriptBridge) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JavaScriptBridge) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JavaScriptBridge) Virtual(name string) reflect.Value { return reflect.Value{} }
-type JavaScriptObject discreet.PointerNamed[JavaScriptObject, [3]uintptr, [1]discreet.Type]
-func (self JavaScriptObject) Free() { Object(self).Free() }
 
+type JavaScriptObject pointers.PointerNamed[JavaScriptObject, [3]uintptr, [1]pointers.Type]
+
+func (self JavaScriptObject) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self JavaScriptObject) AsObject() gd.Object { return gd.Object(self) }
 
 func (self JavaScriptObject) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Joint2D discreet.PointerNamed[Joint2D, [3]uintptr, [1]discreet.Type]
-func (self Joint2D) Free() { Object(self).Free() }
 
+type Joint2D pointers.PointerNamed[Joint2D, [3]uintptr, [1]pointers.Type]
+
+func (self Joint2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Joint2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Joint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Joint3D discreet.PointerNamed[Joint3D, [3]uintptr, [1]discreet.Type]
-func (self Joint3D) Free() { Object(self).Free() }
 
+type Joint3D pointers.PointerNamed[Joint3D, [3]uintptr, [1]pointers.Type]
+
+func (self Joint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Joint3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Joint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type KinematicCollision2D discreet.PointerNamed[KinematicCollision2D, [3]uintptr, [1]discreet.Type]
-func (self KinematicCollision2D) Free() { Object(self).Free() }
 
+type KinematicCollision2D pointers.PointerNamed[KinematicCollision2D, [3]uintptr, [1]pointers.Type]
+
+func (self KinematicCollision2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self KinematicCollision2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self KinematicCollision2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type KinematicCollision3D discreet.PointerNamed[KinematicCollision3D, [3]uintptr, [1]discreet.Type]
-func (self KinematicCollision3D) Free() { Object(self).Free() }
 
+type KinematicCollision3D pointers.PointerNamed[KinematicCollision3D, [3]uintptr, [1]pointers.Type]
+
+func (self KinematicCollision3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self KinematicCollision3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self KinematicCollision3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Label discreet.PointerNamed[Label, [3]uintptr, [1]discreet.Type]
-func (self Label) Free() { Object(self).Free() }
 
+type Label pointers.PointerNamed[Label, [3]uintptr, [1]pointers.Type]
+
+func (self Label) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Label) AsObject() gd.Object { return gd.Object(self) }
@@ -3384,17 +3675,18 @@ func (self Label) Virtual(name string) reflect.Value { return reflect.Value{} }
 type Label3DDrawFlags int64
 
 type Label3DAlphaCutMode int64
-type Label3D discreet.PointerNamed[Label3D, [3]uintptr, [1]discreet.Type]
-func (self Label3D) Free() { Object(self).Free() }
+type Label3D pointers.PointerNamed[Label3D, [3]uintptr, [1]pointers.Type]
 
+func (self Label3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Label3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Label3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type LabelSettings discreet.PointerNamed[LabelSettings, [3]uintptr, [1]discreet.Type]
-func (self LabelSettings) Free() { Object(self).Free() }
 
+type LabelSettings pointers.PointerNamed[LabelSettings, [3]uintptr, [1]pointers.Type]
+
+func (self LabelSettings) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LabelSettings) AsObject() gd.Object { return gd.Object(self) }
@@ -3404,9 +3696,9 @@ func (self LabelSettings) Virtual(name string) reflect.Value { return reflect.Va
 type Light2DShadowFilter int64
 
 type Light2DBlendMode int64
-type Light2D discreet.PointerNamed[Light2D, [3]uintptr, [1]discreet.Type]
-func (self Light2D) Free() { Object(self).Free() }
+type Light2D pointers.PointerNamed[Light2D, [3]uintptr, [1]pointers.Type]
 
+func (self Light2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Light2D) AsObject() gd.Object { return gd.Object(self) }
@@ -3416,17 +3708,18 @@ func (self Light2D) Virtual(name string) reflect.Value { return reflect.Value{} 
 type Light3DParam int64
 
 type Light3DBakeMode int64
-type Light3D discreet.PointerNamed[Light3D, [3]uintptr, [1]discreet.Type]
-func (self Light3D) Free() { Object(self).Free() }
+type Light3D pointers.PointerNamed[Light3D, [3]uintptr, [1]pointers.Type]
 
+func (self Light3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Light3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Light3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type LightOccluder2D discreet.PointerNamed[LightOccluder2D, [3]uintptr, [1]discreet.Type]
-func (self LightOccluder2D) Free() { Object(self).Free() }
 
+type LightOccluder2D pointers.PointerNamed[LightOccluder2D, [3]uintptr, [1]pointers.Type]
+
+func (self LightOccluder2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LightOccluder2D) AsObject() gd.Object { return gd.Object(self) }
@@ -3440,41 +3733,45 @@ type LightmapGIGenerateProbes int64
 type LightmapGIBakeError int64
 
 type LightmapGIEnvironmentMode int64
-type LightmapGI discreet.PointerNamed[LightmapGI, [3]uintptr, [1]discreet.Type]
-func (self LightmapGI) Free() { Object(self).Free() }
+type LightmapGI pointers.PointerNamed[LightmapGI, [3]uintptr, [1]pointers.Type]
 
+func (self LightmapGI) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LightmapGI) AsObject() gd.Object { return gd.Object(self) }
 
 func (self LightmapGI) Virtual(name string) reflect.Value { return reflect.Value{} }
-type LightmapGIData discreet.PointerNamed[LightmapGIData, [3]uintptr, [1]discreet.Type]
-func (self LightmapGIData) Free() { Object(self).Free() }
 
+type LightmapGIData pointers.PointerNamed[LightmapGIData, [3]uintptr, [1]pointers.Type]
+
+func (self LightmapGIData) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LightmapGIData) AsObject() gd.Object { return gd.Object(self) }
 
 func (self LightmapGIData) Virtual(name string) reflect.Value { return reflect.Value{} }
-type LightmapProbe discreet.PointerNamed[LightmapProbe, [3]uintptr, [1]discreet.Type]
-func (self LightmapProbe) Free() { Object(self).Free() }
 
+type LightmapProbe pointers.PointerNamed[LightmapProbe, [3]uintptr, [1]pointers.Type]
+
+func (self LightmapProbe) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LightmapProbe) AsObject() gd.Object { return gd.Object(self) }
 
 func (self LightmapProbe) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Lightmapper discreet.PointerNamed[Lightmapper, [3]uintptr, [1]discreet.Type]
-func (self Lightmapper) Free() { Object(self).Free() }
 
+type Lightmapper pointers.PointerNamed[Lightmapper, [3]uintptr, [1]pointers.Type]
+
+func (self Lightmapper) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Lightmapper) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Lightmapper) Virtual(name string) reflect.Value { return reflect.Value{} }
-type LightmapperRD discreet.PointerNamed[LightmapperRD, [3]uintptr, [1]discreet.Type]
-func (self LightmapperRD) Free() { Object(self).Free() }
 
+type LightmapperRD pointers.PointerNamed[LightmapperRD, [3]uintptr, [1]pointers.Type]
+
+func (self LightmapperRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LightmapperRD) AsObject() gd.Object { return gd.Object(self) }
@@ -3486,9 +3783,9 @@ type Line2DLineJointMode int64
 type Line2DLineCapMode int64
 
 type Line2DLineTextureMode int64
-type Line2D discreet.PointerNamed[Line2D, [3]uintptr, [1]discreet.Type]
-func (self Line2D) Free() { Object(self).Free() }
+type Line2D pointers.PointerNamed[Line2D, [3]uintptr, [1]pointers.Type]
 
+func (self Line2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Line2D) AsObject() gd.Object { return gd.Object(self) }
@@ -3498,9 +3795,9 @@ func (self Line2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 type LineEditMenuItems int64
 
 type LineEditVirtualKeyboardType int64
-type LineEdit discreet.PointerNamed[LineEdit, [3]uintptr, [1]discreet.Type]
-func (self LineEdit) Free() { Object(self).Free() }
+type LineEdit pointers.PointerNamed[LineEdit, [3]uintptr, [1]pointers.Type]
 
+func (self LineEdit) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LineEdit) AsObject() gd.Object { return gd.Object(self) }
@@ -3508,73 +3805,81 @@ func (self LineEdit) AsObject() gd.Object { return gd.Object(self) }
 func (self LineEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type LinkButtonUnderlineMode int64
-type LinkButton discreet.PointerNamed[LinkButton, [3]uintptr, [1]discreet.Type]
-func (self LinkButton) Free() { Object(self).Free() }
+type LinkButton pointers.PointerNamed[LinkButton, [3]uintptr, [1]pointers.Type]
 
+func (self LinkButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self LinkButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self LinkButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MainLoop discreet.PointerNamed[MainLoop, [3]uintptr, [1]discreet.Type]
-func (self MainLoop) Free() { Object(self).Free() }
 
+type MainLoop pointers.PointerNamed[MainLoop, [3]uintptr, [1]pointers.Type]
+
+func (self MainLoop) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MainLoop) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MainLoop) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MarginContainer discreet.PointerNamed[MarginContainer, [3]uintptr, [1]discreet.Type]
-func (self MarginContainer) Free() { Object(self).Free() }
 
+type MarginContainer pointers.PointerNamed[MarginContainer, [3]uintptr, [1]pointers.Type]
+
+func (self MarginContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MarginContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MarginContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Marker2D discreet.PointerNamed[Marker2D, [3]uintptr, [1]discreet.Type]
-func (self Marker2D) Free() { Object(self).Free() }
 
+type Marker2D pointers.PointerNamed[Marker2D, [3]uintptr, [1]pointers.Type]
+
+func (self Marker2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Marker2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Marker2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Marker3D discreet.PointerNamed[Marker3D, [3]uintptr, [1]discreet.Type]
-func (self Marker3D) Free() { Object(self).Free() }
 
+type Marker3D pointers.PointerNamed[Marker3D, [3]uintptr, [1]pointers.Type]
+
+func (self Marker3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Marker3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Marker3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Marshalls discreet.PointerNamed[Marshalls, [3]uintptr, [1]discreet.Type]
-func (self Marshalls) Free() { Object(self).Free() }
 
+type Marshalls pointers.PointerNamed[Marshalls, [3]uintptr, [1]pointers.Type]
+
+func (self Marshalls) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Marshalls) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Marshalls) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Material discreet.PointerNamed[Material, [3]uintptr, [1]discreet.Type]
-func (self Material) Free() { Object(self).Free() }
 
+type Material pointers.PointerNamed[Material, [3]uintptr, [1]pointers.Type]
+
+func (self Material) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Material) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Material) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MenuBar discreet.PointerNamed[MenuBar, [3]uintptr, [1]discreet.Type]
-func (self MenuBar) Free() { Object(self).Free() }
 
+type MenuBar pointers.PointerNamed[MenuBar, [3]uintptr, [1]pointers.Type]
+
+func (self MenuBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MenuBar) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MenuBar) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MenuButton discreet.PointerNamed[MenuButton, [3]uintptr, [1]discreet.Type]
-func (self MenuButton) Free() { Object(self).Free() }
 
+type MenuButton pointers.PointerNamed[MenuButton, [3]uintptr, [1]pointers.Type]
+
+func (self MenuButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MenuButton) AsObject() gd.Object { return gd.Object(self) }
@@ -3590,9 +3895,9 @@ type MeshArrayCustomFormat int64
 type MeshArrayFormat int64
 
 type MeshBlendShapeMode int64
-type Mesh discreet.PointerNamed[Mesh, [3]uintptr, [1]discreet.Type]
-func (self Mesh) Free() { Object(self).Free() }
+type Mesh pointers.PointerNamed[Mesh, [3]uintptr, [1]pointers.Type]
 
+func (self Mesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Mesh) AsObject() gd.Object { return gd.Object(self) }
@@ -3600,89 +3905,101 @@ func (self Mesh) AsObject() gd.Object { return gd.Object(self) }
 func (self Mesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MeshConvexDecompositionSettingsMode int64
-type MeshConvexDecompositionSettings discreet.PointerNamed[MeshConvexDecompositionSettings, [3]uintptr, [1]discreet.Type]
-func (self MeshConvexDecompositionSettings) Free() { Object(self).Free() }
+type MeshConvexDecompositionSettings pointers.PointerNamed[MeshConvexDecompositionSettings, [3]uintptr, [1]pointers.Type]
 
+func (self MeshConvexDecompositionSettings) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshConvexDecompositionSettings) AsObject() gd.Object { return gd.Object(self) }
 
-func (self MeshConvexDecompositionSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MeshDataTool discreet.PointerNamed[MeshDataTool, [3]uintptr, [1]discreet.Type]
-func (self MeshDataTool) Free() { Object(self).Free() }
+func (self MeshConvexDecompositionSettings) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type MeshDataTool pointers.PointerNamed[MeshDataTool, [3]uintptr, [1]pointers.Type]
+
+func (self MeshDataTool) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshDataTool) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MeshDataTool) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MeshInstance2D discreet.PointerNamed[MeshInstance2D, [3]uintptr, [1]discreet.Type]
-func (self MeshInstance2D) Free() { Object(self).Free() }
 
+type MeshInstance2D pointers.PointerNamed[MeshInstance2D, [3]uintptr, [1]pointers.Type]
+
+func (self MeshInstance2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshInstance2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MeshInstance2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MeshInstance3D discreet.PointerNamed[MeshInstance3D, [3]uintptr, [1]discreet.Type]
-func (self MeshInstance3D) Free() { Object(self).Free() }
 
+type MeshInstance3D pointers.PointerNamed[MeshInstance3D, [3]uintptr, [1]pointers.Type]
+
+func (self MeshInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshInstance3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MeshInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MeshLibrary discreet.PointerNamed[MeshLibrary, [3]uintptr, [1]discreet.Type]
-func (self MeshLibrary) Free() { Object(self).Free() }
 
+type MeshLibrary pointers.PointerNamed[MeshLibrary, [3]uintptr, [1]pointers.Type]
+
+func (self MeshLibrary) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshLibrary) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MeshLibrary) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MeshTexture discreet.PointerNamed[MeshTexture, [3]uintptr, [1]discreet.Type]
-func (self MeshTexture) Free() { Object(self).Free() }
 
+type MeshTexture pointers.PointerNamed[MeshTexture, [3]uintptr, [1]pointers.Type]
+
+func (self MeshTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MeshTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MeshTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MethodTweener discreet.PointerNamed[MethodTweener, [3]uintptr, [1]discreet.Type]
-func (self MethodTweener) Free() { Object(self).Free() }
 
+type MethodTweener pointers.PointerNamed[MethodTweener, [3]uintptr, [1]pointers.Type]
+
+func (self MethodTweener) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MethodTweener) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MethodTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MissingNode discreet.PointerNamed[MissingNode, [3]uintptr, [1]discreet.Type]
-func (self MissingNode) Free() { Object(self).Free() }
 
+type MissingNode pointers.PointerNamed[MissingNode, [3]uintptr, [1]pointers.Type]
+
+func (self MissingNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MissingNode) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MissingNode) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MissingResource discreet.PointerNamed[MissingResource, [3]uintptr, [1]discreet.Type]
-func (self MissingResource) Free() { Object(self).Free() }
 
+type MissingResource pointers.PointerNamed[MissingResource, [3]uintptr, [1]pointers.Type]
+
+func (self MissingResource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MissingResource) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MissingResource) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MobileVRInterface discreet.PointerNamed[MobileVRInterface, [3]uintptr, [1]discreet.Type]
-func (self MobileVRInterface) Free() { Object(self).Free() }
 
+type MobileVRInterface pointers.PointerNamed[MobileVRInterface, [3]uintptr, [1]pointers.Type]
+
+func (self MobileVRInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MobileVRInterface) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MobileVRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MovieWriter discreet.PointerNamed[MovieWriter, [3]uintptr, [1]discreet.Type]
-func (self MovieWriter) Free() { Object(self).Free() }
 
+type MovieWriter pointers.PointerNamed[MovieWriter, [3]uintptr, [1]pointers.Type]
+
+func (self MovieWriter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MovieWriter) AsObject() gd.Object { return gd.Object(self) }
@@ -3690,25 +4007,27 @@ func (self MovieWriter) AsObject() gd.Object { return gd.Object(self) }
 func (self MovieWriter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MultiMeshTransformFormat int64
-type MultiMesh discreet.PointerNamed[MultiMesh, [3]uintptr, [1]discreet.Type]
-func (self MultiMesh) Free() { Object(self).Free() }
+type MultiMesh pointers.PointerNamed[MultiMesh, [3]uintptr, [1]pointers.Type]
 
+func (self MultiMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MultiMeshInstance2D discreet.PointerNamed[MultiMeshInstance2D, [3]uintptr, [1]discreet.Type]
-func (self MultiMeshInstance2D) Free() { Object(self).Free() }
 
+type MultiMeshInstance2D pointers.PointerNamed[MultiMeshInstance2D, [3]uintptr, [1]pointers.Type]
+
+func (self MultiMeshInstance2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiMeshInstance2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiMeshInstance2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MultiMeshInstance3D discreet.PointerNamed[MultiMeshInstance3D, [3]uintptr, [1]discreet.Type]
-func (self MultiMeshInstance3D) Free() { Object(self).Free() }
 
+type MultiMeshInstance3D pointers.PointerNamed[MultiMeshInstance3D, [3]uintptr, [1]pointers.Type]
+
+func (self MultiMeshInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiMeshInstance3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3716,17 +4035,18 @@ func (self MultiMeshInstance3D) AsObject() gd.Object { return gd.Object(self) }
 func (self MultiMeshInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MultiplayerAPIRPCMode int64
-type MultiplayerAPI discreet.PointerNamed[MultiplayerAPI, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerAPI) Free() { Object(self).Free() }
+type MultiplayerAPI pointers.PointerNamed[MultiplayerAPI, [3]uintptr, [1]pointers.Type]
 
+func (self MultiplayerAPI) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerAPI) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiplayerAPI) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MultiplayerAPIExtension discreet.PointerNamed[MultiplayerAPIExtension, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerAPIExtension) Free() { Object(self).Free() }
 
+type MultiplayerAPIExtension pointers.PointerNamed[MultiplayerAPIExtension, [3]uintptr, [1]pointers.Type]
+
+func (self MultiplayerAPIExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerAPIExtension) AsObject() gd.Object { return gd.Object(self) }
@@ -3736,25 +4056,27 @@ func (self MultiplayerAPIExtension) Virtual(name string) reflect.Value { return 
 type MultiplayerPeerConnectionStatus int64
 
 type MultiplayerPeerTransferMode int64
-type MultiplayerPeer discreet.PointerNamed[MultiplayerPeer, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerPeer) Free() { Object(self).Free() }
+type MultiplayerPeer pointers.PointerNamed[MultiplayerPeer, [3]uintptr, [1]pointers.Type]
 
+func (self MultiplayerPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerPeer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MultiplayerPeerExtension discreet.PointerNamed[MultiplayerPeerExtension, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerPeerExtension) Free() { Object(self).Free() }
 
+type MultiplayerPeerExtension pointers.PointerNamed[MultiplayerPeerExtension, [3]uintptr, [1]pointers.Type]
+
+func (self MultiplayerPeerExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerPeerExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiplayerPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type MultiplayerSpawner discreet.PointerNamed[MultiplayerSpawner, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerSpawner) Free() { Object(self).Free() }
 
+type MultiplayerSpawner pointers.PointerNamed[MultiplayerSpawner, [3]uintptr, [1]pointers.Type]
+
+func (self MultiplayerSpawner) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerSpawner) AsObject() gd.Object { return gd.Object(self) }
@@ -3762,17 +4084,18 @@ func (self MultiplayerSpawner) AsObject() gd.Object { return gd.Object(self) }
 func (self MultiplayerSpawner) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type MultiplayerSynchronizerVisibilityUpdateMode int64
-type MultiplayerSynchronizer discreet.PointerNamed[MultiplayerSynchronizer, [3]uintptr, [1]discreet.Type]
-func (self MultiplayerSynchronizer) Free() { Object(self).Free() }
+type MultiplayerSynchronizer pointers.PointerNamed[MultiplayerSynchronizer, [3]uintptr, [1]pointers.Type]
 
+func (self MultiplayerSynchronizer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self MultiplayerSynchronizer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self MultiplayerSynchronizer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Mutex discreet.PointerNamed[Mutex, [3]uintptr, [1]discreet.Type]
-func (self Mutex) Free() { Object(self).Free() }
 
+type Mutex pointers.PointerNamed[Mutex, [3]uintptr, [1]pointers.Type]
+
+func (self Mutex) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Mutex) AsObject() gd.Object { return gd.Object(self) }
@@ -3782,41 +4105,45 @@ func (self Mutex) Virtual(name string) reflect.Value { return reflect.Value{} }
 type NativeMenuFeature int64
 
 type NativeMenuSystemMenus int64
-type NativeMenu discreet.PointerNamed[NativeMenu, [3]uintptr, [1]discreet.Type]
-func (self NativeMenu) Free() { Object(self).Free() }
+type NativeMenu pointers.PointerNamed[NativeMenu, [3]uintptr, [1]pointers.Type]
 
+func (self NativeMenu) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NativeMenu) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NativeMenu) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationAgent2D discreet.PointerNamed[NavigationAgent2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationAgent2D) Free() { Object(self).Free() }
 
+type NavigationAgent2D pointers.PointerNamed[NavigationAgent2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationAgent2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationAgent2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationAgent2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationAgent3D discreet.PointerNamed[NavigationAgent3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationAgent3D) Free() { Object(self).Free() }
 
+type NavigationAgent3D pointers.PointerNamed[NavigationAgent3D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationAgent3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationAgent3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationAgent3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationLink2D discreet.PointerNamed[NavigationLink2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationLink2D) Free() { Object(self).Free() }
 
+type NavigationLink2D pointers.PointerNamed[NavigationLink2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationLink2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationLink2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationLink2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationLink3D discreet.PointerNamed[NavigationLink3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationLink3D) Free() { Object(self).Free() }
 
+type NavigationLink3D pointers.PointerNamed[NavigationLink3D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationLink3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationLink3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3828,49 +4155,58 @@ type NavigationMeshSamplePartitionType int64
 type NavigationMeshParsedGeometryType int64
 
 type NavigationMeshSourceGeometryMode int64
-type NavigationMesh discreet.PointerNamed[NavigationMesh, [3]uintptr, [1]discreet.Type]
-func (self NavigationMesh) Free() { Object(self).Free() }
+type NavigationMesh pointers.PointerNamed[NavigationMesh, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationMeshGenerator discreet.PointerNamed[NavigationMeshGenerator, [3]uintptr, [1]discreet.Type]
-func (self NavigationMeshGenerator) Free() { Object(self).Free() }
 
+type NavigationMeshGenerator pointers.PointerNamed[NavigationMeshGenerator, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationMeshGenerator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationMeshGenerator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationMeshGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationMeshSourceGeometryData2D discreet.PointerNamed[NavigationMeshSourceGeometryData2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationMeshSourceGeometryData2D) Free() { Object(self).Free() }
 
+type NavigationMeshSourceGeometryData2D pointers.PointerNamed[NavigationMeshSourceGeometryData2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationMeshSourceGeometryData2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationMeshSourceGeometryData2D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self NavigationMeshSourceGeometryData2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationMeshSourceGeometryData3D discreet.PointerNamed[NavigationMeshSourceGeometryData3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationMeshSourceGeometryData3D) Free() { Object(self).Free() }
+func (self NavigationMeshSourceGeometryData2D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type NavigationMeshSourceGeometryData3D pointers.PointerNamed[NavigationMeshSourceGeometryData3D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationMeshSourceGeometryData3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationMeshSourceGeometryData3D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self NavigationMeshSourceGeometryData3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationObstacle2D discreet.PointerNamed[NavigationObstacle2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationObstacle2D) Free() { Object(self).Free() }
+func (self NavigationMeshSourceGeometryData3D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type NavigationObstacle2D pointers.PointerNamed[NavigationObstacle2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationObstacle2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationObstacle2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationObstacle2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationObstacle3D discreet.PointerNamed[NavigationObstacle3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationObstacle3D) Free() { Object(self).Free() }
 
+type NavigationObstacle3D pointers.PointerNamed[NavigationObstacle3D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationObstacle3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationObstacle3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3882,33 +4218,37 @@ type NavigationPathQueryParameters2DPathfindingAlgorithm int64
 type NavigationPathQueryParameters2DPathPostProcessing int64
 
 type NavigationPathQueryParameters2DPathMetadataFlags int64
-type NavigationPathQueryParameters2D discreet.PointerNamed[NavigationPathQueryParameters2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationPathQueryParameters2D) Free() { Object(self).Free() }
+type NavigationPathQueryParameters2D pointers.PointerNamed[NavigationPathQueryParameters2D, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationPathQueryParameters2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationPathQueryParameters2D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self NavigationPathQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self NavigationPathQueryParameters2D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type NavigationPathQueryParameters3DPathfindingAlgorithm int64
 
 type NavigationPathQueryParameters3DPathPostProcessing int64
 
 type NavigationPathQueryParameters3DPathMetadataFlags int64
-type NavigationPathQueryParameters3D discreet.PointerNamed[NavigationPathQueryParameters3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationPathQueryParameters3D) Free() { Object(self).Free() }
+type NavigationPathQueryParameters3D pointers.PointerNamed[NavigationPathQueryParameters3D, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationPathQueryParameters3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationPathQueryParameters3D) AsObject() gd.Object { return gd.Object(self) }
 
-func (self NavigationPathQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self NavigationPathQueryParameters3D) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type NavigationPathQueryResult2DPathSegmentType int64
-type NavigationPathQueryResult2D discreet.PointerNamed[NavigationPathQueryResult2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationPathQueryResult2D) Free() { Object(self).Free() }
+type NavigationPathQueryResult2D pointers.PointerNamed[NavigationPathQueryResult2D, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationPathQueryResult2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationPathQueryResult2D) AsObject() gd.Object { return gd.Object(self) }
@@ -3916,9 +4256,9 @@ func (self NavigationPathQueryResult2D) AsObject() gd.Object { return gd.Object(
 func (self NavigationPathQueryResult2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type NavigationPathQueryResult3DPathSegmentType int64
-type NavigationPathQueryResult3D discreet.PointerNamed[NavigationPathQueryResult3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationPathQueryResult3D) Free() { Object(self).Free() }
+type NavigationPathQueryResult3D pointers.PointerNamed[NavigationPathQueryResult3D, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationPathQueryResult3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationPathQueryResult3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3928,33 +4268,36 @@ func (self NavigationPathQueryResult3D) Virtual(name string) reflect.Value { ret
 type NavigationPolygonParsedGeometryType int64
 
 type NavigationPolygonSourceGeometryMode int64
-type NavigationPolygon discreet.PointerNamed[NavigationPolygon, [3]uintptr, [1]discreet.Type]
-func (self NavigationPolygon) Free() { Object(self).Free() }
+type NavigationPolygon pointers.PointerNamed[NavigationPolygon, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationPolygon) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationPolygon) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationPolygon) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationRegion2D discreet.PointerNamed[NavigationRegion2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationRegion2D) Free() { Object(self).Free() }
 
+type NavigationRegion2D pointers.PointerNamed[NavigationRegion2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationRegion2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationRegion2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationRegion2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationRegion3D discreet.PointerNamed[NavigationRegion3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationRegion3D) Free() { Object(self).Free() }
 
+type NavigationRegion3D pointers.PointerNamed[NavigationRegion3D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationRegion3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationRegion3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NavigationRegion3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NavigationServer2D discreet.PointerNamed[NavigationServer2D, [3]uintptr, [1]discreet.Type]
-func (self NavigationServer2D) Free() { Object(self).Free() }
 
+type NavigationServer2D pointers.PointerNamed[NavigationServer2D, [3]uintptr, [1]pointers.Type]
+
+func (self NavigationServer2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationServer2D) AsObject() gd.Object { return gd.Object(self) }
@@ -3962,9 +4305,9 @@ func (self NavigationServer2D) AsObject() gd.Object { return gd.Object(self) }
 func (self NavigationServer2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type NavigationServer3DProcessInfo int64
-type NavigationServer3D discreet.PointerNamed[NavigationServer3D, [3]uintptr, [1]discreet.Type]
-func (self NavigationServer3D) Free() { Object(self).Free() }
+type NavigationServer3D pointers.PointerNamed[NavigationServer3D, [3]uintptr, [1]pointers.Type]
 
+func (self NavigationServer3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NavigationServer3D) AsObject() gd.Object { return gd.Object(self) }
@@ -3972,9 +4315,9 @@ func (self NavigationServer3D) AsObject() gd.Object { return gd.Object(self) }
 func (self NavigationServer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type NinePatchRectAxisStretchMode int64
-type NinePatchRect discreet.PointerNamed[NinePatchRect, [3]uintptr, [1]discreet.Type]
-func (self NinePatchRect) Free() { Object(self).Free() }
+type NinePatchRect pointers.PointerNamed[NinePatchRect, [3]uintptr, [1]pointers.Type]
 
+func (self NinePatchRect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NinePatchRect) AsObject() gd.Object { return gd.Object(self) }
@@ -3994,17 +4337,18 @@ type NodeDuplicateFlags int64
 type NodeInternalMode int64
 
 type NodeAutoTranslateMode int64
-type Node discreet.PointerNamed[Node, [3]uintptr, [1]discreet.Type]
-func (self Node) Free() { Object(self).Free() }
+type Node pointers.PointerNamed[Node, [3]uintptr, [1]pointers.Type]
 
+func (self Node) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Node) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Node) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Node2D discreet.PointerNamed[Node2D, [3]uintptr, [1]discreet.Type]
-func (self Node2D) Free() { Object(self).Free() }
 
+type Node2D pointers.PointerNamed[Node2D, [3]uintptr, [1]pointers.Type]
+
+func (self Node2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Node2D) AsObject() gd.Object { return gd.Object(self) }
@@ -4012,49 +4356,54 @@ func (self Node2D) AsObject() gd.Object { return gd.Object(self) }
 func (self Node2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Node3DRotationEditMode int64
-type Node3D discreet.PointerNamed[Node3D, [3]uintptr, [1]discreet.Type]
-func (self Node3D) Free() { Object(self).Free() }
+type Node3D pointers.PointerNamed[Node3D, [3]uintptr, [1]pointers.Type]
 
+func (self Node3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Node3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Node3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Node3DGizmo discreet.PointerNamed[Node3DGizmo, [3]uintptr, [1]discreet.Type]
-func (self Node3DGizmo) Free() { Object(self).Free() }
 
+type Node3DGizmo pointers.PointerNamed[Node3DGizmo, [3]uintptr, [1]pointers.Type]
+
+func (self Node3DGizmo) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Node3DGizmo) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Node3DGizmo) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Noise discreet.PointerNamed[Noise, [3]uintptr, [1]discreet.Type]
-func (self Noise) Free() { Object(self).Free() }
 
+type Noise pointers.PointerNamed[Noise, [3]uintptr, [1]pointers.Type]
+
+func (self Noise) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Noise) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Noise) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NoiseTexture2D discreet.PointerNamed[NoiseTexture2D, [3]uintptr, [1]discreet.Type]
-func (self NoiseTexture2D) Free() { Object(self).Free() }
 
+type NoiseTexture2D pointers.PointerNamed[NoiseTexture2D, [3]uintptr, [1]pointers.Type]
+
+func (self NoiseTexture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NoiseTexture2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NoiseTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type NoiseTexture3D discreet.PointerNamed[NoiseTexture3D, [3]uintptr, [1]discreet.Type]
-func (self NoiseTexture3D) Free() { Object(self).Free() }
 
+type NoiseTexture3D pointers.PointerNamed[NoiseTexture3D, [3]uintptr, [1]pointers.Type]
+
+func (self NoiseTexture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self NoiseTexture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self NoiseTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ORMMaterial3D discreet.PointerNamed[ORMMaterial3D, [3]uintptr, [1]discreet.Type]
-func (self ORMMaterial3D) Free() { Object(self).Free() }
 
+type ORMMaterial3D pointers.PointerNamed[ORMMaterial3D, [3]uintptr, [1]pointers.Type]
+
+func (self ORMMaterial3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ORMMaterial3D) AsObject() gd.Object { return gd.Object(self) }
@@ -4064,25 +4413,27 @@ func (self ORMMaterial3D) Virtual(name string) reflect.Value { return reflect.Va
 type OSRenderingDriver int64
 
 type OSSystemDir int64
-type OS discreet.PointerNamed[OS, [3]uintptr, [1]discreet.Type]
-func (self OS) Free() { Object(self).Free() }
+type OS pointers.PointerNamed[OS, [3]uintptr, [1]pointers.Type]
 
+func (self OS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OS) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OS) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Occluder3D discreet.PointerNamed[Occluder3D, [3]uintptr, [1]discreet.Type]
-func (self Occluder3D) Free() { Object(self).Free() }
 
+type Occluder3D pointers.PointerNamed[Occluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self Occluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Occluder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Occluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OccluderInstance3D discreet.PointerNamed[OccluderInstance3D, [3]uintptr, [1]discreet.Type]
-func (self OccluderInstance3D) Free() { Object(self).Free() }
 
+type OccluderInstance3D pointers.PointerNamed[OccluderInstance3D, [3]uintptr, [1]pointers.Type]
+
+func (self OccluderInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OccluderInstance3D) AsObject() gd.Object { return gd.Object(self) }
@@ -4090,33 +4441,36 @@ func (self OccluderInstance3D) AsObject() gd.Object { return gd.Object(self) }
 func (self OccluderInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OccluderPolygon2DCullMode int64
-type OccluderPolygon2D discreet.PointerNamed[OccluderPolygon2D, [3]uintptr, [1]discreet.Type]
-func (self OccluderPolygon2D) Free() { Object(self).Free() }
+type OccluderPolygon2D pointers.PointerNamed[OccluderPolygon2D, [3]uintptr, [1]pointers.Type]
 
+func (self OccluderPolygon2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OccluderPolygon2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OccluderPolygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OfflineMultiplayerPeer discreet.PointerNamed[OfflineMultiplayerPeer, [3]uintptr, [1]discreet.Type]
-func (self OfflineMultiplayerPeer) Free() { Object(self).Free() }
 
+type OfflineMultiplayerPeer pointers.PointerNamed[OfflineMultiplayerPeer, [3]uintptr, [1]pointers.Type]
+
+func (self OfflineMultiplayerPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OfflineMultiplayerPeer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OfflineMultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OggPacketSequence discreet.PointerNamed[OggPacketSequence, [3]uintptr, [1]discreet.Type]
-func (self OggPacketSequence) Free() { Object(self).Free() }
 
+type OggPacketSequence pointers.PointerNamed[OggPacketSequence, [3]uintptr, [1]pointers.Type]
+
+func (self OggPacketSequence) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OggPacketSequence) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OggPacketSequence) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OggPacketSequencePlayback discreet.PointerNamed[OggPacketSequencePlayback, [3]uintptr, [1]discreet.Type]
-func (self OggPacketSequencePlayback) Free() { Object(self).Free() }
 
+type OggPacketSequencePlayback pointers.PointerNamed[OggPacketSequencePlayback, [3]uintptr, [1]pointers.Type]
+
+func (self OggPacketSequencePlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OggPacketSequencePlayback) AsObject() gd.Object { return gd.Object(self) }
@@ -4124,9 +4478,9 @@ func (self OggPacketSequencePlayback) AsObject() gd.Object { return gd.Object(se
 func (self OggPacketSequencePlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OmniLight3DShadowMode int64
-type OmniLight3D discreet.PointerNamed[OmniLight3D, [3]uintptr, [1]discreet.Type]
-func (self OmniLight3D) Free() { Object(self).Free() }
+type OmniLight3D pointers.PointerNamed[OmniLight3D, [3]uintptr, [1]pointers.Type]
 
+func (self OmniLight3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OmniLight3D) AsObject() gd.Object { return gd.Object(self) }
@@ -4134,9 +4488,9 @@ func (self OmniLight3D) AsObject() gd.Object { return gd.Object(self) }
 func (self OmniLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OpenXRAPIExtensionOpenXRAlphaBlendModeSupport int64
-type OpenXRAPIExtension discreet.PointerNamed[OpenXRAPIExtension, [3]uintptr, [1]discreet.Type]
-func (self OpenXRAPIExtension) Free() { Object(self).Free() }
+type OpenXRAPIExtension pointers.PointerNamed[OpenXRAPIExtension, [3]uintptr, [1]pointers.Type]
 
+func (self OpenXRAPIExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRAPIExtension) AsObject() gd.Object { return gd.Object(self) }
@@ -4144,70 +4498,79 @@ func (self OpenXRAPIExtension) AsObject() gd.Object { return gd.Object(self) }
 func (self OpenXRAPIExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type OpenXRActionActionType int64
-type OpenXRAction discreet.PointerNamed[OpenXRAction, [3]uintptr, [1]discreet.Type]
-func (self OpenXRAction) Free() { Object(self).Free() }
+type OpenXRAction pointers.PointerNamed[OpenXRAction, [3]uintptr, [1]pointers.Type]
 
+func (self OpenXRAction) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRAction) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRAction) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRActionMap discreet.PointerNamed[OpenXRActionMap, [3]uintptr, [1]discreet.Type]
-func (self OpenXRActionMap) Free() { Object(self).Free() }
 
+type OpenXRActionMap pointers.PointerNamed[OpenXRActionMap, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRActionMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRActionMap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRActionMap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRActionSet discreet.PointerNamed[OpenXRActionSet, [3]uintptr, [1]discreet.Type]
-func (self OpenXRActionSet) Free() { Object(self).Free() }
 
+type OpenXRActionSet pointers.PointerNamed[OpenXRActionSet, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRActionSet) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRActionSet) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRActionSet) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRCompositionLayer discreet.PointerNamed[OpenXRCompositionLayer, [3]uintptr, [1]discreet.Type]
-func (self OpenXRCompositionLayer) Free() { Object(self).Free() }
 
+type OpenXRCompositionLayer pointers.PointerNamed[OpenXRCompositionLayer, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRCompositionLayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRCompositionLayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRCompositionLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRCompositionLayerCylinder discreet.PointerNamed[OpenXRCompositionLayerCylinder, [3]uintptr, [1]discreet.Type]
-func (self OpenXRCompositionLayerCylinder) Free() { Object(self).Free() }
 
+type OpenXRCompositionLayerCylinder pointers.PointerNamed[OpenXRCompositionLayerCylinder, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRCompositionLayerCylinder) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRCompositionLayerCylinder) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRCompositionLayerCylinder) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRCompositionLayerEquirect discreet.PointerNamed[OpenXRCompositionLayerEquirect, [3]uintptr, [1]discreet.Type]
-func (self OpenXRCompositionLayerEquirect) Free() { Object(self).Free() }
 
+type OpenXRCompositionLayerEquirect pointers.PointerNamed[OpenXRCompositionLayerEquirect, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRCompositionLayerEquirect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRCompositionLayerEquirect) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRCompositionLayerEquirect) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRCompositionLayerQuad discreet.PointerNamed[OpenXRCompositionLayerQuad, [3]uintptr, [1]discreet.Type]
-func (self OpenXRCompositionLayerQuad) Free() { Object(self).Free() }
 
+type OpenXRCompositionLayerQuad pointers.PointerNamed[OpenXRCompositionLayerQuad, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRCompositionLayerQuad) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRCompositionLayerQuad) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRCompositionLayerQuad) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRExtensionWrapperExtension discreet.PointerNamed[OpenXRExtensionWrapperExtension, [3]uintptr, [1]discreet.Type]
-func (self OpenXRExtensionWrapperExtension) Free() { Object(self).Free() }
 
+type OpenXRExtensionWrapperExtension pointers.PointerNamed[OpenXRExtensionWrapperExtension, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRExtensionWrapperExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRExtensionWrapperExtension) AsObject() gd.Object { return gd.Object(self) }
 
-func (self OpenXRExtensionWrapperExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self OpenXRExtensionWrapperExtension) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type OpenXRHandHands int64
 
@@ -4216,38 +4579,43 @@ type OpenXRHandMotionRange int64
 type OpenXRHandSkeletonRig int64
 
 type OpenXRHandBoneUpdate int64
-type OpenXRHand discreet.PointerNamed[OpenXRHand, [3]uintptr, [1]discreet.Type]
-func (self OpenXRHand) Free() { Object(self).Free() }
+type OpenXRHand pointers.PointerNamed[OpenXRHand, [3]uintptr, [1]pointers.Type]
 
+func (self OpenXRHand) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRHand) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRHand) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRIPBinding discreet.PointerNamed[OpenXRIPBinding, [3]uintptr, [1]discreet.Type]
-func (self OpenXRIPBinding) Free() { Object(self).Free() }
 
+type OpenXRIPBinding pointers.PointerNamed[OpenXRIPBinding, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRIPBinding) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRIPBinding) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRIPBinding) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRInteractionProfile discreet.PointerNamed[OpenXRInteractionProfile, [3]uintptr, [1]discreet.Type]
-func (self OpenXRInteractionProfile) Free() { Object(self).Free() }
 
+type OpenXRInteractionProfile pointers.PointerNamed[OpenXRInteractionProfile, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRInteractionProfile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRInteractionProfile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRInteractionProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OpenXRInteractionProfileMetadata discreet.PointerNamed[OpenXRInteractionProfileMetadata, [3]uintptr, [1]discreet.Type]
-func (self OpenXRInteractionProfileMetadata) Free() { Object(self).Free() }
 
+type OpenXRInteractionProfileMetadata pointers.PointerNamed[OpenXRInteractionProfileMetadata, [3]uintptr, [1]pointers.Type]
+
+func (self OpenXRInteractionProfileMetadata) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRInteractionProfileMetadata) AsObject() gd.Object { return gd.Object(self) }
 
-func (self OpenXRInteractionProfileMetadata) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self OpenXRInteractionProfileMetadata) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type OpenXRInterfaceHand int64
 
@@ -4258,49 +4626,54 @@ type OpenXRInterfaceHandTrackedSource int64
 type OpenXRInterfaceHandJoints int64
 
 type OpenXRInterfaceHandJointFlags int64
-type OpenXRInterface discreet.PointerNamed[OpenXRInterface, [3]uintptr, [1]discreet.Type]
-func (self OpenXRInterface) Free() { Object(self).Free() }
+type OpenXRInterface pointers.PointerNamed[OpenXRInterface, [3]uintptr, [1]pointers.Type]
 
+func (self OpenXRInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OpenXRInterface) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OpenXRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OptimizedTranslation discreet.PointerNamed[OptimizedTranslation, [3]uintptr, [1]discreet.Type]
-func (self OptimizedTranslation) Free() { Object(self).Free() }
 
+type OptimizedTranslation pointers.PointerNamed[OptimizedTranslation, [3]uintptr, [1]pointers.Type]
+
+func (self OptimizedTranslation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OptimizedTranslation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OptimizedTranslation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type OptionButton discreet.PointerNamed[OptionButton, [3]uintptr, [1]discreet.Type]
-func (self OptionButton) Free() { Object(self).Free() }
 
+type OptionButton pointers.PointerNamed[OptionButton, [3]uintptr, [1]pointers.Type]
+
+func (self OptionButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self OptionButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self OptionButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PCKPacker discreet.PointerNamed[PCKPacker, [3]uintptr, [1]discreet.Type]
-func (self PCKPacker) Free() { Object(self).Free() }
 
+type PCKPacker pointers.PointerNamed[PCKPacker, [3]uintptr, [1]pointers.Type]
+
+func (self PCKPacker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PCKPacker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PCKPacker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PackedDataContainer discreet.PointerNamed[PackedDataContainer, [3]uintptr, [1]discreet.Type]
-func (self PackedDataContainer) Free() { Object(self).Free() }
 
+type PackedDataContainer pointers.PointerNamed[PackedDataContainer, [3]uintptr, [1]pointers.Type]
+
+func (self PackedDataContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PackedDataContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PackedDataContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PackedDataContainerRef discreet.PointerNamed[PackedDataContainerRef, [3]uintptr, [1]discreet.Type]
-func (self PackedDataContainerRef) Free() { Object(self).Free() }
 
+type PackedDataContainerRef pointers.PointerNamed[PackedDataContainerRef, [3]uintptr, [1]pointers.Type]
+
+func (self PackedDataContainerRef) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PackedDataContainerRef) AsObject() gd.Object { return gd.Object(self) }
@@ -4308,17 +4681,18 @@ func (self PackedDataContainerRef) AsObject() gd.Object { return gd.Object(self)
 func (self PackedDataContainerRef) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PackedSceneGenEditState int64
-type PackedScene discreet.PointerNamed[PackedScene, [3]uintptr, [1]discreet.Type]
-func (self PackedScene) Free() { Object(self).Free() }
+type PackedScene pointers.PointerNamed[PackedScene, [3]uintptr, [1]pointers.Type]
 
+func (self PackedScene) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PackedScene) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PackedScene) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PacketPeer discreet.PointerNamed[PacketPeer, [3]uintptr, [1]discreet.Type]
-func (self PacketPeer) Free() { Object(self).Free() }
 
+type PacketPeer pointers.PointerNamed[PacketPeer, [3]uintptr, [1]pointers.Type]
+
+func (self PacketPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PacketPeer) AsObject() gd.Object { return gd.Object(self) }
@@ -4326,81 +4700,90 @@ func (self PacketPeer) AsObject() gd.Object { return gd.Object(self) }
 func (self PacketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PacketPeerDTLSStatus int64
-type PacketPeerDTLS discreet.PointerNamed[PacketPeerDTLS, [3]uintptr, [1]discreet.Type]
-func (self PacketPeerDTLS) Free() { Object(self).Free() }
+type PacketPeerDTLS pointers.PointerNamed[PacketPeerDTLS, [3]uintptr, [1]pointers.Type]
 
+func (self PacketPeerDTLS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PacketPeerDTLS) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PacketPeerDTLS) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PacketPeerExtension discreet.PointerNamed[PacketPeerExtension, [3]uintptr, [1]discreet.Type]
-func (self PacketPeerExtension) Free() { Object(self).Free() }
 
+type PacketPeerExtension pointers.PointerNamed[PacketPeerExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PacketPeerExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PacketPeerExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PacketPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PacketPeerStream discreet.PointerNamed[PacketPeerStream, [3]uintptr, [1]discreet.Type]
-func (self PacketPeerStream) Free() { Object(self).Free() }
 
+type PacketPeerStream pointers.PointerNamed[PacketPeerStream, [3]uintptr, [1]pointers.Type]
+
+func (self PacketPeerStream) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PacketPeerStream) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PacketPeerStream) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PacketPeerUDP discreet.PointerNamed[PacketPeerUDP, [3]uintptr, [1]discreet.Type]
-func (self PacketPeerUDP) Free() { Object(self).Free() }
 
+type PacketPeerUDP pointers.PointerNamed[PacketPeerUDP, [3]uintptr, [1]pointers.Type]
+
+func (self PacketPeerUDP) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PacketPeerUDP) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PacketPeerUDP) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Panel discreet.PointerNamed[Panel, [3]uintptr, [1]discreet.Type]
-func (self Panel) Free() { Object(self).Free() }
 
+type Panel pointers.PointerNamed[Panel, [3]uintptr, [1]pointers.Type]
+
+func (self Panel) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Panel) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Panel) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PanelContainer discreet.PointerNamed[PanelContainer, [3]uintptr, [1]discreet.Type]
-func (self PanelContainer) Free() { Object(self).Free() }
 
+type PanelContainer pointers.PointerNamed[PanelContainer, [3]uintptr, [1]pointers.Type]
+
+func (self PanelContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PanelContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PanelContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PanoramaSkyMaterial discreet.PointerNamed[PanoramaSkyMaterial, [3]uintptr, [1]discreet.Type]
-func (self PanoramaSkyMaterial) Free() { Object(self).Free() }
 
+type PanoramaSkyMaterial pointers.PointerNamed[PanoramaSkyMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self PanoramaSkyMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PanoramaSkyMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PanoramaSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Parallax2D discreet.PointerNamed[Parallax2D, [3]uintptr, [1]discreet.Type]
-func (self Parallax2D) Free() { Object(self).Free() }
 
+type Parallax2D pointers.PointerNamed[Parallax2D, [3]uintptr, [1]pointers.Type]
+
+func (self Parallax2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Parallax2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Parallax2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ParallaxBackground discreet.PointerNamed[ParallaxBackground, [3]uintptr, [1]discreet.Type]
-func (self ParallaxBackground) Free() { Object(self).Free() }
 
+type ParallaxBackground pointers.PointerNamed[ParallaxBackground, [3]uintptr, [1]pointers.Type]
+
+func (self ParallaxBackground) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ParallaxBackground) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ParallaxBackground) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ParallaxLayer discreet.PointerNamed[ParallaxLayer, [3]uintptr, [1]discreet.Type]
-func (self ParallaxLayer) Free() { Object(self).Free() }
 
+type ParallaxLayer pointers.PointerNamed[ParallaxLayer, [3]uintptr, [1]pointers.Type]
+
+func (self ParallaxLayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ParallaxLayer) AsObject() gd.Object { return gd.Object(self) }
@@ -4416,33 +4799,36 @@ type ParticleProcessMaterialEmissionShape int64
 type ParticleProcessMaterialSubEmitterMode int64
 
 type ParticleProcessMaterialCollisionMode int64
-type ParticleProcessMaterial discreet.PointerNamed[ParticleProcessMaterial, [3]uintptr, [1]discreet.Type]
-func (self ParticleProcessMaterial) Free() { Object(self).Free() }
+type ParticleProcessMaterial pointers.PointerNamed[ParticleProcessMaterial, [3]uintptr, [1]pointers.Type]
 
+func (self ParticleProcessMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ParticleProcessMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ParticleProcessMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Path2D discreet.PointerNamed[Path2D, [3]uintptr, [1]discreet.Type]
-func (self Path2D) Free() { Object(self).Free() }
 
+type Path2D pointers.PointerNamed[Path2D, [3]uintptr, [1]pointers.Type]
+
+func (self Path2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Path2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Path2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Path3D discreet.PointerNamed[Path3D, [3]uintptr, [1]discreet.Type]
-func (self Path3D) Free() { Object(self).Free() }
 
+type Path3D pointers.PointerNamed[Path3D, [3]uintptr, [1]pointers.Type]
+
+func (self Path3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Path3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Path3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PathFollow2D discreet.PointerNamed[PathFollow2D, [3]uintptr, [1]discreet.Type]
-func (self PathFollow2D) Free() { Object(self).Free() }
 
+type PathFollow2D pointers.PointerNamed[PathFollow2D, [3]uintptr, [1]pointers.Type]
+
+func (self PathFollow2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PathFollow2D) AsObject() gd.Object { return gd.Object(self) }
@@ -4450,9 +4836,9 @@ func (self PathFollow2D) AsObject() gd.Object { return gd.Object(self) }
 func (self PathFollow2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PathFollow3DRotationMode int64
-type PathFollow3D discreet.PointerNamed[PathFollow3D, [3]uintptr, [1]discreet.Type]
-func (self PathFollow3D) Free() { Object(self).Free() }
+type PathFollow3D pointers.PointerNamed[PathFollow3D, [3]uintptr, [1]pointers.Type]
 
+func (self PathFollow3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PathFollow3D) AsObject() gd.Object { return gd.Object(self) }
@@ -4460,17 +4846,18 @@ func (self PathFollow3D) AsObject() gd.Object { return gd.Object(self) }
 func (self PathFollow3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PerformanceMonitor int64
-type Performance discreet.PointerNamed[Performance, [3]uintptr, [1]discreet.Type]
-func (self Performance) Free() { Object(self).Free() }
+type Performance pointers.PointerNamed[Performance, [3]uintptr, [1]pointers.Type]
 
+func (self Performance) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Performance) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Performance) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicalBone2D discreet.PointerNamed[PhysicalBone2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicalBone2D) Free() { Object(self).Free() }
 
+type PhysicalBone2D pointers.PointerNamed[PhysicalBone2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicalBone2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicalBone2D) AsObject() gd.Object { return gd.Object(self) }
@@ -4480,145 +4867,170 @@ func (self PhysicalBone2D) Virtual(name string) reflect.Value { return reflect.V
 type PhysicalBone3DDampMode int64
 
 type PhysicalBone3DJointType int64
-type PhysicalBone3D discreet.PointerNamed[PhysicalBone3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicalBone3D) Free() { Object(self).Free() }
+type PhysicalBone3D pointers.PointerNamed[PhysicalBone3D, [3]uintptr, [1]pointers.Type]
 
+func (self PhysicalBone3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicalBone3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicalBone3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicalBoneSimulator3D discreet.PointerNamed[PhysicalBoneSimulator3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicalBoneSimulator3D) Free() { Object(self).Free() }
 
+type PhysicalBoneSimulator3D pointers.PointerNamed[PhysicalBoneSimulator3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicalBoneSimulator3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicalBoneSimulator3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicalBoneSimulator3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicalSkyMaterial discreet.PointerNamed[PhysicalSkyMaterial, [3]uintptr, [1]discreet.Type]
-func (self PhysicalSkyMaterial) Free() { Object(self).Free() }
 
+type PhysicalSkyMaterial pointers.PointerNamed[PhysicalSkyMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicalSkyMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicalSkyMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicalSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsBody2D discreet.PointerNamed[PhysicsBody2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsBody2D) Free() { Object(self).Free() }
 
+type PhysicsBody2D pointers.PointerNamed[PhysicsBody2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsBody2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsBody2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsBody3D discreet.PointerNamed[PhysicsBody3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsBody3D) Free() { Object(self).Free() }
 
+type PhysicsBody3D pointers.PointerNamed[PhysicsBody3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectBodyState2D discreet.PointerNamed[PhysicsDirectBodyState2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectBodyState2D) Free() { Object(self).Free() }
 
+type PhysicsDirectBodyState2D pointers.PointerNamed[PhysicsDirectBodyState2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectBodyState2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectBodyState2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsDirectBodyState2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectBodyState2DExtension discreet.PointerNamed[PhysicsDirectBodyState2DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectBodyState2DExtension) Free() { Object(self).Free() }
 
+type PhysicsDirectBodyState2DExtension pointers.PointerNamed[PhysicsDirectBodyState2DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectBodyState2DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectBodyState2DExtension) AsObject() gd.Object { return gd.Object(self) }
 
-func (self PhysicsDirectBodyState2DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectBodyState3D discreet.PointerNamed[PhysicsDirectBodyState3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectBodyState3D) Free() { Object(self).Free() }
+func (self PhysicsDirectBodyState2DExtension) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type PhysicsDirectBodyState3D pointers.PointerNamed[PhysicsDirectBodyState3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectBodyState3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectBodyState3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsDirectBodyState3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectBodyState3DExtension discreet.PointerNamed[PhysicsDirectBodyState3DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectBodyState3DExtension) Free() { Object(self).Free() }
 
+type PhysicsDirectBodyState3DExtension pointers.PointerNamed[PhysicsDirectBodyState3DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectBodyState3DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectBodyState3DExtension) AsObject() gd.Object { return gd.Object(self) }
 
-func (self PhysicsDirectBodyState3DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectSpaceState2D discreet.PointerNamed[PhysicsDirectSpaceState2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectSpaceState2D) Free() { Object(self).Free() }
+func (self PhysicsDirectBodyState3DExtension) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type PhysicsDirectSpaceState2D pointers.PointerNamed[PhysicsDirectSpaceState2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectSpaceState2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectSpaceState2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsDirectSpaceState2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectSpaceState2DExtension discreet.PointerNamed[PhysicsDirectSpaceState2DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectSpaceState2DExtension) Free() { Object(self).Free() }
 
+type PhysicsDirectSpaceState2DExtension pointers.PointerNamed[PhysicsDirectSpaceState2DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectSpaceState2DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectSpaceState2DExtension) AsObject() gd.Object { return gd.Object(self) }
 
-func (self PhysicsDirectSpaceState2DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectSpaceState3D discreet.PointerNamed[PhysicsDirectSpaceState3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectSpaceState3D) Free() { Object(self).Free() }
+func (self PhysicsDirectSpaceState2DExtension) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type PhysicsDirectSpaceState3D pointers.PointerNamed[PhysicsDirectSpaceState3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectSpaceState3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectSpaceState3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsDirectSpaceState3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsDirectSpaceState3DExtension discreet.PointerNamed[PhysicsDirectSpaceState3DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsDirectSpaceState3DExtension) Free() { Object(self).Free() }
 
+type PhysicsDirectSpaceState3DExtension pointers.PointerNamed[PhysicsDirectSpaceState3DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsDirectSpaceState3DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsDirectSpaceState3DExtension) AsObject() gd.Object { return gd.Object(self) }
 
-func (self PhysicsDirectSpaceState3DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsMaterial discreet.PointerNamed[PhysicsMaterial, [3]uintptr, [1]discreet.Type]
-func (self PhysicsMaterial) Free() { Object(self).Free() }
+func (self PhysicsDirectSpaceState3DExtension) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type PhysicsMaterial pointers.PointerNamed[PhysicsMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsPointQueryParameters2D discreet.PointerNamed[PhysicsPointQueryParameters2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsPointQueryParameters2D) Free() { Object(self).Free() }
 
+type PhysicsPointQueryParameters2D pointers.PointerNamed[PhysicsPointQueryParameters2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsPointQueryParameters2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsPointQueryParameters2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsPointQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsPointQueryParameters3D discreet.PointerNamed[PhysicsPointQueryParameters3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsPointQueryParameters3D) Free() { Object(self).Free() }
 
+type PhysicsPointQueryParameters3D pointers.PointerNamed[PhysicsPointQueryParameters3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsPointQueryParameters3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsPointQueryParameters3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsPointQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsRayQueryParameters2D discreet.PointerNamed[PhysicsRayQueryParameters2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsRayQueryParameters2D) Free() { Object(self).Free() }
 
+type PhysicsRayQueryParameters2D pointers.PointerNamed[PhysicsRayQueryParameters2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsRayQueryParameters2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsRayQueryParameters2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsRayQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsRayQueryParameters3D discreet.PointerNamed[PhysicsRayQueryParameters3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsRayQueryParameters3D) Free() { Object(self).Free() }
 
+type PhysicsRayQueryParameters3D pointers.PointerNamed[PhysicsRayQueryParameters3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsRayQueryParameters3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsRayQueryParameters3D) AsObject() gd.Object { return gd.Object(self) }
@@ -4656,25 +5068,27 @@ type PhysicsServer2DCCDMode int64
 type PhysicsServer2DAreaBodyStatus int64
 
 type PhysicsServer2DProcessInfo int64
-type PhysicsServer2D discreet.PointerNamed[PhysicsServer2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer2D) Free() { Object(self).Free() }
+type PhysicsServer2D pointers.PointerNamed[PhysicsServer2D, [3]uintptr, [1]pointers.Type]
 
+func (self PhysicsServer2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsServer2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsServer2DExtension discreet.PointerNamed[PhysicsServer2DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer2DExtension) Free() { Object(self).Free() }
 
+type PhysicsServer2DExtension pointers.PointerNamed[PhysicsServer2DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsServer2DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer2DExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsServer2DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsServer2DManager discreet.PointerNamed[PhysicsServer2DManager, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer2DManager) Free() { Object(self).Free() }
 
+type PhysicsServer2DManager pointers.PointerNamed[PhysicsServer2DManager, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsServer2DManager) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer2DManager) AsObject() gd.Object { return gd.Object(self) }
@@ -4718,89 +5132,101 @@ type PhysicsServer3DProcessInfo int64
 type PhysicsServer3DSpaceParameter int64
 
 type PhysicsServer3DBodyAxis int64
-type PhysicsServer3D discreet.PointerNamed[PhysicsServer3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer3D) Free() { Object(self).Free() }
+type PhysicsServer3D pointers.PointerNamed[PhysicsServer3D, [3]uintptr, [1]pointers.Type]
 
+func (self PhysicsServer3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsServer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsServer3DExtension discreet.PointerNamed[PhysicsServer3DExtension, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer3DExtension) Free() { Object(self).Free() }
 
+type PhysicsServer3DExtension pointers.PointerNamed[PhysicsServer3DExtension, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsServer3DExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer3DExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsServer3DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsServer3DManager discreet.PointerNamed[PhysicsServer3DManager, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer3DManager) Free() { Object(self).Free() }
 
+type PhysicsServer3DManager pointers.PointerNamed[PhysicsServer3DManager, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsServer3DManager) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer3DManager) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsServer3DManager) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsServer3DRenderingServerHandler discreet.PointerNamed[PhysicsServer3DRenderingServerHandler, [3]uintptr, [1]discreet.Type]
-func (self PhysicsServer3DRenderingServerHandler) Free() { Object(self).Free() }
 
+type PhysicsServer3DRenderingServerHandler pointers.PointerNamed[PhysicsServer3DRenderingServerHandler, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsServer3DRenderingServerHandler) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsServer3DRenderingServerHandler) AsObject() gd.Object { return gd.Object(self) }
 
-func (self PhysicsServer3DRenderingServerHandler) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsShapeQueryParameters2D discreet.PointerNamed[PhysicsShapeQueryParameters2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsShapeQueryParameters2D) Free() { Object(self).Free() }
+func (self PhysicsServer3DRenderingServerHandler) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type PhysicsShapeQueryParameters2D pointers.PointerNamed[PhysicsShapeQueryParameters2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsShapeQueryParameters2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsShapeQueryParameters2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsShapeQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsShapeQueryParameters3D discreet.PointerNamed[PhysicsShapeQueryParameters3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsShapeQueryParameters3D) Free() { Object(self).Free() }
 
+type PhysicsShapeQueryParameters3D pointers.PointerNamed[PhysicsShapeQueryParameters3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsShapeQueryParameters3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsShapeQueryParameters3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsShapeQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsTestMotionParameters2D discreet.PointerNamed[PhysicsTestMotionParameters2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsTestMotionParameters2D) Free() { Object(self).Free() }
 
+type PhysicsTestMotionParameters2D pointers.PointerNamed[PhysicsTestMotionParameters2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsTestMotionParameters2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsTestMotionParameters2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsTestMotionParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsTestMotionParameters3D discreet.PointerNamed[PhysicsTestMotionParameters3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsTestMotionParameters3D) Free() { Object(self).Free() }
 
+type PhysicsTestMotionParameters3D pointers.PointerNamed[PhysicsTestMotionParameters3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsTestMotionParameters3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsTestMotionParameters3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsTestMotionParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsTestMotionResult2D discreet.PointerNamed[PhysicsTestMotionResult2D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsTestMotionResult2D) Free() { Object(self).Free() }
 
+type PhysicsTestMotionResult2D pointers.PointerNamed[PhysicsTestMotionResult2D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsTestMotionResult2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsTestMotionResult2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsTestMotionResult2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PhysicsTestMotionResult3D discreet.PointerNamed[PhysicsTestMotionResult3D, [3]uintptr, [1]discreet.Type]
-func (self PhysicsTestMotionResult3D) Free() { Object(self).Free() }
 
+type PhysicsTestMotionResult3D pointers.PointerNamed[PhysicsTestMotionResult3D, [3]uintptr, [1]pointers.Type]
+
+func (self PhysicsTestMotionResult3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PhysicsTestMotionResult3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PhysicsTestMotionResult3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PinJoint2D discreet.PointerNamed[PinJoint2D, [3]uintptr, [1]discreet.Type]
-func (self PinJoint2D) Free() { Object(self).Free() }
 
+type PinJoint2D pointers.PointerNamed[PinJoint2D, [3]uintptr, [1]pointers.Type]
+
+func (self PinJoint2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PinJoint2D) AsObject() gd.Object { return gd.Object(self) }
@@ -4808,73 +5234,81 @@ func (self PinJoint2D) AsObject() gd.Object { return gd.Object(self) }
 func (self PinJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PinJoint3DParam int64
-type PinJoint3D discreet.PointerNamed[PinJoint3D, [3]uintptr, [1]discreet.Type]
-func (self PinJoint3D) Free() { Object(self).Free() }
+type PinJoint3D pointers.PointerNamed[PinJoint3D, [3]uintptr, [1]pointers.Type]
 
+func (self PinJoint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PinJoint3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PinJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderCubemap discreet.PointerNamed[PlaceholderCubemap, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderCubemap) Free() { Object(self).Free() }
 
+type PlaceholderCubemap pointers.PointerNamed[PlaceholderCubemap, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderCubemap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderCubemap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderCubemapArray discreet.PointerNamed[PlaceholderCubemapArray, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderCubemapArray) Free() { Object(self).Free() }
 
+type PlaceholderCubemapArray pointers.PointerNamed[PlaceholderCubemapArray, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderCubemapArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderCubemapArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderCubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderMaterial discreet.PointerNamed[PlaceholderMaterial, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderMaterial) Free() { Object(self).Free() }
 
+type PlaceholderMaterial pointers.PointerNamed[PlaceholderMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderMesh discreet.PointerNamed[PlaceholderMesh, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderMesh) Free() { Object(self).Free() }
 
+type PlaceholderMesh pointers.PointerNamed[PlaceholderMesh, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderTexture2D discreet.PointerNamed[PlaceholderTexture2D, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderTexture2D) Free() { Object(self).Free() }
 
+type PlaceholderTexture2D pointers.PointerNamed[PlaceholderTexture2D, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderTexture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderTexture2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderTexture2DArray discreet.PointerNamed[PlaceholderTexture2DArray, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderTexture2DArray) Free() { Object(self).Free() }
 
+type PlaceholderTexture2DArray pointers.PointerNamed[PlaceholderTexture2DArray, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderTexture2DArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderTexture2DArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderTexture3D discreet.PointerNamed[PlaceholderTexture3D, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderTexture3D) Free() { Object(self).Free() }
 
+type PlaceholderTexture3D pointers.PointerNamed[PlaceholderTexture3D, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderTexture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderTexture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaceholderTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PlaceholderTextureLayered discreet.PointerNamed[PlaceholderTextureLayered, [3]uintptr, [1]discreet.Type]
-func (self PlaceholderTextureLayered) Free() { Object(self).Free() }
 
+type PlaceholderTextureLayered pointers.PointerNamed[PlaceholderTextureLayered, [3]uintptr, [1]pointers.Type]
+
+func (self PlaceholderTextureLayered) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaceholderTextureLayered) AsObject() gd.Object { return gd.Object(self) }
@@ -4882,73 +5316,81 @@ func (self PlaceholderTextureLayered) AsObject() gd.Object { return gd.Object(se
 func (self PlaceholderTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PlaneMeshOrientation int64
-type PlaneMesh discreet.PointerNamed[PlaneMesh, [3]uintptr, [1]discreet.Type]
-func (self PlaneMesh) Free() { Object(self).Free() }
+type PlaneMesh pointers.PointerNamed[PlaneMesh, [3]uintptr, [1]pointers.Type]
 
+func (self PlaneMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PlaneMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PlaneMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PointLight2D discreet.PointerNamed[PointLight2D, [3]uintptr, [1]discreet.Type]
-func (self PointLight2D) Free() { Object(self).Free() }
 
+type PointLight2D pointers.PointerNamed[PointLight2D, [3]uintptr, [1]pointers.Type]
+
+func (self PointLight2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PointLight2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PointLight2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PointMesh discreet.PointerNamed[PointMesh, [3]uintptr, [1]discreet.Type]
-func (self PointMesh) Free() { Object(self).Free() }
 
+type PointMesh pointers.PointerNamed[PointMesh, [3]uintptr, [1]pointers.Type]
+
+func (self PointMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PointMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PointMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Polygon2D discreet.PointerNamed[Polygon2D, [3]uintptr, [1]discreet.Type]
-func (self Polygon2D) Free() { Object(self).Free() }
 
+type Polygon2D pointers.PointerNamed[Polygon2D, [3]uintptr, [1]pointers.Type]
+
+func (self Polygon2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Polygon2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Polygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PolygonOccluder3D discreet.PointerNamed[PolygonOccluder3D, [3]uintptr, [1]discreet.Type]
-func (self PolygonOccluder3D) Free() { Object(self).Free() }
 
+type PolygonOccluder3D pointers.PointerNamed[PolygonOccluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self PolygonOccluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PolygonOccluder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PolygonOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PolygonPathFinder discreet.PointerNamed[PolygonPathFinder, [3]uintptr, [1]discreet.Type]
-func (self PolygonPathFinder) Free() { Object(self).Free() }
 
+type PolygonPathFinder pointers.PointerNamed[PolygonPathFinder, [3]uintptr, [1]pointers.Type]
+
+func (self PolygonPathFinder) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PolygonPathFinder) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PolygonPathFinder) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Popup discreet.PointerNamed[Popup, [3]uintptr, [1]discreet.Type]
-func (self Popup) Free() { Object(self).Free() }
 
+type Popup pointers.PointerNamed[Popup, [3]uintptr, [1]pointers.Type]
+
+func (self Popup) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Popup) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Popup) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PopupMenu discreet.PointerNamed[PopupMenu, [3]uintptr, [1]discreet.Type]
-func (self PopupMenu) Free() { Object(self).Free() }
 
+type PopupMenu pointers.PointerNamed[PopupMenu, [3]uintptr, [1]pointers.Type]
+
+func (self PopupMenu) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PopupMenu) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PopupMenu) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PopupPanel discreet.PointerNamed[PopupPanel, [3]uintptr, [1]discreet.Type]
-func (self PopupPanel) Free() { Object(self).Free() }
 
+type PopupPanel pointers.PointerNamed[PopupPanel, [3]uintptr, [1]pointers.Type]
+
+func (self PopupPanel) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PopupPanel) AsObject() gd.Object { return gd.Object(self) }
@@ -4956,33 +5398,36 @@ func (self PopupPanel) AsObject() gd.Object { return gd.Object(self) }
 func (self PopupPanel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PortableCompressedTexture2DCompressionMode int64
-type PortableCompressedTexture2D discreet.PointerNamed[PortableCompressedTexture2D, [3]uintptr, [1]discreet.Type]
-func (self PortableCompressedTexture2D) Free() { Object(self).Free() }
+type PortableCompressedTexture2D pointers.PointerNamed[PortableCompressedTexture2D, [3]uintptr, [1]pointers.Type]
 
+func (self PortableCompressedTexture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PortableCompressedTexture2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PortableCompressedTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PrimitiveMesh discreet.PointerNamed[PrimitiveMesh, [3]uintptr, [1]discreet.Type]
-func (self PrimitiveMesh) Free() { Object(self).Free() }
 
+type PrimitiveMesh pointers.PointerNamed[PrimitiveMesh, [3]uintptr, [1]pointers.Type]
+
+func (self PrimitiveMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PrimitiveMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PrimitiveMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PrismMesh discreet.PointerNamed[PrismMesh, [3]uintptr, [1]discreet.Type]
-func (self PrismMesh) Free() { Object(self).Free() }
 
+type PrismMesh pointers.PointerNamed[PrismMesh, [3]uintptr, [1]pointers.Type]
+
+func (self PrismMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PrismMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PrismMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ProceduralSkyMaterial discreet.PointerNamed[ProceduralSkyMaterial, [3]uintptr, [1]discreet.Type]
-func (self ProceduralSkyMaterial) Free() { Object(self).Free() }
 
+type ProceduralSkyMaterial pointers.PointerNamed[ProceduralSkyMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self ProceduralSkyMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ProceduralSkyMaterial) AsObject() gd.Object { return gd.Object(self) }
@@ -4990,217 +5435,247 @@ func (self ProceduralSkyMaterial) AsObject() gd.Object { return gd.Object(self) 
 func (self ProceduralSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ProgressBarFillMode int64
-type ProgressBar discreet.PointerNamed[ProgressBar, [3]uintptr, [1]discreet.Type]
-func (self ProgressBar) Free() { Object(self).Free() }
+type ProgressBar pointers.PointerNamed[ProgressBar, [3]uintptr, [1]pointers.Type]
 
+func (self ProgressBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ProgressBar) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ProgressBar) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ProjectSettings discreet.PointerNamed[ProjectSettings, [3]uintptr, [1]discreet.Type]
-func (self ProjectSettings) Free() { Object(self).Free() }
 
+type ProjectSettings pointers.PointerNamed[ProjectSettings, [3]uintptr, [1]pointers.Type]
+
+func (self ProjectSettings) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ProjectSettings) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ProjectSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
-type PropertyTweener discreet.PointerNamed[PropertyTweener, [3]uintptr, [1]discreet.Type]
-func (self PropertyTweener) Free() { Object(self).Free() }
 
+type PropertyTweener pointers.PointerNamed[PropertyTweener, [3]uintptr, [1]pointers.Type]
+
+func (self PropertyTweener) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self PropertyTweener) AsObject() gd.Object { return gd.Object(self) }
 
 func (self PropertyTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
-type QuadMesh discreet.PointerNamed[QuadMesh, [3]uintptr, [1]discreet.Type]
-func (self QuadMesh) Free() { Object(self).Free() }
 
+type QuadMesh pointers.PointerNamed[QuadMesh, [3]uintptr, [1]pointers.Type]
+
+func (self QuadMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self QuadMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self QuadMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type QuadOccluder3D discreet.PointerNamed[QuadOccluder3D, [3]uintptr, [1]discreet.Type]
-func (self QuadOccluder3D) Free() { Object(self).Free() }
 
+type QuadOccluder3D pointers.PointerNamed[QuadOccluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self QuadOccluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self QuadOccluder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self QuadOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDAttachmentFormat discreet.PointerNamed[RDAttachmentFormat, [3]uintptr, [1]discreet.Type]
-func (self RDAttachmentFormat) Free() { Object(self).Free() }
 
+type RDAttachmentFormat pointers.PointerNamed[RDAttachmentFormat, [3]uintptr, [1]pointers.Type]
+
+func (self RDAttachmentFormat) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDAttachmentFormat) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDAttachmentFormat) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDFramebufferPass discreet.PointerNamed[RDFramebufferPass, [3]uintptr, [1]discreet.Type]
-func (self RDFramebufferPass) Free() { Object(self).Free() }
 
+type RDFramebufferPass pointers.PointerNamed[RDFramebufferPass, [3]uintptr, [1]pointers.Type]
+
+func (self RDFramebufferPass) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDFramebufferPass) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDFramebufferPass) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineColorBlendState discreet.PointerNamed[RDPipelineColorBlendState, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineColorBlendState) Free() { Object(self).Free() }
 
+type RDPipelineColorBlendState pointers.PointerNamed[RDPipelineColorBlendState, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineColorBlendState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineColorBlendState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDPipelineColorBlendState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineColorBlendStateAttachment discreet.PointerNamed[RDPipelineColorBlendStateAttachment, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineColorBlendStateAttachment) Free() { Object(self).Free() }
 
+type RDPipelineColorBlendStateAttachment pointers.PointerNamed[RDPipelineColorBlendStateAttachment, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineColorBlendStateAttachment) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineColorBlendStateAttachment) AsObject() gd.Object { return gd.Object(self) }
 
-func (self RDPipelineColorBlendStateAttachment) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineDepthStencilState discreet.PointerNamed[RDPipelineDepthStencilState, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineDepthStencilState) Free() { Object(self).Free() }
+func (self RDPipelineColorBlendStateAttachment) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type RDPipelineDepthStencilState pointers.PointerNamed[RDPipelineDepthStencilState, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineDepthStencilState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineDepthStencilState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDPipelineDepthStencilState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineMultisampleState discreet.PointerNamed[RDPipelineMultisampleState, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineMultisampleState) Free() { Object(self).Free() }
 
+type RDPipelineMultisampleState pointers.PointerNamed[RDPipelineMultisampleState, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineMultisampleState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineMultisampleState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDPipelineMultisampleState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineRasterizationState discreet.PointerNamed[RDPipelineRasterizationState, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineRasterizationState) Free() { Object(self).Free() }
 
+type RDPipelineRasterizationState pointers.PointerNamed[RDPipelineRasterizationState, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineRasterizationState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineRasterizationState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDPipelineRasterizationState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDPipelineSpecializationConstant discreet.PointerNamed[RDPipelineSpecializationConstant, [3]uintptr, [1]discreet.Type]
-func (self RDPipelineSpecializationConstant) Free() { Object(self).Free() }
 
+type RDPipelineSpecializationConstant pointers.PointerNamed[RDPipelineSpecializationConstant, [3]uintptr, [1]pointers.Type]
+
+func (self RDPipelineSpecializationConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDPipelineSpecializationConstant) AsObject() gd.Object { return gd.Object(self) }
 
-func (self RDPipelineSpecializationConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDSamplerState discreet.PointerNamed[RDSamplerState, [3]uintptr, [1]discreet.Type]
-func (self RDSamplerState) Free() { Object(self).Free() }
+func (self RDPipelineSpecializationConstant) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type RDSamplerState pointers.PointerNamed[RDSamplerState, [3]uintptr, [1]pointers.Type]
+
+func (self RDSamplerState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDSamplerState) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDSamplerState) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDShaderFile discreet.PointerNamed[RDShaderFile, [3]uintptr, [1]discreet.Type]
-func (self RDShaderFile) Free() { Object(self).Free() }
 
+type RDShaderFile pointers.PointerNamed[RDShaderFile, [3]uintptr, [1]pointers.Type]
+
+func (self RDShaderFile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDShaderFile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDShaderFile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDShaderSPIRV discreet.PointerNamed[RDShaderSPIRV, [3]uintptr, [1]discreet.Type]
-func (self RDShaderSPIRV) Free() { Object(self).Free() }
 
+type RDShaderSPIRV pointers.PointerNamed[RDShaderSPIRV, [3]uintptr, [1]pointers.Type]
+
+func (self RDShaderSPIRV) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDShaderSPIRV) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDShaderSPIRV) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDShaderSource discreet.PointerNamed[RDShaderSource, [3]uintptr, [1]discreet.Type]
-func (self RDShaderSource) Free() { Object(self).Free() }
 
+type RDShaderSource pointers.PointerNamed[RDShaderSource, [3]uintptr, [1]pointers.Type]
+
+func (self RDShaderSource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDShaderSource) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDShaderSource) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDTextureFormat discreet.PointerNamed[RDTextureFormat, [3]uintptr, [1]discreet.Type]
-func (self RDTextureFormat) Free() { Object(self).Free() }
 
+type RDTextureFormat pointers.PointerNamed[RDTextureFormat, [3]uintptr, [1]pointers.Type]
+
+func (self RDTextureFormat) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDTextureFormat) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDTextureFormat) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDTextureView discreet.PointerNamed[RDTextureView, [3]uintptr, [1]discreet.Type]
-func (self RDTextureView) Free() { Object(self).Free() }
 
+type RDTextureView pointers.PointerNamed[RDTextureView, [3]uintptr, [1]pointers.Type]
+
+func (self RDTextureView) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDTextureView) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDTextureView) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDUniform discreet.PointerNamed[RDUniform, [3]uintptr, [1]discreet.Type]
-func (self RDUniform) Free() { Object(self).Free() }
 
+type RDUniform pointers.PointerNamed[RDUniform, [3]uintptr, [1]pointers.Type]
+
+func (self RDUniform) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDUniform) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDUniform) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RDVertexAttribute discreet.PointerNamed[RDVertexAttribute, [3]uintptr, [1]discreet.Type]
-func (self RDVertexAttribute) Free() { Object(self).Free() }
 
+type RDVertexAttribute pointers.PointerNamed[RDVertexAttribute, [3]uintptr, [1]pointers.Type]
+
+func (self RDVertexAttribute) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RDVertexAttribute) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RDVertexAttribute) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RandomNumberGenerator discreet.PointerNamed[RandomNumberGenerator, [3]uintptr, [1]discreet.Type]
-func (self RandomNumberGenerator) Free() { Object(self).Free() }
 
+type RandomNumberGenerator pointers.PointerNamed[RandomNumberGenerator, [3]uintptr, [1]pointers.Type]
+
+func (self RandomNumberGenerator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RandomNumberGenerator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RandomNumberGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Range discreet.PointerNamed[Range, [3]uintptr, [1]discreet.Type]
-func (self Range) Free() { Object(self).Free() }
 
+type Range pointers.PointerNamed[Range, [3]uintptr, [1]pointers.Type]
+
+func (self Range) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Range) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Range) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RayCast2D discreet.PointerNamed[RayCast2D, [3]uintptr, [1]discreet.Type]
-func (self RayCast2D) Free() { Object(self).Free() }
 
+type RayCast2D pointers.PointerNamed[RayCast2D, [3]uintptr, [1]pointers.Type]
+
+func (self RayCast2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RayCast2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RayCast2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RayCast3D discreet.PointerNamed[RayCast3D, [3]uintptr, [1]discreet.Type]
-func (self RayCast3D) Free() { Object(self).Free() }
 
+type RayCast3D pointers.PointerNamed[RayCast3D, [3]uintptr, [1]pointers.Type]
+
+func (self RayCast3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RayCast3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RayCast3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RectangleShape2D discreet.PointerNamed[RectangleShape2D, [3]uintptr, [1]discreet.Type]
-func (self RectangleShape2D) Free() { Object(self).Free() }
 
+type RectangleShape2D pointers.PointerNamed[RectangleShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self RectangleShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RectangleShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RectangleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ReferenceRect discreet.PointerNamed[ReferenceRect, [3]uintptr, [1]discreet.Type]
-func (self ReferenceRect) Free() { Object(self).Free() }
 
+type ReferenceRect pointers.PointerNamed[ReferenceRect, [3]uintptr, [1]pointers.Type]
+
+func (self ReferenceRect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ReferenceRect) AsObject() gd.Object { return gd.Object(self) }
@@ -5210,121 +5685,137 @@ func (self ReferenceRect) Virtual(name string) reflect.Value { return reflect.Va
 type ReflectionProbeUpdateMode int64
 
 type ReflectionProbeAmbientMode int64
-type ReflectionProbe discreet.PointerNamed[ReflectionProbe, [3]uintptr, [1]discreet.Type]
-func (self ReflectionProbe) Free() { Object(self).Free() }
+type ReflectionProbe pointers.PointerNamed[ReflectionProbe, [3]uintptr, [1]pointers.Type]
 
+func (self ReflectionProbe) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ReflectionProbe) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ReflectionProbe) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RegEx discreet.PointerNamed[RegEx, [3]uintptr, [1]discreet.Type]
-func (self RegEx) Free() { Object(self).Free() }
 
+type RegEx pointers.PointerNamed[RegEx, [3]uintptr, [1]pointers.Type]
+
+func (self RegEx) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RegEx) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RegEx) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RegExMatch discreet.PointerNamed[RegExMatch, [3]uintptr, [1]discreet.Type]
-func (self RegExMatch) Free() { Object(self).Free() }
 
+type RegExMatch pointers.PointerNamed[RegExMatch, [3]uintptr, [1]pointers.Type]
+
+func (self RegExMatch) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RegExMatch) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RegExMatch) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RemoteTransform2D discreet.PointerNamed[RemoteTransform2D, [3]uintptr, [1]discreet.Type]
-func (self RemoteTransform2D) Free() { Object(self).Free() }
 
+type RemoteTransform2D pointers.PointerNamed[RemoteTransform2D, [3]uintptr, [1]pointers.Type]
+
+func (self RemoteTransform2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RemoteTransform2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RemoteTransform2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RemoteTransform3D discreet.PointerNamed[RemoteTransform3D, [3]uintptr, [1]discreet.Type]
-func (self RemoteTransform3D) Free() { Object(self).Free() }
 
+type RemoteTransform3D pointers.PointerNamed[RemoteTransform3D, [3]uintptr, [1]pointers.Type]
+
+func (self RemoteTransform3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RemoteTransform3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RemoteTransform3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderData discreet.PointerNamed[RenderData, [3]uintptr, [1]discreet.Type]
-func (self RenderData) Free() { Object(self).Free() }
 
+type RenderData pointers.PointerNamed[RenderData, [3]uintptr, [1]pointers.Type]
+
+func (self RenderData) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderData) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderData) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderDataExtension discreet.PointerNamed[RenderDataExtension, [3]uintptr, [1]discreet.Type]
-func (self RenderDataExtension) Free() { Object(self).Free() }
 
+type RenderDataExtension pointers.PointerNamed[RenderDataExtension, [3]uintptr, [1]pointers.Type]
+
+func (self RenderDataExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderDataExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderDataExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderDataRD discreet.PointerNamed[RenderDataRD, [3]uintptr, [1]discreet.Type]
-func (self RenderDataRD) Free() { Object(self).Free() }
 
+type RenderDataRD pointers.PointerNamed[RenderDataRD, [3]uintptr, [1]pointers.Type]
+
+func (self RenderDataRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderDataRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderDataRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneBuffers discreet.PointerNamed[RenderSceneBuffers, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneBuffers) Free() { Object(self).Free() }
 
+type RenderSceneBuffers pointers.PointerNamed[RenderSceneBuffers, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneBuffers) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneBuffers) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderSceneBuffers) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneBuffersConfiguration discreet.PointerNamed[RenderSceneBuffersConfiguration, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneBuffersConfiguration) Free() { Object(self).Free() }
 
+type RenderSceneBuffersConfiguration pointers.PointerNamed[RenderSceneBuffersConfiguration, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneBuffersConfiguration) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneBuffersConfiguration) AsObject() gd.Object { return gd.Object(self) }
 
-func (self RenderSceneBuffersConfiguration) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneBuffersExtension discreet.PointerNamed[RenderSceneBuffersExtension, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneBuffersExtension) Free() { Object(self).Free() }
+func (self RenderSceneBuffersConfiguration) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type RenderSceneBuffersExtension pointers.PointerNamed[RenderSceneBuffersExtension, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneBuffersExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneBuffersExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderSceneBuffersExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneBuffersRD discreet.PointerNamed[RenderSceneBuffersRD, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneBuffersRD) Free() { Object(self).Free() }
 
+type RenderSceneBuffersRD pointers.PointerNamed[RenderSceneBuffersRD, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneBuffersRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneBuffersRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderSceneBuffersRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneData discreet.PointerNamed[RenderSceneData, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneData) Free() { Object(self).Free() }
 
+type RenderSceneData pointers.PointerNamed[RenderSceneData, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneData) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneData) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderSceneData) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneDataExtension discreet.PointerNamed[RenderSceneDataExtension, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneDataExtension) Free() { Object(self).Free() }
 
+type RenderSceneDataExtension pointers.PointerNamed[RenderSceneDataExtension, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneDataExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneDataExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderSceneDataExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RenderSceneDataRD discreet.PointerNamed[RenderSceneDataRD, [3]uintptr, [1]discreet.Type]
-func (self RenderSceneDataRD) Free() { Object(self).Free() }
 
+type RenderSceneDataRD pointers.PointerNamed[RenderSceneDataRD, [3]uintptr, [1]pointers.Type]
+
+func (self RenderSceneDataRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderSceneDataRD) AsObject() gd.Object { return gd.Object(self) }
@@ -5394,9 +5885,9 @@ type RenderingDevicePipelineSpecializationConstantType int64
 type RenderingDeviceLimit int64
 
 type RenderingDeviceMemoryType int64
-type RenderingDevice discreet.PointerNamed[RenderingDevice, [3]uintptr, [1]discreet.Type]
-func (self RenderingDevice) Free() { Object(self).Free() }
+type RenderingDevice pointers.PointerNamed[RenderingDevice, [3]uintptr, [1]pointers.Type]
 
+func (self RenderingDevice) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderingDevice) AsObject() gd.Object { return gd.Object(self) }
@@ -5558,17 +6049,18 @@ type RenderingServerGlobalShaderParameterType int64
 type RenderingServerRenderingInfo int64
 
 type RenderingServerFeatures int64
-type RenderingServer discreet.PointerNamed[RenderingServer, [3]uintptr, [1]discreet.Type]
-func (self RenderingServer) Free() { Object(self).Free() }
+type RenderingServer pointers.PointerNamed[RenderingServer, [3]uintptr, [1]pointers.Type]
 
+func (self RenderingServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RenderingServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RenderingServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Resource discreet.PointerNamed[Resource, [3]uintptr, [1]discreet.Type]
-func (self Resource) Free() { Object(self).Free() }
 
+type Resource pointers.PointerNamed[Resource, [3]uintptr, [1]pointers.Type]
+
+func (self Resource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Resource) AsObject() gd.Object { return gd.Object(self) }
@@ -5576,17 +6068,18 @@ func (self Resource) AsObject() gd.Object { return gd.Object(self) }
 func (self Resource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ResourceFormatLoaderCacheMode int64
-type ResourceFormatLoader discreet.PointerNamed[ResourceFormatLoader, [3]uintptr, [1]discreet.Type]
-func (self ResourceFormatLoader) Free() { Object(self).Free() }
+type ResourceFormatLoader pointers.PointerNamed[ResourceFormatLoader, [3]uintptr, [1]pointers.Type]
 
+func (self ResourceFormatLoader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceFormatLoader) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceFormatLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceFormatSaver discreet.PointerNamed[ResourceFormatSaver, [3]uintptr, [1]discreet.Type]
-func (self ResourceFormatSaver) Free() { Object(self).Free() }
 
+type ResourceFormatSaver pointers.PointerNamed[ResourceFormatSaver, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceFormatSaver) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceFormatSaver) AsObject() gd.Object { return gd.Object(self) }
@@ -5594,129 +6087,144 @@ func (self ResourceFormatSaver) AsObject() gd.Object { return gd.Object(self) }
 func (self ResourceFormatSaver) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ResourceImporterImportOrder int64
-type ResourceImporter discreet.PointerNamed[ResourceImporter, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporter) Free() { Object(self).Free() }
+type ResourceImporter pointers.PointerNamed[ResourceImporter, [3]uintptr, [1]pointers.Type]
 
+func (self ResourceImporter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterBMFont discreet.PointerNamed[ResourceImporterBMFont, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterBMFont) Free() { Object(self).Free() }
 
+type ResourceImporterBMFont pointers.PointerNamed[ResourceImporterBMFont, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterBMFont) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterBMFont) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterBMFont) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterBitMap discreet.PointerNamed[ResourceImporterBitMap, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterBitMap) Free() { Object(self).Free() }
 
+type ResourceImporterBitMap pointers.PointerNamed[ResourceImporterBitMap, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterBitMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterBitMap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterBitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterCSVTranslation discreet.PointerNamed[ResourceImporterCSVTranslation, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterCSVTranslation) Free() { Object(self).Free() }
 
+type ResourceImporterCSVTranslation pointers.PointerNamed[ResourceImporterCSVTranslation, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterCSVTranslation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterCSVTranslation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterCSVTranslation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterDynamicFont discreet.PointerNamed[ResourceImporterDynamicFont, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterDynamicFont) Free() { Object(self).Free() }
 
+type ResourceImporterDynamicFont pointers.PointerNamed[ResourceImporterDynamicFont, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterDynamicFont) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterDynamicFont) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterDynamicFont) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterImage discreet.PointerNamed[ResourceImporterImage, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterImage) Free() { Object(self).Free() }
 
+type ResourceImporterImage pointers.PointerNamed[ResourceImporterImage, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterImage) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterImage) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterImage) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterImageFont discreet.PointerNamed[ResourceImporterImageFont, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterImageFont) Free() { Object(self).Free() }
 
+type ResourceImporterImageFont pointers.PointerNamed[ResourceImporterImageFont, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterImageFont) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterImageFont) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterImageFont) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterLayeredTexture discreet.PointerNamed[ResourceImporterLayeredTexture, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterLayeredTexture) Free() { Object(self).Free() }
 
+type ResourceImporterLayeredTexture pointers.PointerNamed[ResourceImporterLayeredTexture, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterLayeredTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterLayeredTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterLayeredTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterMP3 discreet.PointerNamed[ResourceImporterMP3, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterMP3) Free() { Object(self).Free() }
 
+type ResourceImporterMP3 pointers.PointerNamed[ResourceImporterMP3, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterMP3) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterMP3) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterMP3) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterOBJ discreet.PointerNamed[ResourceImporterOBJ, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterOBJ) Free() { Object(self).Free() }
 
+type ResourceImporterOBJ pointers.PointerNamed[ResourceImporterOBJ, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterOBJ) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterOBJ) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterOBJ) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterOggVorbis discreet.PointerNamed[ResourceImporterOggVorbis, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterOggVorbis) Free() { Object(self).Free() }
 
+type ResourceImporterOggVorbis pointers.PointerNamed[ResourceImporterOggVorbis, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterOggVorbis) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterOggVorbis) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterScene discreet.PointerNamed[ResourceImporterScene, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterScene) Free() { Object(self).Free() }
 
+type ResourceImporterScene pointers.PointerNamed[ResourceImporterScene, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterScene) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterScene) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterScene) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterShaderFile discreet.PointerNamed[ResourceImporterShaderFile, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterShaderFile) Free() { Object(self).Free() }
 
+type ResourceImporterShaderFile pointers.PointerNamed[ResourceImporterShaderFile, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterShaderFile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterShaderFile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterShaderFile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterTexture discreet.PointerNamed[ResourceImporterTexture, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterTexture) Free() { Object(self).Free() }
 
+type ResourceImporterTexture pointers.PointerNamed[ResourceImporterTexture, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterTextureAtlas discreet.PointerNamed[ResourceImporterTextureAtlas, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterTextureAtlas) Free() { Object(self).Free() }
 
+type ResourceImporterTextureAtlas pointers.PointerNamed[ResourceImporterTextureAtlas, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterTextureAtlas) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterTextureAtlas) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceImporterTextureAtlas) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceImporterWAV discreet.PointerNamed[ResourceImporterWAV, [3]uintptr, [1]discreet.Type]
-func (self ResourceImporterWAV) Free() { Object(self).Free() }
 
+type ResourceImporterWAV pointers.PointerNamed[ResourceImporterWAV, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceImporterWAV) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceImporterWAV) AsObject() gd.Object { return gd.Object(self) }
@@ -5726,17 +6234,18 @@ func (self ResourceImporterWAV) Virtual(name string) reflect.Value { return refl
 type ResourceLoaderThreadLoadStatus int64
 
 type ResourceLoaderCacheMode int64
-type ResourceLoader discreet.PointerNamed[ResourceLoader, [3]uintptr, [1]discreet.Type]
-func (self ResourceLoader) Free() { Object(self).Free() }
+type ResourceLoader pointers.PointerNamed[ResourceLoader, [3]uintptr, [1]pointers.Type]
 
+func (self ResourceLoader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceLoader) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourcePreloader discreet.PointerNamed[ResourcePreloader, [3]uintptr, [1]discreet.Type]
-func (self ResourcePreloader) Free() { Object(self).Free() }
 
+type ResourcePreloader pointers.PointerNamed[ResourcePreloader, [3]uintptr, [1]pointers.Type]
+
+func (self ResourcePreloader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourcePreloader) AsObject() gd.Object { return gd.Object(self) }
@@ -5744,17 +6253,18 @@ func (self ResourcePreloader) AsObject() gd.Object { return gd.Object(self) }
 func (self ResourcePreloader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ResourceSaverSaverFlags int64
-type ResourceSaver discreet.PointerNamed[ResourceSaver, [3]uintptr, [1]discreet.Type]
-func (self ResourceSaver) Free() { Object(self).Free() }
+type ResourceSaver pointers.PointerNamed[ResourceSaver, [3]uintptr, [1]pointers.Type]
 
+func (self ResourceSaver) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceSaver) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ResourceSaver) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ResourceUID discreet.PointerNamed[ResourceUID, [3]uintptr, [1]discreet.Type]
-func (self ResourceUID) Free() { Object(self).Free() }
 
+type ResourceUID pointers.PointerNamed[ResourceUID, [3]uintptr, [1]pointers.Type]
+
+func (self ResourceUID) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ResourceUID) AsObject() gd.Object { return gd.Object(self) }
@@ -5762,17 +6272,18 @@ func (self ResourceUID) AsObject() gd.Object { return gd.Object(self) }
 func (self ResourceUID) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type RibbonTrailMeshShape int64
-type RibbonTrailMesh discreet.PointerNamed[RibbonTrailMesh, [3]uintptr, [1]discreet.Type]
-func (self RibbonTrailMesh) Free() { Object(self).Free() }
+type RibbonTrailMesh pointers.PointerNamed[RibbonTrailMesh, [3]uintptr, [1]pointers.Type]
 
+func (self RibbonTrailMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RibbonTrailMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RibbonTrailMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RichTextEffect discreet.PointerNamed[RichTextEffect, [3]uintptr, [1]discreet.Type]
-func (self RichTextEffect) Free() { Object(self).Free() }
 
+type RichTextEffect pointers.PointerNamed[RichTextEffect, [3]uintptr, [1]pointers.Type]
+
+func (self RichTextEffect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RichTextEffect) AsObject() gd.Object { return gd.Object(self) }
@@ -5786,9 +6297,9 @@ type RichTextLabelMenuItems int64
 type RichTextLabelMetaUnderline int64
 
 type RichTextLabelImageUpdateMask int64
-type RichTextLabel discreet.PointerNamed[RichTextLabel, [3]uintptr, [1]discreet.Type]
-func (self RichTextLabel) Free() { Object(self).Free() }
+type RichTextLabel pointers.PointerNamed[RichTextLabel, [3]uintptr, [1]pointers.Type]
 
+func (self RichTextLabel) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RichTextLabel) AsObject() gd.Object { return gd.Object(self) }
@@ -5802,9 +6313,9 @@ type RigidBody2DCenterOfMassMode int64
 type RigidBody2DDampMode int64
 
 type RigidBody2DCCDMode int64
-type RigidBody2D discreet.PointerNamed[RigidBody2D, [3]uintptr, [1]discreet.Type]
-func (self RigidBody2D) Free() { Object(self).Free() }
+type RigidBody2D pointers.PointerNamed[RigidBody2D, [3]uintptr, [1]pointers.Type]
 
+func (self RigidBody2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RigidBody2D) AsObject() gd.Object { return gd.Object(self) }
@@ -5816,25 +6327,27 @@ type RigidBody3DFreezeMode int64
 type RigidBody3DCenterOfMassMode int64
 
 type RigidBody3DDampMode int64
-type RigidBody3D discreet.PointerNamed[RigidBody3D, [3]uintptr, [1]discreet.Type]
-func (self RigidBody3D) Free() { Object(self).Free() }
+type RigidBody3D pointers.PointerNamed[RigidBody3D, [3]uintptr, [1]pointers.Type]
 
+func (self RigidBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RigidBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RigidBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type RootMotionView discreet.PointerNamed[RootMotionView, [3]uintptr, [1]discreet.Type]
-func (self RootMotionView) Free() { Object(self).Free() }
 
+type RootMotionView pointers.PointerNamed[RootMotionView, [3]uintptr, [1]pointers.Type]
+
+func (self RootMotionView) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self RootMotionView) AsObject() gd.Object { return gd.Object(self) }
 
 func (self RootMotionView) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SceneMultiplayer discreet.PointerNamed[SceneMultiplayer, [3]uintptr, [1]discreet.Type]
-func (self SceneMultiplayer) Free() { Object(self).Free() }
 
+type SceneMultiplayer pointers.PointerNamed[SceneMultiplayer, [3]uintptr, [1]pointers.Type]
+
+func (self SceneMultiplayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SceneMultiplayer) AsObject() gd.Object { return gd.Object(self) }
@@ -5842,9 +6355,9 @@ func (self SceneMultiplayer) AsObject() gd.Object { return gd.Object(self) }
 func (self SceneMultiplayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SceneReplicationConfigReplicationMode int64
-type SceneReplicationConfig discreet.PointerNamed[SceneReplicationConfig, [3]uintptr, [1]discreet.Type]
-func (self SceneReplicationConfig) Free() { Object(self).Free() }
+type SceneReplicationConfig pointers.PointerNamed[SceneReplicationConfig, [3]uintptr, [1]pointers.Type]
 
+func (self SceneReplicationConfig) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SceneReplicationConfig) AsObject() gd.Object { return gd.Object(self) }
@@ -5852,9 +6365,9 @@ func (self SceneReplicationConfig) AsObject() gd.Object { return gd.Object(self)
 func (self SceneReplicationConfig) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SceneStateGenEditState int64
-type SceneState discreet.PointerNamed[SceneState, [3]uintptr, [1]discreet.Type]
-func (self SceneState) Free() { Object(self).Free() }
+type SceneState pointers.PointerNamed[SceneState, [3]uintptr, [1]pointers.Type]
 
+func (self SceneState) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SceneState) AsObject() gd.Object { return gd.Object(self) }
@@ -5862,57 +6375,63 @@ func (self SceneState) AsObject() gd.Object { return gd.Object(self) }
 func (self SceneState) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SceneTreeGroupCallFlags int64
-type SceneTree discreet.PointerNamed[SceneTree, [3]uintptr, [1]discreet.Type]
-func (self SceneTree) Free() { Object(self).Free() }
+type SceneTree pointers.PointerNamed[SceneTree, [3]uintptr, [1]pointers.Type]
 
+func (self SceneTree) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SceneTree) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SceneTree) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SceneTreeTimer discreet.PointerNamed[SceneTreeTimer, [3]uintptr, [1]discreet.Type]
-func (self SceneTreeTimer) Free() { Object(self).Free() }
 
+type SceneTreeTimer pointers.PointerNamed[SceneTreeTimer, [3]uintptr, [1]pointers.Type]
+
+func (self SceneTreeTimer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SceneTreeTimer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SceneTreeTimer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Script discreet.PointerNamed[Script, [3]uintptr, [1]discreet.Type]
-func (self Script) Free() { Object(self).Free() }
 
+type Script pointers.PointerNamed[Script, [3]uintptr, [1]pointers.Type]
+
+func (self Script) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Script) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Script) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ScriptCreateDialog discreet.PointerNamed[ScriptCreateDialog, [3]uintptr, [1]discreet.Type]
-func (self ScriptCreateDialog) Free() { Object(self).Free() }
 
+type ScriptCreateDialog pointers.PointerNamed[ScriptCreateDialog, [3]uintptr, [1]pointers.Type]
+
+func (self ScriptCreateDialog) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptCreateDialog) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ScriptCreateDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ScriptEditor discreet.PointerNamed[ScriptEditor, [3]uintptr, [1]discreet.Type]
-func (self ScriptEditor) Free() { Object(self).Free() }
 
+type ScriptEditor pointers.PointerNamed[ScriptEditor, [3]uintptr, [1]pointers.Type]
+
+func (self ScriptEditor) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptEditor) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ScriptEditor) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ScriptEditorBase discreet.PointerNamed[ScriptEditorBase, [3]uintptr, [1]discreet.Type]
-func (self ScriptEditorBase) Free() { Object(self).Free() }
 
+type ScriptEditorBase pointers.PointerNamed[ScriptEditorBase, [3]uintptr, [1]pointers.Type]
+
+func (self ScriptEditorBase) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptEditorBase) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ScriptEditorBase) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ScriptExtension discreet.PointerNamed[ScriptExtension, [3]uintptr, [1]discreet.Type]
-func (self ScriptExtension) Free() { Object(self).Free() }
 
+type ScriptExtension pointers.PointerNamed[ScriptExtension, [3]uintptr, [1]pointers.Type]
+
+func (self ScriptExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptExtension) AsObject() gd.Object { return gd.Object(self) }
@@ -5920,9 +6439,9 @@ func (self ScriptExtension) AsObject() gd.Object { return gd.Object(self) }
 func (self ScriptExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ScriptLanguageScriptNameCasing int64
-type ScriptLanguage discreet.PointerNamed[ScriptLanguage, [3]uintptr, [1]discreet.Type]
-func (self ScriptLanguage) Free() { Object(self).Free() }
+type ScriptLanguage pointers.PointerNamed[ScriptLanguage, [3]uintptr, [1]pointers.Type]
 
+func (self ScriptLanguage) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptLanguage) AsObject() gd.Object { return gd.Object(self) }
@@ -5934,17 +6453,18 @@ type ScriptLanguageExtensionLookupResultType int64
 type ScriptLanguageExtensionCodeCompletionLocation int64
 
 type ScriptLanguageExtensionCodeCompletionKind int64
-type ScriptLanguageExtension discreet.PointerNamed[ScriptLanguageExtension, [3]uintptr, [1]discreet.Type]
-func (self ScriptLanguageExtension) Free() { Object(self).Free() }
+type ScriptLanguageExtension pointers.PointerNamed[ScriptLanguageExtension, [3]uintptr, [1]pointers.Type]
 
+func (self ScriptLanguageExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScriptLanguageExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ScriptLanguageExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ScrollBar discreet.PointerNamed[ScrollBar, [3]uintptr, [1]discreet.Type]
-func (self ScrollBar) Free() { Object(self).Free() }
 
+type ScrollBar pointers.PointerNamed[ScrollBar, [3]uintptr, [1]pointers.Type]
+
+func (self ScrollBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScrollBar) AsObject() gd.Object { return gd.Object(self) }
@@ -5952,49 +6472,54 @@ func (self ScrollBar) AsObject() gd.Object { return gd.Object(self) }
 func (self ScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ScrollContainerScrollMode int64
-type ScrollContainer discreet.PointerNamed[ScrollContainer, [3]uintptr, [1]discreet.Type]
-func (self ScrollContainer) Free() { Object(self).Free() }
+type ScrollContainer pointers.PointerNamed[ScrollContainer, [3]uintptr, [1]pointers.Type]
 
+func (self ScrollContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ScrollContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ScrollContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SegmentShape2D discreet.PointerNamed[SegmentShape2D, [3]uintptr, [1]discreet.Type]
-func (self SegmentShape2D) Free() { Object(self).Free() }
 
+type SegmentShape2D pointers.PointerNamed[SegmentShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self SegmentShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SegmentShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SegmentShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Semaphore discreet.PointerNamed[Semaphore, [3]uintptr, [1]discreet.Type]
-func (self Semaphore) Free() { Object(self).Free() }
 
+type Semaphore pointers.PointerNamed[Semaphore, [3]uintptr, [1]pointers.Type]
+
+func (self Semaphore) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Semaphore) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Semaphore) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SeparationRayShape2D discreet.PointerNamed[SeparationRayShape2D, [3]uintptr, [1]discreet.Type]
-func (self SeparationRayShape2D) Free() { Object(self).Free() }
 
+type SeparationRayShape2D pointers.PointerNamed[SeparationRayShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self SeparationRayShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SeparationRayShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SeparationRayShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SeparationRayShape3D discreet.PointerNamed[SeparationRayShape3D, [3]uintptr, [1]discreet.Type]
-func (self SeparationRayShape3D) Free() { Object(self).Free() }
 
+type SeparationRayShape3D pointers.PointerNamed[SeparationRayShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self SeparationRayShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SeparationRayShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SeparationRayShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Separator discreet.PointerNamed[Separator, [3]uintptr, [1]discreet.Type]
-func (self Separator) Free() { Object(self).Free() }
 
+type Separator pointers.PointerNamed[Separator, [3]uintptr, [1]pointers.Type]
+
+func (self Separator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Separator) AsObject() gd.Object { return gd.Object(self) }
@@ -6002,81 +6527,90 @@ func (self Separator) AsObject() gd.Object { return gd.Object(self) }
 func (self Separator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ShaderMode int64
-type Shader discreet.PointerNamed[Shader, [3]uintptr, [1]discreet.Type]
-func (self Shader) Free() { Object(self).Free() }
+type Shader pointers.PointerNamed[Shader, [3]uintptr, [1]pointers.Type]
 
+func (self Shader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Shader) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Shader) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ShaderGlobalsOverride discreet.PointerNamed[ShaderGlobalsOverride, [3]uintptr, [1]discreet.Type]
-func (self ShaderGlobalsOverride) Free() { Object(self).Free() }
 
+type ShaderGlobalsOverride pointers.PointerNamed[ShaderGlobalsOverride, [3]uintptr, [1]pointers.Type]
+
+func (self ShaderGlobalsOverride) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ShaderGlobalsOverride) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ShaderGlobalsOverride) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ShaderInclude discreet.PointerNamed[ShaderInclude, [3]uintptr, [1]discreet.Type]
-func (self ShaderInclude) Free() { Object(self).Free() }
 
+type ShaderInclude pointers.PointerNamed[ShaderInclude, [3]uintptr, [1]pointers.Type]
+
+func (self ShaderInclude) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ShaderInclude) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ShaderInclude) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ShaderMaterial discreet.PointerNamed[ShaderMaterial, [3]uintptr, [1]discreet.Type]
-func (self ShaderMaterial) Free() { Object(self).Free() }
 
+type ShaderMaterial pointers.PointerNamed[ShaderMaterial, [3]uintptr, [1]pointers.Type]
+
+func (self ShaderMaterial) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ShaderMaterial) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ShaderMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Shape2D discreet.PointerNamed[Shape2D, [3]uintptr, [1]discreet.Type]
-func (self Shape2D) Free() { Object(self).Free() }
 
+type Shape2D pointers.PointerNamed[Shape2D, [3]uintptr, [1]pointers.Type]
+
+func (self Shape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Shape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Shape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Shape3D discreet.PointerNamed[Shape3D, [3]uintptr, [1]discreet.Type]
-func (self Shape3D) Free() { Object(self).Free() }
 
+type Shape3D pointers.PointerNamed[Shape3D, [3]uintptr, [1]pointers.Type]
+
+func (self Shape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Shape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Shape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ShapeCast2D discreet.PointerNamed[ShapeCast2D, [3]uintptr, [1]discreet.Type]
-func (self ShapeCast2D) Free() { Object(self).Free() }
 
+type ShapeCast2D pointers.PointerNamed[ShapeCast2D, [3]uintptr, [1]pointers.Type]
+
+func (self ShapeCast2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ShapeCast2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ShapeCast2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ShapeCast3D discreet.PointerNamed[ShapeCast3D, [3]uintptr, [1]discreet.Type]
-func (self ShapeCast3D) Free() { Object(self).Free() }
 
+type ShapeCast3D pointers.PointerNamed[ShapeCast3D, [3]uintptr, [1]pointers.Type]
+
+func (self ShapeCast3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ShapeCast3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ShapeCast3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Shortcut discreet.PointerNamed[Shortcut, [3]uintptr, [1]discreet.Type]
-func (self Shortcut) Free() { Object(self).Free() }
 
+type Shortcut pointers.PointerNamed[Shortcut, [3]uintptr, [1]pointers.Type]
+
+func (self Shortcut) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Shortcut) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Shortcut) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Skeleton2D discreet.PointerNamed[Skeleton2D, [3]uintptr, [1]discreet.Type]
-func (self Skeleton2D) Free() { Object(self).Free() }
 
+type Skeleton2D pointers.PointerNamed[Skeleton2D, [3]uintptr, [1]pointers.Type]
+
+func (self Skeleton2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Skeleton2D) AsObject() gd.Object { return gd.Object(self) }
@@ -6084,97 +6618,114 @@ func (self Skeleton2D) AsObject() gd.Object { return gd.Object(self) }
 func (self Skeleton2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Skeleton3DModifierCallbackModeProcess int64
-type Skeleton3D discreet.PointerNamed[Skeleton3D, [3]uintptr, [1]discreet.Type]
-func (self Skeleton3D) Free() { Object(self).Free() }
+type Skeleton3D pointers.PointerNamed[Skeleton3D, [3]uintptr, [1]pointers.Type]
 
+func (self Skeleton3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Skeleton3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Skeleton3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonIK3D discreet.PointerNamed[SkeletonIK3D, [3]uintptr, [1]discreet.Type]
-func (self SkeletonIK3D) Free() { Object(self).Free() }
 
+type SkeletonIK3D pointers.PointerNamed[SkeletonIK3D, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonIK3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonIK3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonIK3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2D discreet.PointerNamed[SkeletonModification2D, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2D) Free() { Object(self).Free() }
 
+type SkeletonModification2D pointers.PointerNamed[SkeletonModification2D, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModification2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DCCDIK discreet.PointerNamed[SkeletonModification2DCCDIK, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DCCDIK) Free() { Object(self).Free() }
 
+type SkeletonModification2DCCDIK pointers.PointerNamed[SkeletonModification2DCCDIK, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DCCDIK) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DCCDIK) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModification2DCCDIK) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DFABRIK discreet.PointerNamed[SkeletonModification2DFABRIK, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DFABRIK) Free() { Object(self).Free() }
 
+type SkeletonModification2DFABRIK pointers.PointerNamed[SkeletonModification2DFABRIK, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DFABRIK) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DFABRIK) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModification2DFABRIK) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DJiggle discreet.PointerNamed[SkeletonModification2DJiggle, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DJiggle) Free() { Object(self).Free() }
 
+type SkeletonModification2DJiggle pointers.PointerNamed[SkeletonModification2DJiggle, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DJiggle) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DJiggle) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModification2DJiggle) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DLookAt discreet.PointerNamed[SkeletonModification2DLookAt, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DLookAt) Free() { Object(self).Free() }
 
+type SkeletonModification2DLookAt pointers.PointerNamed[SkeletonModification2DLookAt, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DLookAt) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DLookAt) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModification2DLookAt) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DPhysicalBones discreet.PointerNamed[SkeletonModification2DPhysicalBones, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DPhysicalBones) Free() { Object(self).Free() }
 
+type SkeletonModification2DPhysicalBones pointers.PointerNamed[SkeletonModification2DPhysicalBones, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DPhysicalBones) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DPhysicalBones) AsObject() gd.Object { return gd.Object(self) }
 
-func (self SkeletonModification2DPhysicalBones) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DStackHolder discreet.PointerNamed[SkeletonModification2DStackHolder, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DStackHolder) Free() { Object(self).Free() }
+func (self SkeletonModification2DPhysicalBones) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type SkeletonModification2DStackHolder pointers.PointerNamed[SkeletonModification2DStackHolder, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DStackHolder) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DStackHolder) AsObject() gd.Object { return gd.Object(self) }
 
-func (self SkeletonModification2DStackHolder) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModification2DTwoBoneIK discreet.PointerNamed[SkeletonModification2DTwoBoneIK, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModification2DTwoBoneIK) Free() { Object(self).Free() }
+func (self SkeletonModification2DStackHolder) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type SkeletonModification2DTwoBoneIK pointers.PointerNamed[SkeletonModification2DTwoBoneIK, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModification2DTwoBoneIK) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModification2DTwoBoneIK) AsObject() gd.Object { return gd.Object(self) }
 
-func (self SkeletonModification2DTwoBoneIK) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModificationStack2D discreet.PointerNamed[SkeletonModificationStack2D, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModificationStack2D) Free() { Object(self).Free() }
+func (self SkeletonModification2DTwoBoneIK) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type SkeletonModificationStack2D pointers.PointerNamed[SkeletonModificationStack2D, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModificationStack2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModificationStack2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonModificationStack2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonModifier3D discreet.PointerNamed[SkeletonModifier3D, [3]uintptr, [1]discreet.Type]
-func (self SkeletonModifier3D) Free() { Object(self).Free() }
 
+type SkeletonModifier3D pointers.PointerNamed[SkeletonModifier3D, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonModifier3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonModifier3D) AsObject() gd.Object { return gd.Object(self) }
@@ -6182,33 +6733,36 @@ func (self SkeletonModifier3D) AsObject() gd.Object { return gd.Object(self) }
 func (self SkeletonModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SkeletonProfileTailDirection int64
-type SkeletonProfile discreet.PointerNamed[SkeletonProfile, [3]uintptr, [1]discreet.Type]
-func (self SkeletonProfile) Free() { Object(self).Free() }
+type SkeletonProfile pointers.PointerNamed[SkeletonProfile, [3]uintptr, [1]pointers.Type]
 
+func (self SkeletonProfile) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonProfile) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkeletonProfileHumanoid discreet.PointerNamed[SkeletonProfileHumanoid, [3]uintptr, [1]discreet.Type]
-func (self SkeletonProfileHumanoid) Free() { Object(self).Free() }
 
+type SkeletonProfileHumanoid pointers.PointerNamed[SkeletonProfileHumanoid, [3]uintptr, [1]pointers.Type]
+
+func (self SkeletonProfileHumanoid) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkeletonProfileHumanoid) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SkeletonProfileHumanoid) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Skin discreet.PointerNamed[Skin, [3]uintptr, [1]discreet.Type]
-func (self Skin) Free() { Object(self).Free() }
 
+type Skin pointers.PointerNamed[Skin, [3]uintptr, [1]pointers.Type]
+
+func (self Skin) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Skin) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Skin) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SkinReference discreet.PointerNamed[SkinReference, [3]uintptr, [1]discreet.Type]
-func (self SkinReference) Free() { Object(self).Free() }
 
+type SkinReference pointers.PointerNamed[SkinReference, [3]uintptr, [1]pointers.Type]
+
+func (self SkinReference) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SkinReference) AsObject() gd.Object { return gd.Object(self) }
@@ -6218,17 +6772,18 @@ func (self SkinReference) Virtual(name string) reflect.Value { return reflect.Va
 type SkyRadianceSize int64
 
 type SkyProcessMode int64
-type Sky discreet.PointerNamed[Sky, [3]uintptr, [1]discreet.Type]
-func (self Sky) Free() { Object(self).Free() }
+type Sky pointers.PointerNamed[Sky, [3]uintptr, [1]pointers.Type]
 
+func (self Sky) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Sky) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Sky) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Slider discreet.PointerNamed[Slider, [3]uintptr, [1]discreet.Type]
-func (self Slider) Free() { Object(self).Free() }
 
+type Slider pointers.PointerNamed[Slider, [3]uintptr, [1]pointers.Type]
+
+func (self Slider) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Slider) AsObject() gd.Object { return gd.Object(self) }
@@ -6236,9 +6791,9 @@ func (self Slider) AsObject() gd.Object { return gd.Object(self) }
 func (self Slider) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SliderJoint3DParam int64
-type SliderJoint3D discreet.PointerNamed[SliderJoint3D, [3]uintptr, [1]discreet.Type]
-func (self SliderJoint3D) Free() { Object(self).Free() }
+type SliderJoint3D pointers.PointerNamed[SliderJoint3D, [3]uintptr, [1]pointers.Type]
 
+func (self SliderJoint3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SliderJoint3D) AsObject() gd.Object { return gd.Object(self) }
@@ -6246,41 +6801,45 @@ func (self SliderJoint3D) AsObject() gd.Object { return gd.Object(self) }
 func (self SliderJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SoftBody3DDisableMode int64
-type SoftBody3D discreet.PointerNamed[SoftBody3D, [3]uintptr, [1]discreet.Type]
-func (self SoftBody3D) Free() { Object(self).Free() }
+type SoftBody3D pointers.PointerNamed[SoftBody3D, [3]uintptr, [1]pointers.Type]
 
+func (self SoftBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SoftBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SoftBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SphereMesh discreet.PointerNamed[SphereMesh, [3]uintptr, [1]discreet.Type]
-func (self SphereMesh) Free() { Object(self).Free() }
 
+type SphereMesh pointers.PointerNamed[SphereMesh, [3]uintptr, [1]pointers.Type]
+
+func (self SphereMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SphereMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SphereMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SphereOccluder3D discreet.PointerNamed[SphereOccluder3D, [3]uintptr, [1]discreet.Type]
-func (self SphereOccluder3D) Free() { Object(self).Free() }
 
+type SphereOccluder3D pointers.PointerNamed[SphereOccluder3D, [3]uintptr, [1]pointers.Type]
+
+func (self SphereOccluder3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SphereOccluder3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SphereOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SphereShape3D discreet.PointerNamed[SphereShape3D, [3]uintptr, [1]discreet.Type]
-func (self SphereShape3D) Free() { Object(self).Free() }
 
+type SphereShape3D pointers.PointerNamed[SphereShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self SphereShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SphereShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SphereShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SpinBox discreet.PointerNamed[SpinBox, [3]uintptr, [1]discreet.Type]
-func (self SpinBox) Free() { Object(self).Free() }
 
+type SpinBox pointers.PointerNamed[SpinBox, [3]uintptr, [1]pointers.Type]
+
+func (self SpinBox) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SpinBox) AsObject() gd.Object { return gd.Object(self) }
@@ -6288,41 +6847,45 @@ func (self SpinBox) AsObject() gd.Object { return gd.Object(self) }
 func (self SpinBox) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type SplitContainerDraggerVisibility int64
-type SplitContainer discreet.PointerNamed[SplitContainer, [3]uintptr, [1]discreet.Type]
-func (self SplitContainer) Free() { Object(self).Free() }
+type SplitContainer pointers.PointerNamed[SplitContainer, [3]uintptr, [1]pointers.Type]
 
+func (self SplitContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SplitContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SplitContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SpotLight3D discreet.PointerNamed[SpotLight3D, [3]uintptr, [1]discreet.Type]
-func (self SpotLight3D) Free() { Object(self).Free() }
 
+type SpotLight3D pointers.PointerNamed[SpotLight3D, [3]uintptr, [1]pointers.Type]
+
+func (self SpotLight3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SpotLight3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SpotLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SpringArm3D discreet.PointerNamed[SpringArm3D, [3]uintptr, [1]discreet.Type]
-func (self SpringArm3D) Free() { Object(self).Free() }
 
+type SpringArm3D pointers.PointerNamed[SpringArm3D, [3]uintptr, [1]pointers.Type]
+
+func (self SpringArm3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SpringArm3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SpringArm3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Sprite2D discreet.PointerNamed[Sprite2D, [3]uintptr, [1]discreet.Type]
-func (self Sprite2D) Free() { Object(self).Free() }
 
+type Sprite2D pointers.PointerNamed[Sprite2D, [3]uintptr, [1]pointers.Type]
+
+func (self Sprite2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Sprite2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Sprite2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Sprite3D discreet.PointerNamed[Sprite3D, [3]uintptr, [1]discreet.Type]
-func (self Sprite3D) Free() { Object(self).Free() }
 
+type Sprite3D pointers.PointerNamed[Sprite3D, [3]uintptr, [1]pointers.Type]
+
+func (self Sprite3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Sprite3D) AsObject() gd.Object { return gd.Object(self) }
@@ -6332,81 +6895,90 @@ func (self Sprite3D) Virtual(name string) reflect.Value { return reflect.Value{}
 type SpriteBase3DDrawFlags int64
 
 type SpriteBase3DAlphaCutMode int64
-type SpriteBase3D discreet.PointerNamed[SpriteBase3D, [3]uintptr, [1]discreet.Type]
-func (self SpriteBase3D) Free() { Object(self).Free() }
+type SpriteBase3D pointers.PointerNamed[SpriteBase3D, [3]uintptr, [1]pointers.Type]
 
+func (self SpriteBase3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SpriteBase3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SpriteBase3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SpriteFrames discreet.PointerNamed[SpriteFrames, [3]uintptr, [1]discreet.Type]
-func (self SpriteFrames) Free() { Object(self).Free() }
 
+type SpriteFrames pointers.PointerNamed[SpriteFrames, [3]uintptr, [1]pointers.Type]
+
+func (self SpriteFrames) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SpriteFrames) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SpriteFrames) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StandardMaterial3D discreet.PointerNamed[StandardMaterial3D, [3]uintptr, [1]discreet.Type]
-func (self StandardMaterial3D) Free() { Object(self).Free() }
 
+type StandardMaterial3D pointers.PointerNamed[StandardMaterial3D, [3]uintptr, [1]pointers.Type]
+
+func (self StandardMaterial3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StandardMaterial3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StandardMaterial3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StaticBody2D discreet.PointerNamed[StaticBody2D, [3]uintptr, [1]discreet.Type]
-func (self StaticBody2D) Free() { Object(self).Free() }
 
+type StaticBody2D pointers.PointerNamed[StaticBody2D, [3]uintptr, [1]pointers.Type]
+
+func (self StaticBody2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StaticBody2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StaticBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StaticBody3D discreet.PointerNamed[StaticBody3D, [3]uintptr, [1]discreet.Type]
-func (self StaticBody3D) Free() { Object(self).Free() }
 
+type StaticBody3D pointers.PointerNamed[StaticBody3D, [3]uintptr, [1]pointers.Type]
+
+func (self StaticBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StaticBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StaticBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StatusIndicator discreet.PointerNamed[StatusIndicator, [3]uintptr, [1]discreet.Type]
-func (self StatusIndicator) Free() { Object(self).Free() }
 
+type StatusIndicator pointers.PointerNamed[StatusIndicator, [3]uintptr, [1]pointers.Type]
+
+func (self StatusIndicator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StatusIndicator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StatusIndicator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StreamPeer discreet.PointerNamed[StreamPeer, [3]uintptr, [1]discreet.Type]
-func (self StreamPeer) Free() { Object(self).Free() }
 
+type StreamPeer pointers.PointerNamed[StreamPeer, [3]uintptr, [1]pointers.Type]
+
+func (self StreamPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StreamPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StreamPeerBuffer discreet.PointerNamed[StreamPeerBuffer, [3]uintptr, [1]discreet.Type]
-func (self StreamPeerBuffer) Free() { Object(self).Free() }
 
+type StreamPeerBuffer pointers.PointerNamed[StreamPeerBuffer, [3]uintptr, [1]pointers.Type]
+
+func (self StreamPeerBuffer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeerBuffer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StreamPeerBuffer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StreamPeerExtension discreet.PointerNamed[StreamPeerExtension, [3]uintptr, [1]discreet.Type]
-func (self StreamPeerExtension) Free() { Object(self).Free() }
 
+type StreamPeerExtension pointers.PointerNamed[StreamPeerExtension, [3]uintptr, [1]pointers.Type]
+
+func (self StreamPeerExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeerExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StreamPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StreamPeerGZIP discreet.PointerNamed[StreamPeerGZIP, [3]uintptr, [1]discreet.Type]
-func (self StreamPeerGZIP) Free() { Object(self).Free() }
 
+type StreamPeerGZIP pointers.PointerNamed[StreamPeerGZIP, [3]uintptr, [1]pointers.Type]
+
+func (self StreamPeerGZIP) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeerGZIP) AsObject() gd.Object { return gd.Object(self) }
@@ -6414,9 +6986,9 @@ func (self StreamPeerGZIP) AsObject() gd.Object { return gd.Object(self) }
 func (self StreamPeerGZIP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type StreamPeerTCPStatus int64
-type StreamPeerTCP discreet.PointerNamed[StreamPeerTCP, [3]uintptr, [1]discreet.Type]
-func (self StreamPeerTCP) Free() { Object(self).Free() }
+type StreamPeerTCP pointers.PointerNamed[StreamPeerTCP, [3]uintptr, [1]pointers.Type]
 
+func (self StreamPeerTCP) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeerTCP) AsObject() gd.Object { return gd.Object(self) }
@@ -6424,41 +6996,45 @@ func (self StreamPeerTCP) AsObject() gd.Object { return gd.Object(self) }
 func (self StreamPeerTCP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type StreamPeerTLSStatus int64
-type StreamPeerTLS discreet.PointerNamed[StreamPeerTLS, [3]uintptr, [1]discreet.Type]
-func (self StreamPeerTLS) Free() { Object(self).Free() }
+type StreamPeerTLS pointers.PointerNamed[StreamPeerTLS, [3]uintptr, [1]pointers.Type]
 
+func (self StreamPeerTLS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StreamPeerTLS) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StreamPeerTLS) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StyleBox discreet.PointerNamed[StyleBox, [3]uintptr, [1]discreet.Type]
-func (self StyleBox) Free() { Object(self).Free() }
 
+type StyleBox pointers.PointerNamed[StyleBox, [3]uintptr, [1]pointers.Type]
+
+func (self StyleBox) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StyleBox) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StyleBox) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StyleBoxEmpty discreet.PointerNamed[StyleBoxEmpty, [3]uintptr, [1]discreet.Type]
-func (self StyleBoxEmpty) Free() { Object(self).Free() }
 
+type StyleBoxEmpty pointers.PointerNamed[StyleBoxEmpty, [3]uintptr, [1]pointers.Type]
+
+func (self StyleBoxEmpty) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StyleBoxEmpty) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StyleBoxEmpty) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StyleBoxFlat discreet.PointerNamed[StyleBoxFlat, [3]uintptr, [1]discreet.Type]
-func (self StyleBoxFlat) Free() { Object(self).Free() }
 
+type StyleBoxFlat pointers.PointerNamed[StyleBoxFlat, [3]uintptr, [1]pointers.Type]
+
+func (self StyleBoxFlat) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StyleBoxFlat) AsObject() gd.Object { return gd.Object(self) }
 
 func (self StyleBoxFlat) Virtual(name string) reflect.Value { return reflect.Value{} }
-type StyleBoxLine discreet.PointerNamed[StyleBoxLine, [3]uintptr, [1]discreet.Type]
-func (self StyleBoxLine) Free() { Object(self).Free() }
 
+type StyleBoxLine pointers.PointerNamed[StyleBoxLine, [3]uintptr, [1]pointers.Type]
+
+func (self StyleBoxLine) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StyleBoxLine) AsObject() gd.Object { return gd.Object(self) }
@@ -6466,9 +7042,9 @@ func (self StyleBoxLine) AsObject() gd.Object { return gd.Object(self) }
 func (self StyleBoxLine) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type StyleBoxTextureAxisStretchMode int64
-type StyleBoxTexture discreet.PointerNamed[StyleBoxTexture, [3]uintptr, [1]discreet.Type]
-func (self StyleBoxTexture) Free() { Object(self).Free() }
+type StyleBoxTexture pointers.PointerNamed[StyleBoxTexture, [3]uintptr, [1]pointers.Type]
 
+func (self StyleBoxTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self StyleBoxTexture) AsObject() gd.Object { return gd.Object(self) }
@@ -6478,17 +7054,18 @@ func (self StyleBoxTexture) Virtual(name string) reflect.Value { return reflect.
 type SubViewportClearMode int64
 
 type SubViewportUpdateMode int64
-type SubViewport discreet.PointerNamed[SubViewport, [3]uintptr, [1]discreet.Type]
-func (self SubViewport) Free() { Object(self).Free() }
+type SubViewport pointers.PointerNamed[SubViewport, [3]uintptr, [1]pointers.Type]
 
+func (self SubViewport) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SubViewport) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SubViewport) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SubViewportContainer discreet.PointerNamed[SubViewportContainer, [3]uintptr, [1]discreet.Type]
-func (self SubViewportContainer) Free() { Object(self).Free() }
 
+type SubViewportContainer pointers.PointerNamed[SubViewportContainer, [3]uintptr, [1]pointers.Type]
+
+func (self SubViewportContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SubViewportContainer) AsObject() gd.Object { return gd.Object(self) }
@@ -6498,41 +7075,45 @@ func (self SubViewportContainer) Virtual(name string) reflect.Value { return ref
 type SurfaceToolCustomFormat int64
 
 type SurfaceToolSkinWeightCount int64
-type SurfaceTool discreet.PointerNamed[SurfaceTool, [3]uintptr, [1]discreet.Type]
-func (self SurfaceTool) Free() { Object(self).Free() }
+type SurfaceTool pointers.PointerNamed[SurfaceTool, [3]uintptr, [1]pointers.Type]
 
+func (self SurfaceTool) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SurfaceTool) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SurfaceTool) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SyntaxHighlighter discreet.PointerNamed[SyntaxHighlighter, [3]uintptr, [1]discreet.Type]
-func (self SyntaxHighlighter) Free() { Object(self).Free() }
 
+type SyntaxHighlighter pointers.PointerNamed[SyntaxHighlighter, [3]uintptr, [1]pointers.Type]
+
+func (self SyntaxHighlighter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SyntaxHighlighter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type SystemFont discreet.PointerNamed[SystemFont, [3]uintptr, [1]discreet.Type]
-func (self SystemFont) Free() { Object(self).Free() }
 
+type SystemFont pointers.PointerNamed[SystemFont, [3]uintptr, [1]pointers.Type]
+
+func (self SystemFont) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self SystemFont) AsObject() gd.Object { return gd.Object(self) }
 
 func (self SystemFont) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TCPServer discreet.PointerNamed[TCPServer, [3]uintptr, [1]discreet.Type]
-func (self TCPServer) Free() { Object(self).Free() }
 
+type TCPServer pointers.PointerNamed[TCPServer, [3]uintptr, [1]pointers.Type]
+
+func (self TCPServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TCPServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TCPServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TLSOptions discreet.PointerNamed[TLSOptions, [3]uintptr, [1]discreet.Type]
-func (self TLSOptions) Free() { Object(self).Free() }
 
+type TLSOptions pointers.PointerNamed[TLSOptions, [3]uintptr, [1]pointers.Type]
+
+func (self TLSOptions) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TLSOptions) AsObject() gd.Object { return gd.Object(self) }
@@ -6542,9 +7123,9 @@ func (self TLSOptions) Virtual(name string) reflect.Value { return reflect.Value
 type TabBarAlignmentMode int64
 
 type TabBarCloseButtonDisplayPolicy int64
-type TabBar discreet.PointerNamed[TabBar, [3]uintptr, [1]discreet.Type]
-func (self TabBar) Free() { Object(self).Free() }
+type TabBar pointers.PointerNamed[TabBar, [3]uintptr, [1]pointers.Type]
 
+func (self TabBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TabBar) AsObject() gd.Object { return gd.Object(self) }
@@ -6552,9 +7133,9 @@ func (self TabBar) AsObject() gd.Object { return gd.Object(self) }
 func (self TabBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TabContainerTabPosition int64
-type TabContainer discreet.PointerNamed[TabContainer, [3]uintptr, [1]discreet.Type]
-func (self TabContainer) Free() { Object(self).Free() }
+type TabContainer pointers.PointerNamed[TabContainer, [3]uintptr, [1]pointers.Type]
 
+func (self TabContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TabContainer) AsObject() gd.Object { return gd.Object(self) }
@@ -6574,33 +7155,36 @@ type TextEditSelectionMode int64
 type TextEditLineWrappingMode int64
 
 type TextEditGutterType int64
-type TextEdit discreet.PointerNamed[TextEdit, [3]uintptr, [1]discreet.Type]
-func (self TextEdit) Free() { Object(self).Free() }
+type TextEdit pointers.PointerNamed[TextEdit, [3]uintptr, [1]pointers.Type]
 
+func (self TextEdit) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextEdit) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextLine discreet.PointerNamed[TextLine, [3]uintptr, [1]discreet.Type]
-func (self TextLine) Free() { Object(self).Free() }
 
+type TextLine pointers.PointerNamed[TextLine, [3]uintptr, [1]pointers.Type]
+
+func (self TextLine) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextLine) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextLine) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextMesh discreet.PointerNamed[TextMesh, [3]uintptr, [1]discreet.Type]
-func (self TextMesh) Free() { Object(self).Free() }
 
+type TextMesh pointers.PointerNamed[TextMesh, [3]uintptr, [1]pointers.Type]
+
+func (self TextMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextParagraph discreet.PointerNamed[TextParagraph, [3]uintptr, [1]discreet.Type]
-func (self TextParagraph) Free() { Object(self).Free() }
 
+type TextParagraph pointers.PointerNamed[TextParagraph, [3]uintptr, [1]pointers.Type]
+
+func (self TextParagraph) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextParagraph) AsObject() gd.Object { return gd.Object(self) }
@@ -6644,97 +7228,108 @@ type TextServerFontStyle int64
 type TextServerStructuredTextParser int64
 
 type TextServerFixedSizeScaleMode int64
-type TextServer discreet.PointerNamed[TextServer, [3]uintptr, [1]discreet.Type]
-func (self TextServer) Free() { Object(self).Free() }
+type TextServer pointers.PointerNamed[TextServer, [3]uintptr, [1]pointers.Type]
 
+func (self TextServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextServerAdvanced discreet.PointerNamed[TextServerAdvanced, [3]uintptr, [1]discreet.Type]
-func (self TextServerAdvanced) Free() { Object(self).Free() }
 
+type TextServerAdvanced pointers.PointerNamed[TextServerAdvanced, [3]uintptr, [1]pointers.Type]
+
+func (self TextServerAdvanced) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextServerAdvanced) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextServerAdvanced) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextServerDummy discreet.PointerNamed[TextServerDummy, [3]uintptr, [1]discreet.Type]
-func (self TextServerDummy) Free() { Object(self).Free() }
 
+type TextServerDummy pointers.PointerNamed[TextServerDummy, [3]uintptr, [1]pointers.Type]
+
+func (self TextServerDummy) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextServerDummy) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextServerDummy) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextServerExtension discreet.PointerNamed[TextServerExtension, [3]uintptr, [1]discreet.Type]
-func (self TextServerExtension) Free() { Object(self).Free() }
 
+type TextServerExtension pointers.PointerNamed[TextServerExtension, [3]uintptr, [1]pointers.Type]
+
+func (self TextServerExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextServerExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextServerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextServerManager discreet.PointerNamed[TextServerManager, [3]uintptr, [1]discreet.Type]
-func (self TextServerManager) Free() { Object(self).Free() }
 
+type TextServerManager pointers.PointerNamed[TextServerManager, [3]uintptr, [1]pointers.Type]
+
+func (self TextServerManager) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextServerManager) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextServerManager) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture discreet.PointerNamed[Texture, [3]uintptr, [1]discreet.Type]
-func (self Texture) Free() { Object(self).Free() }
 
+type Texture pointers.PointerNamed[Texture, [3]uintptr, [1]pointers.Type]
+
+func (self Texture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture2D discreet.PointerNamed[Texture2D, [3]uintptr, [1]discreet.Type]
-func (self Texture2D) Free() { Object(self).Free() }
 
+type Texture2D pointers.PointerNamed[Texture2D, [3]uintptr, [1]pointers.Type]
+
+func (self Texture2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture2DArray discreet.PointerNamed[Texture2DArray, [3]uintptr, [1]discreet.Type]
-func (self Texture2DArray) Free() { Object(self).Free() }
 
+type Texture2DArray pointers.PointerNamed[Texture2DArray, [3]uintptr, [1]pointers.Type]
+
+func (self Texture2DArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture2DArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture2DArrayRD discreet.PointerNamed[Texture2DArrayRD, [3]uintptr, [1]discreet.Type]
-func (self Texture2DArrayRD) Free() { Object(self).Free() }
 
+type Texture2DArrayRD pointers.PointerNamed[Texture2DArrayRD, [3]uintptr, [1]pointers.Type]
+
+func (self Texture2DArrayRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture2DArrayRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture2DArrayRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture2DRD discreet.PointerNamed[Texture2DRD, [3]uintptr, [1]discreet.Type]
-func (self Texture2DRD) Free() { Object(self).Free() }
 
+type Texture2DRD pointers.PointerNamed[Texture2DRD, [3]uintptr, [1]pointers.Type]
+
+func (self Texture2DRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture2DRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture2DRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture3D discreet.PointerNamed[Texture3D, [3]uintptr, [1]discreet.Type]
-func (self Texture3D) Free() { Object(self).Free() }
 
+type Texture3D pointers.PointerNamed[Texture3D, [3]uintptr, [1]pointers.Type]
+
+func (self Texture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Texture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Texture3DRD discreet.PointerNamed[Texture3DRD, [3]uintptr, [1]discreet.Type]
-func (self Texture3DRD) Free() { Object(self).Free() }
 
+type Texture3DRD pointers.PointerNamed[Texture3DRD, [3]uintptr, [1]pointers.Type]
+
+func (self Texture3DRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Texture3DRD) AsObject() gd.Object { return gd.Object(self) }
@@ -6742,25 +7337,27 @@ func (self Texture3DRD) AsObject() gd.Object { return gd.Object(self) }
 func (self Texture3DRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TextureButtonStretchMode int64
-type TextureButton discreet.PointerNamed[TextureButton, [3]uintptr, [1]discreet.Type]
-func (self TextureButton) Free() { Object(self).Free() }
+type TextureButton pointers.PointerNamed[TextureButton, [3]uintptr, [1]pointers.Type]
 
+func (self TextureButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextureButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextureCubemapArrayRD discreet.PointerNamed[TextureCubemapArrayRD, [3]uintptr, [1]discreet.Type]
-func (self TextureCubemapArrayRD) Free() { Object(self).Free() }
 
+type TextureCubemapArrayRD pointers.PointerNamed[TextureCubemapArrayRD, [3]uintptr, [1]pointers.Type]
+
+func (self TextureCubemapArrayRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureCubemapArrayRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextureCubemapArrayRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextureCubemapRD discreet.PointerNamed[TextureCubemapRD, [3]uintptr, [1]discreet.Type]
-func (self TextureCubemapRD) Free() { Object(self).Free() }
 
+type TextureCubemapRD pointers.PointerNamed[TextureCubemapRD, [3]uintptr, [1]pointers.Type]
+
+func (self TextureCubemapRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureCubemapRD) AsObject() gd.Object { return gd.Object(self) }
@@ -6768,17 +7365,18 @@ func (self TextureCubemapRD) AsObject() gd.Object { return gd.Object(self) }
 func (self TextureCubemapRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TextureLayeredLayeredType int64
-type TextureLayered discreet.PointerNamed[TextureLayered, [3]uintptr, [1]discreet.Type]
-func (self TextureLayered) Free() { Object(self).Free() }
+type TextureLayered pointers.PointerNamed[TextureLayered, [3]uintptr, [1]pointers.Type]
 
+func (self TextureLayered) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureLayered) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TextureLayeredRD discreet.PointerNamed[TextureLayeredRD, [3]uintptr, [1]discreet.Type]
-func (self TextureLayeredRD) Free() { Object(self).Free() }
 
+type TextureLayeredRD pointers.PointerNamed[TextureLayeredRD, [3]uintptr, [1]pointers.Type]
+
+func (self TextureLayeredRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureLayeredRD) AsObject() gd.Object { return gd.Object(self) }
@@ -6786,9 +7384,9 @@ func (self TextureLayeredRD) AsObject() gd.Object { return gd.Object(self) }
 func (self TextureLayeredRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TextureProgressBarFillMode int64
-type TextureProgressBar discreet.PointerNamed[TextureProgressBar, [3]uintptr, [1]discreet.Type]
-func (self TextureProgressBar) Free() { Object(self).Free() }
+type TextureProgressBar pointers.PointerNamed[TextureProgressBar, [3]uintptr, [1]pointers.Type]
 
+func (self TextureProgressBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureProgressBar) AsObject() gd.Object { return gd.Object(self) }
@@ -6798,9 +7396,9 @@ func (self TextureProgressBar) Virtual(name string) reflect.Value { return refle
 type TextureRectExpandMode int64
 
 type TextureRectStretchMode int64
-type TextureRect discreet.PointerNamed[TextureRect, [3]uintptr, [1]discreet.Type]
-func (self TextureRect) Free() { Object(self).Free() }
+type TextureRect pointers.PointerNamed[TextureRect, [3]uintptr, [1]pointers.Type]
 
+func (self TextureRect) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TextureRect) AsObject() gd.Object { return gd.Object(self) }
@@ -6808,17 +7406,18 @@ func (self TextureRect) AsObject() gd.Object { return gd.Object(self) }
 func (self TextureRect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ThemeDataType int64
-type Theme discreet.PointerNamed[Theme, [3]uintptr, [1]discreet.Type]
-func (self Theme) Free() { Object(self).Free() }
+type Theme pointers.PointerNamed[Theme, [3]uintptr, [1]pointers.Type]
 
+func (self Theme) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Theme) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Theme) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ThemeDB discreet.PointerNamed[ThemeDB, [3]uintptr, [1]discreet.Type]
-func (self ThemeDB) Free() { Object(self).Free() }
 
+type ThemeDB pointers.PointerNamed[ThemeDB, [3]uintptr, [1]pointers.Type]
+
+func (self ThemeDB) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ThemeDB) AsObject() gd.Object { return gd.Object(self) }
@@ -6826,17 +7425,18 @@ func (self ThemeDB) AsObject() gd.Object { return gd.Object(self) }
 func (self ThemeDB) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ThreadPriority int64
-type Thread discreet.PointerNamed[Thread, [3]uintptr, [1]discreet.Type]
-func (self Thread) Free() { Object(self).Free() }
+type Thread pointers.PointerNamed[Thread, [3]uintptr, [1]pointers.Type]
 
+func (self Thread) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Thread) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Thread) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TileData discreet.PointerNamed[TileData, [3]uintptr, [1]discreet.Type]
-func (self TileData) Free() { Object(self).Free() }
 
+type TileData pointers.PointerNamed[TileData, [3]uintptr, [1]pointers.Type]
+
+func (self TileData) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileData) AsObject() gd.Object { return gd.Object(self) }
@@ -6844,9 +7444,9 @@ func (self TileData) AsObject() gd.Object { return gd.Object(self) }
 func (self TileData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TileMapVisibilityMode int64
-type TileMap discreet.PointerNamed[TileMap, [3]uintptr, [1]discreet.Type]
-func (self TileMap) Free() { Object(self).Free() }
+type TileMap pointers.PointerNamed[TileMap, [3]uintptr, [1]pointers.Type]
 
+func (self TileMap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileMap) AsObject() gd.Object { return gd.Object(self) }
@@ -6854,17 +7454,18 @@ func (self TileMap) AsObject() gd.Object { return gd.Object(self) }
 func (self TileMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TileMapLayerDebugVisibilityMode int64
-type TileMapLayer discreet.PointerNamed[TileMapLayer, [3]uintptr, [1]discreet.Type]
-func (self TileMapLayer) Free() { Object(self).Free() }
+type TileMapLayer pointers.PointerNamed[TileMapLayer, [3]uintptr, [1]pointers.Type]
 
+func (self TileMapLayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileMapLayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TileMapLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TileMapPattern discreet.PointerNamed[TileMapPattern, [3]uintptr, [1]discreet.Type]
-func (self TileMapPattern) Free() { Object(self).Free() }
 
+type TileMapPattern pointers.PointerNamed[TileMapPattern, [3]uintptr, [1]pointers.Type]
+
+func (self TileMapPattern) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileMapPattern) AsObject() gd.Object { return gd.Object(self) }
@@ -6880,9 +7481,9 @@ type TileSetTileOffsetAxis int64
 type TileSetCellNeighbor int64
 
 type TileSetTerrainMode int64
-type TileSet discreet.PointerNamed[TileSet, [3]uintptr, [1]discreet.Type]
-func (self TileSet) Free() { Object(self).Free() }
+type TileSet pointers.PointerNamed[TileSet, [3]uintptr, [1]pointers.Type]
 
+func (self TileSet) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileSet) AsObject() gd.Object { return gd.Object(self) }
@@ -6890,25 +7491,27 @@ func (self TileSet) AsObject() gd.Object { return gd.Object(self) }
 func (self TileSet) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TileSetAtlasSourceTileAnimationMode int64
-type TileSetAtlasSource discreet.PointerNamed[TileSetAtlasSource, [3]uintptr, [1]discreet.Type]
-func (self TileSetAtlasSource) Free() { Object(self).Free() }
+type TileSetAtlasSource pointers.PointerNamed[TileSetAtlasSource, [3]uintptr, [1]pointers.Type]
 
+func (self TileSetAtlasSource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileSetAtlasSource) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TileSetAtlasSource) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TileSetScenesCollectionSource discreet.PointerNamed[TileSetScenesCollectionSource, [3]uintptr, [1]discreet.Type]
-func (self TileSetScenesCollectionSource) Free() { Object(self).Free() }
 
+type TileSetScenesCollectionSource pointers.PointerNamed[TileSetScenesCollectionSource, [3]uintptr, [1]pointers.Type]
+
+func (self TileSetScenesCollectionSource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileSetScenesCollectionSource) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TileSetScenesCollectionSource) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TileSetSource discreet.PointerNamed[TileSetSource, [3]uintptr, [1]discreet.Type]
-func (self TileSetSource) Free() { Object(self).Free() }
 
+type TileSetSource pointers.PointerNamed[TileSetSource, [3]uintptr, [1]pointers.Type]
+
+func (self TileSetSource) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TileSetSource) AsObject() gd.Object { return gd.Object(self) }
@@ -6918,9 +7521,9 @@ func (self TileSetSource) Virtual(name string) reflect.Value { return reflect.Va
 type TimeMonth int64
 
 type TimeWeekday int64
-type Time discreet.PointerNamed[Time, [3]uintptr, [1]discreet.Type]
-func (self Time) Free() { Object(self).Free() }
+type Time pointers.PointerNamed[Time, [3]uintptr, [1]pointers.Type]
 
+func (self Time) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Time) AsObject() gd.Object { return gd.Object(self) }
@@ -6928,17 +7531,18 @@ func (self Time) AsObject() gd.Object { return gd.Object(self) }
 func (self Time) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TimerTimerProcessCallback int64
-type Timer discreet.PointerNamed[Timer, [3]uintptr, [1]discreet.Type]
-func (self Timer) Free() { Object(self).Free() }
+type Timer pointers.PointerNamed[Timer, [3]uintptr, [1]pointers.Type]
 
+func (self Timer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Timer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Timer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TorusMesh discreet.PointerNamed[TorusMesh, [3]uintptr, [1]discreet.Type]
-func (self TorusMesh) Free() { Object(self).Free() }
 
+type TorusMesh pointers.PointerNamed[TorusMesh, [3]uintptr, [1]pointers.Type]
+
+func (self TorusMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TorusMesh) AsObject() gd.Object { return gd.Object(self) }
@@ -6946,25 +7550,27 @@ func (self TorusMesh) AsObject() gd.Object { return gd.Object(self) }
 func (self TorusMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TouchScreenButtonVisibilityMode int64
-type TouchScreenButton discreet.PointerNamed[TouchScreenButton, [3]uintptr, [1]discreet.Type]
-func (self TouchScreenButton) Free() { Object(self).Free() }
+type TouchScreenButton pointers.PointerNamed[TouchScreenButton, [3]uintptr, [1]pointers.Type]
 
+func (self TouchScreenButton) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TouchScreenButton) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TouchScreenButton) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Translation discreet.PointerNamed[Translation, [3]uintptr, [1]discreet.Type]
-func (self Translation) Free() { Object(self).Free() }
 
+type Translation pointers.PointerNamed[Translation, [3]uintptr, [1]pointers.Type]
+
+func (self Translation) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Translation) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Translation) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TranslationServer discreet.PointerNamed[TranslationServer, [3]uintptr, [1]discreet.Type]
-func (self TranslationServer) Free() { Object(self).Free() }
 
+type TranslationServer pointers.PointerNamed[TranslationServer, [3]uintptr, [1]pointers.Type]
+
+func (self TranslationServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TranslationServer) AsObject() gd.Object { return gd.Object(self) }
@@ -6974,9 +7580,9 @@ func (self TranslationServer) Virtual(name string) reflect.Value { return reflec
 type TreeSelectMode int64
 
 type TreeDropModeFlags int64
-type Tree discreet.PointerNamed[Tree, [3]uintptr, [1]discreet.Type]
-func (self Tree) Free() { Object(self).Free() }
+type Tree pointers.PointerNamed[Tree, [3]uintptr, [1]pointers.Type]
 
+func (self Tree) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Tree) AsObject() gd.Object { return gd.Object(self) }
@@ -6984,25 +7590,27 @@ func (self Tree) AsObject() gd.Object { return gd.Object(self) }
 func (self Tree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type TreeItemTreeCellMode int64
-type TreeItem discreet.PointerNamed[TreeItem, [3]uintptr, [1]discreet.Type]
-func (self TreeItem) Free() { Object(self).Free() }
+type TreeItem pointers.PointerNamed[TreeItem, [3]uintptr, [1]pointers.Type]
 
+func (self TreeItem) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TreeItem) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TreeItem) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TriangleMesh discreet.PointerNamed[TriangleMesh, [3]uintptr, [1]discreet.Type]
-func (self TriangleMesh) Free() { Object(self).Free() }
 
+type TriangleMesh pointers.PointerNamed[TriangleMesh, [3]uintptr, [1]pointers.Type]
+
+func (self TriangleMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TriangleMesh) AsObject() gd.Object { return gd.Object(self) }
 
 func (self TriangleMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
-type TubeTrailMesh discreet.PointerNamed[TubeTrailMesh, [3]uintptr, [1]discreet.Type]
-func (self TubeTrailMesh) Free() { Object(self).Free() }
 
+type TubeTrailMesh pointers.PointerNamed[TubeTrailMesh, [3]uintptr, [1]pointers.Type]
+
+func (self TubeTrailMesh) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self TubeTrailMesh) AsObject() gd.Object { return gd.Object(self) }
@@ -7016,25 +7624,27 @@ type TweenTweenPauseMode int64
 type TweenTransitionType int64
 
 type TweenEaseType int64
-type Tween discreet.PointerNamed[Tween, [3]uintptr, [1]discreet.Type]
-func (self Tween) Free() { Object(self).Free() }
+type Tween pointers.PointerNamed[Tween, [3]uintptr, [1]pointers.Type]
 
+func (self Tween) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Tween) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Tween) Virtual(name string) reflect.Value { return reflect.Value{} }
-type Tweener discreet.PointerNamed[Tweener, [3]uintptr, [1]discreet.Type]
-func (self Tweener) Free() { Object(self).Free() }
 
+type Tweener pointers.PointerNamed[Tweener, [3]uintptr, [1]pointers.Type]
+
+func (self Tweener) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Tweener) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Tweener) Virtual(name string) reflect.Value { return reflect.Value{} }
-type UDPServer discreet.PointerNamed[UDPServer, [3]uintptr, [1]discreet.Type]
-func (self UDPServer) Free() { Object(self).Free() }
 
+type UDPServer pointers.PointerNamed[UDPServer, [3]uintptr, [1]pointers.Type]
+
+func (self UDPServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self UDPServer) AsObject() gd.Object { return gd.Object(self) }
@@ -7042,9 +7652,9 @@ func (self UDPServer) AsObject() gd.Object { return gd.Object(self) }
 func (self UDPServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type UPNPUPNPResult int64
-type UPNP discreet.PointerNamed[UPNP, [3]uintptr, [1]discreet.Type]
-func (self UPNP) Free() { Object(self).Free() }
+type UPNP pointers.PointerNamed[UPNP, [3]uintptr, [1]pointers.Type]
 
+func (self UPNP) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self UPNP) AsObject() gd.Object { return gd.Object(self) }
@@ -7052,9 +7662,9 @@ func (self UPNP) AsObject() gd.Object { return gd.Object(self) }
 func (self UPNP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type UPNPDeviceIGDStatus int64
-type UPNPDevice discreet.PointerNamed[UPNPDevice, [3]uintptr, [1]discreet.Type]
-func (self UPNPDevice) Free() { Object(self).Free() }
+type UPNPDevice pointers.PointerNamed[UPNPDevice, [3]uintptr, [1]pointers.Type]
 
+func (self UPNPDevice) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self UPNPDevice) AsObject() gd.Object { return gd.Object(self) }
@@ -7062,113 +7672,126 @@ func (self UPNPDevice) AsObject() gd.Object { return gd.Object(self) }
 func (self UPNPDevice) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type UndoRedoMergeMode int64
-type UndoRedo discreet.PointerNamed[UndoRedo, [3]uintptr, [1]discreet.Type]
-func (self UndoRedo) Free() { Object(self).Free() }
+type UndoRedo pointers.PointerNamed[UndoRedo, [3]uintptr, [1]pointers.Type]
 
+func (self UndoRedo) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self UndoRedo) AsObject() gd.Object { return gd.Object(self) }
 
 func (self UndoRedo) Virtual(name string) reflect.Value { return reflect.Value{} }
-type UniformSetCacheRD discreet.PointerNamed[UniformSetCacheRD, [3]uintptr, [1]discreet.Type]
-func (self UniformSetCacheRD) Free() { Object(self).Free() }
 
+type UniformSetCacheRD pointers.PointerNamed[UniformSetCacheRD, [3]uintptr, [1]pointers.Type]
+
+func (self UniformSetCacheRD) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self UniformSetCacheRD) AsObject() gd.Object { return gd.Object(self) }
 
 func (self UniformSetCacheRD) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VBoxContainer discreet.PointerNamed[VBoxContainer, [3]uintptr, [1]discreet.Type]
-func (self VBoxContainer) Free() { Object(self).Free() }
 
+type VBoxContainer pointers.PointerNamed[VBoxContainer, [3]uintptr, [1]pointers.Type]
+
+func (self VBoxContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VBoxContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VBoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VFlowContainer discreet.PointerNamed[VFlowContainer, [3]uintptr, [1]discreet.Type]
-func (self VFlowContainer) Free() { Object(self).Free() }
 
+type VFlowContainer pointers.PointerNamed[VFlowContainer, [3]uintptr, [1]pointers.Type]
+
+func (self VFlowContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VFlowContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VFlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VScrollBar discreet.PointerNamed[VScrollBar, [3]uintptr, [1]discreet.Type]
-func (self VScrollBar) Free() { Object(self).Free() }
 
+type VScrollBar pointers.PointerNamed[VScrollBar, [3]uintptr, [1]pointers.Type]
+
+func (self VScrollBar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VScrollBar) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VSeparator discreet.PointerNamed[VSeparator, [3]uintptr, [1]discreet.Type]
-func (self VSeparator) Free() { Object(self).Free() }
 
+type VSeparator pointers.PointerNamed[VSeparator, [3]uintptr, [1]pointers.Type]
+
+func (self VSeparator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VSeparator) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VSeparator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VSlider discreet.PointerNamed[VSlider, [3]uintptr, [1]discreet.Type]
-func (self VSlider) Free() { Object(self).Free() }
 
+type VSlider pointers.PointerNamed[VSlider, [3]uintptr, [1]pointers.Type]
+
+func (self VSlider) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VSlider) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VSplitContainer discreet.PointerNamed[VSplitContainer, [3]uintptr, [1]discreet.Type]
-func (self VSplitContainer) Free() { Object(self).Free() }
 
+type VSplitContainer pointers.PointerNamed[VSplitContainer, [3]uintptr, [1]pointers.Type]
+
+func (self VSplitContainer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VSplitContainer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VSplitContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VehicleBody3D discreet.PointerNamed[VehicleBody3D, [3]uintptr, [1]discreet.Type]
-func (self VehicleBody3D) Free() { Object(self).Free() }
 
+type VehicleBody3D pointers.PointerNamed[VehicleBody3D, [3]uintptr, [1]pointers.Type]
+
+func (self VehicleBody3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VehicleBody3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VehicleBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VehicleWheel3D discreet.PointerNamed[VehicleWheel3D, [3]uintptr, [1]discreet.Type]
-func (self VehicleWheel3D) Free() { Object(self).Free() }
 
+type VehicleWheel3D pointers.PointerNamed[VehicleWheel3D, [3]uintptr, [1]pointers.Type]
+
+func (self VehicleWheel3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VehicleWheel3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VehicleWheel3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VideoStream discreet.PointerNamed[VideoStream, [3]uintptr, [1]discreet.Type]
-func (self VideoStream) Free() { Object(self).Free() }
 
+type VideoStream pointers.PointerNamed[VideoStream, [3]uintptr, [1]pointers.Type]
+
+func (self VideoStream) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VideoStream) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VideoStream) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VideoStreamPlayback discreet.PointerNamed[VideoStreamPlayback, [3]uintptr, [1]discreet.Type]
-func (self VideoStreamPlayback) Free() { Object(self).Free() }
 
+type VideoStreamPlayback pointers.PointerNamed[VideoStreamPlayback, [3]uintptr, [1]pointers.Type]
+
+func (self VideoStreamPlayback) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VideoStreamPlayback) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VideoStreamPlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VideoStreamPlayer discreet.PointerNamed[VideoStreamPlayer, [3]uintptr, [1]discreet.Type]
-func (self VideoStreamPlayer) Free() { Object(self).Free() }
 
+type VideoStreamPlayer pointers.PointerNamed[VideoStreamPlayer, [3]uintptr, [1]pointers.Type]
+
+func (self VideoStreamPlayer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VideoStreamPlayer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VideoStreamPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VideoStreamTheora discreet.PointerNamed[VideoStreamTheora, [3]uintptr, [1]discreet.Type]
-func (self VideoStreamTheora) Free() { Object(self).Free() }
 
+type VideoStreamTheora pointers.PointerNamed[VideoStreamTheora, [3]uintptr, [1]pointers.Type]
+
+func (self VideoStreamTheora) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VideoStreamTheora) AsObject() gd.Object { return gd.Object(self) }
@@ -7200,17 +7823,18 @@ type ViewportSDFScale int64
 type ViewportVRSMode int64
 
 type ViewportVRSUpdateMode int64
-type Viewport discreet.PointerNamed[Viewport, [3]uintptr, [1]discreet.Type]
-func (self Viewport) Free() { Object(self).Free() }
+type Viewport pointers.PointerNamed[Viewport, [3]uintptr, [1]pointers.Type]
 
+func (self Viewport) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Viewport) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Viewport) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ViewportTexture discreet.PointerNamed[ViewportTexture, [3]uintptr, [1]discreet.Type]
-func (self ViewportTexture) Free() { Object(self).Free() }
 
+type ViewportTexture pointers.PointerNamed[ViewportTexture, [3]uintptr, [1]pointers.Type]
+
+func (self ViewportTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ViewportTexture) AsObject() gd.Object { return gd.Object(self) }
@@ -7218,9 +7842,9 @@ func (self ViewportTexture) AsObject() gd.Object { return gd.Object(self) }
 func (self ViewportTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisibleOnScreenEnabler2DEnableMode int64
-type VisibleOnScreenEnabler2D discreet.PointerNamed[VisibleOnScreenEnabler2D, [3]uintptr, [1]discreet.Type]
-func (self VisibleOnScreenEnabler2D) Free() { Object(self).Free() }
+type VisibleOnScreenEnabler2D pointers.PointerNamed[VisibleOnScreenEnabler2D, [3]uintptr, [1]pointers.Type]
 
+func (self VisibleOnScreenEnabler2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisibleOnScreenEnabler2D) AsObject() gd.Object { return gd.Object(self) }
@@ -7228,33 +7852,36 @@ func (self VisibleOnScreenEnabler2D) AsObject() gd.Object { return gd.Object(sel
 func (self VisibleOnScreenEnabler2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisibleOnScreenEnabler3DEnableMode int64
-type VisibleOnScreenEnabler3D discreet.PointerNamed[VisibleOnScreenEnabler3D, [3]uintptr, [1]discreet.Type]
-func (self VisibleOnScreenEnabler3D) Free() { Object(self).Free() }
+type VisibleOnScreenEnabler3D pointers.PointerNamed[VisibleOnScreenEnabler3D, [3]uintptr, [1]pointers.Type]
 
+func (self VisibleOnScreenEnabler3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisibleOnScreenEnabler3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisibleOnScreenEnabler3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisibleOnScreenNotifier2D discreet.PointerNamed[VisibleOnScreenNotifier2D, [3]uintptr, [1]discreet.Type]
-func (self VisibleOnScreenNotifier2D) Free() { Object(self).Free() }
 
+type VisibleOnScreenNotifier2D pointers.PointerNamed[VisibleOnScreenNotifier2D, [3]uintptr, [1]pointers.Type]
+
+func (self VisibleOnScreenNotifier2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisibleOnScreenNotifier2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisibleOnScreenNotifier2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisibleOnScreenNotifier3D discreet.PointerNamed[VisibleOnScreenNotifier3D, [3]uintptr, [1]discreet.Type]
-func (self VisibleOnScreenNotifier3D) Free() { Object(self).Free() }
 
+type VisibleOnScreenNotifier3D pointers.PointerNamed[VisibleOnScreenNotifier3D, [3]uintptr, [1]pointers.Type]
+
+func (self VisibleOnScreenNotifier3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisibleOnScreenNotifier3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisibleOnScreenNotifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualInstance3D discreet.PointerNamed[VisualInstance3D, [3]uintptr, [1]discreet.Type]
-func (self VisualInstance3D) Free() { Object(self).Free() }
 
+type VisualInstance3D pointers.PointerNamed[VisualInstance3D, [3]uintptr, [1]pointers.Type]
+
+func (self VisualInstance3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualInstance3D) AsObject() gd.Object { return gd.Object(self) }
@@ -7266,9 +7893,9 @@ type VisualShaderType int64
 type VisualShaderVaryingMode int64
 
 type VisualShaderVaryingType int64
-type VisualShader discreet.PointerNamed[VisualShader, [3]uintptr, [1]discreet.Type]
-func (self VisualShader) Free() { Object(self).Free() }
+type VisualShader pointers.PointerNamed[VisualShader, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShader) AsObject() gd.Object { return gd.Object(self) }
@@ -7276,9 +7903,9 @@ func (self VisualShader) AsObject() gd.Object { return gd.Object(self) }
 func (self VisualShader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodePortType int64
-type VisualShaderNode discreet.PointerNamed[VisualShaderNode, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNode) Free() { Object(self).Free() }
+type VisualShaderNode pointers.PointerNamed[VisualShaderNode, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNode) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNode) AsObject() gd.Object { return gd.Object(self) }
@@ -7286,43 +7913,50 @@ func (self VisualShaderNode) AsObject() gd.Object { return gd.Object(self) }
 func (self VisualShaderNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeBillboardBillboardType int64
-type VisualShaderNodeBillboard discreet.PointerNamed[VisualShaderNodeBillboard, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeBillboard) Free() { Object(self).Free() }
+type VisualShaderNodeBillboard pointers.PointerNamed[VisualShaderNodeBillboard, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeBillboard) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeBillboard) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeBillboard) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeBooleanConstant discreet.PointerNamed[VisualShaderNodeBooleanConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeBooleanConstant) Free() { Object(self).Free() }
 
+type VisualShaderNodeBooleanConstant pointers.PointerNamed[VisualShaderNodeBooleanConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeBooleanConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeBooleanConstant) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeBooleanConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeBooleanParameter discreet.PointerNamed[VisualShaderNodeBooleanParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeBooleanParameter) Free() { Object(self).Free() }
+func (self VisualShaderNodeBooleanConstant) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeBooleanParameter pointers.PointerNamed[VisualShaderNodeBooleanParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeBooleanParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeBooleanParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeBooleanParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeBooleanParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeClampOpType int64
-type VisualShaderNodeClamp discreet.PointerNamed[VisualShaderNodeClamp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeClamp) Free() { Object(self).Free() }
+type VisualShaderNodeClamp pointers.PointerNamed[VisualShaderNodeClamp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeClamp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeClamp) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeClamp) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeColorConstant discreet.PointerNamed[VisualShaderNodeColorConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeColorConstant) Free() { Object(self).Free() }
 
+type VisualShaderNodeColorConstant pointers.PointerNamed[VisualShaderNodeColorConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeColorConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeColorConstant) AsObject() gd.Object { return gd.Object(self) }
@@ -7330,9 +7964,9 @@ func (self VisualShaderNodeColorConstant) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeColorConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeColorFuncFunction int64
-type VisualShaderNodeColorFunc discreet.PointerNamed[VisualShaderNodeColorFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeColorFunc) Free() { Object(self).Free() }
+type VisualShaderNodeColorFunc pointers.PointerNamed[VisualShaderNodeColorFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeColorFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeColorFunc) AsObject() gd.Object { return gd.Object(self) }
@@ -7340,25 +7974,27 @@ func (self VisualShaderNodeColorFunc) AsObject() gd.Object { return gd.Object(se
 func (self VisualShaderNodeColorFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeColorOpOperator int64
-type VisualShaderNodeColorOp discreet.PointerNamed[VisualShaderNodeColorOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeColorOp) Free() { Object(self).Free() }
+type VisualShaderNodeColorOp pointers.PointerNamed[VisualShaderNodeColorOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeColorOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeColorOp) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeColorOp) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeColorParameter discreet.PointerNamed[VisualShaderNodeColorParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeColorParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeColorParameter pointers.PointerNamed[VisualShaderNodeColorParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeColorParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeColorParameter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeColorParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeComment discreet.PointerNamed[VisualShaderNodeComment, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeComment) Free() { Object(self).Free() }
 
+type VisualShaderNodeComment pointers.PointerNamed[VisualShaderNodeComment, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeComment) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeComment) AsObject() gd.Object { return gd.Object(self) }
@@ -7370,17 +8006,18 @@ type VisualShaderNodeCompareComparisonType int64
 type VisualShaderNodeCompareFunction int64
 
 type VisualShaderNodeCompareCondition int64
-type VisualShaderNodeCompare discreet.PointerNamed[VisualShaderNodeCompare, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCompare) Free() { Object(self).Free() }
+type VisualShaderNodeCompare pointers.PointerNamed[VisualShaderNodeCompare, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeCompare) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCompare) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeCompare) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeConstant discreet.PointerNamed[VisualShaderNodeConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeConstant) Free() { Object(self).Free() }
 
+type VisualShaderNodeConstant pointers.PointerNamed[VisualShaderNodeConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeConstant) AsObject() gd.Object { return gd.Object(self) }
@@ -7390,41 +8027,49 @@ func (self VisualShaderNodeConstant) Virtual(name string) reflect.Value { return
 type VisualShaderNodeCubemapSource int64
 
 type VisualShaderNodeCubemapTextureType int64
-type VisualShaderNodeCubemap discreet.PointerNamed[VisualShaderNodeCubemap, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCubemap) Free() { Object(self).Free() }
+type VisualShaderNodeCubemap pointers.PointerNamed[VisualShaderNodeCubemap, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeCubemap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCubemap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeCubemapParameter discreet.PointerNamed[VisualShaderNodeCubemapParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCubemapParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeCubemapParameter pointers.PointerNamed[VisualShaderNodeCubemapParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeCubemapParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCubemapParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeCubemapParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeCurveTexture discreet.PointerNamed[VisualShaderNodeCurveTexture, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCurveTexture) Free() { Object(self).Free() }
+func (self VisualShaderNodeCubemapParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeCurveTexture pointers.PointerNamed[VisualShaderNodeCurveTexture, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeCurveTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCurveTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeCurveTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeCurveXYZTexture discreet.PointerNamed[VisualShaderNodeCurveXYZTexture, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCurveXYZTexture) Free() { Object(self).Free() }
 
+type VisualShaderNodeCurveXYZTexture pointers.PointerNamed[VisualShaderNodeCurveXYZTexture, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeCurveXYZTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCurveXYZTexture) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeCurveXYZTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeCustom discreet.PointerNamed[VisualShaderNodeCustom, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeCustom) Free() { Object(self).Free() }
+func (self VisualShaderNodeCurveXYZTexture) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeCustom pointers.PointerNamed[VisualShaderNodeCustom, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeCustom) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeCustom) AsObject() gd.Object { return gd.Object(self) }
@@ -7436,57 +8081,63 @@ type VisualShaderNodeDerivativeFuncOpType int64
 type VisualShaderNodeDerivativeFuncFunction int64
 
 type VisualShaderNodeDerivativeFuncPrecision int64
-type VisualShaderNodeDerivativeFunc discreet.PointerNamed[VisualShaderNodeDerivativeFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeDerivativeFunc) Free() { Object(self).Free() }
+type VisualShaderNodeDerivativeFunc pointers.PointerNamed[VisualShaderNodeDerivativeFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeDerivativeFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeDerivativeFunc) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeDerivativeFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeDeterminant discreet.PointerNamed[VisualShaderNodeDeterminant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeDeterminant) Free() { Object(self).Free() }
 
+type VisualShaderNodeDeterminant pointers.PointerNamed[VisualShaderNodeDeterminant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeDeterminant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeDeterminant) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeDeterminant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeDistanceFade discreet.PointerNamed[VisualShaderNodeDistanceFade, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeDistanceFade) Free() { Object(self).Free() }
 
+type VisualShaderNodeDistanceFade pointers.PointerNamed[VisualShaderNodeDistanceFade, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeDistanceFade) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeDistanceFade) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeDistanceFade) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeDotProduct discreet.PointerNamed[VisualShaderNodeDotProduct, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeDotProduct) Free() { Object(self).Free() }
 
+type VisualShaderNodeDotProduct pointers.PointerNamed[VisualShaderNodeDotProduct, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeDotProduct) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeDotProduct) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeDotProduct) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeExpression discreet.PointerNamed[VisualShaderNodeExpression, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeExpression) Free() { Object(self).Free() }
 
+type VisualShaderNodeExpression pointers.PointerNamed[VisualShaderNodeExpression, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeExpression) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeExpression) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeExpression) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeFaceForward discreet.PointerNamed[VisualShaderNodeFaceForward, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFaceForward) Free() { Object(self).Free() }
 
+type VisualShaderNodeFaceForward pointers.PointerNamed[VisualShaderNodeFaceForward, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeFaceForward) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFaceForward) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeFaceForward) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeFloatConstant discreet.PointerNamed[VisualShaderNodeFloatConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFloatConstant) Free() { Object(self).Free() }
 
+type VisualShaderNodeFloatConstant pointers.PointerNamed[VisualShaderNodeFloatConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeFloatConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFloatConstant) AsObject() gd.Object { return gd.Object(self) }
@@ -7494,9 +8145,9 @@ func (self VisualShaderNodeFloatConstant) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeFloatConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeFloatFuncFunction int64
-type VisualShaderNodeFloatFunc discreet.PointerNamed[VisualShaderNodeFloatFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFloatFunc) Free() { Object(self).Free() }
+type VisualShaderNodeFloatFunc pointers.PointerNamed[VisualShaderNodeFloatFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeFloatFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFloatFunc) AsObject() gd.Object { return gd.Object(self) }
@@ -7504,9 +8155,9 @@ func (self VisualShaderNodeFloatFunc) AsObject() gd.Object { return gd.Object(se
 func (self VisualShaderNodeFloatFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeFloatOpOperator int64
-type VisualShaderNodeFloatOp discreet.PointerNamed[VisualShaderNodeFloatOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFloatOp) Free() { Object(self).Free() }
+type VisualShaderNodeFloatOp pointers.PointerNamed[VisualShaderNodeFloatOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeFloatOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFloatOp) AsObject() gd.Object { return gd.Object(self) }
@@ -7514,65 +8165,74 @@ func (self VisualShaderNodeFloatOp) AsObject() gd.Object { return gd.Object(self
 func (self VisualShaderNodeFloatOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeFloatParameterHint int64
-type VisualShaderNodeFloatParameter discreet.PointerNamed[VisualShaderNodeFloatParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFloatParameter) Free() { Object(self).Free() }
+type VisualShaderNodeFloatParameter pointers.PointerNamed[VisualShaderNodeFloatParameter, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeFloatParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFloatParameter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeFloatParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeFrame discreet.PointerNamed[VisualShaderNodeFrame, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFrame) Free() { Object(self).Free() }
 
+type VisualShaderNodeFrame pointers.PointerNamed[VisualShaderNodeFrame, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeFrame) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFrame) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeFrame) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeFresnel discreet.PointerNamed[VisualShaderNodeFresnel, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeFresnel) Free() { Object(self).Free() }
 
+type VisualShaderNodeFresnel pointers.PointerNamed[VisualShaderNodeFresnel, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeFresnel) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeFresnel) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeFresnel) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeGlobalExpression discreet.PointerNamed[VisualShaderNodeGlobalExpression, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeGlobalExpression) Free() { Object(self).Free() }
 
+type VisualShaderNodeGlobalExpression pointers.PointerNamed[VisualShaderNodeGlobalExpression, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeGlobalExpression) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeGlobalExpression) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeGlobalExpression) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeGroupBase discreet.PointerNamed[VisualShaderNodeGroupBase, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeGroupBase) Free() { Object(self).Free() }
+func (self VisualShaderNodeGlobalExpression) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeGroupBase pointers.PointerNamed[VisualShaderNodeGroupBase, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeGroupBase) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeGroupBase) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeGroupBase) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeIf discreet.PointerNamed[VisualShaderNodeIf, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIf) Free() { Object(self).Free() }
 
+type VisualShaderNodeIf pointers.PointerNamed[VisualShaderNodeIf, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeIf) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIf) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeIf) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeInput discreet.PointerNamed[VisualShaderNodeInput, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeInput) Free() { Object(self).Free() }
 
+type VisualShaderNodeInput pointers.PointerNamed[VisualShaderNodeInput, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeInput) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeInput) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeInput) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeIntConstant discreet.PointerNamed[VisualShaderNodeIntConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIntConstant) Free() { Object(self).Free() }
 
+type VisualShaderNodeIntConstant pointers.PointerNamed[VisualShaderNodeIntConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeIntConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIntConstant) AsObject() gd.Object { return gd.Object(self) }
@@ -7580,9 +8240,9 @@ func (self VisualShaderNodeIntConstant) AsObject() gd.Object { return gd.Object(
 func (self VisualShaderNodeIntConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeIntFuncFunction int64
-type VisualShaderNodeIntFunc discreet.PointerNamed[VisualShaderNodeIntFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIntFunc) Free() { Object(self).Free() }
+type VisualShaderNodeIntFunc pointers.PointerNamed[VisualShaderNodeIntFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeIntFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIntFunc) AsObject() gd.Object { return gd.Object(self) }
@@ -7590,9 +8250,9 @@ func (self VisualShaderNodeIntFunc) AsObject() gd.Object { return gd.Object(self
 func (self VisualShaderNodeIntFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeIntOpOperator int64
-type VisualShaderNodeIntOp discreet.PointerNamed[VisualShaderNodeIntOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIntOp) Free() { Object(self).Free() }
+type VisualShaderNodeIntOp pointers.PointerNamed[VisualShaderNodeIntOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeIntOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIntOp) AsObject() gd.Object { return gd.Object(self) }
@@ -7600,9 +8260,9 @@ func (self VisualShaderNodeIntOp) AsObject() gd.Object { return gd.Object(self) 
 func (self VisualShaderNodeIntOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeIntParameterHint int64
-type VisualShaderNodeIntParameter discreet.PointerNamed[VisualShaderNodeIntParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIntParameter) Free() { Object(self).Free() }
+type VisualShaderNodeIntParameter pointers.PointerNamed[VisualShaderNodeIntParameter, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeIntParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIntParameter) AsObject() gd.Object { return gd.Object(self) }
@@ -7610,27 +8270,30 @@ func (self VisualShaderNodeIntParameter) AsObject() gd.Object { return gd.Object
 func (self VisualShaderNodeIntParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeIsFunction int64
-type VisualShaderNodeIs discreet.PointerNamed[VisualShaderNodeIs, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeIs) Free() { Object(self).Free() }
+type VisualShaderNodeIs pointers.PointerNamed[VisualShaderNodeIs, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeIs) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeIs) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeIs) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeLinearSceneDepth discreet.PointerNamed[VisualShaderNodeLinearSceneDepth, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeLinearSceneDepth) Free() { Object(self).Free() }
 
+type VisualShaderNodeLinearSceneDepth pointers.PointerNamed[VisualShaderNodeLinearSceneDepth, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeLinearSceneDepth) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeLinearSceneDepth) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeLinearSceneDepth) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeLinearSceneDepth) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeMixOpType int64
-type VisualShaderNodeMix discreet.PointerNamed[VisualShaderNodeMix, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeMix) Free() { Object(self).Free() }
+type VisualShaderNodeMix pointers.PointerNamed[VisualShaderNodeMix, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeMix) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeMix) AsObject() gd.Object { return gd.Object(self) }
@@ -7638,25 +8301,27 @@ func (self VisualShaderNodeMix) AsObject() gd.Object { return gd.Object(self) }
 func (self VisualShaderNodeMix) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeMultiplyAddOpType int64
-type VisualShaderNodeMultiplyAdd discreet.PointerNamed[VisualShaderNodeMultiplyAdd, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeMultiplyAdd) Free() { Object(self).Free() }
+type VisualShaderNodeMultiplyAdd pointers.PointerNamed[VisualShaderNodeMultiplyAdd, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeMultiplyAdd) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeMultiplyAdd) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeMultiplyAdd) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeOuterProduct discreet.PointerNamed[VisualShaderNodeOuterProduct, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeOuterProduct) Free() { Object(self).Free() }
 
+type VisualShaderNodeOuterProduct pointers.PointerNamed[VisualShaderNodeOuterProduct, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeOuterProduct) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeOuterProduct) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeOuterProduct) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeOutput discreet.PointerNamed[VisualShaderNodeOutput, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeOutput) Free() { Object(self).Free() }
 
+type VisualShaderNodeOutput pointers.PointerNamed[VisualShaderNodeOutput, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeOutput) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeOutput) AsObject() gd.Object { return gd.Object(self) }
@@ -7664,17 +8329,18 @@ func (self VisualShaderNodeOutput) AsObject() gd.Object { return gd.Object(self)
 func (self VisualShaderNodeOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeParameterQualifier int64
-type VisualShaderNodeParameter discreet.PointerNamed[VisualShaderNodeParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParameter) Free() { Object(self).Free() }
+type VisualShaderNodeParameter pointers.PointerNamed[VisualShaderNodeParameter, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParameter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParameterRef discreet.PointerNamed[VisualShaderNodeParameterRef, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParameterRef) Free() { Object(self).Free() }
 
+type VisualShaderNodeParameterRef pointers.PointerNamed[VisualShaderNodeParameterRef, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParameterRef) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParameterRef) AsObject() gd.Object { return gd.Object(self) }
@@ -7682,67 +8348,85 @@ func (self VisualShaderNodeParameterRef) AsObject() gd.Object { return gd.Object
 func (self VisualShaderNodeParameterRef) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeParticleAcceleratorMode int64
-type VisualShaderNodeParticleAccelerator discreet.PointerNamed[VisualShaderNodeParticleAccelerator, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleAccelerator) Free() { Object(self).Free() }
+type VisualShaderNodeParticleAccelerator pointers.PointerNamed[VisualShaderNodeParticleAccelerator, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeParticleAccelerator) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleAccelerator) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleAccelerator) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleBoxEmitter discreet.PointerNamed[VisualShaderNodeParticleBoxEmitter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleBoxEmitter) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleAccelerator) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleBoxEmitter pointers.PointerNamed[VisualShaderNodeParticleBoxEmitter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleBoxEmitter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleBoxEmitter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleBoxEmitter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleConeVelocity discreet.PointerNamed[VisualShaderNodeParticleConeVelocity, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleConeVelocity) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleBoxEmitter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleConeVelocity pointers.PointerNamed[VisualShaderNodeParticleConeVelocity, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleConeVelocity) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleConeVelocity) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleConeVelocity) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeParticleConeVelocity) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeParticleEmitEmitFlags int64
-type VisualShaderNodeParticleEmit discreet.PointerNamed[VisualShaderNodeParticleEmit, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleEmit) Free() { Object(self).Free() }
+type VisualShaderNodeParticleEmit pointers.PointerNamed[VisualShaderNodeParticleEmit, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeParticleEmit) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleEmit) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeParticleEmit) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleEmitter discreet.PointerNamed[VisualShaderNodeParticleEmitter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleEmitter) Free() { Object(self).Free() }
 
+type VisualShaderNodeParticleEmitter pointers.PointerNamed[VisualShaderNodeParticleEmitter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleEmitter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleEmitter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleEmitter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleMeshEmitter discreet.PointerNamed[VisualShaderNodeParticleMeshEmitter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleMeshEmitter) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleEmitter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleMeshEmitter pointers.PointerNamed[VisualShaderNodeParticleMeshEmitter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleMeshEmitter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleMeshEmitter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleMeshEmitter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleMultiplyByAxisAngle discreet.PointerNamed[VisualShaderNodeParticleMultiplyByAxisAngle, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleMultiplyByAxisAngle) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleMeshEmitter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleMultiplyByAxisAngle pointers.PointerNamed[VisualShaderNodeParticleMultiplyByAxisAngle, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleMultiplyByAxisAngle) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleMultiplyByAxisAngle) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleMultiplyByAxisAngle) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleOutput discreet.PointerNamed[VisualShaderNodeParticleOutput, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleOutput) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleMultiplyByAxisAngle) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleOutput pointers.PointerNamed[VisualShaderNodeParticleOutput, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleOutput) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleOutput) AsObject() gd.Object { return gd.Object(self) }
@@ -7750,89 +8434,105 @@ func (self VisualShaderNodeParticleOutput) AsObject() gd.Object { return gd.Obje
 func (self VisualShaderNodeParticleOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeParticleRandomnessOpType int64
-type VisualShaderNodeParticleRandomness discreet.PointerNamed[VisualShaderNodeParticleRandomness, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleRandomness) Free() { Object(self).Free() }
+type VisualShaderNodeParticleRandomness pointers.PointerNamed[VisualShaderNodeParticleRandomness, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeParticleRandomness) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleRandomness) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleRandomness) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleRingEmitter discreet.PointerNamed[VisualShaderNodeParticleRingEmitter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleRingEmitter) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleRandomness) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleRingEmitter pointers.PointerNamed[VisualShaderNodeParticleRingEmitter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleRingEmitter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleRingEmitter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleRingEmitter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeParticleSphereEmitter discreet.PointerNamed[VisualShaderNodeParticleSphereEmitter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeParticleSphereEmitter) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleRingEmitter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeParticleSphereEmitter pointers.PointerNamed[VisualShaderNodeParticleSphereEmitter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeParticleSphereEmitter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeParticleSphereEmitter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeParticleSphereEmitter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeProximityFade discreet.PointerNamed[VisualShaderNodeProximityFade, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeProximityFade) Free() { Object(self).Free() }
+func (self VisualShaderNodeParticleSphereEmitter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeProximityFade pointers.PointerNamed[VisualShaderNodeProximityFade, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeProximityFade) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeProximityFade) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeProximityFade) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeRandomRange discreet.PointerNamed[VisualShaderNodeRandomRange, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeRandomRange) Free() { Object(self).Free() }
 
+type VisualShaderNodeRandomRange pointers.PointerNamed[VisualShaderNodeRandomRange, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeRandomRange) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeRandomRange) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeRandomRange) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeRemap discreet.PointerNamed[VisualShaderNodeRemap, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeRemap) Free() { Object(self).Free() }
 
+type VisualShaderNodeRemap pointers.PointerNamed[VisualShaderNodeRemap, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeRemap) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeRemap) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeRemap) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeReroute discreet.PointerNamed[VisualShaderNodeReroute, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeReroute) Free() { Object(self).Free() }
 
+type VisualShaderNodeReroute pointers.PointerNamed[VisualShaderNodeReroute, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeReroute) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeReroute) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeReroute) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeResizableBase discreet.PointerNamed[VisualShaderNodeResizableBase, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeResizableBase) Free() { Object(self).Free() }
 
+type VisualShaderNodeResizableBase pointers.PointerNamed[VisualShaderNodeResizableBase, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeResizableBase) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeResizableBase) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeResizableBase) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeRotationByAxis discreet.PointerNamed[VisualShaderNodeRotationByAxis, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeRotationByAxis) Free() { Object(self).Free() }
 
+type VisualShaderNodeRotationByAxis pointers.PointerNamed[VisualShaderNodeRotationByAxis, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeRotationByAxis) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeRotationByAxis) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeRotationByAxis) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeSDFRaymarch discreet.PointerNamed[VisualShaderNodeSDFRaymarch, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeSDFRaymarch) Free() { Object(self).Free() }
 
+type VisualShaderNodeSDFRaymarch pointers.PointerNamed[VisualShaderNodeSDFRaymarch, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeSDFRaymarch) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeSDFRaymarch) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeSDFRaymarch) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeSDFToScreenUV discreet.PointerNamed[VisualShaderNodeSDFToScreenUV, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeSDFToScreenUV) Free() { Object(self).Free() }
 
+type VisualShaderNodeSDFToScreenUV pointers.PointerNamed[VisualShaderNodeSDFToScreenUV, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeSDFToScreenUV) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeSDFToScreenUV) AsObject() gd.Object { return gd.Object(self) }
@@ -7840,25 +8540,29 @@ func (self VisualShaderNodeSDFToScreenUV) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeSDFToScreenUV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeSample3DSource int64
-type VisualShaderNodeSample3D discreet.PointerNamed[VisualShaderNodeSample3D, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeSample3D) Free() { Object(self).Free() }
+type VisualShaderNodeSample3D pointers.PointerNamed[VisualShaderNodeSample3D, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeSample3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeSample3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeSample3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeScreenNormalWorldSpace discreet.PointerNamed[VisualShaderNodeScreenNormalWorldSpace, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeScreenNormalWorldSpace) Free() { Object(self).Free() }
 
+type VisualShaderNodeScreenNormalWorldSpace pointers.PointerNamed[VisualShaderNodeScreenNormalWorldSpace, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeScreenNormalWorldSpace) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeScreenNormalWorldSpace) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeScreenNormalWorldSpace) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeScreenUVToSDF discreet.PointerNamed[VisualShaderNodeScreenUVToSDF, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeScreenUVToSDF) Free() { Object(self).Free() }
+func (self VisualShaderNodeScreenNormalWorldSpace) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeScreenUVToSDF pointers.PointerNamed[VisualShaderNodeScreenUVToSDF, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeScreenUVToSDF) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeScreenUVToSDF) AsObject() gd.Object { return gd.Object(self) }
@@ -7866,9 +8570,9 @@ func (self VisualShaderNodeScreenUVToSDF) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeScreenUVToSDF) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeSmoothStepOpType int64
-type VisualShaderNodeSmoothStep discreet.PointerNamed[VisualShaderNodeSmoothStep, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeSmoothStep) Free() { Object(self).Free() }
+type VisualShaderNodeSmoothStep pointers.PointerNamed[VisualShaderNodeSmoothStep, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeSmoothStep) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeSmoothStep) AsObject() gd.Object { return gd.Object(self) }
@@ -7876,9 +8580,9 @@ func (self VisualShaderNodeSmoothStep) AsObject() gd.Object { return gd.Object(s
 func (self VisualShaderNodeSmoothStep) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeStepOpType int64
-type VisualShaderNodeStep discreet.PointerNamed[VisualShaderNodeStep, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeStep) Free() { Object(self).Free() }
+type VisualShaderNodeStep pointers.PointerNamed[VisualShaderNodeStep, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeStep) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeStep) AsObject() gd.Object { return gd.Object(self) }
@@ -7886,9 +8590,9 @@ func (self VisualShaderNodeStep) AsObject() gd.Object { return gd.Object(self) }
 func (self VisualShaderNodeStep) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeSwitchOpType int64
-type VisualShaderNodeSwitch discreet.PointerNamed[VisualShaderNodeSwitch, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeSwitch) Free() { Object(self).Free() }
+type VisualShaderNodeSwitch pointers.PointerNamed[VisualShaderNodeSwitch, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeSwitch) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeSwitch) AsObject() gd.Object { return gd.Object(self) }
@@ -7898,54 +8602,65 @@ func (self VisualShaderNodeSwitch) Virtual(name string) reflect.Value { return r
 type VisualShaderNodeTextureSource int64
 
 type VisualShaderNodeTextureTextureType int64
-type VisualShaderNodeTexture discreet.PointerNamed[VisualShaderNodeTexture, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture) Free() { Object(self).Free() }
+type VisualShaderNodeTexture pointers.PointerNamed[VisualShaderNodeTexture, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeTexture) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTexture2DArray discreet.PointerNamed[VisualShaderNodeTexture2DArray, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture2DArray) Free() { Object(self).Free() }
 
+type VisualShaderNodeTexture2DArray pointers.PointerNamed[VisualShaderNodeTexture2DArray, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTexture2DArray) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture2DArray) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTexture2DArrayParameter discreet.PointerNamed[VisualShaderNodeTexture2DArrayParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture2DArrayParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeTexture2DArrayParameter pointers.PointerNamed[VisualShaderNodeTexture2DArrayParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTexture2DArrayParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture2DArrayParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTexture2DArrayParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTexture2DParameter discreet.PointerNamed[VisualShaderNodeTexture2DParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture2DParameter) Free() { Object(self).Free() }
+func (self VisualShaderNodeTexture2DArrayParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTexture2DParameter pointers.PointerNamed[VisualShaderNodeTexture2DParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTexture2DParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture2DParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTexture2DParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTexture3D discreet.PointerNamed[VisualShaderNodeTexture3D, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture3D) Free() { Object(self).Free() }
+func (self VisualShaderNodeTexture2DParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTexture3D pointers.PointerNamed[VisualShaderNodeTexture3D, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTexture3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTexture3DParameter discreet.PointerNamed[VisualShaderNodeTexture3DParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTexture3DParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeTexture3DParameter pointers.PointerNamed[VisualShaderNodeTexture3DParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTexture3DParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTexture3DParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTexture3DParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeTexture3DParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeTextureParameterTextureType int64
 
@@ -7956,67 +8671,85 @@ type VisualShaderNodeTextureParameterTextureFilter int64
 type VisualShaderNodeTextureParameterTextureRepeat int64
 
 type VisualShaderNodeTextureParameterTextureSource int64
-type VisualShaderNodeTextureParameter discreet.PointerNamed[VisualShaderNodeTextureParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTextureParameter) Free() { Object(self).Free() }
+type VisualShaderNodeTextureParameter pointers.PointerNamed[VisualShaderNodeTextureParameter, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeTextureParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTextureParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTextureParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTextureParameterTriplanar discreet.PointerNamed[VisualShaderNodeTextureParameterTriplanar, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTextureParameterTriplanar) Free() { Object(self).Free() }
+func (self VisualShaderNodeTextureParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTextureParameterTriplanar pointers.PointerNamed[VisualShaderNodeTextureParameterTriplanar, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTextureParameterTriplanar) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTextureParameterTriplanar) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTextureParameterTriplanar) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTextureSDF discreet.PointerNamed[VisualShaderNodeTextureSDF, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTextureSDF) Free() { Object(self).Free() }
+func (self VisualShaderNodeTextureParameterTriplanar) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTextureSDF pointers.PointerNamed[VisualShaderNodeTextureSDF, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTextureSDF) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTextureSDF) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeTextureSDF) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTextureSDFNormal discreet.PointerNamed[VisualShaderNodeTextureSDFNormal, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTextureSDFNormal) Free() { Object(self).Free() }
 
+type VisualShaderNodeTextureSDFNormal pointers.PointerNamed[VisualShaderNodeTextureSDFNormal, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTextureSDFNormal) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTextureSDFNormal) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTextureSDFNormal) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTransformCompose discreet.PointerNamed[VisualShaderNodeTransformCompose, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformCompose) Free() { Object(self).Free() }
+func (self VisualShaderNodeTextureSDFNormal) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTransformCompose pointers.PointerNamed[VisualShaderNodeTransformCompose, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTransformCompose) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformCompose) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTransformCompose) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTransformConstant discreet.PointerNamed[VisualShaderNodeTransformConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformConstant) Free() { Object(self).Free() }
+func (self VisualShaderNodeTransformCompose) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTransformConstant pointers.PointerNamed[VisualShaderNodeTransformConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTransformConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformConstant) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTransformConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTransformDecompose discreet.PointerNamed[VisualShaderNodeTransformDecompose, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformDecompose) Free() { Object(self).Free() }
+func (self VisualShaderNodeTransformConstant) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeTransformDecompose pointers.PointerNamed[VisualShaderNodeTransformDecompose, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTransformDecompose) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformDecompose) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTransformDecompose) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeTransformDecompose) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeTransformFuncFunction int64
-type VisualShaderNodeTransformFunc discreet.PointerNamed[VisualShaderNodeTransformFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformFunc) Free() { Object(self).Free() }
+type VisualShaderNodeTransformFunc pointers.PointerNamed[VisualShaderNodeTransformFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeTransformFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformFunc) AsObject() gd.Object { return gd.Object(self) }
@@ -8024,35 +8757,41 @@ func (self VisualShaderNodeTransformFunc) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeTransformFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeTransformOpOperator int64
-type VisualShaderNodeTransformOp discreet.PointerNamed[VisualShaderNodeTransformOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformOp) Free() { Object(self).Free() }
+type VisualShaderNodeTransformOp pointers.PointerNamed[VisualShaderNodeTransformOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeTransformOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformOp) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeTransformOp) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeTransformParameter discreet.PointerNamed[VisualShaderNodeTransformParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeTransformParameter pointers.PointerNamed[VisualShaderNodeTransformParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeTransformParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformParameter) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTransformParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeTransformParameter) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VisualShaderNodeTransformVecMultOperator int64
-type VisualShaderNodeTransformVecMult discreet.PointerNamed[VisualShaderNodeTransformVecMult, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeTransformVecMult) Free() { Object(self).Free() }
+type VisualShaderNodeTransformVecMult pointers.PointerNamed[VisualShaderNodeTransformVecMult, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeTransformVecMult) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeTransformVecMult) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeTransformVecMult) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeUIntConstant discreet.PointerNamed[VisualShaderNodeUIntConstant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUIntConstant) Free() { Object(self).Free() }
+func (self VisualShaderNodeTransformVecMult) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeUIntConstant pointers.PointerNamed[VisualShaderNodeUIntConstant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeUIntConstant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUIntConstant) AsObject() gd.Object { return gd.Object(self) }
@@ -8060,9 +8799,9 @@ func (self VisualShaderNodeUIntConstant) AsObject() gd.Object { return gd.Object
 func (self VisualShaderNodeUIntConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeUIntFuncFunction int64
-type VisualShaderNodeUIntFunc discreet.PointerNamed[VisualShaderNodeUIntFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUIntFunc) Free() { Object(self).Free() }
+type VisualShaderNodeUIntFunc pointers.PointerNamed[VisualShaderNodeUIntFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeUIntFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUIntFunc) AsObject() gd.Object { return gd.Object(self) }
@@ -8070,17 +8809,18 @@ func (self VisualShaderNodeUIntFunc) AsObject() gd.Object { return gd.Object(sel
 func (self VisualShaderNodeUIntFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeUIntOpOperator int64
-type VisualShaderNodeUIntOp discreet.PointerNamed[VisualShaderNodeUIntOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUIntOp) Free() { Object(self).Free() }
+type VisualShaderNodeUIntOp pointers.PointerNamed[VisualShaderNodeUIntOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeUIntOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUIntOp) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeUIntOp) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeUIntParameter discreet.PointerNamed[VisualShaderNodeUIntParameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUIntParameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeUIntParameter pointers.PointerNamed[VisualShaderNodeUIntParameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeUIntParameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUIntParameter) AsObject() gd.Object { return gd.Object(self) }
@@ -8088,89 +8828,99 @@ func (self VisualShaderNodeUIntParameter) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeUIntParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeUVFuncFunction int64
-type VisualShaderNodeUVFunc discreet.PointerNamed[VisualShaderNodeUVFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUVFunc) Free() { Object(self).Free() }
+type VisualShaderNodeUVFunc pointers.PointerNamed[VisualShaderNodeUVFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeUVFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUVFunc) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeUVFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeUVPolarCoord discreet.PointerNamed[VisualShaderNodeUVPolarCoord, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeUVPolarCoord) Free() { Object(self).Free() }
 
+type VisualShaderNodeUVPolarCoord pointers.PointerNamed[VisualShaderNodeUVPolarCoord, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeUVPolarCoord) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeUVPolarCoord) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeUVPolarCoord) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVarying discreet.PointerNamed[VisualShaderNodeVarying, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVarying) Free() { Object(self).Free() }
 
+type VisualShaderNodeVarying pointers.PointerNamed[VisualShaderNodeVarying, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVarying) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVarying) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVarying) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVaryingGetter discreet.PointerNamed[VisualShaderNodeVaryingGetter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVaryingGetter) Free() { Object(self).Free() }
 
+type VisualShaderNodeVaryingGetter pointers.PointerNamed[VisualShaderNodeVaryingGetter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVaryingGetter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVaryingGetter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVaryingGetter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVaryingSetter discreet.PointerNamed[VisualShaderNodeVaryingSetter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVaryingSetter) Free() { Object(self).Free() }
 
+type VisualShaderNodeVaryingSetter pointers.PointerNamed[VisualShaderNodeVaryingSetter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVaryingSetter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVaryingSetter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVaryingSetter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec2Constant discreet.PointerNamed[VisualShaderNodeVec2Constant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec2Constant) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec2Constant pointers.PointerNamed[VisualShaderNodeVec2Constant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec2Constant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec2Constant) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVec2Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec2Parameter discreet.PointerNamed[VisualShaderNodeVec2Parameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec2Parameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec2Parameter pointers.PointerNamed[VisualShaderNodeVec2Parameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec2Parameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec2Parameter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVec2Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec3Constant discreet.PointerNamed[VisualShaderNodeVec3Constant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec3Constant) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec3Constant pointers.PointerNamed[VisualShaderNodeVec3Constant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec3Constant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec3Constant) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVec3Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec3Parameter discreet.PointerNamed[VisualShaderNodeVec3Parameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec3Parameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec3Parameter pointers.PointerNamed[VisualShaderNodeVec3Parameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec3Parameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec3Parameter) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVec3Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec4Constant discreet.PointerNamed[VisualShaderNodeVec4Constant, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec4Constant) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec4Constant pointers.PointerNamed[VisualShaderNodeVec4Constant, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec4Constant) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec4Constant) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVec4Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVec4Parameter discreet.PointerNamed[VisualShaderNodeVec4Parameter, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVec4Parameter) Free() { Object(self).Free() }
 
+type VisualShaderNodeVec4Parameter pointers.PointerNamed[VisualShaderNodeVec4Parameter, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVec4Parameter) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVec4Parameter) AsObject() gd.Object { return gd.Object(self) }
@@ -8178,33 +8928,38 @@ func (self VisualShaderNodeVec4Parameter) AsObject() gd.Object { return gd.Objec
 func (self VisualShaderNodeVec4Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeVectorBaseOpType int64
-type VisualShaderNodeVectorBase discreet.PointerNamed[VisualShaderNodeVectorBase, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorBase) Free() { Object(self).Free() }
+type VisualShaderNodeVectorBase pointers.PointerNamed[VisualShaderNodeVectorBase, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeVectorBase) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorBase) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVectorBase) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVectorCompose discreet.PointerNamed[VisualShaderNodeVectorCompose, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorCompose) Free() { Object(self).Free() }
 
+type VisualShaderNodeVectorCompose pointers.PointerNamed[VisualShaderNodeVectorCompose, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVectorCompose) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorCompose) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVectorCompose) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVectorDecompose discreet.PointerNamed[VisualShaderNodeVectorDecompose, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorDecompose) Free() { Object(self).Free() }
 
+type VisualShaderNodeVectorDecompose pointers.PointerNamed[VisualShaderNodeVectorDecompose, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVectorDecompose) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorDecompose) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeVectorDecompose) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVectorDistance discreet.PointerNamed[VisualShaderNodeVectorDistance, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorDistance) Free() { Object(self).Free() }
+func (self VisualShaderNodeVectorDecompose) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
+type VisualShaderNodeVectorDistance pointers.PointerNamed[VisualShaderNodeVectorDistance, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVectorDistance) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorDistance) AsObject() gd.Object { return gd.Object(self) }
@@ -8212,17 +8967,18 @@ func (self VisualShaderNodeVectorDistance) AsObject() gd.Object { return gd.Obje
 func (self VisualShaderNodeVectorDistance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeVectorFuncFunction int64
-type VisualShaderNodeVectorFunc discreet.PointerNamed[VisualShaderNodeVectorFunc, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorFunc) Free() { Object(self).Free() }
+type VisualShaderNodeVectorFunc pointers.PointerNamed[VisualShaderNodeVectorFunc, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeVectorFunc) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorFunc) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVectorFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVectorLen discreet.PointerNamed[VisualShaderNodeVectorLen, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorLen) Free() { Object(self).Free() }
 
+type VisualShaderNodeVectorLen pointers.PointerNamed[VisualShaderNodeVectorLen, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVectorLen) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorLen) AsObject() gd.Object { return gd.Object(self) }
@@ -8230,51 +8986,57 @@ func (self VisualShaderNodeVectorLen) AsObject() gd.Object { return gd.Object(se
 func (self VisualShaderNodeVectorLen) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type VisualShaderNodeVectorOpOperator int64
-type VisualShaderNodeVectorOp discreet.PointerNamed[VisualShaderNodeVectorOp, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorOp) Free() { Object(self).Free() }
+type VisualShaderNodeVectorOp pointers.PointerNamed[VisualShaderNodeVectorOp, [3]uintptr, [1]pointers.Type]
 
+func (self VisualShaderNodeVectorOp) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorOp) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVectorOp) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeVectorRefract discreet.PointerNamed[VisualShaderNodeVectorRefract, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeVectorRefract) Free() { Object(self).Free() }
 
+type VisualShaderNodeVectorRefract pointers.PointerNamed[VisualShaderNodeVectorRefract, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeVectorRefract) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeVectorRefract) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VisualShaderNodeVectorRefract) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VisualShaderNodeWorldPositionFromDepth discreet.PointerNamed[VisualShaderNodeWorldPositionFromDepth, [3]uintptr, [1]discreet.Type]
-func (self VisualShaderNodeWorldPositionFromDepth) Free() { Object(self).Free() }
 
+type VisualShaderNodeWorldPositionFromDepth pointers.PointerNamed[VisualShaderNodeWorldPositionFromDepth, [3]uintptr, [1]pointers.Type]
+
+func (self VisualShaderNodeWorldPositionFromDepth) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VisualShaderNodeWorldPositionFromDepth) AsObject() gd.Object { return gd.Object(self) }
 
-func (self VisualShaderNodeWorldPositionFromDepth) Virtual(name string) reflect.Value { return reflect.Value{} }
+func (self VisualShaderNodeWorldPositionFromDepth) Virtual(name string) reflect.Value {
+	return reflect.Value{}
+}
 
 type VoxelGISubdiv int64
-type VoxelGI discreet.PointerNamed[VoxelGI, [3]uintptr, [1]discreet.Type]
-func (self VoxelGI) Free() { Object(self).Free() }
+type VoxelGI pointers.PointerNamed[VoxelGI, [3]uintptr, [1]pointers.Type]
 
+func (self VoxelGI) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VoxelGI) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VoxelGI) Virtual(name string) reflect.Value { return reflect.Value{} }
-type VoxelGIData discreet.PointerNamed[VoxelGIData, [3]uintptr, [1]discreet.Type]
-func (self VoxelGIData) Free() { Object(self).Free() }
 
+type VoxelGIData pointers.PointerNamed[VoxelGIData, [3]uintptr, [1]pointers.Type]
+
+func (self VoxelGIData) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self VoxelGIData) AsObject() gd.Object { return gd.Object(self) }
 
 func (self VoxelGIData) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WeakRef discreet.PointerNamed[WeakRef, [3]uintptr, [1]discreet.Type]
-func (self WeakRef) Free() { Object(self).Free() }
 
+type WeakRef pointers.PointerNamed[WeakRef, [3]uintptr, [1]pointers.Type]
+
+func (self WeakRef) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WeakRef) AsObject() gd.Object { return gd.Object(self) }
@@ -8284,25 +9046,27 @@ func (self WeakRef) Virtual(name string) reflect.Value { return reflect.Value{} 
 type WebRTCDataChannelWriteMode int64
 
 type WebRTCDataChannelChannelState int64
-type WebRTCDataChannel discreet.PointerNamed[WebRTCDataChannel, [3]uintptr, [1]discreet.Type]
-func (self WebRTCDataChannel) Free() { Object(self).Free() }
+type WebRTCDataChannel pointers.PointerNamed[WebRTCDataChannel, [3]uintptr, [1]pointers.Type]
 
+func (self WebRTCDataChannel) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebRTCDataChannel) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WebRTCDataChannel) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WebRTCDataChannelExtension discreet.PointerNamed[WebRTCDataChannelExtension, [3]uintptr, [1]discreet.Type]
-func (self WebRTCDataChannelExtension) Free() { Object(self).Free() }
 
+type WebRTCDataChannelExtension pointers.PointerNamed[WebRTCDataChannelExtension, [3]uintptr, [1]pointers.Type]
+
+func (self WebRTCDataChannelExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebRTCDataChannelExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WebRTCDataChannelExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WebRTCMultiplayerPeer discreet.PointerNamed[WebRTCMultiplayerPeer, [3]uintptr, [1]discreet.Type]
-func (self WebRTCMultiplayerPeer) Free() { Object(self).Free() }
 
+type WebRTCMultiplayerPeer pointers.PointerNamed[WebRTCMultiplayerPeer, [3]uintptr, [1]pointers.Type]
+
+func (self WebRTCMultiplayerPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebRTCMultiplayerPeer) AsObject() gd.Object { return gd.Object(self) }
@@ -8314,25 +9078,27 @@ type WebRTCPeerConnectionConnectionState int64
 type WebRTCPeerConnectionGatheringState int64
 
 type WebRTCPeerConnectionSignalingState int64
-type WebRTCPeerConnection discreet.PointerNamed[WebRTCPeerConnection, [3]uintptr, [1]discreet.Type]
-func (self WebRTCPeerConnection) Free() { Object(self).Free() }
+type WebRTCPeerConnection pointers.PointerNamed[WebRTCPeerConnection, [3]uintptr, [1]pointers.Type]
 
+func (self WebRTCPeerConnection) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebRTCPeerConnection) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WebRTCPeerConnection) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WebRTCPeerConnectionExtension discreet.PointerNamed[WebRTCPeerConnectionExtension, [3]uintptr, [1]discreet.Type]
-func (self WebRTCPeerConnectionExtension) Free() { Object(self).Free() }
 
+type WebRTCPeerConnectionExtension pointers.PointerNamed[WebRTCPeerConnectionExtension, [3]uintptr, [1]pointers.Type]
+
+func (self WebRTCPeerConnectionExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebRTCPeerConnectionExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WebRTCPeerConnectionExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WebSocketMultiplayerPeer discreet.PointerNamed[WebSocketMultiplayerPeer, [3]uintptr, [1]discreet.Type]
-func (self WebSocketMultiplayerPeer) Free() { Object(self).Free() }
 
+type WebSocketMultiplayerPeer pointers.PointerNamed[WebSocketMultiplayerPeer, [3]uintptr, [1]pointers.Type]
+
+func (self WebSocketMultiplayerPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebSocketMultiplayerPeer) AsObject() gd.Object { return gd.Object(self) }
@@ -8342,9 +9108,9 @@ func (self WebSocketMultiplayerPeer) Virtual(name string) reflect.Value { return
 type WebSocketPeerWriteMode int64
 
 type WebSocketPeerState int64
-type WebSocketPeer discreet.PointerNamed[WebSocketPeer, [3]uintptr, [1]discreet.Type]
-func (self WebSocketPeer) Free() { Object(self).Free() }
+type WebSocketPeer pointers.PointerNamed[WebSocketPeer, [3]uintptr, [1]pointers.Type]
 
+func (self WebSocketPeer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebSocketPeer) AsObject() gd.Object { return gd.Object(self) }
@@ -8352,9 +9118,9 @@ func (self WebSocketPeer) AsObject() gd.Object { return gd.Object(self) }
 func (self WebSocketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type WebXRInterfaceTargetRayMode int64
-type WebXRInterface discreet.PointerNamed[WebXRInterface, [3]uintptr, [1]discreet.Type]
-func (self WebXRInterface) Free() { Object(self).Free() }
+type WebXRInterface pointers.PointerNamed[WebXRInterface, [3]uintptr, [1]pointers.Type]
 
+func (self WebXRInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WebXRInterface) AsObject() gd.Object { return gd.Object(self) }
@@ -8374,65 +9140,72 @@ type WindowContentScaleStretch int64
 type WindowLayoutDirection int64
 
 type WindowWindowInitialPosition int64
-type Window discreet.PointerNamed[Window, [3]uintptr, [1]discreet.Type]
-func (self Window) Free() { Object(self).Free() }
+type Window pointers.PointerNamed[Window, [3]uintptr, [1]pointers.Type]
 
+func (self Window) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self Window) AsObject() gd.Object { return gd.Object(self) }
 
 func (self Window) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WorkerThreadPool discreet.PointerNamed[WorkerThreadPool, [3]uintptr, [1]discreet.Type]
-func (self WorkerThreadPool) Free() { Object(self).Free() }
 
+type WorkerThreadPool pointers.PointerNamed[WorkerThreadPool, [3]uintptr, [1]pointers.Type]
+
+func (self WorkerThreadPool) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WorkerThreadPool) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WorkerThreadPool) Virtual(name string) reflect.Value { return reflect.Value{} }
-type World2D discreet.PointerNamed[World2D, [3]uintptr, [1]discreet.Type]
-func (self World2D) Free() { Object(self).Free() }
 
+type World2D pointers.PointerNamed[World2D, [3]uintptr, [1]pointers.Type]
+
+func (self World2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self World2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self World2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type World3D discreet.PointerNamed[World3D, [3]uintptr, [1]discreet.Type]
-func (self World3D) Free() { Object(self).Free() }
 
+type World3D pointers.PointerNamed[World3D, [3]uintptr, [1]pointers.Type]
+
+func (self World3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self World3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self World3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WorldBoundaryShape2D discreet.PointerNamed[WorldBoundaryShape2D, [3]uintptr, [1]discreet.Type]
-func (self WorldBoundaryShape2D) Free() { Object(self).Free() }
 
+type WorldBoundaryShape2D pointers.PointerNamed[WorldBoundaryShape2D, [3]uintptr, [1]pointers.Type]
+
+func (self WorldBoundaryShape2D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WorldBoundaryShape2D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WorldBoundaryShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WorldBoundaryShape3D discreet.PointerNamed[WorldBoundaryShape3D, [3]uintptr, [1]discreet.Type]
-func (self WorldBoundaryShape3D) Free() { Object(self).Free() }
 
+type WorldBoundaryShape3D pointers.PointerNamed[WorldBoundaryShape3D, [3]uintptr, [1]pointers.Type]
+
+func (self WorldBoundaryShape3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WorldBoundaryShape3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WorldBoundaryShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type WorldEnvironment discreet.PointerNamed[WorldEnvironment, [3]uintptr, [1]discreet.Type]
-func (self WorldEnvironment) Free() { Object(self).Free() }
 
+type WorldEnvironment pointers.PointerNamed[WorldEnvironment, [3]uintptr, [1]pointers.Type]
+
+func (self WorldEnvironment) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self WorldEnvironment) AsObject() gd.Object { return gd.Object(self) }
 
 func (self WorldEnvironment) Virtual(name string) reflect.Value { return reflect.Value{} }
-type X509Certificate discreet.PointerNamed[X509Certificate, [3]uintptr, [1]discreet.Type]
-func (self X509Certificate) Free() { Object(self).Free() }
 
+type X509Certificate pointers.PointerNamed[X509Certificate, [3]uintptr, [1]pointers.Type]
+
+func (self X509Certificate) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self X509Certificate) AsObject() gd.Object { return gd.Object(self) }
@@ -8440,17 +9213,18 @@ func (self X509Certificate) AsObject() gd.Object { return gd.Object(self) }
 func (self X509Certificate) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type XMLParserNodeType int64
-type XMLParser discreet.PointerNamed[XMLParser, [3]uintptr, [1]discreet.Type]
-func (self XMLParser) Free() { Object(self).Free() }
+type XMLParser pointers.PointerNamed[XMLParser, [3]uintptr, [1]pointers.Type]
 
+func (self XMLParser) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XMLParser) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XMLParser) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRAnchor3D discreet.PointerNamed[XRAnchor3D, [3]uintptr, [1]discreet.Type]
-func (self XRAnchor3D) Free() { Object(self).Free() }
 
+type XRAnchor3D pointers.PointerNamed[XRAnchor3D, [3]uintptr, [1]pointers.Type]
+
+func (self XRAnchor3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRAnchor3D) AsObject() gd.Object { return gd.Object(self) }
@@ -8460,9 +9234,9 @@ func (self XRAnchor3D) Virtual(name string) reflect.Value { return reflect.Value
 type XRBodyModifier3DBodyUpdate int64
 
 type XRBodyModifier3DBoneUpdate int64
-type XRBodyModifier3D discreet.PointerNamed[XRBodyModifier3D, [3]uintptr, [1]discreet.Type]
-func (self XRBodyModifier3D) Free() { Object(self).Free() }
+type XRBodyModifier3D pointers.PointerNamed[XRBodyModifier3D, [3]uintptr, [1]pointers.Type]
 
+func (self XRBodyModifier3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRBodyModifier3D) AsObject() gd.Object { return gd.Object(self) }
@@ -8474,41 +9248,45 @@ type XRBodyTrackerBodyFlags int64
 type XRBodyTrackerJoint int64
 
 type XRBodyTrackerJointFlags int64
-type XRBodyTracker discreet.PointerNamed[XRBodyTracker, [3]uintptr, [1]discreet.Type]
-func (self XRBodyTracker) Free() { Object(self).Free() }
+type XRBodyTracker pointers.PointerNamed[XRBodyTracker, [3]uintptr, [1]pointers.Type]
 
+func (self XRBodyTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRBodyTracker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRBodyTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRCamera3D discreet.PointerNamed[XRCamera3D, [3]uintptr, [1]discreet.Type]
-func (self XRCamera3D) Free() { Object(self).Free() }
 
+type XRCamera3D pointers.PointerNamed[XRCamera3D, [3]uintptr, [1]pointers.Type]
+
+func (self XRCamera3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRCamera3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRCamera3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRController3D discreet.PointerNamed[XRController3D, [3]uintptr, [1]discreet.Type]
-func (self XRController3D) Free() { Object(self).Free() }
 
+type XRController3D pointers.PointerNamed[XRController3D, [3]uintptr, [1]pointers.Type]
+
+func (self XRController3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRController3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRController3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRControllerTracker discreet.PointerNamed[XRControllerTracker, [3]uintptr, [1]discreet.Type]
-func (self XRControllerTracker) Free() { Object(self).Free() }
 
+type XRControllerTracker pointers.PointerNamed[XRControllerTracker, [3]uintptr, [1]pointers.Type]
+
+func (self XRControllerTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRControllerTracker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRControllerTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRFaceModifier3D discreet.PointerNamed[XRFaceModifier3D, [3]uintptr, [1]discreet.Type]
-func (self XRFaceModifier3D) Free() { Object(self).Free() }
 
+type XRFaceModifier3D pointers.PointerNamed[XRFaceModifier3D, [3]uintptr, [1]pointers.Type]
+
+func (self XRFaceModifier3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRFaceModifier3D) AsObject() gd.Object { return gd.Object(self) }
@@ -8516,9 +9294,9 @@ func (self XRFaceModifier3D) AsObject() gd.Object { return gd.Object(self) }
 func (self XRFaceModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type XRFaceTrackerBlendShapeEntry int64
-type XRFaceTracker discreet.PointerNamed[XRFaceTracker, [3]uintptr, [1]discreet.Type]
-func (self XRFaceTracker) Free() { Object(self).Free() }
+type XRFaceTracker pointers.PointerNamed[XRFaceTracker, [3]uintptr, [1]pointers.Type]
 
+func (self XRFaceTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRFaceTracker) AsObject() gd.Object { return gd.Object(self) }
@@ -8526,9 +9304,9 @@ func (self XRFaceTracker) AsObject() gd.Object { return gd.Object(self) }
 func (self XRFaceTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type XRHandModifier3DBoneUpdate int64
-type XRHandModifier3D discreet.PointerNamed[XRHandModifier3D, [3]uintptr, [1]discreet.Type]
-func (self XRHandModifier3D) Free() { Object(self).Free() }
+type XRHandModifier3D pointers.PointerNamed[XRHandModifier3D, [3]uintptr, [1]pointers.Type]
 
+func (self XRHandModifier3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRHandModifier3D) AsObject() gd.Object { return gd.Object(self) }
@@ -8540,9 +9318,9 @@ type XRHandTrackerHandTrackingSource int64
 type XRHandTrackerHandJoint int64
 
 type XRHandTrackerHandJointFlags int64
-type XRHandTracker discreet.PointerNamed[XRHandTracker, [3]uintptr, [1]discreet.Type]
-func (self XRHandTracker) Free() { Object(self).Free() }
+type XRHandTracker pointers.PointerNamed[XRHandTracker, [3]uintptr, [1]pointers.Type]
 
+func (self XRHandTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRHandTracker) AsObject() gd.Object { return gd.Object(self) }
@@ -8556,33 +9334,36 @@ type XRInterfaceTrackingStatus int64
 type XRInterfacePlayAreaMode int64
 
 type XRInterfaceEnvironmentBlendMode int64
-type XRInterface discreet.PointerNamed[XRInterface, [3]uintptr, [1]discreet.Type]
-func (self XRInterface) Free() { Object(self).Free() }
+type XRInterface pointers.PointerNamed[XRInterface, [3]uintptr, [1]pointers.Type]
 
+func (self XRInterface) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRInterface) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRInterfaceExtension discreet.PointerNamed[XRInterfaceExtension, [3]uintptr, [1]discreet.Type]
-func (self XRInterfaceExtension) Free() { Object(self).Free() }
 
+type XRInterfaceExtension pointers.PointerNamed[XRInterfaceExtension, [3]uintptr, [1]pointers.Type]
+
+func (self XRInterfaceExtension) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRInterfaceExtension) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRInterfaceExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRNode3D discreet.PointerNamed[XRNode3D, [3]uintptr, [1]discreet.Type]
-func (self XRNode3D) Free() { Object(self).Free() }
 
+type XRNode3D pointers.PointerNamed[XRNode3D, [3]uintptr, [1]pointers.Type]
+
+func (self XRNode3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRNode3D) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRNode3D) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XROrigin3D discreet.PointerNamed[XROrigin3D, [3]uintptr, [1]discreet.Type]
-func (self XROrigin3D) Free() { Object(self).Free() }
 
+type XROrigin3D pointers.PointerNamed[XROrigin3D, [3]uintptr, [1]pointers.Type]
+
+func (self XROrigin3D) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XROrigin3D) AsObject() gd.Object { return gd.Object(self) }
@@ -8590,9 +9371,9 @@ func (self XROrigin3D) AsObject() gd.Object { return gd.Object(self) }
 func (self XROrigin3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type XRPoseTrackingConfidence int64
-type XRPose discreet.PointerNamed[XRPose, [3]uintptr, [1]discreet.Type]
-func (self XRPose) Free() { Object(self).Free() }
+type XRPose pointers.PointerNamed[XRPose, [3]uintptr, [1]pointers.Type]
 
+func (self XRPose) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRPose) AsObject() gd.Object { return gd.Object(self) }
@@ -8600,9 +9381,9 @@ func (self XRPose) AsObject() gd.Object { return gd.Object(self) }
 func (self XRPose) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type XRPositionalTrackerTrackerHand int64
-type XRPositionalTracker discreet.PointerNamed[XRPositionalTracker, [3]uintptr, [1]discreet.Type]
-func (self XRPositionalTracker) Free() { Object(self).Free() }
+type XRPositionalTracker pointers.PointerNamed[XRPositionalTracker, [3]uintptr, [1]pointers.Type]
 
+func (self XRPositionalTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRPositionalTracker) AsObject() gd.Object { return gd.Object(self) }
@@ -8612,25 +9393,27 @@ func (self XRPositionalTracker) Virtual(name string) reflect.Value { return refl
 type XRServerTrackerType int64
 
 type XRServerRotationMode int64
-type XRServer discreet.PointerNamed[XRServer, [3]uintptr, [1]discreet.Type]
-func (self XRServer) Free() { Object(self).Free() }
+type XRServer pointers.PointerNamed[XRServer, [3]uintptr, [1]pointers.Type]
 
+func (self XRServer) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRServer) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRServer) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRTracker discreet.PointerNamed[XRTracker, [3]uintptr, [1]discreet.Type]
-func (self XRTracker) Free() { Object(self).Free() }
 
+type XRTracker pointers.PointerNamed[XRTracker, [3]uintptr, [1]pointers.Type]
+
+func (self XRTracker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRTracker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self XRTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type XRVRS discreet.PointerNamed[XRVRS, [3]uintptr, [1]discreet.Type]
-func (self XRVRS) Free() { Object(self).Free() }
 
+type XRVRS pointers.PointerNamed[XRVRS, [3]uintptr, [1]pointers.Type]
+
+func (self XRVRS) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self XRVRS) AsObject() gd.Object { return gd.Object(self) }
@@ -8638,17 +9421,18 @@ func (self XRVRS) AsObject() gd.Object { return gd.Object(self) }
 func (self XRVRS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ZIPPackerZipAppend int64
-type ZIPPacker discreet.PointerNamed[ZIPPacker, [3]uintptr, [1]discreet.Type]
-func (self ZIPPacker) Free() { Object(self).Free() }
+type ZIPPacker pointers.PointerNamed[ZIPPacker, [3]uintptr, [1]pointers.Type]
 
+func (self ZIPPacker) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ZIPPacker) AsObject() gd.Object { return gd.Object(self) }
 
 func (self ZIPPacker) Virtual(name string) reflect.Value { return reflect.Value{} }
-type ZIPReader discreet.PointerNamed[ZIPReader, [3]uintptr, [1]discreet.Type]
-func (self ZIPReader) Free() { Object(self).Free() }
 
+type ZIPReader pointers.PointerNamed[ZIPReader, [3]uintptr, [1]pointers.Type]
+
+func (self ZIPReader) Free() { Object(self).Free() }
 
 //go:nosplit
 func (self ZIPReader) AsObject() gd.Object { return gd.Object(self) }

@@ -2,17 +2,19 @@ package EditorUndoRedoManager
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 [EditorUndoRedoManager] is a manager for [UndoRedo] objects associated with edited scenes. Each scene has its own undo history and [EditorUndoRedoManager] ensures that each action performed in the editor gets associated with a proper scene. For actions not related to scenes ([ProjectSettings] edits, external resources, etc.), a separate global history is used.
@@ -23,9 +25,8 @@ The usage is mostly the same as [UndoRedo]. You create and commit actions and th
 This guessing can sometimes yield false results, so you can provide a custom context object when creating an action.
 [EditorUndoRedoManager] is intended to be used by Godot editor plugins. You can obtain it using [method EditorPlugin.get_undo_redo]. For non-editor uses or plugins that don't need to integrate with the editor's undo history, use [UndoRedo] instead.
 The manager's API is mostly the same as in [UndoRedo], so you can refer to its documentation for more examples. The main difference is that [EditorUndoRedoManager] uses object + method name for actions, instead of [Callable].
-
 */
-type Go [1]classdb.EditorUndoRedoManager
+type Instance [1]classdb.EditorUndoRedoManager
 
 /*
 Create a new action. After this is called, do all your calls to [method add_do_method], [method add_undo_method], [method add_do_property], and [method add_undo_property], then commit the action with [method commit_action].
@@ -33,21 +34,21 @@ The way actions are merged is dictated by the [param merge_mode] argument. See [
 If [param custom_context] object is provided, it will be used for deducing target history (instead of using the first operation).
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
-func (self Go) CreateAction(name string) {
+func (self Instance) CreateAction(name string) {
 	class(self).CreateAction(gd.NewString(name), 0, ([1]gd.Object{}[0]), false)
 }
 
 /*
 Commit the action. If [param execute] is true (default), all "do" methods/properties are called/set when this function is called.
 */
-func (self Go) CommitAction() {
+func (self Instance) CommitAction() {
 	class(self).CommitAction(true)
 }
 
 /*
 Returns [code]true[/code] if the [EditorUndoRedoManager] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
-func (self Go) IsCommittingAction() bool {
+func (self Instance) IsCommittingAction() bool {
 	return bool(class(self).IsCommittingAction())
 }
 
@@ -55,7 +56,7 @@ func (self Go) IsCommittingAction() bool {
 Forces the next operation (e.g. [method add_do_method]) to use the action's history rather than guessing it from the object. This is sometimes needed when a history can't be correctly determined, like for a nested resource that doesn't have a path yet.
 This method should only be used when absolutely necessary, otherwise it might cause invalid history state. For most of complex cases, the [code]custom_context[/code] parameter of [method create_action] is sufficient.
 */
-func (self Go) ForceFixedHistory() {
+func (self Instance) ForceFixedHistory() {
 	class(self).ForceFixedHistory()
 }
 
@@ -63,7 +64,7 @@ func (self Go) ForceFixedHistory() {
 Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
-func (self Go) AddDoProperty(obj gd.Object, property string, value gd.Variant) {
+func (self Instance) AddDoProperty(obj gd.Object, property string, value gd.Variant) {
 	class(self).AddDoProperty(obj, gd.NewStringName(property), value)
 }
 
@@ -71,28 +72,28 @@ func (self Go) AddDoProperty(obj gd.Object, property string, value gd.Variant) {
 Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
-func (self Go) AddUndoProperty(obj gd.Object, property string, value gd.Variant) {
+func (self Instance) AddUndoProperty(obj gd.Object, property string, value gd.Variant) {
 	class(self).AddUndoProperty(obj, gd.NewStringName(property), value)
 }
 
 /*
 Register a reference for "do" that will be erased if the "do" history is lost. This is useful mostly for new nodes created for the "do" call. Do not use for resources.
 */
-func (self Go) AddDoReference(obj gd.Object) {
+func (self Instance) AddDoReference(obj gd.Object) {
 	class(self).AddDoReference(obj)
 }
 
 /*
 Register a reference for "undo" that will be erased if the "undo" history is lost. This is useful mostly for nodes removed with the "do" call (not the "undo" call!).
 */
-func (self Go) AddUndoReference(obj gd.Object) {
+func (self Instance) AddUndoReference(obj gd.Object) {
 	class(self).AddUndoReference(obj)
 }
 
 /*
 Returns the history ID deduced from the given [param object]. It can be used with [method get_history_undo_redo].
 */
-func (self Go) GetObjectHistoryId(obj gd.Object) int {
+func (self Instance) GetObjectHistoryId(obj gd.Object) int {
 	return int(int(class(self).GetObjectHistoryId(obj)))
 }
 
@@ -101,17 +102,19 @@ Returns the [UndoRedo] object associated with the given history [param id].
 [param id] above [code]0[/code] are mapped to the opened scene tabs (but it doesn't match their order). [param id] of [code]0[/code] or lower have special meaning (see [enum SpecialHistory]).
 Best used with [method get_object_history_id]. This method is only provided in case you need some more advanced methods of [UndoRedo] (but keep in mind that directly operating on the [UndoRedo] object might affect editor's stability).
 */
-func (self Go) GetHistoryUndoRedo(id int) gdclass.UndoRedo {
+func (self Instance) GetHistoryUndoRedo(id int) gdclass.UndoRedo {
 	return gdclass.UndoRedo(class(self).GetHistoryUndoRedo(gd.Int(id)))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.EditorUndoRedoManager
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorUndoRedoManager"))
-	return Go{classdb.EditorUndoRedoManager(object)}
+	return Instance{classdb.EditorUndoRedoManager(object)}
 }
 
 /*
@@ -121,9 +124,9 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
-func (self class) CreateAction(name gd.String, merge_mode classdb.UndoRedoMergeMode, custom_context gd.Object, backward_undo_ops bool)  {
+func (self class) CreateAction(name gd.String, merge_mode classdb.UndoRedoMergeMode, custom_context gd.Object, backward_undo_ops bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, merge_mode)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(custom_context))
 	callframe.Arg(frame, backward_undo_ops)
@@ -131,17 +134,19 @@ func (self class) CreateAction(name gd.String, merge_mode classdb.UndoRedoMergeM
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_create_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Commit the action. If [param execute] is true (default), all "do" methods/properties are called/set when this function is called.
 */
 //go:nosplit
-func (self class) CommitAction(execute bool)  {
+func (self class) CommitAction(execute bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, execute)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_commit_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if the [EditorUndoRedoManager] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
@@ -154,67 +159,73 @@ func (self class) IsCommittingAction() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Forces the next operation (e.g. [method add_do_method]) to use the action's history rather than guessing it from the object. This is sometimes needed when a history can't be correctly determined, like for a nested resource that doesn't have a path yet.
 This method should only be used when absolutely necessary, otherwise it might cause invalid history state. For most of complex cases, the [code]custom_context[/code] parameter of [method create_action] is sufficient.
 */
 //go:nosplit
-func (self class) ForceFixedHistory()  {
+func (self class) ForceFixedHistory() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj gd.Object, property gd.StringName, value gd.Variant)  {
+func (self class) AddDoProperty(obj gd.Object, property gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
-	callframe.Arg(frame, discreet.Get(property))
-	callframe.Arg(frame, discreet.Get(value))
+	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(value))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj gd.Object, property gd.StringName, value gd.Variant)  {
+func (self class) AddUndoProperty(obj gd.Object, property gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
-	callframe.Arg(frame, discreet.Get(property))
-	callframe.Arg(frame, discreet.Get(value))
+	callframe.Arg(frame, pointers.Get(property))
+	callframe.Arg(frame, pointers.Get(value))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Register a reference for "do" that will be erased if the "do" history is lost. This is useful mostly for new nodes created for the "do" call. Do not use for resources.
 */
 //go:nosplit
-func (self class) AddDoReference(obj gd.Object)  {
+func (self class) AddDoReference(obj gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Register a reference for "undo" that will be erased if the "undo" history is lost. This is useful mostly for nodes removed with the "do" call (not the "undo" call!).
 */
 //go:nosplit
-func (self class) AddUndoReference(obj gd.Object)  {
+func (self class) AddUndoReference(obj gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the history ID deduced from the given [param object]. It can be used with [method get_history_undo_redo].
 */
@@ -228,6 +239,7 @@ func (self class) GetObjectHistoryId(obj gd.Object) gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the [UndoRedo] object associated with the given history [param id].
 [param id] above [code]0[/code] are mapped to the opened scene tabs (but it doesn't match their order). [param id] of [code]0[/code] or lower have special meaning (see [enum SpecialHistory]).
@@ -243,38 +255,41 @@ func (self class) GetHistoryUndoRedo(id gd.Int) gdclass.UndoRedo {
 	frame.Free()
 	return ret
 }
-func (self Go) OnHistoryChanged(cb func()) {
+func (self Instance) OnHistoryChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("history_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnVersionChanged(cb func()) {
+func (self Instance) OnVersionChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsEditorUndoRedoManager() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsEditorUndoRedoManager() Go { return *((*Go)(unsafe.Pointer(&self))) }
+func (self class) AsEditorUndoRedoManager() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorUndoRedoManager() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return classdb.EditorUndoRedoManager(ptr) })}
+func init() {
+	classdb.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return classdb.EditorUndoRedoManager(ptr) })
+}
+
 type SpecialHistory = classdb.EditorUndoRedoManagerSpecialHistory
 
 const (
-/*Global history not associated with any scene, but with external resources etc.*/
+	/*Global history not associated with any scene, but with external resources etc.*/
 	GlobalHistory SpecialHistory = 0
-/*History associated with remote inspector. Used when live editing a running project.*/
+	/*History associated with remote inspector. Used when live editing a running project.*/
 	RemoteHistory SpecialHistory = -9
-/*Invalid "null" history. It's a special value, not associated with any object.*/
+	/*Invalid "null" history. It's a special value, not associated with any object.*/
 	InvalidHistory SpecialHistory = -99
 )

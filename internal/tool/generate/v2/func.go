@@ -21,7 +21,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 	if singleton {
 		fmt.Fprintf(w, "\nfunc On%v(cb func(", convertName(signal.Name))
 	} else {
-		fmt.Fprintf(w, "\nfunc (self Go) On%v(cb func(", convertName(signal.Name))
+		fmt.Fprintf(w, "\nfunc (self Instance) On%v(cb func(", convertName(signal.Name))
 	}
 	for i, arg := range signal.Arguments {
 		if i > 0 {
@@ -61,7 +61,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	if singleton {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))
 	} else {
-		fmt.Fprintf(w, "func (self Go) %v(", convertName(method.Name))
+		fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
 	}
 	for i, arg := range method.Arguments {
 		if arg.DefaultValue == nil {
@@ -133,32 +133,32 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	if method.IsStatic {
 		needsLifetime = true
 	}
-	fmt.Fprintf(w, "func (Go) %s(impl func(ptr unsafe.Pointer", method.Name)
+	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr unsafe.Pointer", method.Name)
 	for _, arg := range method.Arguments {
 		fmt.Fprint(w, ", ")
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
 	}
-	fmt.Fprintf(w, ") %v, api *gd.API) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
-	fmt.Fprintf(w, "\treturn func(class gd.ExtensionClass, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
+	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
+	fmt.Fprintf(w, "\treturn func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
 	for i, arg := range method.Arguments {
 		var expert = classDB.convertType("", arg.Meta, arg.Type)
 
 		if arg.Type == "Object" {
-			fmt.Fprintf(w, "\t\tvar %v = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
-			fmt.Fprintf(w, "\t\tdefer discreet.End(%v)\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\t\tvar %v = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
+			fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
 			continue
 		}
 
 		_, ok := classDB[arg.Type]
 		if ok {
-			fmt.Fprintf(w, "\t\tvar %v = %s{discreet.New[classdb.%v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), expert, arg.Type, i)
-			fmt.Fprintf(w, "\t\tdefer discreet.End(%v[0])\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[classdb.%v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), expert, arg.Type, i)
+			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 			continue
 		}
 		pointerKind, argIsPtr := classDB.isPointer(expert)
 		if argIsPtr {
-			fmt.Fprintf(w, "\t\tvar %v = discreet.New[%v](gd.UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), expert, pointerKind, i)
-			fmt.Fprintf(w, "\t\tdefer discreet.End(%v)\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\t\tvar %v = pointers.New[%v](gd.UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), expert, pointerKind, i)
+			fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
 		} else {
 			fmt.Fprintf(w, "\t\tvar %v = gd.UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), expert, i)
 		}
@@ -180,11 +180,11 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			name = strings.TrimPrefix(name, "[1]classdb.")
 			_, ok := classDB[name]
 			if resultExpert == "gd.Object" {
-				ret = fmt.Sprintf("discreet.End(%s)", ret)
+				ret = fmt.Sprintf("pointers.End(%s)", ret)
 			} else if ok {
-				ret = fmt.Sprintf("discreet.End(%s[0])", ret)
+				ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 			} else {
-				ret = fmt.Sprintf("discreet.End(%s)", ret)
+				ret = fmt.Sprintf("pointers.End(%s)", ret)
 			}
 			fmt.Fprintf(w, "ptr, ok := "+ret)
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")
@@ -234,28 +234,28 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprint(w, ", ")
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 		}
-		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\treturn func(class "+prefix+"ExtensionClass, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
+		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
+		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
 
 			if arg.Type == "Object" {
-				fmt.Fprintf(w, "\t\tvar %v = discreet.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
-				fmt.Fprintf(w, "\t\tdefer discreet.End(%v)\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\t\tvar %v = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
+				fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
 				continue
 			}
 
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(w, "\t\tvar %v = gdclass.%v{discreet.New[classdb.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
+				fmt.Fprintf(w, "\t\tvar %v = gdclass.%v{pointers.New[classdb.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
 					fixReserved(arg.Name), arg.Type, i)
-				fmt.Fprintf(w, "\t\tdefer discreet.End(%v[0])\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
 			}
 
 			argPtrKind, argIsPtr := classDB.isPointer(argType)
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = discreet.New[%s](%v)\n", fixReserved(arg.Name), argType,
+				fmt.Fprintf(w, "\t\tvar %v = pointers.New[%s](%v)\n", fixReserved(arg.Name), argType,
 					fmt.Sprintf(prefix+"UnsafeGet[%v](p_args,%d)", argPtrKind, i))
 			} else {
 				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
@@ -276,9 +276,9 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			if isPtr {
 				_, ok := classDB[strings.TrimPrefix(result, "gdclass.")]
 				if ok {
-					ret = fmt.Sprintf("discreet.End(%s[0])", ret)
+					ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 				} else {
-					ret = fmt.Sprintf("discreet.End(%s)", ret)
+					ret = fmt.Sprintf("pointers.End(%s)", ret)
 				}
 				fmt.Fprintf(w, "ptr, ok := "+ret)
 				fmt.Fprintf(w, "\n\t\tif !ok {\n")
@@ -333,7 +333,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 				case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
 					fmt.Fprintf(w, "\tcallframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(%v[0])))\n", fixReserved(arg.Name))
 				case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-					fmt.Fprintf(w, "\tcallframe.Arg(frame, discreet.Get(%v[0])[0])\n", fixReserved(arg.Name))
+					fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v[0])[0])\n", fixReserved(arg.Name))
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}
@@ -344,14 +344,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
 		_, argIsPtr := classDB.isPointer(argType)
 		if argIsPtr {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, discreet.Get(%v))\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
 		} else {
 			fmt.Fprintf(w, "\tcallframe.Arg(frame, %v)\n", fixReserved(arg.Name))
 		}
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
-		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, discreet.Get(arg))\n")
+		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, pointers.Get(arg))\n")
 		fmt.Fprintf(w, "\t}\n")
 	}
 	if isPtr {
@@ -397,11 +397,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 		} else {
 			if strings.HasPrefix(result, "ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = discreet.New[Array](r_ret.Get())\n")
+				fmt.Fprint(w, "\tvar ret = pointers.New[Array](r_ret.Get())\n")
 			} else if strings.HasPrefix(result, "gd.ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = discreet.New[gd.Array](r_ret.Get())\n")
+				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
 			} else {
-				fmt.Fprintf(w, "\tvar ret = discreet.New[%v](r_ret.Get())\n", result)
+				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}
 		}
 	} else if result != "" {

@@ -2,123 +2,126 @@ package KinematicCollision2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Holds collision data from the movement of a [PhysicsBody2D], usually from [method PhysicsBody2D.move_and_collide]. When a [PhysicsBody2D] is moved, it stops if it detects a collision with another body. If a collision is detected, a [KinematicCollision2D] object is returned.
 The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
-
 */
-type Go [1]classdb.KinematicCollision2D
+type Instance [1]classdb.KinematicCollision2D
 
 /*
 Returns the point of collision in global coordinates.
 */
-func (self Go) GetPosition() gd.Vector2 {
+func (self Instance) GetPosition() gd.Vector2 {
 	return gd.Vector2(class(self).GetPosition())
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision.
 */
-func (self Go) GetNormal() gd.Vector2 {
+func (self Instance) GetNormal() gd.Vector2 {
 	return gd.Vector2(class(self).GetNormal())
 }
 
 /*
 Returns the moving object's travel before collision.
 */
-func (self Go) GetTravel() gd.Vector2 {
+func (self Instance) GetTravel() gd.Vector2 {
 	return gd.Vector2(class(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
-func (self Go) GetRemainder() gd.Vector2 {
+func (self Instance) GetRemainder() gd.Vector2 {
 	return gd.Vector2(class(self).GetRemainder())
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
-func (self Go) GetAngle() float64 {
+func (self Instance) GetAngle() float64 {
 	return float64(float64(class(self).GetAngle(gd.Vector2{0, -1})))
 }
 
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
-func (self Go) GetDepth() float64 {
+func (self Instance) GetDepth() float64 {
 	return float64(float64(class(self).GetDepth()))
 }
 
 /*
 Returns the moving object's colliding shape.
 */
-func (self Go) GetLocalShape() gd.Object {
+func (self Instance) GetLocalShape() gd.Object {
 	return gd.Object(class(self).GetLocalShape())
 }
 
 /*
 Returns the colliding body's attached [Object].
 */
-func (self Go) GetCollider() gd.Object {
+func (self Instance) GetCollider() gd.Object {
 	return gd.Object(class(self).GetCollider())
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object]. See [method Object.get_instance_id].
 */
-func (self Go) GetColliderId() int {
+func (self Instance) GetColliderId() int {
 	return int(int(class(self).GetColliderId()))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
-func (self Go) GetColliderRid() gd.RID {
+func (self Instance) GetColliderRid() gd.RID {
 	return gd.RID(class(self).GetColliderRid())
 }
 
 /*
 Returns the colliding body's shape.
 */
-func (self Go) GetColliderShape() gd.Object {
+func (self Instance) GetColliderShape() gd.Object {
 	return gd.Object(class(self).GetColliderShape())
 }
 
 /*
 Returns the colliding body's shape index. See [CollisionObject2D].
 */
-func (self Go) GetColliderShapeIndex() int {
+func (self Instance) GetColliderShapeIndex() int {
 	return int(int(class(self).GetColliderShapeIndex()))
 }
 
 /*
 Returns the colliding body's velocity.
 */
-func (self Go) GetColliderVelocity() gd.Vector2 {
+func (self Instance) GetColliderVelocity() gd.Vector2 {
 	return gd.Vector2(class(self).GetColliderVelocity())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.KinematicCollision2D
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("KinematicCollision2D"))
-	return Go{classdb.KinematicCollision2D(object)}
+	return Instance{classdb.KinematicCollision2D(object)}
 }
 
 /*
@@ -133,6 +136,7 @@ func (self class) GetPosition() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's shape's normal at the point of collision.
 */
@@ -145,6 +149,7 @@ func (self class) GetNormal() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the moving object's travel before collision.
 */
@@ -157,6 +162,7 @@ func (self class) GetTravel() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the moving object's remaining movement vector.
 */
@@ -169,6 +175,7 @@ func (self class) GetRemainder() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
@@ -182,6 +189,7 @@ func (self class) GetAngle(up_direction gd.Vector2) gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
@@ -194,6 +202,7 @@ func (self class) GetDepth() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the moving object's colliding shape.
 */
@@ -206,6 +215,7 @@ func (self class) GetLocalShape() gd.Object {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's attached [Object].
 */
@@ -218,6 +228,7 @@ func (self class) GetCollider() gd.Object {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the unique instance ID of the colliding body's attached [Object]. See [method Object.get_instance_id].
 */
@@ -230,6 +241,7 @@ func (self class) GetColliderId() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
@@ -242,6 +254,7 @@ func (self class) GetColliderRid() gd.RID {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's shape.
 */
@@ -254,6 +267,7 @@ func (self class) GetColliderShape() gd.Object {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's shape index. See [CollisionObject2D].
 */
@@ -266,6 +280,7 @@ func (self class) GetColliderShapeIndex() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the colliding body's velocity.
 */
@@ -278,20 +293,24 @@ func (self class) GetColliderVelocity() gd.Vector2 {
 	frame.Free()
 	return ret
 }
-func (self class) AsKinematicCollision2D() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsKinematicCollision2D() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsKinematicCollision2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsKinematicCollision2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() gd.RefCounted         { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted      { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("KinematicCollision2D", func(ptr gd.Object) any { return classdb.KinematicCollision2D(ptr) })}
+func init() {
+	classdb.Register("KinematicCollision2D", func(ptr gd.Object) any { return classdb.KinematicCollision2D(ptr) })
+}

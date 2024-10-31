@@ -1,4 +1,4 @@
-// Package discreet provides managed pointers that are invisible to the Go runtime.
+// Package pointers provides managed pointers that are invisible to the Go runtime.
 //
 // Usually, the Go runtime attempts to scan all pointers within a program and as such,
 // the more pointers in use, the more overhead there will be to scan them.
@@ -14,22 +14,23 @@
 //
 // The following constructors are available:
 //
-//	Tmp(ptr) // panics-on-use after two garbage collection cycles.
-//	Let(ptr) // like [Tmp], but [End] operations on this pointer always return false.
-//	New(ptr) // panics-on-use after the next garbage collection cycle, if it is no longer reachable through [Root].
+//	New(ptr) // panics-on-use after two garbage collection cycles.
+//	Let(ptr) // like [New], but [End] operations on this pointer always return false.
 //	Bad(ptr) // unsafe.Pointer equivalent, zero overhead, but provides no protection.
 //
 // The following methods are available:
 //
 //	End(X) (ptr, bool) // returns true on the first call to [End], false on all subsequent calls, GC-related metadata is marked for reuse.
 //	Set(&X, ptr) // sets the underlying pointer to a new value, applies to all copies of the pointer.
-//	Age(X)    // converts a [Tmp] pointer to a [New] pointer.
-//	Pin(ptr) // panics-on-use only after [Free] is called.
-//	Use(ptr) // refreshes a [Tmp] or [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
+//	Use(ptr) // refreshes a [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
+//	Pin(ptr) // pin a [New] pointer, so that it will be available for use until the next call to [Free]
 //
-// [MarkAndSweep] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
-// will eventually have their [Free] method called but this
-package discreet
+// [Cycle] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
+// will eventually have their [Free] method called as long as the program continues to construct new pointers of the same types.
+//
+// The [For] function returns an iterator for all pointers of a given type, this can be used to free all pointers of a given type.
+// Up to 16 pointer types for each shape are currently supported.
+package pointers
 
 import (
 	"reflect"
@@ -39,16 +40,16 @@ import (
 )
 
 const pageSize = 3 * 4 * 5 * 20
-const shapesMax = 3
-const cyclesMax = 3
+const shapesMax = 4
+const cyclesMax = 4
 const uniqueMax = 16
 
-// tables stores the pointers that are managed by the discreet package.
+// tables stores the pointers that are managed by the pointers package.
 // there is one table for each pointer shape, followed by the pointers
 // themselves which have the following structure:
 //
 //	type entry[T Shape] struct {
-//		rev uintptr // when 1, locks the entry, when 0, the entry is free, when 2, queues free
+//		rev uintptr // when 1, locks the entry, when 0, the entry is free, when 2, pinned.
 //		age uintptr // when 1, locks the entry, when 2, queues mark, 3 and 4 are used to track marking.
 //		ptr [unsafe.Sizeof([1]T{})/unsafe.Sizeof(uintptr(0))]uintptr
 //	 }
@@ -161,9 +162,9 @@ type Shape interface {
 	[1]uintptr | [2]uintptr | [3]uintptr
 }
 
-// PointerNamed that is invisible to the Go runtime. The discreet package manages it instead.
+// PointerNamed that is invisible to the Go runtime. The pointers package manages it instead.
 // Supports pointer shapes up to [3]uintptr's in size. The first type paramter should be the
-// named type being defined as a discreet pointer type.
+// named type being defined as a pointers pointer type.
 type PointerNamed[T Pointer[T, S, N], S Shape, N PointerType] struct {
 	_ [0]N // prevents converting between different pointer types.
 
@@ -272,7 +273,7 @@ func End[T Pointer[T, P, N], P Shape, N PointerType](ptr T) (P, bool) {
 func end(rev uintptr, u, s int, p uintptr) bool {
 	page, addr := uintptr(p/pageSize), uintptr(p%pageSize)
 	arr := tables[u][s].Index(page)
-	if arr[addr+offRev].CompareAndSwap(rev, 1) {
+	if arr[addr+offRev].Load() > 1 && arr[addr+offRev].CompareAndSwap(rev, 1) {
 		age := arr[addr+offAge].Load()
 		if age == 1 {
 			return true
@@ -352,7 +353,7 @@ func Set[T Pointer[T, P, N], P Shape, N PointerType](ptr *T, val P) {
 	*ptr = T(p)
 }
 
-// PointerType restricts the unique pointer types that can be used with the discreet package.
+// PointerType restricts the unique pointer types that can be used with the pointers package.
 // A unique pointer type is a pointer
 type PointerType interface {
 	[0]Type | [1]Type | [2]Type | [3]Type |
@@ -405,4 +406,33 @@ func Bad[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
 	}
 	result.ptr = ptr
 	return T(result)
+}
+
+// Pin the pointer, preventing it from being freed until [Free] is called on it.
+func Pin[T Pointer[T, P, N], P Shape, N PointerType](ptr T) T {
+	p := (struct {
+		_ [0]N
+
+		address[P, N]
+
+		rev uintptr
+		ptr P
+	})(ptr)
+	if p.rev == 0 {
+		panic("cannot pin a nil pointer")
+	}
+	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
+	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
+	rev := arr[addr+offRev].Load()
+	if rev != uintptr(p.rev) {
+		panic("expired pointer")
+	}
+	for i := range uintptr(len(p.ptr)) {
+		if arr[addr+offPtr+i].Load() != p.ptr[i] {
+			panic("expired pointer")
+		}
+	}
+	p.rev = 2
+	arr[addr+offRev].Store(2)
+	return T(p)
 }

@@ -2,10 +2,11 @@ package SkeletonModification2DLookAt
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/SkeletonModification2D"
 import "grow.graphics/gd/gdclass/Resource"
@@ -14,67 +15,67 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
-
 */
-type Go [1]classdb.SkeletonModification2DLookAt
+type Instance [1]classdb.SkeletonModification2DLookAt
 
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
-func (self Go) SetAdditionalRotation(rotation float64) {
+func (self Instance) SetAdditionalRotation(rotation float64) {
 	class(self).SetAdditionalRotation(gd.Float(rotation))
 }
 
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
-func (self Go) GetAdditionalRotation() float64 {
+func (self Instance) GetAdditionalRotation() float64 {
 	return float64(float64(class(self).GetAdditionalRotation()))
 }
 
 /*
 Sets whether this modification will use constraints or not. When [code]true[/code], constraints will be applied when solving the LookAt modification.
 */
-func (self Go) SetEnableConstraint(enable_constraint bool) {
+func (self Instance) SetEnableConstraint(enable_constraint bool) {
 	class(self).SetEnableConstraint(enable_constraint)
 }
 
 /*
 Returns [code]true[/code] if the LookAt modification is using constraints.
 */
-func (self Go) GetEnableConstraint() bool {
+func (self Instance) GetEnableConstraint() bool {
 	return bool(class(self).GetEnableConstraint())
 }
 
 /*
 Sets the constraint's minimum allowed angle.
 */
-func (self Go) SetConstraintAngleMin(angle_min float64) {
+func (self Instance) SetConstraintAngleMin(angle_min float64) {
 	class(self).SetConstraintAngleMin(gd.Float(angle_min))
 }
 
 /*
 Returns the constraint's minimum allowed angle.
 */
-func (self Go) GetConstraintAngleMin() float64 {
+func (self Instance) GetConstraintAngleMin() float64 {
 	return float64(float64(class(self).GetConstraintAngleMin()))
 }
 
 /*
 Sets the constraint's maximum allowed angle.
 */
-func (self Go) SetConstraintAngleMax(angle_max float64) {
+func (self Instance) SetConstraintAngleMax(angle_max float64) {
 	class(self).SetConstraintAngleMax(gd.Float(angle_max))
 }
 
 /*
 Returns the constraint's maximum allowed angle.
 */
-func (self Go) GetConstraintAngleMax() float64 {
+func (self Instance) GetConstraintAngleMax() float64 {
 	return float64(float64(class(self).GetConstraintAngleMax()))
 }
 
@@ -82,75 +83,80 @@ func (self Go) GetConstraintAngleMax() float64 {
 When [code]true[/code], the modification will use an inverted joint constraint.
 An inverted joint constraint only constraints the [Bone2D] to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
-func (self Go) SetConstraintAngleInvert(invert bool) {
+func (self Instance) SetConstraintAngleInvert(invert bool) {
 	class(self).SetConstraintAngleInvert(invert)
 }
 
 /*
 Returns whether the constraints to this modification are inverted or not.
 */
-func (self Go) GetConstraintAngleInvert() bool {
+func (self Instance) GetConstraintAngleInvert() bool {
 	return bool(class(self).GetConstraintAngleInvert())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.SkeletonModification2DLookAt
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DLookAt"))
-	return Go{classdb.SkeletonModification2DLookAt(object)}
+	return Instance{classdb.SkeletonModification2DLookAt(object)}
 }
 
-func (self Go) BoneIndex() int {
-		return int(int(class(self).GetBoneIndex()))
+func (self Instance) BoneIndex() int {
+	return int(int(class(self).GetBoneIndex()))
 }
 
-func (self Go) SetBoneIndex(value int) {
+func (self Instance) SetBoneIndex(value int) {
 	class(self).SetBoneIndex(gd.Int(value))
 }
 
-func (self Go) Bone2dNode() string {
-		return string(class(self).GetBone2dNode().String())
+func (self Instance) Bone2dNode() string {
+	return string(class(self).GetBone2dNode().String())
 }
 
-func (self Go) SetBone2dNode(value string) {
+func (self Instance) SetBone2dNode(value string) {
 	class(self).SetBone2dNode(gd.NewString(value).NodePath())
 }
 
-func (self Go) TargetNodepath() string {
-		return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() string {
+	return string(class(self).GetTargetNode().String())
 }
 
-func (self Go) SetTargetNodepath(value string) {
+func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(gd.NewString(value).NodePath())
 }
 
 //go:nosplit
-func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath)  {
+func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(bone2d_nodepath))
+	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetBone2dNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.NodePath](r_ret.Get())
+	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetBoneIndex(bone_idx gd.Int)  {
+func (self class) SetBoneIndex(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetBoneIndex() gd.Int {
 	var frame = callframe.New()
@@ -160,34 +166,38 @@ func (self class) GetBoneIndex() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath)  {
+func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(target_nodepath))
+	callframe.Arg(frame, pointers.Get(target_nodepath))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTargetNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.NodePath](r_ret.Get())
+	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
 //go:nosplit
-func (self class) SetAdditionalRotation(rotation gd.Float)  {
+func (self class) SetAdditionalRotation(rotation gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_additional_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
@@ -200,17 +210,19 @@ func (self class) GetAdditionalRotation() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Sets whether this modification will use constraints or not. When [code]true[/code], constraints will be applied when solving the LookAt modification.
 */
 //go:nosplit
-func (self class) SetEnableConstraint(enable_constraint bool)  {
+func (self class) SetEnableConstraint(enable_constraint bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable_constraint)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if the LookAt modification is using constraints.
 */
@@ -223,17 +235,19 @@ func (self class) GetEnableConstraint() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the constraint's minimum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMin(angle_min gd.Float)  {
+func (self class) SetConstraintAngleMin(angle_min gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_min)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the constraint's minimum allowed angle.
 */
@@ -246,17 +260,19 @@ func (self class) GetConstraintAngleMin() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the constraint's maximum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMax(angle_max gd.Float)  {
+func (self class) SetConstraintAngleMax(angle_max gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_max)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the constraint's maximum allowed angle.
 */
@@ -269,18 +285,20 @@ func (self class) GetConstraintAngleMax() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 When [code]true[/code], the modification will use an inverted joint constraint.
 An inverted joint constraint only constraints the [Bone2D] to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
 //go:nosplit
-func (self class) SetConstraintAngleInvert(invert bool)  {
+func (self class) SetConstraintAngleInvert(invert bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, invert)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns whether the constraints to this modification are inverted or not.
 */
@@ -293,24 +311,40 @@ func (self class) GetConstraintAngleInvert() bool {
 	frame.Free()
 	return ret
 }
-func (self class) AsSkeletonModification2DLookAt() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsSkeletonModification2DLookAt() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsSkeletonModification2D() SkeletonModification2D.GD { return *((*SkeletonModification2D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsSkeletonModification2D() SkeletonModification2D.Go { return *((*SkeletonModification2D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsSkeletonModification2DLookAt() Advanced {
+	return *((*Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModification2DLookAt() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
+	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
+	return *((*SkeletonModification2D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsSkeletonModification2D(), name)
+	default:
+		return gd.VirtualByName(self.AsSkeletonModification2D(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsSkeletonModification2D(), name)
+	default:
+		return gd.VirtualByName(self.AsSkeletonModification2D(), name)
 	}
 }
-func init() {classdb.Register("SkeletonModification2DLookAt", func(ptr gd.Object) any { return classdb.SkeletonModification2DLookAt(ptr) })}
+func init() {
+	classdb.Register("SkeletonModification2DLookAt", func(ptr gd.Object) any { return classdb.SkeletonModification2DLookAt(ptr) })
+}

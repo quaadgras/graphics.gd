@@ -2,10 +2,11 @@ package AnimatedSprite2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Node2D"
 import "grow.graphics/gd/gdclass/CanvasItem"
@@ -15,18 +16,18 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 [AnimatedSprite2D] is similar to the [Sprite2D] node, except it carries multiple textures as animation frames. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
-
 */
-type Go [1]classdb.AnimatedSprite2D
+type Instance [1]classdb.AnimatedSprite2D
 
 /*
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
-func (self Go) IsPlaying() bool {
+func (self Instance) IsPlaying() bool {
 	return bool(class(self).IsPlaying())
 }
 
@@ -34,7 +35,7 @@ func (self Go) IsPlaying() bool {
 Plays the animation with key [param name]. If [param custom_speed] is negative and [param from_end] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
-func (self Go) Play() {
+func (self Instance) Play() {
 	class(self).Play(gd.NewStringName(""), gd.Float(1.0), false)
 }
 
@@ -42,7 +43,7 @@ func (self Go) Play() {
 Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
-func (self Go) PlayBackwards() {
+func (self Instance) PlayBackwards() {
 	class(self).PlayBackwards(gd.NewStringName(""))
 }
 
@@ -50,14 +51,14 @@ func (self Go) PlayBackwards() {
 Pauses the currently playing animation. The [member frame] and [member frame_progress] will be kept and calling [method play] or [method play_backwards] without arguments will resume the animation from the current playback position.
 See also [method stop].
 */
-func (self Go) Pause() {
+func (self Instance) Pause() {
 	class(self).Pause()
 }
 
 /*
 Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
 */
-func (self Go) Stop() {
+func (self Instance) Stop() {
 	class(self).Stop()
 }
 
@@ -75,7 +76,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/gdscript]
 [/codeblocks]
 */
-func (self Go) SetFrameAndProgress(frame_ int, progress float64) {
+func (self Instance) SetFrameAndProgress(frame_ int, progress float64) {
 	class(self).SetFrameAndProgress(gd.Int(frame_), gd.Float(progress))
 }
 
@@ -83,107 +84,110 @@ func (self Go) SetFrameAndProgress(frame_ int, progress float64) {
 Returns the actual playing speed of current animation or [code]0[/code] if not playing. This speed is the [member speed_scale] property multiplied by [code]custom_speed[/code] argument specified when calling the [method play] method.
 Returns a negative value if the current animation is playing backwards.
 */
-func (self Go) GetPlayingSpeed() float64 {
+func (self Instance) GetPlayingSpeed() float64 {
 	return float64(float64(class(self).GetPlayingSpeed()))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.AnimatedSprite2D
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimatedSprite2D"))
-	return Go{classdb.AnimatedSprite2D(object)}
+	return Instance{classdb.AnimatedSprite2D(object)}
 }
 
-func (self Go) SpriteFrames() gdclass.SpriteFrames {
-		return gdclass.SpriteFrames(class(self).GetSpriteFrames())
+func (self Instance) SpriteFrames() gdclass.SpriteFrames {
+	return gdclass.SpriteFrames(class(self).GetSpriteFrames())
 }
 
-func (self Go) SetSpriteFrames(value gdclass.SpriteFrames) {
+func (self Instance) SetSpriteFrames(value gdclass.SpriteFrames) {
 	class(self).SetSpriteFrames(value)
 }
 
-func (self Go) Animation() string {
-		return string(class(self).GetAnimation().String())
+func (self Instance) Animation() string {
+	return string(class(self).GetAnimation().String())
 }
 
-func (self Go) SetAnimation(value string) {
+func (self Instance) SetAnimation(value string) {
 	class(self).SetAnimation(gd.NewStringName(value))
 }
 
-func (self Go) Autoplay() string {
-		return string(class(self).GetAutoplay().String())
+func (self Instance) Autoplay() string {
+	return string(class(self).GetAutoplay().String())
 }
 
-func (self Go) SetAutoplay(value string) {
+func (self Instance) SetAutoplay(value string) {
 	class(self).SetAutoplay(gd.NewString(value))
 }
 
-func (self Go) Frame() int {
-		return int(int(class(self).GetFrame()))
+func (self Instance) Frame() int {
+	return int(int(class(self).GetFrame()))
 }
 
-func (self Go) SetFrame(value int) {
+func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(gd.Int(value))
 }
 
-func (self Go) FrameProgress() float64 {
-		return float64(float64(class(self).GetFrameProgress()))
+func (self Instance) FrameProgress() float64 {
+	return float64(float64(class(self).GetFrameProgress()))
 }
 
-func (self Go) SetFrameProgress(value float64) {
+func (self Instance) SetFrameProgress(value float64) {
 	class(self).SetFrameProgress(gd.Float(value))
 }
 
-func (self Go) SpeedScale() float64 {
-		return float64(float64(class(self).GetSpeedScale()))
+func (self Instance) SpeedScale() float64 {
+	return float64(float64(class(self).GetSpeedScale()))
 }
 
-func (self Go) SetSpeedScale(value float64) {
+func (self Instance) SetSpeedScale(value float64) {
 	class(self).SetSpeedScale(gd.Float(value))
 }
 
-func (self Go) Centered() bool {
-		return bool(class(self).IsCentered())
+func (self Instance) Centered() bool {
+	return bool(class(self).IsCentered())
 }
 
-func (self Go) SetCentered(value bool) {
+func (self Instance) SetCentered(value bool) {
 	class(self).SetCentered(value)
 }
 
-func (self Go) Offset() gd.Vector2 {
-		return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() gd.Vector2 {
+	return gd.Vector2(class(self).GetOffset())
 }
 
-func (self Go) SetOffset(value gd.Vector2) {
+func (self Instance) SetOffset(value gd.Vector2) {
 	class(self).SetOffset(value)
 }
 
-func (self Go) FlipH() bool {
-		return bool(class(self).IsFlippedH())
+func (self Instance) FlipH() bool {
+	return bool(class(self).IsFlippedH())
 }
 
-func (self Go) SetFlipH(value bool) {
+func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
-func (self Go) FlipV() bool {
-		return bool(class(self).IsFlippedV())
+func (self Instance) FlipV() bool {
+	return bool(class(self).IsFlippedV())
 }
 
-func (self Go) SetFlipV(value bool) {
+func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }
 
 //go:nosplit
-func (self class) SetSpriteFrames(sprite_frames gdclass.SpriteFrames)  {
+func (self class) SetSpriteFrames(sprite_frames gdclass.SpriteFrames) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(sprite_frames[0])[0])
+	callframe.Arg(frame, pointers.Get(sprite_frames[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSpriteFrames() gdclass.SpriteFrames {
 	var frame = callframe.New()
@@ -193,40 +197,45 @@ func (self class) GetSpriteFrames() gdclass.SpriteFrames {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAnimation(name gd.StringName)  {
+func (self class) SetAnimation(name gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetAnimation() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAutoplay(name gd.String)  {
+func (self class) SetAutoplay(name gd.String) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetAutoplay() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
@@ -239,61 +248,67 @@ func (self class) IsPlaying() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Plays the animation with key [param name]. If [param custom_speed] is negative and [param from_end] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 //go:nosplit
-func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool)  {
+func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, custom_speed)
 	callframe.Arg(frame, from_end)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_play, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 //go:nosplit
-func (self class) PlayBackwards(name gd.StringName)  {
+func (self class) PlayBackwards(name gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Pauses the currently playing animation. The [member frame] and [member frame_progress] will be kept and calling [method play] or [method play_backwards] without arguments will resume the animation from the current playback position.
 See also [method stop].
 */
 //go:nosplit
-func (self class) Pause()  {
+func (self class) Pause() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
 */
 //go:nosplit
-func (self class) Stop()  {
+func (self class) Stop() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
-func (self class) SetCentered(centered bool)  {
+func (self class) SetCentered(centered bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, centered)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_centered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsCentered() bool {
 	var frame = callframe.New()
@@ -303,14 +318,16 @@ func (self class) IsCentered() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2)  {
+func (self class) SetOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetOffset() gd.Vector2 {
 	var frame = callframe.New()
@@ -320,14 +337,16 @@ func (self class) GetOffset() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetFlipH(flip_h bool)  {
+func (self class) SetFlipH(flip_h bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_h)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_flip_h, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsFlippedH() bool {
 	var frame = callframe.New()
@@ -337,14 +356,16 @@ func (self class) IsFlippedH() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetFlipV(flip_v bool)  {
+func (self class) SetFlipV(flip_v bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_v)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_flip_v, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsFlippedV() bool {
 	var frame = callframe.New()
@@ -354,14 +375,16 @@ func (self class) IsFlippedV() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int)  {
+func (self class) SetFrame(frame_ gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetFrame() gd.Int {
 	var frame = callframe.New()
@@ -371,14 +394,16 @@ func (self class) GetFrame() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetFrameProgress(progress gd.Float)  {
+func (self class) SetFrameProgress(progress gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_frame_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetFrameProgress() gd.Float {
 	var frame = callframe.New()
@@ -388,6 +413,7 @@ func (self class) GetFrameProgress() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 The setter of [member frame] resets the [member frame_progress] to [code]0.0[/code] implicitly, but this method avoids that.
 This is useful when you want to carry over the current [member frame_progress] to another [member frame].
@@ -403,7 +429,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float)  {
+func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, progress)
@@ -411,14 +437,16 @@ func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float)  {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_frame_and_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
-func (self class) SetSpeedScale(speed_scale gd.Float)  {
+func (self class) SetSpeedScale(speed_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed_scale)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetSpeedScale() gd.Float {
 	var frame = callframe.New()
@@ -428,6 +456,7 @@ func (self class) GetSpeedScale() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the actual playing speed of current animation or [code]0[/code] if not playing. This speed is the [member speed_scale] property multiplied by [code]custom_speed[/code] argument specified when calling the [method play] method.
 Returns a negative value if the current animation is playing backwards.
@@ -441,49 +470,52 @@ func (self class) GetPlayingSpeed() gd.Float {
 	frame.Free()
 	return ret
 }
-func (self Go) OnSpriteFramesChanged(cb func()) {
+func (self Instance) OnSpriteFramesChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnAnimationChanged(cb func()) {
+func (self Instance) OnAnimationChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnFrameChanged(cb func()) {
+func (self Instance) OnFrameChanged(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnAnimationLooped(cb func()) {
+func (self Instance) OnAnimationLooped(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnAnimationFinished(cb func()) {
+func (self Instance) OnAnimationFinished(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsAnimatedSprite2D() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimatedSprite2D() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode2D() Node2D.GD { return *((*Node2D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode2D() Node2D.Go { return *((*Node2D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsCanvasItem() CanvasItem.GD { return *((*CanvasItem.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsCanvasItem() CanvasItem.Go { return *((*CanvasItem.Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsAnimatedSprite2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAnimatedSprite2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode2D() Node2D.Advanced       { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode2D() Node2D.Instance    { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCanvasItem() CanvasItem.Advanced {
+	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsCanvasItem() CanvasItem.Instance {
+	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode2D(), name)
+	default:
+		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode2D(), name)
+	default:
+		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() {classdb.Register("AnimatedSprite2D", func(ptr gd.Object) any { return classdb.AnimatedSprite2D(ptr) })}
+func init() {
+	classdb.Register("AnimatedSprite2D", func(ptr gd.Object) any { return classdb.AnimatedSprite2D(ptr) })
+}

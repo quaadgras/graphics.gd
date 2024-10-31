@@ -2,10 +2,11 @@ package AnimationNodeStateMachine
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/AnimationRootNode"
 import "grow.graphics/gd/gdclass/AnimationNode"
@@ -15,7 +16,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Contains multiple [AnimationRootNode]s representing animation states, connected in a graph. State transitions can be configured to happen automatically or via code, using a shortest-path algorithm. Retrieve the [AnimationNodeStateMachinePlayback] object from the [AnimationTree] node to control it programmatically.
@@ -30,173 +32,174 @@ var stateMachine = GetNode<AnimationTree>("AnimationTree").Get("parameters/playb
 stateMachine.Travel("some_state");
 [/csharp]
 [/codeblocks]
-
 */
-type Go [1]classdb.AnimationNodeStateMachine
+type Instance [1]classdb.AnimationNodeStateMachine
 
 /*
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
-func (self Go) AddNode(name string, node gdclass.AnimationNode) {
+func (self Instance) AddNode(name string, node gdclass.AnimationNode) {
 	class(self).AddNode(gd.NewStringName(name), node, gd.Vector2{0, 0})
 }
 
 /*
 Replaces the given animation node with a new animation node.
 */
-func (self Go) ReplaceNode(name string, node gdclass.AnimationNode) {
+func (self Instance) ReplaceNode(name string, node gdclass.AnimationNode) {
 	class(self).ReplaceNode(gd.NewStringName(name), node)
 }
 
 /*
 Returns the animation node with the given name.
 */
-func (self Go) GetNode(name string) gdclass.AnimationNode {
+func (self Instance) GetNode(name string) gdclass.AnimationNode {
 	return gdclass.AnimationNode(class(self).GetNode(gd.NewStringName(name)))
 }
 
 /*
 Deletes the given animation node from the graph.
 */
-func (self Go) RemoveNode(name string) {
+func (self Instance) RemoveNode(name string) {
 	class(self).RemoveNode(gd.NewStringName(name))
 }
 
 /*
 Renames the given animation node.
 */
-func (self Go) RenameNode(name string, new_name string) {
+func (self Instance) RenameNode(name string, new_name string) {
 	class(self).RenameNode(gd.NewStringName(name), gd.NewStringName(new_name))
 }
 
 /*
 Returns [code]true[/code] if the graph contains the given animation node.
 */
-func (self Go) HasNode(name string) bool {
+func (self Instance) HasNode(name string) bool {
 	return bool(class(self).HasNode(gd.NewStringName(name)))
 }
 
 /*
 Returns the given animation node's name.
 */
-func (self Go) GetNodeName(node gdclass.AnimationNode) string {
+func (self Instance) GetNodeName(node gdclass.AnimationNode) string {
 	return string(class(self).GetNodeName(node).String())
 }
 
 /*
 Sets the animation node's coordinates. Used for display in the editor.
 */
-func (self Go) SetNodePosition(name string, position gd.Vector2) {
+func (self Instance) SetNodePosition(name string, position gd.Vector2) {
 	class(self).SetNodePosition(gd.NewStringName(name), position)
 }
 
 /*
 Returns the given animation node's coordinates. Used for display in the editor.
 */
-func (self Go) GetNodePosition(name string) gd.Vector2 {
+func (self Instance) GetNodePosition(name string) gd.Vector2 {
 	return gd.Vector2(class(self).GetNodePosition(gd.NewStringName(name)))
 }
 
 /*
 Returns [code]true[/code] if there is a transition between the given animation nodes.
 */
-func (self Go) HasTransition(from string, to string) bool {
+func (self Instance) HasTransition(from string, to string) bool {
 	return bool(class(self).HasTransition(gd.NewStringName(from), gd.NewStringName(to)))
 }
 
 /*
 Adds a transition between the given animation nodes.
 */
-func (self Go) AddTransition(from string, to string, transition gdclass.AnimationNodeStateMachineTransition) {
+func (self Instance) AddTransition(from string, to string, transition gdclass.AnimationNodeStateMachineTransition) {
 	class(self).AddTransition(gd.NewStringName(from), gd.NewStringName(to), transition)
 }
 
 /*
 Returns the given transition.
 */
-func (self Go) GetTransition(idx int) gdclass.AnimationNodeStateMachineTransition {
+func (self Instance) GetTransition(idx int) gdclass.AnimationNodeStateMachineTransition {
 	return gdclass.AnimationNodeStateMachineTransition(class(self).GetTransition(gd.Int(idx)))
 }
 
 /*
 Returns the given transition's start node.
 */
-func (self Go) GetTransitionFrom(idx int) string {
+func (self Instance) GetTransitionFrom(idx int) string {
 	return string(class(self).GetTransitionFrom(gd.Int(idx)).String())
 }
 
 /*
 Returns the given transition's end node.
 */
-func (self Go) GetTransitionTo(idx int) string {
+func (self Instance) GetTransitionTo(idx int) string {
 	return string(class(self).GetTransitionTo(gd.Int(idx)).String())
 }
 
 /*
 Returns the number of connections in the graph.
 */
-func (self Go) GetTransitionCount() int {
+func (self Instance) GetTransitionCount() int {
 	return int(int(class(self).GetTransitionCount()))
 }
 
 /*
 Deletes the given transition by index.
 */
-func (self Go) RemoveTransitionByIndex(idx int) {
+func (self Instance) RemoveTransitionByIndex(idx int) {
 	class(self).RemoveTransitionByIndex(gd.Int(idx))
 }
 
 /*
 Deletes the transition between the two specified animation nodes.
 */
-func (self Go) RemoveTransition(from string, to string) {
+func (self Instance) RemoveTransition(from string, to string) {
 	class(self).RemoveTransition(gd.NewStringName(from), gd.NewStringName(to))
 }
 
 /*
 Sets the draw offset of the graph. Used for display in the editor.
 */
-func (self Go) SetGraphOffset(offset gd.Vector2) {
+func (self Instance) SetGraphOffset(offset gd.Vector2) {
 	class(self).SetGraphOffset(offset)
 }
 
 /*
 Returns the draw offset of the graph. Used for display in the editor.
 */
-func (self Go) GetGraphOffset() gd.Vector2 {
+func (self Instance) GetGraphOffset() gd.Vector2 {
 	return gd.Vector2(class(self).GetGraphOffset())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.AnimationNodeStateMachine
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeStateMachine"))
-	return Go{classdb.AnimationNodeStateMachine(object)}
+	return Instance{classdb.AnimationNodeStateMachine(object)}
 }
 
-func (self Go) StateMachineType() classdb.AnimationNodeStateMachineStateMachineType {
-		return classdb.AnimationNodeStateMachineStateMachineType(class(self).GetStateMachineType())
+func (self Instance) StateMachineType() classdb.AnimationNodeStateMachineStateMachineType {
+	return classdb.AnimationNodeStateMachineStateMachineType(class(self).GetStateMachineType())
 }
 
-func (self Go) SetStateMachineType(value classdb.AnimationNodeStateMachineStateMachineType) {
+func (self Instance) SetStateMachineType(value classdb.AnimationNodeStateMachineStateMachineType) {
 	class(self).SetStateMachineType(value)
 }
 
-func (self Go) AllowTransitionToSelf() bool {
-		return bool(class(self).IsAllowTransitionToSelf())
+func (self Instance) AllowTransitionToSelf() bool {
+	return bool(class(self).IsAllowTransitionToSelf())
 }
 
-func (self Go) SetAllowTransitionToSelf(value bool) {
+func (self Instance) SetAllowTransitionToSelf(value bool) {
 	class(self).SetAllowTransitionToSelf(value)
 }
 
-func (self Go) ResetEnds() bool {
-		return bool(class(self).AreEndsReset())
+func (self Instance) ResetEnds() bool {
+	return bool(class(self).AreEndsReset())
 }
 
-func (self Go) SetResetEnds(value bool) {
+func (self Instance) SetResetEnds(value bool) {
 	class(self).SetResetEnds(value)
 }
 
@@ -204,141 +207,152 @@ func (self Go) SetResetEnds(value bool) {
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
 //go:nosplit
-func (self class) AddNode(name gd.StringName, node gdclass.AnimationNode, position gd.Vector2)  {
+func (self class) AddNode(name gd.StringName, node gdclass.AnimationNode, position gd.Vector2) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
-	callframe.Arg(frame, discreet.Get(node[0])[0])
+	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Replaces the given animation node with a new animation node.
 */
 //go:nosplit
-func (self class) ReplaceNode(name gd.StringName, node gdclass.AnimationNode)  {
+func (self class) ReplaceNode(name gd.StringName, node gdclass.AnimationNode) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
-	callframe.Arg(frame, discreet.Get(node[0])[0])
+	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_replace_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the animation node with the given name.
 */
 //go:nosplit
 func (self class) GetNode(name gd.StringName) gdclass.AnimationNode {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = gdclass.AnimationNode{classdb.AnimationNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
+
 /*
 Deletes the given animation node from the graph.
 */
 //go:nosplit
-func (self class) RemoveNode(name gd.StringName)  {
+func (self class) RemoveNode(name gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Renames the given animation node.
 */
 //go:nosplit
-func (self class) RenameNode(name gd.StringName, new_name gd.StringName)  {
+func (self class) RenameNode(name gd.StringName, new_name gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
-	callframe.Arg(frame, discreet.Get(new_name))
+	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(new_name))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_rename_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if the graph contains the given animation node.
 */
 //go:nosplit
 func (self class) HasNode(name gd.StringName) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the given animation node's name.
 */
 //go:nosplit
 func (self class) GetNodeName(node gdclass.AnimationNode) gd.StringName {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(node[0])[0])
+	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
-func (self class) SetNodePosition(name gd.StringName, position gd.Vector2)  {
+func (self class) SetNodePosition(name gd.StringName, position gd.Vector2) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, position)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_node_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the given animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
 func (self class) GetNodePosition(name gd.StringName) gd.Vector2 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(name))
+	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if there is a transition between the given animation nodes.
 */
 //go:nosplit
 func (self class) HasTransition(from gd.StringName, to gd.StringName) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Adds a transition between the given animation nodes.
 */
 //go:nosplit
-func (self class) AddTransition(from gd.StringName, to gd.StringName, transition gdclass.AnimationNodeStateMachineTransition)  {
+func (self class) AddTransition(from gd.StringName, to gd.StringName, transition gdclass.AnimationNodeStateMachineTransition) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
-	callframe.Arg(frame, discreet.Get(transition[0])[0])
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
+	callframe.Arg(frame, pointers.Get(transition[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the given transition.
 */
@@ -352,6 +366,7 @@ func (self class) GetTransition(idx gd.Int) gdclass.AnimationNodeStateMachineTra
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the given transition's start node.
 */
@@ -361,10 +376,11 @@ func (self class) GetTransitionFrom(idx gd.Int) gd.StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the given transition's end node.
 */
@@ -374,10 +390,11 @@ func (self class) GetTransitionTo(idx gd.Int) gd.StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the number of connections in the graph.
 */
@@ -390,40 +407,44 @@ func (self class) GetTransitionCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Deletes the given transition by index.
 */
 //go:nosplit
-func (self class) RemoveTransitionByIndex(idx gd.Int)  {
+func (self class) RemoveTransitionByIndex(idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition_by_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Deletes the transition between the two specified animation nodes.
 */
 //go:nosplit
-func (self class) RemoveTransition(from gd.StringName, to gd.StringName)  {
+func (self class) RemoveTransition(from gd.StringName, to gd.StringName) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Sets the draw offset of the graph. Used for display in the editor.
 */
 //go:nosplit
-func (self class) SetGraphOffset(offset gd.Vector2)  {
+func (self class) SetGraphOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_graph_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the draw offset of the graph. Used for display in the editor.
 */
@@ -436,14 +457,16 @@ func (self class) GetGraphOffset() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetStateMachineType(state_machine_type classdb.AnimationNodeStateMachineStateMachineType)  {
+func (self class) SetStateMachineType(state_machine_type classdb.AnimationNodeStateMachineStateMachineType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, state_machine_type)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetStateMachineType() classdb.AnimationNodeStateMachineStateMachineType {
 	var frame = callframe.New()
@@ -453,14 +476,16 @@ func (self class) GetStateMachineType() classdb.AnimationNodeStateMachineStateMa
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAllowTransitionToSelf(enable bool)  {
+func (self class) SetAllowTransitionToSelf(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsAllowTransitionToSelf() bool {
 	var frame = callframe.New()
@@ -470,14 +495,16 @@ func (self class) IsAllowTransitionToSelf() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetResetEnds(enable bool)  {
+func (self class) SetResetEnds(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_reset_ends, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) AreEndsReset() bool {
 	var frame = callframe.New()
@@ -487,36 +514,57 @@ func (self class) AreEndsReset() bool {
 	frame.Free()
 	return ret
 }
-func (self class) AsAnimationNodeStateMachine() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNodeStateMachine() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsAnimationRootNode() AnimationRootNode.GD { return *((*AnimationRootNode.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationRootNode() AnimationRootNode.Go { return *((*AnimationRootNode.Go)(unsafe.Pointer(&self))) }
-func (self class) AsAnimationNode() AnimationNode.GD { return *((*AnimationNode.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNode() AnimationNode.Go { return *((*AnimationNode.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsAnimationNodeStateMachine() Advanced {
+	return *((*Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationNodeStateMachine() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsAnimationRootNode() AnimationRootNode.Advanced {
+	return *((*AnimationRootNode.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationRootNode() AnimationRootNode.Instance {
+	return *((*AnimationRootNode.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsAnimationNode() AnimationNode.Advanced {
+	return *((*AnimationNode.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationNode() AnimationNode.Instance {
+	return *((*AnimationNode.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsAnimationRootNode(), name)
+	default:
+		return gd.VirtualByName(self.AsAnimationRootNode(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsAnimationRootNode(), name)
+	default:
+		return gd.VirtualByName(self.AsAnimationRootNode(), name)
 	}
 }
-func init() {classdb.Register("AnimationNodeStateMachine", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachine(ptr) })}
+func init() {
+	classdb.Register("AnimationNodeStateMachine", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachine(ptr) })
+}
+
 type StateMachineType = classdb.AnimationNodeStateMachineStateMachineType
 
 const (
-/*Seeking to the beginning is treated as playing from the start state. Transition to the end state is treated as exiting the state machine.*/
+	/*Seeking to the beginning is treated as playing from the start state. Transition to the end state is treated as exiting the state machine.*/
 	StateMachineTypeRoot StateMachineType = 0
-/*Seeking to the beginning is treated as seeking to the beginning of the animation in the current state. Transition to the end state, or the absence of transitions in each state, is treated as exiting the state machine.*/
+	/*Seeking to the beginning is treated as seeking to the beginning of the animation in the current state. Transition to the end state, or the absence of transitions in each state, is treated as exiting the state machine.*/
 	StateMachineTypeNested StateMachineType = 1
-/*This is a grouped state machine that can be controlled from a parent state machine. It does not work independently. There must be a state machine with [member state_machine_type] of [constant STATE_MACHINE_TYPE_ROOT] or [constant STATE_MACHINE_TYPE_NESTED] in the parent or ancestor.*/
+	/*This is a grouped state machine that can be controlled from a parent state machine. It does not work independently. There must be a state machine with [member state_machine_type] of [constant STATE_MACHINE_TYPE_ROOT] or [constant STATE_MACHINE_TYPE_NESTED] in the parent or ancestor.*/
 	StateMachineTypeGrouped StateMachineType = 2
 )

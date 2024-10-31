@@ -2,10 +2,11 @@ package AnimationNodeTransition
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/AnimationNodeSync"
 import "grow.graphics/gd/gdclass/AnimationNode"
@@ -15,7 +16,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Simple state machine for cases which don't require a more advanced [AnimationNodeStateMachine]. Animations can be connected to the inputs and transition times can be specified.
@@ -49,98 +51,100 @@ animationTree.Get("parameters/Transition/current_state");
 animationTree.Get("parameters/Transition/current_index");
 [/csharp]
 [/codeblocks]
-
 */
-type Go [1]classdb.AnimationNodeTransition
+type Instance [1]classdb.AnimationNodeTransition
 
 /*
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
 */
-func (self Go) SetInputAsAutoAdvance(input int, enable bool) {
+func (self Instance) SetInputAsAutoAdvance(input int, enable bool) {
 	class(self).SetInputAsAutoAdvance(gd.Int(input), enable)
 }
 
 /*
 Returns [code]true[/code] if auto-advance is enabled for the given [param input] index.
 */
-func (self Go) IsInputSetAsAutoAdvance(input int) bool {
+func (self Instance) IsInputSetAsAutoAdvance(input int) bool {
 	return bool(class(self).IsInputSetAsAutoAdvance(gd.Int(input)))
 }
 
 /*
 If [code]true[/code], breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
-func (self Go) SetInputBreakLoopAtEnd(input int, enable bool) {
+func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) {
 	class(self).SetInputBreakLoopAtEnd(gd.Int(input), enable)
 }
 
 /*
 Returns whether the animation breaks the loop at the end of the loop cycle for transition.
 */
-func (self Go) IsInputLoopBrokenAtEnd(input int) bool {
+func (self Instance) IsInputLoopBrokenAtEnd(input int) bool {
 	return bool(class(self).IsInputLoopBrokenAtEnd(gd.Int(input)))
 }
 
 /*
 If [code]true[/code], the destination animation is restarted when the animation transitions.
 */
-func (self Go) SetInputReset(input int, enable bool) {
+func (self Instance) SetInputReset(input int, enable bool) {
 	class(self).SetInputReset(gd.Int(input), enable)
 }
 
 /*
 Returns whether the animation restarts when the animation transitions from the other animation.
 */
-func (self Go) IsInputReset(input int) bool {
+func (self Instance) IsInputReset(input int) bool {
 	return bool(class(self).IsInputReset(gd.Int(input)))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.AnimationNodeTransition
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeTransition"))
-	return Go{classdb.AnimationNodeTransition(object)}
+	return Instance{classdb.AnimationNodeTransition(object)}
 }
 
-func (self Go) XfadeTime() float64 {
-		return float64(float64(class(self).GetXfadeTime()))
+func (self Instance) XfadeTime() float64 {
+	return float64(float64(class(self).GetXfadeTime()))
 }
 
-func (self Go) SetXfadeTime(value float64) {
+func (self Instance) SetXfadeTime(value float64) {
 	class(self).SetXfadeTime(gd.Float(value))
 }
 
-func (self Go) XfadeCurve() gdclass.Curve {
-		return gdclass.Curve(class(self).GetXfadeCurve())
+func (self Instance) XfadeCurve() gdclass.Curve {
+	return gdclass.Curve(class(self).GetXfadeCurve())
 }
 
-func (self Go) SetXfadeCurve(value gdclass.Curve) {
+func (self Instance) SetXfadeCurve(value gdclass.Curve) {
 	class(self).SetXfadeCurve(value)
 }
 
-func (self Go) AllowTransitionToSelf() bool {
-		return bool(class(self).IsAllowTransitionToSelf())
+func (self Instance) AllowTransitionToSelf() bool {
+	return bool(class(self).IsAllowTransitionToSelf())
 }
 
-func (self Go) SetAllowTransitionToSelf(value bool) {
+func (self Instance) SetAllowTransitionToSelf(value bool) {
 	class(self).SetAllowTransitionToSelf(value)
 }
 
 //go:nosplit
-func (self class) SetInputCount(input_count gd.Int)  {
+func (self class) SetInputCount(input_count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, input_count)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
 */
 //go:nosplit
-func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool)  {
+func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -148,6 +152,7 @@ func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool)  {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_as_auto_advance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if auto-advance is enabled for the given [param input] index.
 */
@@ -161,11 +166,12 @@ func (self class) IsInputSetAsAutoAdvance(input gd.Int) bool {
 	frame.Free()
 	return ret
 }
+
 /*
 If [code]true[/code], breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
 //go:nosplit
-func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool)  {
+func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -173,6 +179,7 @@ func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool)  {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_break_loop_at_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns whether the animation breaks the loop at the end of the loop cycle for transition.
 */
@@ -186,11 +193,12 @@ func (self class) IsInputLoopBrokenAtEnd(input gd.Int) bool {
 	frame.Free()
 	return ret
 }
+
 /*
 If [code]true[/code], the destination animation is restarted when the animation transitions.
 */
 //go:nosplit
-func (self class) SetInputReset(input gd.Int, enable bool)  {
+func (self class) SetInputReset(input gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -198,6 +206,7 @@ func (self class) SetInputReset(input gd.Int, enable bool)  {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns whether the animation restarts when the animation transitions from the other animation.
 */
@@ -211,14 +220,16 @@ func (self class) IsInputReset(input gd.Int) bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetXfadeTime(time gd.Float)  {
+func (self class) SetXfadeTime(time gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetXfadeTime() gd.Float {
 	var frame = callframe.New()
@@ -228,14 +239,16 @@ func (self class) GetXfadeTime() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetXfadeCurve(curve gdclass.Curve)  {
+func (self class) SetXfadeCurve(curve gdclass.Curve) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(curve[0])[0])
+	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetXfadeCurve() gdclass.Curve {
 	var frame = callframe.New()
@@ -245,14 +258,16 @@ func (self class) GetXfadeCurve() gdclass.Curve {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAllowTransitionToSelf(enable bool)  {
+func (self class) SetAllowTransitionToSelf(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsAllowTransitionToSelf() bool {
 	var frame = callframe.New()
@@ -262,26 +277,44 @@ func (self class) IsAllowTransitionToSelf() bool {
 	frame.Free()
 	return ret
 }
-func (self class) AsAnimationNodeTransition() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNodeTransition() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsAnimationNodeSync() AnimationNodeSync.GD { return *((*AnimationNodeSync.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNodeSync() AnimationNodeSync.Go { return *((*AnimationNodeSync.Go)(unsafe.Pointer(&self))) }
-func (self class) AsAnimationNode() AnimationNode.GD { return *((*AnimationNode.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNode() AnimationNode.Go { return *((*AnimationNode.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsAnimationNodeTransition() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAnimationNodeTransition() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsAnimationNodeSync() AnimationNodeSync.Advanced {
+	return *((*AnimationNodeSync.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationNodeSync() AnimationNodeSync.Instance {
+	return *((*AnimationNodeSync.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsAnimationNode() AnimationNode.Advanced {
+	return *((*AnimationNode.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationNode() AnimationNode.Instance {
+	return *((*AnimationNode.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsAnimationNodeSync(), name)
+	default:
+		return gd.VirtualByName(self.AsAnimationNodeSync(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsAnimationNodeSync(), name)
+	default:
+		return gd.VirtualByName(self.AsAnimationNodeSync(), name)
 	}
 }
-func init() {classdb.Register("AnimationNodeTransition", func(ptr gd.Object) any { return classdb.AnimationNodeTransition(ptr) })}
+func init() {
+	classdb.Register("AnimationNodeTransition", func(ptr gd.Object) any { return classdb.AnimationNodeTransition(ptr) })
+}

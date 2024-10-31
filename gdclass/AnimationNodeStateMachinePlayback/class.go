@@ -2,10 +2,11 @@ package AnimationNodeStateMachinePlayback
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Resource"
 
@@ -13,7 +14,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
@@ -28,16 +30,15 @@ var stateMachine = GetNode<AnimationTree>("AnimationTree").Get("parameters/playb
 stateMachine.Travel("some_state");
 [/csharp]
 [/codeblocks]
-
 */
-type Go [1]classdb.AnimationNodeStateMachinePlayback
+type Instance [1]classdb.AnimationNodeStateMachinePlayback
 
 /*
 Transitions from the current state to another one, following the shortest path.
 If the path does not connect from the current state, the animation will play after the state teleports.
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
-func (self Go) Travel(to_node string) {
+func (self Instance) Travel(to_node string) {
 	class(self).Travel(gd.NewStringName(to_node), true)
 }
 
@@ -45,28 +46,28 @@ func (self Go) Travel(to_node string) {
 Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
-func (self Go) Start(node string) {
+func (self Instance) Start(node string) {
 	class(self).Start(gd.NewStringName(node), true)
 }
 
 /*
 If there is a next path by travel or auto advance, immediately transitions from the current state to the next state.
 */
-func (self Go) Next() {
+func (self Instance) Next() {
 	class(self).Next()
 }
 
 /*
 Stops the currently playing animation.
 */
-func (self Go) Stop() {
+func (self Instance) Stop() {
 	class(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if an animation is playing.
 */
-func (self Go) IsPlaying() bool {
+func (self Instance) IsPlaying() bool {
 	return bool(class(self).IsPlaying())
 }
 
@@ -74,14 +75,14 @@ func (self Go) IsPlaying() bool {
 Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
 */
-func (self Go) GetCurrentNode() string {
+func (self Instance) GetCurrentNode() string {
 	return string(class(self).GetCurrentNode().String())
 }
 
 /*
 Returns the playback position within the current animation state.
 */
-func (self Go) GetCurrentPlayPosition() float64 {
+func (self Instance) GetCurrentPlayPosition() float64 {
 	return float64(float64(class(self).GetCurrentPlayPosition()))
 }
 
@@ -89,31 +90,33 @@ func (self Go) GetCurrentPlayPosition() float64 {
 Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
 */
-func (self Go) GetCurrentLength() float64 {
+func (self Instance) GetCurrentLength() float64 {
 	return float64(float64(class(self).GetCurrentLength()))
 }
 
 /*
 Returns the starting state of currently fading animation.
 */
-func (self Go) GetFadingFromNode() string {
+func (self Instance) GetFadingFromNode() string {
 	return string(class(self).GetFadingFromNode().String())
 }
 
 /*
 Returns the current travel path as computed internally by the A* algorithm.
 */
-func (self Go) GetTravelPath() gd.Array {
+func (self Instance) GetTravelPath() gd.Array {
 	return gd.Array(class(self).GetTravelPath())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.AnimationNodeStateMachinePlayback
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeStateMachinePlayback"))
-	return Go{classdb.AnimationNodeStateMachinePlayback(object)}
+	return Instance{classdb.AnimationNodeStateMachinePlayback(object)}
 }
 
 /*
@@ -122,47 +125,51 @@ If the path does not connect from the current state, the animation will play aft
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
 //go:nosplit
-func (self class) Travel(to_node gd.StringName, reset_on_teleport bool)  {
+func (self class) Travel(to_node gd.StringName, reset_on_teleport bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(to_node))
+	callframe.Arg(frame, pointers.Get(to_node))
 	callframe.Arg(frame, reset_on_teleport)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
 //go:nosplit
-func (self class) Start(node gd.StringName, reset bool)  {
+func (self class) Start(node gd.StringName, reset bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(node))
+	callframe.Arg(frame, pointers.Get(node))
 	callframe.Arg(frame, reset)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 If there is a next path by travel or auto advance, immediately transitions from the current state to the next state.
 */
 //go:nosplit
-func (self class) Next()  {
+func (self class) Next() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Stops the currently playing animation.
 */
 //go:nosplit
-func (self class) Stop()  {
+func (self class) Stop() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if an animation is playing.
 */
@@ -175,6 +182,7 @@ func (self class) IsPlaying() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
@@ -184,10 +192,11 @@ func (self class) GetCurrentNode() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the playback position within the current animation state.
 */
@@ -200,6 +209,7 @@ func (self class) GetCurrentPlayPosition() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
@@ -213,6 +223,7 @@ func (self class) GetCurrentLength() gd.Float {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the starting state of currently fading animation.
 */
@@ -221,10 +232,11 @@ func (self class) GetFadingFromNode() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the current travel path as computed internally by the A* algorithm.
 */
@@ -233,26 +245,38 @@ func (self class) GetTravelPath() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
-func (self class) AsAnimationNodeStateMachinePlayback() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsAnimationNodeStateMachinePlayback() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsAnimationNodeStateMachinePlayback() Advanced {
+	return *((*Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsAnimationNodeStateMachinePlayback() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("AnimationNodeStateMachinePlayback", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachinePlayback(ptr) })}
+func init() {
+	classdb.Register("AnimationNodeStateMachinePlayback", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachinePlayback(ptr) })
+}

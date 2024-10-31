@@ -2,10 +2,11 @@ package PackedScene
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Resource"
 
@@ -13,7 +14,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
@@ -53,9 +55,11 @@ var scene = PackedScene.new()
 # Only `node` and `body` are now packed.
 var result = scene.pack(node)
 if result == OK:
-    var error = ResourceSaver.save(scene, "res://path/name.tscn")  # Or "user://..."
-    if error != OK:
-        push_error("An error occurred while saving the scene to disk.")
+
+	var error = ResourceSaver.save(scene, "res://path/name.tscn")  # Or "user://..."
+	if error != OK:
+	    push_error("An error occurred while saving the scene to disk.")
+
 [/gdscript]
 [csharp]
 // Create the objects.
@@ -74,54 +78,57 @@ var scene = new PackedScene();
 // Only `node` and `body` are now packed.
 Error result = scene.Pack(node);
 if (result == Error.Ok)
-{
-    Error error = ResourceSaver.Save(scene, "res://path/name.tscn"); // Or "user://..."
-    if (error != Error.Ok)
-    {
-        GD.PushError("An error occurred while saving the scene to disk.");
-    }
-}
+
+	{
+	    Error error = ResourceSaver.Save(scene, "res://path/name.tscn"); // Or "user://..."
+	    if (error != Error.Ok)
+	    {
+	        GD.PushError("An error occurred while saving the scene to disk.");
+	    }
+	}
+
 [/csharp]
 [/codeblocks]
-
 */
-type Go [1]classdb.PackedScene
+type Instance [1]classdb.PackedScene
 
 /*
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
-func (self Go) Pack(path gdclass.Node) gd.Error {
+func (self Instance) Pack(path gdclass.Node) gd.Error {
 	return gd.Error(class(self).Pack(path))
 }
 
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
-func (self Go) Instantiate() gdclass.Node {
+func (self Instance) Instantiate() gdclass.Node {
 	return gdclass.Node(class(self).Instantiate(0))
 }
 
 /*
 Returns [code]true[/code] if the scene file has nodes.
 */
-func (self Go) CanInstantiate() bool {
+func (self Instance) CanInstantiate() bool {
 	return bool(class(self).CanInstantiate())
 }
 
 /*
 Returns the [SceneState] representing the scene file contents.
 */
-func (self Go) GetState() gdclass.SceneState {
+func (self Instance) GetState() gdclass.SceneState {
 	return gdclass.SceneState(class(self).GetState())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.PackedScene
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PackedScene"))
-	return Go{classdb.PackedScene(object)}
+	return Instance{classdb.PackedScene(object)}
 }
 
 /*
@@ -130,13 +137,14 @@ Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. A
 //go:nosplit
 func (self class) Pack(path gdclass.Node) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path[0])[0])
+	callframe.Arg(frame, pointers.Get(path[0])[0])
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
@@ -150,6 +158,7 @@ func (self class) Instantiate(edit_state classdb.PackedSceneGenEditState) gdclas
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the scene file has nodes.
 */
@@ -162,6 +171,7 @@ func (self class) CanInstantiate() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the [SceneState] representing the scene file contents.
 */
@@ -174,37 +184,46 @@ func (self class) GetState() gdclass.SceneState {
 	frame.Free()
 	return ret
 }
-func (self class) AsPackedScene() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsPackedScene() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsPackedScene() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPackedScene() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsResource(), name)
+	default:
+		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() {classdb.Register("PackedScene", func(ptr gd.Object) any { return classdb.PackedScene(ptr) })}
+func init() {
+	classdb.Register("PackedScene", func(ptr gd.Object) any { return classdb.PackedScene(ptr) })
+}
+
 type GenEditState = classdb.PackedSceneGenEditState
 
 const (
-/*If passed to [method instantiate], blocks edits to the scene state.*/
+	/*If passed to [method instantiate], blocks edits to the scene state.*/
 	GenEditStateDisabled GenEditState = 0
-/*If passed to [method instantiate], provides local scene resources to the local scene.
-[b]Note:[/b] Only available in editor builds.*/
+	/*If passed to [method instantiate], provides local scene resources to the local scene.
+	  [b]Note:[/b] Only available in editor builds.*/
 	GenEditStateInstance GenEditState = 1
-/*If passed to [method instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
-[b]Note:[/b] Only available in editor builds.*/
+	/*If passed to [method instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
+	  [b]Note:[/b] Only available in editor builds.*/
 	GenEditStateMain GenEditState = 2
-/*It's similar to [constant GEN_EDIT_STATE_MAIN], but for the case where the scene is being instantiated to be the base of another one.
-[b]Note:[/b] Only available in editor builds.*/
+	/*It's similar to [constant GEN_EDIT_STATE_MAIN], but for the case where the scene is being instantiated to be the base of another one.
+	  [b]Note:[/b] Only available in editor builds.*/
 	GenEditStateMainInherited GenEditState = 3
 )

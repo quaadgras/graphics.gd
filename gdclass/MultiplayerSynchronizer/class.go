@@ -2,10 +2,11 @@ package MultiplayerSynchronizer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Node"
 
@@ -13,7 +14,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 By default, [MultiplayerSynchronizer] synchronizes configured properties to all peers.
@@ -21,14 +23,13 @@ Visibility can be handled directly with [method set_visibility_for] or as-needed
 [MultiplayerSpawner]s will handle nodes according to visibility of synchronizers as long as the node at [member root_path] was spawned by one.
 Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configuration_add] to notify synchronization start passing the [Node] at [member root_path] as the [code]object[/code] and itself as the [code]configuration[/code], and uses [method MultiplayerAPI.object_configuration_remove] to notify synchronization end in a similar way.
 [b]Note:[/b] Synchronization is not supported for [Object] type properties, like [Resource]. Properties that are unique to each peer, like the instance IDs of [Object]s (see [method Object.get_instance_id]) or [RID]s, will also not work in synchronization.
-
 */
-type Go [1]classdb.MultiplayerSynchronizer
+type Instance [1]classdb.MultiplayerSynchronizer
 
 /*
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
-func (self Go) UpdateVisibility() {
+func (self Instance) UpdateVisibility() {
 	class(self).UpdateVisibility(gd.Int(0))
 }
 
@@ -36,113 +37,118 @@ func (self Go) UpdateVisibility() {
 Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
-func (self Go) AddVisibilityFilter(filter gd.Callable) {
+func (self Instance) AddVisibilityFilter(filter gd.Callable) {
 	class(self).AddVisibilityFilter(filter)
 }
 
 /*
 Removes a peer visibility filter from this synchronizer.
 */
-func (self Go) RemoveVisibilityFilter(filter gd.Callable) {
+func (self Instance) RemoveVisibilityFilter(filter gd.Callable) {
 	class(self).RemoveVisibilityFilter(filter)
 }
 
 /*
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
-func (self Go) SetVisibilityFor(peer int, visible bool) {
+func (self Instance) SetVisibilityFor(peer int, visible bool) {
 	class(self).SetVisibilityFor(gd.Int(peer), visible)
 }
 
 /*
 Queries the current visibility for peer [param peer].
 */
-func (self Go) GetVisibilityFor(peer int) bool {
+func (self Instance) GetVisibilityFor(peer int) bool {
 	return bool(class(self).GetVisibilityFor(gd.Int(peer)))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.MultiplayerSynchronizer
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSynchronizer"))
-	return Go{classdb.MultiplayerSynchronizer(object)}
+	return Instance{classdb.MultiplayerSynchronizer(object)}
 }
 
-func (self Go) RootPath() string {
-		return string(class(self).GetRootPath().String())
+func (self Instance) RootPath() string {
+	return string(class(self).GetRootPath().String())
 }
 
-func (self Go) SetRootPath(value string) {
+func (self Instance) SetRootPath(value string) {
 	class(self).SetRootPath(gd.NewString(value).NodePath())
 }
 
-func (self Go) ReplicationInterval() float64 {
-		return float64(float64(class(self).GetReplicationInterval()))
+func (self Instance) ReplicationInterval() float64 {
+	return float64(float64(class(self).GetReplicationInterval()))
 }
 
-func (self Go) SetReplicationInterval(value float64) {
+func (self Instance) SetReplicationInterval(value float64) {
 	class(self).SetReplicationInterval(gd.Float(value))
 }
 
-func (self Go) DeltaInterval() float64 {
-		return float64(float64(class(self).GetDeltaInterval()))
+func (self Instance) DeltaInterval() float64 {
+	return float64(float64(class(self).GetDeltaInterval()))
 }
 
-func (self Go) SetDeltaInterval(value float64) {
+func (self Instance) SetDeltaInterval(value float64) {
 	class(self).SetDeltaInterval(gd.Float(value))
 }
 
-func (self Go) ReplicationConfig() gdclass.SceneReplicationConfig {
-		return gdclass.SceneReplicationConfig(class(self).GetReplicationConfig())
+func (self Instance) ReplicationConfig() gdclass.SceneReplicationConfig {
+	return gdclass.SceneReplicationConfig(class(self).GetReplicationConfig())
 }
 
-func (self Go) SetReplicationConfig(value gdclass.SceneReplicationConfig) {
+func (self Instance) SetReplicationConfig(value gdclass.SceneReplicationConfig) {
 	class(self).SetReplicationConfig(value)
 }
 
-func (self Go) VisibilityUpdateMode() classdb.MultiplayerSynchronizerVisibilityUpdateMode {
-		return classdb.MultiplayerSynchronizerVisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
+func (self Instance) VisibilityUpdateMode() classdb.MultiplayerSynchronizerVisibilityUpdateMode {
+	return classdb.MultiplayerSynchronizerVisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
-func (self Go) SetVisibilityUpdateMode(value classdb.MultiplayerSynchronizerVisibilityUpdateMode) {
+func (self Instance) SetVisibilityUpdateMode(value classdb.MultiplayerSynchronizerVisibilityUpdateMode) {
 	class(self).SetVisibilityUpdateMode(value)
 }
 
-func (self Go) PublicVisibility() bool {
-		return bool(class(self).IsVisibilityPublic())
+func (self Instance) PublicVisibility() bool {
+	return bool(class(self).IsVisibilityPublic())
 }
 
-func (self Go) SetPublicVisibility(value bool) {
+func (self Instance) SetPublicVisibility(value bool) {
 	class(self).SetVisibilityPublic(value)
 }
 
 //go:nosplit
-func (self class) SetRootPath(path gd.NodePath)  {
+func (self class) SetRootPath(path gd.NodePath) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetRootPath() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_root_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.NodePath](r_ret.Get())
+	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetReplicationInterval(milliseconds gd.Float)  {
+func (self class) SetReplicationInterval(milliseconds gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetReplicationInterval() gd.Float {
 	var frame = callframe.New()
@@ -152,14 +158,16 @@ func (self class) GetReplicationInterval() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetDeltaInterval(milliseconds gd.Float)  {
+func (self class) SetDeltaInterval(milliseconds gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, milliseconds)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_delta_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetDeltaInterval() gd.Float {
 	var frame = callframe.New()
@@ -169,14 +177,16 @@ func (self class) GetDeltaInterval() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetReplicationConfig(config gdclass.SceneReplicationConfig)  {
+func (self class) SetReplicationConfig(config gdclass.SceneReplicationConfig) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(config[0])[0])
+	callframe.Arg(frame, pointers.Get(config[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetReplicationConfig() gdclass.SceneReplicationConfig {
 	var frame = callframe.New()
@@ -186,14 +196,16 @@ func (self class) GetReplicationConfig() gdclass.SceneReplicationConfig {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetVisibilityUpdateMode(mode classdb.MultiplayerSynchronizerVisibilityUpdateMode)  {
+func (self class) SetVisibilityUpdateMode(mode classdb.MultiplayerSynchronizerVisibilityUpdateMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetVisibilityUpdateMode() classdb.MultiplayerSynchronizerVisibilityUpdateMode {
 	var frame = callframe.New()
@@ -203,25 +215,28 @@ func (self class) GetVisibilityUpdateMode() classdb.MultiplayerSynchronizerVisib
 	frame.Free()
 	return ret
 }
+
 /*
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
 //go:nosplit
-func (self class) UpdateVisibility(for_peer gd.Int)  {
+func (self class) UpdateVisibility(for_peer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, for_peer)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_update_visibility, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
-func (self class) SetVisibilityPublic(visible bool)  {
+func (self class) SetVisibilityPublic(visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_public, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsVisibilityPublic() bool {
 	var frame = callframe.New()
@@ -231,34 +246,37 @@ func (self class) IsVisibilityPublic() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
 //go:nosplit
-func (self class) AddVisibilityFilter(filter gd.Callable)  {
+func (self class) AddVisibilityFilter(filter gd.Callable) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(filter))
+	callframe.Arg(frame, pointers.Get(filter))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_add_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Removes a peer visibility filter from this synchronizer.
 */
 //go:nosplit
-func (self class) RemoveVisibilityFilter(filter gd.Callable)  {
+func (self class) RemoveVisibilityFilter(filter gd.Callable) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(filter))
+	callframe.Arg(frame, pointers.Get(filter))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_remove_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
 //go:nosplit
-func (self class) SetVisibilityFor(peer gd.Int, visible bool)  {
+func (self class) SetVisibilityFor(peer gd.Int, visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, visible)
@@ -266,6 +284,7 @@ func (self class) SetVisibilityFor(peer gd.Int, visible bool)  {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_for, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Queries the current visibility for peer [param peer].
 */
@@ -279,45 +298,49 @@ func (self class) GetVisibilityFor(peer gd.Int) bool {
 	frame.Free()
 	return ret
 }
-func (self Go) OnSynchronized(cb func()) {
+func (self Instance) OnSynchronized(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnDeltaSynchronized(cb func()) {
+func (self Instance) OnDeltaSynchronized(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), 0)
 }
 
-
-func (self Go) OnVisibilityChanged(cb func(for_peer int)) {
+func (self Instance) OnVisibilityChanged(cb func(for_peer int)) {
 	self[0].AsObject().Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsMultiplayerSynchronizer() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsMultiplayerSynchronizer() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsMultiplayerSynchronizer() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiplayerSynchronizer() Instance {
+	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode(), name)
+	default:
+		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode(), name)
+	default:
+		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return classdb.MultiplayerSynchronizer(ptr) })}
+func init() {
+	classdb.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return classdb.MultiplayerSynchronizer(ptr) })
+}
+
 type VisibilityUpdateMode = classdb.MultiplayerSynchronizerVisibilityUpdateMode
 
 const (
-/*Visibility filters are updated during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	/*Visibility filters are updated during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	VisibilityProcessIdle VisibilityUpdateMode = 0
-/*Visibility filters are updated during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
+	/*Visibility filters are updated during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	VisibilityProcessPhysics VisibilityUpdateMode = 1
-/*Visibility filters are not updated automatically, and must be updated manually by calling [method update_visibility].*/
+	/*Visibility filters are not updated automatically, and must be updated manually by calling [method update_visibility].*/
 	VisibilityProcessNone VisibilityUpdateMode = 2
 )

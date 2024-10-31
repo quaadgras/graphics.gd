@@ -2,10 +2,11 @@ package ImageTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Texture2D"
 import "grow.graphics/gd/gdclass/Texture"
@@ -15,7 +16,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 A [Texture2D] based on an [Image]. For an image to be displayed, an [ImageTexture] has to be created from it using the [method create_from_image] method:
@@ -38,21 +40,20 @@ var image: Image = texture.get_image()
 [/codeblock]
 An [ImageTexture] is not meant to be operated from within the editor interface directly, and is mostly useful for rendering images on screen dynamically via code. If you need to generate images procedurally from within the editor, consider saving and importing images as custom texture resources implementing a new [EditorImportPlugin].
 [b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations.
-
 */
-type Go [1]classdb.ImageTexture
+type Instance [1]classdb.ImageTexture
 
 /*
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
-func (self Go) CreateFromImage(image gdclass.Image) gdclass.ImageTexture {
+func (self Instance) CreateFromImage(image gdclass.Image) gdclass.ImageTexture {
 	return gdclass.ImageTexture(class(self).CreateFromImage(image))
 }
 
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
-func (self Go) GetFormat() classdb.ImageFormat {
+func (self Instance) GetFormat() classdb.ImageFormat {
 	return classdb.ImageFormat(class(self).GetFormat())
 }
 
@@ -60,7 +61,7 @@ func (self Go) GetFormat() classdb.ImageFormat {
 Replaces the texture's data with a new [Image]. This will re-allocate new memory for the texture.
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
-func (self Go) SetImage(image gdclass.Image) {
+func (self Instance) SetImage(image gdclass.Image) {
 	class(self).SetImage(image)
 }
 
@@ -69,24 +70,26 @@ Replaces the texture's data with a new [Image].
 [b]Note:[/b] The texture has to be created using [method create_from_image] or initialized first with the [method set_image] method before it can be updated. The new image dimensions, format, and mipmaps configuration should match the existing texture's image configuration.
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
-func (self Go) Update(image gdclass.Image) {
+func (self Instance) Update(image gdclass.Image) {
 	class(self).Update(image)
 }
 
 /*
 Resizes the texture to the specified dimensions.
 */
-func (self Go) SetSizeOverride(size gd.Vector2i) {
+func (self Instance) SetSizeOverride(size gd.Vector2i) {
 	class(self).SetSizeOverride(size)
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.ImageTexture
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageTexture"))
-	return Go{classdb.ImageTexture(object)}
+	return Instance{classdb.ImageTexture(object)}
 }
 
 /*
@@ -95,13 +98,14 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 //go:nosplit
 func (self class) CreateFromImage(image gdclass.Image) gdclass.ImageTexture {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(image[0])[0])
+	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = gdclass.ImageTexture{classdb.ImageTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
@@ -114,62 +118,79 @@ func (self class) GetFormat() classdb.ImageFormat {
 	frame.Free()
 	return ret
 }
+
 /*
 Replaces the texture's data with a new [Image]. This will re-allocate new memory for the texture.
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
 //go:nosplit
-func (self class) SetImage(image gdclass.Image)  {
+func (self class) SetImage(image gdclass.Image) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(image[0])[0])
+	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Replaces the texture's data with a new [Image].
 [b]Note:[/b] The texture has to be created using [method create_from_image] or initialized first with the [method set_image] method before it can be updated. The new image dimensions, format, and mipmaps configuration should match the existing texture's image configuration.
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
 //go:nosplit
-func (self class) Update(image gdclass.Image)  {
+func (self class) Update(image gdclass.Image) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(image[0])[0])
+	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Resizes the texture to the specified dimensions.
 */
 //go:nosplit
-func (self class) SetSizeOverride(size gd.Vector2i)  {
+func (self class) SetSizeOverride(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self class) AsImageTexture() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsImageTexture() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsTexture2D() Texture2D.GD { return *((*Texture2D.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsTexture2D() Texture2D.Go { return *((*Texture2D.Go)(unsafe.Pointer(&self))) }
-func (self class) AsTexture() Texture.GD { return *((*Texture.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsTexture() Texture.Go { return *((*Texture.Go)(unsafe.Pointer(&self))) }
-func (self class) AsResource() Resource.GD { return *((*Resource.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsResource() Resource.Go { return *((*Resource.Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsImageTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsImageTexture() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTexture2D() Texture2D.Advanced {
+	return *((*Texture2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsTexture2D() Texture2D.Instance {
+	return *((*Texture2D.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTexture() Texture.Instance {
+	return *((*Texture.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsResource() Resource.Advanced {
+	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsResource() Resource.Instance {
+	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+}
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsTexture2D(), name)
+	default:
+		return gd.VirtualByName(self.AsTexture2D(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsTexture2D(), name)
+	default:
+		return gd.VirtualByName(self.AsTexture2D(), name)
 	}
 }
-func init() {classdb.Register("ImageTexture", func(ptr gd.Object) any { return classdb.ImageTexture(ptr) })}
+func init() {
+	classdb.Register("ImageTexture", func(ptr gd.Object) any { return classdb.ImageTexture(ptr) })
+}

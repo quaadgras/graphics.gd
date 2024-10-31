@@ -2,10 +2,11 @@ package Timer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/gdclass/Node"
 
@@ -13,7 +14,8 @@ var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 The [Timer] node is a countdown timer and is the simplest way to handle time-based logic in the engine. When a timer reaches the end of its [member wait_time], it will emit the [signal timeout] signal.
@@ -21,97 +23,101 @@ After a timer enters the tree, it can be manually started with [method start]. A
 Without requiring much code, a timer node can be added and configured in the editor. The [signal timeout] signal it emits can also be connected through the Node dock in the editor:
 [codeblock]
 func _on_timer_timeout():
-    print("Time to attack!")
+
+	print("Time to attack!")
+
 [/codeblock]
 [b]Note:[/b] To create a one-shot timer without instantiating a node, use [method SceneTree.create_timer].
 [b]Note:[/b] Timers are affected by [member Engine.time_scale]. The higher the time scale, the sooner timers will end. How often a timer processes may depend on the framerate or [member Engine.physics_ticks_per_second].
-
 */
-type Go [1]classdb.Timer
+type Instance [1]classdb.Timer
 
 /*
 Starts the timer, if it was not started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
-func (self Go) Start() {
+func (self Instance) Start() {
 	class(self).Start(gd.Float(-1))
 }
 
 /*
 Stops the timer.
 */
-func (self Go) Stop() {
+func (self Instance) Stop() {
 	class(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if the timer is stopped or has not started.
 */
-func (self Go) IsStopped() bool {
+func (self Instance) IsStopped() bool {
 	return bool(class(self).IsStopped())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.Timer
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Timer"))
-	return Go{classdb.Timer(object)}
+	return Instance{classdb.Timer(object)}
 }
 
-func (self Go) ProcessCallback() classdb.TimerTimerProcessCallback {
-		return classdb.TimerTimerProcessCallback(class(self).GetTimerProcessCallback())
+func (self Instance) ProcessCallback() classdb.TimerTimerProcessCallback {
+	return classdb.TimerTimerProcessCallback(class(self).GetTimerProcessCallback())
 }
 
-func (self Go) SetProcessCallback(value classdb.TimerTimerProcessCallback) {
+func (self Instance) SetProcessCallback(value classdb.TimerTimerProcessCallback) {
 	class(self).SetTimerProcessCallback(value)
 }
 
-func (self Go) WaitTime() float64 {
-		return float64(float64(class(self).GetWaitTime()))
+func (self Instance) WaitTime() float64 {
+	return float64(float64(class(self).GetWaitTime()))
 }
 
-func (self Go) SetWaitTime(value float64) {
+func (self Instance) SetWaitTime(value float64) {
 	class(self).SetWaitTime(gd.Float(value))
 }
 
-func (self Go) OneShot() bool {
-		return bool(class(self).IsOneShot())
+func (self Instance) OneShot() bool {
+	return bool(class(self).IsOneShot())
 }
 
-func (self Go) SetOneShot(value bool) {
+func (self Instance) SetOneShot(value bool) {
 	class(self).SetOneShot(value)
 }
 
-func (self Go) Autostart() bool {
-		return bool(class(self).HasAutostart())
+func (self Instance) Autostart() bool {
+	return bool(class(self).HasAutostart())
 }
 
-func (self Go) SetAutostart(value bool) {
+func (self Instance) SetAutostart(value bool) {
 	class(self).SetAutostart(value)
 }
 
-func (self Go) Paused() bool {
-		return bool(class(self).IsPaused())
+func (self Instance) Paused() bool {
+	return bool(class(self).IsPaused())
 }
 
-func (self Go) SetPaused(value bool) {
+func (self Instance) SetPaused(value bool) {
 	class(self).SetPaused(value)
 }
 
-func (self Go) TimeLeft() float64 {
-		return float64(float64(class(self).GetTimeLeft()))
+func (self Instance) TimeLeft() float64 {
+	return float64(float64(class(self).GetTimeLeft()))
 }
 
 //go:nosplit
-func (self class) SetWaitTime(time_sec gd.Float)  {
+func (self class) SetWaitTime(time_sec gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_wait_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetWaitTime() gd.Float {
 	var frame = callframe.New()
@@ -121,14 +127,16 @@ func (self class) GetWaitTime() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetOneShot(enable bool)  {
+func (self class) SetOneShot(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_one_shot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsOneShot() bool {
 	var frame = callframe.New()
@@ -138,14 +146,16 @@ func (self class) IsOneShot() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAutostart(enable bool)  {
+func (self class) SetAutostart(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_autostart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) HasAutostart() bool {
 	var frame = callframe.New()
@@ -155,36 +165,40 @@ func (self class) HasAutostart() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Starts the timer, if it was not started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 //go:nosplit
-func (self class) Start(time_sec gd.Float)  {
+func (self class) Start(time_sec gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Stops the timer.
 */
 //go:nosplit
-func (self class) Stop()  {
+func (self class) Stop() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
-func (self class) SetPaused(paused bool)  {
+func (self class) SetPaused(paused bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, paused)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_paused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) IsPaused() bool {
 	var frame = callframe.New()
@@ -194,6 +208,7 @@ func (self class) IsPaused() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the timer is stopped or has not started.
 */
@@ -206,6 +221,7 @@ func (self class) IsStopped() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
 func (self class) GetTimeLeft() gd.Float {
 	var frame = callframe.New()
@@ -215,14 +231,16 @@ func (self class) GetTimeLeft() gd.Float {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetTimerProcessCallback(callback classdb.TimerTimerProcessCallback)  {
+func (self class) SetTimerProcessCallback(callback classdb.TimerTimerProcessCallback) {
 	var frame = callframe.New()
 	callframe.Arg(frame, callback)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_set_timer_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetTimerProcessCallback() classdb.TimerTimerProcessCallback {
 	var frame = callframe.New()
@@ -232,33 +250,35 @@ func (self class) GetTimerProcessCallback() classdb.TimerTimerProcessCallback {
 	frame.Free()
 	return ret
 }
-func (self Go) OnTimeout(cb func()) {
+func (self Instance) OnTimeout(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("timeout"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsTimer() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsTimer() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.GD { return *((*Node.GD)(unsafe.Pointer(&self))) }
-func (self Go) AsNode() Node.Go { return *((*Node.Go)(unsafe.Pointer(&self))) }
+func (self class) AsTimer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTimer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode(), name)
+	default:
+		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsNode(), name)
+	default:
+		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() {classdb.Register("Timer", func(ptr gd.Object) any { return classdb.Timer(ptr) })}
+func init() { classdb.Register("Timer", func(ptr gd.Object) any { return classdb.Timer(ptr) }) }
+
 type TimerProcessCallback = classdb.TimerTimerProcessCallback
 
 const (
-/*Update the timer every physics process frame (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
+	/*Update the timer every physics process frame (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	TimerProcessPhysics TimerProcessCallback = 0
-/*Update the timer every process (rendered) frame (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
+	/*Update the timer every process (rendered) frame (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	TimerProcessIdle TimerProcessCallback = 1
 )

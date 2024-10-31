@@ -1,4 +1,4 @@
-package gdenums
+package gdconst
 
 // Error implements the [error] interface.
 func (err Error) Error() string {

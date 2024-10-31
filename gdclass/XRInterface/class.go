@@ -2,43 +2,44 @@ package XRInterface
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
 Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
-
 */
-type Go [1]classdb.XRInterface
+type Instance [1]classdb.XRInterface
 
 /*
 Returns the name of this interface ([code]"OpenXR"[/code], [code]"OpenVR"[/code], [code]"OpenHMD"[/code], [code]"ARKit"[/code], etc.).
 */
-func (self Go) GetName() string {
+func (self Instance) GetName() string {
 	return string(class(self).GetName().String())
 }
 
 /*
 Returns a combination of [enum Capabilities] flags providing information about the capabilities of this interface.
 */
-func (self Go) GetCapabilities() int {
+func (self Instance) GetCapabilities() int {
 	return int(int(class(self).GetCapabilities()))
 }
 
 /*
 Returns [code]true[/code] if this interface has been initialized.
 */
-func (self Go) IsInitialized() bool {
+func (self Instance) IsInitialized() bool {
 	return bool(class(self).IsInitialized())
 }
 
@@ -49,14 +50,14 @@ After initializing the interface you want to use you then need to enable the AR/
 If you do this for a platform that handles its own output (such as OpenVR) Godot will show just one eye without distortion on screen. Alternatively, you can add a separate viewport node to your scene and enable AR/VR on that viewport. It will be used to output to the HMD, leaving you free to do anything you like in the main window, such as using a separate camera as a spectator camera or rendering something completely different.
 While currently not used, you can activate additional interfaces. You may wish to do this if you want to track controllers from other platforms. However, at this point in time only one interface can render to an HMD.
 */
-func (self Go) Initialize() bool {
+func (self Instance) Initialize() bool {
 	return bool(class(self).Initialize())
 }
 
 /*
 Turns the interface off.
 */
-func (self Go) Uninitialize() {
+func (self Instance) Uninitialize() {
 	class(self).Uninitialize()
 }
 
@@ -64,28 +65,28 @@ func (self Go) Uninitialize() {
 Returns a [Dictionary] with extra system info. Interfaces are expected to return [code]XRRuntimeName[/code] and [code]XRRuntimeVersion[/code] providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
-func (self Go) GetSystemInfo() gd.Dictionary {
+func (self Instance) GetSystemInfo() gd.Dictionary {
 	return gd.Dictionary(class(self).GetSystemInfo())
 }
 
 /*
 If supported, returns the status of our tracking. This will allow you to provide feedback to the user whether there are issues with positional tracking.
 */
-func (self Go) GetTrackingStatus() classdb.XRInterfaceTrackingStatus {
+func (self Instance) GetTrackingStatus() classdb.XRInterfaceTrackingStatus {
 	return classdb.XRInterfaceTrackingStatus(class(self).GetTrackingStatus())
 }
 
 /*
 Returns the resolution at which we should render our intermediate results before things like lens distortion are applied by the VR platform.
 */
-func (self Go) GetRenderTargetSize() gd.Vector2 {
+func (self Instance) GetRenderTargetSize() gd.Vector2 {
 	return gd.Vector2(class(self).GetRenderTargetSize())
 }
 
 /*
 Returns the number of views that need to be rendered for this device. 1 for Monoscopic, 2 for Stereoscopic.
 */
-func (self Go) GetViewCount() int {
+func (self Instance) GetViewCount() int {
 	return int(int(class(self).GetViewCount()))
 }
 
@@ -98,42 +99,42 @@ Triggers a haptic pulse on a device associated with this interface.
 [param duration_sec] is the duration of the pulse in seconds.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
-func (self Go) TriggerHapticPulse(action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) {
+func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) {
 	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.NewStringName(tracker_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 
 /*
 Call this to find out if a given play area mode is supported by this interface.
 */
-func (self Go) SupportsPlayAreaMode(mode classdb.XRInterfacePlayAreaMode) bool {
+func (self Instance) SupportsPlayAreaMode(mode classdb.XRInterfacePlayAreaMode) bool {
 	return bool(class(self).SupportsPlayAreaMode(mode))
 }
 
 /*
 Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
-func (self Go) GetPlayArea() []gd.Vector3 {
+func (self Instance) GetPlayArea() []gd.Vector3 {
 	return []gd.Vector3(class(self).GetPlayArea().AsSlice())
 }
 
 /*
 If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
 */
-func (self Go) GetCameraFeedId() int {
+func (self Instance) GetCameraFeedId() int {
 	return int(int(class(self).GetCameraFeedId()))
 }
 
 /*
 Returns [code]true[/code] if this interface supports passthrough.
 */
-func (self Go) IsPassthroughSupported() bool {
+func (self Instance) IsPassthroughSupported() bool {
 	return bool(class(self).IsPassthroughSupported())
 }
 
 /*
 Returns [code]true[/code] if passthrough is enabled.
 */
-func (self Go) IsPassthroughEnabled() bool {
+func (self Instance) IsPassthroughEnabled() bool {
 	return bool(class(self).IsPassthroughEnabled())
 }
 
@@ -141,14 +142,14 @@ func (self Go) IsPassthroughEnabled() bool {
 Starts passthrough, will return [code]false[/code] if passthrough couldn't be started.
 [b]Note:[/b] The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
 */
-func (self Go) StartPassthrough() bool {
+func (self Instance) StartPassthrough() bool {
 	return bool(class(self).StartPassthrough())
 }
 
 /*
 Stops passthrough.
 */
-func (self Go) StopPassthrough() {
+func (self Instance) StopPassthrough() {
 	class(self).StopPassthrough()
 }
 
@@ -157,62 +158,64 @@ Returns the transform for a view/eye.
 [param view] is the view/eye index.
 [param cam_transform] is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
 */
-func (self Go) GetTransformForView(view int, cam_transform gd.Transform3D) gd.Transform3D {
+func (self Instance) GetTransformForView(view int, cam_transform gd.Transform3D) gd.Transform3D {
 	return gd.Transform3D(class(self).GetTransformForView(gd.Int(view), cam_transform))
 }
 
 /*
 Returns the projection matrix for a view/eye.
 */
-func (self Go) GetProjectionForView(view int, aspect float64, near float64, far float64) gd.Projection {
+func (self Instance) GetProjectionForView(view int, aspect float64, near float64, far float64) gd.Projection {
 	return gd.Projection(class(self).GetProjectionForView(gd.Int(view), gd.Float(aspect), gd.Float(near), gd.Float(far)))
 }
 
 /*
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
-func (self Go) GetSupportedEnvironmentBlendModes() gd.Array {
+func (self Instance) GetSupportedEnvironmentBlendModes() gd.Array {
 	return gd.Array(class(self).GetSupportedEnvironmentBlendModes())
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.XRInterface
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterface"))
-	return Go{classdb.XRInterface(object)}
+	return Instance{classdb.XRInterface(object)}
 }
 
-func (self Go) InterfaceIsPrimary() bool {
-		return bool(class(self).IsPrimary())
+func (self Instance) InterfaceIsPrimary() bool {
+	return bool(class(self).IsPrimary())
 }
 
-func (self Go) SetInterfaceIsPrimary(value bool) {
+func (self Instance) SetInterfaceIsPrimary(value bool) {
 	class(self).SetPrimary(value)
 }
 
-func (self Go) XrPlayAreaMode() classdb.XRInterfacePlayAreaMode {
-		return classdb.XRInterfacePlayAreaMode(class(self).GetPlayAreaMode())
+func (self Instance) XrPlayAreaMode() classdb.XRInterfacePlayAreaMode {
+	return classdb.XRInterfacePlayAreaMode(class(self).GetPlayAreaMode())
 }
 
-func (self Go) SetXrPlayAreaMode(value classdb.XRInterfacePlayAreaMode) {
+func (self Instance) SetXrPlayAreaMode(value classdb.XRInterfacePlayAreaMode) {
 	class(self).SetPlayAreaMode(value)
 }
 
-func (self Go) EnvironmentBlendMode() classdb.XRInterfaceEnvironmentBlendMode {
-		return classdb.XRInterfaceEnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
+func (self Instance) EnvironmentBlendMode() classdb.XRInterfaceEnvironmentBlendMode {
+	return classdb.XRInterfaceEnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
 }
 
-func (self Go) SetEnvironmentBlendMode(value classdb.XRInterfaceEnvironmentBlendMode) {
+func (self Instance) SetEnvironmentBlendMode(value classdb.XRInterfaceEnvironmentBlendMode) {
 	class(self).SetEnvironmentBlendMode(value)
 }
 
-func (self Go) ArIsAnchorDetectionEnabled() bool {
-		return bool(class(self).GetAnchorDetectionIsEnabled())
+func (self Instance) ArIsAnchorDetectionEnabled() bool {
+	return bool(class(self).GetAnchorDetectionIsEnabled())
 }
 
-func (self Go) SetArIsAnchorDetectionEnabled(value bool) {
+func (self Instance) SetArIsAnchorDetectionEnabled(value bool) {
 	class(self).SetAnchorDetectionIsEnabled(value)
 }
 
@@ -224,10 +227,11 @@ func (self class) GetName() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.StringName](r_ret.Get())
+	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a combination of [enum Capabilities] flags providing information about the capabilities of this interface.
 */
@@ -240,6 +244,7 @@ func (self class) GetCapabilities() gd.Int {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
 func (self class) IsPrimary() bool {
 	var frame = callframe.New()
@@ -249,14 +254,16 @@ func (self class) IsPrimary() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetPrimary(primary bool)  {
+func (self class) SetPrimary(primary bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primary)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_primary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns [code]true[/code] if this interface has been initialized.
 */
@@ -269,6 +276,7 @@ func (self class) IsInitialized() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Call this to initialize this interface. The first interface that is initialized is identified as the primary interface and it will be used for rendering output.
 After initializing the interface you want to use you then need to enable the AR/VR mode of a viewport and rendering should commence.
@@ -285,16 +293,18 @@ func (self class) Initialize() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Turns the interface off.
 */
 //go:nosplit
-func (self class) Uninitialize()  {
+func (self class) Uninitialize() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_uninitialize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns a [Dictionary] with extra system info. Interfaces are expected to return [code]XRRuntimeName[/code] and [code]XRRuntimeVersion[/code] providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
@@ -304,10 +314,11 @@ func (self class) GetSystemInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_system_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Dictionary](r_ret.Get())
+	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 If supported, returns the status of our tracking. This will allow you to provide feedback to the user whether there are issues with positional tracking.
 */
@@ -320,6 +331,7 @@ func (self class) GetTrackingStatus() classdb.XRInterfaceTrackingStatus {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the resolution at which we should render our intermediate results before things like lens distortion are applied by the VR platform.
 */
@@ -332,6 +344,7 @@ func (self class) GetRenderTargetSize() gd.Vector2 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the number of views that need to be rendered for this device. 1 for Monoscopic, 2 for Stereoscopic.
 */
@@ -344,6 +357,7 @@ func (self class) GetViewCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Triggers a haptic pulse on a device associated with this interface.
 [param action_name] is the name of the action for this pulse.
@@ -354,10 +368,10 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 //go:nosplit
-func (self class) TriggerHapticPulse(action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)  {
+func (self class) TriggerHapticPulse(action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(action_name))
-	callframe.Arg(frame, discreet.Get(tracker_name))
+	callframe.Arg(frame, pointers.Get(action_name))
+	callframe.Arg(frame, pointers.Get(tracker_name))
 	callframe.Arg(frame, frequency)
 	callframe.Arg(frame, amplitude)
 	callframe.Arg(frame, duration_sec)
@@ -366,6 +380,7 @@ func (self class) TriggerHapticPulse(action_name gd.String, tracker_name gd.Stri
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Call this to find out if a given play area mode is supported by this interface.
 */
@@ -379,6 +394,7 @@ func (self class) SupportsPlayAreaMode(mode classdb.XRInterfacePlayAreaMode) boo
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
 func (self class) GetPlayAreaMode() classdb.XRInterfacePlayAreaMode {
 	var frame = callframe.New()
@@ -388,6 +404,7 @@ func (self class) GetPlayAreaMode() classdb.XRInterfacePlayAreaMode {
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the active play area mode, will return [code]false[/code] if the mode can't be used with this interface.
 [b]Note:[/b] Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [method XRServer.center_on_hmd] (if switching to [constant XRInterface.XR_PLAY_AREA_STAGE]) or make the switch during a scene change.
@@ -402,6 +419,7 @@ func (self class) SetPlayAreaMode(mode classdb.XRInterfacePlayAreaMode) bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
@@ -410,10 +428,11 @@ func (self class) GetPlayArea() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedVector3Array](r_ret.Get())
+	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
 func (self class) GetAnchorDetectionIsEnabled() bool {
 	var frame = callframe.New()
@@ -423,14 +442,16 @@ func (self class) GetAnchorDetectionIsEnabled() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetAnchorDetectionIsEnabled(enable bool)  {
+func (self class) SetAnchorDetectionIsEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_anchor_detection_is_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
 */
@@ -443,6 +464,7 @@ func (self class) GetCameraFeedId() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if this interface supports passthrough.
 */
@@ -455,6 +477,7 @@ func (self class) IsPassthroughSupported() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if passthrough is enabled.
 */
@@ -467,6 +490,7 @@ func (self class) IsPassthroughEnabled() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Starts passthrough, will return [code]false[/code] if passthrough couldn't be started.
 [b]Note:[/b] The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
@@ -480,16 +504,18 @@ func (self class) StartPassthrough() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Stops passthrough.
 */
 //go:nosplit
-func (self class) StopPassthrough()  {
+func (self class) StopPassthrough() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_stop_passthrough, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns the transform for a view/eye.
 [param view] is the view/eye index.
@@ -506,6 +532,7 @@ func (self class) GetTransformForView(view gd.Int, cam_transform gd.Transform3D)
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the projection matrix for a view/eye.
 */
@@ -522,6 +549,7 @@ func (self class) GetProjectionForView(view gd.Int, aspect gd.Float, near gd.Flo
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
@@ -530,10 +558,11 @@ func (self class) GetSupportedEnvironmentBlendModes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.Array](r_ret.Get())
+	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Sets the active environment blend mode.
 [param mode] is the environment blend mode starting with the next frame.
@@ -562,6 +591,7 @@ func (self class) SetEnvironmentBlendMode(mode classdb.XRInterfaceEnvironmentBle
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
 func (self class) GetEnvironmentBlendMode() classdb.XRInterfaceEnvironmentBlendMode {
 	var frame = callframe.New()
@@ -571,81 +601,88 @@ func (self class) GetEnvironmentBlendMode() classdb.XRInterfaceEnvironmentBlendM
 	frame.Free()
 	return ret
 }
-func (self Go) OnPlayAreaChanged(cb func(mode int)) {
+func (self Instance) OnPlayAreaChanged(cb func(mode int)) {
 	self[0].AsObject().Connect(gd.NewStringName("play_area_changed"), gd.NewCallable(cb), 0)
 }
 
-
-func (self class) AsXRInterface() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsXRInterface() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsXRInterface() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXRInterface() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("XRInterface", func(ptr gd.Object) any { return classdb.XRInterface(ptr) })}
+func init() {
+	classdb.Register("XRInterface", func(ptr gd.Object) any { return classdb.XRInterface(ptr) })
+}
+
 type Capabilities = classdb.XRInterfaceCapabilities
 
 const (
-/*No XR capabilities.*/
+	/*No XR capabilities.*/
 	XrNone Capabilities = 0
-/*This interface can work with normal rendering output (non-HMD based AR).*/
+	/*This interface can work with normal rendering output (non-HMD based AR).*/
 	XrMono Capabilities = 1
-/*This interface supports stereoscopic rendering.*/
+	/*This interface supports stereoscopic rendering.*/
 	XrStereo Capabilities = 2
-/*This interface supports quad rendering (not yet supported by Godot).*/
+	/*This interface supports quad rendering (not yet supported by Godot).*/
 	XrQuad Capabilities = 4
-/*This interface supports VR.*/
+	/*This interface supports VR.*/
 	XrVr Capabilities = 8
-/*This interface supports AR (video background and real world tracking).*/
+	/*This interface supports AR (video background and real world tracking).*/
 	XrAr Capabilities = 16
-/*This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [method get_render_target_size]). Using a separate viewport node frees up the main viewport for other purposes.*/
+	/*This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [method get_render_target_size]). Using a separate viewport node frees up the main viewport for other purposes.*/
 	XrExternal Capabilities = 32
 )
+
 type TrackingStatus = classdb.XRInterfaceTrackingStatus
 
 const (
-/*Tracking is behaving as expected.*/
+	/*Tracking is behaving as expected.*/
 	XrNormalTracking TrackingStatus = 0
-/*Tracking is hindered by excessive motion (the player is moving faster than tracking can keep up).*/
+	/*Tracking is hindered by excessive motion (the player is moving faster than tracking can keep up).*/
 	XrExcessiveMotion TrackingStatus = 1
-/*Tracking is hindered by insufficient features, it's too dark (for camera-based tracking), player is blocked, etc.*/
+	/*Tracking is hindered by insufficient features, it's too dark (for camera-based tracking), player is blocked, etc.*/
 	XrInsufficientFeatures TrackingStatus = 2
-/*We don't know the status of the tracking or this interface does not provide feedback.*/
+	/*We don't know the status of the tracking or this interface does not provide feedback.*/
 	XrUnknownTracking TrackingStatus = 3
-/*Tracking is not functional (camera not plugged in or obscured, lighthouses turned off, etc.).*/
+	/*Tracking is not functional (camera not plugged in or obscured, lighthouses turned off, etc.).*/
 	XrNotTracking TrackingStatus = 4
 )
+
 type PlayAreaMode = classdb.XRInterfacePlayAreaMode
 
 const (
-/*Play area mode not set or not available.*/
+	/*Play area mode not set or not available.*/
 	XrPlayAreaUnknown PlayAreaMode = 0
-/*Play area only supports orientation tracking, no positional tracking, area will center around player.*/
+	/*Play area only supports orientation tracking, no positional tracking, area will center around player.*/
 	XrPlayArea3dof PlayAreaMode = 1
-/*Player is in seated position, limited positional tracking, fixed guardian around player.*/
+	/*Player is in seated position, limited positional tracking, fixed guardian around player.*/
 	XrPlayAreaSitting PlayAreaMode = 2
-/*Player is free to move around, full positional tracking.*/
+	/*Player is free to move around, full positional tracking.*/
 	XrPlayAreaRoomscale PlayAreaMode = 3
-/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [method XRServer.center_on_hmd].*/
+	/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [method XRServer.center_on_hmd].*/
 	XrPlayAreaStage PlayAreaMode = 4
 )
+
 type EnvironmentBlendMode = classdb.XRInterfaceEnvironmentBlendMode
 
 const (
-/*Opaque blend mode. This is typically used for VR devices.*/
+	/*Opaque blend mode. This is typically used for VR devices.*/
 	XrEnvBlendModeOpaque EnvironmentBlendMode = 0
-/*Additive blend mode. This is typically used for AR devices or VR devices with passthrough.*/
+	/*Additive blend mode. This is typically used for AR devices or VR devices with passthrough.*/
 	XrEnvBlendModeAdditive EnvironmentBlendMode = 1
-/*Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.*/
+	/*Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.*/
 	XrEnvBlendModeAlphaBlend EnvironmentBlendMode = 2
 )

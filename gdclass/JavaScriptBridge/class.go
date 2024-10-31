@@ -3,32 +3,37 @@ package JavaScriptBridge
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
 [b]Note:[/b] This singleton can be disabled at build-time to improve security. By default, the JavaScriptBridge singleton is enabled. Official export templates also have the JavaScriptBridge singleton enabled. See [url=$DOCS_URL/contributing/development/compiling/compiling_for_web.html]Compiling for the Web[/url] in the documentation for more information.
-
 */
 var self gdclass.JavaScriptBridge
 var once sync.Once
+
 func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.JavaScriptBridge)
 	self = *(*gdclass.JavaScriptBridge)(unsafe.Pointer(&obj))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-func GD() class { once.Do(singleton); return self }
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+func Advanced() class { once.Do(singleton); return self }
+
 type class [1]classdb.JavaScriptBridge
+
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
 /*
@@ -71,10 +76,12 @@ func OnPwaUpdateAvailable(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("pwa_update_available"), gd.NewCallable(cb), 0)
 }
 
-
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsObject(), name)
+	default:
+		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() {classdb.Register("JavaScriptBridge", func(ptr gd.Object) any { return classdb.JavaScriptBridge(ptr) })}
+func init() {
+	classdb.Register("JavaScriptBridge", func(ptr gd.Object) any { return classdb.JavaScriptBridge(ptr) })
+}

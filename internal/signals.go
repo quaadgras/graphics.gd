@@ -4,7 +4,7 @@ package gd
 
 import (
 	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/discreet"
+	"grow.graphics/gd/internal/pointers"
 )
 
 type IsSignal interface{ signal() }
@@ -12,7 +12,7 @@ type IsSignal interface{ signal() }
 func (s Signal) signal() {}
 
 func (s Signal) Free() {
-	if ptr, ok := discreet.End(s); ok {
+	if ptr, ok := pointers.End(s); ok {
 		var frame = callframe.New()
 		Global.typeset.destruct.Signal(callframe.Arg(frame, ptr).Uintptr())
 		frame.Free()
@@ -21,11 +21,11 @@ func (s Signal) Free() {
 
 func NewSignalOf(object Object, signal StringName) Signal {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(object))
-	callframe.Arg(frame, discreet.Get(signal))
+	callframe.Arg(frame, pointers.Get(object))
+	callframe.Arg(frame, pointers.Get(signal))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	Global.typeset.creation.Signal[2](r_ret.Uintptr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
-	return discreet.New[Signal](raw)
+	return pointers.New[Signal](raw)
 }

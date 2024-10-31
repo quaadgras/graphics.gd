@@ -2,17 +2,19 @@ package DirAccess
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/discreet"
+import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/gdclass"
+import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ gdclass.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = discreet.Root
+var _ = pointers.Root
+var _ gdconst.Side
 
 /*
 This class is used to manage directories and their content, even outside of the project folder.
@@ -30,63 +32,66 @@ Here is an example on how to iterate through the files of a directory:
 [codeblocks]
 [gdscript]
 func dir_contents(path):
-    var dir = DirAccess.open(path)
-    if dir:
-        dir.list_dir_begin()
-        var file_name = dir.get_next()
-        while file_name != "":
-            if dir.current_is_dir():
-                print("Found directory: " + file_name)
-            else:
-                print("Found file: " + file_name)
-            file_name = dir.get_next()
-    else:
-        print("An error occurred when trying to access the path.")
+
+	var dir = DirAccess.open(path)
+	if dir:
+	    dir.list_dir_begin()
+	    var file_name = dir.get_next()
+	    while file_name != "":
+	        if dir.current_is_dir():
+	            print("Found directory: " + file_name)
+	        else:
+	            print("Found file: " + file_name)
+	        file_name = dir.get_next()
+	else:
+	    print("An error occurred when trying to access the path.")
+
 [/gdscript]
 [csharp]
 public void DirContents(string path)
-{
-    using var dir = DirAccess.Open(path);
-    if (dir != null)
-    {
-        dir.ListDirBegin();
-        string fileName = dir.GetNext();
-        while (fileName != "")
-        {
-            if (dir.CurrentIsDir())
-            {
-                GD.Print($"Found directory: {fileName}");
-            }
-            else
-            {
-                GD.Print($"Found file: {fileName}");
-            }
-            fileName = dir.GetNext();
-        }
-    }
-    else
-    {
-        GD.Print("An error occurred when trying to access the path.");
-    }
-}
+
+	{
+	    using var dir = DirAccess.Open(path);
+	    if (dir != null)
+	    {
+	        dir.ListDirBegin();
+	        string fileName = dir.GetNext();
+	        while (fileName != "")
+	        {
+	            if (dir.CurrentIsDir())
+	            {
+	                GD.Print($"Found directory: {fileName}");
+	            }
+	            else
+	            {
+	                GD.Print($"Found file: {fileName}");
+	            }
+	            fileName = dir.GetNext();
+	        }
+	    }
+	    else
+	    {
+	        GD.Print("An error occurred when trying to access the path.");
+	    }
+	}
+
 [/csharp]
 [/codeblocks]
-
 */
-type Go [1]classdb.DirAccess
+type Instance [1]classdb.DirAccess
 
 /*
 Creates a new [DirAccess] object and opens an existing directory of the filesystem. The [param path] argument can be within the project tree ([code]res://folder[/code]), the user directory ([code]user://folder[/code]) or an absolute path of the user filesystem (e.g. [code]/tmp/folder[/code] or [code]C:\tmp\folder[/code]).
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Go) Open(path string) gdclass.DirAccess {
+func (self Instance) Open(path string) gdclass.DirAccess {
 	return gdclass.DirAccess(class(self).Open(gd.NewString(path)))
 }
 
 /*
 Returns the result of the last [method open] call in the current thread.
 */
-func (self Go) GetOpenError() gd.Error {
+func (self Instance) GetOpenError() gd.Error {
 	return gd.Error(class(self).GetOpenError())
 }
 
@@ -95,7 +100,7 @@ Initializes the stream used to list all files and directories using the [method 
 Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [method get_files] or [method get_directories].
 */
-func (self Go) ListDirBegin() gd.Error {
+func (self Instance) ListDirBegin() gd.Error {
 	return gd.Error(class(self).ListDirBegin())
 }
 
@@ -103,21 +108,21 @@ func (self Go) ListDirBegin() gd.Error {
 Returns the next element (file or directory) in the current directory.
 The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty [String] and closes the stream automatically (i.e. [method list_dir_end] would not be mandatory in such a case).
 */
-func (self Go) GetNext() string {
+func (self Instance) GetNext() string {
 	return string(class(self).GetNext().String())
 }
 
 /*
 Returns whether the current item processed with the last [method get_next] call is a directory ([code].[/code] and [code]..[/code] are considered directories).
 */
-func (self Go) CurrentIsDir() bool {
+func (self Instance) CurrentIsDir() bool {
 	return bool(class(self).CurrentIsDir())
 }
 
 /*
 Closes the current stream opened with [method list_dir_begin] (whether it has been fully processed with [method get_next] does not matter).
 */
-func (self Go) ListDirEnd() {
+func (self Instance) ListDirEnd() {
 	class(self).ListDirEnd()
 }
 
@@ -126,7 +131,7 @@ Returns a [PackedStringArray] containing filenames of the directory contents, ex
 Affected by [member include_hidden].
 [b]Note:[/b] When used on a [code]res://[/code] path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level [code].godot/[/code] folder, only paths to [code]*.gd[/code] and [code]*.import[/code] files are returned (plus a few files such as [code]project.godot[/code] or [code]project.binary[/code] and the project icon). In an exported project, the list of returned files will also vary depending on whether [member ProjectSettings.editor/export/convert_text_resources_to_binary] is [code]true[/code].
 */
-func (self Go) GetFiles() []string {
+func (self Instance) GetFiles() []string {
 	return []string(class(self).GetFiles().Strings())
 }
 
@@ -134,7 +139,7 @@ func (self Go) GetFiles() []string {
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given [param path]. The array is sorted alphabetically.
 Use [method get_files] if you want more control of what gets included.
 */
-func (self Go) GetFilesAt(path string) []string {
+func (self Instance) GetFilesAt(path string) []string {
 	return []string(class(self).GetFilesAt(gd.NewString(path)).Strings())
 }
 
@@ -142,7 +147,7 @@ func (self Go) GetFilesAt(path string) []string {
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
 Affected by [member include_hidden] and [member include_navigational].
 */
-func (self Go) GetDirectories() []string {
+func (self Instance) GetDirectories() []string {
 	return []string(class(self).GetDirectories().Strings())
 }
 
@@ -150,7 +155,7 @@ func (self Go) GetDirectories() []string {
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given [param path]. The array is sorted alphabetically.
 Use [method get_directories] if you want more control of what gets included.
 */
-func (self Go) GetDirectoriesAt(path string) []string {
+func (self Instance) GetDirectoriesAt(path string) []string {
 	return []string(class(self).GetDirectoriesAt(gd.NewString(path)).Strings())
 }
 
@@ -160,7 +165,7 @@ On macOS, returns the number of mounted volumes.
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
 On other platforms, the method returns 0.
 */
-func (self Go) GetDriveCount() int {
+func (self Instance) GetDriveCount() int {
 	return int(int(class(self).GetDriveCount()))
 }
 
@@ -170,14 +175,14 @@ On macOS, returns the path to the mounted volume passed as an argument.
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
-func (self Go) GetDriveName(idx int) string {
+func (self Instance) GetDriveName(idx int) string {
 	return string(class(self).GetDriveName(gd.Int(idx)).String())
 }
 
 /*
 Returns the currently opened directory's drive index. See [method get_drive_name] to convert returned index to the name of the drive.
 */
-func (self Go) GetCurrentDrive() int {
+func (self Instance) GetCurrentDrive() int {
 	return int(int(class(self).GetCurrentDrive()))
 }
 
@@ -186,14 +191,14 @@ Changes the currently opened directory to the one passed as an argument. The arg
 Returns one of the [enum Error] code constants ([constant OK] on success).
 [b]Note:[/b] The new directory must be within the same scope, e.g. when you had opened a directory inside [code]res://[/code], you can't change it to [code]user://[/code] directory. If you need to open a directory in another access scope, use [method open] to create a new instance instead.
 */
-func (self Go) ChangeDir(to_dir string) gd.Error {
+func (self Instance) ChangeDir(to_dir string) gd.Error {
 	return gd.Error(class(self).ChangeDir(gd.NewString(to_dir)))
 }
 
 /*
 Returns the absolute path to the currently opened directory (e.g. [code]res://folder[/code] or [code]C:\tmp\folder[/code]).
 */
-func (self Go) GetCurrentDir() string {
+func (self Instance) GetCurrentDir() string {
 	return string(class(self).GetCurrentDir(true).String())
 }
 
@@ -201,14 +206,14 @@ func (self Go) GetCurrentDir() string {
 Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [method make_dir_recursive]).
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Go) MakeDir(path string) gd.Error {
+func (self Instance) MakeDir(path string) gd.Error {
 	return gd.Error(class(self).MakeDir(gd.NewString(path)))
 }
 
 /*
 Static version of [method make_dir]. Supports only absolute paths.
 */
-func (self Go) MakeDirAbsolute(path string) gd.Error {
+func (self Instance) MakeDirAbsolute(path string) gd.Error {
 	return gd.Error(class(self).MakeDirAbsolute(gd.NewString(path)))
 }
 
@@ -216,14 +221,14 @@ func (self Go) MakeDirAbsolute(path string) gd.Error {
 Creates a target directory and all necessary intermediate directories in its path, by calling [method make_dir] recursively. The argument can be relative to the current directory, or an absolute path.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Go) MakeDirRecursive(path string) gd.Error {
+func (self Instance) MakeDirRecursive(path string) gd.Error {
 	return gd.Error(class(self).MakeDirRecursive(gd.NewString(path)))
 }
 
 /*
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
-func (self Go) MakeDirRecursiveAbsolute(path string) gd.Error {
+func (self Instance) MakeDirRecursiveAbsolute(path string) gd.Error {
 	return gd.Error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
 }
 
@@ -231,28 +236,28 @@ func (self Go) MakeDirRecursiveAbsolute(path string) gd.Error {
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
 For a static equivalent, use [method FileAccess.file_exists].
 */
-func (self Go) FileExists(path string) bool {
+func (self Instance) FileExists(path string) bool {
 	return bool(class(self).FileExists(gd.NewString(path)))
 }
 
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
 */
-func (self Go) DirExists(path string) bool {
+func (self Instance) DirExists(path string) bool {
 	return bool(class(self).DirExists(gd.NewString(path)))
 }
 
 /*
 Static version of [method dir_exists]. Supports only absolute paths.
 */
-func (self Go) DirExistsAbsolute(path string) bool {
+func (self Instance) DirExistsAbsolute(path string) bool {
 	return bool(class(self).DirExistsAbsolute(gd.NewString(path)))
 }
 
 /*
 Returns the available space on the current directory's disk, in bytes. Returns [code]0[/code] if the platform-specific method to query the available space fails.
 */
-func (self Go) GetSpaceLeft() int {
+func (self Instance) GetSpaceLeft() int {
 	return int(int(class(self).GetSpaceLeft()))
 }
 
@@ -261,14 +266,14 @@ Copies the [param from] file to the [param to] destination. Both arguments shoul
 If [param chmod_flags] is different than [code]-1[/code], the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Go) Copy(from string, to string) gd.Error {
+func (self Instance) Copy(from string, to string) gd.Error {
 	return gd.Error(class(self).Copy(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
 /*
 Static version of [method copy]. Supports only absolute paths.
 */
-func (self Go) CopyAbsolute(from string, to string) gd.Error {
+func (self Instance) CopyAbsolute(from string, to string) gd.Error {
 	return gd.Error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
@@ -276,14 +281,14 @@ func (self Go) CopyAbsolute(from string, to string) gd.Error {
 Renames (move) the [param from] file or directory to the [param to] destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Go) Rename(from string, to string) gd.Error {
+func (self Instance) Rename(from string, to string) gd.Error {
 	return gd.Error(class(self).Rename(gd.NewString(from), gd.NewString(to)))
 }
 
 /*
 Static version of [method rename]. Supports only absolute paths.
 */
-func (self Go) RenameAbsolute(from string, to string) gd.Error {
+func (self Instance) RenameAbsolute(from string, to string) gd.Error {
 	return gd.Error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
 }
 
@@ -292,14 +297,14 @@ Permanently deletes the target file or an empty directory. The argument can be r
 If you don't want to delete the file/directory permanently, use [method OS.move_to_trash] instead.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Go) Remove(path string) gd.Error {
+func (self Instance) Remove(path string) gd.Error {
 	return gd.Error(class(self).Remove(gd.NewString(path)))
 }
 
 /*
 Static version of [method remove]. Supports only absolute paths.
 */
-func (self Go) RemoveAbsolute(path string) gd.Error {
+func (self Instance) RemoveAbsolute(path string) gd.Error {
 	return gd.Error(class(self).RemoveAbsolute(gd.NewString(path)))
 }
 
@@ -307,7 +312,7 @@ func (self Go) RemoveAbsolute(path string) gd.Error {
 Returns [code]true[/code] if the file or directory is a symbolic link, directory junction, or other reparse point.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
-func (self Go) IsLink(path string) bool {
+func (self Instance) IsLink(path string) bool {
 	return bool(class(self).IsLink(gd.NewString(path)))
 }
 
@@ -315,7 +320,7 @@ func (self Go) IsLink(path string) bool {
 Returns target of the symbolic link.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
-func (self Go) ReadLink(path string) string {
+func (self Instance) ReadLink(path string) string {
 	return string(class(self).ReadLink(gd.NewString(path)).String())
 }
 
@@ -324,7 +329,7 @@ Creates symbolic link between files or folders.
 [b]Note:[/b] On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
-func (self Go) CreateLink(source string, target string) gd.Error {
+func (self Instance) CreateLink(source string, target string) gd.Error {
 	return gd.Error(class(self).CreateLink(gd.NewString(source), gd.NewString(target)))
 }
 
@@ -332,32 +337,34 @@ func (self Go) CreateLink(source string, target string) gd.Error {
 Returns [code]true[/code] if the file system or directory use case sensitive file names.
 [b]Note:[/b] This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns [code]true[/code].
 */
-func (self Go) IsCaseSensitive(path string) bool {
+func (self Instance) IsCaseSensitive(path string) bool {
 	return bool(class(self).IsCaseSensitive(gd.NewString(path)))
 }
-// GD is a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
-type GD = class
+
+// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
+type Advanced = class
 type class [1]classdb.DirAccess
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
-func (self Go) AsObject() gd.Object { return self[0].AsObject() }
-func New() Go {
+
+func (self class) AsObject() gd.Object    { return self[0].AsObject() }
+func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirAccess"))
-	return Go{classdb.DirAccess(object)}
+	return Instance{classdb.DirAccess(object)}
 }
 
-func (self Go) IncludeNavigational() bool {
-		return bool(class(self).GetIncludeNavigational())
+func (self Instance) IncludeNavigational() bool {
+	return bool(class(self).GetIncludeNavigational())
 }
 
-func (self Go) SetIncludeNavigational(value bool) {
+func (self Instance) SetIncludeNavigational(value bool) {
 	class(self).SetIncludeNavigational(value)
 }
 
-func (self Go) IncludeHidden() bool {
-		return bool(class(self).GetIncludeHidden())
+func (self Instance) IncludeHidden() bool {
+	return bool(class(self).GetIncludeHidden())
 }
 
-func (self Go) SetIncludeHidden(value bool) {
+func (self Instance) SetIncludeHidden(value bool) {
 	class(self).SetIncludeHidden(value)
 }
 
@@ -368,13 +375,14 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 //go:nosplit
 func (self class) Open(path gd.String) gdclass.DirAccess {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = gdclass.DirAccess{classdb.DirAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the result of the last [method open] call in the current thread.
 */
@@ -387,6 +395,7 @@ func (self class) GetOpenError() int64 {
 	frame.Free()
 	return ret
 }
+
 /*
 Initializes the stream used to list all files and directories using the [method get_next] function, closing the currently opened stream if needed. Once the stream has been processed, it should typically be closed with [method list_dir_end].
 Affected by [member include_hidden] and [member include_navigational].
@@ -401,6 +410,7 @@ func (self class) ListDirBegin() int64 {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the next element (file or directory) in the current directory.
 The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty [String] and closes the stream automatically (i.e. [method list_dir_end] would not be mandatory in such a case).
@@ -410,10 +420,11 @@ func (self class) GetNext() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns whether the current item processed with the last [method get_next] call is a directory ([code].[/code] and [code]..[/code] are considered directories).
 */
@@ -426,16 +437,18 @@ func (self class) CurrentIsDir() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Closes the current stream opened with [method list_dir_begin] (whether it has been fully processed with [method get_next] does not matter).
 */
 //go:nosplit
-func (self class) ListDirEnd()  {
+func (self class) ListDirEnd() {
 	var frame = callframe.New()
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_list_dir_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
 Affected by [member include_hidden].
@@ -446,10 +459,11 @@ func (self class) GetFiles() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given [param path]. The array is sorted alphabetically.
 Use [method get_files] if you want more control of what gets included.
@@ -457,13 +471,14 @@ Use [method get_files] if you want more control of what gets included.
 //go:nosplit
 func (self class) GetFilesAt(path gd.String) gd.PackedStringArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_files_at, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
 Affected by [member include_hidden] and [member include_navigational].
@@ -473,10 +488,11 @@ func (self class) GetDirectories() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_directories, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given [param path]. The array is sorted alphabetically.
 Use [method get_directories] if you want more control of what gets included.
@@ -484,13 +500,14 @@ Use [method get_directories] if you want more control of what gets included.
 //go:nosplit
 func (self class) GetDirectoriesAt(path gd.String) gd.PackedStringArray {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_directories_at, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.PackedStringArray](r_ret.Get())
+	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 On Windows, returns the number of drives (partitions) mounted on the current filesystem.
 On macOS, returns the number of mounted volumes.
@@ -506,6 +523,7 @@ func (self class) GetDriveCount() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 On Windows, returns the name of the drive (partition) passed as an argument (e.g. [code]C:[/code]).
 On macOS, returns the path to the mounted volume passed as an argument.
@@ -518,10 +536,11 @@ func (self class) GetDriveName(idx gd.Int) gd.String {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_drive_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the currently opened directory's drive index. See [method get_drive_name] to convert returned index to the name of the drive.
 */
@@ -534,6 +553,7 @@ func (self class) GetCurrentDrive() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Changes the currently opened directory to the one passed as an argument. The argument can be relative to the current directory (e.g. [code]newdir[/code] or [code]../newdir[/code]), or an absolute path (e.g. [code]/tmp/newdir[/code] or [code]res://somedir/newdir[/code]).
 Returns one of the [enum Error] code constants ([constant OK] on success).
@@ -542,13 +562,14 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) ChangeDir(to_dir gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(to_dir))
+	callframe.Arg(frame, pointers.Get(to_dir))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_change_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the absolute path to the currently opened directory (e.g. [code]res://folder[/code] or [code]C:\tmp\folder[/code]).
 */
@@ -558,10 +579,11 @@ func (self class) GetCurrentDir(include_drive bool) gd.String {
 	callframe.Arg(frame, include_drive)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [method make_dir_recursive]).
 Returns one of the [enum Error] code constants ([constant OK] on success).
@@ -569,26 +591,28 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) MakeDir(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method make_dir]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirAbsolute(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Creates a target directory and all necessary intermediate directories in its path, by calling [method make_dir] recursively. The argument can be relative to the current directory, or an absolute path.
 Returns one of the [enum Error] code constants ([constant OK] on success).
@@ -596,26 +620,28 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) MakeDirRecursive(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirRecursiveAbsolute(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
 For a static equivalent, use [method FileAccess.file_exists].
@@ -623,39 +649,42 @@ For a static equivalent, use [method FileAccess.file_exists].
 //go:nosplit
 func (self class) FileExists(path gd.String) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
 */
 //go:nosplit
 func (self class) DirExists(path gd.String) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_dir_exists, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method dir_exists]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) DirExistsAbsolute(path gd.String) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns the available space on the current directory's disk, in bytes. Returns [code]0[/code] if the platform-specific method to query the available space fails.
 */
@@ -668,6 +697,7 @@ func (self class) GetSpaceLeft() gd.Int {
 	frame.Free()
 	return ret
 }
+
 /*
 Copies the [param from] file to the [param to] destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
 If [param chmod_flags] is different than [code]-1[/code], the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
@@ -676,8 +706,8 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) Copy(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, chmod_flags)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -685,14 +715,15 @@ func (self class) Copy(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method copy]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) CopyAbsolute(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, chmod_flags)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -700,6 +731,7 @@ func (self class) CopyAbsolute(from gd.String, to gd.String, chmod_flags gd.Int)
 	frame.Free()
 	return ret
 }
+
 /*
 Renames (move) the [param from] file or directory to the [param to] destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
 Returns one of the [enum Error] code constants ([constant OK] on success).
@@ -707,28 +739,30 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) Rename(from gd.String, to gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method rename]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) RenameAbsolute(from gd.String, to gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(from))
-	callframe.Arg(frame, discreet.Get(to))
+	callframe.Arg(frame, pointers.Get(from))
+	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Permanently deletes the target file or an empty directory. The argument can be relative to the current directory, or an absolute path. If the target directory is not empty, the operation will fail.
 If you don't want to delete the file/directory permanently, use [method OS.move_to_trash] instead.
@@ -737,26 +771,28 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 //go:nosplit
 func (self class) Remove(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Static version of [method remove]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) RemoveAbsolute(path gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the file or directory is a symbolic link, directory junction, or other reparse point.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
@@ -764,13 +800,14 @@ Returns [code]true[/code] if the file or directory is a symbolic link, directory
 //go:nosplit
 func (self class) IsLink(path gd.String) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_link, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 /*
 Returns target of the symbolic link.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
@@ -778,13 +815,14 @@ Returns target of the symbolic link.
 //go:nosplit
 func (self class) ReadLink(path gd.String) gd.String {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_read_link, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = discreet.New[gd.String](r_ret.Get())
+	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
 }
+
 /*
 Creates symbolic link between files or folders.
 [b]Note:[/b] On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
@@ -793,22 +831,24 @@ Creates symbolic link between files or folders.
 //go:nosplit
 func (self class) CreateLink(source gd.String, target gd.String) int64 {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(source))
-	callframe.Arg(frame, discreet.Get(target))
+	callframe.Arg(frame, pointers.Get(source))
+	callframe.Arg(frame, pointers.Get(target))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_link, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetIncludeNavigational(enable bool)  {
+func (self class) SetIncludeNavigational(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_set_include_navigational, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetIncludeNavigational() bool {
 	var frame = callframe.New()
@@ -818,14 +858,16 @@ func (self class) GetIncludeNavigational() bool {
 	frame.Free()
 	return ret
 }
+
 //go:nosplit
-func (self class) SetIncludeHidden(enable bool)  {
+func (self class) SetIncludeHidden(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_set_include_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
+
 //go:nosplit
 func (self class) GetIncludeHidden() bool {
 	var frame = callframe.New()
@@ -835,6 +877,7 @@ func (self class) GetIncludeHidden() bool {
 	frame.Free()
 	return ret
 }
+
 /*
 Returns [code]true[/code] if the file system or directory use case sensitive file names.
 [b]Note:[/b] This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns [code]true[/code].
@@ -842,27 +885,29 @@ Returns [code]true[/code] if the file system or directory use case sensitive fil
 //go:nosplit
 func (self class) IsCaseSensitive(path gd.String) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, discreet.Get(path))
+	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_case_sensitive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
-func (self class) AsDirAccess() GD { return *((*GD)(unsafe.Pointer(&self))) }
-func (self Go) AsDirAccess() Go { return *((*Go)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Go) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsDirAccess() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsDirAccess() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
 
-func (self Go) Virtual(name string) reflect.Value {
+func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
-	default: return gd.VirtualByName(self.AsRefCounted(), name)
+	default:
+		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() {classdb.Register("DirAccess", func(ptr gd.Object) any { return classdb.DirAccess(ptr) })}
+func init() { classdb.Register("DirAccess", func(ptr gd.Object) any { return classdb.DirAccess(ptr) }) }
