@@ -176,7 +176,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	if resultSimple != "" {
 		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
 		if needsLifetime {
-			name := strings.TrimPrefix(resultExpert, "gdclass.")
+			name := strings.TrimPrefix(resultExpert, "objects.")
 			name = strings.TrimPrefix(name, "[1]classdb.")
 			_, ok := classDB[name]
 			if resultExpert == "gd.Object" {
@@ -247,7 +247,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(w, "\t\tvar %v = gdclass.%v{pointers.New[classdb.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
+				fmt.Fprintf(w, "\t\tvar %v = objects.%v{pointers.New[classdb.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
 					fixReserved(arg.Name), arg.Type, i)
 				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
@@ -274,7 +274,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			ret := gdtype.Name(result).ToUnderlying("ret")
 			if isPtr {
-				_, ok := classDB[strings.TrimPrefix(result, "gdclass.")]
+				_, ok := classDB[strings.TrimPrefix(result, "objects.")]
 				if ok {
 					ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 				} else {
@@ -369,7 +369,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall(gd.Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
 
 	if isPtr {
-		_, ok := classDB[strings.TrimPrefix(result, "gdclass.")]
+		_, ok := classDB[strings.TrimPrefix(result, "objects.")]
 		if ok || result == "gd.Object" {
 			if result == "gd.Object" {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
@@ -385,11 +385,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = gdclass.%s{classdb.%[1]s("+prefix+"PointerWithOwnershipTransferredToGo(r_ret.Get()))}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = objects.%s{classdb.%[1]s("+prefix+"PointerWithOwnershipTransferredToGo(r_ret.Get()))}\n", method.ReturnValue.Type)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = gdclass.%s{classdb.%[1]s("+prefix+"PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = objects.%s{classdb.%[1]s("+prefix+"PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}\n", method.ReturnValue.Type)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = gdclass.%s{classdb.%[1]s("+prefix+"PointerMustAssertInstanceID(r_ret.Get()))}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = objects.%s{classdb.%[1]s("+prefix+"PointerMustAssertInstanceID(r_ret.Get()))}\n", method.ReturnValue.Type)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}

@@ -6,10 +6,10 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd/gdclass/Resource"
 	"grow.graphics/gd/gdconst"
 	gd "grow.graphics/gd/internal"
 	classdb "grow.graphics/gd/internal/classdb"
+	"grow.graphics/gd/objects/Resource"
 )
 
 func propertyOf(field reflect.StructField) gd.PropertyInfo {

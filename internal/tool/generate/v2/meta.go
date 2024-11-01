@@ -201,7 +201,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if class, ok := classDB[gdType]; ok {
-			return "gdclass." + class.Name
+			return "objects." + class.Name
 		}
 
 		if inCore(gdType) {
@@ -209,7 +209,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if gdType != "" {
-			return "gdclass." + gdType
+			return "objects." + gdType
 		}
 		return gdType
 	}
@@ -345,7 +345,7 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "[1]")
 	t = strings.TrimPrefix(t, "gd.")
 	t = strings.TrimPrefix(t, "classdb.")
-	t = strings.TrimPrefix(t, "gdclass.")
+	t = strings.TrimPrefix(t, "objects.")
 	if strings.HasPrefix(t, "ArrayOf") {
 		return "[1]uintptr", true
 	}

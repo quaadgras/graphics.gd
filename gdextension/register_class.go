@@ -10,14 +10,14 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"grow.graphics/gd/gdclass"
-	"grow.graphics/gd/gdclass/EditorPlugin"
-	"grow.graphics/gd/gdclass/Engine"
-	"grow.graphics/gd/gdclass/MainLoop"
-	"grow.graphics/gd/gdclass/Node"
-	"grow.graphics/gd/gdclass/ProjectSettings"
-	"grow.graphics/gd/gdclass/Script"
-	"grow.graphics/gd/gdclass/ScriptLanguage"
+	"grow.graphics/gd/objects"
+	"grow.graphics/gd/objects/EditorPlugin"
+	"grow.graphics/gd/objects/Engine"
+	"grow.graphics/gd/objects/MainLoop"
+	"grow.graphics/gd/objects/Node"
+	"grow.graphics/gd/objects/ProjectSettings"
+	"grow.graphics/gd/objects/Script"
+	"grow.graphics/gd/objects/ScriptLanguage"
 	"grow.graphics/gd/variant/StringName"
 
 	gd "grow.graphics/gd/internal"
@@ -525,7 +525,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	var parent gdclass.Node = gdclass.Node{classdb.Node(instance.Value.AsObject())}
+	var parent objects.Node = objects.Node{classdb.Node(instance.Value.AsObject())}
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -544,7 +544,7 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
-func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner gdclass.Node) {
+func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner objects.Node) {
 	type isNode interface {
 		gd.PointerToClass
 
@@ -591,7 +591,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 			mode = Node.InternalModeFront
 		}
 		Node.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
-		var adding gdclass.Node = gdclass.Node{classdb.Node(class.AsObject())}
+		var adding objects.Node = objects.Node{classdb.Node(class.AsObject())}
 		Node.Advanced(parent).AddChild(adding, true, mode)
 		Node.Advanced(class.AsNode()).SetOwner(owner)
 		return

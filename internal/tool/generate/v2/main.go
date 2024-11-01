@@ -22,7 +22,7 @@ func generate() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := os.MkdirAll("./gdclass", 0755); err != nil {
+	if err := os.MkdirAll("./objects", 0755); err != nil {
 		return xray.New(err)
 	}
 	var classDB = make(ClassDB)
@@ -76,12 +76,12 @@ func generate() error {
 		mod.IsSingleton = true
 		classDB[class.Name] = mod
 	}
-	file, err := os.Create("./gdclass/gdclass.go")
+	file, err := os.Create("./objects/objects.go")
 	if err != nil {
 		return xray.New(err)
 	}
 	defer file.Close()
-	fmt.Fprintln(file, `package gdclass`)
+	fmt.Fprintln(file, `package objects`)
 	fmt.Fprintln(file)
 	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
 	fmt.Fprintln(file)
@@ -127,10 +127,10 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 }
 
 func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool, global_enums map[string]gdjson.Enum) error {
-	if err := os.MkdirAll("./gdclass/"+class.Name, 0755); err != nil {
+	if err := os.MkdirAll("./objects/"+class.Name, 0755); err != nil {
 		return xray.New(err)
 	}
-	file, err := os.Create("./gdclass/" + class.Name + "/class.go")
+	file, err := os.Create("./objects/" + class.Name + "/class.go")
 	if err != nil {
 		return xray.New(err)
 	}
@@ -144,7 +144,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/gdclass"`)
+	fmt.Fprintln(file, `import "grow.graphics/gd/objects"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/gdconst"`)
 	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
 	var imported = make(map[string]bool)
@@ -152,13 +152,13 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
 			imported[super.Name] = true
-			fmt.Fprintf(file, "import \"grow.graphics/gd/gdclass/%s\"\n", super.Name)
+			fmt.Fprintf(file, "import \"grow.graphics/gd/objects/%s\"\n", super.Name)
 			super = classDB[super.Inherits]
 		}
 	}
 	fmt.Fprintln(file)
 	fmt.Fprintln(file, "var _ unsafe.Pointer")
-	fmt.Fprintln(file, "var _ gdclass.Engine")
+	fmt.Fprintln(file, "var _ objects.Engine")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Root")
@@ -203,11 +203,11 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, "\n*/")
 	}
 	if singleton {
-		fmt.Fprintf(file, "var self gdclass.%s\n", class.Name)
+		fmt.Fprintf(file, "var self objects.%s\n", class.Name)
 		fmt.Fprintf(file, "var once sync.Once\n")
 		fmt.Fprintf(file, "func singleton() {\n")
 		fmt.Fprintf(file, "\tobj := gd.Global.Object.GetSingleton(gd.Global.Singletons.%s)\n", class.Name)
-		fmt.Fprintf(file, "\tself = *(*gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
+		fmt.Fprintf(file, "\tself = *(*objects.%s)(unsafe.Pointer(&obj))\n", class.Name)
 		fmt.Fprintf(file, "}\n")
 	} else {
 		fmt.Fprintf(file, "type Instance [1]classdb.%s\n", class.Name)
