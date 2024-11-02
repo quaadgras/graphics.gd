@@ -34,35 +34,46 @@ type FileLine struct {
 	Line int
 }
 
-func extractTags(prefix string, packages []fs.DirEntry, tags map[string]FileLine) error {
-	for _, pkg := range packages {
+func extractPkg(pkg string, tags map[string]FileLine) error {
+	file, err := os.Open(pkg)
+	if err != nil {
+		return xray.New(err)
+	}
+	defer file.Close()
+	files, err := file.ReadDir(0)
+	if err != nil {
+		return xray.New(err)
+	}
+	for _, f := range files {
+		if f.IsDir() || !strings.HasSuffix(f.Name(), ".go") {
+			continue
+		}
+		name := pkg + "/" + f.Name()
+		f, err := os.Open(name)
+		if err != nil {
+			return xray.New(err)
+		}
+		if err := extractTagsFrom(name, bufio.NewReader(f), tags); err != nil {
+			return xray.New(err)
+		}
+		if err := f.Close(); err != nil {
+			return xray.New(err)
+		}
+	}
+	return nil
+}
+
+func extractFromPackages(prefix string, tags map[string]FileLine) error {
+	dir, err := list(prefix)
+	if err != nil {
+		return xray.New(err)
+	}
+	for _, pkg := range dir {
 		if !pkg.IsDir() {
 			continue
 		}
-		file, err := os.Open(prefix + pkg.Name())
-		if err != nil {
+		if err := extractPkg(prefix+pkg.Name(), tags); err != nil {
 			return xray.New(err)
-		}
-		defer file.Close()
-		files, err := file.ReadDir(0)
-		if err != nil {
-			return xray.New(err)
-		}
-		for _, f := range files {
-			if f.IsDir() {
-				continue
-			}
-			name := prefix + pkg.Name() + "/" + f.Name()
-			f, err := os.Open(name)
-			if err != nil {
-				return xray.New(err)
-			}
-			if err := extractTagsFrom(name, bufio.NewReader(f), tags); err != nil {
-				return xray.New(err)
-			}
-			if err := f.Close(); err != nil {
-				return xray.New(err)
-			}
 		}
 	}
 	return nil
@@ -123,12 +134,17 @@ func work() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	variants, err := list("./variant")
-	if err != nil {
+	var tags = make(map[string]FileLine)
+	if err := extractPkg("./variant", tags); err != nil {
 		return xray.New(err)
 	}
-	var tags = make(map[string]FileLine)
-	if err := extractTags("./variant/", variants, tags); err != nil {
+	if err := extractPkg(".", tags); err != nil {
+		return xray.New(err)
+	}
+	if err := extractPkg("./objects", tags); err != nil {
+		return xray.New(err)
+	}
+	if err := extractFromPackages("./variant/", tags); err != nil {
 		return xray.New(err)
 	}
 	for _, builtin := range spec.BuiltinClasses {
@@ -143,6 +159,15 @@ func work() error {
 			if _, ok := tags[tag]; !ok {
 				fmt.Println("//gd:" + tag)
 			}
+		}
+	}
+	for _, utility := range spec.UtilityFunctions {
+		tag := utility.Name
+		if tag == "error_string" {
+			continue
+		}
+		if _, ok := tags[tag]; !ok {
+			fmt.Println("//gd:" + tag)
 		}
 	}
 	return nil

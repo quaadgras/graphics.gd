@@ -32,8 +32,8 @@ type Any interface {
 }
 
 // New returns an engine-optimised String for use with Advanced functions.
-func New(s string) gd.String {
-	return gd.Global.Strings.New(s)
+func New(vals ...any) gd.String { //gd:String() str
+	return gd.Global.Strings.New(fmt.Sprint(vals...))
 }
 
 // BeginsWith returns true if the string begins with the given text. See also [EndsWith].

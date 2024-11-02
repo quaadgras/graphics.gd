@@ -1,7 +1,7 @@
 package gdconst
 
 // Error implements the [error] interface.
-func (err Error) Error() string {
+func (err Error) Error() string { //gd:error_string
 	switch err {
 	case Failed:
 		return "Failed"

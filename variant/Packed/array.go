@@ -402,6 +402,7 @@ func (p *Array[S, W, T, P, M]) Sort() { //gd:PackedArray.sort
 	})
 }
 
+// ToByteArray returns a byte array containing the elements of the array encoded as bytes.
 func (p *Array[S, W, T, P, M]) ToByteArray() ByteArray { //gd:PackedArray.to_byte_array
 	var zero ByteArray
 	if p.proxy != ([1]P{}[0]) {
