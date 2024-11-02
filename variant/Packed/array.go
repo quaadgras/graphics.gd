@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/variant"
 	"grow.graphics/gd/variant/Color"
 	"grow.graphics/gd/variant/Vector2"
 	"grow.graphics/gd/variant/Vector3"
@@ -50,6 +51,8 @@ type container[Self any, Wrap, Elem packable, Proxy proxiable] interface {
 	load() ([]Wrap, Proxy)
 	less(Wrap, Wrap) bool
 
+	alloc() Proxy
+
 	wrap(Elem) Wrap
 	conv(Wrap) Elem
 }
@@ -86,6 +89,20 @@ func (p *Array[S, W, T, P, M]) Iter() iter.Seq2[int, W] {
 			}
 		}
 	}
+}
+
+// Proxy converts the array into a proxied array and returns it.
+func (p *Array[S, W, T, P, M]) Proxy() P {
+	var zero S
+	if p.proxy == ([1]P{}[0]) {
+		p.proxy = zero.alloc()
+		M(&p.proxy).Resize(gd.Int(len(p.local)))
+		for i, v := range p.local {
+			M(&p.proxy).Set(gd.Int(i), zero.conv(v))
+		}
+		p.local = nil
+	}
+	return p.proxy
 }
 
 // Index returns the element at the specified index.
@@ -383,4 +400,13 @@ func (p *Array[S, W, T, P, M]) Sort() { //gd:PackedArray.sort
 	sort.Slice(p.local, func(i, j int) bool {
 		return zero.less(p.local[i], p.local[j])
 	})
+}
+
+func (p *Array[S, W, T, P, M]) ToByteArray() ByteArray { //gd:PackedArray.to_byte_array
+	var zero ByteArray
+	if p.proxy != ([1]P{}[0]) {
+		return zero.make(nil, M(&p.proxy).ToByteArray())
+	}
+	zero.local, _ = variant.Marshal(p.local)
+	return zero
 }

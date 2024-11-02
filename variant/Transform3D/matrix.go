@@ -1,5 +1,5 @@
-// Package BasisOrigin a 3×4 matrix representing a 3D transformation.
-package BasisOrigin
+// Package Transform3D a 3×4 matrix representing a 3D transformation.
+package Transform3D
 
 import (
 	"grow.graphics/gd/variant/Angle"

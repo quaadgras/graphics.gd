@@ -19,6 +19,7 @@ import (
 	"unicode"
 	"unicode/utf16"
 	"unicode/utf8"
+	"unsafe"
 
 	"golang.org/x/text/encoding/unicode/utf32"
 	gd "grow.graphics/gd/internal"
@@ -971,6 +972,14 @@ func ToASCII[S Any](s S) []byte { //gd:String.to_ascii_buffer
 	return buf.Bytes()
 }
 
+// ASCII converts ASCII/Latin-1 encoded array to string. Fast alternative to get_string_from_utf8 if the
+// content is ASCII/Latin-1 only. Unlike the UTF-8 function this function maps every byte to a character
+// in the array. Multibyte sequences will not be interpreted correctly. For parsing user input always use
+// [UTF8]. This is the inverse of [ToASCII].
+func ASCII[S Any](s S) string { //gd:PackedByteArray.get_string_from_ascii
+	return string(s)
+}
+
 // ToCamelCase returns the string converted to camelCase.
 func ToCamelCase[S Any](s S) S { //gd:String.to_camel_case
 	return S(strings.ReplaceAll(strings.Title(strings.ToLower(string(s))), " ", ""))
@@ -1066,6 +1075,14 @@ func ToUTF8[S Any](s S) []byte { //gd:String.to_utf8_buffer
 	return []byte(string(s))
 }
 
+// UTF8 converts UTF-8 encoded array to string. Slower than [ASCII] but supports UTF-8 encoded
+// data. Use this function if you are unsure about the source of the data. For user input this function should
+// always be preferred. Returns empty string if source array is not valid UTF-8 string. This is the inverse
+// of [ToUTF8].
+func UTF8[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf8
+	return string(s)
+}
+
 // ToUTF16 converts the string to a UTF-16.
 func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_buffer
 	var result bytes.Buffer
@@ -1077,10 +1094,29 @@ func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_bu
 	return result.Bytes()
 }
 
+// UTF16 converts UTF-16 encoded array to String. If the BOM is missing, system endianness
+// is assumed. Returns empty string if source array is not valid UTF-16 string. This is
+// the inverse of [ToUTF16].
+func UTF16[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf16 PackedByteArray.get_string_from_wchar
+	if len(s)%2 != 0 {
+		return ""
+	}
+	return string(utf16.Decode(unsafe.Slice((*uint16)(unsafe.Pointer(&s[0])), len(s)/2)))
+}
+
 // ToUTF32 converts the string to a UTF-32.
 func ToUTF32[S Any](s S) []byte { //gd:String.to_utf32_buffer
 	var UTF = utf32.UTF32(utf32.LittleEndian, utf32.UseBOM).NewEncoder()
 	b, _ := UTF.Bytes([]byte(s))
+	return b
+}
+
+// UTF32 converts UTF-32 encoded array to string. If the BOM is missing, system endianness
+// is assumed. Returns empty string if source array is not valid UTF-32 string. This is
+// the inverse of [ToUTF32].
+func UTF32[S Any](s S) string { //gd:PackedByteArray.get_string_from_utf32
+	var UTF = utf32.UTF32(utf32.LittleEndian, utf32.UseBOM).NewDecoder()
+	b, _ := UTF.String(string(s))
 	return b
 }
 
