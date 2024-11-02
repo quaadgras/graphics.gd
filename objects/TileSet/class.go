@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
@@ -1872,4 +1870,89 @@ const (
 	TerrainModeMatchCorners TerrainMode = 1
 	/*Requires sides to match with neighboring tiles' terrains.*/
 	TerrainModeMatchSides TerrainMode = 2
+)
+
+type VariantType int
+
+const (
+	/*Variable is [code]null[/code].*/
+	TypeNil VariantType = 0
+	/*Variable is of type [bool].*/
+	TypeBool VariantType = 1
+	/*Variable is of type [int].*/
+	TypeInt VariantType = 2
+	/*Variable is of type [float].*/
+	TypeFloat VariantType = 3
+	/*Variable is of type [String].*/
+	TypeString VariantType = 4
+	/*Variable is of type [Vector2].*/
+	TypeVector2 VariantType = 5
+	/*Variable is of type [Vector2i].*/
+	TypeVector2i VariantType = 6
+	/*Variable is of type [Rect2].*/
+	TypeRect2 VariantType = 7
+	/*Variable is of type [Rect2i].*/
+	TypeRect2i VariantType = 8
+	/*Variable is of type [Vector3].*/
+	TypeVector3 VariantType = 9
+	/*Variable is of type [Vector3i].*/
+	TypeVector3i VariantType = 10
+	/*Variable is of type [Transform2D].*/
+	TypeTransform2d VariantType = 11
+	/*Variable is of type [Vector4].*/
+	TypeVector4 VariantType = 12
+	/*Variable is of type [Vector4i].*/
+	TypeVector4i VariantType = 13
+	/*Variable is of type [Plane].*/
+	TypePlane VariantType = 14
+	/*Variable is of type [Quaternion].*/
+	TypeQuaternion VariantType = 15
+	/*Variable is of type [AABB].*/
+	TypeAabb VariantType = 16
+	/*Variable is of type [Basis].*/
+	TypeBasis VariantType = 17
+	/*Variable is of type [Transform3D].*/
+	TypeTransform3d VariantType = 18
+	/*Variable is of type [Projection].*/
+	TypeProjection VariantType = 19
+	/*Variable is of type [Color].*/
+	TypeColor VariantType = 20
+	/*Variable is of type [StringName].*/
+	TypeStringName VariantType = 21
+	/*Variable is of type [NodePath].*/
+	TypeNodePath VariantType = 22
+	/*Variable is of type [RID].*/
+	TypeRid VariantType = 23
+	/*Variable is of type [Object].*/
+	TypeObject VariantType = 24
+	/*Variable is of type [Callable].*/
+	TypeCallable VariantType = 25
+	/*Variable is of type [Signal].*/
+	TypeSignal VariantType = 26
+	/*Variable is of type [Dictionary].*/
+	TypeDictionary VariantType = 27
+	/*Variable is of type [Array].*/
+	TypeArray VariantType = 28
+	/*Variable is of type [PackedByteArray].*/
+	TypePackedByteArray VariantType = 29
+	/*Variable is of type [PackedInt32Array].*/
+	TypePackedInt32Array VariantType = 30
+	/*Variable is of type [PackedInt64Array].*/
+	TypePackedInt64Array VariantType = 31
+	/*Variable is of type [PackedFloat32Array].*/
+	TypePackedFloat32Array VariantType = 32
+	/*Variable is of type [PackedFloat64Array].*/
+	TypePackedFloat64Array VariantType = 33
+	/*Variable is of type [PackedStringArray].*/
+	TypePackedStringArray VariantType = 34
+	/*Variable is of type [PackedVector2Array].*/
+	TypePackedVector2Array VariantType = 35
+	/*Variable is of type [PackedVector3Array].*/
+	TypePackedVector3Array VariantType = 36
+	/*Variable is of type [PackedColorArray].*/
+	TypePackedColorArray VariantType = 37
+	/*Variable is of type [PackedVector4Array].*/
+	TypePackedVector4Array VariantType = 38
+	/*Represents the size of the [enum Variant.Type] enum.*/
+	TypeMax VariantType = 39
 )

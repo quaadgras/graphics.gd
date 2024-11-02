@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CSGShape3D"
 import "grow.graphics/gd/objects/GeometryInstance3D"
@@ -19,7 +18,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 For complex arrangements of shapes, it is sometimes needed to add structure to your CSG nodes. The CSGCombiner3D node allows you to create this structure. The node encapsulates the result of the CSG operations of its children. In this way, it is possible to do operations on one set of shapes that are children of one CSGCombiner3D node, and a set of separate operations on a second set of shapes that are children of a second CSGCombiner3D node, and then do an operation that takes the two end results as its input to create the final shape.

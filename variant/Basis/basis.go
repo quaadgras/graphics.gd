@@ -4,8 +4,6 @@ package Basis
 import (
 	"unsafe"
 
-	"grow.graphics/gd/gdconst"
-
 	"grow.graphics/gd/variant/Angle"
 	"grow.graphics/gd/variant/Float"
 	"grow.graphics/gd/variant/Vector3"
@@ -132,7 +130,7 @@ func Outer(v, with Vector3.XYZ) XYZ { //gd:Vector3.outer
 
 // Euler constructs a pure rotation Basis matrix from Euler angles in the specified Euler rotation order.
 // By default, use YXZ order (most common). See the EulerOrder enum for possible values.
-func Euler(e Angle.Euler3D, order gdconst.EulerOrder) XYZ { //gd:Basis.from_euler
+func Euler(e Angle.Euler3D, order Angle.Order) XYZ { //gd:Basis.from_euler
 	var (
 		c, s Float.X
 	)
@@ -162,17 +160,17 @@ func Euler(e Angle.Euler3D, order gdconst.EulerOrder) XYZ { //gd:Basis.from_eule
 		}
 	)
 	switch order {
-	case gdconst.EulerOrderXyz:
+	case Angle.OrderXYZ:
 		return Mul(xmat, Mul(ymat, zmat))
-	case gdconst.EulerOrderXzy:
+	case Angle.OrderXZY:
 		return Mul(xmat, Mul(zmat, ymat))
-	case gdconst.EulerOrderYxz:
+	case Angle.OrderYXZ:
 		return Mul(ymat, Mul(xmat, zmat))
-	case gdconst.EulerOrderYzx:
+	case Angle.OrderYZX:
 		return Mul(ymat, Mul(zmat, xmat))
-	case gdconst.EulerOrderZxy:
+	case Angle.OrderZXY:
 		return Mul(zmat, Mul(xmat, ymat))
-	case gdconst.EulerOrderZyx:
+	case Angle.OrderZYX:
 		return Mul(zmat, Mul(ymat, xmat))
 	default:
 		panic("Invalid order parameter for EulerAngles.Basis()")
@@ -249,9 +247,9 @@ func Determinant(b XYZ) Float.X { //gd:Basis.determinant
 //
 // Consider using the [Basis.Quaternion] method instead, which returns a [Quaternion]
 // quaternion instead of [EulerAngles].
-func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.get_euler
+func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_euler
 	switch order {
-	case gdconst.EulerOrderXyz:
+	case Angle.OrderXYZ:
 		// Euler angles in XYZ convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -284,7 +282,7 @@ func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.g
 			euler.Z = 0.0
 		}
 		return euler
-	case gdconst.EulerOrderXzy:
+	case Angle.OrderXZY:
 		// Euler angles in XZY convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -312,7 +310,7 @@ func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.g
 			euler.Z = -Angle.Pi / 2.0
 		}
 		return euler
-	case gdconst.EulerOrderYxz:
+	case Angle.OrderYXZ:
 		// Euler angles in YXZ convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -349,7 +347,7 @@ func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.g
 		}
 
 		return euler
-	case gdconst.EulerOrderYzx:
+	case Angle.OrderYZX:
 		// Euler angles in YZX convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -377,7 +375,7 @@ func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.g
 			euler.Z = Angle.Pi / 2.0
 		}
 		return euler
-	case gdconst.EulerOrderZxy:
+	case Angle.OrderZXY:
 		// Euler angles in ZXY convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//
@@ -404,7 +402,7 @@ func AsEulerAngles(b XYZ, order gdconst.EulerOrder) Angle.Euler3D { //gd:Basis.g
 			euler.Z = 0
 		}
 		return euler
-	case gdconst.EulerOrderZyx:
+	case Angle.OrderZYX:
 		// Euler angles in ZYX convention.
 		// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
 		//

@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 AudioEffectEQ gives you control over frequencies. Use it to compensate for existing deficiencies in audio. AudioEffectEQs are useful on the Master bus to completely master a mix and give it more character. They are also useful when a game is run on a mobile device, to adjust the mix to that kind of speakers (it can be added but disabled when headphones are plugged).

@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.

@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeVectorBase"
 import "grow.graphics/gd/objects/VisualShaderNode"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Translates to [code]faceforward(N, I, Nref)[/code] in the shader language. The function has three vector parameters: [code]N[/code], the vector to orient, [code]I[/code], the incident vector, and [code]Nref[/code], the reference vector. If the dot product of [code]I[/code] and [code]Nref[/code] is smaller than zero the return value is [code]N[/code]. Otherwise, [code]-N[/code] is returned.

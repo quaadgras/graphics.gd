@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Abstraction over [TextServer] for handling a single paragraph of text.
@@ -297,11 +295,11 @@ func (self Instance) SetPreserveControl(value bool) {
 	class(self).SetPreserveControl(value)
 }
 
-func (self Instance) Alignment() gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetAlignment())
+func (self Instance) Alignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetAlignment())
 }
 
-func (self Instance) SetAlignment(value gdconst.HorizontalAlignment) {
+func (self Instance) SetAlignment(value HorizontalAlignment) {
 	class(self).SetAlignment(value)
 }
 
@@ -523,7 +521,7 @@ func (self class) AddString(text gd.String, font objects.Font, font_size gd.Int,
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, length gd.Int, baseline gd.Float) bool {
+func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, size)
@@ -541,7 +539,7 @@ func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align gdcons
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, baseline gd.Float) bool {
+func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, size)
@@ -555,7 +553,7 @@ func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align gdc
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment gdconst.HorizontalAlignment) {
+func (self class) SetAlignment(alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
@@ -564,9 +562,9 @@ func (self class) SetAlignment(alignment gdconst.HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetAlignment() gdconst.HorizontalAlignment {
+func (self class) GetAlignment() HorizontalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1056,3 +1054,47 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("TextParagraph", func(ptr gd.Object) any { return classdb.TextParagraph(ptr) })
 }
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)
+
+type InlineAlignment int
+
+const (
+	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentTopTo InlineAlignment = 0
+	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentCenterTo InlineAlignment = 1
+	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBaselineTo InlineAlignment = 3
+	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBottomTo InlineAlignment = 2
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	InlineAlignmentToTop InlineAlignment = 0
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	InlineAlignmentToCenter InlineAlignment = 4
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
+	InlineAlignmentToBaseline InlineAlignment = 8
+	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	InlineAlignmentToBottom InlineAlignment = 12
+	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	InlineAlignmentTop InlineAlignment = 0
+	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	InlineAlignmentCenter InlineAlignment = 5
+	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	InlineAlignmentBottom InlineAlignment = 14
+	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	InlineAlignmentImageMask InlineAlignment = 3
+	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	InlineAlignmentTextMask InlineAlignment = 12
+)

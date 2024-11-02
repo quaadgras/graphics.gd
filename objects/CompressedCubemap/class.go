@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CompressedTextureLayered"
 import "grow.graphics/gd/objects/TextureLayered"
@@ -18,7 +17,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A cubemap that is loaded from a [code].ccube[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedCubemap] can use one of 4 compression methods:

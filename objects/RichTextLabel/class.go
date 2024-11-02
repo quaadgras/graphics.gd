@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -158,7 +156,7 @@ func (self Instance) PushOutlineColor(color gd.Color) {
 /*
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
-func (self Instance) PushParagraph(alignment gdconst.HorizontalAlignment) {
+func (self Instance) PushParagraph(alignment HorizontalAlignment) {
 	class(self).PushParagraph(alignment, 0, gd.NewString(""), 0, 163, gd.NewPackedFloat32Slice(([1][]float32{}[0])))
 }
 
@@ -851,7 +849,7 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 //go:nosplit
-func (self class) AddImage(image objects.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align gdconst.InlineAlignment, region gd.Rect2, key gd.Variant, pad bool, tooltip gd.String, size_in_percent bool) {
+func (self class) AddImage(image objects.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, key gd.Variant, pad bool, tooltip gd.String, size_in_percent bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, width)
@@ -872,7 +870,7 @@ func (self class) AddImage(image objects.Texture2D, width gd.Int, height gd.Int,
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 //go:nosplit
-func (self class) UpdateImage(key gd.Variant, mask classdb.RichTextLabelImageUpdateMask, image objects.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align gdconst.InlineAlignment, region gd.Rect2, pad bool, tooltip gd.String, size_in_percent bool) {
+func (self class) UpdateImage(key gd.Variant, mask classdb.RichTextLabelImageUpdateMask, image objects.Texture2D, width gd.Int, height gd.Int, color gd.Color, inline_align InlineAlignment, region gd.Rect2, pad bool, tooltip gd.String, size_in_percent bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, mask)
@@ -1053,7 +1051,7 @@ func (self class) PushOutlineColor(color gd.Color) {
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushParagraph(alignment gdconst.HorizontalAlignment, base_direction classdb.ControlTextDirection, language gd.String, st_parser classdb.TextServerStructuredTextParser, justification_flags classdb.TextServerJustificationFlag, tab_stops gd.PackedFloat32Array) {
+func (self class) PushParagraph(alignment HorizontalAlignment, base_direction classdb.ControlTextDirection, language gd.String, st_parser classdb.TextServerStructuredTextParser, justification_flags classdb.TextServerJustificationFlag, tab_stops gd.PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, base_direction)
@@ -1158,7 +1156,7 @@ func (self class) PushStrikethrough() {
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
 //go:nosplit
-func (self class) PushTable(columns gd.Int, inline_align gdconst.InlineAlignment, align_to_row gd.Int) {
+func (self class) PushTable(columns gd.Int, inline_align InlineAlignment, align_to_row gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, columns)
 	callframe.Arg(frame, inline_align)
@@ -2334,4 +2332,48 @@ const (
 	UpdateTooltip ImageUpdateMask = 64
 	/*If this bit is set, [method update_image] changes image width from/to percents.*/
 	UpdateWidthInPercent ImageUpdateMask = 128
+)
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)
+
+type InlineAlignment int
+
+const (
+	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentTopTo InlineAlignment = 0
+	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentCenterTo InlineAlignment = 1
+	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBaselineTo InlineAlignment = 3
+	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBottomTo InlineAlignment = 2
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	InlineAlignmentToTop InlineAlignment = 0
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	InlineAlignmentToCenter InlineAlignment = 4
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
+	InlineAlignmentToBaseline InlineAlignment = 8
+	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	InlineAlignmentToBottom InlineAlignment = 12
+	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	InlineAlignmentTop InlineAlignment = 0
+	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	InlineAlignmentCenter InlineAlignment = 5
+	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	InlineAlignmentBottom InlineAlignment = 14
+	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	InlineAlignmentImageMask InlineAlignment = 3
+	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	InlineAlignmentTextMask InlineAlignment = 12
 )

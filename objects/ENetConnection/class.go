@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
@@ -25,8 +23,8 @@ type Instance [1]classdb.ENetConnection
 Creates an ENetHost bound to the given [param bind_address] and [param bind_port] that allows up to [param max_peers] connected peers, each allocating up to [param max_channels] channels, optionally limiting bandwidth to [param in_bandwidth] and [param out_bandwidth] (if greater than zero).
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
-func (self Instance) CreateHostBound(bind_address string, bind_port int) gd.Error {
-	return gd.Error(class(self).CreateHostBound(gd.NewString(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
+func (self Instance) CreateHostBound(bind_address string, bind_port int) error {
+	return error(class(self).CreateHostBound(gd.NewString(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
 }
 
 /*
@@ -34,8 +32,8 @@ Creates an ENetHost that allows up to [param max_peers] connected peers, each al
 This method binds a random available dynamic UDP port on the host machine at the [i]unspecified[/i] address. Use [method create_host_bound] to specify the address and port.
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
-func (self Instance) CreateHost() gd.Error {
-	return gd.Error(class(self).CreateHost(gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
+func (self Instance) CreateHost() error {
+	return error(class(self).CreateHost(gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
 }
 
 /*
@@ -102,15 +100,15 @@ func (self Instance) Compress(mode classdb.ENetConnectionCompressionMode) {
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
-func (self Instance) DtlsServerSetup(server_options objects.TLSOptions) gd.Error {
-	return gd.Error(class(self).DtlsServerSetup(server_options))
+func (self Instance) DtlsServerSetup(server_options objects.TLSOptions) error {
+	return error(class(self).DtlsServerSetup(server_options))
 }
 
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Instance) DtlsClientSetup(hostname string) gd.Error {
-	return gd.Error(class(self).DtlsClientSetup(gd.NewString(hostname), ([1]objects.TLSOptions{}[0])))
+func (self Instance) DtlsClientSetup(hostname string) error {
+	return error(class(self).DtlsClientSetup(gd.NewString(hostname), ([1]objects.TLSOptions{}[0])))
 }
 
 /*
@@ -175,7 +173,7 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 //go:nosplit
-func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) int64 {
+func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bind_address))
 	callframe.Arg(frame, bind_port)
@@ -183,7 +181,7 @@ func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_
 	callframe.Arg(frame, max_channels)
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host_bound, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -196,13 +194,13 @@ This method binds a random available dynamic UDP port on the host machine at the
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 //go:nosplit
-func (self class) CreateHost(max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) int64 {
+func (self class) CreateHost(max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_peers)
 	callframe.Arg(frame, max_channels)
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -322,10 +320,10 @@ func (self class) Compress(mode classdb.ENetConnectionCompressionMode) {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) DtlsServerSetup(server_options objects.TLSOptions) int64 {
+func (self class) DtlsServerSetup(server_options objects.TLSOptions) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -336,11 +334,11 @@ func (self class) DtlsServerSetup(server_options objects.TLSOptions) int64 {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) DtlsClientSetup(hostname gd.String, client_options objects.TLSOptions) int64 {
+func (self class) DtlsClientSetup(hostname gd.String, client_options objects.TLSOptions) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(hostname))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -492,4 +490,120 @@ const (
 	HostTotalReceivedData HostStatistic = 2
 	/*Total UDP packets received.*/
 	HostTotalReceivedPackets HostStatistic = 3
+)
+
+type Error int
+
+const (
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
+	ErrFileMissingDependencies Error = 17
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
 )

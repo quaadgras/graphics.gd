@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 [StyleBox] is an abstract base class for drawing stylized boxes for UI elements. It is used for panels, buttons, [LineEdit] backgrounds, [Tree] backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a [StyleBox] assigned as mask to a control, clicks and motion signals will go through it to the one below.
@@ -87,7 +85,7 @@ func (self Instance) SetContentMarginAll(offset float64) {
 Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
-func (self Instance) GetMargin(margin gdconst.Side) float64 {
+func (self Instance) GetMargin(margin Side) float64 {
 	return float64(float64(class(self).GetMargin(margin)))
 }
 
@@ -219,7 +217,7 @@ func (self class) GetMinimumSize() gd.Vector2 {
 Sets the default value of the specified [enum Side] to [param offset] pixels.
 */
 //go:nosplit
-func (self class) SetContentMargin(margin gdconst.Side, offset gd.Float) {
+func (self class) SetContentMargin(margin Side, offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, offset)
@@ -244,7 +242,7 @@ func (self class) SetContentMarginAll(offset gd.Float) {
 Returns the default margin of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetContentMargin(margin gdconst.Side) gd.Float {
+func (self class) GetContentMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -259,7 +257,7 @@ Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 //go:nosplit
-func (self class) GetMargin(margin gdconst.Side) gd.Float {
+func (self class) GetMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -364,3 +362,16 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("StyleBox", func(ptr gd.Object) any { return classdb.StyleBox(ptr) }) }
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
+)

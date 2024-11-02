@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -3758,7 +3756,7 @@ func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts gd.Ar
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, length gd.Int, baseline gd.Float) bool {
+func (self class) ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(key))
@@ -3777,7 +3775,7 @@ func (self class) ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vec
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, baseline gd.Float) bool {
+func (self class) ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(key))
@@ -5056,4 +5054,35 @@ const (
 	FixedSizeScaleIntegerOnly FixedSizeScaleMode = 1
 	/*Bitmap font is scaled to an arbitrary (fractional) size. This is the recommended option for non-pixel art fonts.*/
 	FixedSizeScaleEnabled FixedSizeScaleMode = 2
+)
+
+type InlineAlignment int
+
+const (
+	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentTopTo InlineAlignment = 0
+	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentCenterTo InlineAlignment = 1
+	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBaselineTo InlineAlignment = 3
+	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBottomTo InlineAlignment = 2
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	InlineAlignmentToTop InlineAlignment = 0
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	InlineAlignmentToCenter InlineAlignment = 4
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
+	InlineAlignmentToBaseline InlineAlignment = 8
+	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	InlineAlignmentToBottom InlineAlignment = 12
+	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	InlineAlignmentTop InlineAlignment = 0
+	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	InlineAlignmentCenter InlineAlignment = 5
+	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	InlineAlignmentBottom InlineAlignment = 14
+	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	InlineAlignmentImageMask InlineAlignment = 3
+	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	InlineAlignmentTextMask InlineAlignment = 12
 )

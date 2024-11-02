@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MultiplayerAPI"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 This class can be used to augment or replace the default [MultiplayerAPI] implementation via script or extensions.
@@ -103,7 +101,7 @@ Native extensions can alternatively use the [method MultiplayerAPI.set_default_i
 	// MultiplayerAPIExtension methods that can be overridden by a [Class] that extends it.
 	type MultiplayerAPIExtension interface {
 		//Callback for [method MultiplayerAPI.poll].
-		Poll() gd.Error
+		Poll() error
 		//Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 		SetMultiplayerPeer(multiplayer_peer objects.MultiplayerPeer)
 		//Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
@@ -113,13 +111,13 @@ Native extensions can alternatively use the [method MultiplayerAPI.set_default_i
 		//Callback for [method MultiplayerAPI.get_peers].
 		GetPeerIds() []int32
 		//Callback for [method MultiplayerAPI.rpc].
-		Rpc(peer int, obj gd.Object, method string, args gd.Array) gd.Error
+		Rpc(peer int, obj gd.Object, method string, args gd.Array) error
 		//Callback for [method MultiplayerAPI.get_remote_sender_id].
 		GetRemoteSenderId() int
 		//Callback for [method MultiplayerAPI.object_configuration_add].
-		ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) gd.Error
+		ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) error
 		//Callback for [method MultiplayerAPI.object_configuration_remove].
-		ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) gd.Error
+		ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) error
 	}
 */
 type Instance [1]classdb.MultiplayerAPIExtension
@@ -127,7 +125,7 @@ type Instance [1]classdb.MultiplayerAPIExtension
 /*
 Callback for [method MultiplayerAPI.poll].
 */
-func (Instance) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -191,7 +189,7 @@ func (Instance) _get_peer_ids(impl func(ptr unsafe.Pointer) []int32) (cb gd.Exte
 /*
 Callback for [method MultiplayerAPI.rpc].
 */
-func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj gd.Object, method string, args gd.Array) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj gd.Object, method string, args gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})
@@ -220,7 +218,7 @@ func (Instance) _get_remote_sender_id(impl func(ptr unsafe.Pointer) int) (cb gd.
 /*
 Callback for [method MultiplayerAPI.object_configuration_add].
 */
-func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(obj)
@@ -235,7 +233,7 @@ func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.O
 /*
 Callback for [method MultiplayerAPI.object_configuration_remove].
 */
-func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(obj)
@@ -261,7 +259,7 @@ func New() Instance {
 /*
 Callback for [method MultiplayerAPI.poll].
 */
-func (class) _poll(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -325,7 +323,7 @@ func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (c
 /*
 Callback for [method MultiplayerAPI.rpc].
 */
-func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj gd.Object, method gd.StringName, args gd.Array) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj gd.Object, method gd.StringName, args gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})
@@ -352,7 +350,7 @@ func (class) _get_remote_sender_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.
 /*
 Callback for [method MultiplayerAPI.object_configuration_add].
 */
-func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(obj)
@@ -366,7 +364,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj gd.Obje
 /*
 Callback for [method MultiplayerAPI.object_configuration_remove].
 */
-func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(obj)
@@ -442,3 +440,119 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("MultiplayerAPIExtension", func(ptr gd.Object) any { return classdb.MultiplayerAPIExtension(ptr) })
 }
+
+type Error int
+
+const (
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
+	ErrFileMissingDependencies Error = 17
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
+)

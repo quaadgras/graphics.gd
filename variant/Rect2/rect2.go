@@ -2,11 +2,18 @@
 package Rect2
 
 import (
-	"grow.graphics/gd/gdconst"
-
 	"grow.graphics/gd/variant/Float"
 	"grow.graphics/gd/variant/Int"
 	"grow.graphics/gd/variant/Vector2"
+)
+
+type Side int
+
+const (
+	SideLeft   Side = 0
+	SideTop    Side = 1
+	SideRight  Side = 2
+	SideBottom Side = 3
 )
 
 // PositionSize represents an axis-aligned rectangle in a 2D space.
@@ -121,17 +128,17 @@ func ExpandSides[X Float.Any | Int.Any](rect PositionSize, left, top, right, bot
 // ExpandSize returns a copy of this rectangle with its side extended by the given amount
 // (see Side constants). A negative amount shrinks the rectangle, instead. See also
 // [Expand] and [ExpandSides].
-func ExpandSide[X Float.Any | Int.Any](rect PositionSize, side gdconst.Side, amount X) PositionSize { //gd:Rect2.grow_side
+func ExpandSide[X Float.Any | Int.Any](rect PositionSize, side Side, amount X) PositionSize { //gd:Rect2.grow_side
 	switch side {
-	case gdconst.SideLeft:
+	case SideLeft:
 		rect.Position.X -= Float.X(amount)
 		rect.Size.X += Float.X(amount)
-	case gdconst.SideTop:
+	case SideTop:
 		rect.Position.Y -= Float.X(amount)
 		rect.Size.Y += Float.X(amount)
-	case gdconst.SideRight:
+	case SideRight:
 		rect.Size.X += Float.X(amount)
-	case gdconst.SideBottom:
+	case SideBottom:
 		rect.Size.Y += Float.X(amount)
 	}
 	return rect

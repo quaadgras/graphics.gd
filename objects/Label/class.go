@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
@@ -88,19 +86,19 @@ func (self Instance) SetLabelSettings(value objects.LabelSettings) {
 	class(self).SetLabelSettings(value)
 }
 
-func (self Instance) HorizontalAlignment() gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) HorizontalAlignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetHorizontalAlignment(value gdconst.HorizontalAlignment) {
+func (self Instance) SetHorizontalAlignment(value HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
-func (self Instance) VerticalAlignment() gdconst.VerticalAlignment {
-	return gdconst.VerticalAlignment(class(self).GetVerticalAlignment())
+func (self Instance) VerticalAlignment() VerticalAlignment {
+	return VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
-func (self Instance) SetVerticalAlignment(value gdconst.VerticalAlignment) {
+func (self Instance) SetVerticalAlignment(value VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
@@ -233,7 +231,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment gdconst.HorizontalAlignment) {
+func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
@@ -242,9 +240,9 @@ func (self class) SetHorizontalAlignment(alignment gdconst.HorizontalAlignment) 
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() gdconst.HorizontalAlignment {
+func (self class) GetHorizontalAlignment() HorizontalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -252,7 +250,7 @@ func (self class) GetHorizontalAlignment() gdconst.HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetVerticalAlignment(alignment gdconst.VerticalAlignment) {
+func (self class) SetVerticalAlignment(alignment VerticalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
@@ -261,9 +259,9 @@ func (self class) SetVerticalAlignment(alignment gdconst.VerticalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetVerticalAlignment() gdconst.VerticalAlignment {
+func (self class) GetVerticalAlignment() VerticalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.VerticalAlignment](frame)
+	var r_ret = callframe.Ret[VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -709,3 +707,29 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("Label", func(ptr gd.Object) any { return classdb.Label(ptr) }) }
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)
+
+type VerticalAlignment int
+
+const (
+	/*Vertical top alignment, usually for text-derived classes.*/
+	VerticalAlignmentTop VerticalAlignment = 0
+	/*Vertical center alignment, usually for text-derived classes.*/
+	VerticalAlignmentCenter VerticalAlignment = 1
+	/*Vertical bottom alignment, usually for text-derived classes.*/
+	VerticalAlignmentBottom VerticalAlignment = 2
+	/*Expand rows to fit height, usually for text-derived classes.*/
+	VerticalAlignmentFill VerticalAlignment = 3
+)

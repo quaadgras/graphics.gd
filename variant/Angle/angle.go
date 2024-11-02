@@ -18,6 +18,17 @@ type Euler3D = struct {
 	Z Radians
 }
 
+type Order int
+
+const (
+	OrderXYZ Order = 0
+	OrderXZY Order = 1
+	OrderYXZ Order = 2
+	OrderYZX Order = 3
+	OrderZXY Order = 4
+	OrderZYX Order = 5
+)
+
 type vector2 = struct {
 	X Float.X
 	Y Float.X

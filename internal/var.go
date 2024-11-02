@@ -10,6 +10,7 @@ import (
 	"grow.graphics/xy"
 
 	float "grow.graphics/gd/variant/Float"
+	gdVector3 "grow.graphics/gd/variant/Vector3"
 )
 
 type Bool = bool
@@ -99,7 +100,7 @@ func variantTypeFromName(s string) (VariantType, reflect.Type) {
 	case "Vector3i":
 		return TypeVector3i, reflect.TypeOf(Vector3i{})
 	case "Transform2D":
-		return TypeTransform2d, reflect.TypeOf(Transform2D{})
+		return TypeTransform2D, reflect.TypeOf(Transform2D{})
 	case "Vector4":
 		return TypeVector4, reflect.TypeOf(Vector4{})
 	case "Vector4i":
@@ -109,11 +110,11 @@ func variantTypeFromName(s string) (VariantType, reflect.Type) {
 	case "Quaternion":
 		return TypeQuaternion, reflect.TypeOf(Quaternion{})
 	case "AABB":
-		return TypeAabb, reflect.TypeOf(AABB{})
+		return TypeAABB, reflect.TypeOf(AABB{})
 	case "Basis":
 		return TypeBasis, reflect.TypeOf(Basis{})
 	case "Transform3D":
-		return TypeTransform3d, reflect.TypeOf(Transform3D{})
+		return TypeTransform3D, reflect.TypeOf(Transform3D{})
 	case "Projection":
 		return TypeProjection, reflect.TypeOf(Projection{})
 	case "Color":
@@ -123,7 +124,7 @@ func variantTypeFromName(s string) (VariantType, reflect.Type) {
 	case "NodePath":
 		return TypeNodePath, reflect.TypeOf(NodePath{})
 	case "RID":
-		return TypeRid, reflect.TypeOf(RID(0))
+		return TypeRID, reflect.TypeOf(RID(0))
 	case "Object":
 		return TypeObject, reflect.TypeOf(uintptr(0))
 	case "Callable":
@@ -213,3 +214,88 @@ func operatoTypeFromName(name string) Operator {
 		panic("gdextension.operatoTypeFromName: unknown operator " + name)
 	}
 }
+
+type Vector3Axis = gdVector3.Axis
+
+const (
+	/*Variable is [code]null[/code].*/
+	TypeNil VariantType = 0
+	/*Variable is of type [bool].*/
+	TypeBool VariantType = 1
+	/*Variable is of type [int].*/
+	TypeInt VariantType = 2
+	/*Variable is of type [float].*/
+	TypeFloat VariantType = 3
+	/*Variable is of type [String].*/
+	TypeString VariantType = 4
+	/*Variable is of type [Vector2].*/
+	TypeVector2 VariantType = 5
+	/*Variable is of type [Vector2i].*/
+	TypeVector2i VariantType = 6
+	/*Variable is of type [Rect2].*/
+	TypeRect2 VariantType = 7
+	/*Variable is of type [Rect2i].*/
+	TypeRect2i VariantType = 8
+	/*Variable is of type [Vector3].*/
+	TypeVector3 VariantType = 9
+	/*Variable is of type [Vector3i].*/
+	TypeVector3i VariantType = 10
+	/*Variable is of type [Transform2D].*/
+	TypeTransform2D VariantType = 11
+	/*Variable is of type [Vector4].*/
+	TypeVector4 VariantType = 12
+	/*Variable is of type [Vector4i].*/
+	TypeVector4i VariantType = 13
+	/*Variable is of type [Plane].*/
+	TypePlane VariantType = 14
+	/*Variable is of type [Quaternion].*/
+	TypeQuaternion VariantType = 15
+	/*Variable is of type [AABB].*/
+	TypeAABB VariantType = 16
+	/*Variable is of type [Basis].*/
+	TypeBasis VariantType = 17
+	/*Variable is of type [Transform3D].*/
+	TypeTransform3D VariantType = 18
+	/*Variable is of type [Projection].*/
+	TypeProjection VariantType = 19
+	/*Variable is of type [Color].*/
+	TypeColor VariantType = 20
+	/*Variable is of type [StringName].*/
+	TypeStringName VariantType = 21
+	/*Variable is of type [NodePath].*/
+	TypeNodePath VariantType = 22
+	/*Variable is of type [RID].*/
+	TypeRID VariantType = 23
+	/*Variable is of type [Object].*/
+	TypeObject VariantType = 24
+	/*Variable is of type [Callable].*/
+	TypeCallable VariantType = 25
+	/*Variable is of type [Signal].*/
+	TypeSignal VariantType = 26
+	/*Variable is of type [Dictionary].*/
+	TypeDictionary VariantType = 27
+	/*Variable is of type [Array].*/
+	TypeArray VariantType = 28
+	/*Variable is of type [PackedByteArray].*/
+	TypePackedByteArray VariantType = 29
+	/*Variable is of type [PackedInt32Array].*/
+	TypePackedInt32Array VariantType = 30
+	/*Variable is of type [PackedInt64Array].*/
+	TypePackedInt64Array VariantType = 31
+	/*Variable is of type [PackedFloat32Array].*/
+	TypePackedFloat32Array VariantType = 32
+	/*Variable is of type [PackedFloat64Array].*/
+	TypePackedFloat64Array VariantType = 33
+	/*Variable is of type [PackedStringArray].*/
+	TypePackedStringArray VariantType = 34
+	/*Variable is of type [PackedVector2Array].*/
+	TypePackedVector2Array VariantType = 35
+	/*Variable is of type [PackedVector3Array].*/
+	TypePackedVector3Array VariantType = 36
+	/*Variable is of type [PackedColorArray].*/
+	TypePackedColorArray VariantType = 37
+	/*Variable is of type [PackedVector4Array].*/
+	TypePackedVector4Array VariantType = 38
+	/*Represents the size of the [enum Variant.Type] enum.*/
+	TypeMax VariantType = 39
+)

@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Stores information about joystick motions. One [InputEventJoypadMotion] represents one axis at a time. For gamepad buttons, see [InputEventJoypadButton].
@@ -34,11 +32,11 @@ func New() Instance {
 	return Instance{classdb.InputEventJoypadMotion(object)}
 }
 
-func (self Instance) Axis() gdconst.JoyAxis {
-	return gdconst.JoyAxis(class(self).GetAxis())
+func (self Instance) Axis() JoyAxis {
+	return JoyAxis(class(self).GetAxis())
 }
 
-func (self Instance) SetAxis(value gdconst.JoyAxis) {
+func (self Instance) SetAxis(value JoyAxis) {
 	class(self).SetAxis(value)
 }
 
@@ -51,7 +49,7 @@ func (self Instance) SetAxisValue(value float64) {
 }
 
 //go:nosplit
-func (self class) SetAxis(axis gdconst.JoyAxis) {
+func (self class) SetAxis(axis JoyAxis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret callframe.Nil
@@ -60,9 +58,9 @@ func (self class) SetAxis(axis gdconst.JoyAxis) {
 }
 
 //go:nosplit
-func (self class) GetAxis() gdconst.JoyAxis {
+func (self class) GetAxis() JoyAxis {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.JoyAxis](frame)
+	var r_ret = callframe.Ret[JoyAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -122,3 +120,26 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventJoypadMotion", func(ptr gd.Object) any { return classdb.InputEventJoypadMotion(ptr) })
 }
+
+type JoyAxis int
+
+const (
+	/*An invalid game controller axis.*/
+	JoyAxisInvalid JoyAxis = -1
+	/*Game controller left joystick x-axis.*/
+	JoyAxisLeftX JoyAxis = 0
+	/*Game controller left joystick y-axis.*/
+	JoyAxisLeftY JoyAxis = 1
+	/*Game controller right joystick x-axis.*/
+	JoyAxisRightX JoyAxis = 2
+	/*Game controller right joystick y-axis.*/
+	JoyAxisRightY JoyAxis = 3
+	/*Game controller left trigger axis.*/
+	JoyAxisTriggerLeft JoyAxis = 4
+	/*Game controller right trigger axis.*/
+	JoyAxisTriggerRight JoyAxis = 5
+	/*The number of SDL game controller axes.*/
+	JoyAxisSdlMax JoyAxis = 6
+	/*The maximum number of game controller axes: OpenVR supports up to 5 Joysticks making a total of 10 axes.*/
+	JoyAxisMax JoyAxis = 10
+)

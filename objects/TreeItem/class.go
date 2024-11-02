@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -592,15 +590,15 @@ func (self Instance) GetTooltipText(column int) string {
 /*
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
-func (self Instance) SetTextAlignment(column int, text_alignment gdconst.HorizontalAlignment) {
+func (self Instance) SetTextAlignment(column int, text_alignment HorizontalAlignment) {
 	class(self).SetTextAlignment(gd.Int(column), text_alignment)
 }
 
 /*
 Returns the given column's text alignment.
 */
-func (self Instance) GetTextAlignment(column int) gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetTextAlignment(gd.Int(column)))
+func (self Instance) GetTextAlignment(column int) HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetTextAlignment(gd.Int(column)))
 }
 
 /*
@@ -1950,7 +1948,7 @@ func (self class) GetTooltipText(column gd.Int) gd.String {
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
 //go:nosplit
-func (self class) SetTextAlignment(column gd.Int, text_alignment gdconst.HorizontalAlignment) {
+func (self class) SetTextAlignment(column gd.Int, text_alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, text_alignment)
@@ -1963,10 +1961,10 @@ func (self class) SetTextAlignment(column gd.Int, text_alignment gdconst.Horizon
 Returns the given column's text alignment.
 */
 //go:nosplit
-func (self class) GetTextAlignment(column gd.Int) gdconst.HorizontalAlignment {
+func (self class) GetTextAlignment(column gd.Int) HorizontalAlignment {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2296,4 +2294,17 @@ const (
 	/*Cell shows as a clickable button. It will display an arrow similar to [OptionButton], but doesn't feature a dropdown (for that you can use [constant CELL_MODE_RANGE]). Clicking the button emits the [signal Tree.item_edited] signal. The button is flat by default, you can use [method set_custom_as_button] to display it with a [StyleBox].
 	  This mode also supports custom drawing using [method set_custom_draw_callback].*/
 	CellModeCustom TreeCellMode = 4
+)
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
 )

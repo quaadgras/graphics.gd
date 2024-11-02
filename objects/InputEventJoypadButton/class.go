@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Input event type for gamepad buttons. For gamepad analog sticks and joysticks, see [InputEventJoypadMotion].
@@ -34,11 +32,11 @@ func New() Instance {
 	return Instance{classdb.InputEventJoypadButton(object)}
 }
 
-func (self Instance) ButtonIndex() gdconst.JoyButton {
-	return gdconst.JoyButton(class(self).GetButtonIndex())
+func (self Instance) ButtonIndex() JoyButton {
+	return JoyButton(class(self).GetButtonIndex())
 }
 
-func (self Instance) SetButtonIndex(value gdconst.JoyButton) {
+func (self Instance) SetButtonIndex(value JoyButton) {
 	class(self).SetButtonIndex(value)
 }
 
@@ -51,7 +49,7 @@ func (self Instance) SetPressure(value float64) {
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index gdconst.JoyButton) {
+func (self class) SetButtonIndex(button_index JoyButton) {
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret callframe.Nil
@@ -60,9 +58,9 @@ func (self class) SetButtonIndex(button_index gdconst.JoyButton) {
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() gdconst.JoyButton {
+func (self class) GetButtonIndex() JoyButton {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.JoyButton](frame)
+	var r_ret = callframe.Ret[JoyButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -131,3 +129,59 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventJoypadButton", func(ptr gd.Object) any { return classdb.InputEventJoypadButton(ptr) })
 }
+
+type JoyButton int
+
+const (
+	/*An invalid game controller button.*/
+	JoyButtonInvalid JoyButton = -1
+	/*Game controller SDL button A. Corresponds to the bottom action button: Sony Cross, Xbox A, Nintendo B.*/
+	JoyButtonA JoyButton = 0
+	/*Game controller SDL button B. Corresponds to the right action button: Sony Circle, Xbox B, Nintendo A.*/
+	JoyButtonB JoyButton = 1
+	/*Game controller SDL button X. Corresponds to the left action button: Sony Square, Xbox X, Nintendo Y.*/
+	JoyButtonX JoyButton = 2
+	/*Game controller SDL button Y. Corresponds to the top action button: Sony Triangle, Xbox Y, Nintendo X.*/
+	JoyButtonY JoyButton = 3
+	/*Game controller SDL back button. Corresponds to the Sony Select, Xbox Back, Nintendo - button.*/
+	JoyButtonBack JoyButton = 4
+	/*Game controller SDL guide button. Corresponds to the Sony PS, Xbox Home button.*/
+	JoyButtonGuide JoyButton = 5
+	/*Game controller SDL start button. Corresponds to the Sony Options, Xbox Menu, Nintendo + button.*/
+	JoyButtonStart JoyButton = 6
+	/*Game controller SDL left stick button. Corresponds to the Sony L3, Xbox L/LS button.*/
+	JoyButtonLeftStick JoyButton = 7
+	/*Game controller SDL right stick button. Corresponds to the Sony R3, Xbox R/RS button.*/
+	JoyButtonRightStick JoyButton = 8
+	/*Game controller SDL left shoulder button. Corresponds to the Sony L1, Xbox LB button.*/
+	JoyButtonLeftShoulder JoyButton = 9
+	/*Game controller SDL right shoulder button. Corresponds to the Sony R1, Xbox RB button.*/
+	JoyButtonRightShoulder JoyButton = 10
+	/*Game controller D-pad up button.*/
+	JoyButtonDpadUp JoyButton = 11
+	/*Game controller D-pad down button.*/
+	JoyButtonDpadDown JoyButton = 12
+	/*Game controller D-pad left button.*/
+	JoyButtonDpadLeft JoyButton = 13
+	/*Game controller D-pad right button.*/
+	JoyButtonDpadRight JoyButton = 14
+	/*Game controller SDL miscellaneous button. Corresponds to Xbox share button, PS5 microphone button, Nintendo Switch capture button.*/
+	JoyButtonMisc1 JoyButton = 15
+	/*Game controller SDL paddle 1 button.*/
+	JoyButtonPaddle1 JoyButton = 16
+	/*Game controller SDL paddle 2 button.*/
+	JoyButtonPaddle2 JoyButton = 17
+	/*Game controller SDL paddle 3 button.*/
+	JoyButtonPaddle3 JoyButton = 18
+	/*Game controller SDL paddle 4 button.*/
+	JoyButtonPaddle4 JoyButton = 19
+	/*Game controller SDL touchpad button.*/
+	JoyButtonTouchpad JoyButton = 20
+	/*The number of SDL game controller buttons.*/
+	JoyButtonSdlMax JoyButton = 21
+	/*The maximum number of game controller buttons supported by the engine. The actual limit may be lower on specific platforms:
+	  - [b]Android:[/b] Up to 36 buttons.
+	  - [b]Linux:[/b] Up to 80 buttons.
+	  - [b]Windows[/b] and [b]macOS:[/b] Up to 128 buttons.*/
+	JoyButtonMax JoyButton = 128
+)

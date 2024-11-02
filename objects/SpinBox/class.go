@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Range"
 import "grow.graphics/gd/objects/Control"
@@ -18,7 +17,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 [SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
@@ -73,11 +71,11 @@ func New() Instance {
 	return Instance{classdb.SpinBox(object)}
 }
 
-func (self Instance) Alignment() gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) Alignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetAlignment(value gdconst.HorizontalAlignment) {
+func (self Instance) SetAlignment(value HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
@@ -130,7 +128,7 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment gdconst.HorizontalAlignment) {
+func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
@@ -139,9 +137,9 @@ func (self class) SetHorizontalAlignment(alignment gdconst.HorizontalAlignment) 
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() gdconst.HorizontalAlignment {
+func (self class) GetHorizontalAlignment() HorizontalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -317,3 +315,16 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("SpinBox", func(ptr gd.Object) any { return classdb.SpinBox(ptr) }) }
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)

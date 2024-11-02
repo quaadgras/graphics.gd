@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Abstract base class for different font types. It has methods for drawing text and font character introspection.
@@ -568,7 +566,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by [method get_height].
 */
 //go:nosplit
-func (self class) GetStringSize(text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.Vector2 {
+func (self class) GetStringSize(text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, alignment)
@@ -589,7 +587,7 @@ Returns the size of a bounding box of a string broken into the lines, taking ker
 See also [method draw_multiline_string].
 */
 //go:nosplit
-func (self class) GetMultilineStringSize(text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.Vector2 {
+func (self class) GetMultilineStringSize(text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, alignment)
@@ -612,7 +610,7 @@ Draw [param text] into a canvas item using the font, at a given position, with [
 See also [method CanvasItem.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawString(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -634,7 +632,7 @@ Breaks [param text] into lines using rules specified by [param brk_flags] and dr
 See also [method CanvasItem.draw_multiline_string].
 */
 //go:nosplit
-func (self class) DrawMultilineString(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawMultilineString(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -658,7 +656,7 @@ Draw [param text] outline into a canvas item using the font, at a given position
 See also [method CanvasItem.draw_string_outline].
 */
 //go:nosplit
-func (self class) DrawStringOutline(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawStringOutline(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -681,7 +679,7 @@ Breaks [param text] to the lines using rules specified by [param brk_flags] and 
 See also [method CanvasItem.draw_multiline_string_outline].
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawMultilineStringOutline(canvas_item gd.RID, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -887,3 +885,16 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("Font", func(ptr gd.Object) any { return classdb.Font(ptr) }) }
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)

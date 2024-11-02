@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
@@ -368,11 +366,11 @@ func (self Instance) SetRotationEditMode(value classdb.Node3DRotationEditMode) {
 	class(self).SetRotationEditMode(value)
 }
 
-func (self Instance) RotationOrder() gdconst.EulerOrder {
-	return gdconst.EulerOrder(class(self).GetRotationOrder())
+func (self Instance) RotationOrder() EulerOrder {
+	return EulerOrder(class(self).GetRotationOrder())
 }
 
-func (self Instance) SetRotationOrder(value gdconst.EulerOrder) {
+func (self Instance) SetRotationOrder(value EulerOrder) {
 	class(self).SetRotationOrder(value)
 }
 
@@ -509,7 +507,7 @@ func (self class) GetRotationDegrees() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetRotationOrder(order gdconst.EulerOrder) {
+func (self class) SetRotationOrder(order EulerOrder) {
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret callframe.Nil
@@ -518,9 +516,9 @@ func (self class) SetRotationOrder(order gdconst.EulerOrder) {
 }
 
 //go:nosplit
-func (self class) GetRotationOrder() gdconst.EulerOrder {
+func (self class) GetRotationOrder() EulerOrder {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.EulerOrder](frame)
+	var r_ret = callframe.Ret[EulerOrder](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1240,4 +1238,21 @@ const (
 	RotationEditModeQuaternion RotationEditMode = 1
 	/*The rotation is edited using a [Basis]. In this mode, [member scale] can't be edited separately.*/
 	RotationEditModeBasis RotationEditMode = 2
+)
+
+type EulerOrder int
+
+const (
+	/*Specifies that Euler angles should be in XYZ order. When composing, the order is X, Y, Z. When decomposing, the order is reversed, first Z, then Y, and X last.*/
+	EulerOrderXyz EulerOrder = 0
+	/*Specifies that Euler angles should be in XZY order. When composing, the order is X, Z, Y. When decomposing, the order is reversed, first Y, then Z, and X last.*/
+	EulerOrderXzy EulerOrder = 1
+	/*Specifies that Euler angles should be in YXZ order. When composing, the order is Y, X, Z. When decomposing, the order is reversed, first Z, then X, and Y last.*/
+	EulerOrderYxz EulerOrder = 2
+	/*Specifies that Euler angles should be in YZX order. When composing, the order is Y, Z, X. When decomposing, the order is reversed, first X, then Z, and Y last.*/
+	EulerOrderYzx EulerOrder = 3
+	/*Specifies that Euler angles should be in ZXY order. When composing, the order is Z, X, Y. When decomposing, the order is reversed, first Y, then X, and Z last.*/
+	EulerOrderZxy EulerOrder = 4
+	/*Specifies that Euler angles should be in ZYX order. When composing, the order is Z, Y, X. When decomposing, the order is reversed, first X, then Y, and Z last.*/
+	EulerOrderZyx EulerOrder = 5
 )

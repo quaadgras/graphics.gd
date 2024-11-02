@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/BaseButton"
 import "grow.graphics/gd/objects/Control"
@@ -18,7 +17,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 [Button] is the standard themed button. It can contain text and an icon, and it will display them according to the current [Theme].
@@ -95,11 +93,11 @@ func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
-func (self Instance) Alignment() gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetTextAlignment())
+func (self Instance) Alignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetTextAlignment())
 }
 
-func (self Instance) SetAlignment(value gdconst.HorizontalAlignment) {
+func (self Instance) SetAlignment(value HorizontalAlignment) {
 	class(self).SetTextAlignment(value)
 }
 
@@ -127,19 +125,19 @@ func (self Instance) SetClipText(value bool) {
 	class(self).SetClipText(value)
 }
 
-func (self Instance) IconAlignment() gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetIconAlignment())
+func (self Instance) IconAlignment() HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetIconAlignment())
 }
 
-func (self Instance) SetIconAlignment(value gdconst.HorizontalAlignment) {
+func (self Instance) SetIconAlignment(value HorizontalAlignment) {
 	class(self).SetIconAlignment(value)
 }
 
-func (self Instance) VerticalIconAlignment() gdconst.VerticalAlignment {
-	return gdconst.VerticalAlignment(class(self).GetVerticalIconAlignment())
+func (self Instance) VerticalIconAlignment() VerticalAlignment {
+	return VerticalAlignment(class(self).GetVerticalIconAlignment())
 }
 
-func (self Instance) SetVerticalIconAlignment(value gdconst.VerticalAlignment) {
+func (self Instance) SetVerticalIconAlignment(value VerticalAlignment) {
 	class(self).SetVerticalIconAlignment(value)
 }
 
@@ -320,7 +318,7 @@ func (self class) GetClipText() bool {
 }
 
 //go:nosplit
-func (self class) SetTextAlignment(alignment gdconst.HorizontalAlignment) {
+func (self class) SetTextAlignment(alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret callframe.Nil
@@ -329,9 +327,9 @@ func (self class) SetTextAlignment(alignment gdconst.HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetTextAlignment() gdconst.HorizontalAlignment {
+func (self class) GetTextAlignment() HorizontalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -339,7 +337,7 @@ func (self class) GetTextAlignment() gdconst.HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetIconAlignment(icon_alignment gdconst.HorizontalAlignment) {
+func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, icon_alignment)
 	var r_ret callframe.Nil
@@ -348,9 +346,9 @@ func (self class) SetIconAlignment(icon_alignment gdconst.HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetIconAlignment() gdconst.HorizontalAlignment {
+func (self class) GetIconAlignment() HorizontalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -358,7 +356,7 @@ func (self class) GetIconAlignment() gdconst.HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetVerticalIconAlignment(vertical_icon_alignment gdconst.VerticalAlignment) {
+func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical_icon_alignment)
 	var r_ret callframe.Nil
@@ -367,9 +365,9 @@ func (self class) SetVerticalIconAlignment(vertical_icon_alignment gdconst.Verti
 }
 
 //go:nosplit
-func (self class) GetVerticalIconAlignment() gdconst.VerticalAlignment {
+func (self class) GetVerticalIconAlignment() VerticalAlignment {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.VerticalAlignment](frame)
+	var r_ret = callframe.Ret[VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_vertical_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -429,3 +427,29 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("Button", func(ptr gd.Object) any { return classdb.Button(ptr) }) }
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
+)
+
+type VerticalAlignment int
+
+const (
+	/*Vertical top alignment, usually for text-derived classes.*/
+	VerticalAlignmentTop VerticalAlignment = 0
+	/*Vertical center alignment, usually for text-derived classes.*/
+	VerticalAlignmentCenter VerticalAlignment = 1
+	/*Vertical bottom alignment, usually for text-derived classes.*/
+	VerticalAlignmentBottom VerticalAlignment = 2
+	/*Expand rows to fit height, usually for text-derived classes.*/
+	VerticalAlignmentFill VerticalAlignment = 3
+)

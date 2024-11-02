@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Range"
 import "grow.graphics/gd/objects/Control"
@@ -18,7 +17,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 TextureProgressBar works like [ProgressBar], but uses up to 3 textures instead of Godot's [Theme] resource. It can be used to create horizontal, vertical and radial progress bars.
@@ -377,7 +375,7 @@ func (self class) GetFillDegrees() gd.Float {
 Sets the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) SetStretchMargin(margin gdconst.Side, value gd.Int) {
+func (self class) SetStretchMargin(margin Side, value gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -390,7 +388,7 @@ func (self class) SetStretchMargin(margin gdconst.Side, value gd.Int) {
 Returns the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) GetStretchMargin(margin gdconst.Side) gd.Int {
+func (self class) GetStretchMargin(margin Side) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -473,4 +471,17 @@ const (
 	FillBilinearTopAndBottom FillMode = 7
 	/*Turns the node into a radial bar. The [member texture_progress] fills radially from the center, expanding both clockwise and counterclockwise. See [member radial_center_offset], [member radial_initial_angle] and [member radial_fill_degrees] to control the way the bar fills up.*/
 	FillClockwiseAndCounterClockwise FillMode = 8
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
 )

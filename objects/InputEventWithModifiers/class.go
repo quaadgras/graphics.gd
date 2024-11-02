@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Stores information about mouse, keyboard, and touch gesture input events. This includes information about which modifier keys are pressed, such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See [method Node._input].
@@ -35,8 +33,8 @@ func (self Instance) IsCommandOrControlPressed() bool {
 /*
 Returns the keycode combination of modifier keys.
 */
-func (self Instance) GetModifiersMask() gdconst.KeyModifierMask {
-	return gdconst.KeyModifierMask(class(self).GetModifiersMask())
+func (self Instance) GetModifiersMask() KeyModifierMask {
+	return KeyModifierMask(class(self).GetModifiersMask())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -203,9 +201,9 @@ func (self class) IsMetaPressed() bool {
 Returns the keycode combination of modifier keys.
 */
 //go:nosplit
-func (self class) GetModifiersMask() gdconst.KeyModifierMask {
+func (self class) GetModifiersMask() KeyModifierMask {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.KeyModifierMask](frame)
+	var r_ret = callframe.Ret[KeyModifierMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_get_modifiers_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -252,3 +250,26 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventWithModifiers", func(ptr gd.Object) any { return classdb.InputEventWithModifiers(ptr) })
 }
+
+type KeyModifierMask int
+
+const (
+	/*Key Code mask.*/
+	KeyCodeMask KeyModifierMask = 8388607
+	/*Modifier key mask.*/
+	KeyModifierMaskDefault KeyModifierMask = 532676608
+	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
+	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
+	/*Shift key mask.*/
+	KeyMaskShift KeyModifierMask = 33554432
+	/*Alt or Option (on macOS) key mask.*/
+	KeyMaskAlt KeyModifierMask = 67108864
+	/*Command (on macOS) or Meta/Windows key mask.*/
+	KeyMaskMeta KeyModifierMask = 134217728
+	/*Control key mask.*/
+	KeyMaskCtrl KeyModifierMask = 268435456
+	/*Keypad key mask.*/
+	KeyMaskKpad KeyModifierMask = 536870912
+	/*Group Switch key mask.*/
+	KeyMaskGroupSwitch KeyModifierMask = 1073741824
+)

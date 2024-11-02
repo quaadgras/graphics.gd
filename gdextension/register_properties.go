@@ -6,9 +6,9 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd/gdconst"
 	gd "grow.graphics/gd/internal"
 	classdb "grow.graphics/gd/internal/classdb"
+	"grow.graphics/gd/objects"
 	"grow.graphics/gd/objects/Resource"
 )
 
@@ -18,37 +18,37 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 	if ok {
 		name = tag
 	}
-	var hint gdconst.PropertyHint
+	var hint objects.PropertyHint
 	var hintString = classNameOf(field.Type)
 	vtype := variantTypeOf(field.Type)
 	if vtype == gd.TypeArray {
 		_, generic, ok := strings.Cut(field.Type.String(), "[")
 		if ok {
-			hint |= gdconst.PropertyHintArrayType
+			hint |= objects.PropertyHintArrayType
 			split := strings.Split(generic, ".")
 			elem := split[len(split)-1]
 			elem = elem[:len(elem)-1]
-			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, gdconst.PropertyHintResourceType, elem) // MAKE_RESOURCE_TYPE_HINT
+			hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, objects.PropertyHintResourceType, elem) // MAKE_RESOURCE_TYPE_HINT
 		}
 	}
 	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() Resource.Instance }{}).Elem()) {
-		hint |= gdconst.PropertyHintResourceType
+		hint |= objects.PropertyHintResourceType
 	}
-	var usage = gdconst.PropertyUsageStorage | gdconst.PropertyUsageEditor
+	var usage = objects.PropertyUsageStorage | objects.PropertyUsageEditor
 	if vtype == gd.TypeNil {
-		usage |= gdconst.PropertyUsageNilIsVariant
+		usage |= objects.PropertyUsageNilIsVariant
 	}
 	if rangeHint, ok := field.Tag.Lookup("range"); ok {
-		hint |= gdconst.PropertyHintRange
+		hint |= objects.PropertyHintRange
 		hintString = rangeHint
 	}
 	return gd.PropertyInfo{
 		Type:       vtype,
 		Name:       gd.NewStringName(name),
 		ClassName:  gd.NewStringName(classNameOf(field.Type)),
-		Hint:       hint,
+		Hint:       int64(hint),
 		HintString: gd.NewString(hintString),
-		Usage:      usage,
+		Usage:      int64(usage),
 	}
 }
 
@@ -81,7 +81,7 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 	case reflect.TypeOf([0]gd.Vector3i{}).Elem():
 		vtype = gd.TypeVector3i
 	case reflect.TypeOf([0]gd.Transform2D{}).Elem():
-		vtype = gd.TypeTransform2d
+		vtype = gd.TypeTransform2D
 	case reflect.TypeOf([0]gd.Vector4{}).Elem():
 		vtype = gd.TypeVector4
 	case reflect.TypeOf([0]gd.Vector4i{}).Elem():
@@ -91,11 +91,11 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 	case reflect.TypeOf([0]gd.Quaternion{}).Elem():
 		vtype = gd.TypeQuaternion
 	case reflect.TypeOf([0]gd.AABB{}).Elem():
-		vtype = gd.TypeAabb
+		vtype = gd.TypeAABB
 	case reflect.TypeOf([0]gd.Basis{}).Elem():
 		vtype = gd.TypeBasis
 	case reflect.TypeOf([0]gd.Transform3D{}).Elem():
-		vtype = gd.TypeTransform3d
+		vtype = gd.TypeTransform3D
 	case reflect.TypeOf([0]gd.Projection{}).Elem():
 		vtype = gd.TypeProjection
 	case reflect.TypeOf([0]gd.Color{}).Elem():
@@ -105,7 +105,7 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 	case reflect.TypeOf([0]gd.NodePath{}).Elem():
 		vtype = gd.TypeNodePath
 	case reflect.TypeOf([0]gd.RID{}).Elem():
-		vtype = gd.TypeRid
+		vtype = gd.TypeRID
 	case reflect.TypeOf([0]gd.Object{}).Elem():
 		vtype = gd.TypeObject
 	case reflect.TypeOf([0]gd.Callable{}).Elem():

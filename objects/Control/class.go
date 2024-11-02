@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
@@ -513,14 +511,14 @@ Sets the anchor for the specified [enum Side] to [param anchor]. A setter method
 If [param keep_offset] is [code]true[/code], offsets aren't updated after this operation.
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
-func (self Instance) SetAnchor(side gdconst.Side, anchor float64) {
+func (self Instance) SetAnchor(side Side, anchor float64) {
 	class(self).SetAnchor(side, gd.Float(anchor), false, true)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
-func (self Instance) SetAnchorAndOffset(side gdconst.Side, anchor float64, offset float64) {
+func (self Instance) SetAnchorAndOffset(side Side, anchor float64, offset float64) {
 	class(self).SetAnchorAndOffset(side, gd.Float(anchor), gd.Float(offset), false)
 }
 
@@ -662,7 +660,7 @@ func (self Instance) FindNextValidFocus() objects.Control {
 Finds the next [Control] that can receive the focus on the specified [enum Side].
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
-func (self Instance) FindValidFocusNeighbor(side gdconst.Side) objects.Control {
+func (self Instance) FindValidFocusNeighbor(side Side) objects.Control {
 	return objects.Control(class(self).FindValidFocusNeighbor(side))
 }
 
@@ -1795,7 +1793,7 @@ If [param keep_offset] is [code]true[/code], offsets aren't updated after this o
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
 //go:nosplit
-func (self class) SetAnchor(side gdconst.Side, anchor gd.Float, keep_offset bool, push_opposite_anchor bool) {
+func (self class) SetAnchor(side Side, anchor gd.Float, keep_offset bool, push_opposite_anchor bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -1810,7 +1808,7 @@ func (self class) SetAnchor(side gdconst.Side, anchor gd.Float, keep_offset bool
 Returns the anchor for the specified [enum Side]. A getter method for [member anchor_bottom], [member anchor_left], [member anchor_right] and [member anchor_top].
 */
 //go:nosplit
-func (self class) GetAnchor(side gdconst.Side) gd.Float {
+func (self class) GetAnchor(side Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1824,7 +1822,7 @@ func (self class) GetAnchor(side gdconst.Side) gd.Float {
 Sets the offset for the specified [enum Side] to [param offset]. A setter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) SetOffset(side gdconst.Side, offset gd.Float) {
+func (self class) SetOffset(side Side, offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, offset)
@@ -1837,7 +1835,7 @@ func (self class) SetOffset(side gdconst.Side, offset gd.Float) {
 Returns the offset for the specified [enum Side]. A getter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) GetOffset(offset gdconst.Side) gd.Float {
+func (self class) GetOffset(offset Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1851,7 +1849,7 @@ func (self class) GetOffset(offset gdconst.Side) gd.Float {
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
 //go:nosplit
-func (self class) SetAnchorAndOffset(side gdconst.Side, anchor gd.Float, offset gd.Float, push_opposite_anchor bool) {
+func (self class) SetAnchorAndOffset(side Side, anchor gd.Float, offset gd.Float, push_opposite_anchor bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -2239,7 +2237,7 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
 //go:nosplit
-func (self class) FindValidFocusNeighbor(side gdconst.Side) objects.Control {
+func (self class) FindValidFocusNeighbor(side Side) objects.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -3031,7 +3029,7 @@ func (self class) GetCursorShape(position gd.Vector2) classdb.ControlCursorShape
 Sets the focus neighbor for the specified [enum Side] to the [Control] at [param neighbor] node path. A setter method for [member focus_neighbor_bottom], [member focus_neighbor_left], [member focus_neighbor_right] and [member focus_neighbor_top].
 */
 //go:nosplit
-func (self class) SetFocusNeighbor(side gdconst.Side, neighbor gd.NodePath) {
+func (self class) SetFocusNeighbor(side Side, neighbor gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, pointers.Get(neighbor))
@@ -3045,7 +3043,7 @@ Returns the focus neighbor for the specified [enum Side]. A getter method for [m
 [b]Note:[/b] To find the next [Control] on the specific [enum Side], even if a neighbor is not assigned, use [method find_valid_focus_neighbor].
 */
 //go:nosplit
-func (self class) GetFocusNeighbor(side gdconst.Side) gd.NodePath {
+func (self class) GetFocusNeighbor(side Side) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -3640,4 +3638,17 @@ const (
 	TextDirectionLtr TextDirection = 1
 	/*Right-to-left text writing direction.*/
 	TextDirectionRtl TextDirection = 2
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
 )

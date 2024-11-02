@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 InputEventMIDI stores information about messages from [url=https://en.wikipedia.org/wiki/MIDI]MIDI[/url] (Musical Instrument Digital Interface) devices. These may include musical keyboards, synthesizers, and drum machines.
@@ -103,11 +101,11 @@ func (self Instance) SetChannel(value int) {
 	class(self).SetChannel(gd.Int(value))
 }
 
-func (self Instance) Message() gdconst.MIDIMessage {
-	return gdconst.MIDIMessage(class(self).GetMessage())
+func (self Instance) Message() MIDIMessage {
+	return MIDIMessage(class(self).GetMessage())
 }
 
-func (self Instance) SetMessage(value gdconst.MIDIMessage) {
+func (self Instance) SetMessage(value MIDIMessage) {
 	class(self).SetMessage(value)
 }
 
@@ -179,7 +177,7 @@ func (self class) GetChannel() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMessage(message gdconst.MIDIMessage) {
+func (self class) SetMessage(message MIDIMessage) {
 	var frame = callframe.New()
 	callframe.Arg(frame, message)
 	var r_ret callframe.Nil
@@ -188,9 +186,9 @@ func (self class) SetMessage(message gdconst.MIDIMessage) {
 }
 
 //go:nosplit
-func (self class) GetMessage() gdconst.MIDIMessage {
+func (self class) GetMessage() MIDIMessage {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.MIDIMessage](frame)
+	var r_ret = callframe.Ret[MIDIMessage](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -343,3 +341,51 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventMIDI", func(ptr gd.Object) any { return classdb.InputEventMIDI(ptr) })
 }
+
+type MIDIMessage int
+
+const (
+	/*Does not correspond to any MIDI message. This is the default value of [member InputEventMIDI.message].*/
+	MidiMessageNone MIDIMessage = 0
+	/*MIDI message sent when a note is released.
+	  [b]Note:[/b] Not all MIDI devices send this message; some may send [constant MIDI_MESSAGE_NOTE_ON] with [member InputEventMIDI.velocity] set to [code]0[/code].*/
+	MidiMessageNoteOff MIDIMessage = 8
+	/*MIDI message sent when a note is pressed.*/
+	MidiMessageNoteOn MIDIMessage = 9
+	/*MIDI message sent to indicate a change in pressure while a note is being pressed down, also called aftertouch.*/
+	MidiMessageAftertouch MIDIMessage = 10
+	/*MIDI message sent when a controller value changes. In a MIDI device, a controller is any input that doesn't play notes. These may include sliders for volume, balance, and panning, as well as switches and pedals. See the [url=https://en.wikipedia.org/wiki/General_MIDI#Controller_events]General MIDI specification[/url] for a small list.*/
+	MidiMessageControlChange MIDIMessage = 11
+	/*MIDI message sent when the MIDI device changes its current instrument (also called [i]program[/i] or [i]preset[/i]).*/
+	MidiMessageProgramChange MIDIMessage = 12
+	/*MIDI message sent to indicate a change in pressure for the whole channel. Some MIDI devices may send this instead of [constant MIDI_MESSAGE_AFTERTOUCH].*/
+	MidiMessageChannelPressure MIDIMessage = 13
+	/*MIDI message sent when the value of the pitch bender changes, usually a wheel on the MIDI device.*/
+	MidiMessagePitchBend MIDIMessage = 14
+	/*MIDI system exclusive (SysEx) message. This type of message is not standardized and it's highly dependent on the MIDI device sending it.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageSystemExclusive MIDIMessage = 240
+	/*MIDI message sent every quarter frame to keep connected MIDI devices synchronized. Related to [constant MIDI_MESSAGE_TIMING_CLOCK].
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageQuarterFrame MIDIMessage = 241
+	/*MIDI message sent to jump onto a new position in the current sequence or song.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageSongPositionPointer MIDIMessage = 242
+	/*MIDI message sent to select a sequence or song to play.
+	  [b]Note:[/b] Getting this message's data from [InputEventMIDI] is not implemented.*/
+	MidiMessageSongSelect MIDIMessage = 243
+	/*MIDI message sent to request a tuning calibration. Used on analog synthesizers. Most modern MIDI devices do not need this message.*/
+	MidiMessageTuneRequest MIDIMessage = 246
+	/*MIDI message sent 24 times after [constant MIDI_MESSAGE_QUARTER_FRAME], to keep connected MIDI devices synchronized.*/
+	MidiMessageTimingClock MIDIMessage = 248
+	/*MIDI message sent to start the current sequence or song from the beginning.*/
+	MidiMessageStart MIDIMessage = 250
+	/*MIDI message sent to resume from the point the current sequence or song was paused.*/
+	MidiMessageContinue MIDIMessage = 251
+	/*MIDI message sent to pause the current sequence or song.*/
+	MidiMessageStop MIDIMessage = 252
+	/*MIDI message sent repeatedly while the MIDI device is idle, to tell the receiver that the connection is alive. Most MIDI devices do not send this message.*/
+	MidiMessageActiveSensing MIDIMessage = 254
+	/*MIDI message sent to reset a MIDI device to its default state, as if it was just turned on. It should not be sent when the MIDI device is being turned on.*/
+	MidiMessageSystemReset MIDIMessage = 255
+)

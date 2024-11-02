@@ -48,7 +48,7 @@ func (l *local) Args() (int, Array.Of[any]) {
 
 func (l *local) Call(args ...any) any {
 	argc, binds := l.Args()
-	if len(args)-Array.Size(binds) != argc {
+	if len(args)-binds.Size() != argc {
 		panic("invalid number of arguments")
 	}
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
@@ -125,7 +125,7 @@ func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
 	if fn == nil {
 		return 0
 	}
-	return Array.Size(BoundArguments(fn))
+	return BoundArguments(fn).Size()
 }
 
 // Method returns the name of the function represented by this Callable or

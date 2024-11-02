@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/StyleBox"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A texture-based nine-patch [StyleBox], in a way similar to [NinePatchRect]. This stylebox performs a 3×3 scaling of a texture, where only the center cell is fully stretched. This makes it possible to design bordered styles regardless of the stylebox's size.
@@ -183,7 +181,7 @@ func (self class) GetTexture() objects.Texture2D {
 Sets the margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetTextureMargin(margin gdconst.Side, size gd.Float) {
+func (self class) SetTextureMargin(margin Side, size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -208,7 +206,7 @@ func (self class) SetTextureMarginAll(size gd.Float) {
 Returns the margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetTextureMargin(margin gdconst.Side) gd.Float {
+func (self class) GetTextureMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -222,7 +220,7 @@ func (self class) GetTextureMargin(margin gdconst.Side) gd.Float {
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin gdconst.Side, size gd.Float) {
+func (self class) SetExpandMargin(margin Side, size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -247,7 +245,7 @@ func (self class) SetExpandMarginAll(size gd.Float) {
 Returns the expand margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin gdconst.Side) gd.Float {
+func (self class) GetExpandMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -394,4 +392,17 @@ const (
 	AxisStretchModeTile AxisStretchMode = 1
 	/*Repeats the stylebox's texture to match the stylebox's size according to the nine-patch system. Unlike [constant AXIS_STRETCH_MODE_TILE], the texture may be slightly stretched to make the nine-patch texture tile seamlessly.*/
 	AxisStretchModeTileFit AxisStretchMode = 2
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
 )

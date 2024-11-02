@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
@@ -63,8 +61,8 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] can't be updated while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to update this texture.
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
-func (self Instance) TextureUpdate(texture gd.RID, layer int, data []byte) gd.Error {
-	return gd.Error(class(self).TextureUpdate(texture, gd.Int(layer), gd.NewPackedByteSlice(data)))
+func (self Instance) TextureUpdate(texture gd.RID, layer int, data []byte) error {
+	return error(class(self).TextureUpdate(texture, gd.Int(layer), gd.NewPackedByteSlice(data)))
 }
 
 /*
@@ -105,16 +103,16 @@ Copies the [param from_texture] to [param to_texture] with the specified [param 
 [b]Note:[/b] [param to_texture] requires the [constant TEXTURE_USAGE_CAN_COPY_TO_BIT] to be retrieved.
 [b]Note:[/b] [param from_texture] and [param to_texture] must be of the same type (color or depth).
 */
-func (self Instance) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap int, dst_mipmap int, src_layer int, dst_layer int) gd.Error {
-	return gd.Error(class(self).TextureCopy(from_texture, to_texture, from_pos, to_pos, size, gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer)))
+func (self Instance) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap int, dst_mipmap int, src_layer int, dst_layer int) error {
+	return error(class(self).TextureCopy(from_texture, to_texture, from_pos, to_pos, size, gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer)))
 }
 
 /*
 Clears the specified [param texture] by replacing all of its pixels with the specified [param color]. [param base_mipmap] and [param mipmap_count] determine which mipmaps of the texture are affected by this clear operation, while [param base_layer] and [param layer_count] determine which layers of a 3D texture (or texture array) are affected by this clear operation. For 2D textures (which only have one layer by design), [param base_layer] must be [code]0[/code] and [param layer_count] must be [code]1[/code].
 [b]Note:[/b] [param texture] can't be cleared while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to clear this texture.
 */
-func (self Instance) TextureClear(texture gd.RID, color gd.Color, base_mipmap int, mipmap_count int, base_layer int, layer_count int) gd.Error {
-	return gd.Error(class(self).TextureClear(texture, color, gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count)))
+func (self Instance) TextureClear(texture gd.RID, color gd.Color, base_mipmap int, mipmap_count int, base_layer int, layer_count int) error {
+	return error(class(self).TextureClear(texture, color, gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count)))
 }
 
 /*
@@ -127,8 +125,8 @@ Resolves the [param from_texture] texture onto [param to_texture] with multisamp
 [b]Note:[/b] [param to_texture] texture requires the [constant TEXTURE_USAGE_CAN_COPY_TO_BIT] to be retrieved.
 [b]Note:[/b] [param to_texture] texture must [b]not[/b] be multisampled and must also be 2D (or a slice of a 3D/cubemap texture).
 */
-func (self Instance) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) gd.Error {
-	return gd.Error(class(self).TextureResolveMultisample(from_texture, to_texture))
+func (self Instance) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) error {
+	return error(class(self).TextureResolveMultisample(from_texture, to_texture))
 }
 
 /*
@@ -358,8 +356,8 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset int, dst_offset int, size int) gd.Error {
-	return gd.Error(class(self).BufferCopy(src_buffer, dst_buffer, gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size)))
+func (self Instance) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset int, dst_offset int, size int) error {
+	return error(class(self).BufferCopy(src_buffer, dst_buffer, gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size)))
 }
 
 /*
@@ -369,8 +367,8 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferUpdate(buffer gd.RID, offset int, size_bytes int, data []byte) gd.Error {
-	return gd.Error(class(self).BufferUpdate(buffer, gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data)))
+func (self Instance) BufferUpdate(buffer gd.RID, offset int, size_bytes int, data []byte) error {
+	return error(class(self).BufferUpdate(buffer, gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data)))
 }
 
 /*
@@ -381,8 +379,8 @@ Prints an error if:
 - a draw list is currently active (created by [method draw_list_begin])
 - a compute list is currently active (created by [method compute_list_begin])
 */
-func (self Instance) BufferClear(buffer gd.RID, offset int, size_bytes int) gd.Error {
-	return gd.Error(class(self).BufferClear(buffer, gd.Int(offset), gd.Int(size_bytes)))
+func (self Instance) BufferClear(buffer gd.RID, offset int, size_bytes int) error {
+	return error(class(self).BufferClear(buffer, gd.Int(offset), gd.Int(size_bytes)))
 }
 
 /*
@@ -909,12 +907,12 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
 //go:nosplit
-func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data gd.PackedByteArray) int64 {
+func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data gd.PackedByteArray) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -990,7 +988,7 @@ Copies the [param from_texture] to [param to_texture] with the specified [param 
 [b]Note:[/b] [param from_texture] and [param to_texture] must be of the same type (color or depth).
 */
 //go:nosplit
-func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap gd.Int, dst_mipmap gd.Int, src_layer gd.Int, dst_layer gd.Int) int64 {
+func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap gd.Int, dst_mipmap gd.Int, src_layer gd.Int, dst_layer gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_texture)
 	callframe.Arg(frame, to_texture)
@@ -1001,7 +999,7 @@ func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos g
 	callframe.Arg(frame, dst_mipmap)
 	callframe.Arg(frame, src_layer)
 	callframe.Arg(frame, dst_layer)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_copy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1013,7 +1011,7 @@ Clears the specified [param texture] by replacing all of its pixels with the spe
 [b]Note:[/b] [param texture] can't be cleared while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to clear this texture.
 */
 //go:nosplit
-func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.Int, mipmap_count gd.Int, base_layer gd.Int, layer_count gd.Int) int64 {
+func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.Int, mipmap_count gd.Int, base_layer gd.Int, layer_count gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, color)
@@ -1021,7 +1019,7 @@ func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.In
 	callframe.Arg(frame, mipmap_count)
 	callframe.Arg(frame, base_layer)
 	callframe.Arg(frame, layer_count)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1039,11 +1037,11 @@ Resolves the [param from_texture] texture onto [param to_texture] with multisamp
 [b]Note:[/b] [param to_texture] texture must [b]not[/b] be multisampled and must also be 2D (or a slice of a 3D/cubemap texture).
 */
 //go:nosplit
-func (self class) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) int64 {
+func (self class) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_texture)
 	callframe.Arg(frame, to_texture)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_resolve_multisample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1513,14 +1511,14 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset gd.Int, dst_offset gd.Int, size gd.Int) int64 {
+func (self class) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset gd.Int, dst_offset gd.Int, size gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, src_buffer)
 	callframe.Arg(frame, dst_buffer)
 	callframe.Arg(frame, src_offset)
 	callframe.Arg(frame, dst_offset)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_copy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1535,13 +1533,13 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data gd.PackedByteArray) int64 {
+func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data gd.PackedByteArray) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1557,12 +1555,12 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferClear(buffer gd.RID, offset gd.Int, size_bytes gd.Int) int64 {
+func (self class) BufferClear(buffer gd.RID, offset gd.Int, size_bytes gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, size_bytes)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3494,4 +3492,120 @@ const (
 	MemoryBuffers MemoryType = 1
 	/*Total memory taken. This is greater than the sum of [constant MEMORY_TEXTURES] and [constant MEMORY_BUFFERS], as it also includes miscellaneous memory usage.*/
 	MemoryTotal MemoryType = 2
+)
+
+type Error int
+
+const (
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
+	ErrFileMissingDependencies Error = 17
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
 )

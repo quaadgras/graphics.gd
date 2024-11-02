@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
@@ -300,15 +298,15 @@ func (self Instance) GetColumnTitle(column int) string {
 /*
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
-func (self Instance) SetColumnTitleAlignment(column int, title_alignment gdconst.HorizontalAlignment) {
+func (self Instance) SetColumnTitleAlignment(column int, title_alignment HorizontalAlignment) {
 	class(self).SetColumnTitleAlignment(gd.Int(column), title_alignment)
 }
 
 /*
 Returns the column title alignment.
 */
-func (self Instance) GetColumnTitleAlignment(column int) gdconst.HorizontalAlignment {
-	return gdconst.HorizontalAlignment(class(self).GetColumnTitleAlignment(gd.Int(column)))
+func (self Instance) GetColumnTitleAlignment(column int) HorizontalAlignment {
+	return HorizontalAlignment(class(self).GetColumnTitleAlignment(gd.Int(column)))
 }
 
 /*
@@ -960,7 +958,7 @@ func (self class) GetColumnTitle(column gd.Int) gd.String {
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
 //go:nosplit
-func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment gdconst.HorizontalAlignment) {
+func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, title_alignment)
@@ -973,10 +971,10 @@ func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment gdconst
 Returns the column title alignment.
 */
 //go:nosplit
-func (self class) GetColumnTitleAlignment(column gd.Int) gdconst.HorizontalAlignment {
+func (self class) GetColumnTitleAlignment(column gd.Int) HorizontalAlignment {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdconst.HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1330,4 +1328,17 @@ const (
 	/*Enables "above item" and "below item" drop sections. The "above item" drop section covers the top half of the item, and the "below item" drop section covers the bottom half.
 	  When combined with [constant DROP_MODE_ON_ITEM], these drop sections halves the height and stays on top / bottom accordingly.*/
 	DropModeInbetween DropModeFlags = 2
+)
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
 )

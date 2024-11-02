@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEventMouse"
 import "grow.graphics/gd/objects/InputEventWithModifiers"
@@ -19,7 +18,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Stores information about mouse click events. See [method Node._input].
@@ -46,11 +44,11 @@ func (self Instance) SetFactor(value float64) {
 	class(self).SetFactor(gd.Float(value))
 }
 
-func (self Instance) ButtonIndex() gdconst.MouseButton {
-	return gdconst.MouseButton(class(self).GetButtonIndex())
+func (self Instance) ButtonIndex() MouseButton {
+	return MouseButton(class(self).GetButtonIndex())
 }
 
-func (self Instance) SetButtonIndex(value gdconst.MouseButton) {
+func (self Instance) SetButtonIndex(value MouseButton) {
 	class(self).SetButtonIndex(value)
 }
 
@@ -82,7 +80,7 @@ func (self class) GetFactor() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index gdconst.MouseButton) {
+func (self class) SetButtonIndex(button_index MouseButton) {
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret callframe.Nil
@@ -91,9 +89,9 @@ func (self class) SetButtonIndex(button_index gdconst.MouseButton) {
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() gdconst.MouseButton {
+func (self class) GetButtonIndex() MouseButton {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.MouseButton](frame)
+	var r_ret = callframe.Ret[MouseButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,3 +185,28 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventMouseButton", func(ptr gd.Object) any { return classdb.InputEventMouseButton(ptr) })
 }
+
+type MouseButton int
+
+const (
+	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
+	MouseButtonNone MouseButton = 0
+	/*Primary mouse button, usually assigned to the left button.*/
+	MouseButtonLeft MouseButton = 1
+	/*Secondary mouse button, usually assigned to the right button.*/
+	MouseButtonRight MouseButton = 2
+	/*Middle mouse button.*/
+	MouseButtonMiddle MouseButton = 3
+	/*Mouse wheel scrolling up.*/
+	MouseButtonWheelUp MouseButton = 4
+	/*Mouse wheel scrolling down.*/
+	MouseButtonWheelDown MouseButton = 5
+	/*Mouse wheel left button (only present on some mice).*/
+	MouseButtonWheelLeft MouseButton = 6
+	/*Mouse wheel right button (only present on some mice).*/
+	MouseButtonWheelRight MouseButton = 7
+	/*Extra mouse button 1. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton1 MouseButton = 8
+	/*Extra mouse button 2. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton2 MouseButton = 9
+)

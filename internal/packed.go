@@ -6,7 +6,6 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/gd/internal/pointers"
-	"grow.graphics/uc"
 )
 
 func (p *PackedFloat32Array) Pointer() *PackedFloat32Array { return p }
@@ -305,10 +304,10 @@ func NewPackedColorArray() PackedColorArray {
 	return pointers.New[PackedColorArray](raw)
 }
 
-func NewPackedColorSlice(data []uc.Color) PackedColorArray {
+func NewPackedColorSlice(data []Color) PackedColorArray {
 	var array = NewPackedColorArray()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*uc.Color)(array.UnsafePointer()), len(data)), data)
+	copy(unsafe.Slice((*Color)(array.UnsafePointer()), len(data)), data)
 	return array
 }
 

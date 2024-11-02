@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/StyleBox"
 import "grow.graphics/gd/objects/Resource"
@@ -16,7 +15,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 By configuring various properties of this style box, you can achieve many common looks without the need of a texture. This includes optionally rounded borders, antialiasing, shadows, and skew.
@@ -325,7 +323,7 @@ func (self class) GetBorderWidthMin() gd.Int {
 Sets the specified [enum Side]'s border width to [param width] pixels.
 */
 //go:nosplit
-func (self class) SetBorderWidth(margin gdconst.Side, width gd.Int) {
+func (self class) SetBorderWidth(margin Side, width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, width)
@@ -338,7 +336,7 @@ func (self class) SetBorderWidth(margin gdconst.Side, width gd.Int) {
 Returns the specified [enum Side]'s border width.
 */
 //go:nosplit
-func (self class) GetBorderWidth(margin gdconst.Side) gd.Int {
+func (self class) GetBorderWidth(margin Side) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -383,7 +381,7 @@ func (self class) SetCornerRadiusAll(radius gd.Int) {
 Sets the corner radius to [param radius] pixels for the given [param corner]. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) SetCornerRadius(corner gdconst.Corner, radius gd.Int) {
+func (self class) SetCornerRadius(corner Corner, radius gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	callframe.Arg(frame, radius)
@@ -396,7 +394,7 @@ func (self class) SetCornerRadius(corner gdconst.Corner, radius gd.Int) {
 Returns the given [param corner]'s radius. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) GetCornerRadius(corner gdconst.Corner) gd.Int {
+func (self class) GetCornerRadius(corner Corner) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -410,7 +408,7 @@ func (self class) GetCornerRadius(corner gdconst.Corner) gd.Int {
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin gdconst.Side, size gd.Float) {
+func (self class) SetExpandMargin(margin Side, size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -435,7 +433,7 @@ func (self class) SetExpandMarginAll(size gd.Float) {
 Returns the size of the specified [enum Side]'s expand margin.
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin gdconst.Side) gd.Float {
+func (self class) GetExpandMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -629,3 +627,29 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("StyleBoxFlat", func(ptr gd.Object) any { return classdb.StyleBoxFlat(ptr) })
 }
+
+type Corner int
+
+const (
+	/*Top-left corner.*/
+	CornerTopLeft Corner = 0
+	/*Top-right corner.*/
+	CornerTopRight Corner = 1
+	/*Bottom-right corner.*/
+	CornerBottomRight Corner = 2
+	/*Bottom-left corner.*/
+	CornerBottomLeft Corner = 3
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
+)

@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Also known as 9-slice panels, [NinePatchRect] produces clean panels of any size based on a small texture. To do so, it splits the texture in a 3×3 grid. When you scale the node, it tiles the texture's edges horizontally or vertically, tiles the center on both axes, and leaves the corners unchanged.
@@ -130,7 +128,7 @@ func (self class) GetTexture() objects.Texture2D {
 Sets the size of the margin on the specified [enum Side] to [param value] pixels.
 */
 //go:nosplit
-func (self class) SetPatchMargin(margin gdconst.Side, value gd.Int) {
+func (self class) SetPatchMargin(margin Side, value gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -143,7 +141,7 @@ func (self class) SetPatchMargin(margin gdconst.Side, value gd.Int) {
 Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetPatchMargin(margin gdconst.Side) gd.Int {
+func (self class) GetPatchMargin(margin Side) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -273,4 +271,17 @@ const (
 	AxisStretchModeTile AxisStretchMode = 1
 	/*Repeats the center texture across the NinePatchRect, but will also stretch the texture to make sure each tile is visible in full. This may cause the texture to be distorted, but less than [constant AXIS_STRETCH_MODE_STRETCH]. The texture must be seamless for this to work without displaying artifacts between edges.*/
 	AxisStretchModeTileFit AxisStretchMode = 2
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
 )

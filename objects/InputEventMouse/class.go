@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEventWithModifiers"
 import "grow.graphics/gd/objects/InputEventFromWindow"
@@ -18,7 +17,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Stores general information about mouse events.
@@ -36,11 +34,11 @@ func New() Instance {
 	return Instance{classdb.InputEventMouse(object)}
 }
 
-func (self Instance) ButtonMask() gdconst.MouseButtonMask {
-	return gdconst.MouseButtonMask(class(self).GetButtonMask())
+func (self Instance) ButtonMask() MouseButtonMask {
+	return MouseButtonMask(class(self).GetButtonMask())
 }
 
-func (self Instance) SetButtonMask(value gdconst.MouseButtonMask) {
+func (self Instance) SetButtonMask(value MouseButtonMask) {
 	class(self).SetButtonMask(value)
 }
 
@@ -61,7 +59,7 @@ func (self Instance) SetGlobalPosition(value gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) SetButtonMask(button_mask gdconst.MouseButtonMask) {
+func (self class) SetButtonMask(button_mask MouseButtonMask) {
 	var frame = callframe.New()
 	callframe.Arg(frame, button_mask)
 	var r_ret callframe.Nil
@@ -70,9 +68,9 @@ func (self class) SetButtonMask(button_mask gdconst.MouseButtonMask) {
 }
 
 //go:nosplit
-func (self class) GetButtonMask() gdconst.MouseButtonMask {
+func (self class) GetButtonMask() MouseButtonMask {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdconst.MouseButtonMask](frame)
+	var r_ret = callframe.Ret[MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -161,3 +159,18 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("InputEventMouse", func(ptr gd.Object) any { return classdb.InputEventMouse(ptr) })
 }
+
+type MouseButtonMask int
+
+const (
+	/*Primary mouse button mask, usually for the left button.*/
+	MouseButtonMaskLeft MouseButtonMask = 1
+	/*Secondary mouse button mask, usually for the right button.*/
+	MouseButtonMaskRight MouseButtonMask = 2
+	/*Middle mouse button mask.*/
+	MouseButtonMaskMiddle MouseButtonMask = 4
+	/*Extra mouse button 1 mask.*/
+	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
+	/*Extra mouse button 2 mask.*/
+	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
+)

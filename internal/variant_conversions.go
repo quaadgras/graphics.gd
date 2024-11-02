@@ -28,9 +28,6 @@ func NewVariant(v any) Variant {
 	case Int:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeInt](ret, arg.Uintptr())
-	case Error:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeInt](ret, arg.Uintptr())
 	case Float:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeFloat](ret, arg.Uintptr())
@@ -57,7 +54,7 @@ func NewVariant(v any) Variant {
 		Global.variant.FromType[TypeVector3i](ret, arg.Uintptr())
 	case Transform2D:
 		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeTransform2d](ret, arg.Uintptr())
+		Global.variant.FromType[TypeTransform2D](ret, arg.Uintptr())
 	case Vector4:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeVector4](ret, arg.Uintptr())
@@ -72,13 +69,13 @@ func NewVariant(v any) Variant {
 		Global.variant.FromType[TypeQuaternion](ret, arg.Uintptr())
 	case AABB:
 		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeAabb](ret, arg.Uintptr())
+		Global.variant.FromType[TypeAABB](ret, arg.Uintptr())
 	case Basis:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeBasis](ret, arg.Uintptr())
 	case Transform3D:
 		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeTransform3d](ret, arg.Uintptr())
+		Global.variant.FromType[TypeTransform3D](ret, arg.Uintptr())
 	case Projection:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeProjection](ret, arg.Uintptr())
@@ -93,7 +90,7 @@ func NewVariant(v any) Variant {
 		Global.variant.FromType[TypeStringName](ret, arg.Uintptr())
 	case RID:
 		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeRid](ret, arg.Uintptr())
+		Global.variant.FromType[TypeRID](ret, arg.Uintptr())
 	case Object:
 		if pointers.Get(val) == ([3]uintptr{}) {
 			return Global.Variants.NewNil()
@@ -229,7 +226,7 @@ func (variant Variant) Interface() any {
 		return variantAsValueType[Vector3](variant, vtype)
 	case TypeVector3i:
 		return variantAsValueType[Vector3i](variant, vtype)
-	case TypeTransform2d:
+	case TypeTransform2D:
 		return variantAsValueType[Transform2D](variant, vtype)
 	case TypeVector4:
 		return variantAsValueType[Vector4](variant, vtype)
@@ -239,11 +236,11 @@ func (variant Variant) Interface() any {
 		return variantAsValueType[Plane](variant, vtype)
 	case TypeQuaternion:
 		return variantAsValueType[Quaternion](variant, vtype)
-	case TypeAabb:
+	case TypeAABB:
 		return variantAsValueType[AABB](variant, vtype)
 	case TypeBasis:
 		return variantAsValueType[Basis](variant, vtype)
-	case TypeTransform3d:
+	case TypeTransform3D:
 		return variantAsValueType[Transform3D](variant, vtype)
 	case TypeProjection:
 		return variantAsValueType[Projection](variant, vtype)
@@ -253,7 +250,7 @@ func (variant Variant) Interface() any {
 		return variantAsPointerType[StringName](variant, vtype)
 	case TypeNodePath:
 		return variantAsPointerType[NodePath](variant, vtype)
-	case TypeRid:
+	case TypeRID:
 		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:
 		var obj = variantAsPointerType[Object](variant, vtype)

@@ -310,3 +310,60 @@ func Hash(v any) uint32 { //gd:hash
 func Equal(a, b any) bool { //gd:is_same
 	return gd.IsSame(gd.NewVariant(a), gd.NewVariant(b))
 }
+
+type Operator int
+
+const (
+	/*Equality operator ([code]==[/code]).*/
+	OpEqual Operator = 0
+	/*Inequality operator ([code]!=[/code]).*/
+	OpNotEqual Operator = 1
+	/*Less than operator ([code]<[/code]).*/
+	OpLess Operator = 2
+	/*Less than or equal operator ([code]<=[/code]).*/
+	OpLessEqual Operator = 3
+	/*Greater than operator ([code]>[/code]).*/
+	OpGreater Operator = 4
+	/*Greater than or equal operator ([code]>=[/code]).*/
+	OpGreaterEqual Operator = 5
+	/*Addition operator ([code]+[/code]).*/
+	OpAdd Operator = 6
+	/*Subtraction operator ([code]-[/code]).*/
+	OpSubtract Operator = 7
+	/*Multiplication operator ([code]*[/code]).*/
+	OpMultiply Operator = 8
+	/*Division operator ([code]/[/code]).*/
+	OpDivide Operator = 9
+	/*Unary negation operator ([code]-[/code]).*/
+	OpNegate Operator = 10
+	/*Unary plus operator ([code]+[/code]).*/
+	OpPositive Operator = 11
+	/*Remainder/modulo operator ([code]%[/code]).*/
+	OpModule Operator = 12
+	/*Power operator ([code]**[/code]).*/
+	OpPower Operator = 13
+	/*Left shift operator ([code]<<[/code]).*/
+	OpShiftLeft Operator = 14
+	/*Right shift operator ([code]>>[/code]).*/
+	OpShiftRight Operator = 15
+	/*Bitwise AND operator ([code]&[/code]).*/
+	OpBitAnd Operator = 16
+	/*Bitwise OR operator ([code]|[/code]).*/
+	OpBitOr Operator = 17
+	/*Bitwise XOR operator ([code]^[/code]).*/
+	OpBitXor Operator = 18
+	/*Bitwise NOT operator ([code]~[/code]).*/
+	OpBitNegate Operator = 19
+	/*Logical AND operator ([code]and[/code] or [code]&&[/code]).*/
+	OpAnd Operator = 20
+	/*Logical OR operator ([code]or[/code] or [code]||[/code]).*/
+	OpOr Operator = 21
+	/*Logical XOR operator (not implemented in GDScript).*/
+	OpXor Operator = 22
+	/*Logical NOT operator ([code]not[/code] or [code]![/code]).*/
+	OpNot Operator = 23
+	/*Logical IN operator ([code]in[/code]).*/
+	OpIn Operator = 24
+	/*Represents the size of the [enum Variant.Operator] enum.*/
+	OpMax Operator = 25
+)

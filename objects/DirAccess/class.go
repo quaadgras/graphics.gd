@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 
 var _ unsafe.Pointer
@@ -14,7 +13,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 This class is used to manage directories and their content, even outside of the project folder.
@@ -91,8 +89,8 @@ func (self Instance) Open(path string) objects.DirAccess {
 /*
 Returns the result of the last [method open] call in the current thread.
 */
-func (self Instance) GetOpenError() gd.Error {
-	return gd.Error(class(self).GetOpenError())
+func (self Instance) GetOpenError() error {
+	return error(class(self).GetOpenError())
 }
 
 /*
@@ -100,8 +98,8 @@ Initializes the stream used to list all files and directories using the [method 
 Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [method get_files] or [method get_directories].
 */
-func (self Instance) ListDirBegin() gd.Error {
-	return gd.Error(class(self).ListDirBegin())
+func (self Instance) ListDirBegin() error {
+	return error(class(self).ListDirBegin())
 }
 
 /*
@@ -191,8 +189,8 @@ Changes the currently opened directory to the one passed as an argument. The arg
 Returns one of the [enum Error] code constants ([constant OK] on success).
 [b]Note:[/b] The new directory must be within the same scope, e.g. when you had opened a directory inside [code]res://[/code], you can't change it to [code]user://[/code] directory. If you need to open a directory in another access scope, use [method open] to create a new instance instead.
 */
-func (self Instance) ChangeDir(to_dir string) gd.Error {
-	return gd.Error(class(self).ChangeDir(gd.NewString(to_dir)))
+func (self Instance) ChangeDir(to_dir string) error {
+	return error(class(self).ChangeDir(gd.NewString(to_dir)))
 }
 
 /*
@@ -206,30 +204,30 @@ func (self Instance) GetCurrentDir() string {
 Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [method make_dir_recursive]).
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Instance) MakeDir(path string) gd.Error {
-	return gd.Error(class(self).MakeDir(gd.NewString(path)))
+func (self Instance) MakeDir(path string) error {
+	return error(class(self).MakeDir(gd.NewString(path)))
 }
 
 /*
 Static version of [method make_dir]. Supports only absolute paths.
 */
-func (self Instance) MakeDirAbsolute(path string) gd.Error {
-	return gd.Error(class(self).MakeDirAbsolute(gd.NewString(path)))
+func (self Instance) MakeDirAbsolute(path string) error {
+	return error(class(self).MakeDirAbsolute(gd.NewString(path)))
 }
 
 /*
 Creates a target directory and all necessary intermediate directories in its path, by calling [method make_dir] recursively. The argument can be relative to the current directory, or an absolute path.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Instance) MakeDirRecursive(path string) gd.Error {
-	return gd.Error(class(self).MakeDirRecursive(gd.NewString(path)))
+func (self Instance) MakeDirRecursive(path string) error {
+	return error(class(self).MakeDirRecursive(gd.NewString(path)))
 }
 
 /*
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
-func (self Instance) MakeDirRecursiveAbsolute(path string) gd.Error {
-	return gd.Error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
+func (self Instance) MakeDirRecursiveAbsolute(path string) error {
+	return error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
 }
 
 /*
@@ -266,30 +264,30 @@ Copies the [param from] file to the [param to] destination. Both arguments shoul
 If [param chmod_flags] is different than [code]-1[/code], the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Instance) Copy(from string, to string) gd.Error {
-	return gd.Error(class(self).Copy(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
+func (self Instance) Copy(from string, to string) error {
+	return error(class(self).Copy(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
 /*
 Static version of [method copy]. Supports only absolute paths.
 */
-func (self Instance) CopyAbsolute(from string, to string) gd.Error {
-	return gd.Error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
+func (self Instance) CopyAbsolute(from string, to string) error {
+	return error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
 /*
 Renames (move) the [param from] file or directory to the [param to] destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Instance) Rename(from string, to string) gd.Error {
-	return gd.Error(class(self).Rename(gd.NewString(from), gd.NewString(to)))
+func (self Instance) Rename(from string, to string) error {
+	return error(class(self).Rename(gd.NewString(from), gd.NewString(to)))
 }
 
 /*
 Static version of [method rename]. Supports only absolute paths.
 */
-func (self Instance) RenameAbsolute(from string, to string) gd.Error {
-	return gd.Error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
+func (self Instance) RenameAbsolute(from string, to string) error {
+	return error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
 }
 
 /*
@@ -297,15 +295,15 @@ Permanently deletes the target file or an empty directory. The argument can be r
 If you don't want to delete the file/directory permanently, use [method OS.move_to_trash] instead.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
-func (self Instance) Remove(path string) gd.Error {
-	return gd.Error(class(self).Remove(gd.NewString(path)))
+func (self Instance) Remove(path string) error {
+	return error(class(self).Remove(gd.NewString(path)))
 }
 
 /*
 Static version of [method remove]. Supports only absolute paths.
 */
-func (self Instance) RemoveAbsolute(path string) gd.Error {
-	return gd.Error(class(self).RemoveAbsolute(gd.NewString(path)))
+func (self Instance) RemoveAbsolute(path string) error {
+	return error(class(self).RemoveAbsolute(gd.NewString(path)))
 }
 
 /*
@@ -329,8 +327,8 @@ Creates symbolic link between files or folders.
 [b]Note:[/b] On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
-func (self Instance) CreateLink(source string, target string) gd.Error {
-	return gd.Error(class(self).CreateLink(gd.NewString(source), gd.NewString(target)))
+func (self Instance) CreateLink(source string, target string) error {
+	return error(class(self).CreateLink(gd.NewString(source), gd.NewString(target)))
 }
 
 /*
@@ -387,9 +385,9 @@ func (self class) Open(path gd.String) objects.DirAccess {
 Returns the result of the last [method open] call in the current thread.
 */
 //go:nosplit
-func (self class) GetOpenError() int64 {
+func (self class) GetOpenError() error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -402,9 +400,9 @@ Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [method get_files] or [method get_directories].
 */
 //go:nosplit
-func (self class) ListDirBegin() int64 {
+func (self class) ListDirBegin() error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_list_dir_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -560,10 +558,10 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 [b]Note:[/b] The new directory must be within the same scope, e.g. when you had opened a directory inside [code]res://[/code], you can't change it to [code]user://[/code] directory. If you need to open a directory in another access scope, use [method open] to create a new instance instead.
 */
 //go:nosplit
-func (self class) ChangeDir(to_dir gd.String) int64 {
+func (self class) ChangeDir(to_dir gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to_dir))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_change_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -589,10 +587,10 @@ Creates a directory. The argument can be relative to the current directory, or a
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
-func (self class) MakeDir(path gd.String) int64 {
+func (self class) MakeDir(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -603,10 +601,10 @@ func (self class) MakeDir(path gd.String) int64 {
 Static version of [method make_dir]. Supports only absolute paths.
 */
 //go:nosplit
-func (self class) MakeDirAbsolute(path gd.String) int64 {
+func (self class) MakeDirAbsolute(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -618,10 +616,10 @@ Creates a target directory and all necessary intermediate directories in its pat
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
-func (self class) MakeDirRecursive(path gd.String) int64 {
+func (self class) MakeDirRecursive(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -632,10 +630,10 @@ func (self class) MakeDirRecursive(path gd.String) int64 {
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 //go:nosplit
-func (self class) MakeDirRecursiveAbsolute(path gd.String) int64 {
+func (self class) MakeDirRecursiveAbsolute(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -704,12 +702,12 @@ If [param chmod_flags] is different than [code]-1[/code], the Unix permissions f
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
-func (self class) Copy(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
+func (self class) Copy(from gd.String, to gd.String, chmod_flags gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, chmod_flags)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -720,12 +718,12 @@ func (self class) Copy(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
 Static version of [method copy]. Supports only absolute paths.
 */
 //go:nosplit
-func (self class) CopyAbsolute(from gd.String, to gd.String, chmod_flags gd.Int) int64 {
+func (self class) CopyAbsolute(from gd.String, to gd.String, chmod_flags gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, chmod_flags)
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -737,11 +735,11 @@ Renames (move) the [param from] file or directory to the [param to] destination.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
-func (self class) Rename(from gd.String, to gd.String) int64 {
+func (self class) Rename(from gd.String, to gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -752,11 +750,11 @@ func (self class) Rename(from gd.String, to gd.String) int64 {
 Static version of [method rename]. Supports only absolute paths.
 */
 //go:nosplit
-func (self class) RenameAbsolute(from gd.String, to gd.String) int64 {
+func (self class) RenameAbsolute(from gd.String, to gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -769,10 +767,10 @@ If you don't want to delete the file/directory permanently, use [method OS.move_
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
-func (self class) Remove(path gd.String) int64 {
+func (self class) Remove(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -783,10 +781,10 @@ func (self class) Remove(path gd.String) int64 {
 Static version of [method remove]. Supports only absolute paths.
 */
 //go:nosplit
-func (self class) RemoveAbsolute(path gd.String) int64 {
+func (self class) RemoveAbsolute(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove_absolute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -829,11 +827,11 @@ Creates symbolic link between files or folders.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
 //go:nosplit
-func (self class) CreateLink(source gd.String, target gd.String) int64 {
+func (self class) CreateLink(source gd.String, target gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(source))
 	callframe.Arg(frame, pointers.Get(target))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_link, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -911,3 +909,119 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() { classdb.Register("DirAccess", func(ptr gd.Object) any { return classdb.DirAccess(ptr) }) }
+
+type Error int
+
+const (
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
+	ErrFileMissingDependencies Error = 17
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
+)

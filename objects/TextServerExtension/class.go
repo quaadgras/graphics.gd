@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/TextServer"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 External [TextServer] implementations should inherit from this class.
@@ -479,10 +477,10 @@ External [TextServer] implementations should inherit from this class.
 		ShapedTextAddString(shaped gd.RID, text string, fonts gd.Array, size int, opentype_features gd.Dictionary, language string, meta gd.Variant) bool
 		//[b]Required.[/b]
 		//Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
-		ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, length int, baseline float64) bool
+		ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length int, baseline float64) bool
 		//[b]Required.[/b]
 		//Sets new size and alignment of embedded object.
-		ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, baseline float64) bool
+		ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline float64) bool
 		//[b]Required.[/b]
 		//Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
 		ShapedGetSpanCount(shaped gd.RID) int
@@ -2844,13 +2842,13 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, length int, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length int, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(key)
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
-		var inline_align = gd.UnsafeGet[gdconst.InlineAlignment](p_args, 3)
+		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var length = gd.UnsafeGet[gd.Int](p_args, 4)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 5)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2863,13 +2861,13 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Sets new size and alignment of embedded object.
 */
-func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(key)
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
-		var inline_align = gd.UnsafeGet[gdconst.InlineAlignment](p_args, 3)
+		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key, size, inline_align, float64(baseline))
@@ -5987,12 +5985,12 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID
 [b]Required.[/b]
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, length gd.Int, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
-		var inline_align = gd.UnsafeGet[gdconst.InlineAlignment](p_args, 3)
+		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var length = gd.UnsafeGet[gd.Int](p_args, 4)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 5)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6005,12 +6003,12 @@ func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID
 [b]Required.[/b]
 Sets new size and alignment of embedded object.
 */
-func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align gdconst.InlineAlignment, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
-		var inline_align = gd.UnsafeGet[gdconst.InlineAlignment](p_args, 3)
+		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key, size, inline_align, baseline)
@@ -7832,3 +7830,34 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	classdb.Register("TextServerExtension", func(ptr gd.Object) any { return classdb.TextServerExtension(ptr) })
 }
+
+type InlineAlignment int
+
+const (
+	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentTopTo InlineAlignment = 0
+	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentCenterTo InlineAlignment = 1
+	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBaselineTo InlineAlignment = 3
+	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	InlineAlignmentBottomTo InlineAlignment = 2
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	InlineAlignmentToTop InlineAlignment = 0
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	InlineAlignmentToCenter InlineAlignment = 4
+	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
+	InlineAlignmentToBaseline InlineAlignment = 8
+	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	InlineAlignmentToBottom InlineAlignment = 12
+	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	InlineAlignmentTop InlineAlignment = 0
+	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	InlineAlignmentCenter InlineAlignment = 5
+	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	InlineAlignmentBottom InlineAlignment = 14
+	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	InlineAlignmentImageMask InlineAlignment = 3
+	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	InlineAlignmentTextMask InlineAlignment = 12
+)

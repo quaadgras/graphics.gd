@@ -4,7 +4,7 @@ package Signal
 import (
 	"sync"
 
-	"grow.graphics/gd/gdconst"
+	errors "grow.graphics/gd"
 	gd "grow.graphics/gd/internal"
 	"grow.graphics/gd/variant/Callable"
 )
@@ -21,7 +21,7 @@ type Chan[T any] struct {
 	proxy *gd.Signal
 }
 
-const ErrInvalidParameter = gdconst.ErrInvalidParameter
+const ErrInvalidParameter = errors.ErrInvalidParameter
 
 // Attach connects this signal to the specified [Callable.Func]
 // A signal can only be connected once to the same [Callable.Func].
@@ -32,7 +32,7 @@ func (c *Chan[T]) Attach(fn Callable.Func) error { //gd:Signal.connect
 	}
 	for _, f := range c.funcs {
 		if f == fn {
-			return ErrInvalidParameter
+			return errors.ErrInvalidParameter
 		}
 	}
 	c.funcs = append(c.funcs, fn)

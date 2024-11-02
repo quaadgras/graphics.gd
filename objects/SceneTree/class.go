@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MainLoop"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
@@ -166,8 +164,8 @@ Changes the running scene to the one at the given [param path], after loading it
 Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if that scene cannot be instantiated.
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
-func (self Instance) ChangeSceneToFile(path string) gd.Error {
-	return gd.Error(class(self).ChangeSceneToFile(gd.NewString(path)))
+func (self Instance) ChangeSceneToFile(path string) error {
+	return error(class(self).ChangeSceneToFile(gd.NewString(path)))
 }
 
 /*
@@ -178,16 +176,16 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [method Node.get_tree] and [member current_scene] will be back to working as usual.
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
-func (self Instance) ChangeSceneToPacked(packed_scene objects.PackedScene) gd.Error {
-	return gd.Error(class(self).ChangeSceneToPacked(packed_scene))
+func (self Instance) ChangeSceneToPacked(packed_scene objects.PackedScene) error {
+	return error(class(self).ChangeSceneToPacked(packed_scene))
 }
 
 /*
 Reloads the currently active scene, replacing [member current_scene] with a new instance of its original [PackedScene].
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
-func (self Instance) ReloadCurrentScene() gd.Error {
-	return gd.Error(class(self).ReloadCurrentScene())
+func (self Instance) ReloadCurrentScene() error {
+	return error(class(self).ReloadCurrentScene())
 }
 
 /*
@@ -727,10 +725,10 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 //go:nosplit
-func (self class) ChangeSceneToFile(path gd.String) int64 {
+func (self class) ChangeSceneToFile(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -746,10 +744,10 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
 //go:nosplit
-func (self class) ChangeSceneToPacked(packed_scene objects.PackedScene) int64 {
+func (self class) ChangeSceneToPacked(packed_scene objects.PackedScene) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_packed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -761,9 +759,9 @@ Reloads the currently active scene, replacing [member current_scene] with a new 
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
 //go:nosplit
-func (self class) ReloadCurrentScene() int64 {
+func (self class) ReloadCurrentScene() error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
+	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_reload_current_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -895,4 +893,120 @@ const (
 	/*Call nodes within a group only once, even if the call is executed many times in the same frame. Must be combined with [constant GROUP_CALL_DEFERRED] to work.
 	  [b]Note:[/b] Different arguments are not taken into account. Therefore, when the same call is executed with different arguments, only the first call will be performed.*/
 	GroupCallUnique GroupCallFlags = 4
+)
+
+type Error int
+
+const (
+	/*Methods that return [enum Error] return [constant OK] when no error occurred.
+	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.
+	  [b]Example:[/b]
+	  [codeblock]
+	  var error = method_that_returns_error()
+	  if error != OK:
+	      printerr("Failure!")
+
+	  # Or, alternatively:
+	  if error:
+	      printerr("Still failing!")
+	  [/codeblock]
+	  [b]Note:[/b] Many functions do not return an error code, but will print error messages to standard output.*/
+	Ok Error = 0
+	/*Generic error.*/
+	Failed Error = 1
+	/*Unavailable error.*/
+	ErrUnavailable Error = 2
+	/*Unconfigured error.*/
+	ErrUnconfigured Error = 3
+	/*Unauthorized error.*/
+	ErrUnauthorized Error = 4
+	/*Parameter range error.*/
+	ErrParameterRangeError Error = 5
+	/*Out of memory (OOM) error.*/
+	ErrOutOfMemory Error = 6
+	/*File: Not found error.*/
+	ErrFileNotFound Error = 7
+	/*File: Bad drive error.*/
+	ErrFileBadDrive Error = 8
+	/*File: Bad path error.*/
+	ErrFileBadPath Error = 9
+	/*File: No permission error.*/
+	ErrFileNoPermission Error = 10
+	/*File: Already in use error.*/
+	ErrFileAlreadyInUse Error = 11
+	/*File: Can't open error.*/
+	ErrFileCantOpen Error = 12
+	/*File: Can't write error.*/
+	ErrFileCantWrite Error = 13
+	/*File: Can't read error.*/
+	ErrFileCantRead Error = 14
+	/*File: Unrecognized error.*/
+	ErrFileUnrecognized Error = 15
+	/*File: Corrupt error.*/
+	ErrFileCorrupt Error = 16
+	/*File: Missing dependencies error.*/
+	ErrFileMissingDependencies Error = 17
+	/*File: End of file (EOF) error.*/
+	ErrFileEof Error = 18
+	/*Can't open error.*/
+	ErrCantOpen Error = 19
+	/*Can't create error.*/
+	ErrCantCreate Error = 20
+	/*Query failed error.*/
+	ErrQueryFailed Error = 21
+	/*Already in use error.*/
+	ErrAlreadyInUse Error = 22
+	/*Locked error.*/
+	ErrLocked Error = 23
+	/*Timeout error.*/
+	ErrTimeout Error = 24
+	/*Can't connect error.*/
+	ErrCantConnect Error = 25
+	/*Can't resolve error.*/
+	ErrCantResolve Error = 26
+	/*Connection error.*/
+	ErrConnectionError Error = 27
+	/*Can't acquire resource error.*/
+	ErrCantAcquireResource Error = 28
+	/*Can't fork process error.*/
+	ErrCantFork Error = 29
+	/*Invalid data error.*/
+	ErrInvalidData Error = 30
+	/*Invalid parameter error.*/
+	ErrInvalidParameter Error = 31
+	/*Already exists error.*/
+	ErrAlreadyExists Error = 32
+	/*Does not exist error.*/
+	ErrDoesNotExist Error = 33
+	/*Database: Read error.*/
+	ErrDatabaseCantRead Error = 34
+	/*Database: Write error.*/
+	ErrDatabaseCantWrite Error = 35
+	/*Compilation failed error.*/
+	ErrCompilationFailed Error = 36
+	/*Method not found error.*/
+	ErrMethodNotFound Error = 37
+	/*Linking failed error.*/
+	ErrLinkFailed Error = 38
+	/*Script failed error.*/
+	ErrScriptFailed Error = 39
+	/*Cycling link (import cycle) error.*/
+	ErrCyclicLink Error = 40
+	/*Invalid declaration error.*/
+	ErrInvalidDeclaration Error = 41
+	/*Duplicate symbol error.*/
+	ErrDuplicateSymbol Error = 42
+	/*Parse error.*/
+	ErrParseError Error = 43
+	/*Busy error.*/
+	ErrBusy Error = 44
+	/*Skip error.*/
+	ErrSkip Error = 45
+	/*Help error. Used internally when passing [code]--version[/code] or [code]--help[/code] as executable options.*/
+	ErrHelp Error = 46
+	/*Bug error, caused by an implementation issue in the method.
+	  [b]Note:[/b] If a built-in method returns this code, please open an issue on [url=https://github.com/godotengine/godot/issues]the GitHub Issue Tracker[/url].*/
+	ErrBug Error = 47
+	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
+	ErrPrinterOnFire Error = 48
 )

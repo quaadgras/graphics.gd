@@ -5,12 +5,13 @@ package gd
 import (
 	"unsafe"
 
-	"grow.graphics/gd/gdconst"
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/gd/internal/pointers"
 
 	"runtime.link/api"
 )
+
+type VariantType int
 
 // API specification for Godot's GDExtension.
 type API struct {
@@ -304,10 +305,12 @@ type PropertyInfo struct {
 	Type       VariantType
 	Name       StringName
 	ClassName  StringName
-	Hint       gdconst.PropertyHint
+	Hint       int64
 	HintString String
-	Usage      gdconst.PropertyUsageFlags
+	Usage      int64
 }
+
+type MethodFlags int64
 
 type MethodInfo struct {
 	Name             StringName

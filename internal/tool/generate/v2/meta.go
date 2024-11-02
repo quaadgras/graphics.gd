@@ -157,7 +157,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 
 	// strange C++ cases
 	case "enum::Error":
-		return "int64"
+		return "error"
 	case "const uint8_t **":
 		return "unsafe.Pointer"
 	case "const void*", "const uint8_t*", "const uint8_t *":
@@ -187,7 +187,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 			if hasHost {
 				return "classdb." + host + sub
 			} else {
-				return "gdconst." + gdType
+				return gdType
 			}
 		}
 
@@ -250,7 +250,7 @@ func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
 	case "PackedColorArray":
 		return "[]gd.Color"
 	case "enum::Error":
-		return "gd.Error"
+		return "error"
 	default:
 		return classDB.convertType("", meta, gdType)
 	}

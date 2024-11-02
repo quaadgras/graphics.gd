@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"maps"
 	"os"
+	"slices"
 	"strings"
 
 	"grow.graphics/gd/internal/gdjson"
@@ -42,20 +44,6 @@ func generate() error {
 			}
 		}
 	}
-	if err := os.MkdirAll("./gdconst", 0755); err != nil {
-		return xray.New(err)
-	}
-	enums, err := os.Create("./gdconst/const.go")
-	if err != nil {
-		return xray.New(err)
-	}
-	fmt.Fprintln(enums, `package gdconst`)
-	fmt.Fprintln(enums)
-	for _, enum := range spec.GlobalEnums {
-		generateEnum(enums, "", enum, "")
-		fmt.Fprintln(enums)
-	}
-	defer enums.Close()
 	var global_enums = make(map[string]gdjson.Enum)
 	for _, enum := range spec.GlobalEnums {
 		global_enums[enum.Name] = enum
@@ -145,7 +133,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
 	fmt.Fprintln(file, `import "grow.graphics/gd/objects"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/gdconst"`)
 	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
 	var imported = make(map[string]bool)
 	if class.Inherits != "" {
@@ -162,7 +149,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Root")
-	fmt.Fprintln(file, "var _ gdconst.Side")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	if class.Description != "" {
@@ -316,9 +302,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	for _, enum := range class.Enums {
 		generateEnum(file, class.Name, enum, "classdb.")
 	}
-	/*for _, key := range slices.Sorted(maps.Keys(local_enums)) {
-	enum := global_enums[key]
-	generateEnum(file, "", enum, "gd.")
-	}*/
+	for _, key := range slices.Sorted(maps.Keys(local_enums)) {
+		enum := global_enums[key]
+		generateEnum(file, "", enum, "")
+	}
 	return nil
 }

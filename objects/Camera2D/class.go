@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
@@ -17,7 +16,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Camera node for 2D scenes. It forces the screen (current layer) to scroll following this node. This makes it easier (and faster) to program scrollable scenes than manually changing the position of [CanvasItem]-based nodes.
@@ -429,7 +427,7 @@ func (self class) IsCurrent() bool {
 Sets the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) SetLimit(margin gdconst.Side, limit gd.Int) {
+func (self class) SetLimit(margin Side, limit gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, limit)
@@ -442,7 +440,7 @@ func (self class) SetLimit(margin gdconst.Side, limit gd.Int) {
 Returns the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) GetLimit(margin gdconst.Side) gd.Int {
+func (self class) GetLimit(margin Side) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -551,7 +549,7 @@ func (self class) GetDragHorizontalOffset() gd.Float {
 Sets the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) SetDragMargin(margin gdconst.Side, drag_margin gd.Float) {
+func (self class) SetDragMargin(margin Side, drag_margin gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, drag_margin)
@@ -564,7 +562,7 @@ func (self class) SetDragMargin(margin gdconst.Side, drag_margin gd.Float) {
 Returns the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) GetDragMargin(margin gdconst.Side) gd.Float {
+func (self class) GetDragMargin(margin Side) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -850,4 +848,17 @@ const (
 	Camera2dProcessPhysics Camera2DProcessCallback = 0
 	/*The camera updates during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	Camera2dProcessIdle Camera2DProcessCallback = 1
+)
+
+type Side int
+
+const (
+	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideLeft Side = 0
+	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideTop Side = 1
+	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideRight Side = 2
+	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
+	SideBottom Side = 3
 )

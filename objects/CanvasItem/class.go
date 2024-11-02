@@ -6,7 +6,6 @@ import "grow.graphics/gd/internal/pointers"
 import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
-import "grow.graphics/gd/gdconst"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
 
@@ -15,7 +14,6 @@ var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Root
-var _ gdconst.Side
 
 /*
 Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.
@@ -1219,7 +1217,7 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(font objects.Font, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawString(font objects.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1240,7 +1238,7 @@ func (self class) DrawString(font objects.Font, pos gd.Vector2, text gd.String, 
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineString(font objects.Font, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawMultilineString(font objects.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1263,7 +1261,7 @@ func (self class) DrawMultilineString(font objects.Font, pos gd.Vector2, text gd
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawStringOutline(font objects.Font, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawStringOutline(font objects.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1285,7 +1283,7 @@ func (self class) DrawStringOutline(font objects.Font, pos gd.Vector2, text gd.S
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(font objects.Font, pos gd.Vector2, text gd.String, alignment gdconst.HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
+func (self class) DrawMultilineStringOutline(font objects.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags classdb.TextServerLineBreakFlag, justification_flags classdb.TextServerJustificationFlag, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1899,4 +1897,17 @@ const (
 	ClipChildrenAndDraw ClipChildrenMode = 2
 	/*Represents the size of the [enum ClipChildrenMode] enum.*/
 	ClipChildrenMax ClipChildrenMode = 3
+)
+
+type HorizontalAlignment int
+
+const (
+	/*Horizontal left alignment, usually for text-derived classes.*/
+	HorizontalAlignmentLeft HorizontalAlignment = 0
+	/*Horizontal center alignment, usually for text-derived classes.*/
+	HorizontalAlignmentCenter HorizontalAlignment = 1
+	/*Horizontal right alignment, usually for text-derived classes.*/
+	HorizontalAlignmentRight HorizontalAlignment = 2
+	/*Expand row to fit width, usually for text-derived classes.*/
+	HorizontalAlignmentFill HorizontalAlignment = 3
 )

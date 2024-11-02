@@ -27,7 +27,7 @@ func (array ColorArray) make(local []Color.RGBA, proxy gd.PackedColorArray) Colo
 	array.proxy = proxy
 	return array
 }
-4
+
 // Float32Array is an array specifically designed to hold float32. Packs data tightly, so it saves
 // memory for large array sizes.
 type Float32Array struct {
@@ -156,7 +156,7 @@ type Vector4Array struct {
 func (array Vector4Array) less(a, b Vector4.XYZW) bool    { return Vector4.Less(a, b) }
 func (array Vector4Array) conv(c Vector4.XYZW) gd.Vector4 { return gd.Vector4(c) }
 func (array Vector4Array) wrap(c gd.Vector4) Vector4.XYZW { return Vector4.XYZW(c) }
-func (array Vector4Array) alloc() gd.PackedVector4Array  { return internal.NewPackedVector3Array() }
+func (array Vector4Array) alloc() gd.PackedVector4Array   { return internal.NewPackedVector4Array() }
 
 func (array Vector4Array) make(local []Vector4.XYZW, proxy gd.PackedVector4Array) Vector4Array {
 	array.local = local
