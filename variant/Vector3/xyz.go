@@ -4,10 +4,10 @@ package Vector3
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Angle"
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
-	"grow.graphics/gd/gdmaths/Vector2"
+	"grow.graphics/gd/variant/Angle"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
+	"grow.graphics/gd/variant/Vector2"
 )
 
 // XYZ is a 3-element structure that can be used to represent 3D coordinates
@@ -60,6 +60,16 @@ var (
 // New returns a [XYZ] with the given components.
 func New[X Int.Any | Float.Any](x, y, z X) XYZ { //gd:Vector3(x:float,y:float,z:float)
 	return XYZ{Float.X(x), Float.X(y), Float.X(z)}
+}
+
+// Less compares two Vector3 vectors by first checking if the X value of the left vector is less than the X value of
+// the right vector. If the X values are exactly equal, then it repeats this check with the Y and Z values of the two vectors.
+// This operator is useful for sorting vectors.
+//
+// Note: Vectors with NaN elements don't behave the same as other vectors. Therefore, the results from this operator may not
+// be accurate if NaNs are included.
+func Less(a, b XYZ) bool { //gd:Vector3<Vector3
+	return a.X < b.X && a.Y < b.Y && a.Z < b.Z
 }
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).

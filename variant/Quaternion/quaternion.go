@@ -4,13 +4,13 @@ package Quaternion
 import (
 	"math"
 
-	"grow.graphics/gd/gdenums"
+	"grow.graphics/gd/gdconst"
 
-	"grow.graphics/gd/gdmaths/Angle"
-	"grow.graphics/gd/gdmaths/Basis"
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
-	"grow.graphics/gd/gdmaths/Vector3"
+	"grow.graphics/gd/variant/Angle"
+	"grow.graphics/gd/variant/Basis"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
+	"grow.graphics/gd/variant/Vector3"
 )
 
 // The Quaternion built-in Variant type is a 4D data structure that represents rotation
@@ -122,7 +122,7 @@ func Axis(q IJKX) Vector3.XYZ { //gd:Quaternion.get_axis
 // parameter, for example using the YXZ convention: since this method decomposes, first Z, then X, and Y last. See
 // the EulerOrder enum for possible values. The returned vector contains the rotation angles in the format
 // (X angle, Y angle, Z angle).
-func EulerAngles(order gdenums.EulerOrder, q IJKX) Angle.Euler3D { //gd:Quaternion.get_euler
+func EulerAngles(order gdconst.EulerOrder, q IJKX) Angle.Euler3D { //gd:Quaternion.get_euler
 	return Basis.AsEulerAngles(AsBasis(q), order)
 }
 

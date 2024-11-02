@@ -2,11 +2,11 @@
 package BasisOrigin
 
 import (
-	"grow.graphics/gd/gdmaths/Angle"
-	"grow.graphics/gd/gdmaths/Basis"
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Quaternion"
-	"grow.graphics/gd/gdmaths/Vector3"
+	"grow.graphics/gd/variant/Angle"
+	"grow.graphics/gd/variant/Basis"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Quaternion"
+	"grow.graphics/gd/variant/Vector3"
 )
 
 // The BasisOrigin built-in Variant type is a 3×4 matrix representing a

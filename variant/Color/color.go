@@ -4,8 +4,8 @@ package Color
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
 )
 
 // A color represented in RGBA format by a red (r), green (g), blue (b), and
@@ -17,6 +17,16 @@ type RGBA = struct {
 	G Float.X
 	B Float.X
 	A Float.X
+}
+
+// Less compares two colors by first checking if the R value of the left color is less than the R value of the right color.
+// If the R values are exactly equal, then it repeats this check with the G values of the two colors, B values of the two
+// colors, and then with the A values. This operator is useful for sorting colors.
+//
+// Note: Colors with NaN elements don't behave the same as other colors. Therefore, the results from this operator may not
+// be accurate if NaNs are included.
+func Less(a, b RGBA) bool { //gd:Color<Color
+	return a.R < b.R && a.G < b.G && a.B < b.B && a.A < b.A
 }
 
 // Bytes returns a color represented in RGBA format by a red (r), green

@@ -4,9 +4,9 @@ package Vector2
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Angle"
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
+	"grow.graphics/gd/variant/Angle"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
 )
 
 // XY is a 2-element structure that can be used to represent 2D coordinates or any
@@ -41,6 +41,16 @@ var (
 	Up    = XY{0, -1}                // Up unit vector. Y is down in 2D, so this vector points -Y.
 	Down  = XY{0, 1}                 // Down unit vector. Y is down in 2D, so this vector points +Y.
 )
+
+// Less compares two Vector2 vectors by first checking if the X value of the left vector is less than the X value of
+// the right vector. If the X values are exactly equal, then it repeats this check with the Y values of the two vectors.
+// This operator is useful for sorting vectors.
+//
+// Note: Vectors with NaN elements don't behave the same as other vectors. Therefore, the results from this operator may not
+// be accurate if NaNs are included.
+func Less(a, b XY) bool { //gd:Vector2<Vector2
+	return a.X < b.X && a.Y < b.Y
+}
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).
 func Abs(vec XY) XY { return XY{Float.Abs(vec.X), Float.Abs(vec.Y)} } //gd:Vector2.abs

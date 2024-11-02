@@ -7,7 +7,6 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/gd/internal/pointers"
-	"grow.graphics/uc"
 	"grow.graphics/xy"
 
 	float "grow.graphics/gd/variant/Float"
@@ -18,15 +17,15 @@ type Bool = bool
 type (
 	Float       = float64
 	Int         = int64
-	Vector2     = struct{ X, Y float.X }
-	Vector2i    = struct{ X, Y int32 }
+	Vector2     struct{ X, Y float.X }
+	Vector2i    struct{ X, Y int32 }
 	Rect2       = xy.Rect2
 	Rect2i      = xy.Rect2i
-	Vector3     = struct{ X, Y, Z float.X }
-	Vector3i    = xy.Vector3i
+	Vector3     struct{ X, Y, Z float.X }
+	Vector3i    struct{ X, Y, Z int32 }
 	Transform2D = xy.Transform2D
-	Vector4     = xy.Vector4
-	Vector4i    = xy.Vector4i
+	Vector4     struct{ X, Y, Z, W float.X }
+	Vector4i    struct{ X, Y, Z, W int32 }
 	Plane       = xy.Plane
 	Quaternion  = xy.Quaternion
 	AABB        = xy.AABB
@@ -35,7 +34,7 @@ type (
 	Projection  = xy.Projection
 )
 
-type Color = uc.Color
+type Color struct{ R, G, B, A float.X }
 
 type (
 	Side       = xy.Side

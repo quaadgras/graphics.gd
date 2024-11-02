@@ -3,7 +3,7 @@ package Color
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Float"
+	"grow.graphics/gd/variant/Float"
 )
 
 // HSL constructs a color from an OK HSL profile. The hue (h), saturation (s), and

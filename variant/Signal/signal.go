@@ -4,9 +4,9 @@ package Signal
 import (
 	"sync"
 
-	"grow.graphics/gd/gdenums"
-	"grow.graphics/gd/gdvalue/Callable"
+	"grow.graphics/gd/gdconst"
 	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/variant/Callable"
 )
 
 // Chan is a multi-producer, multi-consumer channel, when T is a value, it denotes the
@@ -21,7 +21,7 @@ type Chan[T any] struct {
 	proxy *gd.Signal
 }
 
-const ErrInvalidParameter = gdenums.ErrInvalidParameter
+const ErrInvalidParameter = gdconst.ErrInvalidParameter
 
 // Attach connects this signal to the specified [Callable.Func]
 // A signal can only be connected once to the same [Callable.Func].

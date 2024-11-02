@@ -88,7 +88,23 @@ func extractTagsFrom(name string, lines *bufio.Reader, tags map[string]FileLine)
 		if tag == "" {
 			continue
 		}
-		for _, tag := range strings.Split(tag, " ") {
+		splits := strings.Split(tag, " ")
+		for _, tag := range splits {
+			if strings.HasPrefix(tag, "PackedArray") {
+				suffix := strings.TrimPrefix(tag, "PackedArray")
+				splits = append(splits, "PackedByteArray"+suffix)
+				splits = append(splits, "PackedColorArray"+suffix)
+				splits = append(splits, "PackedFloat32Array"+suffix)
+				splits = append(splits, "PackedFloat64Array"+suffix)
+				splits = append(splits, "PackedInt32Array"+suffix)
+				splits = append(splits, "PackedInt64Array"+suffix)
+				splits = append(splits, "PackedStringArray"+suffix)
+				splits = append(splits, "PackedVector2Array"+suffix)
+				splits = append(splits, "PackedVector3Array"+suffix)
+				splits = append(splits, "PackedVector4Array"+suffix)
+			}
+		}
+		for _, tag := range splits {
 			if _, ok := tags[tag]; ok {
 				return fmt.Errorf("duplicate tag %q in %s:%d and %s:%d\n",
 					tag, tags[tag].File, tags[tag].Line, name, n)
@@ -107,19 +123,12 @@ func work() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	gdvalue, err := list("./gdvalue")
-	if err != nil {
-		return xray.New(err)
-	}
-	gdmaths, err := list("./gdmaths")
+	variants, err := list("./variant")
 	if err != nil {
 		return xray.New(err)
 	}
 	var tags = make(map[string]FileLine)
-	if err := extractTags("./gdvalue/", gdvalue, tags); err != nil {
-		return xray.New(err)
-	}
-	if err := extractTags("./gdmaths/", gdmaths, tags); err != nil {
+	if err := extractTags("./variant/", variants, tags); err != nil {
 		return xray.New(err)
 	}
 	for _, builtin := range spec.BuiltinClasses {

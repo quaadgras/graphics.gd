@@ -4,8 +4,8 @@ package Vector2i
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
 )
 
 // A 2-element structure that can be used to represent 2D grid

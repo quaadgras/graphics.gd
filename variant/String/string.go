@@ -21,12 +21,18 @@ import (
 	"unicode/utf8"
 
 	"golang.org/x/text/encoding/unicode/utf32"
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
+	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
 )
 
 type Any interface {
 	~string | ~[]byte
+}
+
+// New returns an engine-optimised String for use with Advanced functions.
+func New(s string) gd.String {
+	return gd.Global.Strings.New(s)
 }
 
 // BeginsWith returns true if the string begins with the given text. See also [EndsWith].

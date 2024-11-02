@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"runtime"
 
-	"grow.graphics/gd/gdvalue/Array"
+	"grow.graphics/gd/variant/Array"
 )
 
 // Func representation.
@@ -55,7 +55,7 @@ func (l *local) Call(args ...any) any {
 		for i := range args {
 			l.cache[i] = reflect.ValueOf(args[i])
 		}
-		for i, v := range Array.Iter(binds) {
+		for i, v := range binds.Iter() {
 			l.cache[i+len(args)] = reflect.ValueOf(v)
 		}
 		result := reflect.ValueOf(l.value).Call(l.cache)
@@ -114,9 +114,6 @@ func ArgumentCount(fn Func) int { //gd:Callable.get_argument_count
 
 // BoundArguments returns the arguments that have been bound to this Callable.
 func BoundArguments(fn Func) Array.Of[any] { //gd:Callable.get_bound_arguments
-	if fn == nil {
-		return nil
-	}
 	_, binds := fn.Args()
 	return binds
 }

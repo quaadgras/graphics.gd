@@ -2,11 +2,11 @@
 package Rect2
 
 import (
-	"grow.graphics/gd/gdenums"
+	"grow.graphics/gd/gdconst"
 
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
-	"grow.graphics/gd/gdmaths/Vector2"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
+	"grow.graphics/gd/variant/Vector2"
 )
 
 // PositionSize represents an axis-aligned rectangle in a 2D space.
@@ -121,17 +121,17 @@ func ExpandSides[X Float.Any | Int.Any](rect PositionSize, left, top, right, bot
 // ExpandSize returns a copy of this rectangle with its side extended by the given amount
 // (see Side constants). A negative amount shrinks the rectangle, instead. See also
 // [Expand] and [ExpandSides].
-func ExpandSide[X Float.Any | Int.Any](rect PositionSize, side gdenums.Side, amount X) PositionSize { //gd:Rect2.grow_side
+func ExpandSide[X Float.Any | Int.Any](rect PositionSize, side gdconst.Side, amount X) PositionSize { //gd:Rect2.grow_side
 	switch side {
-	case gdenums.SideLeft:
+	case gdconst.SideLeft:
 		rect.Position.X -= Float.X(amount)
 		rect.Size.X += Float.X(amount)
-	case gdenums.SideTop:
+	case gdconst.SideTop:
 		rect.Position.Y -= Float.X(amount)
 		rect.Size.Y += Float.X(amount)
-	case gdenums.SideRight:
+	case gdconst.SideRight:
 		rect.Size.X += Float.X(amount)
-	case gdenums.SideBottom:
+	case gdconst.SideBottom:
 		rect.Size.Y += Float.X(amount)
 	}
 	return rect

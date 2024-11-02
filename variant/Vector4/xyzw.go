@@ -4,8 +4,8 @@ package Vector4
 import (
 	"math"
 
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Int"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Int"
 )
 
 // XYZW is a 4-element structure that can be used to represent
@@ -42,6 +42,16 @@ var (
 // New returns a [XYZW] with the given components.
 func New[X Int.Any | Float.Any](x, y, z, w X) XYZW { //gd:Vector4(x:float,y:float,z:float,w:float)
 	return XYZW{Float.X(x), Float.X(y), Float.X(z), Float.X(w)}
+}
+
+// Less compares two Vector4 vectors by first checking if the X value of the left vector is less than the X value of
+// the right vector. If the X values are exactly equal, then it repeats this check with the Y, Z and W values of the two vectors.
+// This operator is useful for sorting vectors.
+//
+// Note: Vectors with NaN elements don't behave the same as other vectors. Therefore, the results from this operator may not
+// be accurate if NaNs are included.
+func Less(a, b XYZW) bool { //gd:Vector4<Vector4
+	return a.X < b.X && a.Y < b.Y && a.Z < b.Z && a.W < b.W
 }
 
 // Abs returns a new vector with all components in absolute values (i.e. positive).

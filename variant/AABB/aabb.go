@@ -4,9 +4,9 @@ package AABB
 import (
 	"unsafe"
 
-	"grow.graphics/gd/gdmaths/Float"
-	"grow.graphics/gd/gdmaths/Plane"
-	"grow.graphics/gd/gdmaths/Vector3"
+	"grow.graphics/gd/variant/Float"
+	"grow.graphics/gd/variant/Plane"
+	"grow.graphics/gd/variant/Vector3"
 )
 
 // ʕ is a little ternary operator for porting C code.
