@@ -44,7 +44,16 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			var signalName = gd.NewStringName(name)
 			var etype = field.Type.Elem()
 			var args []gd.PropertyInfo
-			if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
+			if etype.Kind() == reflect.Func {
+				for i := 0; i < etype.NumOut(); i++ {
+					arg := etype.Out(i)
+					args = append(args, gd.PropertyInfo{
+						Type:      variantTypeOf(arg),
+						Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+						ClassName: gd.NewStringName(classNameOf(arg)),
+					})
+				}
+			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				args = append(args, gd.PropertyInfo{
 					Type:      variantTypeOf(etype),
 					Name:      gd.NewStringName("event"),
@@ -79,6 +88,7 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 			}
 		}
 		signal := signals[chosen]
+		fmt.Println("received signal!")
 		gd.NewCallable(func() {
 			if gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance)) == (gd.Object{}) {
 				panic("manageSignals: object freed")
@@ -86,6 +96,13 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 			rtype := value.Type()
 			if rtype.Kind() == reflect.Struct && rtype.NumField() == 0 {
 				signal.signal.Emit()
+			} else if rtype.Kind() == reflect.Func {
+				var args []gd.Variant
+				results := value.Call(nil)
+				for _, result := range results {
+					args = append(args, gd.NewVariant(result.Interface()))
+				}
+				signal.signal.Emit(args...)
 			} else {
 				signal.signal.Emit(gd.NewVariant(value.Interface()))
 			}

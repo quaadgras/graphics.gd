@@ -30,8 +30,12 @@ type Tool interface{ tool() }
 
 // Class can be embedded inside of a struct to represent a new Class type.
 // The extended class will be available by calling the [Class.Super] method.
-type Class[T, S gd.IsClass] struct {
+type Class[T any, S gd.IsClass] struct {
 	gd.Class[T, S]
+}
+
+func (class *Class[T, S]) getObject() gd.Object {
+	return *(*gd.Object)(unsafe.Pointer(class.Super()))
 }
 
 func (class *Class[T, S]) setObject(obj gd.Object) {
@@ -39,12 +43,25 @@ func (class *Class[T, S]) setObject(obj gd.Object) {
 }
 
 type isClass interface {
-	gd.IsClass
-
+	getObject() gd.Object
 	setObject(gd.Object)
 }
 
+func (class *Class[T, S]) AsObject() gd.Object {
+	obj := class.getObject()
+	if obj == (gd.Object{}) {
+		impl, ok := registered.Load(reflect.TypeFor[T]())
+		if ok {
+			instancer := impl.(*classImplementation)
+			obj = instancer.CreateInstance()
+			class.setObject(obj)
+		}
+	}
+	return obj
+}
+
 var instances sync.Map
+var registered sync.Map
 
 /*
 RegisterClass registers a struct available for use inside Godot
@@ -96,16 +113,20 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
 	var reference Struct
 	var className = pointers.Pin(StringName.New(rename))
 	var superName = pointers.Pin(StringName.New(classNameOf(superType)))
-	gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName,
-		&classImplementation{
-			Name:           className,
-			Super:          superName,
-			Type:           classType,
-			Tool:           tool,
-			VirtualMethods: reference.Virtual,
-		})
+
+	var impl = &classImplementation{
+		Name:           className,
+		Super:          superName,
+		Type:           classType,
+		Tool:           tool,
+		VirtualMethods: reference.Virtual,
+	}
+	registered.Store(classType, impl)
+
+	gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
 	gd.RegisterCleanup(func() {
 		gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
+		registered.Delete(classType)
 		className.Free()
 		superName.Free()
 	})
@@ -127,14 +148,14 @@ func classNameOf(rtype reflect.Type) string {
 	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
 		return classNameOf(rtype.Elem())
 	}
-	if rtype.Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
+	if rtype.Kind() == reflect.Struct && rtype.NumField() > 0 {
 		if rtype.Field(0).Anonymous {
 			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
 				return rename
 			}
-		}
-		if rtype.Name() == "" && rtype.Field(0).Anonymous {
-			return classNameOf(rtype.Field(0).Type)
+			if rtype.Name() == "" {
+				return classNameOf(rtype.Field(0).Type)
+			}
 		}
 		return strings.TrimPrefix(rtype.Name(), "class")
 	}
@@ -533,7 +554,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	var parent objects.Node = objects.Node{classdb.Node(instance.Value.AsObject())}
+	var parent objects.Node = objects.Node{classdb.Node(instance.Value.getObject())}
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {

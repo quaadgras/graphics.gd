@@ -5,15 +5,11 @@ package gd_test
 import (
 	"testing"
 
-	gd "grow.graphics/gd/internal"
+	"grow.graphics/gd/variant/String"
 )
 
 func BenchmarkMethodBindPointerCall(B *testing.B) {
-	godot := gd.NewLifetime(API)
-	defer godot.End()
-
-	s := godot.String("Hello, World!")
-
+	s := String.New("Hello, World!")
 	for i := 0; i < B.N; i++ {
 		_ = s.Length()
 	}

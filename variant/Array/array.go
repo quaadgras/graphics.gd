@@ -32,7 +32,7 @@ func New[T any](elements ...T) Of[T] {
 }
 
 // Size returns the number of elements in the array.
-func (a Of[T]) Size() int { //gd:Array.size
+func (a *Of[T]) Size() int { //gd:Array.size
 	if a.array != (gd.Array{}) {
 		return int(a.array.Size())
 	}
@@ -41,7 +41,7 @@ func (a Of[T]) Size() int { //gd:Array.size
 
 // Index returns the value at the given index. If the index is negative,
 // it counts from the end of the array.
-func (a Of[T]) Index(i int) T { //gd:Array[]
+func (a *Of[T]) Index(i int) T { //gd:Array[]
 	if a.array != (gd.Array{}) {
 		return a.array.Index(gd.Int(i)).Interface().(T)
 	}
@@ -53,7 +53,7 @@ func (a Of[T]) Index(i int) T { //gd:Array[]
 
 // SetIndex sets the value at the given index. If the index is negative,
 // it counts from the end of the array.
-func (a Of[T]) SetIndex(i int, value T) { //gd:Array[]=
+func (a *Of[T]) SetIndex(i int, value T) { //gd:Array[]=
 	if a.array != (gd.Array{}) {
 		a.array.SetIndex(gd.Int(i), variant.New(value))
 		return
@@ -67,7 +67,7 @@ func (a Of[T]) SetIndex(i int, value T) { //gd:Array[]=
 // All calls the given function on each element in the array and returns true if the fn returns
 // true for all elements in the array. If the fn returns false for one array element or more,
 // this method returns false. See also [Any], [Filter], [Map], and [Reduce].
-func (a Of[T]) All(fn func(T) bool) bool { //gd:Array.all
+func (a *Of[T]) All(fn func(T) bool) bool { //gd:Array.all
 	for _, v := range a.Iter() {
 		if !fn(v) {
 			return false
@@ -79,7 +79,7 @@ func (a Of[T]) All(fn func(T) bool) bool { //gd:Array.all
 // Any calls the given function on each element in the array and returns true if the function
 // returns true for one or more elements in the array. If the function returns false for all
 // elements in the array, this method returns false. See also [Any], [Filter], [Map], and [Reduce].
-func (a Of[T]) Any(fn func(T) bool) bool { //gd:Array.any
+func (a *Of[T]) Any(fn func(T) bool) bool { //gd:Array.any
 	if a.array != (gd.Array{}) {
 		return false
 	}
@@ -92,7 +92,7 @@ func (a Of[T]) Any(fn func(T) bool) bool { //gd:Array.any
 }
 
 // Append appends value at the end of the array (alias of PushBack).
-func (a Of[T]) Append(value T) { //gd:Array.append
+func (a *Of[T]) Append(value T) { //gd:Array.append
 	if a.array != (gd.Array{}) {
 		a.array.Append(variant.New(value))
 		return
@@ -104,7 +104,7 @@ func (a Of[T]) Append(value T) { //gd:Array.append
 }
 
 // AppendTo appends another array at the end of this array.
-func (a Of[T]) AppendArray(other Of[T]) { //gd:Array.append_array
+func (a *Of[T]) AppendArray(other Of[T]) { //gd:Array.append_array
 	if a.array != (gd.Array{}) && other.array != (gd.Array{}) {
 		a.array.AppendArray(other.array)
 		return
@@ -116,7 +116,7 @@ func (a Of[T]) AppendArray(other Of[T]) { //gd:Array.append_array
 
 // Assign assigns elements of another array into the array. Resizes the
 // array to match array. Performs type conversions if the array is typed.
-func (a Of[T]) Assign(other Of[T]) { //gd:Array.assign
+func (a *Of[T]) Assign(other Of[T]) { //gd:Array.assign
 	if a.array != (gd.Array{}) && other.array != (gd.Array{}) {
 		a.array.Assign(other.array)
 		return
@@ -150,7 +150,7 @@ func BinarySearch[T cmp.Ordered](array Of[T], value T, before bool) int { //gd:A
 //
 // If before is true (as by default), the returned index comes before all existing elements equal
 // to value in the array.
-func (a Of[T]) BinarySearchFunc(fn func(T, T) bool, value T, before bool) int { //gd:Array.bsearch_custom
+func (a *Of[T]) BinarySearchFunc(fn func(T, T) bool, value T, before bool) int { //gd:Array.bsearch_custom
 	var lo = 0
 	var hi = a.Size()
 	if before {
@@ -176,7 +176,7 @@ func (a Of[T]) BinarySearchFunc(fn func(T, T) bool, value T, before bool) int { 
 }
 
 // Clear removes all elements from the array. This is equivalent to using resize with a size of 0.
-func Clear[T any](array Of[T]) { array.Resize(0) } //gd:Array.clear
+func Clear[T any](array *Of[T]) { array.Resize(0) } //gd:Array.clear
 
 // Count returns the number of times an element is in the array.
 func Count[T comparable](array Of[T], value T) int { //gd:Array.count
@@ -208,8 +208,8 @@ func Duplicate[T any](array Of[T]) Of[T] { //gd:Array.duplicate
 //
 // Note: Erasing elements while iterating over arrays is not supported and will result in
 // unpredictable behavior.
-func Erase[T comparable](array Of[T], value T) { //gd:Array.erase
-	var index = Find(array, value)
+func Erase[T comparable](array *Of[T], value T) { //gd:Array.erase
+	var index = Find(*array, value)
 	if index != -1 {
 		Remove(array, index)
 	}
@@ -227,7 +227,7 @@ func Fill[T any](array Of[T], value T) { //gd:Array.fill
 //
 // Note: Every element's index after position needs to be shifted forward, which
 // may have a noticeable performance cost, especially on larger arrays.
-func Insert[T any](array Of[T], position int, value T) { //gd:Array.insert
+func Insert[T any](array *Of[T], position int, value T) { //gd:Array.insert
 	index := Int.Posmod(position, array.Size())
 	array.Resize(array.Size() + 1)
 	for i := array.Size() - 1; i > index; i-- {
@@ -369,7 +369,7 @@ func PickRandom[T any](array Of[T]) T { //gd:Array.pick_random
 //
 // Note: This method shifts every element's index after position back, which may have
 // a noticeable performance cost, especially on larger arrays.
-func PopAt[T any](array Of[T], position int) T { //gd:Array.pop_at
+func PopAt[T any](array *Of[T], position int) T { //gd:Array.pop_at
 	if array.Size() == 0 {
 		return [1]T{}[0]
 	}
@@ -384,14 +384,14 @@ func PopAt[T any](array Of[T], position int) T { //gd:Array.pop_at
 
 // PopBack removes and returns the last element of the array. Returns the zero value for
 // T if the array is empty, without generating an error. See also [PopFront].
-func PopBack[T any](array Of[T]) T { return PopAt(array, -1) } //gd:Array.pop_back
+func PopBack[T any](array *Of[T]) T { return PopAt(array, -1) } //gd:Array.pop_back
 
 // PopFront removes and returns the first element of the array. Returns the zero value for
 // T if the array is empty, without generating an error. See also [PopBack].
-func PopFront[T any](array Of[T]) T { return PopAt(array, 0) } //gd:Array.pop_front
+func PopFront[T any](array *Of[T]) T { return PopAt(array, 0) } //gd:Array.pop_front
 
 // PushBack appends an element at the end of the array. See also [PushFront].
-func PushBack[T any](array Of[T], value T) { //gd:Array.push_back
+func PushBack[T any](array *Of[T], value T) { //gd:Array.push_back
 	array.Resize(array.Size() + 1)
 	array.SetIndex(array.Size()-1, value)
 }
@@ -400,7 +400,7 @@ func PushBack[T any](array Of[T], value T) { //gd:Array.push_back
 //
 // Note: This method shifts every other element's index forward, which may have a
 // noticeable performance cost, especially on larger arrays.
-func PushFront[T any](array Of[T], value T) { //gd:Array.push_front
+func PushFront[T any](array *Of[T], value T) { //gd:Array.push_front
 	array.Resize(array.Size() + 1)
 	for i := array.Size() - 1; i > 0; i-- {
 		array.SetIndex(i, array.Index(i-1))
@@ -428,7 +428,7 @@ func Reduce[T, U any](array Of[T], fn func(U, T) U, accum U) U { //gd:Array.redu
 //
 // Note: This method shifts every element's index after position back, which may
 // have a noticeable performance cost, especially on larger arrays.
-func Remove[T any](array Of[T], position int) { //gd:Array.remove_at
+func Remove[T any](array *Of[T], position int) { //gd:Array.remove_at
 	index := Int.Posmod(position, array.Size())
 	for i := index; i < array.Size()-1; i++ {
 		array.SetIndex(i, array.Index(i+1))
@@ -439,7 +439,7 @@ func Remove[T any](array Of[T], position int) { //gd:Array.remove_at
 // Resize changes the size of the array. If the new size is smaller than the current size,
 // the array is truncated. If the new size is larger, the array is padded with the zero
 // value for T.
-func (array Of[T]) Resize(size int) { //gd:Array.resize
+func (array *Of[T]) Resize(size int) { //gd:Array.resize
 	if array.array != (gd.Array{}) {
 		array.array.Resize(gd.Int(size))
 		return
@@ -452,7 +452,7 @@ func (array Of[T]) Resize(size int) { //gd:Array.resize
 }
 
 // Reverse reverses the order of elements in the array.
-func Reverse[T any](array Of[T]) { //gd:Array.reverse
+func Reverse[T any](array *Of[T]) { //gd:Array.reverse
 	for i, j := 0, array.Size()-1; i < j; i, j = i+1, j-1 {
 		v, w := array.Index(i), array.Index(j)
 		array.SetIndex(i, w)
@@ -472,7 +472,7 @@ func FindLast[T comparable](array Of[T], what T) int { //gd:Array.rfind
 }
 
 // Shuffle shuffles all elements of the array in a random order.
-func Shuffle[T any](array Of[T]) { //gd:Array.shuffle
+func Shuffle[T any](array *Of[T]) { //gd:Array.shuffle
 	for i := array.Size() - 1; i > 0; i-- {
 		j := rand.Intn(i + 1)
 		v, w := array.Index(i), array.Index(j)
@@ -508,7 +508,7 @@ func Slice[T any](array Of[T], from, upto int) Of[T] { //gd:Array.slice
 }
 
 type sorter[T any] struct {
-	array Of[T]
+	array *Of[T]
 	less  func(T, T) bool
 }
 
@@ -524,7 +524,7 @@ func (s sorter[T]) Len() int { return s.array.Size() }
 
 // Sort sorts the array in ascending order. The final order is dependent on the
 // "less than" (<) comparison between elements.
-func Sort[T cmp.Ordered](array Of[T]) { //gd:Array.sort
+func Sort[T cmp.Ordered](array *Of[T]) { //gd:Array.sort
 	sort.Sort(sorter[T]{array: array, less: func(a, b T) bool { return a < b }})
 }
 
@@ -533,7 +533,7 @@ func Sort[T cmp.Ordered](array Of[T]) { //gd:Array.sort
 // fn is called as many times as necessary, receiving two array elements as arguments.
 // The function should return true if the first element should be moved before the
 // second one, otherwise it should return false.
-func SortFunc[T any](less func(a, b T) bool, array Of[T]) { //gd:Array.sort_custom
+func SortFunc[T any](less func(a, b T) bool, array *Of[T]) { //gd:Array.sort_custom
 	sort.Sort(sorter[T]{array: array, less: less})
 }
 

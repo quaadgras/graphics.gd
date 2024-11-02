@@ -6,60 +6,54 @@ import (
 	"fmt"
 	"testing"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdclass/Engine"
-	"grow.graphics/gd/gdclass/Node"
-	"grow.graphics/gd/gdclass/Node2D"
+	"grow.graphics/gd/gdextension"
 	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/objects/Engine"
+	"grow.graphics/gd/objects/Node"
+	"grow.graphics/gd/objects/Node2D"
+	"grow.graphics/gd/variant/String"
 )
 
 func TestRegister(t *testing.T) {
-	godot := internal.NewLifetime(API)
-	defer godot.End()
-
 	type SimpleClass struct {
-		gd.Class[SimpleClass, Node2D.Expert]
+		gdextension.Class[SimpleClass, Node2D.Advanced]
 	}
+	gdextension.Register[SimpleClass]()
 
-	gd.Register[SimpleClass](godot)
-
-	if tag := godot.API.ClassDB.GetClassTag(godot.StringName("Node2D")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(internal.NewStringName("Node2D")); tag == 0 {
 		t.Fail()
 	}
-	if tag := godot.API.ClassDB.GetClassTag(godot.StringName("SimpleClass")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(internal.NewStringName("SimpleClass")); tag == 0 {
 		t.Fail()
 	}
 
-	class := gd.New[SimpleClass](godot)
-	if class.AsObject().GetClass(godot).String() != "SimpleClass" {
+	class := new(SimpleClass)
+	if class.AsObject().GetClass().String() != "SimpleClass" {
 		t.Fail()
 	}
-	class.Super().AsNode().SetName(godot.String("SimpleClass"))
+	class.Super().AsNode().SetName(String.New("SimpleClass"))
 }
 
 type MyClassWithConstants struct {
-	gd.Class[MyClassWithConstants, Node2D.Expert]
+	gdextension.Class[MyClassWithConstants, Node2D.Advanced]
 }
 
-func (*MyClassWithConstants) OnRegister(godot gd.Lifetime) {
-	godot.Register(gd.Enum[MyClassWithConstants, int]{
-		Name: "MyEnum",
-		Values: map[string]int{
-			"Value1": 1,
-			"Value2": 2,
-		},
-	})
+func (*MyClassWithConstants) OnRegister() {
+	/*godot.Register(gd.Enum[MyClassWithConstants, int]{
+	Name: "MyEnum",
+	Values: map[string]int{
+		"Value1": 1,
+		"Value2": 2,
+	},
+	})*/
 }
 
 func TestRegisterConstants(t *testing.T) {
-	godot := internal.NewLifetime(API)
-	defer godot.End()
-
-	gd.Register[MyClassWithConstants](godot)
+	gdextension.Register[MyClassWithConstants]()
 }
 
 type Singleton struct {
-	gd.Class[Singleton, Node.Expert]
+	gdextension.Class[Singleton, Node.Advanced]
 }
 
 func (Singleton) Ready() {
@@ -67,10 +61,6 @@ func (Singleton) Ready() {
 }
 
 func TestSingleton(t *testing.T) {
-	godot := internal.NewLifetime(API)
-	defer godot.End()
-
-	gd.Register[Singleton](godot)
-
-	Engine.Expert(gd.Engine(godot)).RegisterSingleton(godot.StringName("HelloWorld"), gd.New[Singleton](godot).AsObject())
+	gdextension.Register[Singleton]()
+	Engine.Advanced().RegisterSingleton(internal.NewStringName("HelloWorld"), new(Singleton).AsObject())
 }

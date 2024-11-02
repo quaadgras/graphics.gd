@@ -4,19 +4,14 @@ import (
 	"testing"
 
 	gd "grow.graphics/gd/internal"
-	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/variant"
 )
 
 func TestVariants(t *testing.T) {
-	var godot = internal.NewLifetime(API)
-	defer godot.End()
-
-	var f = godot.Variant(gd.Float(3.14))
-
-	if f.Interface(godot).(gd.Float) != 3.14 {
+	var f = variant.New(3.14)
+	if f.Interface().(gd.Float) != 3.14 {
 		t.Fail()
 	}
-
 	if f.Float() != 3.14 {
 		t.Fail()
 	}

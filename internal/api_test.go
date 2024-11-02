@@ -4,7 +4,6 @@ package gd_test
 
 import (
 	"fmt"
-	"os"
 	"testing"
 	"unsafe"
 
@@ -12,21 +11,8 @@ import (
 	gd "grow.graphics/gd/internal"
 )
 
-var API *gd.API
-
-var godot gd.Lifetime
-
-func TestMain(M *testing.M) {
-	var ok bool
-	godot, ok = gdextension.Link()
-	if ok {
-		API = godot.API
-		os.Exit(M.Run())
-	}
-}
-
 func TestGetGodotVersion(t *testing.T) {
-	version := API.GetGodotVersion()
+	version := gd.Global.GetGodotVersion()
 	if version.Major != 4 {
 		t.Fail()
 	}
@@ -42,8 +28,6 @@ func TestGetGodotVersion(t *testing.T) {
 }
 
 func TestNativeStructSize(t *testing.T) {
-	godot := gd.NewLifetime(API)
-	defer godot.End()
 	for name, expectation := range map[string]uintptr{
 		"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),
 		"AudioFrame":                              unsafe.Sizeof(gd.AudioFrame{}),
@@ -60,14 +44,12 @@ func TestNativeStructSize(t *testing.T) {
 		"PhysicsServer3DExtensionMotionCollision": unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionCollision{}),
 		"PhysicsServer3DExtensionMotionResult":    unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionResult{}),
 	} {
-		if API.GetNativeStructSize(godot.StringName(name)) != expectation {
-			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, API.GetNativeStructSize(godot.StringName(name)))
+		if size := gd.Global.GetNativeStructSize(gd.NewStringName(name)); size != expectation {
+			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 		}
 	}
 }
 
 func TestGetLibraryPath(t *testing.T) {
-	godot := gd.NewLifetime(API)
-	defer godot.End()
-	fmt.Println(godot.GetLibraryPath())
+	fmt.Println(gdextension.LibraryPath())
 }

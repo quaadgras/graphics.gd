@@ -65,12 +65,12 @@ func (self Object) Free() {
 	}
 }
 
-type Class[T, S IsClass] struct {
+type Class[T any, S IsClass] struct {
 	_     [0]*T
 	super S
 }
 
-func (class Class[T, S]) AsObject() Object {
+func (class *Class[T, S]) AsObject() Object {
 	return class.super.AsObject()
 }
 
@@ -147,8 +147,9 @@ type Singleton interface {
 }
 
 type Extends[T IsClass] interface {
-	IsClass
 	class() T
+
+	Virtual(string) reflect.Value
 }
 
 type PointerToClass interface {

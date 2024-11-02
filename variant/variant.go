@@ -23,7 +23,14 @@ import (
 )
 
 func New(val any) gd.Variant {
-	return gd.NewVariant(val)
+	rtype := reflect.TypeOf(val)
+	value := reflect.ValueOf(val)
+	switch rtype.Kind() {
+	case reflect.Float32, reflect.Float64:
+		return gd.NewVariant(gd.Float(value.Float()))
+	default:
+		return gd.NewVariant(val)
+	}
 }
 
 // Call attempts to call the given method on the given variant value with the given arguments.

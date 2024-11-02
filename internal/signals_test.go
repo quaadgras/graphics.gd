@@ -5,17 +5,16 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdclass/Node2D"
-	internal "grow.graphics/gd/internal"
+	"grow.graphics/gd/gdextension"
+	"grow.graphics/gd/objects/Node2D"
 )
 
 type CustomSignal struct {
-	gd.Class[CustomSignal, Node2D.Expert]
+	gdextension.Class[CustomSignal, Node2D.Instance]
 
-	HealthChanged gd.SignalAs[func(gd.Int, gd.Int)]
+	HealthChanged chan<- func() (old, new int)
 
-	Health gd.Int
+	Health int
 }
 
 func (c *CustomSignal) Ready() {
@@ -24,18 +23,16 @@ func (c *CustomSignal) Ready() {
 	}
 }
 
-func (c *CustomSignal) TakeDamage(godot gd.Lifetime, amount gd.Int) {
+func (c *CustomSignal) TakeDamage(amount int) {
 	oldHealth := c.Health
 	c.Health -= amount
-	c.HealthChanged.Emit(oldHealth, c.Health)
+	c.HealthChanged <- func() (int, int) { return oldHealth, c.Health }
 }
 
 func TestSignals(t *testing.T) {
-	godot := internal.NewLifetime(API)
-	defer godot.End()
+	gdextension.Register[CustomSignal]()
 
-	gd.Register[CustomSignal](godot)
-
-	custom := gd.New[CustomSignal](godot)
-	custom.TakeDamage(godot, 10)
+	custom := new(CustomSignal)
+	custom.HealthChanged = make(chan func() (int, int), 1)
+	custom.TakeDamage(10)
 }
