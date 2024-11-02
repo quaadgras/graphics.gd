@@ -12,6 +12,8 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -67,12 +69,12 @@ func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(gd.Int(value))
 }
 
-func (self Instance) FrameCoords() gd.Vector2i {
-	return gd.Vector2i(class(self).GetFrameCoords())
+func (self Instance) FrameCoords() Vector2i.XY {
+	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
-func (self Instance) SetFrameCoords(value gd.Vector2i) {
-	class(self).SetFrameCoords(value)
+func (self Instance) SetFrameCoords(value Vector2i.XY) {
+	class(self).SetFrameCoords(gd.Vector2i(value))
 }
 
 func (self Instance) RegionEnabled() bool {
@@ -83,12 +85,12 @@ func (self Instance) SetRegionEnabled(value bool) {
 	class(self).SetRegionEnabled(value)
 }
 
-func (self Instance) RegionRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRegionRect())
+func (self Instance) RegionRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-func (self Instance) SetRegionRect(value gd.Rect2) {
-	class(self).SetRegionRect(value)
+func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+	class(self).SetRegionRect(gd.Rect2(value))
 }
 
 //go:nosplit

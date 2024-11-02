@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -55,10 +57,10 @@ If the default [method _estimate_cost] and [method _compute_cost] methods are us
 	type AStar3D interface {
 		//Called when estimating the cost between a point and the path's ending point.
 		//Note that this function is hidden in the default [AStar3D] class.
-		EstimateCost(from_id int, to_id int) float64
+		EstimateCost(from_id int, to_id int) Float.X
 		//Called when computing the cost between two connected points.
 		//Note that this function is hidden in the default [AStar3D] class.
-		ComputeCost(from_id int, to_id int) float64
+		ComputeCost(from_id int, to_id int) Float.X
 	}
 */
 type Instance [1]classdb.AStar3D
@@ -67,7 +69,7 @@ type Instance [1]classdb.AStar3D
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -81,7 +83,7 @@ func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id 
 Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -113,35 +115,35 @@ astar.AddPoint(1, new Vector3(1, 0, 0), 4); // Adds the point (1, 0, 0) with wei
 [/codeblocks]
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
-func (self Instance) AddPoint(id int, position gd.Vector3) {
-	class(self).AddPoint(gd.Int(id), position, gd.Float(1.0))
+func (self Instance) AddPoint(id int, position Vector3.XYZ) {
+	class(self).AddPoint(gd.Int(id), gd.Vector3(position), gd.Float(1.0))
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
-func (self Instance) GetPointPosition(id int) gd.Vector3 {
-	return gd.Vector3(class(self).GetPointPosition(gd.Int(id)))
+func (self Instance) GetPointPosition(id int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetPointPosition(gd.Int(id)))
 }
 
 /*
 Sets the [param position] for the point with the given [param id].
 */
-func (self Instance) SetPointPosition(id int, position gd.Vector3) {
-	class(self).SetPointPosition(gd.Int(id), position)
+func (self Instance) SetPointPosition(id int, position Vector3.XYZ) {
+	class(self).SetPointPosition(gd.Int(id), gd.Vector3(position))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
-func (self Instance) GetPointWeightScale(id int) float64 {
-	return float64(float64(class(self).GetPointWeightScale(gd.Int(id))))
+func (self Instance) GetPointWeightScale(id int) Float.X {
+	return Float.X(Float.X(class(self).GetPointWeightScale(gd.Int(id))))
 }
 
 /*
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
-func (self Instance) SetPointWeightScale(id int, weight_scale float64) {
+func (self Instance) SetPointWeightScale(id int, weight_scale Float.X) {
 	class(self).SetPointWeightScale(gd.Int(id), gd.Float(weight_scale))
 }
 
@@ -279,8 +281,8 @@ func (self Instance) Clear() {
 Returns the ID of the closest point to [param to_position], optionally taking disabled points into account. Returns [code]-1[/code] if there are no points in the points pool.
 [b]Note:[/b] If several points are the closest to [param to_position], the one with the smallest ID will be returned, ensuring a deterministic result.
 */
-func (self Instance) GetClosestPoint(to_position gd.Vector3) int {
-	return int(int(class(self).GetClosestPoint(to_position, false)))
+func (self Instance) GetClosestPoint(to_position Vector3.XYZ) int {
+	return int(int(class(self).GetClosestPoint(gd.Vector3(to_position), false)))
 }
 
 /*
@@ -303,8 +305,8 @@ Vector3 res = astar.GetClosestPositionInSegment(new Vector3(3, 3, 0)); // Return
 [/codeblocks]
 The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/code]. It's the closest position in the segment to the given point.
 */
-func (self Instance) GetClosestPositionInSegment(to_position gd.Vector3) gd.Vector3 {
-	return gd.Vector3(class(self).GetClosestPositionInSegment(to_position))
+func (self Instance) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetClosestPositionInSegment(gd.Vector3(to_position)))
 }
 
 /*
@@ -312,8 +314,8 @@ Returns an array with the points that are in the path found by AStar3D between t
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
-func (self Instance) GetPointPath(from_id int, to_id int) []gd.Vector3 {
-	return []gd.Vector3(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
+func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
 }
 
 /*

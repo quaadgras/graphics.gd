@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -52,19 +53,19 @@ func New() Instance {
 	return Instance{classdb.CanvasGroup(object)}
 }
 
-func (self Instance) FitMargin() float64 {
-	return float64(float64(class(self).GetFitMargin()))
+func (self Instance) FitMargin() Float.X {
+	return Float.X(Float.X(class(self).GetFitMargin()))
 }
 
-func (self Instance) SetFitMargin(value float64) {
+func (self Instance) SetFitMargin(value Float.X) {
 	class(self).SetFitMargin(gd.Float(value))
 }
 
-func (self Instance) ClearMargin() float64 {
-	return float64(float64(class(self).GetClearMargin()))
+func (self Instance) ClearMargin() Float.X {
+	return Float.X(Float.X(class(self).GetClearMargin()))
 }
 
-func (self Instance) SetClearMargin(value float64) {
+func (self Instance) SetClearMargin(value Float.X) {
 	class(self).SetClearMargin(gd.Float(value))
 }
 

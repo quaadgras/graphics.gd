@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,7 +24,7 @@ Range is an abstract base class for controls that represent a number within a ra
 	// Range methods that can be overridden by a [Class] that extends it.
 	type Range interface {
 		//Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
-		ValueChanged(new_value float64)
+		ValueChanged(new_value Float.X)
 	}
 */
 type Instance [1]classdb.Range
@@ -31,18 +32,18 @@ type Instance [1]classdb.Range
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
-func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(new_value))
+		impl(self, Float.X(new_value))
 	}
 }
 
 /*
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
-func (self Instance) SetValueNoSignal(value float64) {
+func (self Instance) SetValueNoSignal(value Float.X) {
 	class(self).SetValueNoSignal(gd.Float(value))
 }
 
@@ -71,51 +72,51 @@ func New() Instance {
 	return Instance{classdb.Range(object)}
 }
 
-func (self Instance) MinValue() float64 {
-	return float64(float64(class(self).GetMin()))
+func (self Instance) MinValue() Float.X {
+	return Float.X(Float.X(class(self).GetMin()))
 }
 
-func (self Instance) SetMinValue(value float64) {
+func (self Instance) SetMinValue(value Float.X) {
 	class(self).SetMin(gd.Float(value))
 }
 
-func (self Instance) MaxValue() float64 {
-	return float64(float64(class(self).GetMax()))
+func (self Instance) MaxValue() Float.X {
+	return Float.X(Float.X(class(self).GetMax()))
 }
 
-func (self Instance) SetMaxValue(value float64) {
+func (self Instance) SetMaxValue(value Float.X) {
 	class(self).SetMax(gd.Float(value))
 }
 
-func (self Instance) Step() float64 {
-	return float64(float64(class(self).GetStep()))
+func (self Instance) Step() Float.X {
+	return Float.X(Float.X(class(self).GetStep()))
 }
 
-func (self Instance) SetStep(value float64) {
+func (self Instance) SetStep(value Float.X) {
 	class(self).SetStep(gd.Float(value))
 }
 
-func (self Instance) Page() float64 {
-	return float64(float64(class(self).GetPage()))
+func (self Instance) Page() Float.X {
+	return Float.X(Float.X(class(self).GetPage()))
 }
 
-func (self Instance) SetPage(value float64) {
+func (self Instance) SetPage(value Float.X) {
 	class(self).SetPage(gd.Float(value))
 }
 
-func (self Instance) Value() float64 {
-	return float64(float64(class(self).GetValue()))
+func (self Instance) Value() Float.X {
+	return Float.X(Float.X(class(self).GetValue()))
 }
 
-func (self Instance) SetValue(value float64) {
+func (self Instance) SetValue(value Float.X) {
 	class(self).SetValue(gd.Float(value))
 }
 
-func (self Instance) Ratio() float64 {
-	return float64(float64(class(self).GetAsRatio()))
+func (self Instance) Ratio() Float.X {
+	return Float.X(Float.X(class(self).GetAsRatio()))
 }
 
-func (self Instance) SetRatio(value float64) {
+func (self Instance) SetRatio(value Float.X) {
 	class(self).SetAsRatio(gd.Float(value))
 }
 
@@ -386,7 +387,7 @@ func (self class) Unshare() {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_unshare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self Instance) OnValueChanged(cb func(value float64)) {
+func (self Instance) OnValueChanged(cb func(value Float.X)) {
 	self[0].AsObject().Connect(gd.NewStringName("value_changed"), gd.NewCallable(cb), 0)
 }
 

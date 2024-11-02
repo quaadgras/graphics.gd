@@ -22,7 +22,7 @@ Importantly, you can inherit from [Material] to create your own custom material 
 	// Material methods that can be overridden by a [Class] that extends it.
 	type Material interface {
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
-		GetShaderRid() gd.RID
+		GetShaderRid() Resource.ID
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
 		GetShaderMode() classdb.ShaderMode
 		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
@@ -36,7 +36,7 @@ type Instance [1]classdb.Material
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
 */
-func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

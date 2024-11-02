@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/OpenXRCompositionLayer"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,35 +34,35 @@ func New() Instance {
 	return Instance{classdb.OpenXRCompositionLayerEquirect(object)}
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) CentralHorizontalAngle() float64 {
-	return float64(float64(class(self).GetCentralHorizontalAngle()))
+func (self Instance) CentralHorizontalAngle() Float.X {
+	return Float.X(Float.X(class(self).GetCentralHorizontalAngle()))
 }
 
-func (self Instance) SetCentralHorizontalAngle(value float64) {
+func (self Instance) SetCentralHorizontalAngle(value Float.X) {
 	class(self).SetCentralHorizontalAngle(gd.Float(value))
 }
 
-func (self Instance) UpperVerticalAngle() float64 {
-	return float64(float64(class(self).GetUpperVerticalAngle()))
+func (self Instance) UpperVerticalAngle() Float.X {
+	return Float.X(Float.X(class(self).GetUpperVerticalAngle()))
 }
 
-func (self Instance) SetUpperVerticalAngle(value float64) {
+func (self Instance) SetUpperVerticalAngle(value Float.X) {
 	class(self).SetUpperVerticalAngle(gd.Float(value))
 }
 
-func (self Instance) LowerVerticalAngle() float64 {
-	return float64(float64(class(self).GetLowerVerticalAngle()))
+func (self Instance) LowerVerticalAngle() Float.X {
+	return Float.X(Float.X(class(self).GetLowerVerticalAngle()))
 }
 
-func (self Instance) SetLowerVerticalAngle(value float64) {
+func (self Instance) SetLowerVerticalAngle(value Float.X) {
 	class(self).SetLowerVerticalAngle(gd.Float(value))
 }
 

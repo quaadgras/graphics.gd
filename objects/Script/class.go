@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -118,15 +119,15 @@ func (self Instance) GetScriptSignalList() gd.Array {
 /*
 Returns a dictionary containing constant names and their values.
 */
-func (self Instance) GetScriptConstantMap() gd.Dictionary {
-	return gd.Dictionary(class(self).GetScriptConstantMap())
+func (self Instance) GetScriptConstantMap() Dictionary.Any {
+	return Dictionary.Any(class(self).GetScriptConstantMap())
 }
 
 /*
 Returns the default value of the specified property.
 */
-func (self Instance) GetPropertyDefaultValue(property string) gd.Variant {
-	return gd.Variant(class(self).GetPropertyDefaultValue(gd.NewStringName(property)))
+func (self Instance) GetPropertyDefaultValue(property string) any {
+	return any(class(self).GetPropertyDefaultValue(gd.NewStringName(property)).Interface())
 }
 
 /*

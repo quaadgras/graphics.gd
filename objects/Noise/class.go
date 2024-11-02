@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,36 +28,36 @@ type Instance [1]classdb.Noise
 /*
 Returns the 1D noise value at the given (x) coordinate.
 */
-func (self Instance) GetNoise1d(x float64) float64 {
-	return float64(float64(class(self).GetNoise1d(gd.Float(x))))
+func (self Instance) GetNoise1d(x Float.X) Float.X {
+	return Float.X(Float.X(class(self).GetNoise1d(gd.Float(x))))
 }
 
 /*
 Returns the 2D noise value at the given position.
 */
-func (self Instance) GetNoise2d(x float64, y float64) float64 {
-	return float64(float64(class(self).GetNoise2d(gd.Float(x), gd.Float(y))))
+func (self Instance) GetNoise2d(x Float.X, y Float.X) Float.X {
+	return Float.X(Float.X(class(self).GetNoise2d(gd.Float(x), gd.Float(y))))
 }
 
 /*
 Returns the 2D noise value at the given position.
 */
-func (self Instance) GetNoise2dv(v gd.Vector2) float64 {
-	return float64(float64(class(self).GetNoise2dv(v)))
+func (self Instance) GetNoise2dv(v Vector2.XY) Float.X {
+	return Float.X(Float.X(class(self).GetNoise2dv(gd.Vector2(v))))
 }
 
 /*
 Returns the 3D noise value at the given position.
 */
-func (self Instance) GetNoise3d(x float64, y float64, z float64) float64 {
-	return float64(float64(class(self).GetNoise3d(gd.Float(x), gd.Float(y), gd.Float(z))))
+func (self Instance) GetNoise3d(x Float.X, y Float.X, z Float.X) Float.X {
+	return Float.X(Float.X(class(self).GetNoise3d(gd.Float(x), gd.Float(y), gd.Float(z))))
 }
 
 /*
 Returns the 3D noise value at the given position.
 */
-func (self Instance) GetNoise3dv(v gd.Vector3) float64 {
-	return float64(float64(class(self).GetNoise3dv(v)))
+func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X {
+	return Float.X(Float.X(class(self).GetNoise3dv(gd.Vector3(v))))
 }
 
 /*

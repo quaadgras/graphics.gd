@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,19 +35,19 @@ func New() Instance {
 	return Instance{classdb.CameraAttributes(object)}
 }
 
-func (self Instance) ExposureSensitivity() float64 {
-	return float64(float64(class(self).GetExposureSensitivity()))
+func (self Instance) ExposureSensitivity() Float.X {
+	return Float.X(Float.X(class(self).GetExposureSensitivity()))
 }
 
-func (self Instance) SetExposureSensitivity(value float64) {
+func (self Instance) SetExposureSensitivity(value Float.X) {
 	class(self).SetExposureSensitivity(gd.Float(value))
 }
 
-func (self Instance) ExposureMultiplier() float64 {
-	return float64(float64(class(self).GetExposureMultiplier()))
+func (self Instance) ExposureMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetExposureMultiplier()))
 }
 
-func (self Instance) SetExposureMultiplier(value float64) {
+func (self Instance) SetExposureMultiplier(value Float.X) {
 	class(self).SetExposureMultiplier(gd.Float(value))
 }
 
@@ -58,19 +59,19 @@ func (self Instance) SetAutoExposureEnabled(value bool) {
 	class(self).SetAutoExposureEnabled(value)
 }
 
-func (self Instance) AutoExposureScale() float64 {
-	return float64(float64(class(self).GetAutoExposureScale()))
+func (self Instance) AutoExposureScale() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureScale()))
 }
 
-func (self Instance) SetAutoExposureScale(value float64) {
+func (self Instance) SetAutoExposureScale(value Float.X) {
 	class(self).SetAutoExposureScale(gd.Float(value))
 }
 
-func (self Instance) AutoExposureSpeed() float64 {
-	return float64(float64(class(self).GetAutoExposureSpeed()))
+func (self Instance) AutoExposureSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureSpeed()))
 }
 
-func (self Instance) SetAutoExposureSpeed(value float64) {
+func (self Instance) SetAutoExposureSpeed(value Float.X) {
 	class(self).SetAutoExposureSpeed(gd.Float(value))
 }
 

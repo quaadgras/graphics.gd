@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,20 +33,20 @@ func New() Instance {
 	return Instance{classdb.SegmentShape2D(object)}
 }
 
-func (self Instance) A() gd.Vector2 {
-	return gd.Vector2(class(self).GetA())
+func (self Instance) A() Vector2.XY {
+	return Vector2.XY(class(self).GetA())
 }
 
-func (self Instance) SetA(value gd.Vector2) {
-	class(self).SetA(value)
+func (self Instance) SetA(value Vector2.XY) {
+	class(self).SetA(gd.Vector2(value))
 }
 
-func (self Instance) B() gd.Vector2 {
-	return gd.Vector2(class(self).GetB())
+func (self Instance) B() Vector2.XY {
+	return Vector2.XY(class(self).GetB())
 }
 
-func (self Instance) SetB(value gd.Vector2) {
-	class(self).SetB(value)
+func (self Instance) SetB(value Vector2.XY) {
+	class(self).SetB(gd.Vector2(value))
 }
 
 //go:nosplit

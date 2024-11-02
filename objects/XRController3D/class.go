@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRNode3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,22 +37,22 @@ func (self Instance) IsButtonPressed(name string) bool {
 /*
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
-func (self Instance) GetInput(name string) gd.Variant {
-	return gd.Variant(class(self).GetInput(gd.NewStringName(name)))
+func (self Instance) GetInput(name string) any {
+	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
 }
 
 /*
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
-func (self Instance) GetFloat(name string) float64 {
-	return float64(float64(class(self).GetFloat(gd.NewStringName(name))))
+func (self Instance) GetFloat(name string) Float.X {
+	return Float.X(Float.X(class(self).GetFloat(gd.NewStringName(name))))
 }
 
 /*
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
-func (self Instance) GetVector2(name string) gd.Vector2 {
-	return gd.Vector2(class(self).GetVector2(gd.NewStringName(name)))
+func (self Instance) GetVector2(name string) Vector2.XY {
+	return Vector2.XY(class(self).GetVector2(gd.NewStringName(name)))
 }
 
 /*
@@ -147,11 +149,11 @@ func (self Instance) OnButtonReleased(cb func(name string)) {
 	self[0].AsObject().Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnInputFloatChanged(cb func(name string, value float64)) {
+func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X)) {
 	self[0].AsObject().Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnInputVector2Changed(cb func(name string, value gd.Vector2)) {
+func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
 }
 

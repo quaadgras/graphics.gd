@@ -43,8 +43,8 @@ type Instance [1]classdb.PackedDataContainer
 Packs the given container into a binary representation. The [param value] must be either [Array] or [Dictionary], any other type will result in invalid data error.
 [b]Note:[/b] Subsequent calls to this method will overwrite the existing data.
 */
-func (self Instance) Pack(value gd.Variant) error {
-	return error(class(self).Pack(value))
+func (self Instance) Pack(value any) error {
+	return error(class(self).Pack(gd.NewVariant(value)))
 }
 
 /*

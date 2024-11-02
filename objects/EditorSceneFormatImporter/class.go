@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,9 +23,9 @@ To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.a
 	type EditorSceneFormatImporter interface {
 		GetImportFlags() int
 		GetExtensions() []string
-		ImportScene(path string, flags int, options gd.Dictionary) gd.Object
+		ImportScene(path string, flags int, options Dictionary.Any) gd.Object
 		GetImportOptions(path string)
-		GetOptionVisibility(path string, for_animation bool, option string) gd.Variant
+		GetOptionVisibility(path string, for_animation bool, option string) any
 	}
 */
 type Instance [1]classdb.EditorSceneFormatImporter
@@ -47,7 +48,7 @@ func (Instance) _get_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options gd.Dictionary) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options Dictionary.Any) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -71,7 +72,7 @@ func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string)) 
 		impl(self, path.String())
 	}
 }
-func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, for_animation bool, option string) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -80,7 +81,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), for_animation, option.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}

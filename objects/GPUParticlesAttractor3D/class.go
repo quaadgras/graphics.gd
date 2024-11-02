@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,27 +37,27 @@ func New() Instance {
 	return Instance{classdb.GPUParticlesAttractor3D(object)}
 }
 
-func (self Instance) Strength() float64 {
-	return float64(float64(class(self).GetStrength()))
+func (self Instance) Strength() Float.X {
+	return Float.X(Float.X(class(self).GetStrength()))
 }
 
-func (self Instance) SetStrength(value float64) {
+func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(gd.Float(value))
 }
 
-func (self Instance) Attenuation() float64 {
-	return float64(float64(class(self).GetAttenuation()))
+func (self Instance) Attenuation() Float.X {
+	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
-func (self Instance) SetAttenuation(value float64) {
+func (self Instance) SetAttenuation(value Float.X) {
 	class(self).SetAttenuation(gd.Float(value))
 }
 
-func (self Instance) Directionality() float64 {
-	return float64(float64(class(self).GetDirectionality()))
+func (self Instance) Directionality() Float.X {
+	return Float.X(Float.X(class(self).GetDirectionality()))
 }
 
-func (self Instance) SetDirectionality(value float64) {
+func (self Instance) SetDirectionality(value Float.X) {
 	class(self).SetDirectionality(gd.Float(value))
 }
 

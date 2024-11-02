@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -64,23 +65,23 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj gd.Object, method string) error {
-	return error(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), ([1]gd.Array{}[0])))
+	return error(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), [1]Array.Any{}[0]))
 }
 
 /*
 Notifies the MultiplayerAPI of a new [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and a valid [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) error {
-	return error(class(self).ObjectConfigurationAdd(obj, configuration))
+func (self Instance) ObjectConfigurationAdd(obj gd.Object, configuration any) error {
+	return error(class(self).ObjectConfigurationAdd(obj, gd.NewVariant(configuration)))
 }
 
 /*
 Notifies the MultiplayerAPI to remove a [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and an empty [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) error {
-	return error(class(self).ObjectConfigurationRemove(obj, configuration))
+func (self Instance) ObjectConfigurationRemove(obj gd.Object, configuration any) error {
+	return error(class(self).ObjectConfigurationRemove(obj, gd.NewVariant(configuration)))
 }
 
 /*

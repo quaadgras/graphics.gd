@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,11 +33,11 @@ func New() Instance {
 	return Instance{classdb.AudioEffectPitchShift(object)}
 }
 
-func (self Instance) PitchScale() float64 {
-	return float64(float64(class(self).GetPitchScale()))
+func (self Instance) PitchScale() Float.X {
+	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
-func (self Instance) SetPitchScale(value float64) {
+func (self Instance) SetPitchScale(value Float.X) {
 	class(self).SetPitchScale(gd.Float(value))
 }
 

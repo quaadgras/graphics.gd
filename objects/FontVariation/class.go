@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Font"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -64,11 +67,11 @@ func (self Instance) SetBaseFont(value objects.Font) {
 	class(self).SetBaseFont(value)
 }
 
-func (self Instance) VariationOpentype() gd.Dictionary {
-	return gd.Dictionary(class(self).GetVariationOpentype())
+func (self Instance) VariationOpentype() Dictionary.Any {
+	return Dictionary.Any(class(self).GetVariationOpentype())
 }
 
-func (self Instance) SetVariationOpentype(value gd.Dictionary) {
+func (self Instance) SetVariationOpentype(value Dictionary.Any) {
 	class(self).SetVariationOpentype(value)
 }
 
@@ -80,27 +83,47 @@ func (self Instance) SetVariationFaceIndex(value int) {
 	class(self).SetVariationFaceIndex(gd.Int(value))
 }
 
-func (self Instance) VariationEmbolden() float64 {
-	return float64(float64(class(self).GetVariationEmbolden()))
+func (self Instance) VariationEmbolden() Float.X {
+	return Float.X(Float.X(class(self).GetVariationEmbolden()))
 }
 
-func (self Instance) SetVariationEmbolden(value float64) {
+func (self Instance) SetVariationEmbolden(value Float.X) {
 	class(self).SetVariationEmbolden(gd.Float(value))
 }
 
-func (self Instance) VariationTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetVariationTransform())
+func (self Instance) VariationTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetVariationTransform())
 }
 
-func (self Instance) SetVariationTransform(value gd.Transform2D) {
-	class(self).SetVariationTransform(value)
+func (self Instance) SetVariationTransform(value Transform2D.OriginXY) {
+	class(self).SetVariationTransform(gd.Transform2D(value))
 }
 
-func (self Instance) BaselineOffset() float64 {
-	return float64(float64(class(self).GetBaselineOffset()))
+func (self Instance) SetOpentypeFeatures(value Dictionary.Any) {
+	class(self).SetOpentypeFeatures(value)
 }
 
-func (self Instance) SetBaselineOffset(value float64) {
+func (self Instance) SetSpacingGlyph(value int) {
+	class(self).SetSpacing(0, gd.Int(value))
+}
+
+func (self Instance) SetSpacingSpace(value int) {
+	class(self).SetSpacing(1, gd.Int(value))
+}
+
+func (self Instance) SetSpacingTop(value int) {
+	class(self).SetSpacing(2, gd.Int(value))
+}
+
+func (self Instance) SetSpacingBottom(value int) {
+	class(self).SetSpacing(3, gd.Int(value))
+}
+
+func (self Instance) BaselineOffset() Float.X {
+	return Float.X(Float.X(class(self).GetBaselineOffset()))
+}
+
+func (self Instance) SetBaselineOffset(value Float.X) {
 	class(self).SetBaselineOffset(gd.Float(value))
 }
 

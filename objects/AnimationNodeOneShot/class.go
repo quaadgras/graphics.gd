@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationNodeSync"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -86,11 +87,11 @@ func (self Instance) SetMixMode(value classdb.AnimationNodeOneShotMixMode) {
 	class(self).SetMixMode(value)
 }
 
-func (self Instance) FadeinTime() float64 {
-	return float64(float64(class(self).GetFadeinTime()))
+func (self Instance) FadeinTime() Float.X {
+	return Float.X(Float.X(class(self).GetFadeinTime()))
 }
 
-func (self Instance) SetFadeinTime(value float64) {
+func (self Instance) SetFadeinTime(value Float.X) {
 	class(self).SetFadeinTime(gd.Float(value))
 }
 
@@ -102,11 +103,11 @@ func (self Instance) SetFadeinCurve(value objects.Curve) {
 	class(self).SetFadeinCurve(value)
 }
 
-func (self Instance) FadeoutTime() float64 {
-	return float64(float64(class(self).GetFadeoutTime()))
+func (self Instance) FadeoutTime() Float.X {
+	return Float.X(Float.X(class(self).GetFadeoutTime()))
 }
 
-func (self Instance) SetFadeoutTime(value float64) {
+func (self Instance) SetFadeoutTime(value Float.X) {
 	class(self).SetFadeoutTime(gd.Float(value))
 }
 
@@ -134,19 +135,19 @@ func (self Instance) SetAutorestart(value bool) {
 	class(self).SetAutorestart(value)
 }
 
-func (self Instance) AutorestartDelay() float64 {
-	return float64(float64(class(self).GetAutorestartDelay()))
+func (self Instance) AutorestartDelay() Float.X {
+	return Float.X(Float.X(class(self).GetAutorestartDelay()))
 }
 
-func (self Instance) SetAutorestartDelay(value float64) {
+func (self Instance) SetAutorestartDelay(value Float.X) {
 	class(self).SetAutorestartDelay(gd.Float(value))
 }
 
-func (self Instance) AutorestartRandomDelay() float64 {
-	return float64(float64(class(self).GetAutorestartRandomDelay()))
+func (self Instance) AutorestartRandomDelay() Float.X {
+	return Float.X(Float.X(class(self).GetAutorestartRandomDelay()))
 }
 
-func (self Instance) SetAutorestartRandomDelay(value float64) {
+func (self Instance) SetAutorestartRandomDelay(value Float.X) {
 	class(self).SetAutorestartRandomDelay(gd.Float(value))
 }
 

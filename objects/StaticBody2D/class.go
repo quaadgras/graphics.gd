@@ -12,6 +12,8 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,19 +47,19 @@ func (self Instance) SetPhysicsMaterialOverride(value objects.PhysicsMaterial) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
-func (self Instance) ConstantLinearVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetConstantLinearVelocity())
+func (self Instance) ConstantLinearVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetConstantLinearVelocity())
 }
 
-func (self Instance) SetConstantLinearVelocity(value gd.Vector2) {
-	class(self).SetConstantLinearVelocity(value)
+func (self Instance) SetConstantLinearVelocity(value Vector2.XY) {
+	class(self).SetConstantLinearVelocity(gd.Vector2(value))
 }
 
-func (self Instance) ConstantAngularVelocity() float64 {
-	return float64(float64(class(self).GetConstantAngularVelocity()))
+func (self Instance) ConstantAngularVelocity() Float.X {
+	return Float.X(Float.X(class(self).GetConstantAngularVelocity()))
 }
 
-func (self Instance) SetConstantAngularVelocity(value float64) {
+func (self Instance) SetConstantAngularVelocity(value Float.X) {
 	class(self).SetConstantAngularVelocity(gd.Float(value))
 }
 

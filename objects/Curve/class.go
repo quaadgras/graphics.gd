@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,8 +26,8 @@ type Instance [1]classdb.Curve
 /*
 Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constant TANGENT_LINEAR], the [code]*_tangent[/code] angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the [code]*_tangent[/code] angle if [code]*_mode[/code] is set to [constant TANGENT_FREE].
 */
-func (self Instance) AddPoint(position gd.Vector2) int {
-	return int(int(class(self).AddPoint(position, gd.Float(0), gd.Float(0), 0, 0)))
+func (self Instance) AddPoint(position Vector2.XY) int {
+	return int(int(class(self).AddPoint(gd.Vector2(position), gd.Float(0), gd.Float(0), 0, 0)))
 }
 
 /*
@@ -45,50 +47,50 @@ func (self Instance) ClearPoints() {
 /*
 Returns the curve coordinates for the point at [param index].
 */
-func (self Instance) GetPointPosition(index int) gd.Vector2 {
-	return gd.Vector2(class(self).GetPointPosition(gd.Int(index)))
+func (self Instance) GetPointPosition(index int) Vector2.XY {
+	return Vector2.XY(class(self).GetPointPosition(gd.Int(index)))
 }
 
 /*
 Assigns the vertical position [param y] to the point at [param index].
 */
-func (self Instance) SetPointValue(index int, y float64) {
+func (self Instance) SetPointValue(index int, y Float.X) {
 	class(self).SetPointValue(gd.Int(index), gd.Float(y))
 }
 
 /*
 Sets the offset from [code]0.5[/code].
 */
-func (self Instance) SetPointOffset(index int, offset float64) int {
+func (self Instance) SetPointOffset(index int, offset Float.X) int {
 	return int(int(class(self).SetPointOffset(gd.Int(index), gd.Float(offset))))
 }
 
 /*
 Returns the Y value for the point that would exist at the X position [param offset] along the curve.
 */
-func (self Instance) Sample(offset float64) float64 {
-	return float64(float64(class(self).Sample(gd.Float(offset))))
+func (self Instance) Sample(offset Float.X) Float.X {
+	return Float.X(Float.X(class(self).Sample(gd.Float(offset))))
 }
 
 /*
 Returns the Y value for the point that would exist at the X position [param offset] along the curve using the baked cache. Bakes the curve's points if not already baked.
 */
-func (self Instance) SampleBaked(offset float64) float64 {
-	return float64(float64(class(self).SampleBaked(gd.Float(offset))))
+func (self Instance) SampleBaked(offset Float.X) Float.X {
+	return Float.X(Float.X(class(self).SampleBaked(gd.Float(offset))))
 }
 
 /*
 Returns the left tangent angle (in degrees) for the point at [param index].
 */
-func (self Instance) GetPointLeftTangent(index int) float64 {
-	return float64(float64(class(self).GetPointLeftTangent(gd.Int(index))))
+func (self Instance) GetPointLeftTangent(index int) Float.X {
+	return Float.X(Float.X(class(self).GetPointLeftTangent(gd.Int(index))))
 }
 
 /*
 Returns the right tangent angle (in degrees) for the point at [param index].
 */
-func (self Instance) GetPointRightTangent(index int) float64 {
-	return float64(float64(class(self).GetPointRightTangent(gd.Int(index))))
+func (self Instance) GetPointRightTangent(index int) Float.X {
+	return Float.X(Float.X(class(self).GetPointRightTangent(gd.Int(index))))
 }
 
 /*
@@ -108,14 +110,14 @@ func (self Instance) GetPointRightMode(index int) classdb.CurveTangentMode {
 /*
 Sets the left tangent angle for the point at [param index] to [param tangent].
 */
-func (self Instance) SetPointLeftTangent(index int, tangent float64) {
+func (self Instance) SetPointLeftTangent(index int, tangent Float.X) {
 	class(self).SetPointLeftTangent(gd.Int(index), gd.Float(tangent))
 }
 
 /*
 Sets the right tangent angle for the point at [param index] to [param tangent].
 */
-func (self Instance) SetPointRightTangent(index int, tangent float64) {
+func (self Instance) SetPointRightTangent(index int, tangent Float.X) {
 	class(self).SetPointRightTangent(gd.Int(index), gd.Float(tangent))
 }
 
@@ -158,19 +160,19 @@ func New() Instance {
 	return Instance{classdb.Curve(object)}
 }
 
-func (self Instance) MinValue() float64 {
-	return float64(float64(class(self).GetMinValue()))
+func (self Instance) MinValue() Float.X {
+	return Float.X(Float.X(class(self).GetMinValue()))
 }
 
-func (self Instance) SetMinValue(value float64) {
+func (self Instance) SetMinValue(value Float.X) {
 	class(self).SetMinValue(gd.Float(value))
 }
 
-func (self Instance) MaxValue() float64 {
-	return float64(float64(class(self).GetMaxValue()))
+func (self Instance) MaxValue() Float.X {
+	return Float.X(Float.X(class(self).GetMaxValue()))
 }
 
-func (self Instance) SetMaxValue(value float64) {
+func (self Instance) SetMaxValue(value Float.X) {
 	class(self).SetMaxValue(gd.Float(value))
 }
 

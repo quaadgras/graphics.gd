@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,12 +43,12 @@ func (self Instance) SetFaceTracker(value string) {
 	class(self).SetFaceTracker(gd.NewStringName(value))
 }
 
-func (self Instance) Target() string {
-	return string(class(self).GetTarget().String())
+func (self Instance) Target() Path.String {
+	return Path.String(class(self).GetTarget().String())
 }
 
-func (self Instance) SetTarget(value string) {
-	class(self).SetTarget(gd.NewString(value).NodePath())
+func (self Instance) SetTarget(value Path.String) {
+	class(self).SetTarget(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Joint3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,15 +26,15 @@ type Instance [1]classdb.HingeJoint3D
 /*
 Sets the value of the specified parameter.
 */
-func (self Instance) SetParam(param classdb.HingeJoint3DParam, value float64) {
+func (self Instance) SetParam(param classdb.HingeJoint3DParam, value Float.X) {
 	class(self).SetParam(param, gd.Float(value))
 }
 
 /*
 Returns the value of the specified parameter.
 */
-func (self Instance) GetParam(param classdb.HingeJoint3DParam) float64 {
-	return float64(float64(class(self).GetParam(param)))
+func (self Instance) GetParam(param classdb.HingeJoint3DParam) Float.X {
+	return Float.X(Float.X(class(self).GetParam(param)))
 }
 
 /*

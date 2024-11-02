@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,15 +53,15 @@ func (self Instance) AppendObstructionOutlines(obstruction_outlines gd.Array) {
 /*
 Adds the outline points of a shape as traversable area.
 */
-func (self Instance) AddTraversableOutline(shape_outline []gd.Vector2) {
-	class(self).AddTraversableOutline(gd.NewPackedVector2Slice(shape_outline))
+func (self Instance) AddTraversableOutline(shape_outline []Vector2.XY) {
+	class(self).AddTraversableOutline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape_outline))))
 }
 
 /*
 Adds the outline points of a shape as obstructed area.
 */
-func (self Instance) AddObstructionOutline(shape_outline []gd.Vector2) {
-	class(self).AddObstructionOutline(gd.NewPackedVector2Slice(shape_outline))
+func (self Instance) AddObstructionOutline(shape_outline []Vector2.XY) {
+	class(self).AddObstructionOutline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&shape_outline))))
 }
 
 /*
@@ -72,8 +74,8 @@ func (self Instance) Merge(other_geometry objects.NavigationMeshSourceGeometryDa
 /*
 Adds a projected obstruction shape to the source geometry. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
-func (self Instance) AddProjectedObstruction(vertices []gd.Vector2, carve bool) {
-	class(self).AddProjectedObstruction(gd.NewPackedVector2Slice(vertices), carve)
+func (self Instance) AddProjectedObstruction(vertices []Vector2.XY, carve bool) {
+	class(self).AddProjectedObstruction(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&vertices))), carve)
 }
 
 /*
@@ -110,11 +112,11 @@ func (self Instance) SetObstructionOutlines(value gd.Array) {
 	class(self).SetObstructionOutlines(value)
 }
 
-func (self Instance) ProjectedObstructions() gd.Array {
-	return gd.Array(class(self).GetProjectedObstructions())
+func (self Instance) ProjectedObstructions() Array.Any {
+	return Array.Any(class(self).GetProjectedObstructions())
 }
 
-func (self Instance) SetProjectedObstructions(value gd.Array) {
+func (self Instance) SetProjectedObstructions(value Array.Any) {
 	class(self).SetProjectedObstructions(value)
 }
 

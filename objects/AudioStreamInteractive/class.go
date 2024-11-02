@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -88,7 +89,7 @@ Add a transition between two clips. Provide the indices of the source and destin
 * [param filler_clip] the index of the filler clip.
 * If [param hold_previous] is used, then this clip will be remembered. This can be used together with [constant AUTO_ADVANCE_RETURN_TO_HOLD] to return to this clip after another is done playing.
 */
-func (self Instance) AddTransition(from_clip int, to_clip int, from_time classdb.AudioStreamInteractiveTransitionFromTime, to_time classdb.AudioStreamInteractiveTransitionToTime, fade_mode classdb.AudioStreamInteractiveFadeMode, fade_beats float64) {
+func (self Instance) AddTransition(from_clip int, to_clip int, from_time classdb.AudioStreamInteractiveTransitionFromTime, to_time classdb.AudioStreamInteractiveTransitionToTime, fade_mode classdb.AudioStreamInteractiveFadeMode, fade_beats Float.X) {
 	class(self).AddTransition(gd.Int(from_clip), gd.Int(to_clip), from_time, to_time, fade_mode, gd.Float(fade_beats), false, gd.Int(-1), false)
 }
 
@@ -137,8 +138,8 @@ func (self Instance) GetTransitionFadeMode(from_clip int, to_clip int) classdb.A
 /*
 Return the time (in beats) for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionFadeBeats(from_clip int, to_clip int) float64 {
-	return float64(float64(class(self).GetTransitionFadeBeats(gd.Int(from_clip), gd.Int(to_clip))))
+func (self Instance) GetTransitionFadeBeats(from_clip int, to_clip int) Float.X {
+	return Float.X(Float.X(class(self).GetTransitionFadeBeats(gd.Int(from_clip), gd.Int(to_clip))))
 }
 
 /*

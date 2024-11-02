@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,43 +25,43 @@ type Instance [1]classdb.TileMapPattern
 /*
 Sets the tile identifiers for the cell at coordinates [param coords]. See [method TileMap.set_cell].
 */
-func (self Instance) SetCell(coords gd.Vector2i) {
-	class(self).SetCell(coords, gd.Int(-1), gd.Vector2i{-1, -1}, gd.Int(-1))
+func (self Instance) SetCell(coords Vector2i.XY) {
+	class(self).SetCell(gd.Vector2i(coords), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1))
 }
 
 /*
 Returns whether the pattern has a tile at the given coordinates.
 */
-func (self Instance) HasCell(coords gd.Vector2i) bool {
-	return bool(class(self).HasCell(coords))
+func (self Instance) HasCell(coords Vector2i.XY) bool {
+	return bool(class(self).HasCell(gd.Vector2i(coords)))
 }
 
 /*
 Remove the cell at the given coordinates.
 */
-func (self Instance) RemoveCell(coords gd.Vector2i, update_size bool) {
-	class(self).RemoveCell(coords, update_size)
+func (self Instance) RemoveCell(coords Vector2i.XY, update_size bool) {
+	class(self).RemoveCell(gd.Vector2i(coords), update_size)
 }
 
 /*
 Returns the tile source ID of the cell at [param coords].
 */
-func (self Instance) GetCellSourceId(coords gd.Vector2i) int {
-	return int(int(class(self).GetCellSourceId(coords)))
+func (self Instance) GetCellSourceId(coords Vector2i.XY) int {
+	return int(int(class(self).GetCellSourceId(gd.Vector2i(coords))))
 }
 
 /*
 Returns the tile atlas coordinates ID of the cell at [param coords].
 */
-func (self Instance) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i {
-	return gd.Vector2i(class(self).GetCellAtlasCoords(coords))
+func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY {
+	return Vector2i.XY(class(self).GetCellAtlasCoords(gd.Vector2i(coords)))
 }
 
 /*
 Returns the tile alternative ID of the cell at [param coords].
 */
-func (self Instance) GetCellAlternativeTile(coords gd.Vector2i) int {
-	return int(int(class(self).GetCellAlternativeTile(coords)))
+func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int {
+	return int(int(class(self).GetCellAlternativeTile(gd.Vector2i(coords))))
 }
 
 /*
@@ -73,15 +74,15 @@ func (self Instance) GetUsedCells() gd.Array {
 /*
 Returns the size, in cells, of the pattern.
 */
-func (self Instance) GetSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize())
+func (self Instance) GetSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize())
 }
 
 /*
 Sets the size of the pattern.
 */
-func (self Instance) SetSize(size gd.Vector2i) {
-	class(self).SetSize(size)
+func (self Instance) SetSize(size Vector2i.XY) {
+	class(self).SetSize(gd.Vector2i(size))
 }
 
 /*

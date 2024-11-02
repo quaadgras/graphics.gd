@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,12 +42,20 @@ func (self Instance) SetIndex(value int) {
 	class(self).SetIndex(gd.Int(value))
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(value))
+}
+
+func (self Instance) SetCanceled(value bool) {
+	class(self).SetCanceled(value)
+}
+
+func (self Instance) SetPressed(value bool) {
+	class(self).SetPressed(value)
 }
 
 func (self Instance) DoubleTap() bool {

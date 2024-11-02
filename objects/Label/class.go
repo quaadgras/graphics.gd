@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -55,8 +58,8 @@ func (self Instance) GetTotalCharacterCount() int {
 /*
 Returns the bounding rectangle of the character at position [param pos]. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
-func (self Instance) GetCharacterBounds(pos int) gd.Rect2 {
-	return gd.Rect2(class(self).GetCharacterBounds(gd.Int(pos)))
+func (self Instance) GetCharacterBounds(pos int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetCharacterBounds(gd.Int(pos)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -190,11 +193,11 @@ func (self Instance) SetVisibleCharactersBehavior(value classdb.TextServerVisibl
 	class(self).SetVisibleCharactersBehavior(value)
 }
 
-func (self Instance) VisibleRatio() float64 {
-	return float64(float64(class(self).GetVisibleRatio()))
+func (self Instance) VisibleRatio() Float.X {
+	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
-func (self Instance) SetVisibleRatio(value float64) {
+func (self Instance) SetVisibleRatio(value Float.X) {
 	class(self).SetVisibleRatio(gd.Float(value))
 }
 
@@ -222,11 +225,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

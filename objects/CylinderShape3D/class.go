@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,19 +35,19 @@ func New() Instance {
 	return Instance{classdb.CylinderShape3D(object)}
 }
 
-func (self Instance) Height() float64 {
-	return float64(float64(class(self).GetHeight()))
+func (self Instance) Height() Float.X {
+	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-func (self Instance) SetHeight(value float64) {
+func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(gd.Float(value))
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 

@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3DGizmo"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,23 +33,23 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 		IsHandleHighlighted(id int, secondary bool) bool
 		//Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_handle].
 		//The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
-		GetHandleValue(id int, secondary bool) gd.Variant
+		GetHandleValue(id int, secondary bool) any
 		BeginHandleAction(id int, secondary bool)
 		//Override this method to update the node properties when the user drags a gizmo handle (previously added with [method add_handles]). The provided [param point] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 		//The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
-		SetHandle(id int, secondary bool, camera objects.Camera3D, point gd.Vector2)
+		SetHandle(id int, secondary bool, camera objects.Camera3D, point Vector2.XY)
 		//Override this method to commit a handle being edited (handles must have been previously added by [method add_handles]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [param restore] argument as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restore] value should be directly set, without any [UndoRedo] action.
 		//The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
-		CommitHandle(id int, secondary bool, restore gd.Variant, cancel bool)
+		CommitHandle(id int, secondary bool, restore any, cancel bool)
 		//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-		SubgizmosIntersectRay(camera objects.Camera3D, point gd.Vector2) int
+		SubgizmosIntersectRay(camera objects.Camera3D, point Vector2.XY) int
 		//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 		SubgizmosIntersectFrustum(camera objects.Camera3D, frustum gd.Array) []int32
 		//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
-		SetSubgizmoTransform(id int, transform gd.Transform3D)
+		SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin)
 		//Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
-		GetSubgizmoTransform(id int) gd.Transform3D
+		GetSubgizmoTransform(id int) Transform3D.BasisOrigin
 		//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 		//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 		CommitSubgizmos(ids []int32, restores gd.Array, cancel bool)
@@ -100,13 +103,13 @@ func (Instance) _is_handle_highlighted(impl func(ptr unsafe.Pointer, id int, sec
 Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_handle].
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
-func (Instance) _get_handle_value(impl func(ptr unsafe.Pointer, id int, secondary bool) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_handle_value(impl func(ptr unsafe.Pointer, id int, secondary bool) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -126,7 +129,7 @@ func (Instance) _begin_handle_action(impl func(ptr unsafe.Pointer, id int, secon
 Override this method to update the node properties when the user drags a gizmo handle (previously added with [method add_handles]). The provided [param point] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
 */
-func (Instance) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera objects.Camera3D, point gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera objects.Camera3D, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
@@ -143,7 +146,7 @@ Override this method to commit a handle being edited (handles must have been pre
 If the [param cancel] argument is [code]true[/code], the [param restore] value should be directly set, without any [UndoRedo] action.
 The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
 */
-func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, restore gd.Variant, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, restore any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
@@ -151,14 +154,14 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary b
 		defer pointers.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, int(id), secondary, restore, cancel)
+		impl(self, int(id), secondary, restore.Interface(), cancel)
 	}
 }
 
 /*
 Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera objects.Camera3D, point gd.Vector2) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera objects.Camera3D, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var camera = objects.Camera3D{pointers.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(camera[0])
@@ -191,7 +194,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camer
 /*
 Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 */
-func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id int, transform gd.Transform3D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var transform = gd.UnsafeGet[gd.Transform3D](p_args, 1)
@@ -203,12 +206,12 @@ func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id int, tr
 /*
 Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
 */
-func (Instance) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transform3D(ret))
 	}
 }
 
@@ -231,22 +234,22 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 /*
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
-func (self Instance) AddLines(lines []gd.Vector3, material objects.Material) {
-	class(self).AddLines(gd.NewPackedVector3Slice(lines), material, false, gd.Color{1, 1, 1, 1})
+func (self Instance) AddLines(lines []Vector3.XYZ, material objects.Material) {
+	class(self).AddLines(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&lines))), material, false, gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
 func (self Instance) AddMesh(mesh objects.Mesh) {
-	class(self).AddMesh(mesh, ([1]objects.Material{}[0]), gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), ([1]objects.SkinReference{}[0]))
+	class(self).AddMesh(mesh, [1]objects.Material{}[0], gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1]objects.SkinReference{}[0])
 }
 
 /*
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
-func (self Instance) AddCollisionSegments(segments []gd.Vector3) {
-	class(self).AddCollisionSegments(gd.NewPackedVector3Slice(segments))
+func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) {
+	class(self).AddCollisionSegments(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&segments))))
 }
 
 /*
@@ -260,7 +263,7 @@ func (self Instance) AddCollisionTriangles(triangles objects.TriangleMesh) {
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
 func (self Instance) AddUnscaledBillboard(material objects.Material) {
-	class(self).AddUnscaledBillboard(material, gd.Float(1), gd.Color{1, 1, 1, 1})
+	class(self).AddUnscaledBillboard(material, gd.Float(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -268,8 +271,8 @@ Adds a list of handles (points) which can be used to edit the properties of the 
 The [param secondary] argument marks the added handles as secondary, meaning they will normally have lower selection priority than regular handles. When the user is holding the shift key secondary handles will switch to have higher priority than regular handles. This change in priority can be used to place multiple handles at the same point while still giving the user control on their selection.
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
-func (self Instance) AddHandles(handles []gd.Vector3, material objects.Material, ids []int32) {
-	class(self).AddHandles(gd.NewPackedVector3Slice(handles), material, gd.NewPackedInt32Slice(ids), false, false)
+func (self Instance) AddHandles(handles []Vector3.XYZ, material objects.Material, ids []int32) {
+	class(self).AddHandles(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&handles))), material, gd.NewPackedInt32Slice(ids), false, false)
 }
 
 /*

@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -62,19 +63,19 @@ func (self Instance) SetEnableDepthRange(value bool) {
 	class(self).SetEnableDepthRange(value)
 }
 
-func (self Instance) DepthRangeMin() float64 {
-	return float64(float64(class(self).GetDepthRangeMin()))
+func (self Instance) DepthRangeMin() Float.X {
+	return Float.X(Float.X(class(self).GetDepthRangeMin()))
 }
 
-func (self Instance) SetDepthRangeMin(value float64) {
+func (self Instance) SetDepthRangeMin(value Float.X) {
 	class(self).SetDepthRangeMin(gd.Float(value))
 }
 
-func (self Instance) DepthRangeMax() float64 {
-	return float64(float64(class(self).GetDepthRangeMax()))
+func (self Instance) DepthRangeMax() Float.X {
+	return Float.X(Float.X(class(self).GetDepthRangeMax()))
 }
 
-func (self Instance) SetDepthRangeMax(value float64) {
+func (self Instance) SetDepthRangeMax(value Float.X) {
 	class(self).SetDepthRangeMax(gd.Float(value))
 }
 

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/ImageFormatLoader"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,7 +25,7 @@ Be sure to respect the documented return types and values. You should create an 
 		//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 		GetRecognizedExtensions() []string
 		//Loads the content of [param fileaccess] into the provided [param image].
-		LoadImage(image objects.Image, fileaccess objects.FileAccess, flags classdb.ImageFormatLoaderLoaderFlags, scale float64) error
+		LoadImage(image objects.Image, fileaccess objects.FileAccess, flags classdb.ImageFormatLoaderLoaderFlags, scale Float.X) error
 	}
 */
 type Instance [1]classdb.ImageFormatLoaderExtension
@@ -47,7 +48,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 /*
 Loads the content of [param fileaccess] into the provided [param image].
 */
-func (Instance) _load_image(impl func(ptr unsafe.Pointer, image objects.Image, fileaccess objects.FileAccess, flags classdb.ImageFormatLoaderLoaderFlags, scale float64) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _load_image(impl func(ptr unsafe.Pointer, image objects.Image, fileaccess objects.FileAccess, flags classdb.ImageFormatLoaderLoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var image = objects.Image{pointers.New[classdb.Image]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(image[0])
@@ -56,7 +57,7 @@ func (Instance) _load_image(impl func(ptr unsafe.Pointer, image objects.Image, f
 		var flags = gd.UnsafeGet[classdb.ImageFormatLoaderLoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[gd.Float](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, image, fileaccess, flags, float64(scale))
+		ret := impl(self, image, fileaccess, flags, Float.X(scale))
 		gd.UnsafeSet(p_back, ret)
 	}
 }

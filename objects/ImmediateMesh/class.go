@@ -9,6 +9,10 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Plane"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,56 +49,56 @@ type Instance [1]classdb.ImmediateMesh
 Begin a new surface.
 */
 func (self Instance) SurfaceBegin(primitive classdb.MeshPrimitiveType) {
-	class(self).SurfaceBegin(primitive, ([1]objects.Material{}[0]))
+	class(self).SurfaceBegin(primitive, [1]objects.Material{}[0])
 }
 
 /*
 Set the color attribute that will be pushed with the next vertex.
 */
-func (self Instance) SurfaceSetColor(color gd.Color) {
-	class(self).SurfaceSetColor(color)
+func (self Instance) SurfaceSetColor(color Color.RGBA) {
+	class(self).SurfaceSetColor(gd.Color(color))
 }
 
 /*
 Set the normal attribute that will be pushed with the next vertex.
 */
-func (self Instance) SurfaceSetNormal(normal gd.Vector3) {
-	class(self).SurfaceSetNormal(normal)
+func (self Instance) SurfaceSetNormal(normal Vector3.XYZ) {
+	class(self).SurfaceSetNormal(gd.Vector3(normal))
 }
 
 /*
 Set the tangent attribute that will be pushed with the next vertex.
 */
-func (self Instance) SurfaceSetTangent(tangent gd.Plane) {
-	class(self).SurfaceSetTangent(tangent)
+func (self Instance) SurfaceSetTangent(tangent Plane.NormalD) {
+	class(self).SurfaceSetTangent(gd.Plane(tangent))
 }
 
 /*
 Set the UV attribute that will be pushed with the next vertex.
 */
-func (self Instance) SurfaceSetUv(uv gd.Vector2) {
-	class(self).SurfaceSetUv(uv)
+func (self Instance) SurfaceSetUv(uv Vector2.XY) {
+	class(self).SurfaceSetUv(gd.Vector2(uv))
 }
 
 /*
 Set the UV2 attribute that will be pushed with the next vertex.
 */
-func (self Instance) SurfaceSetUv2(uv2 gd.Vector2) {
-	class(self).SurfaceSetUv2(uv2)
+func (self Instance) SurfaceSetUv2(uv2 Vector2.XY) {
+	class(self).SurfaceSetUv2(gd.Vector2(uv2))
 }
 
 /*
 Add a 3D vertex using the current attributes previously set.
 */
-func (self Instance) SurfaceAddVertex(vertex gd.Vector3) {
-	class(self).SurfaceAddVertex(vertex)
+func (self Instance) SurfaceAddVertex(vertex Vector3.XYZ) {
+	class(self).SurfaceAddVertex(gd.Vector3(vertex))
 }
 
 /*
 Add a 2D vertex using the current attributes previously set.
 */
-func (self Instance) SurfaceAddVertex2d(vertex gd.Vector2) {
-	class(self).SurfaceAddVertex2d(vertex)
+func (self Instance) SurfaceAddVertex2d(vertex Vector2.XY) {
+	class(self).SurfaceAddVertex2d(gd.Vector2(vertex))
 }
 
 /*

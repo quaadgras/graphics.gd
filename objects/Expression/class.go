@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -72,15 +73,15 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error {
-	return error(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice(([1][]string{}[0]))))
+	return error(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice([1][]string{}[0])))
 }
 
 /*
 Executes the expression that was previously parsed by [method parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [method has_execute_failed].
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
-func (self Instance) Execute() gd.Variant {
-	return gd.Variant(class(self).Execute(([1]gd.Array{}[0]), ([1]gd.Object{}[0]), true, false))
+func (self Instance) Execute() any {
+	return any(class(self).Execute([1]Array.Any{}[0], [1]gd.Object{}[0], true, false).Interface())
 }
 
 /*

@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,12 +52,12 @@ func (self Instance) SetMotionRange(value classdb.OpenXRHandMotionRange) {
 	class(self).SetMotionRange(value)
 }
 
-func (self Instance) HandSkeleton() string {
-	return string(class(self).GetHandSkeleton().String())
+func (self Instance) HandSkeleton() Path.String {
+	return Path.String(class(self).GetHandSkeleton().String())
 }
 
-func (self Instance) SetHandSkeleton(value string) {
-	class(self).SetHandSkeleton(gd.NewString(value).NodePath())
+func (self Instance) SetHandSkeleton(value Path.String) {
+	class(self).SetHandSkeleton(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) SkeletonRig() classdb.OpenXRHandSkeletonRig {

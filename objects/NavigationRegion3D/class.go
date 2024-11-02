@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,22 +32,22 @@ type Instance [1]classdb.NavigationRegion3D
 /*
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
-func (self Instance) SetNavigationMap(navigation_map gd.RID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
 	class(self).SetNavigationMap(navigation_map)
 }
 
 /*
 Returns the current navigation map [RID] used by this region.
 */
-func (self Instance) GetNavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
 /*
@@ -65,8 +67,8 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool {
 /*
 Returns the [RID] of this region on the [NavigationServer3D].
 */
-func (self Instance) GetRegionRid() gd.RID {
-	return gd.RID(class(self).GetRegionRid())
+func (self Instance) GetRegionRid() Resource.ID {
+	return Resource.ID(class(self).GetRegionRid())
 }
 
 /*
@@ -126,19 +128,19 @@ func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(gd.Int(value))
 }
 
-func (self Instance) EnterCost() float64 {
-	return float64(float64(class(self).GetEnterCost()))
+func (self Instance) EnterCost() Float.X {
+	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
-func (self Instance) SetEnterCost(value float64) {
+func (self Instance) SetEnterCost(value Float.X) {
 	class(self).SetEnterCost(gd.Float(value))
 }
 
-func (self Instance) TravelCost() float64 {
-	return float64(float64(class(self).GetTravelCost()))
+func (self Instance) TravelCost() Float.X {
+	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
-func (self Instance) SetTravelCost(value float64) {
+func (self Instance) SetTravelCost(value Float.X) {
 	class(self).SetTravelCost(gd.Float(value))
 }
 

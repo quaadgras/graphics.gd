@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,15 +30,15 @@ type Instance [1]classdb.SkeletonModification2DFABRIK
 /*
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) {
-	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), gd.NewString(bone2d_nodepath).NodePath())
+func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath Path.String) {
+	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) GetFabrikJointBone2dNode(joint_idx int) string {
-	return string(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetFabrikJointBone2dNode(joint_idx int) Path.String {
+	return Path.String(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -56,15 +58,15 @@ func (self Instance) GetFabrikJointBoneIndex(joint_idx int) int {
 /*
 Sets the magnet position vector for the joint at [param joint_idx].
 */
-func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position gd.Vector2) {
-	class(self).SetFabrikJointMagnetPosition(gd.Int(joint_idx), magnet_position)
+func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position Vector2.XY) {
+	class(self).SetFabrikJointMagnetPosition(gd.Int(joint_idx), gd.Vector2(magnet_position))
 }
 
 /*
 Returns the magnet position vector for the joint at [param joint_idx].
 */
-func (self Instance) GetFabrikJointMagnetPosition(joint_idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetFabrikJointMagnetPosition(gd.Int(joint_idx)))
+func (self Instance) GetFabrikJointMagnetPosition(joint_idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetFabrikJointMagnetPosition(gd.Int(joint_idx)))
 }
 
 /*
@@ -93,12 +95,12 @@ func New() Instance {
 	return Instance{classdb.SkeletonModification2DFABRIK(object)}
 }
 
-func (self Instance) TargetNodepath() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNodepath(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) FabrikDataChainLength() int {

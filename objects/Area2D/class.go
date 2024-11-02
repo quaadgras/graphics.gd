@@ -11,6 +11,9 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -125,35 +128,35 @@ func (self Instance) SetGravityPoint(value bool) {
 	class(self).SetGravityIsPoint(value)
 }
 
-func (self Instance) GravityPointUnitDistance() float64 {
-	return float64(float64(class(self).GetGravityPointUnitDistance()))
+func (self Instance) GravityPointUnitDistance() Float.X {
+	return Float.X(Float.X(class(self).GetGravityPointUnitDistance()))
 }
 
-func (self Instance) SetGravityPointUnitDistance(value float64) {
+func (self Instance) SetGravityPointUnitDistance(value Float.X) {
 	class(self).SetGravityPointUnitDistance(gd.Float(value))
 }
 
-func (self Instance) GravityPointCenter() gd.Vector2 {
-	return gd.Vector2(class(self).GetGravityPointCenter())
+func (self Instance) GravityPointCenter() Vector2.XY {
+	return Vector2.XY(class(self).GetGravityPointCenter())
 }
 
-func (self Instance) SetGravityPointCenter(value gd.Vector2) {
-	class(self).SetGravityPointCenter(value)
+func (self Instance) SetGravityPointCenter(value Vector2.XY) {
+	class(self).SetGravityPointCenter(gd.Vector2(value))
 }
 
-func (self Instance) GravityDirection() gd.Vector2 {
-	return gd.Vector2(class(self).GetGravityDirection())
+func (self Instance) GravityDirection() Vector2.XY {
+	return Vector2.XY(class(self).GetGravityDirection())
 }
 
-func (self Instance) SetGravityDirection(value gd.Vector2) {
-	class(self).SetGravityDirection(value)
+func (self Instance) SetGravityDirection(value Vector2.XY) {
+	class(self).SetGravityDirection(gd.Vector2(value))
 }
 
-func (self Instance) Gravity() float64 {
-	return float64(float64(class(self).GetGravity()))
+func (self Instance) Gravity() Float.X {
+	return Float.X(Float.X(class(self).GetGravity()))
 }
 
-func (self Instance) SetGravity(value float64) {
+func (self Instance) SetGravity(value Float.X) {
 	class(self).SetGravity(gd.Float(value))
 }
 
@@ -165,11 +168,11 @@ func (self Instance) SetLinearDampSpaceOverride(value classdb.Area2DSpaceOverrid
 	class(self).SetLinearDampSpaceOverrideMode(value)
 }
 
-func (self Instance) LinearDamp() float64 {
-	return float64(float64(class(self).GetLinearDamp()))
+func (self Instance) LinearDamp() Float.X {
+	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-func (self Instance) SetLinearDamp(value float64) {
+func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(gd.Float(value))
 }
 
@@ -181,11 +184,11 @@ func (self Instance) SetAngularDampSpaceOverride(value classdb.Area2DSpaceOverri
 	class(self).SetAngularDampSpaceOverrideMode(value)
 }
 
-func (self Instance) AngularDamp() float64 {
-	return float64(float64(class(self).GetAngularDamp()))
+func (self Instance) AngularDamp() Float.X {
+	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-func (self Instance) SetAngularDamp(value float64) {
+func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(gd.Float(value))
 }
 
@@ -576,11 +579,11 @@ func (self class) IsOverridingAudioBus() bool {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid gd.RID, body objects.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid Resource.ID, body objects.Node2D, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid gd.RID, body objects.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid Resource.ID, body objects.Node2D, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
@@ -592,11 +595,11 @@ func (self Instance) OnBodyExited(cb func(body objects.Node2D)) {
 	self[0].AsObject().Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeEntered(cb func(area_rid gd.RID, area objects.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeEntered(cb func(area_rid Resource.ID, area objects.Area2D, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeExited(cb func(area_rid gd.RID, area objects.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeExited(cb func(area_rid Resource.ID, area objects.Area2D, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
 }
 

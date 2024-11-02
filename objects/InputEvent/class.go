@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,8 +51,8 @@ func (self Instance) IsActionReleased(action string) bool {
 Returns a value between 0.0 and 1.0 depending on the given actions' state. Useful for getting the value of events of type [InputEventJoypadMotion].
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func (self Instance) GetActionStrength(action string) float64 {
-	return float64(float64(class(self).GetActionStrength(gd.NewStringName(action), false)))
+func (self Instance) GetActionStrength(action string) Float.X {
+	return Float.X(Float.X(class(self).GetActionStrength(gd.NewStringName(action), false)))
 }
 
 /*
@@ -116,8 +118,8 @@ func (self Instance) Accumulate(with_event objects.InputEvent) bool {
 /*
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
-func (self Instance) XformedBy(xform gd.Transform2D) objects.InputEvent {
-	return objects.InputEvent(class(self).XformedBy(xform, gd.Vector2{0, 0}))
+func (self Instance) XformedBy(xform Transform2D.OriginXY) objects.InputEvent {
+	return objects.InputEvent(class(self).XformedBy(gd.Transform2D(xform), gd.Vector2(gd.Vector2{0, 0})))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -58,19 +60,19 @@ func (self Instance) SetSpecularTexture(value objects.Texture2D) {
 	class(self).SetSpecularTexture(value)
 }
 
-func (self Instance) SpecularColor() gd.Color {
-	return gd.Color(class(self).GetSpecularColor())
+func (self Instance) SpecularColor() Color.RGBA {
+	return Color.RGBA(class(self).GetSpecularColor())
 }
 
-func (self Instance) SetSpecularColor(value gd.Color) {
-	class(self).SetSpecularColor(value)
+func (self Instance) SetSpecularColor(value Color.RGBA) {
+	class(self).SetSpecularColor(gd.Color(value))
 }
 
-func (self Instance) SpecularShininess() float64 {
-	return float64(float64(class(self).GetSpecularShininess()))
+func (self Instance) SpecularShininess() Float.X {
+	return Float.X(Float.X(class(self).GetSpecularShininess()))
 }
 
-func (self Instance) SetSpecularShininess(value float64) {
+func (self Instance) SetSpecularShininess(value Float.X) {
 	class(self).SetSpecularShininess(gd.Float(value))
 }
 

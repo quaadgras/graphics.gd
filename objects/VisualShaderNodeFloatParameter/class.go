@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeParameter"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,27 +42,27 @@ func (self Instance) SetHint(value classdb.VisualShaderNodeFloatParameterHint) {
 	class(self).SetHint(value)
 }
 
-func (self Instance) Min() float64 {
-	return float64(float64(class(self).GetMin()))
+func (self Instance) Min() Float.X {
+	return Float.X(Float.X(class(self).GetMin()))
 }
 
-func (self Instance) SetMin(value float64) {
+func (self Instance) SetMin(value Float.X) {
 	class(self).SetMin(gd.Float(value))
 }
 
-func (self Instance) Max() float64 {
-	return float64(float64(class(self).GetMax()))
+func (self Instance) Max() Float.X {
+	return Float.X(Float.X(class(self).GetMax()))
 }
 
-func (self Instance) SetMax(value float64) {
+func (self Instance) SetMax(value Float.X) {
 	class(self).SetMax(gd.Float(value))
 }
 
-func (self Instance) Step() float64 {
-	return float64(float64(class(self).GetStep()))
+func (self Instance) Step() Float.X {
+	return Float.X(Float.X(class(self).GetStep()))
 }
 
-func (self Instance) SetStep(value float64) {
+func (self Instance) SetStep(value Float.X) {
 	class(self).SetStep(gd.Float(value))
 }
 
@@ -73,11 +74,11 @@ func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
-func (self Instance) DefaultValue() float64 {
-	return float64(float64(class(self).GetDefaultValue()))
+func (self Instance) DefaultValue() Float.X {
+	return Float.X(Float.X(class(self).GetDefaultValue()))
 }
 
-func (self Instance) SetDefaultValue(value float64) {
+func (self Instance) SetDefaultValue(value Float.X) {
 	class(self).SetDefaultValue(gd.Float(value))
 }
 

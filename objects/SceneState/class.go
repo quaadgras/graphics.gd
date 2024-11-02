@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,15 +48,15 @@ func (self Instance) GetNodeName(idx int) string {
 Returns the path to the node at [param idx].
 If [param for_parent] is [code]true[/code], returns the path of the [param idx] node's parent instead.
 */
-func (self Instance) GetNodePath(idx int) string {
-	return string(class(self).GetNodePath(gd.Int(idx), false).String())
+func (self Instance) GetNodePath(idx int) Path.String {
+	return Path.String(class(self).GetNodePath(gd.Int(idx), false).String())
 }
 
 /*
 Returns the path to the owner of the node at [param idx], relative to the root node.
 */
-func (self Instance) GetNodeOwnerPath(idx int) string {
-	return string(class(self).GetNodeOwnerPath(gd.Int(idx)).String())
+func (self Instance) GetNodeOwnerPath(idx int) Path.String {
+	return Path.String(class(self).GetNodeOwnerPath(gd.Int(idx)).String())
 }
 
 /*
@@ -110,8 +112,8 @@ func (self Instance) GetNodePropertyName(idx int, prop_idx int) string {
 /*
 Returns the value of the property at [param prop_idx] for the node at [param idx].
 */
-func (self Instance) GetNodePropertyValue(idx int, prop_idx int) gd.Variant {
-	return gd.Variant(class(self).GetNodePropertyValue(gd.Int(idx), gd.Int(prop_idx)))
+func (self Instance) GetNodePropertyValue(idx int, prop_idx int) any {
+	return any(class(self).GetNodePropertyValue(gd.Int(idx), gd.Int(prop_idx)).Interface())
 }
 
 /*
@@ -125,8 +127,8 @@ func (self Instance) GetConnectionCount() int {
 /*
 Returns the path to the node that owns the signal at [param idx], relative to the root node.
 */
-func (self Instance) GetConnectionSource(idx int) string {
-	return string(class(self).GetConnectionSource(gd.Int(idx)).String())
+func (self Instance) GetConnectionSource(idx int) Path.String {
+	return Path.String(class(self).GetConnectionSource(gd.Int(idx)).String())
 }
 
 /*
@@ -139,8 +141,8 @@ func (self Instance) GetConnectionSignal(idx int) string {
 /*
 Returns the path to the node that owns the method connected to the signal at [param idx], relative to the root node.
 */
-func (self Instance) GetConnectionTarget(idx int) string {
-	return string(class(self).GetConnectionTarget(gd.Int(idx)).String())
+func (self Instance) GetConnectionTarget(idx int) Path.String {
+	return Path.String(class(self).GetConnectionTarget(gd.Int(idx)).String())
 }
 
 /*
@@ -160,8 +162,8 @@ func (self Instance) GetConnectionFlags(idx int) int {
 /*
 Returns the list of bound parameters for the signal at [param idx].
 */
-func (self Instance) GetConnectionBinds(idx int) gd.Array {
-	return gd.Array(class(self).GetConnectionBinds(gd.Int(idx)))
+func (self Instance) GetConnectionBinds(idx int) Array.Any {
+	return Array.Any(class(self).GetConnectionBinds(gd.Int(idx)))
 }
 
 /*

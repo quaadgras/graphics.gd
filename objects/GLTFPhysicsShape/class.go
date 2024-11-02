@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,15 +54,15 @@ func (self Instance) ToResource() objects.Shape3D {
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary gd.Dictionary) objects.GLTFPhysicsShape {
+func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsShape {
 	return objects.GLTFPhysicsShape(class(self).FromDictionary(dictionary))
 }
 
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
-func (self Instance) ToDictionary() gd.Dictionary {
-	return gd.Dictionary(class(self).ToDictionary())
+func (self Instance) ToDictionary() Dictionary.Any {
+	return Dictionary.Any(class(self).ToDictionary())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -81,27 +84,27 @@ func (self Instance) SetShapeType(value string) {
 	class(self).SetShapeType(gd.NewString(value))
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) Height() float64 {
-	return float64(float64(class(self).GetHeight()))
+func (self Instance) Height() Float.X {
+	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-func (self Instance) SetHeight(value float64) {
+func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(gd.Float(value))
 }
 

@@ -8,6 +8,12 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,8 +51,8 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 /*
 Returns the canvas item RID used by [RenderingServer] for this item.
 */
-func (self Instance) GetCanvasItem() gd.RID {
-	return gd.RID(class(self).GetCanvasItem())
+func (self Instance) GetCanvasItem() Resource.ID {
+	return Resource.ID(class(self).GetCanvasItem())
 }
 
 /*
@@ -90,8 +96,8 @@ func (self Instance) MoveToFront() {
 Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_multiline] and [method draw_polyline].
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawLine(from gd.Vector2, to gd.Vector2, color gd.Color) {
-	class(self).DrawLine(from, to, color, gd.Float(-1.0), false)
+func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) {
+	class(self).DrawLine(gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
@@ -100,24 +106,24 @@ If [param width] is negative, then a two-point primitives will be drawn instead 
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawDashedLine(from gd.Vector2, to gd.Vector2, color gd.Color) {
-	class(self).DrawDashedLine(from, to, color, gd.Float(-1.0), gd.Float(2.0), true, false)
+func (self Instance) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) {
+	class(self).DrawDashedLine(gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), gd.Float(2.0), true, false)
 }
 
 /*
 Draws interconnected line segments with a uniform [param color] and [param width] and optional antialiasing (supported only for positive [param width]). When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline] instead. See also [method draw_polygon].
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawPolyline(points []gd.Vector2, color gd.Color) {
-	class(self).DrawPolyline(gd.NewPackedVector2Slice(points), color, gd.Float(-1.0), false)
+func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) {
+	class(self).DrawPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
 Draws interconnected line segments with a uniform [param width], point-by-point coloring, and optional antialiasing (supported only for positive [param width]). Colors assigned to line points match by index between [param points] and [param colors], i.e. each line segment is filled with a gradient between the colors of the endpoints. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline_colors] instead. See also [method draw_polygon].
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawPolylineColors(points []gd.Vector2, colors []gd.Color) {
-	class(self).DrawPolylineColors(gd.NewPackedVector2Slice(points), gd.NewPackedColorSlice(colors), gd.Float(-1.0), false)
+func (self Instance) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA) {
+	class(self).DrawPolylineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
 /*
@@ -125,8 +131,8 @@ Draws an unfilled arc between the given angles with a uniform [param color] and 
 If [param width] is negative, it will be ignored and the arc will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
-func (self Instance) DrawArc(center gd.Vector2, radius float64, start_angle float64, end_angle float64, point_count int, color gd.Color) {
-	class(self).DrawArc(center, gd.Float(radius), gd.Float(start_angle), gd.Float(end_angle), gd.Int(point_count), color, gd.Float(-1.0), false)
+func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA) {
+	class(self).DrawArc(gd.Vector2(center), gd.Float(radius), gd.Float(start_angle), gd.Float(end_angle), gd.Int(point_count), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
@@ -134,8 +140,8 @@ Draws multiple disconnected lines with a uniform [param width] and [param color]
 If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawMultiline(points []gd.Vector2, color gd.Color) {
-	class(self).DrawMultiline(gd.NewPackedVector2Slice(points), color, gd.Float(-1.0), false)
+func (self Instance) DrawMultiline(points []Vector2.XY, color Color.RGBA) {
+	class(self).DrawMultiline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
 }
 
 /*
@@ -143,8 +149,8 @@ Draws multiple disconnected lines with a uniform [param width] and segment-by-se
 If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawMultilineColors(points []gd.Vector2, colors []gd.Color) {
-	class(self).DrawMultilineColors(gd.NewPackedVector2Slice(points), gd.NewPackedColorSlice(colors), gd.Float(-1.0), false)
+func (self Instance) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA) {
+	class(self).DrawMultilineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
 /*
@@ -154,8 +160,8 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 [b]Note:[/b] Unfilled rectangles drawn with a negative [param width] may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent [param color]).
 */
-func (self Instance) DrawRect(rect gd.Rect2, color gd.Color) {
-	class(self).DrawRect(rect, color, true, gd.Float(-1.0), false)
+func (self Instance) DrawRect(rect Rect2.PositionSize, color Color.RGBA) {
+	class(self).DrawRect(gd.Rect2(rect), gd.Color(color), true, gd.Float(-1.0), false)
 }
 
 /*
@@ -165,29 +171,29 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 */
-func (self Instance) DrawCircle(position gd.Vector2, radius float64, color gd.Color) {
-	class(self).DrawCircle(position, gd.Float(radius), color, true, gd.Float(-1.0), false)
+func (self Instance) DrawCircle(position Vector2.XY, radius Float.X, color Color.RGBA) {
+	class(self).DrawCircle(gd.Vector2(position), gd.Float(radius), gd.Color(color), true, gd.Float(-1.0), false)
 }
 
 /*
 Draws a texture at a given position.
 */
-func (self Instance) DrawTexture(texture objects.Texture2D, position gd.Vector2) {
-	class(self).DrawTexture(texture, position, gd.Color{1, 1, 1, 1})
+func (self Instance) DrawTexture(texture objects.Texture2D, position Vector2.XY) {
+	class(self).DrawTexture(texture, gd.Vector2(position), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
-func (self Instance) DrawTextureRect(texture objects.Texture2D, rect gd.Rect2, tile bool) {
-	class(self).DrawTextureRect(texture, rect, tile, gd.Color{1, 1, 1, 1}, false)
+func (self Instance) DrawTextureRect(texture objects.Texture2D, rect Rect2.PositionSize, tile bool) {
+	class(self).DrawTextureRect(texture, gd.Rect2(rect), tile, gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
-func (self Instance) DrawTextureRectRegion(texture objects.Texture2D, rect gd.Rect2, src_rect gd.Rect2) {
-	class(self).DrawTextureRectRegion(texture, rect, src_rect, gd.Color{1, 1, 1, 1}, false, true)
+func (self Instance) DrawTextureRectRegion(texture objects.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+	class(self).DrawTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
 }
 
 /*
@@ -195,8 +201,8 @@ Draws a textured rectangle region of the multi-channel signed distance field tex
 If [param outline] is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the [param outline] radius.
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
-func (self Instance) DrawMsdfTextureRectRegion(texture objects.Texture2D, rect gd.Rect2, src_rect gd.Rect2) {
-	class(self).DrawMsdfTextureRectRegion(texture, rect, src_rect, gd.Color{1, 1, 1, 1}, gd.Float(0.0), gd.Float(4.0), gd.Float(1.0))
+func (self Instance) DrawMsdfTextureRectRegion(texture objects.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+	class(self).DrawMsdfTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), gd.Float(0.0), gd.Float(4.0), gd.Float(1.0))
 }
 
 /*
@@ -209,36 +215,36 @@ dst.b = texture.b * modulate.b * modulate.a + dst.b * (1.0 - texture.b * modulat
 dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
-func (self Instance) DrawLcdTextureRectRegion(texture objects.Texture2D, rect gd.Rect2, src_rect gd.Rect2) {
-	class(self).DrawLcdTextureRectRegion(texture, rect, src_rect, gd.Color{1, 1, 1, 1})
+func (self Instance) DrawLcdTextureRectRegion(texture objects.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+	class(self).DrawLcdTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a styled rectangle.
 */
-func (self Instance) DrawStyleBox(style_box objects.StyleBox, rect gd.Rect2) {
-	class(self).DrawStyleBox(style_box, rect)
+func (self Instance) DrawStyleBox(style_box objects.StyleBox, rect Rect2.PositionSize) {
+	class(self).DrawStyleBox(style_box, gd.Rect2(rect))
 }
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
-func (self Instance) DrawPrimitive(points []gd.Vector2, colors []gd.Color, uvs []gd.Vector2) {
-	class(self).DrawPrimitive(gd.NewPackedVector2Slice(points), gd.NewPackedColorSlice(colors), gd.NewPackedVector2Slice(uvs), ([1]objects.Texture2D{}[0]))
+func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) {
+	class(self).DrawPrimitive(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&uvs))), [1]objects.Texture2D{}[0])
 }
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 */
-func (self Instance) DrawPolygon(points []gd.Vector2, colors []gd.Color) {
-	class(self).DrawPolygon(gd.NewPackedVector2Slice(points), gd.NewPackedColorSlice(colors), gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), ([1]objects.Texture2D{}[0]))
+func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) {
+	class(self).DrawPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), [1]objects.Texture2D{}[0])
 }
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 */
-func (self Instance) DrawColoredPolygon(points []gd.Vector2, color gd.Color) {
-	class(self).DrawColoredPolygon(gd.NewPackedVector2Slice(points), color, gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), ([1]objects.Texture2D{}[0]))
+func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) {
+	class(self).DrawColoredPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.NewPackedVector2Slice(nil), [1]objects.Texture2D{}[0])
 }
 
 /*
@@ -264,50 +270,50 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 [/codeblocks]
 See also [method Font.draw_string].
 */
-func (self Instance) DrawString(font objects.Font, pos gd.Vector2, text string) {
-	class(self).DrawString(font, pos, gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color{1, 1, 1, 1}, 3, 0, 0)
+func (self Instance) DrawString(font objects.Font, pos Vector2.XY, text string) {
+	class(self).DrawString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineString(font objects.Font, pos gd.Vector2, text string) {
-	class(self).DrawMultilineString(font, pos, gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color{1, 1, 1, 1}, 3, 3, 0, 0)
+func (self Instance) DrawMultilineString(font objects.Font, pos Vector2.XY, text string) {
+	class(self).DrawMultilineString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawStringOutline(font objects.Font, pos gd.Vector2, text string) {
-	class(self).DrawStringOutline(font, pos, gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color{1, 1, 1, 1}, 3, 0, 0)
+func (self Instance) DrawStringOutline(font objects.Font, pos Vector2.XY, text string) {
+	class(self).DrawStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineStringOutline(font objects.Font, pos gd.Vector2, text string) {
-	class(self).DrawMultilineStringOutline(font, pos, gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color{1, 1, 1, 1}, 3, 3, 0, 0)
+func (self Instance) DrawMultilineStringOutline(font objects.Font, pos Vector2.XY, text string) {
+	class(self).DrawMultilineStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws a string first character using a custom font.
 */
-func (self Instance) DrawChar(font objects.Font, pos gd.Vector2, char string) {
-	class(self).DrawChar(font, pos, gd.NewString(char), gd.Int(16), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawChar(font objects.Font, pos Vector2.XY, char string) {
+	class(self).DrawChar(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
-func (self Instance) DrawCharOutline(font objects.Font, pos gd.Vector2, char string) {
-	class(self).DrawCharOutline(font, pos, gd.NewString(char), gd.Int(16), gd.Int(-1), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawCharOutline(font objects.Font, pos Vector2.XY, char string) {
+	class(self).DrawCharOutline(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
 func (self Instance) DrawMesh(mesh objects.Mesh, texture objects.Texture2D) {
-	class(self).DrawMesh(mesh, texture, gd.NewTransform2D(1, 0, 0, 1, 0, 0), gd.Color{1, 1, 1, 1})
+	class(self).DrawMesh(mesh, texture, gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -321,21 +327,21 @@ func (self Instance) DrawMultimesh(multimesh objects.MultiMesh, texture objects.
 Sets a custom transform for drawing via components. Anything drawn afterwards will be transformed by this.
 [b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 */
-func (self Instance) DrawSetTransform(position gd.Vector2) {
-	class(self).DrawSetTransform(position, gd.Float(0.0), gd.Vector2{1, 1})
+func (self Instance) DrawSetTransform(position Vector2.XY) {
+	class(self).DrawSetTransform(gd.Vector2(position), gd.Float(0.0), gd.Vector2(gd.Vector2{1, 1}))
 }
 
 /*
 Sets a custom transform for drawing via matrix. Anything drawn afterwards will be transformed by this.
 */
-func (self Instance) DrawSetTransformMatrix(xform gd.Transform2D) {
-	class(self).DrawSetTransformMatrix(xform)
+func (self Instance) DrawSetTransformMatrix(xform Transform2D.OriginXY) {
+	class(self).DrawSetTransformMatrix(gd.Transform2D(xform))
 }
 
 /*
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
-func (self Instance) DrawAnimationSlice(animation_length float64, slice_begin float64, slice_end float64) {
+func (self Instance) DrawAnimationSlice(animation_length Float.X, slice_begin Float.X, slice_end Float.X) {
 	class(self).DrawAnimationSlice(gd.Float(animation_length), gd.Float(slice_begin), gd.Float(slice_end), gd.Float(0.0))
 }
 
@@ -349,73 +355,73 @@ func (self Instance) DrawEndAnimation() {
 /*
 Returns the transform matrix of this item.
 */
-func (self Instance) GetTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform())
+func (self Instance) GetTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 /*
 Returns the global transform matrix of this item, i.e. the combined transform up to the topmost [CanvasItem] node. The topmost item is a [CanvasItem] that either has no parent, has non-[CanvasItem] parent or it has [member top_level] enabled.
 */
-func (self Instance) GetGlobalTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetGlobalTransform())
+func (self Instance) GetGlobalTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetGlobalTransform())
 }
 
 /*
 Returns the transform from the local coordinate system of this [CanvasItem] to the [Viewport]s coordinate system.
 */
-func (self Instance) GetGlobalTransformWithCanvas() gd.Transform2D {
-	return gd.Transform2D(class(self).GetGlobalTransformWithCanvas())
+func (self Instance) GetGlobalTransformWithCanvas() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetGlobalTransformWithCanvas())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s embedders coordinate system.
 */
-func (self Instance) GetViewportTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetViewportTransform())
+func (self Instance) GetViewportTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetViewportTransform())
 }
 
 /*
 Returns the viewport's boundaries as a [Rect2].
 */
-func (self Instance) GetViewportRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetViewportRect())
+func (self Instance) GetViewportRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetViewportRect())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s coordinate system.
 */
-func (self Instance) GetCanvasTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetCanvasTransform())
+func (self Instance) GetCanvasTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
 /*
 Returns the transform of this [CanvasItem] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 Equals to [method get_global_transform] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
 */
-func (self Instance) GetScreenTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetScreenTransform())
+func (self Instance) GetScreenTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetScreenTransform())
 }
 
 /*
 Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
 */
-func (self Instance) GetLocalMousePosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetLocalMousePosition())
+func (self Instance) GetLocalMousePosition() Vector2.XY {
+	return Vector2.XY(class(self).GetLocalMousePosition())
 }
 
 /*
 Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in using the coordinate system of the [CanvasLayer].
 [b]Note:[/b] For screen-space coordinates (e.g. when using a non-embedded [Popup]), you can use [method DisplayServer.mouse_get_position].
 */
-func (self Instance) GetGlobalMousePosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalMousePosition())
+func (self Instance) GetGlobalMousePosition() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalMousePosition())
 }
 
 /*
 Returns the [RID] of the [World2D] canvas where this item is in.
 */
-func (self Instance) GetCanvas() gd.RID {
-	return gd.RID(class(self).GetCanvas())
+func (self Instance) GetCanvas() Resource.ID {
+	return Resource.ID(class(self).GetCanvas())
 }
 
 /*
@@ -470,8 +476,8 @@ func (self Instance) ForceUpdateTransform() {
 /*
 Assigns [param screen_point] as this node's new local transform.
 */
-func (self Instance) MakeCanvasPositionLocal(screen_point gd.Vector2) gd.Vector2 {
-	return gd.Vector2(class(self).MakeCanvasPositionLocal(screen_point))
+func (self Instance) MakeCanvasPositionLocal(screen_point Vector2.XY) Vector2.XY {
+	return Vector2.XY(class(self).MakeCanvasPositionLocal(gd.Vector2(screen_point)))
 }
 
 /*
@@ -514,20 +520,20 @@ func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
-func (self Instance) Modulate() gd.Color {
-	return gd.Color(class(self).GetModulate())
+func (self Instance) Modulate() Color.RGBA {
+	return Color.RGBA(class(self).GetModulate())
 }
 
-func (self Instance) SetModulate(value gd.Color) {
-	class(self).SetModulate(value)
+func (self Instance) SetModulate(value Color.RGBA) {
+	class(self).SetModulate(gd.Color(value))
 }
 
-func (self Instance) SelfModulate() gd.Color {
-	return gd.Color(class(self).GetSelfModulate())
+func (self Instance) SelfModulate() Color.RGBA {
+	return Color.RGBA(class(self).GetSelfModulate())
 }
 
-func (self Instance) SetSelfModulate(value gd.Color) {
-	class(self).SetSelfModulate(value)
+func (self Instance) SetSelfModulate(value Color.RGBA) {
+	class(self).SetSelfModulate(gd.Color(value))
 }
 
 func (self Instance) ShowBehindParent() bool {

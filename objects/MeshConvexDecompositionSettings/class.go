@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,35 +31,35 @@ func New() Instance {
 	return Instance{classdb.MeshConvexDecompositionSettings(object)}
 }
 
-func (self Instance) MaxConcavity() float64 {
-	return float64(float64(class(self).GetMaxConcavity()))
+func (self Instance) MaxConcavity() Float.X {
+	return Float.X(Float.X(class(self).GetMaxConcavity()))
 }
 
-func (self Instance) SetMaxConcavity(value float64) {
+func (self Instance) SetMaxConcavity(value Float.X) {
 	class(self).SetMaxConcavity(gd.Float(value))
 }
 
-func (self Instance) SymmetryPlanesClippingBias() float64 {
-	return float64(float64(class(self).GetSymmetryPlanesClippingBias()))
+func (self Instance) SymmetryPlanesClippingBias() Float.X {
+	return Float.X(Float.X(class(self).GetSymmetryPlanesClippingBias()))
 }
 
-func (self Instance) SetSymmetryPlanesClippingBias(value float64) {
+func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) {
 	class(self).SetSymmetryPlanesClippingBias(gd.Float(value))
 }
 
-func (self Instance) RevolutionAxesClippingBias() float64 {
-	return float64(float64(class(self).GetRevolutionAxesClippingBias()))
+func (self Instance) RevolutionAxesClippingBias() Float.X {
+	return Float.X(Float.X(class(self).GetRevolutionAxesClippingBias()))
 }
 
-func (self Instance) SetRevolutionAxesClippingBias(value float64) {
+func (self Instance) SetRevolutionAxesClippingBias(value Float.X) {
 	class(self).SetRevolutionAxesClippingBias(gd.Float(value))
 }
 
-func (self Instance) MinVolumePerConvexHull() float64 {
-	return float64(float64(class(self).GetMinVolumePerConvexHull()))
+func (self Instance) MinVolumePerConvexHull() Float.X {
+	return Float.X(Float.X(class(self).GetMinVolumePerConvexHull()))
 }
 
-func (self Instance) SetMinVolumePerConvexHull(value float64) {
+func (self Instance) SetMinVolumePerConvexHull(value Float.X) {
 	class(self).SetMinVolumePerConvexHull(gd.Float(value))
 }
 

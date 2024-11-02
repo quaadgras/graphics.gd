@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/RenderData"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,9 +26,9 @@ This class allows for a RenderData implementation to be made in GDExtension.
 		//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
 		GetRenderSceneData() objects.RenderSceneData
 		//Implement this in GDExtension to return the [RID] of the implementation's environment object.
-		GetEnvironment() gd.RID
+		GetEnvironment() Resource.ID
 		//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
-		GetCameraAttributes() gd.RID
+		GetCameraAttributes() Resource.ID
 	}
 */
 type Instance [1]classdb.RenderDataExtension
@@ -65,7 +66,7 @@ func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) objects.Ren
 /*
 Implement this in GDExtension to return the [RID] of the implementation's environment object.
 */
-func (Instance) _get_environment(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_environment(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -76,7 +77,7 @@ func (Instance) _get_environment(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Ex
 /*
 Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
 */
-func (Instance) _get_camera_attributes(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_camera_attributes(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,8 +52,8 @@ func (self Instance) GetCollider() gd.Object {
 /*
 Returns the [RID] of the first object that the ray intersects, or an empty [RID] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
-func (self Instance) GetColliderRid() gd.RID {
-	return gd.RID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() Resource.ID {
+	return Resource.ID(class(self).GetColliderRid())
 }
 
 /*
@@ -79,16 +82,16 @@ func (self Instance) GetColliderShape() int {
 Returns the collision point at which the ray intersects the closest object, in the global coordinate system. If [member hit_from_inside] is [code]true[/code] and the ray starts inside of a collision shape, this function will return the origin point of the ray.
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned point is valid and up-to-date.
 */
-func (self Instance) GetCollisionPoint() gd.Vector3 {
-	return gd.Vector3(class(self).GetCollisionPoint())
+func (self Instance) GetCollisionPoint() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCollisionPoint())
 }
 
 /*
 Returns the normal of the intersecting object's shape at the collision point, or [code]Vector3(0, 0, 0)[/code] if the ray starts inside the shape and [member hit_from_inside] is [code]true[/code].
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned normal is valid and up-to-date.
 */
-func (self Instance) GetCollisionNormal() gd.Vector3 {
-	return gd.Vector3(class(self).GetCollisionNormal())
+func (self Instance) GetCollisionNormal() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCollisionNormal())
 }
 
 /*
@@ -101,7 +104,7 @@ func (self Instance) GetCollisionFaceIndex() int {
 /*
 Adds a collision exception so the ray does not report collisions with the specified [RID].
 */
-func (self Instance) AddExceptionRid(rid gd.RID) {
+func (self Instance) AddExceptionRid(rid Resource.ID) {
 	class(self).AddExceptionRid(rid)
 }
 
@@ -115,7 +118,7 @@ func (self Instance) AddException(node objects.CollisionObject3D) {
 /*
 Removes a collision exception so the ray does report collisions with the specified [RID].
 */
-func (self Instance) RemoveExceptionRid(rid gd.RID) {
+func (self Instance) RemoveExceptionRid(rid Resource.ID) {
 	class(self).RemoveExceptionRid(rid)
 }
 
@@ -174,12 +177,12 @@ func (self Instance) SetExcludeParent(value bool) {
 	class(self).SetExcludeParentBody(value)
 }
 
-func (self Instance) TargetPosition() gd.Vector3 {
-	return gd.Vector3(class(self).GetTargetPosition())
+func (self Instance) TargetPosition() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
-func (self Instance) SetTargetPosition(value gd.Vector3) {
-	class(self).SetTargetPosition(value)
+func (self Instance) SetTargetPosition(value Vector3.XYZ) {
+	class(self).SetTargetPosition(gd.Vector3(value))
 }
 
 func (self Instance) CollisionMask() int {
@@ -222,12 +225,12 @@ func (self Instance) SetCollideWithBodies(value bool) {
 	class(self).SetCollideWithBodies(value)
 }
 
-func (self Instance) DebugShapeCustomColor() gd.Color {
-	return gd.Color(class(self).GetDebugShapeCustomColor())
+func (self Instance) DebugShapeCustomColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDebugShapeCustomColor())
 }
 
-func (self Instance) SetDebugShapeCustomColor(value gd.Color) {
-	class(self).SetDebugShapeCustomColor(value)
+func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) {
+	class(self).SetDebugShapeCustomColor(gd.Color(value))
 }
 
 func (self Instance) DebugShapeThickness() int {

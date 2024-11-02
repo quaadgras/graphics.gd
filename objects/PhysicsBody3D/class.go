@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CollisionObject3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,8 +33,8 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody3D] for improving floor detection during floor snapping.
 [param max_collisions] allows to retrieve more than one collision result.
 */
-func (self Instance) MoveAndCollide(motion gd.Vector3) objects.KinematicCollision3D {
-	return objects.KinematicCollision3D(class(self).MoveAndCollide(motion, false, gd.Float(0.001), false, gd.Int(1)))
+func (self Instance) MoveAndCollide(motion Vector3.XYZ) objects.KinematicCollision3D {
+	return objects.KinematicCollision3D(class(self).MoveAndCollide(gd.Vector3(motion), false, gd.Float(0.001), false, gd.Int(1)))
 }
 
 /*
@@ -43,15 +45,15 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 [param max_collisions] allows to retrieve more than one collision result.
 */
-func (self Instance) TestMove(from gd.Transform3D, motion gd.Vector3) bool {
-	return bool(class(self).TestMove(from, motion, ([1]objects.KinematicCollision3D{}[0]), gd.Float(0.001), false, gd.Int(1)))
+func (self Instance) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ) bool {
+	return bool(class(self).TestMove(gd.Transform3D(from), gd.Vector3(motion), [1]objects.KinematicCollision3D{}[0], gd.Float(0.001), false, gd.Int(1)))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
 */
-func (self Instance) GetGravity() gd.Vector3 {
-	return gd.Vector3(class(self).GetGravity())
+func (self Instance) GetGravity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetGravity())
 }
 
 /*

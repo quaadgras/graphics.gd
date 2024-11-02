@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,8 +23,8 @@ type Instance [1]classdb.StatusIndicator
 /*
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2].
 */
-func (self Instance) GetRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRect())
+func (self Instance) GetRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -51,12 +54,12 @@ func (self Instance) SetIcon(value objects.Texture2D) {
 	class(self).SetIcon(value)
 }
 
-func (self Instance) Menu() string {
-	return string(class(self).GetMenu().String())
+func (self Instance) Menu() Path.String {
+	return Path.String(class(self).GetMenu().String())
 }
 
-func (self Instance) SetMenu(value string) {
-	class(self).SetMenu(gd.NewString(value).NodePath())
+func (self Instance) SetMenu(value Path.String) {
+	class(self).SetMenu(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) Visible() bool {
@@ -155,7 +158,7 @@ func (self class) GetRect() gd.Rect2 {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnPressed(cb func(mouse_button int, mouse_position gd.Vector2i)) {
+func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
 }
 

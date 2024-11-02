@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,85 +29,85 @@ func (self Instance) GetProperties() gd.Array {
 Adds the property identified by the given [param path] to the list of the properties being synchronized, optionally passing an [param index].
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
-func (self Instance) AddProperty(path string) {
-	class(self).AddProperty(gd.NewString(path).NodePath(), gd.Int(-1))
+func (self Instance) AddProperty(path Path.String) {
+	class(self).AddProperty(gd.NewString(string(path)).NodePath(), gd.Int(-1))
 }
 
 /*
 Returns [code]true[/code] if the given [param path] is configured for synchronization.
 */
-func (self Instance) HasProperty(path string) bool {
-	return bool(class(self).HasProperty(gd.NewString(path).NodePath()))
+func (self Instance) HasProperty(path Path.String) bool {
+	return bool(class(self).HasProperty(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Removes the property identified by the given [param path] from the configuration.
 */
-func (self Instance) RemoveProperty(path string) {
-	class(self).RemoveProperty(gd.NewString(path).NodePath())
+func (self Instance) RemoveProperty(path Path.String) {
+	class(self).RemoveProperty(gd.NewString(string(path)).NodePath())
 }
 
 /*
 Finds the index of the given [param path].
 */
-func (self Instance) PropertyGetIndex(path string) int {
-	return int(int(class(self).PropertyGetIndex(gd.NewString(path).NodePath())))
+func (self Instance) PropertyGetIndex(path Path.String) int {
+	return int(int(class(self).PropertyGetIndex(gd.NewString(string(path)).NodePath())))
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on spawn.
 */
-func (self Instance) PropertyGetSpawn(path string) bool {
-	return bool(class(self).PropertyGetSpawn(gd.NewString(path).NodePath()))
+func (self Instance) PropertyGetSpawn(path Path.String) bool {
+	return bool(class(self).PropertyGetSpawn(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on spawn.
 */
-func (self Instance) PropertySetSpawn(path string, enabled bool) {
-	class(self).PropertySetSpawn(gd.NewString(path).NodePath(), enabled)
+func (self Instance) PropertySetSpawn(path Path.String, enabled bool) {
+	class(self).PropertySetSpawn(gd.NewString(string(path)).NodePath(), enabled)
 }
 
 /*
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertyGetReplicationMode(path string) classdb.SceneReplicationConfigReplicationMode {
-	return classdb.SceneReplicationConfigReplicationMode(class(self).PropertyGetReplicationMode(gd.NewString(path).NodePath()))
+func (self Instance) PropertyGetReplicationMode(path Path.String) classdb.SceneReplicationConfigReplicationMode {
+	return classdb.SceneReplicationConfigReplicationMode(class(self).PropertyGetReplicationMode(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertySetReplicationMode(path string, mode classdb.SceneReplicationConfigReplicationMode) {
-	class(self).PropertySetReplicationMode(gd.NewString(path).NodePath(), mode)
+func (self Instance) PropertySetReplicationMode(path Path.String, mode classdb.SceneReplicationConfigReplicationMode) {
+	class(self).PropertySetReplicationMode(gd.NewString(string(path)).NodePath(), mode)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on process.
 */
-func (self Instance) PropertyGetSync(path string) bool {
-	return bool(class(self).PropertyGetSync(gd.NewString(path).NodePath()))
+func (self Instance) PropertyGetSync(path Path.String) bool {
+	return bool(class(self).PropertyGetSync(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on process.
 */
-func (self Instance) PropertySetSync(path string, enabled bool) {
-	class(self).PropertySetSync(gd.NewString(path).NodePath(), enabled)
+func (self Instance) PropertySetSync(path Path.String, enabled bool) {
+	class(self).PropertySetSync(gd.NewString(string(path)).NodePath(), enabled)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
-func (self Instance) PropertyGetWatch(path string) bool {
-	return bool(class(self).PropertyGetWatch(gd.NewString(path).NodePath()))
+func (self Instance) PropertyGetWatch(path Path.String) bool {
+	return bool(class(self).PropertyGetWatch(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
-func (self Instance) PropertySetWatch(path string, enabled bool) {
-	class(self).PropertySetWatch(gd.NewString(path).NodePath(), enabled)
+func (self Instance) PropertySetWatch(path Path.String, enabled bool) {
+	class(self).PropertySetWatch(gd.NewString(string(path)).NodePath(), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

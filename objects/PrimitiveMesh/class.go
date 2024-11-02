@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,7 +25,7 @@ Base class for all primitive meshes. Handles applying a [Material] to a primitiv
 	// PrimitiveMesh methods that can be overridden by a [Class] that extends it.
 	type PrimitiveMesh interface {
 		//Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
-		CreateMeshArray() gd.Array
+		CreateMeshArray() Array.Any
 	}
 */
 type Instance [1]classdb.PrimitiveMesh
@@ -30,7 +33,7 @@ type Instance [1]classdb.PrimitiveMesh
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
 */
-func (Instance) _create_mesh_array(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_mesh_array(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -57,8 +60,8 @@ arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, c.GetMeshArrays());
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetMeshArrays() gd.Array {
-	return gd.Array(class(self).GetMeshArrays())
+func (self Instance) GetMeshArrays() Array.Any {
+	return Array.Any(class(self).GetMeshArrays())
 }
 
 /*
@@ -87,12 +90,12 @@ func (self Instance) SetMaterial(value objects.Material) {
 	class(self).SetMaterial(value)
 }
 
-func (self Instance) CustomAabb() gd.AABB {
-	return gd.AABB(class(self).GetCustomAabb())
+func (self Instance) CustomAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-func (self Instance) SetCustomAabb(value gd.AABB) {
-	class(self).SetCustomAabb(value)
+func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+	class(self).SetCustomAabb(gd.AABB(value))
 }
 
 func (self Instance) FlipFaces() bool {
@@ -111,11 +114,11 @@ func (self Instance) SetAddUv2(value bool) {
 	class(self).SetAddUv2(value)
 }
 
-func (self Instance) Uv2Padding() float64 {
-	return float64(float64(class(self).GetUv2Padding()))
+func (self Instance) Uv2Padding() Float.X {
+	return Float.X(Float.X(class(self).GetUv2Padding()))
 }
 
-func (self Instance) SetUv2Padding(value float64) {
+func (self Instance) SetUv2Padding(value Float.X) {
 	class(self).SetUv2Padding(gd.Float(value))
 }
 

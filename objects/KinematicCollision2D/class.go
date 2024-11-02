@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,43 +26,43 @@ type Instance [1]classdb.KinematicCollision2D
 /*
 Returns the point of collision in global coordinates.
 */
-func (self Instance) GetPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) GetPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision.
 */
-func (self Instance) GetNormal() gd.Vector2 {
-	return gd.Vector2(class(self).GetNormal())
+func (self Instance) GetNormal() Vector2.XY {
+	return Vector2.XY(class(self).GetNormal())
 }
 
 /*
 Returns the moving object's travel before collision.
 */
-func (self Instance) GetTravel() gd.Vector2 {
-	return gd.Vector2(class(self).GetTravel())
+func (self Instance) GetTravel() Vector2.XY {
+	return Vector2.XY(class(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
-func (self Instance) GetRemainder() gd.Vector2 {
-	return gd.Vector2(class(self).GetRemainder())
+func (self Instance) GetRemainder() Vector2.XY {
+	return Vector2.XY(class(self).GetRemainder())
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
-func (self Instance) GetAngle() float64 {
-	return float64(float64(class(self).GetAngle(gd.Vector2{0, -1})))
+func (self Instance) GetAngle() Float.X {
+	return Float.X(Float.X(class(self).GetAngle(gd.Vector2(gd.Vector2{0, -1}))))
 }
 
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
-func (self Instance) GetDepth() float64 {
-	return float64(float64(class(self).GetDepth()))
+func (self Instance) GetDepth() Float.X {
+	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 /*
@@ -86,8 +89,8 @@ func (self Instance) GetColliderId() int {
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
-func (self Instance) GetColliderRid() gd.RID {
-	return gd.RID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() Resource.ID {
+	return Resource.ID(class(self).GetColliderRid())
 }
 
 /*
@@ -107,8 +110,8 @@ func (self Instance) GetColliderShapeIndex() int {
 /*
 Returns the colliding body's velocity.
 */
-func (self Instance) GetColliderVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetColliderVelocity())
+func (self Instance) GetColliderVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetColliderVelocity())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

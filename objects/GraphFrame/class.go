@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -84,12 +85,12 @@ func (self Instance) SetTintColorEnabled(value bool) {
 	class(self).SetTintColorEnabled(value)
 }
 
-func (self Instance) TintColor() gd.Color {
-	return gd.Color(class(self).GetTintColor())
+func (self Instance) TintColor() Color.RGBA {
+	return Color.RGBA(class(self).GetTintColor())
 }
 
-func (self Instance) SetTintColor(value gd.Color) {
-	class(self).SetTintColor(value)
+func (self Instance) SetTintColor(value Color.RGBA) {
+	class(self).SetTintColor(gd.Color(value))
 }
 
 //go:nosplit

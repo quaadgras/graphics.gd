@@ -13,6 +13,7 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -52,12 +53,12 @@ func New() Instance {
 	return Instance{classdb.PhysicalBone2D(object)}
 }
 
-func (self Instance) Bone2dNodepath() string {
-	return string(class(self).GetBone2dNodepath().String())
+func (self Instance) Bone2dNodepath() Path.String {
+	return Path.String(class(self).GetBone2dNodepath().String())
 }
 
-func (self Instance) SetBone2dNodepath(value string) {
-	class(self).SetBone2dNodepath(gd.NewString(value).NodePath())
+func (self Instance) SetBone2dNodepath(value Path.String) {
+	class(self).SetBone2dNodepath(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) Bone2dIndex() int {

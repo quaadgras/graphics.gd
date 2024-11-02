@@ -10,6 +10,11 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,7 +41,7 @@ var _ = pointers.Root
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInInputHotzone(in_node gd.Object, in_port int, mouse_position gd.Vector2) bool
+		IsInInputHotzone(in_node gd.Object, in_port int, mouse_position Vector2.XY) bool
 		//Returns whether the [param mouse_position] is in the output hot zone. For more information on hot zones, see [method _is_in_input_hotzone].
 		//Below is a sample code to help get started:
 		//[codeblock]
@@ -47,9 +52,9 @@ var _ = pointers.Root
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInOutputHotzone(in_node gd.Object, in_port int, mouse_position gd.Vector2) bool
+		IsInOutputHotzone(in_node gd.Object, in_port int, mouse_position Vector2.XY) bool
 		//Virtual method which can be overridden to customize how connections are drawn.
-		GetConnectionLine(from_position gd.Vector2, to_position gd.Vector2) []gd.Vector2
+		GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY
 		//This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
 		//Return [code]true[/code] if the connection is indeed valid or return [code]false[/code] if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
 		//In this example a connection to same node is suppressed:
@@ -85,7 +90,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(in_node)
@@ -111,7 +116,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
 		defer pointers.End(in_node)
@@ -126,13 +131,13 @@ func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.O
 /*
 Virtual method which can be overridden to customize how connections are drawn.
 */
-func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) []gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
-		ptr, ok := pointers.End(gd.NewPackedVector2Slice(ret))
+		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
 		if !ok {
 			return
 		}
@@ -199,7 +204,7 @@ func (self Instance) DisconnectNode(from_node string, from_port int, to_node str
 /*
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
-func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount float64) {
+func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) {
 	class(self).SetConnectionActivity(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port), gd.Float(amount))
 }
 
@@ -220,15 +225,15 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetClosestConnectionAtPoint(point gd.Vector2) gd.Dictionary {
-	return gd.Dictionary(class(self).GetClosestConnectionAtPoint(point, gd.Float(4.0)))
+func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Dictionary.Any {
+	return Dictionary.Any(class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0)))
 }
 
 /*
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionsIntersectingWithRect(rect gd.Rect2) gd.Array {
-	return gd.Array(class(self).GetConnectionsIntersectingWithRect(rect))
+func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) gd.Array {
+	return gd.Array(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))
 }
 
 /*
@@ -302,8 +307,8 @@ func (self Instance) IsValidConnectionType(from_type int, to_type int) bool {
 /*
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
-func (self Instance) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) []gd.Vector2 {
-	return []gd.Vector2(class(self).GetConnectionLine(from_node, to_node).AsSlice())
+func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY {
+	return []Vector2.XY(class(self).GetConnectionLine(gd.Vector2(from_node), gd.Vector2(to_node)).AsSlice())
 }
 
 /*
@@ -367,12 +372,12 @@ func New() Instance {
 	return Instance{classdb.GraphEdit(object)}
 }
 
-func (self Instance) ScrollOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollOffset())
+func (self Instance) ScrollOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-func (self Instance) SetScrollOffset(value gd.Vector2) {
-	class(self).SetScrollOffset(value)
+func (self Instance) SetScrollOffset(value Vector2.XY) {
+	class(self).SetScrollOffset(gd.Vector2(value))
 }
 
 func (self Instance) ShowGrid() bool {
@@ -423,19 +428,19 @@ func (self Instance) SetRightDisconnects(value bool) {
 	class(self).SetRightDisconnects(value)
 }
 
-func (self Instance) ConnectionLinesCurvature() float64 {
-	return float64(float64(class(self).GetConnectionLinesCurvature()))
+func (self Instance) ConnectionLinesCurvature() Float.X {
+	return Float.X(Float.X(class(self).GetConnectionLinesCurvature()))
 }
 
-func (self Instance) SetConnectionLinesCurvature(value float64) {
+func (self Instance) SetConnectionLinesCurvature(value Float.X) {
 	class(self).SetConnectionLinesCurvature(gd.Float(value))
 }
 
-func (self Instance) ConnectionLinesThickness() float64 {
-	return float64(float64(class(self).GetConnectionLinesThickness()))
+func (self Instance) ConnectionLinesThickness() Float.X {
+	return Float.X(Float.X(class(self).GetConnectionLinesThickness()))
 }
 
-func (self Instance) SetConnectionLinesThickness(value float64) {
+func (self Instance) SetConnectionLinesThickness(value Float.X) {
 	class(self).SetConnectionLinesThickness(gd.Float(value))
 }
 
@@ -447,35 +452,35 @@ func (self Instance) SetConnectionLinesAntialiased(value bool) {
 	class(self).SetConnectionLinesAntialiased(value)
 }
 
-func (self Instance) Zoom() float64 {
-	return float64(float64(class(self).GetZoom()))
+func (self Instance) Zoom() Float.X {
+	return Float.X(Float.X(class(self).GetZoom()))
 }
 
-func (self Instance) SetZoom(value float64) {
+func (self Instance) SetZoom(value Float.X) {
 	class(self).SetZoom(gd.Float(value))
 }
 
-func (self Instance) ZoomMin() float64 {
-	return float64(float64(class(self).GetZoomMin()))
+func (self Instance) ZoomMin() Float.X {
+	return Float.X(Float.X(class(self).GetZoomMin()))
 }
 
-func (self Instance) SetZoomMin(value float64) {
+func (self Instance) SetZoomMin(value Float.X) {
 	class(self).SetZoomMin(gd.Float(value))
 }
 
-func (self Instance) ZoomMax() float64 {
-	return float64(float64(class(self).GetZoomMax()))
+func (self Instance) ZoomMax() Float.X {
+	return Float.X(Float.X(class(self).GetZoomMax()))
 }
 
-func (self Instance) SetZoomMax(value float64) {
+func (self Instance) SetZoomMax(value Float.X) {
 	class(self).SetZoomMax(gd.Float(value))
 }
 
-func (self Instance) ZoomStep() float64 {
-	return float64(float64(class(self).GetZoomStep()))
+func (self Instance) ZoomStep() Float.X {
+	return Float.X(Float.X(class(self).GetZoomStep()))
 }
 
-func (self Instance) SetZoomStep(value float64) {
+func (self Instance) SetZoomStep(value Float.X) {
 	class(self).SetZoomStep(gd.Float(value))
 }
 
@@ -487,19 +492,19 @@ func (self Instance) SetMinimapEnabled(value bool) {
 	class(self).SetMinimapEnabled(value)
 }
 
-func (self Instance) MinimapSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetMinimapSize())
+func (self Instance) MinimapSize() Vector2.XY {
+	return Vector2.XY(class(self).GetMinimapSize())
 }
 
-func (self Instance) SetMinimapSize(value gd.Vector2) {
-	class(self).SetMinimapSize(value)
+func (self Instance) SetMinimapSize(value Vector2.XY) {
+	class(self).SetMinimapSize(gd.Vector2(value))
 }
 
-func (self Instance) MinimapOpacity() float64 {
-	return float64(float64(class(self).GetMinimapOpacity()))
+func (self Instance) MinimapOpacity() Float.X {
+	return Float.X(Float.X(class(self).GetMinimapOpacity()))
 }
 
-func (self Instance) SetMinimapOpacity(value float64) {
+func (self Instance) SetMinimapOpacity(value Float.X) {
 	class(self).SetMinimapOpacity(gd.Float(value))
 }
 
@@ -1433,11 +1438,11 @@ func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port 
 	self[0].AsObject().Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position gd.Vector2)) {
+func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position gd.Vector2)) {
+func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), 0)
 }
 
@@ -1473,11 +1478,11 @@ func (self Instance) OnNodeDeselected(cb func(node objects.Node)) {
 	self[0].AsObject().Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnFrameRectChanged(cb func(frame_ objects.GraphFrame, new_rect gd.Vector2)) {
+func (self Instance) OnFrameRectChanged(cb func(frame_ objects.GraphFrame, new_rect Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPopupRequest(cb func(at_position gd.Vector2)) {
+func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), 0)
 }
 
@@ -1489,11 +1494,11 @@ func (self Instance) OnEndNodeMove(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements gd.Array, frame_ string)) {
+func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements Array.Any, frame_ string)) {
 	self[0].AsObject().Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnScrollOffsetChanged(cb func(offset gd.Vector2)) {
+func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), 0)
 }
 

@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,7 +23,7 @@ type Instance [1]classdb.RDUniform
 /*
 Binds the given id to the uniform. The data associated with the id is then used when the uniform is passed to a shader.
 */
-func (self Instance) AddId(id gd.RID) {
+func (self Instance) AddId(id Resource.ID) {
 	class(self).AddId(id)
 }
 

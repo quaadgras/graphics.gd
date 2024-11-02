@@ -7,6 +7,11 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -159,15 +164,15 @@ func (self Instance) GetStructuredTextBidiOverride(column int) classdb.TextServe
 /*
 Set additional options for BiDi override. Has effect for cells that display text.
 */
-func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), args)
 }
 
 /*
 Returns the additional BiDi options set for this cell.
 */
-func (self Instance) GetStructuredTextBidiOverrideOptions(column int) gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column)))
+func (self Instance) GetStructuredTextBidiOverrideOptions(column int) Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column)))
 }
 
 /*
@@ -215,15 +220,15 @@ func (self Instance) GetIcon(column int) objects.Texture2D {
 /*
 Sets the given column's icon's texture region.
 */
-func (self Instance) SetIconRegion(column int, region gd.Rect2) {
-	class(self).SetIconRegion(gd.Int(column), region)
+func (self Instance) SetIconRegion(column int, region Rect2.PositionSize) {
+	class(self).SetIconRegion(gd.Int(column), gd.Rect2(region))
 }
 
 /*
 Returns the icon [Texture2D] region as [Rect2].
 */
-func (self Instance) GetIconRegion(column int) gd.Rect2 {
-	return gd.Rect2(class(self).GetIconRegion(gd.Int(column)))
+func (self Instance) GetIconRegion(column int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetIconRegion(gd.Int(column)))
 }
 
 /*
@@ -243,58 +248,58 @@ func (self Instance) GetIconMaxWidth(column int) int {
 /*
 Modulates the given column's icon with [param modulate].
 */
-func (self Instance) SetIconModulate(column int, modulate gd.Color) {
-	class(self).SetIconModulate(gd.Int(column), modulate)
+func (self Instance) SetIconModulate(column int, modulate Color.RGBA) {
+	class(self).SetIconModulate(gd.Int(column), gd.Color(modulate))
 }
 
 /*
 Returns the [Color] modulating the column's icon.
 */
-func (self Instance) GetIconModulate(column int) gd.Color {
-	return gd.Color(class(self).GetIconModulate(gd.Int(column)))
+func (self Instance) GetIconModulate(column int) Color.RGBA {
+	return Color.RGBA(class(self).GetIconModulate(gd.Int(column)))
 }
 
 /*
 Sets the value of a [constant CELL_MODE_RANGE] column.
 */
-func (self Instance) SetRange(column int, value float64) {
+func (self Instance) SetRange(column int, value Float.X) {
 	class(self).SetRange(gd.Int(column), gd.Float(value))
 }
 
 /*
 Returns the value of a [constant CELL_MODE_RANGE] column.
 */
-func (self Instance) GetRange(column int) float64 {
-	return float64(float64(class(self).GetRange(gd.Int(column))))
+func (self Instance) GetRange(column int) Float.X {
+	return Float.X(Float.X(class(self).GetRange(gd.Int(column))))
 }
 
 /*
 Sets the range of accepted values for a column. The column must be in the [constant CELL_MODE_RANGE] mode.
 If [param expr] is [code]true[/code], the edit mode slider will use an exponential scale as with [member Range.exp_edit].
 */
-func (self Instance) SetRangeConfig(column int, min float64, max float64, step float64) {
+func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X) {
 	class(self).SetRangeConfig(gd.Int(column), gd.Float(min), gd.Float(max), gd.Float(step), false)
 }
 
 /*
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
-func (self Instance) GetRangeConfig(column int) gd.Dictionary {
-	return gd.Dictionary(class(self).GetRangeConfig(gd.Int(column)))
+func (self Instance) GetRangeConfig(column int) Dictionary.Any {
+	return Dictionary.Any(class(self).GetRangeConfig(gd.Int(column)))
 }
 
 /*
 Sets the metadata value for the given column, which can be retrieved later using [method get_metadata]. This can be used, for example, to store a reference to the original data.
 */
-func (self Instance) SetMetadata(column int, meta gd.Variant) {
-	class(self).SetMetadata(gd.Int(column), meta)
+func (self Instance) SetMetadata(column int, meta any) {
+	class(self).SetMetadata(gd.Int(column), gd.NewVariant(meta))
 }
 
 /*
 Returns the metadata value that was set for the given column using [method set_metadata].
 */
-func (self Instance) GetMetadata(column int) gd.Variant {
-	return gd.Variant(class(self).GetMetadata(gd.Int(column)))
+func (self Instance) GetMetadata(column int) any {
+	return any(class(self).GetMetadata(gd.Int(column)).Interface())
 }
 
 /*
@@ -401,15 +406,15 @@ func (self Instance) IsEditable(column int) bool {
 /*
 Sets the given column's custom color.
 */
-func (self Instance) SetCustomColor(column int, color gd.Color) {
-	class(self).SetCustomColor(gd.Int(column), color)
+func (self Instance) SetCustomColor(column int, color Color.RGBA) {
+	class(self).SetCustomColor(gd.Int(column), gd.Color(color))
 }
 
 /*
 Returns the custom color of column [param column].
 */
-func (self Instance) GetCustomColor(column int) gd.Color {
-	return gd.Color(class(self).GetCustomColor(gd.Int(column)))
+func (self Instance) GetCustomColor(column int) Color.RGBA {
+	return Color.RGBA(class(self).GetCustomColor(gd.Int(column)))
 }
 
 /*
@@ -450,8 +455,8 @@ func (self Instance) GetCustomFontSize(column int) int {
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
 */
-func (self Instance) SetCustomBgColor(column int, color gd.Color) {
-	class(self).SetCustomBgColor(gd.Int(column), color, false)
+func (self Instance) SetCustomBgColor(column int, color Color.RGBA) {
+	class(self).SetCustomBgColor(gd.Int(column), gd.Color(color), false)
 }
 
 /*
@@ -464,8 +469,8 @@ func (self Instance) ClearCustomBgColor(column int) {
 /*
 Returns the custom background color of column [param column].
 */
-func (self Instance) GetCustomBgColor(column int) gd.Color {
-	return gd.Color(class(self).GetCustomBgColor(gd.Int(column)))
+func (self Instance) GetCustomBgColor(column int) Color.RGBA {
+	return Color.RGBA(class(self).GetCustomBgColor(gd.Int(column)))
 }
 
 /*
@@ -520,8 +525,8 @@ func (self Instance) GetButtonById(column int, id int) int {
 /*
 Returns the color of the button with ID [param id] in column [param column]. If the specified button does not exist, returns [constant Color.BLACK].
 */
-func (self Instance) GetButtonColor(column int, id int) gd.Color {
-	return gd.Color(class(self).GetButtonColor(gd.Int(column), gd.Int(id)))
+func (self Instance) GetButtonColor(column int, id int) Color.RGBA {
+	return Color.RGBA(class(self).GetButtonColor(gd.Int(column), gd.Int(id)))
 }
 
 /*
@@ -562,8 +567,8 @@ func (self Instance) SetButtonDisabled(column int, button_index int, disabled bo
 /*
 Sets the given column's button color at index [param button_index] to [param color].
 */
-func (self Instance) SetButtonColor(column int, button_index int, color gd.Color) {
-	class(self).SetButtonColor(gd.Int(column), gd.Int(button_index), color)
+func (self Instance) SetButtonColor(column int, button_index int, color Color.RGBA) {
+	class(self).SetButtonColor(gd.Int(column), gd.Int(button_index), gd.Color(color))
 }
 
 /*

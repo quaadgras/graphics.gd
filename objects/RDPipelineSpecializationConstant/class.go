@@ -31,12 +31,12 @@ func New() Instance {
 	return Instance{classdb.RDPipelineSpecializationConstant(object)}
 }
 
-func (self Instance) Value() gd.Variant {
-	return gd.Variant(class(self).GetValue())
+func (self Instance) Value() any {
+	return any(class(self).GetValue().Interface())
 }
 
-func (self Instance) SetValue(value gd.Variant) {
-	class(self).SetValue(value)
+func (self Instance) SetValue(value any) {
+	class(self).SetValue(gd.NewVariant(value))
 }
 
 func (self Instance) ConstantId() int {

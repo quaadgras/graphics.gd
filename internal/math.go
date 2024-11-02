@@ -2,32 +2,40 @@
 
 package gd
 
-import "grow.graphics/xy"
+import (
+	float "grow.graphics/gd/variant/Float"
+)
 
 // NewRect2 constructs a Rect2 by setting its position to (x, y), and its size to (width, height).
 func NewRect2(x, y, width, height Float) Rect2 {
-	return xy.NewRect2(x, y, width, height)
+	return Rect2{
+		Position: Vector2{float.X(x), float.X(y)},
+		Size:     Vector2{float.X(width), float.X(height)},
+	}
 }
 
 func NewRect2i(x, y, width, height int32) Rect2i {
-	return xy.NewRect2i(x, y, width, height)
+	return Rect2i{
+		Position: Vector2i{x, y},
+		Size:     Vector2i{width, height},
+	}
 }
 
 func NewTransform2D(a, b, c, d, e, f Float) Transform2D {
-	return xy.Transform2D{
-		xy.NewVector2(a, b),
-		xy.NewVector2(c, d),
-		xy.NewVector2(e, f),
+	return Transform2D{
+		Vector2{float.X(a), float.X(b)},
+		Vector2{float.X(c), float.X(d)},
+		Vector2{float.X(e), float.X(f)},
 	}
 }
 
 func NewTransform3D(a, b, c, d, e, f, g, h, i, j, k, l Float) Transform3D {
-	return xy.Transform3D{
-		Basis: xy.Basis{
-			xy.NewVector3(a, b, c),
-			xy.NewVector3(d, e, f),
-			xy.NewVector3(g, h, i),
+	return Transform3D{
+		Basis: Basis{
+			Vector3{float.X(a), float.X(b), float.X(c)},
+			Vector3{float.X(d), float.X(e), float.X(f)},
+			Vector3{float.X(g), float.X(h), float.X(i)},
 		},
-		Origin: xy.NewVector3(j, k, l),
+		Origin: Vector3{float.X(j), float.X(k), float.X(l)},
 	}
 }

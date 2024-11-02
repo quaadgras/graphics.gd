@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/GPUParticlesCollision3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,11 +38,11 @@ func New() Instance {
 	return Instance{classdb.GPUParticlesCollisionSphere3D(object)}
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 

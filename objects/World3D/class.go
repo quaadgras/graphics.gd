@@ -55,16 +55,16 @@ func (self Instance) SetCameraAttributes(value objects.CameraAttributes) {
 	class(self).SetCameraAttributes(value)
 }
 
-func (self Instance) Space() gd.RID {
-	return gd.RID(class(self).GetSpace())
+func (self Instance) Space() Resource.ID {
+	return Resource.ID(class(self).GetSpace())
 }
 
-func (self Instance) NavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) NavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
-func (self Instance) Scenario() gd.RID {
-	return gd.RID(class(self).GetScenario())
+func (self Instance) Scenario() Resource.ID {
+	return Resource.ID(class(self).GetScenario())
 }
 
 func (self Instance) DirectSpaceState() objects.PhysicsDirectSpaceState3D {

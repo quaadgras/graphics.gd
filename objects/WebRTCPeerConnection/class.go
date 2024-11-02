@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -52,7 +53,7 @@ Valid [param configuration] options are:
 [/codeblock]
 */
 func (self Instance) Initialize() error {
-	return error(class(self).Initialize(([1]gd.Dictionary{}[0])))
+	return error(class(self).Initialize([1]Dictionary.Any{}[0]))
 }
 
 /*
@@ -77,7 +78,7 @@ Valid [param options] are:
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
 func (self Instance) CreateDataChannel(label string) objects.WebRTCDataChannel {
-	return objects.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), ([1]gd.Dictionary{}[0])))
+	return objects.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), [1]Dictionary.Any{}[0]))
 }
 
 /*

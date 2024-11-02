@@ -33,7 +33,7 @@ func (self Instance) Poll() {
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToPeer(packet_peer objects.PacketPeerUDP, hostname string) error {
-	return error(class(self).ConnectToPeer(packet_peer, gd.NewString(hostname), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).ConnectToPeer(packet_peer, gd.NewString(hostname), [1]objects.TLSOptions{}[0]))
 }
 
 /*

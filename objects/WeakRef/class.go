@@ -22,8 +22,8 @@ type Instance [1]classdb.WeakRef
 /*
 Returns the [Object] this weakref is referring to. Returns [code]null[/code] if that object no longer exists.
 */
-func (self Instance) GetRef() gd.Variant {
-	return gd.Variant(class(self).GetRef())
+func (self Instance) GetRef() any {
+	return any(class(self).GetRef().Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

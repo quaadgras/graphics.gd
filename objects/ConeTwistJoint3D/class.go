@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Joint3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,43 +34,43 @@ func New() Instance {
 	return Instance{classdb.ConeTwistJoint3D(object)}
 }
 
-func (self Instance) SwingSpan() float64 {
-	return float64(float64(class(self).GetParam(0)))
+func (self Instance) SwingSpan() Float.X {
+	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
-func (self Instance) SetSwingSpan(value float64) {
+func (self Instance) SetSwingSpan(value Float.X) {
 	class(self).SetParam(0, gd.Float(value))
 }
 
-func (self Instance) TwistSpan() float64 {
-	return float64(float64(class(self).GetParam(1)))
+func (self Instance) TwistSpan() Float.X {
+	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
-func (self Instance) SetTwistSpan(value float64) {
+func (self Instance) SetTwistSpan(value Float.X) {
 	class(self).SetParam(1, gd.Float(value))
 }
 
-func (self Instance) Bias() float64 {
-	return float64(float64(class(self).GetParam(2)))
+func (self Instance) Bias() Float.X {
+	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
-func (self Instance) SetBias(value float64) {
+func (self Instance) SetBias(value Float.X) {
 	class(self).SetParam(2, gd.Float(value))
 }
 
-func (self Instance) Softness() float64 {
-	return float64(float64(class(self).GetParam(3)))
+func (self Instance) Softness() Float.X {
+	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
-func (self Instance) SetSoftness(value float64) {
+func (self Instance) SetSoftness(value Float.X) {
 	class(self).SetParam(3, gd.Float(value))
 }
 
-func (self Instance) Relaxation() float64 {
-	return float64(float64(class(self).GetParam(4)))
+func (self Instance) Relaxation() Float.X {
+	return Float.X(Float.X(class(self).GetParam(4)))
 }
 
-func (self Instance) SetRelaxation(value float64) {
+func (self Instance) SetRelaxation(value Float.X) {
 	class(self).SetParam(4, gd.Float(value))
 }
 

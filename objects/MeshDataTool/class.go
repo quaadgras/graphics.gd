@@ -7,6 +7,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Plane"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -118,85 +122,85 @@ func (self Instance) GetFaceCount() int {
 /*
 Sets the position of the given vertex.
 */
-func (self Instance) SetVertex(idx int, vertex gd.Vector3) {
-	class(self).SetVertex(gd.Int(idx), vertex)
+func (self Instance) SetVertex(idx int, vertex Vector3.XYZ) {
+	class(self).SetVertex(gd.Int(idx), gd.Vector3(vertex))
 }
 
 /*
 Returns the position of the given vertex.
 */
-func (self Instance) GetVertex(idx int) gd.Vector3 {
-	return gd.Vector3(class(self).GetVertex(gd.Int(idx)))
+func (self Instance) GetVertex(idx int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetVertex(gd.Int(idx)))
 }
 
 /*
 Sets the normal of the given vertex.
 */
-func (self Instance) SetVertexNormal(idx int, normal gd.Vector3) {
-	class(self).SetVertexNormal(gd.Int(idx), normal)
+func (self Instance) SetVertexNormal(idx int, normal Vector3.XYZ) {
+	class(self).SetVertexNormal(gd.Int(idx), gd.Vector3(normal))
 }
 
 /*
 Returns the normal of the given vertex.
 */
-func (self Instance) GetVertexNormal(idx int) gd.Vector3 {
-	return gd.Vector3(class(self).GetVertexNormal(gd.Int(idx)))
+func (self Instance) GetVertexNormal(idx int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetVertexNormal(gd.Int(idx)))
 }
 
 /*
 Sets the tangent of the given vertex.
 */
-func (self Instance) SetVertexTangent(idx int, tangent gd.Plane) {
-	class(self).SetVertexTangent(gd.Int(idx), tangent)
+func (self Instance) SetVertexTangent(idx int, tangent Plane.NormalD) {
+	class(self).SetVertexTangent(gd.Int(idx), gd.Plane(tangent))
 }
 
 /*
 Returns the tangent of the given vertex.
 */
-func (self Instance) GetVertexTangent(idx int) gd.Plane {
-	return gd.Plane(class(self).GetVertexTangent(gd.Int(idx)))
+func (self Instance) GetVertexTangent(idx int) Plane.NormalD {
+	return Plane.NormalD(class(self).GetVertexTangent(gd.Int(idx)))
 }
 
 /*
 Sets the UV of the given vertex.
 */
-func (self Instance) SetVertexUv(idx int, uv gd.Vector2) {
-	class(self).SetVertexUv(gd.Int(idx), uv)
+func (self Instance) SetVertexUv(idx int, uv Vector2.XY) {
+	class(self).SetVertexUv(gd.Int(idx), gd.Vector2(uv))
 }
 
 /*
 Returns the UV of the given vertex.
 */
-func (self Instance) GetVertexUv(idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetVertexUv(gd.Int(idx)))
+func (self Instance) GetVertexUv(idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetVertexUv(gd.Int(idx)))
 }
 
 /*
 Sets the UV2 of the given vertex.
 */
-func (self Instance) SetVertexUv2(idx int, uv2 gd.Vector2) {
-	class(self).SetVertexUv2(gd.Int(idx), uv2)
+func (self Instance) SetVertexUv2(idx int, uv2 Vector2.XY) {
+	class(self).SetVertexUv2(gd.Int(idx), gd.Vector2(uv2))
 }
 
 /*
 Returns the UV2 of the given vertex.
 */
-func (self Instance) GetVertexUv2(idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetVertexUv2(gd.Int(idx)))
+func (self Instance) GetVertexUv2(idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetVertexUv2(gd.Int(idx)))
 }
 
 /*
 Sets the color of the given vertex.
 */
-func (self Instance) SetVertexColor(idx int, color gd.Color) {
-	class(self).SetVertexColor(gd.Int(idx), color)
+func (self Instance) SetVertexColor(idx int, color Color.RGBA) {
+	class(self).SetVertexColor(gd.Int(idx), gd.Color(color))
 }
 
 /*
 Returns the color of the given vertex.
 */
-func (self Instance) GetVertexColor(idx int) gd.Color {
-	return gd.Color(class(self).GetVertexColor(gd.Int(idx)))
+func (self Instance) GetVertexColor(idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetVertexColor(gd.Int(idx)))
 }
 
 /*
@@ -230,15 +234,15 @@ func (self Instance) GetVertexWeights(idx int) []float32 {
 /*
 Sets the metadata associated with the given vertex.
 */
-func (self Instance) SetVertexMeta(idx int, meta gd.Variant) {
-	class(self).SetVertexMeta(gd.Int(idx), meta)
+func (self Instance) SetVertexMeta(idx int, meta any) {
+	class(self).SetVertexMeta(gd.Int(idx), gd.NewVariant(meta))
 }
 
 /*
 Returns the metadata associated with the given vertex.
 */
-func (self Instance) GetVertexMeta(idx int) gd.Variant {
-	return gd.Variant(class(self).GetVertexMeta(gd.Int(idx)))
+func (self Instance) GetVertexMeta(idx int) any {
+	return any(class(self).GetVertexMeta(gd.Int(idx)).Interface())
 }
 
 /*
@@ -273,15 +277,15 @@ func (self Instance) GetEdgeFaces(idx int) []int32 {
 /*
 Sets the metadata of the given edge.
 */
-func (self Instance) SetEdgeMeta(idx int, meta gd.Variant) {
-	class(self).SetEdgeMeta(gd.Int(idx), meta)
+func (self Instance) SetEdgeMeta(idx int, meta any) {
+	class(self).SetEdgeMeta(gd.Int(idx), gd.NewVariant(meta))
 }
 
 /*
 Returns meta information assigned to given edge.
 */
-func (self Instance) GetEdgeMeta(idx int) gd.Variant {
-	return gd.Variant(class(self).GetEdgeMeta(gd.Int(idx)))
+func (self Instance) GetEdgeMeta(idx int) any {
+	return any(class(self).GetEdgeMeta(gd.Int(idx)).Interface())
 }
 
 /*
@@ -316,22 +320,22 @@ func (self Instance) GetFaceEdge(idx int, edge int) int {
 /*
 Sets the metadata of the given face.
 */
-func (self Instance) SetFaceMeta(idx int, meta gd.Variant) {
-	class(self).SetFaceMeta(gd.Int(idx), meta)
+func (self Instance) SetFaceMeta(idx int, meta any) {
+	class(self).SetFaceMeta(gd.Int(idx), gd.NewVariant(meta))
 }
 
 /*
 Returns the metadata associated with the given face.
 */
-func (self Instance) GetFaceMeta(idx int) gd.Variant {
-	return gd.Variant(class(self).GetFaceMeta(gd.Int(idx)))
+func (self Instance) GetFaceMeta(idx int) any {
+	return any(class(self).GetFaceMeta(gd.Int(idx)).Interface())
 }
 
 /*
 Calculates and returns the face normal of the given face.
 */
-func (self Instance) GetFaceNormal(idx int) gd.Vector3 {
-	return gd.Vector3(class(self).GetFaceNormal(gd.Int(idx)))
+func (self Instance) GetFaceNormal(idx int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetFaceNormal(gd.Int(idx)))
 }
 
 /*

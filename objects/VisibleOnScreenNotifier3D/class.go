@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,6 +42,10 @@ func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenNotifier3D"))
 	return Instance{classdb.VisibleOnScreenNotifier3D(object)}
+}
+
+func (self Instance) SetAabb(value AABB.PositionSize) {
+	class(self).SetAabb(gd.AABB(value))
 }
 
 //go:nosplit

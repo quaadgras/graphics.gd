@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationNodeSync"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -105,11 +106,11 @@ func New() Instance {
 	return Instance{classdb.AnimationNodeTransition(object)}
 }
 
-func (self Instance) XfadeTime() float64 {
-	return float64(float64(class(self).GetXfadeTime()))
+func (self Instance) XfadeTime() Float.X {
+	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
-func (self Instance) SetXfadeTime(value float64) {
+func (self Instance) SetXfadeTime(value Float.X) {
 	class(self).SetXfadeTime(gd.Float(value))
 }
 
@@ -127,6 +128,10 @@ func (self Instance) AllowTransitionToSelf() bool {
 
 func (self Instance) SetAllowTransitionToSelf(value bool) {
 	class(self).SetAllowTransitionToSelf(value)
+}
+
+func (self Instance) SetInputCount(value int) {
+	class(self).SetInputCount(gd.Int(value))
 }
 
 //go:nosplit

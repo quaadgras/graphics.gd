@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/TextEdit"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -414,15 +416,15 @@ func (self Instance) GetDelimiterEndKey(delimiter_index int) string {
 /*
 If [param line] [param column] is in a string or comment, returns the start position of the region. If not or no start could be found, both [Vector2] values will be [code]-1[/code].
 */
-func (self Instance) GetDelimiterStartPosition(line int, column int) gd.Vector2 {
-	return gd.Vector2(class(self).GetDelimiterStartPosition(gd.Int(line), gd.Int(column)))
+func (self Instance) GetDelimiterStartPosition(line int, column int) Vector2.XY {
+	return Vector2.XY(class(self).GetDelimiterStartPosition(gd.Int(line), gd.Int(column)))
 }
 
 /*
 If [param line] [param column] is in a string or comment, returns the end position of the region. If not or no end could be found, both [Vector2] values will be [code]-1[/code].
 */
-func (self Instance) GetDelimiterEndPosition(line int, column int) gd.Vector2 {
-	return gd.Vector2(class(self).GetDelimiterEndPosition(gd.Int(line), gd.Int(column)))
+func (self Instance) GetDelimiterEndPosition(line int, column int) Vector2.XY {
+	return Vector2.XY(class(self).GetDelimiterEndPosition(gd.Int(line), gd.Int(column)))
 }
 
 /*
@@ -459,7 +461,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [b]Note:[/b] This list will replace all current candidates.
 */
 func (self Instance) AddCodeCompletionOption(atype classdb.CodeEditCodeCompletionKind, display_text string, insert_text string) {
-	class(self).AddCodeCompletionOption(atype, gd.NewString(display_text), gd.NewString(insert_text), gd.Color{1, 1, 1, 1}, ([1]objects.Resource{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), gd.Int(1024))
+	class(self).AddCodeCompletionOption(atype, gd.NewString(display_text), gd.NewString(insert_text), gd.Color(gd.Color{1, 1, 1, 1}), [1]objects.Resource{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), gd.Int(1024))
 }
 
 /*
@@ -486,8 +488,8 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]icon[/code]: Icon to draw on the autocomplete menu.
 [code]default_value[/code]: Value of the symbol.
 */
-func (self Instance) GetCodeCompletionOption(index int) gd.Dictionary {
-	return gd.Dictionary(class(self).GetCodeCompletionOption(gd.Int(index)))
+func (self Instance) GetCodeCompletionOption(index int) Dictionary.Any {
+	return Dictionary.Any(class(self).GetCodeCompletionOption(gd.Int(index)))
 }
 
 /*
@@ -737,11 +739,11 @@ func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) {
 	class(self).SetHighlightMatchingBracesEnabled(value)
 }
 
-func (self Instance) AutoBraceCompletionPairs() gd.Dictionary {
-	return gd.Dictionary(class(self).GetAutoBraceCompletionPairs())
+func (self Instance) AutoBraceCompletionPairs() Dictionary.Any {
+	return Dictionary.Any(class(self).GetAutoBraceCompletionPairs())
 }
 
-func (self Instance) SetAutoBraceCompletionPairs(value gd.Dictionary) {
+func (self Instance) SetAutoBraceCompletionPairs(value Dictionary.Any) {
 	class(self).SetAutoBraceCompletionPairs(value)
 }
 

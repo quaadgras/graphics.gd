@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,51 +38,51 @@ func New() Instance {
 	return Instance{classdb.AudioEffectCompressor(object)}
 }
 
-func (self Instance) Threshold() float64 {
-	return float64(float64(class(self).GetThreshold()))
+func (self Instance) Threshold() Float.X {
+	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
-func (self Instance) SetThreshold(value float64) {
+func (self Instance) SetThreshold(value Float.X) {
 	class(self).SetThreshold(gd.Float(value))
 }
 
-func (self Instance) Ratio() float64 {
-	return float64(float64(class(self).GetRatio()))
+func (self Instance) Ratio() Float.X {
+	return Float.X(Float.X(class(self).GetRatio()))
 }
 
-func (self Instance) SetRatio(value float64) {
+func (self Instance) SetRatio(value Float.X) {
 	class(self).SetRatio(gd.Float(value))
 }
 
-func (self Instance) Gain() float64 {
-	return float64(float64(class(self).GetGain()))
+func (self Instance) Gain() Float.X {
+	return Float.X(Float.X(class(self).GetGain()))
 }
 
-func (self Instance) SetGain(value float64) {
+func (self Instance) SetGain(value Float.X) {
 	class(self).SetGain(gd.Float(value))
 }
 
-func (self Instance) AttackUs() float64 {
-	return float64(float64(class(self).GetAttackUs()))
+func (self Instance) AttackUs() Float.X {
+	return Float.X(Float.X(class(self).GetAttackUs()))
 }
 
-func (self Instance) SetAttackUs(value float64) {
+func (self Instance) SetAttackUs(value Float.X) {
 	class(self).SetAttackUs(gd.Float(value))
 }
 
-func (self Instance) ReleaseMs() float64 {
-	return float64(float64(class(self).GetReleaseMs()))
+func (self Instance) ReleaseMs() Float.X {
+	return Float.X(Float.X(class(self).GetReleaseMs()))
 }
 
-func (self Instance) SetReleaseMs(value float64) {
+func (self Instance) SetReleaseMs(value Float.X) {
 	class(self).SetReleaseMs(gd.Float(value))
 }
 
-func (self Instance) Mix() float64 {
-	return float64(float64(class(self).GetMix()))
+func (self Instance) Mix() Float.X {
+	return Float.X(Float.X(class(self).GetMix()))
 }
 
-func (self Instance) SetMix(value float64) {
+func (self Instance) SetMix(value Float.X) {
 	class(self).SetMix(gd.Float(value))
 }
 

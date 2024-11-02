@@ -8,6 +8,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -193,7 +195,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 */
 func Execute(path string, arguments []string) int {
 	once.Do(singleton)
-	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), ([1]gd.Array{}[0]), false, false)))
+	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), [1]Array.Any{}[0], false, false)))
 }
 
 /*
@@ -208,9 +210,9 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func ExecuteWithPipe(path string, arguments []string) gd.Dictionary {
+func ExecuteWithPipe(path string, arguments []string) Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments)))
+	return Dictionary.Any(class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments)))
 }
 
 /*
@@ -518,7 +520,7 @@ This method can be used to apply setting changes that require a restart. See als
 */
 func SetRestartOnExit(restart bool) {
 	once.Do(singleton)
-	class(self).SetRestartOnExit(restart, gd.NewPackedStringSlice(([1][]string{}[0])))
+	class(self).SetRestartOnExit(restart, gd.NewPackedStringSlice([1][]string{}[0]))
 }
 
 /*
@@ -639,9 +641,9 @@ Returns a [Dictionary] containing information about the current memory with the 
 - [code]"stack"[/code] - size of the current thread stack in bytes.
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
-func GetMemoryInfo() gd.Dictionary {
+func GetMemoryInfo() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetMemoryInfo())
+	return Dictionary.Any(class(self).GetMemoryInfo())
 }
 
 /*

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Tweener"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,8 +30,8 @@ var tween = get_tree().create_tween()
 tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 100)) #this will move the node from position (100, 100) to (200, 100)
 [/codeblock]
 */
-func (self Instance) From(value gd.Variant) objects.PropertyTweener {
-	return objects.PropertyTweener(class(self).From(value))
+func (self Instance) From(value any) objects.PropertyTweener {
+	return objects.PropertyTweener(class(self).From(gd.NewVariant(value)))
 }
 
 /*
@@ -95,7 +96,7 @@ func (self Instance) SetCustomInterpolator(interpolator_method gd.Callable) obje
 /*
 Sets the time in seconds after which the [PropertyTweener] will start interpolating. By default there's no delay.
 */
-func (self Instance) SetDelay(delay float64) objects.PropertyTweener {
+func (self Instance) SetDelay(delay Float.X) objects.PropertyTweener {
 	return objects.PropertyTweener(class(self).SetDelay(gd.Float(delay)))
 }
 

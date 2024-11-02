@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Quaternion"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,16 +28,16 @@ type Instance [1]classdb.GLTFNode
 Gets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
-func (self Instance) GetAdditionalData(extension_name string) gd.Variant {
-	return gd.Variant(class(self).GetAdditionalData(gd.NewStringName(extension_name)))
+func (self Instance) GetAdditionalData(extension_name string) any {
+	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
 
 /*
 Sets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data gd.Variant) {
-	class(self).SetAdditionalData(gd.NewStringName(extension_name), additional_data)
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -72,12 +75,12 @@ func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(gd.Int(value))
 }
 
-func (self Instance) Xform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetXform())
+func (self Instance) Xform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetXform())
 }
 
-func (self Instance) SetXform(value gd.Transform3D) {
-	class(self).SetXform(value)
+func (self Instance) SetXform(value Transform3D.BasisOrigin) {
+	class(self).SetXform(gd.Transform3D(value))
 }
 
 func (self Instance) Mesh() int {
@@ -112,28 +115,28 @@ func (self Instance) SetSkeleton(value int) {
 	class(self).SetSkeleton(gd.Int(value))
 }
 
-func (self Instance) Position() gd.Vector3 {
-	return gd.Vector3(class(self).GetPosition())
+func (self Instance) Position() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector3) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector3.XYZ) {
+	class(self).SetPosition(gd.Vector3(value))
 }
 
-func (self Instance) Rotation() gd.Quaternion {
-	return gd.Quaternion(class(self).GetRotation())
+func (self Instance) Rotation() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetRotation())
 }
 
-func (self Instance) SetRotation(value gd.Quaternion) {
-	class(self).SetRotation(value)
+func (self Instance) SetRotation(value Quaternion.IJKX) {
+	class(self).SetRotation(gd.Quaternion(value))
 }
 
-func (self Instance) Scale() gd.Vector3 {
-	return gd.Vector3(class(self).GetScale())
+func (self Instance) Scale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetScale())
 }
 
-func (self Instance) SetScale(value gd.Vector3) {
-	class(self).SetScale(value)
+func (self Instance) SetScale(value Vector3.XYZ) {
+	class(self).SetScale(gd.Vector3(value))
 }
 
 func (self Instance) Children() []int32 {

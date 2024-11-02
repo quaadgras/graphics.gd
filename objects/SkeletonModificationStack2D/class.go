@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,7 +34,7 @@ func (self Instance) Setup() {
 Executes all of the [SkeletonModification2D]s in the stack that use the same execution mode as the passed-in [param execution_mode], starting from index [code]0[/code] to [member modification_count].
 [b]Note:[/b] The order of the modifications can matter depending on the modifications. For example, modifications on a spine should operate before modifications on the arms in order to get proper results.
 */
-func (self Instance) Execute(delta float64, execution_mode int) {
+func (self Instance) Execute(delta Float.X, execution_mode int) {
 	class(self).Execute(gd.Float(delta), gd.Int(execution_mode))
 }
 
@@ -105,11 +106,11 @@ func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
-func (self Instance) Strength() float64 {
-	return float64(float64(class(self).GetStrength()))
+func (self Instance) Strength() Float.X {
+	return Float.X(Float.X(class(self).GetStrength()))
 }
 
-func (self Instance) SetStrength(value float64) {
+func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(gd.Float(value))
 }
 

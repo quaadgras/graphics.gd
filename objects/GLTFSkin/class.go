@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -84,19 +85,19 @@ func (self Instance) SetSkeleton(value int) {
 	class(self).SetSkeleton(gd.Int(value))
 }
 
-func (self Instance) JointIToBoneI() gd.Dictionary {
-	return gd.Dictionary(class(self).GetJointIToBoneI())
+func (self Instance) JointIToBoneI() Dictionary.Any {
+	return Dictionary.Any(class(self).GetJointIToBoneI())
 }
 
-func (self Instance) SetJointIToBoneI(value gd.Dictionary) {
+func (self Instance) SetJointIToBoneI(value Dictionary.Any) {
 	class(self).SetJointIToBoneI(value)
 }
 
-func (self Instance) JointIToName() gd.Dictionary {
-	return gd.Dictionary(class(self).GetJointIToName())
+func (self Instance) JointIToName() Dictionary.Any {
+	return Dictionary.Any(class(self).GetJointIToName())
 }
 
-func (self Instance) SetJointIToName(value gd.Dictionary) {
+func (self Instance) SetJointIToName(value Dictionary.Any) {
 	class(self).SetJointIToName(value)
 }
 

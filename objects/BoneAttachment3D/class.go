@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,15 +46,15 @@ func (self Instance) GetUseExternalSkeleton() bool {
 /*
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
-func (self Instance) SetExternalSkeleton(external_skeleton string) {
-	class(self).SetExternalSkeleton(gd.NewString(external_skeleton).NodePath())
+func (self Instance) SetExternalSkeleton(external_skeleton Path.String) {
+	class(self).SetExternalSkeleton(gd.NewString(string(external_skeleton)).NodePath())
 }
 
 /*
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
-func (self Instance) GetExternalSkeleton() string {
-	return string(class(self).GetExternalSkeleton().String())
+func (self Instance) GetExternalSkeleton() Path.String {
+	return Path.String(class(self).GetExternalSkeleton().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

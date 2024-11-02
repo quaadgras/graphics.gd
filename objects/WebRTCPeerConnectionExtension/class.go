@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/WebRTCPeerConnection"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,7 +39,7 @@ func (Instance) _get_signaling_state(impl func(ptr unsafe.Pointer) classdb.WebRT
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config Dictionary.Any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_config = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(p_config)
@@ -47,7 +48,7 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label string, p_config gd.Dictionary) objects.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label string, p_config Dictionary.Any) objects.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(p_label)

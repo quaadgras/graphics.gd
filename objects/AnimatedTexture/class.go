@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,15 +45,15 @@ func (self Instance) GetFrameTexture(frame_ int) objects.Texture2D {
 /*
 Sets the duration of any given [param frame]. The final duration is affected by the [member speed_scale]. If set to [code]0[/code], the frame is skipped during playback.
 */
-func (self Instance) SetFrameDuration(frame_ int, duration float64) {
+func (self Instance) SetFrameDuration(frame_ int, duration Float.X) {
 	class(self).SetFrameDuration(gd.Int(frame_), gd.Float(duration))
 }
 
 /*
 Returns the given [param frame]'s duration, in seconds.
 */
-func (self Instance) GetFrameDuration(frame_ int) float64 {
-	return float64(float64(class(self).GetFrameDuration(gd.Int(frame_))))
+func (self Instance) GetFrameDuration(frame_ int) Float.X {
+	return Float.X(Float.X(class(self).GetFrameDuration(gd.Int(frame_))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -98,11 +99,11 @@ func (self Instance) SetOneShot(value bool) {
 	class(self).SetOneShot(value)
 }
 
-func (self Instance) SpeedScale() float64 {
-	return float64(float64(class(self).GetSpeedScale()))
+func (self Instance) SpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-func (self Instance) SetSpeedScale(value float64) {
+func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(gd.Float(value))
 }
 

@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Quaternion"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,7 +26,7 @@ After instantiating the playback information data within the extended class, the
 	// AnimationMixer methods that can be overridden by a [Class] that extends it.
 	type AnimationMixer interface {
 		//A virtual function for processing after getting a key during playback.
-		PostProcessKeyValue(animation objects.Animation, track int, value gd.Variant, object_id int, object_sub_idx int) gd.Variant
+		PostProcessKeyValue(animation objects.Animation, track int, value any, object_id int, object_sub_idx int) any
 	}
 */
 type Instance [1]classdb.AnimationMixer
@@ -30,7 +34,7 @@ type Instance [1]classdb.AnimationMixer
 /*
 A virtual function for processing after getting a key during playback.
 */
-func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation objects.Animation, track int, value gd.Variant, object_id int, object_sub_idx int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation objects.Animation, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var animation = objects.Animation{pointers.New[classdb.Animation]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(animation[0])
@@ -40,8 +44,8 @@ func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation 
 		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
 		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, animation, int(track), value, int(object_id), int(object_sub_idx))
-		ptr, ok := pointers.End(ret)
+		ret := impl(self, animation, int(track), value.Interface(), int(object_id), int(object_sub_idx))
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -155,8 +159,8 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionPosition() gd.Vector3 {
-	return gd.Vector3(class(self).GetRootMotionPosition())
+func (self Instance) GetRootMotionPosition() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRootMotionPosition())
 }
 
 /*
@@ -175,8 +179,8 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionRotation() gd.Quaternion {
-	return gd.Quaternion(class(self).GetRootMotionRotation())
+func (self Instance) GetRootMotionRotation() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetRootMotionRotation())
 }
 
 /*
@@ -201,8 +205,8 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionScale() gd.Vector3 {
-	return gd.Vector3(class(self).GetRootMotionScale())
+func (self Instance) GetRootMotionScale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRootMotionScale())
 }
 
 /*
@@ -226,8 +230,8 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionPositionAccumulator() gd.Vector3 {
-	return gd.Vector3(class(self).GetRootMotionPositionAccumulator())
+func (self Instance) GetRootMotionPositionAccumulator() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRootMotionPositionAccumulator())
 }
 
 /*
@@ -252,8 +256,8 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionRotationAccumulator() gd.Quaternion {
-	return gd.Quaternion(class(self).GetRootMotionRotationAccumulator())
+func (self Instance) GetRootMotionRotationAccumulator() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetRootMotionRotationAccumulator())
 }
 
 /*
@@ -276,8 +280,8 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionScaleAccumulator() gd.Vector3 {
-	return gd.Vector3(class(self).GetRootMotionScaleAccumulator())
+func (self Instance) GetRootMotionScaleAccumulator() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRootMotionScaleAccumulator())
 }
 
 /*
@@ -290,7 +294,7 @@ func (self Instance) ClearCaches() {
 /*
 Manually advance the animations by the specified time (in seconds).
 */
-func (self Instance) Advance(delta float64) {
+func (self Instance) Advance(delta Float.X) {
 	class(self).Advance(gd.Float(delta))
 }
 
@@ -299,7 +303,7 @@ If the animation track specified by [param name] has an option [constant Animati
 After this it will interpolate with current animation blending result during the playback process for the time specified by [param duration], working like a crossfade.
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
-func (self Instance) Capture(name string, duration float64) {
+func (self Instance) Capture(name string, duration Float.X) {
 	class(self).Capture(gd.NewStringName(name), gd.Float(duration), 0, 0)
 }
 
@@ -352,20 +356,20 @@ func (self Instance) SetResetOnSave(value bool) {
 	class(self).SetResetOnSaveEnabled(value)
 }
 
-func (self Instance) RootNode() string {
-	return string(class(self).GetRootNode().String())
+func (self Instance) RootNode() Path.String {
+	return Path.String(class(self).GetRootNode().String())
 }
 
-func (self Instance) SetRootNode(value string) {
-	class(self).SetRootNode(gd.NewString(value).NodePath())
+func (self Instance) SetRootNode(value Path.String) {
+	class(self).SetRootNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) RootMotionTrack() string {
-	return string(class(self).GetRootMotionTrack().String())
+func (self Instance) RootMotionTrack() Path.String {
+	return Path.String(class(self).GetRootMotionTrack().String())
 }
 
-func (self Instance) SetRootMotionTrack(value string) {
-	class(self).SetRootMotionTrack(gd.NewString(value).NodePath())
+func (self Instance) SetRootMotionTrack(value Path.String) {
+	class(self).SetRootMotionTrack(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) AudioMaxPolyphony() int {

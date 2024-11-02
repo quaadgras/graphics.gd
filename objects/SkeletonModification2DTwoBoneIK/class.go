@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,15 +27,15 @@ type Instance [1]classdb.SkeletonModification2DTwoBoneIK
 /*
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointOneBone2dNode(bone2d_node string) {
-	class(self).SetJointOneBone2dNode(gd.NewString(bone2d_node).NodePath())
+func (self Instance) SetJointOneBone2dNode(bone2d_node Path.String) {
+	class(self).SetJointOneBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointOneBone2dNode() string {
-	return string(class(self).GetJointOneBone2dNode().String())
+func (self Instance) GetJointOneBone2dNode() Path.String {
+	return Path.String(class(self).GetJointOneBone2dNode().String())
 }
 
 /*
@@ -53,15 +55,15 @@ func (self Instance) GetJointOneBoneIdx() int {
 /*
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointTwoBone2dNode(bone2d_node string) {
-	class(self).SetJointTwoBone2dNode(gd.NewString(bone2d_node).NodePath())
+func (self Instance) SetJointTwoBone2dNode(bone2d_node Path.String) {
+	class(self).SetJointTwoBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointTwoBone2dNode() string {
-	return string(class(self).GetJointTwoBone2dNode().String())
+func (self Instance) GetJointTwoBone2dNode() Path.String {
+	return Path.String(class(self).GetJointTwoBone2dNode().String())
 }
 
 /*
@@ -89,27 +91,27 @@ func New() Instance {
 	return Instance{classdb.SkeletonModification2DTwoBoneIK(object)}
 }
 
-func (self Instance) TargetNodepath() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNodepath(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) TargetMinimumDistance() float64 {
-	return float64(float64(class(self).GetTargetMinimumDistance()))
+func (self Instance) TargetMinimumDistance() Float.X {
+	return Float.X(Float.X(class(self).GetTargetMinimumDistance()))
 }
 
-func (self Instance) SetTargetMinimumDistance(value float64) {
+func (self Instance) SetTargetMinimumDistance(value Float.X) {
 	class(self).SetTargetMinimumDistance(gd.Float(value))
 }
 
-func (self Instance) TargetMaximumDistance() float64 {
-	return float64(float64(class(self).GetTargetMaximumDistance()))
+func (self Instance) TargetMaximumDistance() Float.X {
+	return Float.X(Float.X(class(self).GetTargetMaximumDistance()))
 }
 
-func (self Instance) SetTargetMaximumDistance(value float64) {
+func (self Instance) SetTargetMaximumDistance(value Float.X) {
 	class(self).SetTargetMaximumDistance(gd.Float(value))
 }
 

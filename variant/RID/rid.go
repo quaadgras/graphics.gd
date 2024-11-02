@@ -13,5 +13,5 @@ func New() Resource.ID { //gd:rid_allocate_id
 
 // Int64 returns a resource ID from the given int64.
 func Int64(id int64) Resource.ID { //gd:rid_from_int64
-	return gd.RidFromInt64(id)
+	return gd.RidFromInt64(gd.Int(id))
 }

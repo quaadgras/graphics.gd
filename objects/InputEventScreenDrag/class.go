@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,19 +43,19 @@ func (self Instance) SetIndex(value int) {
 	class(self).SetIndex(gd.Int(value))
 }
 
-func (self Instance) Tilt() gd.Vector2 {
-	return gd.Vector2(class(self).GetTilt())
+func (self Instance) Tilt() Vector2.XY {
+	return Vector2.XY(class(self).GetTilt())
 }
 
-func (self Instance) SetTilt(value gd.Vector2) {
-	class(self).SetTilt(value)
+func (self Instance) SetTilt(value Vector2.XY) {
+	class(self).SetTilt(gd.Vector2(value))
 }
 
-func (self Instance) Pressure() float64 {
-	return float64(float64(class(self).GetPressure()))
+func (self Instance) Pressure() Float.X {
+	return Float.X(Float.X(class(self).GetPressure()))
 }
 
-func (self Instance) SetPressure(value float64) {
+func (self Instance) SetPressure(value Float.X) {
 	class(self).SetPressure(gd.Float(value))
 }
 
@@ -65,44 +67,44 @@ func (self Instance) SetPenInverted(value bool) {
 	class(self).SetPenInverted(value)
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(value))
 }
 
-func (self Instance) Relative() gd.Vector2 {
-	return gd.Vector2(class(self).GetRelative())
+func (self Instance) Relative() Vector2.XY {
+	return Vector2.XY(class(self).GetRelative())
 }
 
-func (self Instance) SetRelative(value gd.Vector2) {
-	class(self).SetRelative(value)
+func (self Instance) SetRelative(value Vector2.XY) {
+	class(self).SetRelative(gd.Vector2(value))
 }
 
-func (self Instance) ScreenRelative() gd.Vector2 {
-	return gd.Vector2(class(self).GetScreenRelative())
+func (self Instance) ScreenRelative() Vector2.XY {
+	return Vector2.XY(class(self).GetScreenRelative())
 }
 
-func (self Instance) SetScreenRelative(value gd.Vector2) {
-	class(self).SetScreenRelative(value)
+func (self Instance) SetScreenRelative(value Vector2.XY) {
+	class(self).SetScreenRelative(gd.Vector2(value))
 }
 
-func (self Instance) Velocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetVelocity())
+func (self Instance) Velocity() Vector2.XY {
+	return Vector2.XY(class(self).GetVelocity())
 }
 
-func (self Instance) SetVelocity(value gd.Vector2) {
-	class(self).SetVelocity(value)
+func (self Instance) SetVelocity(value Vector2.XY) {
+	class(self).SetVelocity(gd.Vector2(value))
 }
 
-func (self Instance) ScreenVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetScreenVelocity())
+func (self Instance) ScreenVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetScreenVelocity())
 }
 
-func (self Instance) SetScreenVelocity(value gd.Vector2) {
-	class(self).SetScreenVelocity(value)
+func (self Instance) SetScreenVelocity(value Vector2.XY) {
+	class(self).SetScreenVelocity(gd.Vector2(value))
 }
 
 //go:nosplit

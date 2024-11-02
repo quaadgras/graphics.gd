@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/OpenXRCompositionLayer"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,12 +34,12 @@ func New() Instance {
 	return Instance{classdb.OpenXRCompositionLayerQuad(object)}
 }
 
-func (self Instance) QuadSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetQuadSize())
+func (self Instance) QuadSize() Vector2.XY {
+	return Vector2.XY(class(self).GetQuadSize())
 }
 
-func (self Instance) SetQuadSize(value gd.Vector2) {
-	class(self).SetQuadSize(value)
+func (self Instance) SetQuadSize(value Vector2.XY) {
+	class(self).SetQuadSize(gd.Vector2(value))
 }
 
 //go:nosplit

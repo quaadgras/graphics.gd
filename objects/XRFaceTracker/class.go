@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRTracker"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,14 +25,14 @@ type Instance [1]classdb.XRFaceTracker
 /*
 Returns the requested face blend shape weight.
 */
-func (self Instance) GetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry) float64 {
-	return float64(float64(class(self).GetBlendShape(blend_shape)))
+func (self Instance) GetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry) Float.X {
+	return Float.X(Float.X(class(self).GetBlendShape(blend_shape)))
 }
 
 /*
 Sets a face blend shape weight.
 */
-func (self Instance) SetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry, weight float64) {
+func (self Instance) SetBlendShape(blend_shape classdb.XRFaceTrackerBlendShapeEntry, weight Float.X) {
 	class(self).SetBlendShape(blend_shape, gd.Float(weight))
 }
 

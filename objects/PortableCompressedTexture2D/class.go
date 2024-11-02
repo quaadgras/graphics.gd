@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -74,12 +75,12 @@ func New() Instance {
 	return Instance{classdb.PortableCompressedTexture2D(object)}
 }
 
-func (self Instance) SizeOverride() gd.Vector2 {
-	return gd.Vector2(class(self).GetSizeOverride())
+func (self Instance) SizeOverride() Vector2.XY {
+	return Vector2.XY(class(self).GetSizeOverride())
 }
 
-func (self Instance) SetSizeOverride(value gd.Vector2) {
-	class(self).SetSizeOverride(value)
+func (self Instance) SetSizeOverride(value Vector2.XY) {
+	class(self).SetSizeOverride(gd.Vector2(value))
 }
 
 func (self Instance) KeepCompressedBuffer() bool {

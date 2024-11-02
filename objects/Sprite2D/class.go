@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,8 +29,8 @@ type Instance [1]classdb.Sprite2D
 Returns [code]true[/code], if the pixel at the given position is opaque and [code]false[/code] in other case. The position is in local coordinates.
 [b]Note:[/b] It also returns [code]false[/code], if the sprite's texture is [code]null[/code] or if the given position is invalid.
 */
-func (self Instance) IsPixelOpaque(pos gd.Vector2) bool {
-	return bool(class(self).IsPixelOpaque(pos))
+func (self Instance) IsPixelOpaque(pos Vector2.XY) bool {
+	return bool(class(self).IsPixelOpaque(gd.Vector2(pos)))
 }
 
 /*
@@ -61,8 +64,8 @@ public override void _Input(InputEvent @event)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRect())
+func (self Instance) GetRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -92,12 +95,12 @@ func (self Instance) SetCentered(value bool) {
 	class(self).SetCentered(value)
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
 func (self Instance) FlipH() bool {
@@ -140,12 +143,12 @@ func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(gd.Int(value))
 }
 
-func (self Instance) FrameCoords() gd.Vector2i {
-	return gd.Vector2i(class(self).GetFrameCoords())
+func (self Instance) FrameCoords() Vector2i.XY {
+	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
-func (self Instance) SetFrameCoords(value gd.Vector2i) {
-	class(self).SetFrameCoords(value)
+func (self Instance) SetFrameCoords(value Vector2i.XY) {
+	class(self).SetFrameCoords(gd.Vector2i(value))
 }
 
 func (self Instance) RegionEnabled() bool {
@@ -156,12 +159,12 @@ func (self Instance) SetRegionEnabled(value bool) {
 	class(self).SetRegionEnabled(value)
 }
 
-func (self Instance) RegionRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRegionRect())
+func (self Instance) RegionRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-func (self Instance) SetRegionRect(value gd.Rect2) {
-	class(self).SetRegionRect(value)
+func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+	class(self).SetRegionRect(gd.Rect2(value))
 }
 
 func (self Instance) RegionFilterClipEnabled() bool {

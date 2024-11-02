@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,12 +31,12 @@ func New() Instance {
 	return Instance{classdb.PhysicsPointQueryParameters2D(object)}
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(value))
 }
 
 func (self Instance) CanvasInstanceId() int {

@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/GPUParticlesAttractor3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.GPUParticlesAttractorBox3D(object)}
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
 //go:nosplit

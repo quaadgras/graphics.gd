@@ -9,6 +9,12 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Font"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -96,50 +102,50 @@ func (self Instance) ClearSizeCache(cache_index int) {
 /*
 Removes specified font size from the cache entry.
 */
-func (self Instance) RemoveSizeCache(cache_index int, size gd.Vector2i) {
-	class(self).RemoveSizeCache(gd.Int(cache_index), size)
+func (self Instance) RemoveSizeCache(cache_index int, size Vector2i.XY) {
+	class(self).RemoveSizeCache(gd.Int(cache_index), gd.Vector2i(size))
 }
 
 /*
 Sets variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates gd.Dictionary) {
+func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates Dictionary.Any) {
 	class(self).SetVariationCoordinates(gd.Int(cache_index), variation_coordinates)
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) GetVariationCoordinates(cache_index int) gd.Dictionary {
-	return gd.Dictionary(class(self).GetVariationCoordinates(gd.Int(cache_index)))
+func (self Instance) GetVariationCoordinates(cache_index int) Dictionary.Any {
+	return Dictionary.Any(class(self).GetVariationCoordinates(gd.Int(cache_index)))
 }
 
 /*
 Sets embolden strength, if is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (self Instance) SetEmbolden(cache_index int, strength float64) {
+func (self Instance) SetEmbolden(cache_index int, strength Float.X) {
 	class(self).SetEmbolden(gd.Int(cache_index), gd.Float(strength))
 }
 
 /*
 Returns embolden strength, if is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (self Instance) GetEmbolden(cache_index int) float64 {
-	return float64(float64(class(self).GetEmbolden(gd.Int(cache_index))))
+func (self Instance) GetEmbolden(cache_index int) Float.X {
+	return Float.X(Float.X(class(self).GetEmbolden(gd.Int(cache_index))))
 }
 
 /*
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 */
-func (self Instance) SetTransform(cache_index int, transform gd.Transform2D) {
-	class(self).SetTransform(gd.Int(cache_index), transform)
+func (self Instance) SetTransform(cache_index int, transform Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Int(cache_index), gd.Transform2D(transform))
 }
 
 /*
 Returns 2D transform, applied to the font outlines, can be used for slanting, flipping and rotating glyphs.
 */
-func (self Instance) GetTransform(cache_index int) gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform(gd.Int(cache_index)))
+func (self Instance) GetTransform(cache_index int) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform(gd.Int(cache_index)))
 }
 
 /*
@@ -159,15 +165,15 @@ func (self Instance) GetExtraSpacing(cache_index int, spacing classdb.TextServer
 /*
 Sets extra baseline offset (as a fraction of font height).
 */
-func (self Instance) SetExtraBaselineOffset(cache_index int, baseline_offset float64) {
+func (self Instance) SetExtraBaselineOffset(cache_index int, baseline_offset Float.X) {
 	class(self).SetExtraBaselineOffset(gd.Int(cache_index), gd.Float(baseline_offset))
 }
 
 /*
 Returns extra baseline offset (as a fraction of font height).
 */
-func (self Instance) GetExtraBaselineOffset(cache_index int) float64 {
-	return float64(float64(class(self).GetExtraBaselineOffset(gd.Int(cache_index))))
+func (self Instance) GetExtraBaselineOffset(cache_index int) Float.X {
+	return Float.X(Float.X(class(self).GetExtraBaselineOffset(gd.Int(cache_index))))
 }
 
 /*
@@ -187,217 +193,217 @@ func (self Instance) GetFaceIndex(cache_index int) int {
 /*
 Sets the font ascent (number of pixels above the baseline).
 */
-func (self Instance) SetCacheAscent(cache_index int, size int, ascent float64) {
+func (self Instance) SetCacheAscent(cache_index int, size int, ascent Float.X) {
 	class(self).SetCacheAscent(gd.Int(cache_index), gd.Int(size), gd.Float(ascent))
 }
 
 /*
 Returns the font ascent (number of pixels above the baseline).
 */
-func (self Instance) GetCacheAscent(cache_index int, size int) float64 {
-	return float64(float64(class(self).GetCacheAscent(gd.Int(cache_index), gd.Int(size))))
+func (self Instance) GetCacheAscent(cache_index int, size int) Float.X {
+	return Float.X(Float.X(class(self).GetCacheAscent(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
 Sets the font descent (number of pixels below the baseline).
 */
-func (self Instance) SetCacheDescent(cache_index int, size int, descent float64) {
+func (self Instance) SetCacheDescent(cache_index int, size int, descent Float.X) {
 	class(self).SetCacheDescent(gd.Int(cache_index), gd.Int(size), gd.Float(descent))
 }
 
 /*
 Returns the font descent (number of pixels below the baseline).
 */
-func (self Instance) GetCacheDescent(cache_index int, size int) float64 {
-	return float64(float64(class(self).GetCacheDescent(gd.Int(cache_index), gd.Int(size))))
+func (self Instance) GetCacheDescent(cache_index int, size int) Float.X {
+	return Float.X(Float.X(class(self).GetCacheDescent(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
 Sets pixel offset of the underline below the baseline.
 */
-func (self Instance) SetCacheUnderlinePosition(cache_index int, size int, underline_position float64) {
+func (self Instance) SetCacheUnderlinePosition(cache_index int, size int, underline_position Float.X) {
 	class(self).SetCacheUnderlinePosition(gd.Int(cache_index), gd.Int(size), gd.Float(underline_position))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) GetCacheUnderlinePosition(cache_index int, size int) float64 {
-	return float64(float64(class(self).GetCacheUnderlinePosition(gd.Int(cache_index), gd.Int(size))))
+func (self Instance) GetCacheUnderlinePosition(cache_index int, size int) Float.X {
+	return Float.X(Float.X(class(self).GetCacheUnderlinePosition(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
 Sets thickness of the underline in pixels.
 */
-func (self Instance) SetCacheUnderlineThickness(cache_index int, size int, underline_thickness float64) {
+func (self Instance) SetCacheUnderlineThickness(cache_index int, size int, underline_thickness Float.X) {
 	class(self).SetCacheUnderlineThickness(gd.Int(cache_index), gd.Int(size), gd.Float(underline_thickness))
 }
 
 /*
 Returns thickness of the underline in pixels.
 */
-func (self Instance) GetCacheUnderlineThickness(cache_index int, size int) float64 {
-	return float64(float64(class(self).GetCacheUnderlineThickness(gd.Int(cache_index), gd.Int(size))))
+func (self Instance) GetCacheUnderlineThickness(cache_index int, size int) Float.X {
+	return Float.X(Float.X(class(self).GetCacheUnderlineThickness(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
 Sets scaling factor of the color bitmap font.
 */
-func (self Instance) SetCacheScale(cache_index int, size int, scale float64) {
+func (self Instance) SetCacheScale(cache_index int, size int, scale Float.X) {
 	class(self).SetCacheScale(gd.Int(cache_index), gd.Int(size), gd.Float(scale))
 }
 
 /*
 Returns scaling factor of the color bitmap font.
 */
-func (self Instance) GetCacheScale(cache_index int, size int) float64 {
-	return float64(float64(class(self).GetCacheScale(gd.Int(cache_index), gd.Int(size))))
+func (self Instance) GetCacheScale(cache_index int, size int) Float.X {
+	return Float.X(Float.X(class(self).GetCacheScale(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
 Returns number of textures used by font cache entry.
 */
-func (self Instance) GetTextureCount(cache_index int, size gd.Vector2i) int {
-	return int(int(class(self).GetTextureCount(gd.Int(cache_index), size)))
+func (self Instance) GetTextureCount(cache_index int, size Vector2i.XY) int {
+	return int(int(class(self).GetTextureCount(gd.Int(cache_index), gd.Vector2i(size))))
 }
 
 /*
 Removes all textures from font cache entry.
 [b]Note:[/b] This function will not remove glyphs associated with the texture, use [method remove_glyph] to remove them manually.
 */
-func (self Instance) ClearTextures(cache_index int, size gd.Vector2i) {
-	class(self).ClearTextures(gd.Int(cache_index), size)
+func (self Instance) ClearTextures(cache_index int, size Vector2i.XY) {
+	class(self).ClearTextures(gd.Int(cache_index), gd.Vector2i(size))
 }
 
 /*
 Removes specified texture from the cache entry.
 [b]Note:[/b] This function will not remove glyphs associated with the texture. Remove them manually using [method remove_glyph].
 */
-func (self Instance) RemoveTexture(cache_index int, size gd.Vector2i, texture_index int) {
-	class(self).RemoveTexture(gd.Int(cache_index), size, gd.Int(texture_index))
+func (self Instance) RemoveTexture(cache_index int, size Vector2i.XY, texture_index int) {
+	class(self).RemoveTexture(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index))
 }
 
 /*
 Sets font cache texture image.
 */
-func (self Instance) SetTextureImage(cache_index int, size gd.Vector2i, texture_index int, image objects.Image) {
-	class(self).SetTextureImage(gd.Int(cache_index), size, gd.Int(texture_index), image)
+func (self Instance) SetTextureImage(cache_index int, size Vector2i.XY, texture_index int, image objects.Image) {
+	class(self).SetTextureImage(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index), image)
 }
 
 /*
 Returns a copy of the font cache texture image.
 */
-func (self Instance) GetTextureImage(cache_index int, size gd.Vector2i, texture_index int) objects.Image {
-	return objects.Image(class(self).GetTextureImage(gd.Int(cache_index), size, gd.Int(texture_index)))
+func (self Instance) GetTextureImage(cache_index int, size Vector2i.XY, texture_index int) objects.Image {
+	return objects.Image(class(self).GetTextureImage(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index)))
 }
 
 /*
 Sets array containing glyph packing data.
 */
-func (self Instance) SetTextureOffsets(cache_index int, size gd.Vector2i, texture_index int, offset []int32) {
-	class(self).SetTextureOffsets(gd.Int(cache_index), size, gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
+func (self Instance) SetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int, offset []int32) {
+	class(self).SetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
 }
 
 /*
 Returns a copy of the array containing glyph packing data.
 */
-func (self Instance) GetTextureOffsets(cache_index int, size gd.Vector2i, texture_index int) []int32 {
-	return []int32(class(self).GetTextureOffsets(gd.Int(cache_index), size, gd.Int(texture_index)).AsSlice())
+func (self Instance) GetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int) []int32 {
+	return []int32(class(self).GetTextureOffsets(gd.Int(cache_index), gd.Vector2i(size), gd.Int(texture_index)).AsSlice())
 }
 
 /*
 Returns list of rendered glyphs in the cache entry.
 */
-func (self Instance) GetGlyphList(cache_index int, size gd.Vector2i) []int32 {
-	return []int32(class(self).GetGlyphList(gd.Int(cache_index), size).AsSlice())
+func (self Instance) GetGlyphList(cache_index int, size Vector2i.XY) []int32 {
+	return []int32(class(self).GetGlyphList(gd.Int(cache_index), gd.Vector2i(size)).AsSlice())
 }
 
 /*
 Removes all rendered glyph information from the cache entry.
 [b]Note:[/b] This function will not remove textures associated with the glyphs, use [method remove_texture] to remove them manually.
 */
-func (self Instance) ClearGlyphs(cache_index int, size gd.Vector2i) {
-	class(self).ClearGlyphs(gd.Int(cache_index), size)
+func (self Instance) ClearGlyphs(cache_index int, size Vector2i.XY) {
+	class(self).ClearGlyphs(gd.Int(cache_index), gd.Vector2i(size))
 }
 
 /*
 Removes specified rendered glyph information from the cache entry.
 [b]Note:[/b] This function will not remove textures associated with the glyphs, use [method remove_texture] to remove them manually.
 */
-func (self Instance) RemoveGlyph(cache_index int, size gd.Vector2i, glyph int) {
-	class(self).RemoveGlyph(gd.Int(cache_index), size, gd.Int(glyph))
+func (self Instance) RemoveGlyph(cache_index int, size Vector2i.XY, glyph int) {
+	class(self).RemoveGlyph(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph))
 }
 
 /*
 Sets glyph advance (offset of the next glyph).
 [b]Note:[/b] Advance for glyphs outlines is the same as the base glyph advance and is not saved.
 */
-func (self Instance) SetGlyphAdvance(cache_index int, size int, glyph int, advance gd.Vector2) {
-	class(self).SetGlyphAdvance(gd.Int(cache_index), gd.Int(size), gd.Int(glyph), advance)
+func (self Instance) SetGlyphAdvance(cache_index int, size int, glyph int, advance Vector2.XY) {
+	class(self).SetGlyphAdvance(gd.Int(cache_index), gd.Int(size), gd.Int(glyph), gd.Vector2(advance))
 }
 
 /*
 Returns glyph advance (offset of the next glyph).
 [b]Note:[/b] Advance for glyphs outlines is the same as the base glyph advance and is not saved.
 */
-func (self Instance) GetGlyphAdvance(cache_index int, size int, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).GetGlyphAdvance(gd.Int(cache_index), gd.Int(size), gd.Int(glyph)))
+func (self Instance) GetGlyphAdvance(cache_index int, size int, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).GetGlyphAdvance(gd.Int(cache_index), gd.Int(size), gd.Int(glyph)))
 }
 
 /*
 Sets glyph offset from the baseline.
 */
-func (self Instance) SetGlyphOffset(cache_index int, size gd.Vector2i, glyph int, offset gd.Vector2) {
-	class(self).SetGlyphOffset(gd.Int(cache_index), size, gd.Int(glyph), offset)
+func (self Instance) SetGlyphOffset(cache_index int, size Vector2i.XY, glyph int, offset Vector2.XY) {
+	class(self).SetGlyphOffset(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph), gd.Vector2(offset))
 }
 
 /*
 Returns glyph offset from the baseline.
 */
-func (self Instance) GetGlyphOffset(cache_index int, size gd.Vector2i, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).GetGlyphOffset(gd.Int(cache_index), size, gd.Int(glyph)))
+func (self Instance) GetGlyphOffset(cache_index int, size Vector2i.XY, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).GetGlyphOffset(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets glyph size.
 */
-func (self Instance) SetGlyphSize(cache_index int, size gd.Vector2i, glyph int, gl_size gd.Vector2) {
-	class(self).SetGlyphSize(gd.Int(cache_index), size, gd.Int(glyph), gl_size)
+func (self Instance) SetGlyphSize(cache_index int, size Vector2i.XY, glyph int, gl_size Vector2.XY) {
+	class(self).SetGlyphSize(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph), gd.Vector2(gl_size))
 }
 
 /*
 Returns glyph size.
 */
-func (self Instance) GetGlyphSize(cache_index int, size gd.Vector2i, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).GetGlyphSize(gd.Int(cache_index), size, gd.Int(glyph)))
+func (self Instance) GetGlyphSize(cache_index int, size Vector2i.XY, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).GetGlyphSize(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets rectangle in the cache texture containing the glyph.
 */
-func (self Instance) SetGlyphUvRect(cache_index int, size gd.Vector2i, glyph int, uv_rect gd.Rect2) {
-	class(self).SetGlyphUvRect(gd.Int(cache_index), size, gd.Int(glyph), uv_rect)
+func (self Instance) SetGlyphUvRect(cache_index int, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) {
+	class(self).SetGlyphUvRect(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph), gd.Rect2(uv_rect))
 }
 
 /*
 Returns rectangle in the cache texture containing the glyph.
 */
-func (self Instance) GetGlyphUvRect(cache_index int, size gd.Vector2i, glyph int) gd.Rect2 {
-	return gd.Rect2(class(self).GetGlyphUvRect(gd.Int(cache_index), size, gd.Int(glyph)))
+func (self Instance) GetGlyphUvRect(cache_index int, size Vector2i.XY, glyph int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetGlyphUvRect(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets index of the cache texture containing the glyph.
 */
-func (self Instance) SetGlyphTextureIdx(cache_index int, size gd.Vector2i, glyph int, texture_idx int) {
-	class(self).SetGlyphTextureIdx(gd.Int(cache_index), size, gd.Int(glyph), gd.Int(texture_idx))
+func (self Instance) SetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph int, texture_idx int) {
+	class(self).SetGlyphTextureIdx(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph), gd.Int(texture_idx))
 }
 
 /*
 Returns index of the cache texture containing the glyph.
 */
-func (self Instance) GetGlyphTextureIdx(cache_index int, size gd.Vector2i, glyph int) int {
-	return int(int(class(self).GetGlyphTextureIdx(gd.Int(cache_index), size, gd.Int(glyph))))
+func (self Instance) GetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph int) int {
+	return int(int(class(self).GetGlyphTextureIdx(gd.Int(cache_index), gd.Vector2i(size), gd.Int(glyph))))
 }
 
 /*
@@ -417,36 +423,36 @@ func (self Instance) ClearKerningMap(cache_index int, size int) {
 /*
 Removes kerning override for the pair of glyphs.
 */
-func (self Instance) RemoveKerning(cache_index int, size int, glyph_pair gd.Vector2i) {
-	class(self).RemoveKerning(gd.Int(cache_index), gd.Int(size), glyph_pair)
+func (self Instance) RemoveKerning(cache_index int, size int, glyph_pair Vector2i.XY) {
+	class(self).RemoveKerning(gd.Int(cache_index), gd.Int(size), gd.Vector2i(glyph_pair))
 }
 
 /*
 Sets kerning for the pair of glyphs.
 */
-func (self Instance) SetKerning(cache_index int, size int, glyph_pair gd.Vector2i, kerning gd.Vector2) {
-	class(self).SetKerning(gd.Int(cache_index), gd.Int(size), glyph_pair, kerning)
+func (self Instance) SetKerning(cache_index int, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) {
+	class(self).SetKerning(gd.Int(cache_index), gd.Int(size), gd.Vector2i(glyph_pair), gd.Vector2(kerning))
 }
 
 /*
 Returns kerning for the pair of glyphs.
 */
-func (self Instance) GetKerning(cache_index int, size int, glyph_pair gd.Vector2i) gd.Vector2 {
-	return gd.Vector2(class(self).GetKerning(gd.Int(cache_index), gd.Int(size), glyph_pair))
+func (self Instance) GetKerning(cache_index int, size int, glyph_pair Vector2i.XY) Vector2.XY {
+	return Vector2.XY(class(self).GetKerning(gd.Int(cache_index), gd.Int(size), gd.Vector2i(glyph_pair)))
 }
 
 /*
 Renders the range of characters to the font cache texture.
 */
-func (self Instance) RenderRange(cache_index int, size gd.Vector2i, start int, end int) {
-	class(self).RenderRange(gd.Int(cache_index), size, gd.Int(start), gd.Int(end))
+func (self Instance) RenderRange(cache_index int, size Vector2i.XY, start int, end int) {
+	class(self).RenderRange(gd.Int(cache_index), gd.Vector2i(size), gd.Int(start), gd.Int(end))
 }
 
 /*
 Renders specified glyph to the font cache texture.
 */
-func (self Instance) RenderGlyph(cache_index int, size gd.Vector2i, index int) {
-	class(self).RenderGlyph(gd.Int(cache_index), size, gd.Int(index))
+func (self Instance) RenderGlyph(cache_index int, size Vector2i.XY, index int) {
+	class(self).RenderGlyph(gd.Int(cache_index), gd.Vector2i(size), gd.Int(index))
 }
 
 /*
@@ -562,6 +568,26 @@ func (self Instance) SetAntialiasing(value classdb.TextServerFontAntialiasing) {
 	class(self).SetAntialiasing(value)
 }
 
+func (self Instance) SetFontName(value string) {
+	class(self).SetFontName(gd.NewString(value))
+}
+
+func (self Instance) SetStyleName(value string) {
+	class(self).SetFontStyleName(gd.NewString(value))
+}
+
+func (self Instance) SetFontStyle(value classdb.TextServerFontStyle) {
+	class(self).SetFontStyle(value)
+}
+
+func (self Instance) SetFontWeight(value int) {
+	class(self).SetFontWeight(gd.Int(value))
+}
+
+func (self Instance) SetFontStretch(value int) {
+	class(self).SetFontStretch(gd.Int(value))
+}
+
 func (self Instance) SubpixelPositioning() classdb.TextServerSubpixelPositioning {
 	return classdb.TextServerSubpixelPositioning(class(self).GetSubpixelPositioning())
 }
@@ -618,11 +644,11 @@ func (self Instance) SetHinting(value classdb.TextServerHinting) {
 	class(self).SetHinting(value)
 }
 
-func (self Instance) Oversampling() float64 {
-	return float64(float64(class(self).GetOversampling()))
+func (self Instance) Oversampling() Float.X {
+	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
-func (self Instance) SetOversampling(value float64) {
+func (self Instance) SetOversampling(value Float.X) {
 	class(self).SetOversampling(gd.Float(value))
 }
 
@@ -642,11 +668,11 @@ func (self Instance) SetFixedSizeScaleMode(value classdb.TextServerFixedSizeScal
 	class(self).SetFixedSizeScaleMode(value)
 }
 
-func (self Instance) OpentypeFeatureOverrides() gd.Dictionary {
-	return gd.Dictionary(class(self).GetOpentypeFeatureOverrides())
+func (self Instance) OpentypeFeatureOverrides() Dictionary.Any {
+	return Dictionary.Any(class(self).GetOpentypeFeatureOverrides())
 }
 
-func (self Instance) SetOpentypeFeatureOverrides(value gd.Dictionary) {
+func (self Instance) SetOpentypeFeatureOverrides(value Dictionary.Any) {
 	class(self).SetOpentypeFeatureOverrides(value)
 }
 

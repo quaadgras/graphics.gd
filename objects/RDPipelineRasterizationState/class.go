@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -78,35 +79,35 @@ func (self Instance) SetDepthBiasEnabled(value bool) {
 	class(self).SetDepthBiasEnabled(value)
 }
 
-func (self Instance) DepthBiasConstantFactor() float64 {
-	return float64(float64(class(self).GetDepthBiasConstantFactor()))
+func (self Instance) DepthBiasConstantFactor() Float.X {
+	return Float.X(Float.X(class(self).GetDepthBiasConstantFactor()))
 }
 
-func (self Instance) SetDepthBiasConstantFactor(value float64) {
+func (self Instance) SetDepthBiasConstantFactor(value Float.X) {
 	class(self).SetDepthBiasConstantFactor(gd.Float(value))
 }
 
-func (self Instance) DepthBiasClamp() float64 {
-	return float64(float64(class(self).GetDepthBiasClamp()))
+func (self Instance) DepthBiasClamp() Float.X {
+	return Float.X(Float.X(class(self).GetDepthBiasClamp()))
 }
 
-func (self Instance) SetDepthBiasClamp(value float64) {
+func (self Instance) SetDepthBiasClamp(value Float.X) {
 	class(self).SetDepthBiasClamp(gd.Float(value))
 }
 
-func (self Instance) DepthBiasSlopeFactor() float64 {
-	return float64(float64(class(self).GetDepthBiasSlopeFactor()))
+func (self Instance) DepthBiasSlopeFactor() Float.X {
+	return Float.X(Float.X(class(self).GetDepthBiasSlopeFactor()))
 }
 
-func (self Instance) SetDepthBiasSlopeFactor(value float64) {
+func (self Instance) SetDepthBiasSlopeFactor(value Float.X) {
 	class(self).SetDepthBiasSlopeFactor(gd.Float(value))
 }
 
-func (self Instance) LineWidth() float64 {
-	return float64(float64(class(self).GetLineWidth()))
+func (self Instance) LineWidth() Float.X {
+	return Float.X(Float.X(class(self).GetLineWidth()))
 }
 
-func (self Instance) SetLineWidth(value float64) {
+func (self Instance) SetLineWidth(value Float.X) {
 	class(self).SetLineWidth(gd.Float(value))
 }
 

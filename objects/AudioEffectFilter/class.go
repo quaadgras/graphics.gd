@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,27 +33,27 @@ func New() Instance {
 	return Instance{classdb.AudioEffectFilter(object)}
 }
 
-func (self Instance) CutoffHz() float64 {
-	return float64(float64(class(self).GetCutoff()))
+func (self Instance) CutoffHz() Float.X {
+	return Float.X(Float.X(class(self).GetCutoff()))
 }
 
-func (self Instance) SetCutoffHz(value float64) {
+func (self Instance) SetCutoffHz(value Float.X) {
 	class(self).SetCutoff(gd.Float(value))
 }
 
-func (self Instance) Resonance() float64 {
-	return float64(float64(class(self).GetResonance()))
+func (self Instance) Resonance() Float.X {
+	return Float.X(Float.X(class(self).GetResonance()))
 }
 
-func (self Instance) SetResonance(value float64) {
+func (self Instance) SetResonance(value Float.X) {
 	class(self).SetResonance(gd.Float(value))
 }
 
-func (self Instance) Gain() float64 {
-	return float64(float64(class(self).GetGain()))
+func (self Instance) Gain() Float.X {
+	return Float.X(Float.X(class(self).GetGain()))
 }
 
-func (self Instance) SetGain(value float64) {
+func (self Instance) SetGain(value Float.X) {
 	class(self).SetGain(gd.Float(value))
 }
 

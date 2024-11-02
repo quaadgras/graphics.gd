@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationMixer"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,15 +43,15 @@ func (self Instance) AnimationGetNext(animation_from string) string {
 /*
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
-func (self Instance) SetBlendTime(animation_from string, animation_to string, sec float64) {
+func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) {
 	class(self).SetBlendTime(gd.NewStringName(animation_from), gd.NewStringName(animation_to), gd.Float(sec))
 }
 
 /*
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
-func (self Instance) GetBlendTime(animation_from string, animation_to string) float64 {
-	return float64(float64(class(self).GetBlendTime(gd.NewStringName(animation_from), gd.NewStringName(animation_to))))
+func (self Instance) GetBlendTime(animation_from string, animation_to string) Float.X {
+	return Float.X(Float.X(class(self).GetBlendTime(gd.NewStringName(animation_from), gd.NewStringName(animation_to))))
 }
 
 /*
@@ -135,8 +137,8 @@ func (self Instance) ClearQueue() {
 Returns the actual playing speed of current animation or [code]0[/code] if not playing. This speed is the [member speed_scale] property multiplied by [code]custom_speed[/code] argument specified when calling the [method play] method.
 Returns a negative value if the current animation is playing backwards.
 */
-func (self Instance) GetPlayingSpeed() float64 {
-	return float64(float64(class(self).GetPlayingSpeed()))
+func (self Instance) GetPlayingSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetPlayingSpeed()))
 }
 
 /*
@@ -144,7 +146,7 @@ Seeks the animation to the [param seconds] point in time (in seconds). If [param
 If [param update_only] is [code]true[/code], the method / audio / animation playback tracks will not be processed.
 [b]Note:[/b] Seeking to the end of the animation doesn't emit [signal AnimationMixer.animation_finished]. If you want to skip animation and emit the signal, use [method AnimationMixer.advance].
 */
-func (self Instance) SeekTo(seconds float64) {
+func (self Instance) SeekTo(seconds Float.X) {
 	class(self).SeekTo(gd.Float(seconds), false, false)
 }
 
@@ -179,15 +181,15 @@ func (self Instance) GetMethodCallMode() classdb.AnimationPlayerAnimationMethodC
 /*
 Sets the node which node path references will travel from.
 */
-func (self Instance) SetRoot(path string) {
-	class(self).SetRoot(gd.NewString(path).NodePath())
+func (self Instance) SetRoot(path Path.String) {
+	class(self).SetRoot(gd.NewString(string(path)).NodePath())
 }
 
 /*
 Returns the node which node path references will travel from.
 */
-func (self Instance) GetRoot() string {
-	return string(class(self).GetRoot().String())
+func (self Instance) GetRoot() Path.String {
+	return Path.String(class(self).GetRoot().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -225,12 +227,12 @@ func (self Instance) SetAutoplay(value string) {
 	class(self).SetAutoplay(gd.NewString(value))
 }
 
-func (self Instance) CurrentAnimationLength() float64 {
-	return float64(float64(class(self).GetCurrentAnimationLength()))
+func (self Instance) CurrentAnimationLength() Float.X {
+	return Float.X(Float.X(class(self).GetCurrentAnimationLength()))
 }
 
-func (self Instance) CurrentAnimationPosition() float64 {
-	return float64(float64(class(self).GetCurrentAnimationPosition()))
+func (self Instance) CurrentAnimationPosition() Float.X {
+	return Float.X(Float.X(class(self).GetCurrentAnimationPosition()))
 }
 
 func (self Instance) PlaybackAutoCapture() bool {
@@ -241,11 +243,11 @@ func (self Instance) SetPlaybackAutoCapture(value bool) {
 	class(self).SetAutoCapture(value)
 }
 
-func (self Instance) PlaybackAutoCaptureDuration() float64 {
-	return float64(float64(class(self).GetAutoCaptureDuration()))
+func (self Instance) PlaybackAutoCaptureDuration() Float.X {
+	return Float.X(Float.X(class(self).GetAutoCaptureDuration()))
 }
 
-func (self Instance) SetPlaybackAutoCaptureDuration(value float64) {
+func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) {
 	class(self).SetAutoCaptureDuration(gd.Float(value))
 }
 
@@ -265,19 +267,19 @@ func (self Instance) SetPlaybackAutoCaptureEaseType(value classdb.TweenEaseType)
 	class(self).SetAutoCaptureEaseType(value)
 }
 
-func (self Instance) PlaybackDefaultBlendTime() float64 {
-	return float64(float64(class(self).GetDefaultBlendTime()))
+func (self Instance) PlaybackDefaultBlendTime() Float.X {
+	return Float.X(Float.X(class(self).GetDefaultBlendTime()))
 }
 
-func (self Instance) SetPlaybackDefaultBlendTime(value float64) {
+func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) {
 	class(self).SetDefaultBlendTime(gd.Float(value))
 }
 
-func (self Instance) SpeedScale() float64 {
-	return float64(float64(class(self).GetSpeedScale()))
+func (self Instance) SpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-func (self Instance) SetSpeedScale(value float64) {
+func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(gd.Float(value))
 }
 

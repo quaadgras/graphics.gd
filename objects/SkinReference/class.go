@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,8 +27,8 @@ type Instance [1]classdb.SkinReference
 /*
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
-func (self Instance) GetSkeleton() gd.RID {
-	return gd.RID(class(self).GetSkeleton())
+func (self Instance) GetSkeleton() Resource.ID {
+	return Resource.ID(class(self).GetSkeleton())
 }
 
 /*

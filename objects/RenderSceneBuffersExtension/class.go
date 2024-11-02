@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/RenderSceneBuffers"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,9 +24,9 @@ This class allows for a RenderSceneBuffer implementation to be made in GDExtensi
 		//Implement this in GDExtension to handle the (re)sizing of a viewport.
 		Configure(config objects.RenderSceneBuffersConfiguration)
 		//Implement this in GDExtension to record a new FSR sharpness value.
-		SetFsrSharpness(fsr_sharpness float64)
+		SetFsrSharpness(fsr_sharpness Float.X)
 		//Implement this in GDExtension to change the texture mipmap bias.
-		SetTextureMipmapBias(texture_mipmap_bias float64)
+		SetTextureMipmapBias(texture_mipmap_bias Float.X)
 		//Implement this in GDExtension to react to the debanding flag changing.
 		SetUseDebanding(use_debanding bool)
 	}
@@ -47,22 +48,22 @@ func (Instance) _configure(impl func(ptr unsafe.Pointer, config objects.RenderSc
 /*
 Implement this in GDExtension to record a new FSR sharpness value.
 */
-func (Instance) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var fsr_sharpness = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(fsr_sharpness))
+		impl(self, Float.X(fsr_sharpness))
 	}
 }
 
 /*
 Implement this in GDExtension to change the texture mipmap bias.
 */
-func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var texture_mipmap_bias = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(texture_mipmap_bias))
+		impl(self, Float.X(texture_mipmap_bias))
 	}
 }
 

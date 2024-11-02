@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRPositionalTracker"
 import "grow.graphics/gd/objects/XRTracker"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,57 +42,57 @@ func (self Instance) GetHandJointFlags(joint classdb.XRHandTrackerHandJoint) cla
 /*
 Sets the transform for the given hand joint.
 */
-func (self Instance) SetHandJointTransform(joint classdb.XRHandTrackerHandJoint, transform gd.Transform3D) {
-	class(self).SetHandJointTransform(joint, transform)
+func (self Instance) SetHandJointTransform(joint classdb.XRHandTrackerHandJoint, transform Transform3D.BasisOrigin) {
+	class(self).SetHandJointTransform(joint, gd.Transform3D(transform))
 }
 
 /*
 Returns the transform for the given hand joint.
 */
-func (self Instance) GetHandJointTransform(joint classdb.XRHandTrackerHandJoint) gd.Transform3D {
-	return gd.Transform3D(class(self).GetHandJointTransform(joint))
+func (self Instance) GetHandJointTransform(joint classdb.XRHandTrackerHandJoint) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetHandJointTransform(joint))
 }
 
 /*
 Sets the radius of the given hand joint.
 */
-func (self Instance) SetHandJointRadius(joint classdb.XRHandTrackerHandJoint, radius float64) {
+func (self Instance) SetHandJointRadius(joint classdb.XRHandTrackerHandJoint, radius Float.X) {
 	class(self).SetHandJointRadius(joint, gd.Float(radius))
 }
 
 /*
 Returns the radius of the given hand joint.
 */
-func (self Instance) GetHandJointRadius(joint classdb.XRHandTrackerHandJoint) float64 {
-	return float64(float64(class(self).GetHandJointRadius(joint)))
+func (self Instance) GetHandJointRadius(joint classdb.XRHandTrackerHandJoint) Float.X {
+	return Float.X(Float.X(class(self).GetHandJointRadius(joint)))
 }
 
 /*
 Sets the linear velocity for the given hand joint.
 */
-func (self Instance) SetHandJointLinearVelocity(joint classdb.XRHandTrackerHandJoint, linear_velocity gd.Vector3) {
-	class(self).SetHandJointLinearVelocity(joint, linear_velocity)
+func (self Instance) SetHandJointLinearVelocity(joint classdb.XRHandTrackerHandJoint, linear_velocity Vector3.XYZ) {
+	class(self).SetHandJointLinearVelocity(joint, gd.Vector3(linear_velocity))
 }
 
 /*
 Returns the linear velocity for the given hand joint.
 */
-func (self Instance) GetHandJointLinearVelocity(joint classdb.XRHandTrackerHandJoint) gd.Vector3 {
-	return gd.Vector3(class(self).GetHandJointLinearVelocity(joint))
+func (self Instance) GetHandJointLinearVelocity(joint classdb.XRHandTrackerHandJoint) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetHandJointLinearVelocity(joint))
 }
 
 /*
 Sets the angular velocity for the given hand joint.
 */
-func (self Instance) SetHandJointAngularVelocity(joint classdb.XRHandTrackerHandJoint, angular_velocity gd.Vector3) {
-	class(self).SetHandJointAngularVelocity(joint, angular_velocity)
+func (self Instance) SetHandJointAngularVelocity(joint classdb.XRHandTrackerHandJoint, angular_velocity Vector3.XYZ) {
+	class(self).SetHandJointAngularVelocity(joint, gd.Vector3(angular_velocity))
 }
 
 /*
 Returns the angular velocity for the given hand joint.
 */
-func (self Instance) GetHandJointAngularVelocity(joint classdb.XRHandTrackerHandJoint) gd.Vector3 {
-	return gd.Vector3(class(self).GetHandJointAngularVelocity(joint))
+func (self Instance) GetHandJointAngularVelocity(joint classdb.XRHandTrackerHandJoint) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetHandJointAngularVelocity(joint))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

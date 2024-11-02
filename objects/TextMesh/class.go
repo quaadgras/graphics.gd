@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -83,11 +86,11 @@ func (self Instance) SetUppercase(value bool) {
 	class(self).SetUppercase(value)
 }
 
-func (self Instance) LineSpacing() float64 {
-	return float64(float64(class(self).GetLineSpacing()))
+func (self Instance) LineSpacing() Float.X {
+	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
-func (self Instance) SetLineSpacing(value float64) {
+func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(gd.Float(value))
 }
 
@@ -107,44 +110,44 @@ func (self Instance) SetJustificationFlags(value classdb.TextServerJustification
 	class(self).SetJustificationFlags(value)
 }
 
-func (self Instance) PixelSize() float64 {
-	return float64(float64(class(self).GetPixelSize()))
+func (self Instance) PixelSize() Float.X {
+	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
-func (self Instance) SetPixelSize(value float64) {
+func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(gd.Float(value))
 }
 
-func (self Instance) CurveStep() float64 {
-	return float64(float64(class(self).GetCurveStep()))
+func (self Instance) CurveStep() Float.X {
+	return Float.X(Float.X(class(self).GetCurveStep()))
 }
 
-func (self Instance) SetCurveStep(value float64) {
+func (self Instance) SetCurveStep(value Float.X) {
 	class(self).SetCurveStep(gd.Float(value))
 }
 
-func (self Instance) Depth() float64 {
-	return float64(float64(class(self).GetDepth()))
+func (self Instance) Depth() Float.X {
+	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-func (self Instance) SetDepth(value float64) {
+func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(gd.Float(value))
 }
 
-func (self Instance) Width() float64 {
-	return float64(float64(class(self).GetWidth()))
+func (self Instance) Width() Float.X {
+	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-func (self Instance) SetWidth(value float64) {
+func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(gd.Float(value))
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
 func (self Instance) TextDirection() classdb.TextServerDirection {
@@ -171,11 +174,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

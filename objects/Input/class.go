@@ -8,6 +8,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -117,27 +121,27 @@ func IsActionJustReleased(action string) bool {
 Returns a value between 0 and 1 representing the intensity of the given action. In a joypad, for example, the further away the axis (analog sticks or L2, R2 triggers) is from the dead zone, the closer the value will be to 1. If the action is mapped to a control that has no axis such as the keyboard, the value returned will be 0 or 1.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func GetActionStrength(action string) float64 {
+func GetActionStrength(action string) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetActionStrength(gd.NewStringName(action), false)))
+	return Float.X(Float.X(class(self).GetActionStrength(gd.NewStringName(action), false)))
 }
 
 /*
 Returns a value between 0 and 1 representing the raw intensity of the given action, ignoring the action's deadzone. In most cases, you should use [method get_action_strength] instead.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func GetActionRawStrength(action string) float64 {
+func GetActionRawStrength(action string) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetActionRawStrength(gd.NewStringName(action), false)))
+	return Float.X(Float.X(class(self).GetActionRawStrength(gd.NewStringName(action), false)))
 }
 
 /*
 Get axis input by specifying two actions, one negative and one positive.
 This is a shorthand for writing [code]Input.get_action_strength("positive_action") - Input.get_action_strength("negative_action")[/code].
 */
-func GetAxis(negative_action string, positive_action string) float64 {
+func GetAxis(negative_action string, positive_action string) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetAxis(gd.NewStringName(negative_action), gd.NewStringName(positive_action))))
+	return Float.X(Float.X(class(self).GetAxis(gd.NewStringName(negative_action), gd.NewStringName(positive_action))))
 }
 
 /*
@@ -145,9 +149,9 @@ Gets an input vector by specifying four actions for the positive and negative X 
 This method is useful when getting vector input, such as from a joystick, directional pad, arrows, or WASD. The vector has its length limited to 1 and has a circular deadzone, which is useful for using vector input as movement.
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
-func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) gd.Vector2 {
+func GetVector(negative_x string, positive_x string, negative_y string, positive_y string) Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetVector(gd.NewStringName(negative_x), gd.NewStringName(positive_x), gd.NewStringName(negative_y), gd.NewStringName(positive_y), gd.Float(-1.0)))
+	return Vector2.XY(class(self).GetVector(gd.NewStringName(negative_x), gd.NewStringName(positive_x), gd.NewStringName(negative_y), gd.NewStringName(positive_y), gd.Float(-1.0)))
 }
 
 /*
@@ -177,9 +181,9 @@ func IsJoyKnown(device int) bool {
 /*
 Returns the current value of the joypad axis at given index (see [enum JoyAxis]).
 */
-func GetJoyAxis(device int, axis JoyAxis) float64 {
+func GetJoyAxis(device int, axis JoyAxis) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetJoyAxis(gd.Int(device), axis)))
+	return Float.X(Float.X(class(self).GetJoyAxis(gd.Int(device), axis)))
 }
 
 /*
@@ -208,9 +212,9 @@ On Linux:
 [code]product_id[/code]: The USB product ID of the device.
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
-func GetJoyInfo(device int) gd.Dictionary {
+func GetJoyInfo(device int) Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetJoyInfo(gd.Int(device)))
+	return Dictionary.Any(class(self).GetJoyInfo(gd.Int(device)))
 }
 
 /*
@@ -233,17 +237,17 @@ func GetConnectedJoypads() gd.Array {
 /*
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
 */
-func GetJoyVibrationStrength(device int) gd.Vector2 {
+func GetJoyVibrationStrength(device int) Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetJoyVibrationStrength(gd.Int(device)))
+	return Vector2.XY(class(self).GetJoyVibrationStrength(gd.Int(device)))
 }
 
 /*
 Returns the duration of the current vibration effect in seconds.
 */
-func GetJoyVibrationDuration(device int) float64 {
+func GetJoyVibrationDuration(device int) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetJoyVibrationDuration(gd.Int(device))))
+	return Float.X(Float.X(class(self).GetJoyVibrationDuration(gd.Int(device))))
 }
 
 /*
@@ -251,7 +255,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
-func StartJoyVibration(device int, weak_magnitude float64, strong_magnitude float64) {
+func StartJoyVibration(device int, weak_magnitude Float.X, strong_magnitude Float.X) {
 	once.Do(singleton)
 	class(self).StartJoyVibration(gd.Int(device), gd.Float(weak_magnitude), gd.Float(strong_magnitude), gd.Float(0))
 }
@@ -282,9 +286,9 @@ func VibrateHandheld() {
 Returns the gravity in m/s² of the device's accelerometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
-func GetGravity() gd.Vector3 {
+func GetGravity() Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).GetGravity())
+	return Vector3.XYZ(class(self).GetGravity())
 }
 
 /*
@@ -292,79 +296,79 @@ Returns the acceleration in m/s² of the device's accelerometer sensor, if the d
 Note this method returns an empty [Vector3] when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
-func GetAccelerometer() gd.Vector3 {
+func GetAccelerometer() Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).GetAccelerometer())
+	return Vector3.XYZ(class(self).GetAccelerometer())
 }
 
 /*
 Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
-func GetMagnetometer() gd.Vector3 {
+func GetMagnetometer() Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).GetMagnetometer())
+	return Vector3.XYZ(class(self).GetMagnetometer())
 }
 
 /*
 Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns [constant Vector3.ZERO].
 [b]Note:[/b] This method only works on Android and iOS. On other platforms, it always returns [constant Vector3.ZERO].
 */
-func GetGyroscope() gd.Vector3 {
+func GetGyroscope() Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).GetGyroscope())
+	return Vector3.XYZ(class(self).GetGyroscope())
 }
 
 /*
 Sets the gravity value of the accelerometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
-func SetGravity(value gd.Vector3) {
+func SetGravity(value Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).SetGravity(value)
+	class(self).SetGravity(gd.Vector3(value))
 }
 
 /*
 Sets the acceleration value of the accelerometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
-func SetAccelerometer(value gd.Vector3) {
+func SetAccelerometer(value Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).SetAccelerometer(value)
+	class(self).SetAccelerometer(gd.Vector3(value))
 }
 
 /*
 Sets the value of the magnetic field of the magnetometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
-func SetMagnetometer(value gd.Vector3) {
+func SetMagnetometer(value Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).SetMagnetometer(value)
+	class(self).SetMagnetometer(gd.Vector3(value))
 }
 
 /*
 Sets the value of the rotation rate of the gyroscope sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
 [b]Note:[/b] This value can be immediately overwritten by the hardware sensor value on Android and iOS.
 */
-func SetGyroscope(value gd.Vector3) {
+func SetGyroscope(value Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).SetGyroscope(value)
+	class(self).SetGyroscope(gd.Vector3(value))
 }
 
 /*
 Returns the last mouse velocity. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
-func GetLastMouseVelocity() gd.Vector2 {
+func GetLastMouseVelocity() Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetLastMouseVelocity())
+	return Vector2.XY(class(self).GetLastMouseVelocity())
 }
 
 /*
 Returns the last mouse velocity in screen coordinates. To provide a precise and jitter-free velocity, mouse velocity is only calculated every 0.1s. Therefore, mouse velocity will lag mouse movements.
 */
-func GetLastMouseScreenVelocity() gd.Vector2 {
+func GetLastMouseScreenVelocity() Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetLastMouseScreenVelocity())
+	return Vector2.XY(class(self).GetLastMouseScreenVelocity())
 }
 
 /*
@@ -380,9 +384,9 @@ Sets the mouse position to the specified vector, provided in pixels and relative
 Mouse position is clipped to the limits of the screen resolution, or to the limits of the game window if [enum MouseMode] is set to [constant MOUSE_MODE_CONFINED] or [constant MOUSE_MODE_CONFINED_HIDDEN].
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
-func WarpMouse(position gd.Vector2) {
+func WarpMouse(position Vector2.XY) {
 	once.Do(singleton)
-	class(self).WarpMouse(position)
+	class(self).WarpMouse(gd.Vector2(position))
 }
 
 /*
@@ -431,7 +435,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 */
 func SetCustomMouseCursor(image objects.Resource) {
 	once.Do(singleton)
-	class(self).SetCustomMouseCursor(image, 0, gd.Vector2{0, 0})
+	class(self).SetCustomMouseCursor(image, 0, gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*

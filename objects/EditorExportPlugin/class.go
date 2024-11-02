@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -71,7 +72,7 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 		//            "binary_format/embed_pck": true,
 		//        }
 		//[/codeblock]
-		GetExportOptionsOverrides(platform objects.EditorExportPlatform) gd.Dictionary
+		GetExportOptionsOverrides(platform objects.EditorExportPlatform) Dictionary.Any
 		//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
 		ShouldUpdateExportOptions(platform objects.EditorExportPlatform) bool
 		//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
@@ -301,7 +302,7 @@ class MyExportPlugin extends EditorExportPlugin:
 
 [/codeblock]
 */
-func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform objects.EditorExportPlatform) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform objects.EditorExportPlatform) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var platform = objects.EditorExportPlatform{pointers.New[classdb.EditorExportPlatform]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(platform[0])
@@ -600,8 +601,8 @@ func (self Instance) Skip() {
 /*
 Returns the current value of an export option supplied by [method _get_export_options].
 */
-func (self Instance) GetOption(name string) gd.Variant {
-	return gd.Variant(class(self).GetOption(gd.NewStringName(name)))
+func (self Instance) GetOption(name string) any {
+	return any(class(self).GetOption(gd.NewStringName(name)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

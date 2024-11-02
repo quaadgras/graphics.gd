@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,8 +36,8 @@ func (self Instance) IsNativelySupported() bool {
 Returns UV coordinates where the given ray intersects with the composition layer. [param origin] and [param direction] must be in global space.
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
-func (self Instance) IntersectsRay(origin gd.Vector3, direction gd.Vector3) gd.Vector2 {
-	return gd.Vector2(class(self).IntersectsRay(origin, direction))
+func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY {
+	return Vector2.XY(class(self).IntersectsRay(gd.Vector3(origin), gd.Vector3(direction)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

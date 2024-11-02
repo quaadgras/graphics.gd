@@ -230,7 +230,7 @@ func (array ByteArray) DecodeSize(offset uintptr) uintptr { //gd:PackedByteArray
 // array must have at least 8 bytes of allocated space, starting at the offset.
 func (array ByteArray) EncodeFloat64(offset uintptr, value float64) { //gd:PackedByteArray.encode_double
 	if array.proxy != (gd.PackedByteArray{}) {
-		array.proxy.EncodeDouble(gd.Int(offset), value)
+		array.proxy.EncodeDouble(gd.Int(offset), gd.Float(value))
 		return
 	}
 	if offset+8 > uintptr(len(array.local)) {
@@ -382,7 +382,7 @@ func (array ByteArray) ToHex() string { //gd:PackedByteArray.hex_encode
 // Returns false otherwise
 func (array ByteArray) HasVariantAt(offset int) bool { //gd:PackedByteArray.has_encoded_var
 	if array.proxy != (gd.PackedByteArray{}) {
-		return array.proxy.HasEncodedVar(gd.Int(offset), false)
+		return bool(array.proxy.HasEncodedVar(gd.Int(offset), false))
 	}
 	_, err := variant.UnmarshalAny(array.local[offset:])
 	return err == nil

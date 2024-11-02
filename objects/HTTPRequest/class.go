@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -185,7 +186,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 func (self Instance) Request(url string) error {
-	return error(class(self).Request(gd.NewString(url), gd.NewPackedStringSlice(([1][]string{}[0])), 0, gd.NewString("")))
+	return error(class(self).Request(gd.NewString(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewString("")))
 }
 
 /*
@@ -193,7 +194,7 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 func (self Instance) RequestRaw(url string) error {
-	return error(class(self).RequestRaw(gd.NewString(url), gd.NewPackedStringSlice(([1][]string{}[0])), 0, gd.NewPackedByteSlice(([1][]byte{}[0]))))
+	return error(class(self).RequestRaw(gd.NewString(url), gd.NewPackedStringSlice([1][]string{}[0]), 0, gd.NewPackedByteSlice([1][]byte{}[0])))
 }
 
 /*
@@ -307,11 +308,11 @@ func (self Instance) SetMaxRedirects(value int) {
 	class(self).SetMaxRedirects(gd.Int(value))
 }
 
-func (self Instance) Timeout() float64 {
-	return float64(float64(class(self).GetTimeout()))
+func (self Instance) Timeout() Float.X {
+	return Float.X(Float.X(class(self).GetTimeout()))
 }
 
-func (self Instance) SetTimeout(value float64) {
+func (self Instance) SetTimeout(value Float.X) {
 	class(self).SetTimeout(gd.Float(value))
 }
 

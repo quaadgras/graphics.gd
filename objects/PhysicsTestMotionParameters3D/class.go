@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,27 +33,27 @@ func New() Instance {
 	return Instance{classdb.PhysicsTestMotionParameters3D(object)}
 }
 
-func (self Instance) From() gd.Transform3D {
-	return gd.Transform3D(class(self).GetFrom())
+func (self Instance) From() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetFrom())
 }
 
-func (self Instance) SetFrom(value gd.Transform3D) {
-	class(self).SetFrom(value)
+func (self Instance) SetFrom(value Transform3D.BasisOrigin) {
+	class(self).SetFrom(gd.Transform3D(value))
 }
 
-func (self Instance) Motion() gd.Vector3 {
-	return gd.Vector3(class(self).GetMotion())
+func (self Instance) Motion() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetMotion())
 }
 
-func (self Instance) SetMotion(value gd.Vector3) {
-	class(self).SetMotion(value)
+func (self Instance) SetMotion(value Vector3.XYZ) {
+	class(self).SetMotion(gd.Vector3(value))
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 

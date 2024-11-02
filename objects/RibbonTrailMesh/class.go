@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,11 +43,11 @@ func (self Instance) SetShape(value classdb.RibbonTrailMeshShape) {
 	class(self).SetShape(value)
 }
 
-func (self Instance) Size() float64 {
-	return float64(float64(class(self).GetSize()))
+func (self Instance) Size() Float.X {
+	return Float.X(Float.X(class(self).GetSize()))
 }
 
-func (self Instance) SetSize(value float64) {
+func (self Instance) SetSize(value Float.X) {
 	class(self).SetSize(gd.Float(value))
 }
 
@@ -58,11 +59,11 @@ func (self Instance) SetSections(value int) {
 	class(self).SetSections(gd.Int(value))
 }
 
-func (self Instance) SectionLength() float64 {
-	return float64(float64(class(self).GetSectionLength()))
+func (self Instance) SectionLength() Float.X {
+	return Float.X(Float.X(class(self).GetSectionLength()))
 }
 
-func (self Instance) SetSectionLength(value float64) {
+func (self Instance) SetSectionLength(value Float.X) {
 	class(self).SetSectionLength(gd.Float(value))
 }
 

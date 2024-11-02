@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -67,11 +68,11 @@ func (self Instance) SetActive(value bool) {
 	class(self).SetActive(value)
 }
 
-func (self Instance) Influence() float64 {
-	return float64(float64(class(self).GetInfluence()))
+func (self Instance) Influence() Float.X {
+	return Float.X(Float.X(class(self).GetInfluence()))
 }
 
-func (self Instance) SetInfluence(value float64) {
+func (self Instance) SetInfluence(value Float.X) {
 	class(self).SetInfluence(gd.Float(value))
 }
 

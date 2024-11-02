@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,11 +35,11 @@ func New() Instance {
 	return Instance{classdb.CollisionPolygon3D(object)}
 }
 
-func (self Instance) Depth() float64 {
-	return float64(float64(class(self).GetDepth()))
+func (self Instance) Depth() Float.X {
+	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-func (self Instance) SetDepth(value float64) {
+func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(gd.Float(value))
 }
 
@@ -49,19 +51,19 @@ func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
-func (self Instance) Polygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPolygon().AsSlice())
+func (self Instance) Polygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPolygon().AsSlice())
 }
 
-func (self Instance) SetPolygon(value []gd.Vector2) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPolygon(value []Vector2.XY) {
+	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 

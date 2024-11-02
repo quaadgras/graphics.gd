@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,15 +39,15 @@ type Instance [1]classdb.HeightMapShape3D
 /*
 Returns the smallest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
-func (self Instance) GetMinHeight() float64 {
-	return float64(float64(class(self).GetMinHeight()))
+func (self Instance) GetMinHeight() Float.X {
+	return Float.X(Float.X(class(self).GetMinHeight()))
 }
 
 /*
 Returns the largest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
-func (self Instance) GetMaxHeight() float64 {
-	return float64(float64(class(self).GetMaxHeight()))
+func (self Instance) GetMaxHeight() Float.X {
+	return Float.X(Float.X(class(self).GetMaxHeight()))
 }
 
 /*
@@ -54,7 +55,7 @@ Updates [member map_data] with data read from an [Image] reference. Automaticall
 The image needs to be in either [constant Image.FORMAT_RF] (32 bit), [constant Image.FORMAT_RH] (16 bit), or [constant Image.FORMAT_R8] (8 bit).
 Each image pixel is read in as a float on the range from [code]0.0[/code] (black pixel) to [code]1.0[/code] (white pixel). This range value gets remapped to [param height_min] and [param height_max] to form the final height value.
 */
-func (self Instance) UpdateMapDataFromImage(image objects.Image, height_min float64, height_max float64) {
+func (self Instance) UpdateMapDataFromImage(image objects.Image, height_min Float.X, height_max Float.X) {
 	class(self).UpdateMapDataFromImage(image, gd.Float(height_min), gd.Float(height_max))
 }
 

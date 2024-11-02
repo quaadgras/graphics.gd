@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CameraAttributes"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,8 +28,8 @@ type Instance [1]classdb.CameraAttributesPhysical
 /*
 Returns the vertical field of view that corresponds to the [member frustum_focal_length]. This value is calculated internally whenever [member frustum_focal_length] is changed.
 */
-func (self Instance) GetFov() float64 {
-	return float64(float64(class(self).GetFov()))
+func (self Instance) GetFov() Float.X {
+	return Float.X(Float.X(class(self).GetFov()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -42,67 +43,67 @@ func New() Instance {
 	return Instance{classdb.CameraAttributesPhysical(object)}
 }
 
-func (self Instance) FrustumFocusDistance() float64 {
-	return float64(float64(class(self).GetFocusDistance()))
+func (self Instance) FrustumFocusDistance() Float.X {
+	return Float.X(Float.X(class(self).GetFocusDistance()))
 }
 
-func (self Instance) SetFrustumFocusDistance(value float64) {
+func (self Instance) SetFrustumFocusDistance(value Float.X) {
 	class(self).SetFocusDistance(gd.Float(value))
 }
 
-func (self Instance) FrustumFocalLength() float64 {
-	return float64(float64(class(self).GetFocalLength()))
+func (self Instance) FrustumFocalLength() Float.X {
+	return Float.X(Float.X(class(self).GetFocalLength()))
 }
 
-func (self Instance) SetFrustumFocalLength(value float64) {
+func (self Instance) SetFrustumFocalLength(value Float.X) {
 	class(self).SetFocalLength(gd.Float(value))
 }
 
-func (self Instance) FrustumNear() float64 {
-	return float64(float64(class(self).GetNear()))
+func (self Instance) FrustumNear() Float.X {
+	return Float.X(Float.X(class(self).GetNear()))
 }
 
-func (self Instance) SetFrustumNear(value float64) {
+func (self Instance) SetFrustumNear(value Float.X) {
 	class(self).SetNear(gd.Float(value))
 }
 
-func (self Instance) FrustumFar() float64 {
-	return float64(float64(class(self).GetFar()))
+func (self Instance) FrustumFar() Float.X {
+	return Float.X(Float.X(class(self).GetFar()))
 }
 
-func (self Instance) SetFrustumFar(value float64) {
+func (self Instance) SetFrustumFar(value Float.X) {
 	class(self).SetFar(gd.Float(value))
 }
 
-func (self Instance) ExposureAperture() float64 {
-	return float64(float64(class(self).GetAperture()))
+func (self Instance) ExposureAperture() Float.X {
+	return Float.X(Float.X(class(self).GetAperture()))
 }
 
-func (self Instance) SetExposureAperture(value float64) {
+func (self Instance) SetExposureAperture(value Float.X) {
 	class(self).SetAperture(gd.Float(value))
 }
 
-func (self Instance) ExposureShutterSpeed() float64 {
-	return float64(float64(class(self).GetShutterSpeed()))
+func (self Instance) ExposureShutterSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetShutterSpeed()))
 }
 
-func (self Instance) SetExposureShutterSpeed(value float64) {
+func (self Instance) SetExposureShutterSpeed(value Float.X) {
 	class(self).SetShutterSpeed(gd.Float(value))
 }
 
-func (self Instance) AutoExposureMinExposureValue() float64 {
-	return float64(float64(class(self).GetAutoExposureMinExposureValue()))
+func (self Instance) AutoExposureMinExposureValue() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureMinExposureValue()))
 }
 
-func (self Instance) SetAutoExposureMinExposureValue(value float64) {
+func (self Instance) SetAutoExposureMinExposureValue(value Float.X) {
 	class(self).SetAutoExposureMinExposureValue(gd.Float(value))
 }
 
-func (self Instance) AutoExposureMaxExposureValue() float64 {
-	return float64(float64(class(self).GetAutoExposureMaxExposureValue()))
+func (self Instance) AutoExposureMaxExposureValue() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureMaxExposureValue()))
 }
 
-func (self Instance) SetAutoExposureMaxExposureValue(value float64) {
+func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
 	class(self).SetAutoExposureMaxExposureValue(gd.Float(value))
 }
 

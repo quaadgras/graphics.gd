@@ -12,6 +12,10 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,8 +33,8 @@ type Instance [1]classdb.SoftBody3D
 /*
 Returns the internal [RID] used by the [PhysicsServer3D] for this body.
 */
-func (self Instance) GetPhysicsRid() gd.RID {
-	return gd.RID(class(self).GetPhysicsRid())
+func (self Instance) GetPhysicsRid() Resource.ID {
+	return Resource.ID(class(self).GetPhysicsRid())
 }
 
 /*
@@ -85,15 +89,15 @@ func (self Instance) RemoveCollisionExceptionWith(body objects.Node) {
 /*
 Returns local translation of a vertex in the surface array.
 */
-func (self Instance) GetPointTransform(point_index int) gd.Vector3 {
-	return gd.Vector3(class(self).GetPointTransform(gd.Int(point_index)))
+func (self Instance) GetPointTransform(point_index int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetPointTransform(gd.Int(point_index)))
 }
 
 /*
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) {
-	class(self).SetPointPinned(gd.Int(point_index), pinned, gd.NewString("").NodePath())
+	class(self).SetPointPinned(gd.Int(point_index), pinned, gd.NewString(string("")).NodePath())
 }
 
 /*
@@ -130,12 +134,12 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) ParentCollisionIgnore() string {
-	return string(class(self).GetParentCollisionIgnore().String())
+func (self Instance) ParentCollisionIgnore() Path.String {
+	return Path.String(class(self).GetParentCollisionIgnore().String())
 }
 
-func (self Instance) SetParentCollisionIgnore(value string) {
-	class(self).SetParentCollisionIgnore(gd.NewString(value).NodePath())
+func (self Instance) SetParentCollisionIgnore(value Path.String) {
+	class(self).SetParentCollisionIgnore(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) SimulationPrecision() int {
@@ -146,43 +150,43 @@ func (self Instance) SetSimulationPrecision(value int) {
 	class(self).SetSimulationPrecision(gd.Int(value))
 }
 
-func (self Instance) TotalMass() float64 {
-	return float64(float64(class(self).GetTotalMass()))
+func (self Instance) TotalMass() Float.X {
+	return Float.X(Float.X(class(self).GetTotalMass()))
 }
 
-func (self Instance) SetTotalMass(value float64) {
+func (self Instance) SetTotalMass(value Float.X) {
 	class(self).SetTotalMass(gd.Float(value))
 }
 
-func (self Instance) LinearStiffness() float64 {
-	return float64(float64(class(self).GetLinearStiffness()))
+func (self Instance) LinearStiffness() Float.X {
+	return Float.X(Float.X(class(self).GetLinearStiffness()))
 }
 
-func (self Instance) SetLinearStiffness(value float64) {
+func (self Instance) SetLinearStiffness(value Float.X) {
 	class(self).SetLinearStiffness(gd.Float(value))
 }
 
-func (self Instance) PressureCoefficient() float64 {
-	return float64(float64(class(self).GetPressureCoefficient()))
+func (self Instance) PressureCoefficient() Float.X {
+	return Float.X(Float.X(class(self).GetPressureCoefficient()))
 }
 
-func (self Instance) SetPressureCoefficient(value float64) {
+func (self Instance) SetPressureCoefficient(value Float.X) {
 	class(self).SetPressureCoefficient(gd.Float(value))
 }
 
-func (self Instance) DampingCoefficient() float64 {
-	return float64(float64(class(self).GetDampingCoefficient()))
+func (self Instance) DampingCoefficient() Float.X {
+	return Float.X(Float.X(class(self).GetDampingCoefficient()))
 }
 
-func (self Instance) SetDampingCoefficient(value float64) {
+func (self Instance) SetDampingCoefficient(value Float.X) {
 	class(self).SetDampingCoefficient(gd.Float(value))
 }
 
-func (self Instance) DragCoefficient() float64 {
-	return float64(float64(class(self).GetDragCoefficient()))
+func (self Instance) DragCoefficient() Float.X {
+	return Float.X(Float.X(class(self).GetDragCoefficient()))
 }
 
-func (self Instance) SetDragCoefficient(value float64) {
+func (self Instance) SetDragCoefficient(value Float.X) {
 	class(self).SetDragCoefficient(gd.Float(value))
 }
 

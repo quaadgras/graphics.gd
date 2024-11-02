@@ -8,6 +8,11 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,60 +37,60 @@ func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.PhysicsServer3D)
 	self = *(*objects.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
-func WorldBoundaryShapeCreate() gd.RID {
+func WorldBoundaryShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).WorldBoundaryShapeCreate())
+	return Resource.ID(class(self).WorldBoundaryShapeCreate())
 }
-func SeparationRayShapeCreate() gd.RID {
+func SeparationRayShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SeparationRayShapeCreate())
+	return Resource.ID(class(self).SeparationRayShapeCreate())
 }
-func SphereShapeCreate() gd.RID {
+func SphereShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SphereShapeCreate())
+	return Resource.ID(class(self).SphereShapeCreate())
 }
-func BoxShapeCreate() gd.RID {
+func BoxShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BoxShapeCreate())
+	return Resource.ID(class(self).BoxShapeCreate())
 }
-func CapsuleShapeCreate() gd.RID {
+func CapsuleShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CapsuleShapeCreate())
+	return Resource.ID(class(self).CapsuleShapeCreate())
 }
-func CylinderShapeCreate() gd.RID {
+func CylinderShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CylinderShapeCreate())
+	return Resource.ID(class(self).CylinderShapeCreate())
 }
-func ConvexPolygonShapeCreate() gd.RID {
+func ConvexPolygonShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).ConvexPolygonShapeCreate())
+	return Resource.ID(class(self).ConvexPolygonShapeCreate())
 }
-func ConcavePolygonShapeCreate() gd.RID {
+func ConcavePolygonShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).ConcavePolygonShapeCreate())
+	return Resource.ID(class(self).ConcavePolygonShapeCreate())
 }
-func HeightmapShapeCreate() gd.RID {
+func HeightmapShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).HeightmapShapeCreate())
+	return Resource.ID(class(self).HeightmapShapeCreate())
 }
-func CustomShapeCreate() gd.RID {
+func CustomShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CustomShapeCreate())
+	return Resource.ID(class(self).CustomShapeCreate())
 }
 
 /*
 Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [method shape_get_type].
 */
-func ShapeSetData(shape gd.RID, data gd.Variant) {
+func ShapeSetData(shape Resource.ID, data any) {
 	once.Do(singleton)
-	class(self).ShapeSetData(shape, data)
+	class(self).ShapeSetData(shape, gd.NewVariant(data))
 }
 
 /*
 Sets the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics.
 */
-func ShapeSetMargin(shape gd.RID, margin float64) {
+func ShapeSetMargin(shape Resource.ID, margin Float.X) {
 	once.Do(singleton)
 	class(self).ShapeSetMargin(shape, gd.Float(margin))
 }
@@ -93,7 +98,7 @@ func ShapeSetMargin(shape gd.RID, margin float64) {
 /*
 Returns the type of shape (see [enum ShapeType] constants).
 */
-func ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
+func ShapeGetType(shape Resource.ID) classdb.PhysicsServer3DShapeType {
 	once.Do(singleton)
 	return classdb.PhysicsServer3DShapeType(class(self).ShapeGetType(shape))
 }
@@ -101,32 +106,32 @@ func ShapeGetType(shape gd.RID) classdb.PhysicsServer3DShapeType {
 /*
 Returns the shape data.
 */
-func ShapeGetData(shape gd.RID) gd.Variant {
+func ShapeGetData(shape Resource.ID) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).ShapeGetData(shape))
+	return any(class(self).ShapeGetData(shape).Interface())
 }
 
 /*
 Returns the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics, so will always return [code]0[/code].
 */
-func ShapeGetMargin(shape gd.RID) float64 {
+func ShapeGetMargin(shape Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ShapeGetMargin(shape)))
+	return Float.X(Float.X(class(self).ShapeGetMargin(shape)))
 }
 
 /*
 Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [method area_set_space], or to a body with [method body_set_space].
 */
-func SpaceCreate() gd.RID {
+func SpaceCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SpaceCreate())
+	return Resource.ID(class(self).SpaceCreate())
 }
 
 /*
 Marks a space as active. It will not have an effect, unless it is assigned to an area or body.
 */
-func SpaceSetActive(space gd.RID, active bool) {
+func SpaceSetActive(space Resource.ID, active bool) {
 	once.Do(singleton)
 	class(self).SpaceSetActive(space, active)
 }
@@ -134,7 +139,7 @@ func SpaceSetActive(space gd.RID, active bool) {
 /*
 Returns whether the space is active.
 */
-func SpaceIsActive(space gd.RID) bool {
+func SpaceIsActive(space Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).SpaceIsActive(space))
 }
@@ -142,7 +147,7 @@ func SpaceIsActive(space gd.RID) bool {
 /*
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
-func SpaceSetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter, value float64) {
+func SpaceSetParam(space Resource.ID, param classdb.PhysicsServer3DSpaceParameter, value Float.X) {
 	once.Do(singleton)
 	class(self).SpaceSetParam(space, param, gd.Float(value))
 }
@@ -150,15 +155,15 @@ func SpaceSetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter, va
 /*
 Returns the value of a space parameter.
 */
-func SpaceGetParam(space gd.RID, param classdb.PhysicsServer3DSpaceParameter) float64 {
+func SpaceGetParam(space Resource.ID, param classdb.PhysicsServer3DSpaceParameter) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SpaceGetParam(space, param)))
+	return Float.X(Float.X(class(self).SpaceGetParam(space, param)))
 }
 
 /*
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
-func SpaceGetDirectState(space gd.RID) objects.PhysicsDirectSpaceState3D {
+func SpaceGetDirectState(space Resource.ID) objects.PhysicsDirectSpaceState3D {
 	once.Do(singleton)
 	return objects.PhysicsDirectSpaceState3D(class(self).SpaceGetDirectState(space))
 }
@@ -167,15 +172,15 @@ func SpaceGetDirectState(space gd.RID) objects.PhysicsDirectSpaceState3D {
 Creates a 3D area object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and [code]monitorable[/code] set to [code]false[/code].
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
-func AreaCreate() gd.RID {
+func AreaCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaCreate())
+	return Resource.ID(class(self).AreaCreate())
 }
 
 /*
 Assigns a space to the area.
 */
-func AreaSetSpace(area gd.RID, space gd.RID) {
+func AreaSetSpace(area Resource.ID, space Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaSetSpace(area, space)
 }
@@ -183,23 +188,23 @@ func AreaSetSpace(area gd.RID, space gd.RID) {
 /*
 Returns the space assigned to the area.
 */
-func AreaGetSpace(area gd.RID) gd.RID {
+func AreaGetSpace(area Resource.ID) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaGetSpace(area))
+	return Resource.ID(class(self).AreaGetSpace(area))
 }
 
 /*
 Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func AreaAddShape(area gd.RID, shape gd.RID) {
+func AreaAddShape(area Resource.ID, shape Resource.ID) {
 	once.Do(singleton)
-	class(self).AreaAddShape(area, shape, gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), false)
+	class(self).AreaAddShape(area, shape, gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), false)
 }
 
 /*
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
 */
-func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
+func AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaSetShape(area, gd.Int(shape_idx), shape)
 }
@@ -207,11 +212,11 @@ func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
 /*
 Sets the transform matrix for an area shape.
 */
-func AreaSetShapeTransform(area gd.RID, shape_idx int, transform gd.Transform3D) {
+func AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), transform)
+	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), gd.Transform3D(transform))
 }
-func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
+func AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
 	once.Do(singleton)
 	class(self).AreaSetShapeDisabled(area, gd.Int(shape_idx), disabled)
 }
@@ -219,7 +224,7 @@ func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
 /*
 Returns the number of shapes assigned to an area.
 */
-func AreaGetShapeCount(area gd.RID) int {
+func AreaGetShapeCount(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetShapeCount(area)))
 }
@@ -227,23 +232,23 @@ func AreaGetShapeCount(area gd.RID) int {
 /*
 Returns the [RID] of the nth shape of an area.
 */
-func AreaGetShape(area gd.RID, shape_idx int) gd.RID {
+func AreaGetShape(area Resource.ID, shape_idx int) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
+	return Resource.ID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
 }
 
 /*
 Returns the transform matrix of a shape within an area.
 */
-func AreaGetShapeTransform(area gd.RID, shape_idx int) gd.Transform3D {
+func AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOrigin {
 	once.Do(singleton)
-	return gd.Transform3D(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
+	return Transform3D.BasisOrigin(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
 }
 
 /*
 Removes a shape from an area. It does not delete the shape, so it can be reassigned later.
 */
-func AreaRemoveShape(area gd.RID, shape_idx int) {
+func AreaRemoveShape(area Resource.ID, shape_idx int) {
 	once.Do(singleton)
 	class(self).AreaRemoveShape(area, gd.Int(shape_idx))
 }
@@ -251,7 +256,7 @@ func AreaRemoveShape(area gd.RID, shape_idx int) {
 /*
 Removes all shapes from an area. It does not delete the shapes, so they can be reassigned later.
 */
-func AreaClearShapes(area gd.RID) {
+func AreaClearShapes(area Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaClearShapes(area)
 }
@@ -259,7 +264,7 @@ func AreaClearShapes(area gd.RID) {
 /*
 Assigns the area to one or many physics layers.
 */
-func AreaSetCollisionLayer(area gd.RID, layer int) {
+func AreaSetCollisionLayer(area Resource.ID, layer int) {
 	once.Do(singleton)
 	class(self).AreaSetCollisionLayer(area, gd.Int(layer))
 }
@@ -267,7 +272,7 @@ func AreaSetCollisionLayer(area gd.RID, layer int) {
 /*
 Returns the physics layer or layers an area belongs to.
 */
-func AreaGetCollisionLayer(area gd.RID) int {
+func AreaGetCollisionLayer(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionLayer(area)))
 }
@@ -275,7 +280,7 @@ func AreaGetCollisionLayer(area gd.RID) int {
 /*
 Sets which physics layers the area will monitor.
 */
-func AreaSetCollisionMask(area gd.RID, mask int) {
+func AreaSetCollisionMask(area Resource.ID, mask int) {
 	once.Do(singleton)
 	class(self).AreaSetCollisionMask(area, gd.Int(mask))
 }
@@ -283,7 +288,7 @@ func AreaSetCollisionMask(area gd.RID, mask int) {
 /*
 Returns the physics layer or layers an area can contact with.
 */
-func AreaGetCollisionMask(area gd.RID) int {
+func AreaGetCollisionMask(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionMask(area)))
 }
@@ -291,39 +296,39 @@ func AreaGetCollisionMask(area gd.RID) int {
 /*
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaSetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter, value gd.Variant) {
+func AreaSetParam(area Resource.ID, param classdb.PhysicsServer3DAreaParameter, value any) {
 	once.Do(singleton)
-	class(self).AreaSetParam(area, param, value)
+	class(self).AreaSetParam(area, param, gd.NewVariant(value))
 }
 
 /*
 Sets the transform matrix for an area.
 */
-func AreaSetTransform(area gd.RID, transform gd.Transform3D) {
+func AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).AreaSetTransform(area, transform)
+	class(self).AreaSetTransform(area, gd.Transform3D(transform))
 }
 
 /*
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaGetParam(area gd.RID, param classdb.PhysicsServer3DAreaParameter) gd.Variant {
+func AreaGetParam(area Resource.ID, param classdb.PhysicsServer3DAreaParameter) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).AreaGetParam(area, param))
+	return any(class(self).AreaGetParam(area, param).Interface())
 }
 
 /*
 Returns the transform matrix for an area.
 */
-func AreaGetTransform(area gd.RID) gd.Transform3D {
+func AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin {
 	once.Do(singleton)
-	return gd.Transform3D(class(self).AreaGetTransform(area))
+	return Transform3D.BasisOrigin(class(self).AreaGetTransform(area))
 }
 
 /*
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
-func AreaAttachObjectInstanceId(area gd.RID, id int) {
+func AreaAttachObjectInstanceId(area Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).AreaAttachObjectInstanceId(area, gd.Int(id))
 }
@@ -331,7 +336,7 @@ func AreaAttachObjectInstanceId(area gd.RID, id int) {
 /*
 Gets the instance ID of the object the area is assigned to.
 */
-func AreaGetObjectInstanceId(area gd.RID) int {
+func AreaGetObjectInstanceId(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetObjectInstanceId(area)))
 }
@@ -345,7 +350,7 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the body entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetMonitorCallback(area gd.RID, callback gd.Callable) {
+func AreaSetMonitorCallback(area Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).AreaSetMonitorCallback(area, callback)
 }
@@ -359,11 +364,11 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the other area entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable) {
+func AreaSetAreaMonitorCallback(area Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).AreaSetAreaMonitorCallback(area, callback)
 }
-func AreaSetMonitorable(area gd.RID, monitorable bool) {
+func AreaSetMonitorable(area Resource.ID, monitorable bool) {
 	once.Do(singleton)
 	class(self).AreaSetMonitorable(area, monitorable)
 }
@@ -371,7 +376,7 @@ func AreaSetMonitorable(area gd.RID, monitorable bool) {
 /*
 Sets object pickable with rays.
 */
-func AreaSetRayPickable(area gd.RID, enable bool) {
+func AreaSetRayPickable(area Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).AreaSetRayPickable(area, enable)
 }
@@ -380,15 +385,15 @@ func AreaSetRayPickable(area gd.RID, enable bool) {
 Creates a 3D body object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and body mode set to [constant BODY_MODE_RIGID].
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
-func BodyCreate() gd.RID {
+func BodyCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyCreate())
+	return Resource.ID(class(self).BodyCreate())
 }
 
 /*
 Assigns a space to the body (see [method space_create]).
 */
-func BodySetSpace(body gd.RID, space gd.RID) {
+func BodySetSpace(body Resource.ID, space Resource.ID) {
 	once.Do(singleton)
 	class(self).BodySetSpace(body, space)
 }
@@ -396,15 +401,15 @@ func BodySetSpace(body gd.RID, space gd.RID) {
 /*
 Returns the [RID] of the space assigned to a body.
 */
-func BodyGetSpace(body gd.RID) gd.RID {
+func BodyGetSpace(body Resource.ID) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyGetSpace(body))
+	return Resource.ID(class(self).BodyGetSpace(body))
 }
 
 /*
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
-func BodySetMode(body gd.RID, mode classdb.PhysicsServer3DBodyMode) {
+func BodySetMode(body Resource.ID, mode classdb.PhysicsServer3DBodyMode) {
 	once.Do(singleton)
 	class(self).BodySetMode(body, mode)
 }
@@ -412,7 +417,7 @@ func BodySetMode(body gd.RID, mode classdb.PhysicsServer3DBodyMode) {
 /*
 Returns the body mode.
 */
-func BodyGetMode(body gd.RID) classdb.PhysicsServer3DBodyMode {
+func BodyGetMode(body Resource.ID) classdb.PhysicsServer3DBodyMode {
 	once.Do(singleton)
 	return classdb.PhysicsServer3DBodyMode(class(self).BodyGetMode(body))
 }
@@ -420,7 +425,7 @@ func BodyGetMode(body gd.RID) classdb.PhysicsServer3DBodyMode {
 /*
 Sets the physics layer or layers a body belongs to.
 */
-func BodySetCollisionLayer(body gd.RID, layer int) {
+func BodySetCollisionLayer(body Resource.ID, layer int) {
 	once.Do(singleton)
 	class(self).BodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -428,7 +433,7 @@ func BodySetCollisionLayer(body gd.RID, layer int) {
 /*
 Returns the physics layer or layers a body belongs to.
 */
-func BodyGetCollisionLayer(body gd.RID) int {
+func BodyGetCollisionLayer(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionLayer(body)))
 }
@@ -436,7 +441,7 @@ func BodyGetCollisionLayer(body gd.RID) int {
 /*
 Sets the physics layer or layers a body can collide with.
 */
-func BodySetCollisionMask(body gd.RID, mask int) {
+func BodySetCollisionMask(body Resource.ID, mask int) {
 	once.Do(singleton)
 	class(self).BodySetCollisionMask(body, gd.Int(mask))
 }
@@ -444,7 +449,7 @@ func BodySetCollisionMask(body gd.RID, mask int) {
 /*
 Returns the physics layer or layers a body can collide with.
 */
-func BodyGetCollisionMask(body gd.RID) int {
+func BodyGetCollisionMask(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionMask(body)))
 }
@@ -452,7 +457,7 @@ func BodyGetCollisionMask(body gd.RID) int {
 /*
 Sets the body's collision priority.
 */
-func BodySetCollisionPriority(body gd.RID, priority float64) {
+func BodySetCollisionPriority(body Resource.ID, priority Float.X) {
 	once.Do(singleton)
 	class(self).BodySetCollisionPriority(body, gd.Float(priority))
 }
@@ -460,23 +465,23 @@ func BodySetCollisionPriority(body gd.RID, priority float64) {
 /*
 Returns the body's collision priority.
 */
-func BodyGetCollisionPriority(body gd.RID) float64 {
+func BodyGetCollisionPriority(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).BodyGetCollisionPriority(body)))
+	return Float.X(Float.X(class(self).BodyGetCollisionPriority(body)))
 }
 
 /*
 Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func BodyAddShape(body gd.RID, shape gd.RID) {
+func BodyAddShape(body Resource.ID, shape Resource.ID) {
 	once.Do(singleton)
-	class(self).BodyAddShape(body, shape, gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), false)
+	class(self).BodyAddShape(body, shape, gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), false)
 }
 
 /*
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
 */
-func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
+func BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) {
 	once.Do(singleton)
 	class(self).BodySetShape(body, gd.Int(shape_idx), shape)
 }
@@ -484,11 +489,11 @@ func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
 /*
 Sets the transform matrix for a body shape.
 */
-func BodySetShapeTransform(body gd.RID, shape_idx int, transform gd.Transform3D) {
+func BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), transform)
+	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), gd.Transform3D(transform))
 }
-func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
+func BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
 	once.Do(singleton)
 	class(self).BodySetShapeDisabled(body, gd.Int(shape_idx), disabled)
 }
@@ -496,7 +501,7 @@ func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
 /*
 Returns the number of shapes assigned to a body.
 */
-func BodyGetShapeCount(body gd.RID) int {
+func BodyGetShapeCount(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetShapeCount(body)))
 }
@@ -504,23 +509,23 @@ func BodyGetShapeCount(body gd.RID) int {
 /*
 Returns the [RID] of the nth shape of a body.
 */
-func BodyGetShape(body gd.RID, shape_idx int) gd.RID {
+func BodyGetShape(body Resource.ID, shape_idx int) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
+	return Resource.ID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
 }
 
 /*
 Returns the transform matrix of a body shape.
 */
-func BodyGetShapeTransform(body gd.RID, shape_idx int) gd.Transform3D {
+func BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOrigin {
 	once.Do(singleton)
-	return gd.Transform3D(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
+	return Transform3D.BasisOrigin(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
 }
 
 /*
 Removes a shape from a body. The shape is not deleted, so it can be reused afterwards.
 */
-func BodyRemoveShape(body gd.RID, shape_idx int) {
+func BodyRemoveShape(body Resource.ID, shape_idx int) {
 	once.Do(singleton)
 	class(self).BodyRemoveShape(body, gd.Int(shape_idx))
 }
@@ -528,7 +533,7 @@ func BodyRemoveShape(body gd.RID, shape_idx int) {
 /*
 Removes all shapes from a body.
 */
-func BodyClearShapes(body gd.RID) {
+func BodyClearShapes(body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyClearShapes(body)
 }
@@ -536,7 +541,7 @@ func BodyClearShapes(body gd.RID) {
 /*
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
-func BodyAttachObjectInstanceId(body gd.RID, id int) {
+func BodyAttachObjectInstanceId(body Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).BodyAttachObjectInstanceId(body, gd.Int(id))
 }
@@ -544,7 +549,7 @@ func BodyAttachObjectInstanceId(body gd.RID, id int) {
 /*
 Gets the instance ID of the object the area is assigned to.
 */
-func BodyGetObjectInstanceId(body gd.RID) int {
+func BodyGetObjectInstanceId(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetObjectInstanceId(body)))
 }
@@ -553,7 +558,7 @@ func BodyGetObjectInstanceId(body gd.RID) int {
 If [code]true[/code], the continuous collision detection mode is enabled.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
-func BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) {
+func BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).BodySetEnableContinuousCollisionDetection(body, enable)
 }
@@ -561,7 +566,7 @@ func BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) {
 /*
 If [code]true[/code], the continuous collision detection mode is enabled.
 */
-func BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
+func BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).BodyIsContinuousCollisionDetectionEnabled(body))
 }
@@ -569,23 +574,23 @@ func BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
 /*
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodySetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter, value gd.Variant) {
+func BodySetParam(body Resource.ID, param classdb.PhysicsServer3DBodyParameter, value any) {
 	once.Do(singleton)
-	class(self).BodySetParam(body, param, value)
+	class(self).BodySetParam(body, param, gd.NewVariant(value))
 }
 
 /*
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodyGetParam(body gd.RID, param classdb.PhysicsServer3DBodyParameter) gd.Variant {
+func BodyGetParam(body Resource.ID, param classdb.PhysicsServer3DBodyParameter) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetParam(body, param))
+	return any(class(self).BodyGetParam(body, param).Interface())
 }
 
 /*
 Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [method body_set_param].
 */
-func BodyResetMassProperties(body gd.RID) {
+func BodyResetMassProperties(body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyResetMassProperties(body)
 }
@@ -593,17 +598,17 @@ func BodyResetMassProperties(body gd.RID) {
 /*
 Sets a body state (see [enum BodyState] constants).
 */
-func BodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, value gd.Variant) {
+func BodySetState(body Resource.ID, state classdb.PhysicsServer3DBodyState, value any) {
 	once.Do(singleton)
-	class(self).BodySetState(body, state, value)
+	class(self).BodySetState(body, state, gd.NewVariant(value))
 }
 
 /*
 Returns a body state.
 */
-func BodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
+func BodyGetState(body Resource.ID, state classdb.PhysicsServer3DBodyState) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetState(body, state))
+	return any(class(self).BodyGetState(body, state).Interface())
 }
 
 /*
@@ -611,9 +616,9 @@ Applies a directional impulse without affecting rotation.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
-func BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector3) {
+func BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyCentralImpulse(body, impulse)
+	class(self).BodyApplyCentralImpulse(body, gd.Vector3(impulse))
 }
 
 /*
@@ -621,120 +626,120 @@ Applies a positioned impulse to the body.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyImpulse(body gd.RID, impulse gd.Vector3) {
+func BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyImpulse(body, impulse, gd.Vector3{0, 0, 0})
+	class(self).BodyApplyImpulse(body, gd.Vector3(impulse), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
 
 /*
 Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
-func BodyApplyTorqueImpulse(body gd.RID, impulse gd.Vector3) {
+func BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyTorqueImpulse(body, impulse)
+	class(self).BodyApplyTorqueImpulse(body, gd.Vector3(impulse))
 }
 
 /*
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
-func BodyApplyCentralForce(body gd.RID, force gd.Vector3) {
+func BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyCentralForce(body, force)
+	class(self).BodyApplyCentralForce(body, gd.Vector3(force))
 }
 
 /*
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyForce(body gd.RID, force gd.Vector3) {
+func BodyApplyForce(body Resource.ID, force Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyForce(body, force, gd.Vector3{0, 0, 0})
+	class(self).BodyApplyForce(body, gd.Vector3(force), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
 
 /*
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 */
-func BodyApplyTorque(body gd.RID, torque gd.Vector3) {
+func BodyApplyTorque(body Resource.ID, torque Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyApplyTorque(body, torque)
+	class(self).BodyApplyTorque(body, gd.Vector3(torque))
 }
 
 /*
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector3(0, 0, 0))[/code].
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
-func BodyAddConstantCentralForce(body gd.RID, force gd.Vector3) {
+func BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyAddConstantCentralForce(body, force)
+	class(self).BodyAddConstantCentralForce(body, gd.Vector3(force))
 }
 
 /*
 Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector3(0, 0, 0))[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyAddConstantForce(body gd.RID, force gd.Vector3) {
+func BodyAddConstantForce(body Resource.ID, force Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyAddConstantForce(body, force, gd.Vector3{0, 0, 0})
+	class(self).BodyAddConstantForce(body, gd.Vector3(force), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]body_set_constant_torque(body, Vector3(0, 0, 0))[/code].
 */
-func BodyAddConstantTorque(body gd.RID, torque gd.Vector3) {
+func BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodyAddConstantTorque(body, torque)
+	class(self).BodyAddConstantTorque(body, gd.Vector3(torque))
 }
 
 /*
 Sets the body's total constant positional forces applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodySetConstantForce(body gd.RID, force gd.Vector3) {
+func BodySetConstantForce(body Resource.ID, force Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodySetConstantForce(body, force)
+	class(self).BodySetConstantForce(body, gd.Vector3(force))
 }
 
 /*
 Returns the body's total constant positional forces applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodyGetConstantForce(body gd.RID) gd.Vector3 {
+func BodyGetConstantForce(body Resource.ID) Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).BodyGetConstantForce(body))
+	return Vector3.XYZ(class(self).BodyGetConstantForce(body))
 }
 
 /*
 Sets the body's total constant rotational forces applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodySetConstantTorque(body gd.RID, torque gd.Vector3) {
+func BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodySetConstantTorque(body, torque)
+	class(self).BodySetConstantTorque(body, gd.Vector3(torque))
 }
 
 /*
 Returns the body's total constant rotational forces applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodyGetConstantTorque(body gd.RID) gd.Vector3 {
+func BodyGetConstantTorque(body Resource.ID) Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).BodyGetConstantTorque(body))
+	return Vector3.XYZ(class(self).BodyGetConstantTorque(body))
 }
 
 /*
 Sets an axis velocity. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
-func BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3) {
+func BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).BodySetAxisVelocity(body, axis_velocity)
+	class(self).BodySetAxisVelocity(body, gd.Vector3(axis_velocity))
 }
-func BodySetAxisLock(body gd.RID, axis classdb.PhysicsServer3DBodyAxis, lock bool) {
+func BodySetAxisLock(body Resource.ID, axis classdb.PhysicsServer3DBodyAxis, lock bool) {
 	once.Do(singleton)
 	class(self).BodySetAxisLock(body, axis, lock)
 }
-func BodyIsAxisLocked(body gd.RID, axis classdb.PhysicsServer3DBodyAxis) bool {
+func BodyIsAxisLocked(body Resource.ID, axis classdb.PhysicsServer3DBodyAxis) bool {
 	once.Do(singleton)
 	return bool(class(self).BodyIsAxisLocked(body, axis))
 }
@@ -742,7 +747,7 @@ func BodyIsAxisLocked(body gd.RID, axis classdb.PhysicsServer3DBodyAxis) bool {
 /*
 Adds a body to the list of bodies exempt from collisions.
 */
-func BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
+func BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyAddCollisionException(body, excepted_body)
 }
@@ -751,7 +756,7 @@ func BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
 Removes a body from the list of bodies exempt from collisions.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
-func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
+func BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyRemoveCollisionException(body, excepted_body)
 }
@@ -759,7 +764,7 @@ func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
 /*
 Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
 */
-func BodySetMaxContactsReported(body gd.RID, amount int) {
+func BodySetMaxContactsReported(body Resource.ID, amount int) {
 	once.Do(singleton)
 	class(self).BodySetMaxContactsReported(body, gd.Int(amount))
 }
@@ -767,7 +772,7 @@ func BodySetMaxContactsReported(body gd.RID, amount int) {
 /*
 Returns the maximum contacts that can be reported. See [method body_set_max_contacts_reported].
 */
-func BodyGetMaxContactsReported(body gd.RID) int {
+func BodyGetMaxContactsReported(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetMaxContactsReported(body)))
 }
@@ -776,7 +781,7 @@ func BodyGetMaxContactsReported(body gd.RID) int {
 Sets whether the body omits the standard force integration. If [param enable] is [code]true[/code], the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [method body_set_force_integration_callback] can be used to manually update the linear and angular velocity instead.
 This method is called when the property [member RigidBody3D.custom_integrator] is set.
 */
-func BodySetOmitForceIntegration(body gd.RID, enable bool) {
+func BodySetOmitForceIntegration(body Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).BodySetOmitForceIntegration(body, enable)
 }
@@ -784,7 +789,7 @@ func BodySetOmitForceIntegration(body gd.RID, enable bool) {
 /*
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
-func BodyIsOmittingForceIntegration(body gd.RID) bool {
+func BodyIsOmittingForceIntegration(body Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).BodyIsOmittingForceIntegration(body))
 }
@@ -795,7 +800,7 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body gd.RID, callable gd.Callable) {
+func BodySetStateSyncCallback(body Resource.ID, callable gd.Callable) {
 	once.Do(singleton)
 	class(self).BodySetStateSyncCallback(body, callable)
 }
@@ -808,15 +813,15 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable) {
+func BodySetForceIntegrationCallback(body Resource.ID, callable gd.Callable) {
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(([1]gd.Variant{}[0])))
+	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*
 Sets the body pickable with rays if [param enable] is set.
 */
-func BodySetRayPickable(body gd.RID, enable bool) {
+func BodySetRayPickable(body Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).BodySetRayPickable(body, enable)
 }
@@ -824,15 +829,15 @@ func BodySetRayPickable(body gd.RID, enable bool) {
 /*
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
-func BodyTestMotion(body gd.RID, parameters objects.PhysicsTestMotionParameters3D) bool {
+func BodyTestMotion(body Resource.ID, parameters objects.PhysicsTestMotionParameters3D) bool {
 	once.Do(singleton)
-	return bool(class(self).BodyTestMotion(body, parameters, ([1]objects.PhysicsTestMotionResult3D{}[0])))
+	return bool(class(self).BodyTestMotion(body, parameters, [1]objects.PhysicsTestMotionResult3D{}[0]))
 }
 
 /*
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
-func BodyGetDirectState(body gd.RID) objects.PhysicsDirectBodyState3D {
+func BodyGetDirectState(body Resource.ID) objects.PhysicsDirectBodyState3D {
 	once.Do(singleton)
 	return objects.PhysicsDirectBodyState3D(class(self).BodyGetDirectState(body))
 }
@@ -840,15 +845,15 @@ func BodyGetDirectState(body gd.RID) objects.PhysicsDirectBodyState3D {
 /*
 Creates a new soft body and returns its internal [RID].
 */
-func SoftBodyCreate() gd.RID {
+func SoftBodyCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SoftBodyCreate())
+	return Resource.ID(class(self).SoftBodyCreate())
 }
 
 /*
 Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the [param rendering_server_handler] interface.
 */
-func SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler objects.PhysicsServer3DRenderingServerHandler) {
+func SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler objects.PhysicsServer3DRenderingServerHandler) {
 	once.Do(singleton)
 	class(self).SoftBodyUpdateRenderingServer(body, rendering_server_handler)
 }
@@ -856,7 +861,7 @@ func SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler objects
 /*
 Assigns a space to the given soft body (see [method space_create]).
 */
-func SoftBodySetSpace(body gd.RID, space gd.RID) {
+func SoftBodySetSpace(body Resource.ID, space Resource.ID) {
 	once.Do(singleton)
 	class(self).SoftBodySetSpace(body, space)
 }
@@ -864,15 +869,15 @@ func SoftBodySetSpace(body gd.RID, space gd.RID) {
 /*
 Returns the [RID] of the space assigned to the given soft body.
 */
-func SoftBodyGetSpace(body gd.RID) gd.RID {
+func SoftBodyGetSpace(body Resource.ID) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SoftBodyGetSpace(body))
+	return Resource.ID(class(self).SoftBodyGetSpace(body))
 }
 
 /*
 Sets the mesh of the given soft body.
 */
-func SoftBodySetMesh(body gd.RID, mesh gd.RID) {
+func SoftBodySetMesh(body Resource.ID, mesh Resource.ID) {
 	once.Do(singleton)
 	class(self).SoftBodySetMesh(body, mesh)
 }
@@ -880,15 +885,15 @@ func SoftBodySetMesh(body gd.RID, mesh gd.RID) {
 /*
 Returns the bounds of the given soft body in global coordinates.
 */
-func SoftBodyGetBounds(body gd.RID) gd.AABB {
+func SoftBodyGetBounds(body Resource.ID) AABB.PositionSize {
 	once.Do(singleton)
-	return gd.AABB(class(self).SoftBodyGetBounds(body))
+	return AABB.PositionSize(class(self).SoftBodyGetBounds(body))
 }
 
 /*
 Sets the physics layer or layers the given soft body belongs to.
 */
-func SoftBodySetCollisionLayer(body gd.RID, layer int) {
+func SoftBodySetCollisionLayer(body Resource.ID, layer int) {
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -896,7 +901,7 @@ func SoftBodySetCollisionLayer(body gd.RID, layer int) {
 /*
 Returns the physics layer or layers that the given soft body belongs to.
 */
-func SoftBodyGetCollisionLayer(body gd.RID) int {
+func SoftBodyGetCollisionLayer(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionLayer(body)))
 }
@@ -904,7 +909,7 @@ func SoftBodyGetCollisionLayer(body gd.RID) int {
 /*
 Sets the physics layer or layers the given soft body can collide with.
 */
-func SoftBodySetCollisionMask(body gd.RID, mask int) {
+func SoftBodySetCollisionMask(body Resource.ID, mask int) {
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionMask(body, gd.Int(mask))
 }
@@ -912,7 +917,7 @@ func SoftBodySetCollisionMask(body gd.RID, mask int) {
 /*
 Returns the physics layer or layers that the given soft body can collide with.
 */
-func SoftBodyGetCollisionMask(body gd.RID) int {
+func SoftBodyGetCollisionMask(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionMask(body)))
 }
@@ -920,7 +925,7 @@ func SoftBodyGetCollisionMask(body gd.RID) int {
 /*
 Adds the given body to the list of bodies exempt from collisions.
 */
-func SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
+func SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID) {
 	once.Do(singleton)
 	class(self).SoftBodyAddCollisionException(body, body_b)
 }
@@ -928,7 +933,7 @@ func SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
 /*
 Removes the given body from the list of bodies exempt from collisions.
 */
-func SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID) {
+func SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) {
 	once.Do(singleton)
 	class(self).SoftBodyRemoveCollisionException(body, body_b)
 }
@@ -937,32 +942,32 @@ func SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID) {
 Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodySetState(body gd.RID, state classdb.PhysicsServer3DBodyState, variant gd.Variant) {
+func SoftBodySetState(body Resource.ID, state classdb.PhysicsServer3DBodyState, variant any) {
 	once.Do(singleton)
-	class(self).SoftBodySetState(body, state, variant)
+	class(self).SoftBodySetState(body, state, gd.NewVariant(variant))
 }
 
 /*
 Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodyGetState(body gd.RID, state classdb.PhysicsServer3DBodyState) gd.Variant {
+func SoftBodyGetState(body Resource.ID, state classdb.PhysicsServer3DBodyState) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).SoftBodyGetState(body, state))
+	return any(class(self).SoftBodyGetState(body, state).Interface())
 }
 
 /*
 Sets the global transform of the given soft body.
 */
-func SoftBodySetTransform(body gd.RID, transform gd.Transform3D) {
+func SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).SoftBodySetTransform(body, transform)
+	class(self).SoftBodySetTransform(body, gd.Transform3D(transform))
 }
 
 /*
 Sets whether the given soft body will be pickable when using object picking.
 */
-func SoftBodySetRayPickable(body gd.RID, enable bool) {
+func SoftBodySetRayPickable(body Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).SoftBodySetRayPickable(body, enable)
 }
@@ -970,7 +975,7 @@ func SoftBodySetRayPickable(body gd.RID, enable bool) {
 /*
 Sets the simulation precision of the given soft body. Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
 */
-func SoftBodySetSimulationPrecision(body gd.RID, simulation_precision int) {
+func SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int) {
 	once.Do(singleton)
 	class(self).SoftBodySetSimulationPrecision(body, gd.Int(simulation_precision))
 }
@@ -978,7 +983,7 @@ func SoftBodySetSimulationPrecision(body gd.RID, simulation_precision int) {
 /*
 Returns the simulation precision of the given soft body.
 */
-func SoftBodyGetSimulationPrecision(body gd.RID) int {
+func SoftBodyGetSimulationPrecision(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetSimulationPrecision(body)))
 }
@@ -986,7 +991,7 @@ func SoftBodyGetSimulationPrecision(body gd.RID) int {
 /*
 Sets the total mass for the given soft body.
 */
-func SoftBodySetTotalMass(body gd.RID, total_mass float64) {
+func SoftBodySetTotalMass(body Resource.ID, total_mass Float.X) {
 	once.Do(singleton)
 	class(self).SoftBodySetTotalMass(body, gd.Float(total_mass))
 }
@@ -994,15 +999,15 @@ func SoftBodySetTotalMass(body gd.RID, total_mass float64) {
 /*
 Returns the total mass assigned to the given soft body.
 */
-func SoftBodyGetTotalMass(body gd.RID) float64 {
+func SoftBodyGetTotalMass(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SoftBodyGetTotalMass(body)))
+	return Float.X(Float.X(class(self).SoftBodyGetTotalMass(body)))
 }
 
 /*
 Sets the linear stiffness of the given soft body. Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
-func SoftBodySetLinearStiffness(body gd.RID, stiffness float64) {
+func SoftBodySetLinearStiffness(body Resource.ID, stiffness Float.X) {
 	once.Do(singleton)
 	class(self).SoftBodySetLinearStiffness(body, gd.Float(stiffness))
 }
@@ -1010,15 +1015,15 @@ func SoftBodySetLinearStiffness(body gd.RID, stiffness float64) {
 /*
 Returns the linear stiffness of the given soft body.
 */
-func SoftBodyGetLinearStiffness(body gd.RID) float64 {
+func SoftBodyGetLinearStiffness(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SoftBodyGetLinearStiffness(body)))
+	return Float.X(Float.X(class(self).SoftBodyGetLinearStiffness(body)))
 }
 
 /*
 Sets the pressure coefficient of the given soft body. Simulates pressure build-up from inside this body. Higher values increase the strength of this effect.
 */
-func SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient float64) {
+func SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X) {
 	once.Do(singleton)
 	class(self).SoftBodySetPressureCoefficient(body, gd.Float(pressure_coefficient))
 }
@@ -1026,15 +1031,15 @@ func SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient float64) {
 /*
 Returns the pressure coefficient of the given soft body.
 */
-func SoftBodyGetPressureCoefficient(body gd.RID) float64 {
+func SoftBodyGetPressureCoefficient(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SoftBodyGetPressureCoefficient(body)))
+	return Float.X(Float.X(class(self).SoftBodyGetPressureCoefficient(body)))
 }
 
 /*
 Sets the damping coefficient of the given soft body. Higher values will slow down the body more noticeably when forces are applied.
 */
-func SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient float64) {
+func SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X) {
 	once.Do(singleton)
 	class(self).SoftBodySetDampingCoefficient(body, gd.Float(damping_coefficient))
 }
@@ -1042,16 +1047,16 @@ func SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient float64) {
 /*
 Returns the damping coefficient of the given soft body.
 */
-func SoftBodyGetDampingCoefficient(body gd.RID) float64 {
+func SoftBodyGetDampingCoefficient(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SoftBodyGetDampingCoefficient(body)))
+	return Float.X(Float.X(class(self).SoftBodyGetDampingCoefficient(body)))
 }
 
 /*
 Sets the drag coefficient of the given soft body. Higher values increase this body's air resistance.
 [b]Note:[/b] This value is currently unused by Godot's default physics implementation.
 */
-func SoftBodySetDragCoefficient(body gd.RID, drag_coefficient float64) {
+func SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X) {
 	once.Do(singleton)
 	class(self).SoftBodySetDragCoefficient(body, gd.Float(drag_coefficient))
 }
@@ -1059,31 +1064,31 @@ func SoftBodySetDragCoefficient(body gd.RID, drag_coefficient float64) {
 /*
 Returns the drag coefficient of the given soft body.
 */
-func SoftBodyGetDragCoefficient(body gd.RID) float64 {
+func SoftBodyGetDragCoefficient(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SoftBodyGetDragCoefficient(body)))
+	return Float.X(Float.X(class(self).SoftBodyGetDragCoefficient(body)))
 }
 
 /*
 Moves the given soft body point to a position in global coordinates.
 */
-func SoftBodyMovePoint(body gd.RID, point_index int, global_position gd.Vector3) {
+func SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).SoftBodyMovePoint(body, gd.Int(point_index), global_position)
+	class(self).SoftBodyMovePoint(body, gd.Int(point_index), gd.Vector3(global_position))
 }
 
 /*
 Returns the current position of the given soft body point in global coordinates.
 */
-func SoftBodyGetPointGlobalPosition(body gd.RID, point_index int) gd.Vector3 {
+func SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).SoftBodyGetPointGlobalPosition(body, gd.Int(point_index)))
+	return Vector3.XYZ(class(self).SoftBodyGetPointGlobalPosition(body, gd.Int(point_index)))
 }
 
 /*
 Unpins all points of the given soft body.
 */
-func SoftBodyRemoveAllPinnedPoints(body gd.RID) {
+func SoftBodyRemoveAllPinnedPoints(body Resource.ID) {
 	once.Do(singleton)
 	class(self).SoftBodyRemoveAllPinnedPoints(body)
 }
@@ -1092,7 +1097,7 @@ func SoftBodyRemoveAllPinnedPoints(body gd.RID) {
 Pins or unpins the given soft body point based on the value of [param pin].
 [b]Note:[/b] Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [method soft_body_move_point].
 */
-func SoftBodyPinPoint(body gd.RID, point_index int, pin bool) {
+func SoftBodyPinPoint(body Resource.ID, point_index int, pin bool) {
 	once.Do(singleton)
 	class(self).SoftBodyPinPoint(body, gd.Int(point_index), pin)
 }
@@ -1100,27 +1105,27 @@ func SoftBodyPinPoint(body gd.RID, point_index int, pin bool) {
 /*
 Returns whether the given soft body point is pinned.
 */
-func SoftBodyIsPointPinned(body gd.RID, point_index int) bool {
+func SoftBodyIsPointPinned(body Resource.ID, point_index int) bool {
 	once.Do(singleton)
 	return bool(class(self).SoftBodyIsPointPinned(body, gd.Int(point_index)))
 }
-func JointCreate() gd.RID {
+func JointCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).JointCreate())
+	return Resource.ID(class(self).JointCreate())
 }
-func JointClear(joint gd.RID) {
+func JointClear(joint Resource.ID) {
 	once.Do(singleton)
 	class(self).JointClear(joint)
 }
-func JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3) {
+func JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).JointMakePin(joint, body_A, local_A, body_B, local_B)
+	class(self).JointMakePin(joint, body_A, gd.Vector3(local_A), body_B, gd.Vector3(local_B))
 }
 
 /*
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam, value float64) {
+func PinJointSetParam(joint Resource.ID, param classdb.PhysicsServer3DPinJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).PinJointSetParam(joint, param, gd.Float(value))
 }
@@ -1128,51 +1133,51 @@ func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam, 
 /*
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointGetParam(joint gd.RID, param classdb.PhysicsServer3DPinJointParam) float64 {
+func PinJointGetParam(joint Resource.ID, param classdb.PhysicsServer3DPinJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).PinJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).PinJointGetParam(joint, param)))
 }
 
 /*
 Sets position of the joint in the local space of body a of the joint.
 */
-func PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) {
+func PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).PinJointSetLocalA(joint, local_A)
+	class(self).PinJointSetLocalA(joint, gd.Vector3(local_A))
 }
 
 /*
 Returns position of the joint in the local space of body a of the joint.
 */
-func PinJointGetLocalA(joint gd.RID) gd.Vector3 {
+func PinJointGetLocalA(joint Resource.ID) Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).PinJointGetLocalA(joint))
+	return Vector3.XYZ(class(self).PinJointGetLocalA(joint))
 }
 
 /*
 Sets position of the joint in the local space of body b of the joint.
 */
-func PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) {
+func PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ) {
 	once.Do(singleton)
-	class(self).PinJointSetLocalB(joint, local_B)
+	class(self).PinJointSetLocalB(joint, gd.Vector3(local_B))
 }
 
 /*
 Returns position of the joint in the local space of body b of the joint.
 */
-func PinJointGetLocalB(joint gd.RID) gd.Vector3 {
+func PinJointGetLocalB(joint Resource.ID) Vector3.XYZ {
 	once.Do(singleton)
-	return gd.Vector3(class(self).PinJointGetLocalB(joint))
+	return Vector3.XYZ(class(self).PinJointGetLocalB(joint))
 }
-func JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D) {
+func JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).JointMakeHinge(joint, body_A, hinge_A, body_B, hinge_B)
+	class(self).JointMakeHinge(joint, body_A, gd.Transform3D(hinge_A), body_B, gd.Transform3D(hinge_B))
 }
 
 /*
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
-func HingeJointSetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam, value float64) {
+func HingeJointSetParam(joint Resource.ID, param classdb.PhysicsServer3DHingeJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).HingeJointSetParam(joint, param, gd.Float(value))
 }
@@ -1180,15 +1185,15 @@ func HingeJointSetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointPar
 /*
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
-func HingeJointGetParam(joint gd.RID, param classdb.PhysicsServer3DHingeJointParam) float64 {
+func HingeJointGetParam(joint Resource.ID, param classdb.PhysicsServer3DHingeJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).HingeJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).HingeJointGetParam(joint, param)))
 }
 
 /*
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointSetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag, enabled bool) {
+func HingeJointSetFlag(joint Resource.ID, flag classdb.PhysicsServer3DHingeJointFlag, enabled bool) {
 	once.Do(singleton)
 	class(self).HingeJointSetFlag(joint, flag, enabled)
 }
@@ -1196,19 +1201,19 @@ func HingeJointSetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag,
 /*
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointGetFlag(joint gd.RID, flag classdb.PhysicsServer3DHingeJointFlag) bool {
+func HingeJointGetFlag(joint Resource.ID, flag classdb.PhysicsServer3DHingeJointFlag) bool {
 	once.Do(singleton)
 	return bool(class(self).HingeJointGetFlag(joint, flag))
 }
-func JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).JointMakeSlider(joint, body_A, local_ref_A, body_B, local_ref_B)
+	class(self).JointMakeSlider(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
 
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointSetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam, value float64) {
+func SliderJointSetParam(joint Resource.ID, param classdb.PhysicsServer3DSliderJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).SliderJointSetParam(joint, param, gd.Float(value))
 }
@@ -1216,19 +1221,19 @@ func SliderJointSetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointP
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointGetParam(joint gd.RID, param classdb.PhysicsServer3DSliderJointParam) float64 {
+func SliderJointGetParam(joint Resource.ID, param classdb.PhysicsServer3DSliderJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SliderJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).SliderJointGetParam(joint, param)))
 }
-func JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).JointMakeConeTwist(joint, body_A, local_ref_A, body_B, local_ref_B)
+	class(self).JointMakeConeTwist(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
 
 /*
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointSetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam, value float64) {
+func ConeTwistJointSetParam(joint Resource.ID, param classdb.PhysicsServer3DConeTwistJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).ConeTwistJointSetParam(joint, param, gd.Float(value))
 }
@@ -1236,15 +1241,15 @@ func ConeTwistJointSetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwist
 /*
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointGetParam(joint gd.RID, param classdb.PhysicsServer3DConeTwistJointParam) float64 {
+func ConeTwistJointGetParam(joint Resource.ID, param classdb.PhysicsServer3DConeTwistJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ConeTwistJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).ConeTwistJointGetParam(joint, param)))
 }
 
 /*
 Returns the type of the Joint3D.
 */
-func JointGetType(joint gd.RID) classdb.PhysicsServer3DJointType {
+func JointGetType(joint Resource.ID) classdb.PhysicsServer3DJointType {
 	once.Do(singleton)
 	return classdb.PhysicsServer3DJointType(class(self).JointGetType(joint))
 }
@@ -1252,7 +1257,7 @@ func JointGetType(joint gd.RID) classdb.PhysicsServer3DJointType {
 /*
 Sets the priority value of the Joint3D.
 */
-func JointSetSolverPriority(joint gd.RID, priority int) {
+func JointSetSolverPriority(joint Resource.ID, priority int) {
 	once.Do(singleton)
 	class(self).JointSetSolverPriority(joint, gd.Int(priority))
 }
@@ -1260,7 +1265,7 @@ func JointSetSolverPriority(joint gd.RID, priority int) {
 /*
 Gets the priority value of the Joint3D.
 */
-func JointGetSolverPriority(joint gd.RID) int {
+func JointGetSolverPriority(joint Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).JointGetSolverPriority(joint)))
 }
@@ -1268,7 +1273,7 @@ func JointGetSolverPriority(joint gd.RID) int {
 /*
 Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
-func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
+func JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
 	once.Do(singleton)
 	class(self).JointDisableCollisionsBetweenBodies(joint, disable)
 }
@@ -1276,7 +1281,7 @@ func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
 /*
 Returns whether the bodies attached to the [Joint3D] will collide with each other.
 */
-func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
+func JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(joint))
 }
@@ -1284,15 +1289,15 @@ func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
 /*
 Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generic_6dof_joint_set_flag] and [method generic_6dof_joint_set_param] to set the joint's flags and parameters respectively.
 */
-func JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).JointMakeGeneric6dof(joint, body_A, local_ref_A, body_B, local_ref_B)
+	class(self).JointMakeGeneric6dof(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
 
 /*
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam, value float64) {
+func Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam, value Float.X) {
 	once.Do(singleton)
 	class(self).Generic6dofJointSetParam(joint, axis, param, gd.Float(value))
 }
@@ -1300,15 +1305,15 @@ func Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.P
 /*
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam) float64 {
+func Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param classdb.PhysicsServer3DG6DOFJointAxisParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).Generic6dofJointGetParam(joint, axis, param)))
+	return Float.X(Float.X(class(self).Generic6dofJointGetParam(joint, axis, param)))
 }
 
 /*
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
+func Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
 	once.Do(singleton)
 	class(self).Generic6dofJointSetFlag(joint, axis, flag, enable)
 }
@@ -1316,7 +1321,7 @@ func Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.Phy
 /*
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag) bool {
+func Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag classdb.PhysicsServer3DG6DOFJointAxisFlag) bool {
 	once.Do(singleton)
 	return bool(class(self).Generic6dofJointGetFlag(joint, axis, flag))
 }
@@ -1324,7 +1329,7 @@ func Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag classdb.Phy
 /*
 Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
-func FreeRid(rid gd.RID) {
+func FreeRid(rid Resource.ID) {
 	once.Do(singleton)
 	class(self).FreeRid(rid)
 }

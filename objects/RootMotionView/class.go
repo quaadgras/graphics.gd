@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,35 +37,35 @@ func New() Instance {
 	return Instance{classdb.RootMotionView(object)}
 }
 
-func (self Instance) AnimationPath() string {
-	return string(class(self).GetAnimationPath().String())
+func (self Instance) AnimationPath() Path.String {
+	return Path.String(class(self).GetAnimationPath().String())
 }
 
-func (self Instance) SetAnimationPath(value string) {
-	class(self).SetAnimationPath(gd.NewString(value).NodePath())
+func (self Instance) SetAnimationPath(value Path.String) {
+	class(self).SetAnimationPath(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) CellSize() float64 {
-	return float64(float64(class(self).GetCellSize()))
+func (self Instance) CellSize() Float.X {
+	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
-func (self Instance) SetCellSize(value float64) {
+func (self Instance) SetCellSize(value Float.X) {
 	class(self).SetCellSize(gd.Float(value))
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 

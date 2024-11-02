@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/InputEventWithModifiers"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.InputEventPanGesture(object)}
 }
 
-func (self Instance) Delta() gd.Vector2 {
-	return gd.Vector2(class(self).GetDelta())
+func (self Instance) Delta() Vector2.XY {
+	return Vector2.XY(class(self).GetDelta())
 }
 
-func (self Instance) SetDelta(value gd.Vector2) {
-	class(self).SetDelta(value)
+func (self Instance) SetDelta(value Vector2.XY) {
+	class(self).SetDelta(gd.Vector2(value))
 }
 
 //go:nosplit

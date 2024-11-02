@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PhysicsDirectBodyState2D"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,59 +26,59 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 	// PhysicsDirectBodyState2DExtension methods that can be overridden by a [Class] that extends it.
 	type PhysicsDirectBodyState2DExtension interface {
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
-		GetTotalGravity() gd.Vector2
+		GetTotalGravity() Vector2.XY
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_linear_damp] and its respective getter.
-		GetTotalLinearDamp() float64
+		GetTotalLinearDamp() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_angular_damp] and its respective getter.
-		GetTotalAngularDamp() float64
+		GetTotalAngularDamp() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass] and its respective getter.
-		GetCenterOfMass() gd.Vector2
+		GetCenterOfMass() Vector2.XY
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass_local] and its respective getter.
-		GetCenterOfMassLocal() gd.Vector2
+		GetCenterOfMassLocal() Vector2.XY
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_mass] and its respective getter.
-		GetInverseMass() float64
+		GetInverseMass() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_inertia] and its respective getter.
-		GetInverseInertia() float64
+		GetInverseInertia() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective setter.
-		SetLinearVelocity(velocity gd.Vector2)
+		SetLinearVelocity(velocity Vector2.XY)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective getter.
-		GetLinearVelocity() gd.Vector2
+		GetLinearVelocity() Vector2.XY
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective setter.
-		SetAngularVelocity(velocity float64)
+		SetAngularVelocity(velocity Float.X)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective getter.
-		GetAngularVelocity() float64
+		GetAngularVelocity() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective setter.
-		SetTransform(transform gd.Transform2D)
+		SetTransform(transform Transform2D.OriginXY)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective getter.
-		GetTransform() gd.Transform2D
+		GetTransform() Transform2D.OriginXY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_velocity_at_local_position].
-		GetVelocityAtLocalPosition(local_position gd.Vector2) gd.Vector2
+		GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_impulse].
-		ApplyCentralImpulse(impulse gd.Vector2)
+		ApplyCentralImpulse(impulse Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_impulse].
-		ApplyImpulse(impulse gd.Vector2, position gd.Vector2)
+		ApplyImpulse(impulse Vector2.XY, position Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque_impulse].
-		ApplyTorqueImpulse(impulse float64)
+		ApplyTorqueImpulse(impulse Float.X)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_force].
-		ApplyCentralForce(force gd.Vector2)
+		ApplyCentralForce(force Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_force].
-		ApplyForce(force gd.Vector2, position gd.Vector2)
+		ApplyForce(force Vector2.XY, position Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque].
-		ApplyTorque(torque float64)
+		ApplyTorque(torque Float.X)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_central_force].
-		AddConstantCentralForce(force gd.Vector2)
+		AddConstantCentralForce(force Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_force].
-		AddConstantForce(force gd.Vector2, position gd.Vector2)
+		AddConstantForce(force Vector2.XY, position Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_torque].
-		AddConstantTorque(torque float64)
+		AddConstantTorque(torque Float.X)
 		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_force].
-		SetConstantForce(force gd.Vector2)
+		SetConstantForce(force Vector2.XY)
 		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_force].
-		GetConstantForce() gd.Vector2
+		GetConstantForce() Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_torque].
-		SetConstantTorque(torque float64)
+		SetConstantTorque(torque Float.X)
 		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_torque].
-		GetConstantTorque() float64
+		GetConstantTorque() Float.X
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective setter.
 		SetSleepState(enabled bool)
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective getter.
@@ -82,17 +86,17 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_count].
 		GetContactCount() int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_position].
-		GetContactLocalPosition(contact_idx int) gd.Vector2
+		GetContactLocalPosition(contact_idx int) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_normal].
-		GetContactLocalNormal(contact_idx int) gd.Vector2
+		GetContactLocalNormal(contact_idx int) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_shape].
 		GetContactLocalShape(contact_idx int) int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
-		GetContactLocalVelocityAtPosition(contact_idx int) gd.Vector2
+		GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
-		GetContactCollider(contact_idx int) gd.RID
+		GetContactCollider(contact_idx int) Resource.ID
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
-		GetContactColliderPosition(contact_idx int) gd.Vector2
+		GetContactColliderPosition(contact_idx int) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_id].
 		GetContactColliderId(contact_idx int) int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_object].
@@ -100,11 +104,11 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_shape].
 		GetContactColliderShape(contact_idx int) int
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position].
-		GetContactColliderVelocityAtPosition(contact_idx int) gd.Vector2
+		GetContactColliderVelocityAtPosition(contact_idx int) Vector2.XY
 		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_impulse].
-		GetContactImpulse(contact_idx int) gd.Vector2
+		GetContactImpulse(contact_idx int) Vector2.XY
 		//Implement to override the behavior of [member PhysicsDirectBodyState2D.step] and its respective getter.
-		GetStep() float64
+		GetStep() Float.X
 		//Overridable version of [method PhysicsDirectBodyState2D.integrate_forces].
 		IntegrateForces()
 		//Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
@@ -116,18 +120,18 @@ type Instance [1]classdb.PhysicsDirectBodyState2DExtension
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
 */
-func (Instance) _get_total_gravity(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_total_gravity(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_linear_damp] and its respective getter.
 */
-func (Instance) _get_total_linear_damp(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_total_linear_damp(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -138,7 +142,7 @@ func (Instance) _get_total_linear_damp(impl func(ptr unsafe.Pointer) float64) (c
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_angular_damp] and its respective getter.
 */
-func (Instance) _get_total_angular_damp(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_total_angular_damp(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -149,29 +153,29 @@ func (Instance) _get_total_angular_damp(impl func(ptr unsafe.Pointer) float64) (
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass] and its respective getter.
 */
-func (Instance) _get_center_of_mass(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_center_of_mass(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass_local] and its respective getter.
 */
-func (Instance) _get_center_of_mass_local(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_center_of_mass_local(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_mass] and its respective getter.
 */
-func (Instance) _get_inverse_mass(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_inverse_mass(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -182,7 +186,7 @@ func (Instance) _get_inverse_mass(impl func(ptr unsafe.Pointer) float64) (cb gd.
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_inertia] and its respective getter.
 */
-func (Instance) _get_inverse_inertia(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_inverse_inertia(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -193,7 +197,7 @@ func (Instance) _get_inverse_inertia(impl func(ptr unsafe.Pointer) float64) (cb 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective setter.
 */
-func (Instance) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var velocity = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -204,29 +208,29 @@ func (Instance) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity gd.V
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective getter.
 */
-func (Instance) _get_linear_velocity(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_linear_velocity(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective setter.
 */
-func (Instance) _set_angular_velocity(impl func(ptr unsafe.Pointer, velocity float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_angular_velocity(impl func(ptr unsafe.Pointer, velocity Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var velocity = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(velocity))
+		impl(self, Float.X(velocity))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective getter.
 */
-func (Instance) _get_angular_velocity(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_angular_velocity(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -237,7 +241,7 @@ func (Instance) _get_angular_velocity(impl func(ptr unsafe.Pointer) float64) (cb
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective setter.
 */
-func (Instance) _set_transform(impl func(ptr unsafe.Pointer, transform gd.Transform2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_transform(impl func(ptr unsafe.Pointer, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -248,30 +252,30 @@ func (Instance) _set_transform(impl func(ptr unsafe.Pointer, transform gd.Transf
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective getter.
 */
-func (Instance) _get_transform(impl func(ptr unsafe.Pointer) gd.Transform2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_transform(impl func(ptr unsafe.Pointer) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transform2D(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_velocity_at_local_position].
 */
-func (Instance) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local_position gd.Vector2) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local_position Vector2.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var local_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, local_position)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_central_impulse].
 */
-func (Instance) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -282,7 +286,7 @@ func (Instance) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse gd.
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_impulse].
 */
-func (Instance) _apply_impulse(impl func(ptr unsafe.Pointer, impulse gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_impulse(impl func(ptr unsafe.Pointer, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var impulse = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var position = gd.UnsafeGet[gd.Vector2](p_args, 1)
@@ -294,18 +298,18 @@ func (Instance) _apply_impulse(impl func(ptr unsafe.Pointer, impulse gd.Vector2,
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_torque_impulse].
 */
-func (Instance) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var impulse = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(impulse))
+		impl(self, Float.X(impulse))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_central_force].
 */
-func (Instance) _apply_central_force(impl func(ptr unsafe.Pointer, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_central_force(impl func(ptr unsafe.Pointer, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var force = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -316,7 +320,7 @@ func (Instance) _apply_central_force(impl func(ptr unsafe.Pointer, force gd.Vect
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_force].
 */
-func (Instance) _apply_force(impl func(ptr unsafe.Pointer, force gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_force(impl func(ptr unsafe.Pointer, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var force = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var position = gd.UnsafeGet[gd.Vector2](p_args, 1)
@@ -328,18 +332,18 @@ func (Instance) _apply_force(impl func(ptr unsafe.Pointer, force gd.Vector2, pos
 /*
 Overridable version of [method PhysicsDirectBodyState2D.apply_torque].
 */
-func (Instance) _apply_torque(impl func(ptr unsafe.Pointer, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_torque(impl func(ptr unsafe.Pointer, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var torque = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(torque))
+		impl(self, Float.X(torque))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.add_constant_central_force].
 */
-func (Instance) _add_constant_central_force(impl func(ptr unsafe.Pointer, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _add_constant_central_force(impl func(ptr unsafe.Pointer, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var force = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -350,7 +354,7 @@ func (Instance) _add_constant_central_force(impl func(ptr unsafe.Pointer, force 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.add_constant_force].
 */
-func (Instance) _add_constant_force(impl func(ptr unsafe.Pointer, force gd.Vector2, position gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _add_constant_force(impl func(ptr unsafe.Pointer, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var force = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var position = gd.UnsafeGet[gd.Vector2](p_args, 1)
@@ -362,18 +366,18 @@ func (Instance) _add_constant_force(impl func(ptr unsafe.Pointer, force gd.Vecto
 /*
 Overridable version of [method PhysicsDirectBodyState2D.add_constant_torque].
 */
-func (Instance) _add_constant_torque(impl func(ptr unsafe.Pointer, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _add_constant_torque(impl func(ptr unsafe.Pointer, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var torque = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(torque))
+		impl(self, Float.X(torque))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.set_constant_force].
 */
-func (Instance) _set_constant_force(impl func(ptr unsafe.Pointer, force gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_constant_force(impl func(ptr unsafe.Pointer, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var force = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -384,29 +388,29 @@ func (Instance) _set_constant_force(impl func(ptr unsafe.Pointer, force gd.Vecto
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_constant_force].
 */
-func (Instance) _get_constant_force(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constant_force(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.set_constant_torque].
 */
-func (Instance) _set_constant_torque(impl func(ptr unsafe.Pointer, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_constant_torque(impl func(ptr unsafe.Pointer, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var torque = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(torque))
+		impl(self, Float.X(torque))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_constant_torque].
 */
-func (Instance) _get_constant_torque(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constant_torque(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -450,24 +454,24 @@ func (Instance) _get_contact_count(impl func(ptr unsafe.Pointer) int) (cb gd.Ext
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_position].
 */
-func (Instance) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_normal].
 */
-func (Instance) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -486,19 +490,19 @@ func (Instance) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_i
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
 */
-func (Instance) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
 */
-func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -510,12 +514,12 @@ func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
 */
-func (Instance) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -562,31 +566,31 @@ func (Instance) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contac
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position].
 */
-func (Instance) _get_contact_collider_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_contact_impulse].
 */
-func (Instance) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.step] and its respective getter.
 */
-func (Instance) _get_step(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_step(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

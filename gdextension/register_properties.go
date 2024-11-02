@@ -56,6 +56,12 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 	switch rtype.Kind() {
 	case reflect.Int32, reflect.Int64, reflect.Int:
 		return gd.TypeInt
+	case reflect.Pointer:
+		if rtype.Elem().Kind() == reflect.Struct {
+			return gd.TypeObject
+		}
+	case reflect.Map:
+		return gd.TypeDictionary
 	}
 	switch rtype {
 	case reflect.TypeOf([0]gd.Variant{}).Elem():

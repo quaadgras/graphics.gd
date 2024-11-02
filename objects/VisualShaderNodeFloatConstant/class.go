@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeConstant"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,11 +34,11 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeFloatConstant(object)}
 }
 
-func (self Instance) Constant() float64 {
-	return float64(float64(class(self).GetConstant()))
+func (self Instance) Constant() Float.X {
+	return Float.X(Float.X(class(self).GetConstant()))
 }
 
-func (self Instance) SetConstant(value float64) {
+func (self Instance) SetConstant(value Float.X) {
 	class(self).SetConstant(gd.Float(value))
 }
 

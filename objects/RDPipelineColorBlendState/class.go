@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,12 +47,12 @@ func (self Instance) SetLogicOp(value classdb.RenderingDeviceLogicOperation) {
 	class(self).SetLogicOp(value)
 }
 
-func (self Instance) BlendConstant() gd.Color {
-	return gd.Color(class(self).GetBlendConstant())
+func (self Instance) BlendConstant() Color.RGBA {
+	return Color.RGBA(class(self).GetBlendConstant())
 }
 
-func (self Instance) SetBlendConstant(value gd.Color) {
-	class(self).SetBlendConstant(value)
+func (self Instance) SetBlendConstant(value Color.RGBA) {
+	class(self).SetBlendConstant(gd.Color(value))
 }
 
 func (self Instance) Attachments() gd.Array {

@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +28,8 @@ type Instance [1]classdb.NavigationLink2D
 /*
 Returns the [RID] of this link on the [NavigationServer2D].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
@@ -46,29 +49,29 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool {
 /*
 Sets the [member start_position] that is relative to the link from a global [param position].
 */
-func (self Instance) SetGlobalStartPosition(position gd.Vector2) {
-	class(self).SetGlobalStartPosition(position)
+func (self Instance) SetGlobalStartPosition(position Vector2.XY) {
+	class(self).SetGlobalStartPosition(gd.Vector2(position))
 }
 
 /*
 Returns the [member start_position] that is relative to the link as a global position.
 */
-func (self Instance) GetGlobalStartPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalStartPosition())
+func (self Instance) GetGlobalStartPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalStartPosition())
 }
 
 /*
 Sets the [member end_position] that is relative to the link from a global [param position].
 */
-func (self Instance) SetGlobalEndPosition(position gd.Vector2) {
-	class(self).SetGlobalEndPosition(position)
+func (self Instance) SetGlobalEndPosition(position Vector2.XY) {
+	class(self).SetGlobalEndPosition(gd.Vector2(position))
 }
 
 /*
 Returns the [member end_position] that is relative to the link as a global position.
 */
-func (self Instance) GetGlobalEndPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalEndPosition())
+func (self Instance) GetGlobalEndPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalEndPosition())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -106,35 +109,35 @@ func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(gd.Int(value))
 }
 
-func (self Instance) StartPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetStartPosition())
+func (self Instance) StartPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetStartPosition())
 }
 
-func (self Instance) SetStartPosition(value gd.Vector2) {
-	class(self).SetStartPosition(value)
+func (self Instance) SetStartPosition(value Vector2.XY) {
+	class(self).SetStartPosition(gd.Vector2(value))
 }
 
-func (self Instance) EndPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetEndPosition())
+func (self Instance) EndPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetEndPosition())
 }
 
-func (self Instance) SetEndPosition(value gd.Vector2) {
-	class(self).SetEndPosition(value)
+func (self Instance) SetEndPosition(value Vector2.XY) {
+	class(self).SetEndPosition(gd.Vector2(value))
 }
 
-func (self Instance) EnterCost() float64 {
-	return float64(float64(class(self).GetEnterCost()))
+func (self Instance) EnterCost() Float.X {
+	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
-func (self Instance) SetEnterCost(value float64) {
+func (self Instance) SetEnterCost(value Float.X) {
 	class(self).SetEnterCost(gd.Float(value))
 }
 
-func (self Instance) TravelCost() float64 {
-	return float64(float64(class(self).GetTravelCost()))
+func (self Instance) TravelCost() Float.X {
+	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
-func (self Instance) SetTravelCost(value float64) {
+func (self Instance) SetTravelCost(value Float.X) {
 	class(self).SetTravelCost(gd.Float(value))
 }
 

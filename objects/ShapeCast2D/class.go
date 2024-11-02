@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -56,8 +59,8 @@ func (self Instance) GetCollider(index int) gd.Object {
 /*
 Returns the [RID] of the collided object of one of the multiple collisions at [param index].
 */
-func (self Instance) GetColliderRid(index int) gd.RID {
-	return gd.RID(class(self).GetColliderRid(gd.Int(index)))
+func (self Instance) GetColliderRid(index int) Resource.ID {
+	return Resource.ID(class(self).GetColliderRid(gd.Int(index)))
 }
 
 /*
@@ -71,36 +74,36 @@ func (self Instance) GetColliderShape(index int) int {
 Returns the collision point of one of the multiple collisions at [param index] where the shape intersects the colliding object.
 [b]Note:[/b] this point is in the [b]global[/b] coordinate system.
 */
-func (self Instance) GetCollisionPoint(index int) gd.Vector2 {
-	return gd.Vector2(class(self).GetCollisionPoint(gd.Int(index)))
+func (self Instance) GetCollisionPoint(index int) Vector2.XY {
+	return Vector2.XY(class(self).GetCollisionPoint(gd.Int(index)))
 }
 
 /*
 Returns the normal of one of the multiple collisions at [param index] of the intersecting object.
 */
-func (self Instance) GetCollisionNormal(index int) gd.Vector2 {
-	return gd.Vector2(class(self).GetCollisionNormal(gd.Int(index)))
+func (self Instance) GetCollisionNormal(index int) Vector2.XY {
+	return Vector2.XY(class(self).GetCollisionNormal(gd.Int(index)))
 }
 
 /*
 The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape can move without triggering a collision.
 */
-func (self Instance) GetClosestCollisionSafeFraction() float64 {
-	return float64(float64(class(self).GetClosestCollisionSafeFraction()))
+func (self Instance) GetClosestCollisionSafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetClosestCollisionSafeFraction()))
 }
 
 /*
 The fraction from the [ShapeCast2D]'s origin to its [member target_position] (between 0 and 1) of how far the shape must move to trigger a collision.
 In ideal conditions this would be the same as [method get_closest_collision_safe_fraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
 */
-func (self Instance) GetClosestCollisionUnsafeFraction() float64 {
-	return float64(float64(class(self).GetClosestCollisionUnsafeFraction()))
+func (self Instance) GetClosestCollisionUnsafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetClosestCollisionUnsafeFraction()))
 }
 
 /*
 Adds a collision exception so the shape does not report collisions with the specified [RID].
 */
-func (self Instance) AddExceptionRid(rid gd.RID) {
+func (self Instance) AddExceptionRid(rid Resource.ID) {
 	class(self).AddExceptionRid(rid)
 }
 
@@ -114,7 +117,7 @@ func (self Instance) AddException(node objects.CollisionObject2D) {
 /*
 Removes a collision exception so the shape does report collisions with the specified [RID].
 */
-func (self Instance) RemoveExceptionRid(rid gd.RID) {
+func (self Instance) RemoveExceptionRid(rid Resource.ID) {
 	class(self).RemoveExceptionRid(rid)
 }
 
@@ -181,19 +184,19 @@ func (self Instance) SetExcludeParent(value bool) {
 	class(self).SetExcludeParentBody(value)
 }
 
-func (self Instance) TargetPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetTargetPosition())
+func (self Instance) TargetPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetTargetPosition())
 }
 
-func (self Instance) SetTargetPosition(value gd.Vector2) {
-	class(self).SetTargetPosition(value)
+func (self Instance) SetTargetPosition(value Vector2.XY) {
+	class(self).SetTargetPosition(gd.Vector2(value))
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 

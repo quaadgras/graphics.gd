@@ -151,15 +151,15 @@ func (self Instance) AddUndoMethod(callable gd.Callable) {
 /*
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
-func (self Instance) AddDoProperty(obj gd.Object, property string, value gd.Variant) {
-	class(self).AddDoProperty(obj, gd.NewStringName(property), value)
+func (self Instance) AddDoProperty(obj gd.Object, property string, value any) {
+	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
-func (self Instance) AddUndoProperty(obj gd.Object, property string, value gd.Variant) {
-	class(self).AddUndoProperty(obj, gd.NewStringName(property), value)
+func (self Instance) AddUndoProperty(obj gd.Object, property string, value any) {
+	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*

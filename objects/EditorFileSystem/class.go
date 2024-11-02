@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,8 +39,8 @@ func (self Instance) IsScanning() bool {
 /*
 Returns the scan progress for 0 to 1 if the FS is being scanned.
 */
-func (self Instance) GetScanningProgress() float64 {
-	return float64(float64(class(self).GetScanningProgress()))
+func (self Instance) GetScanningProgress() Float.X {
+	return Float.X(Float.X(class(self).GetScanningProgress()))
 }
 
 /*

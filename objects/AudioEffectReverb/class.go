@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,67 +33,67 @@ func New() Instance {
 	return Instance{classdb.AudioEffectReverb(object)}
 }
 
-func (self Instance) PredelayMsec() float64 {
-	return float64(float64(class(self).GetPredelayMsec()))
+func (self Instance) PredelayMsec() Float.X {
+	return Float.X(Float.X(class(self).GetPredelayMsec()))
 }
 
-func (self Instance) SetPredelayMsec(value float64) {
+func (self Instance) SetPredelayMsec(value Float.X) {
 	class(self).SetPredelayMsec(gd.Float(value))
 }
 
-func (self Instance) PredelayFeedback() float64 {
-	return float64(float64(class(self).GetPredelayFeedback()))
+func (self Instance) PredelayFeedback() Float.X {
+	return Float.X(Float.X(class(self).GetPredelayFeedback()))
 }
 
-func (self Instance) SetPredelayFeedback(value float64) {
+func (self Instance) SetPredelayFeedback(value Float.X) {
 	class(self).SetPredelayFeedback(gd.Float(value))
 }
 
-func (self Instance) RoomSize() float64 {
-	return float64(float64(class(self).GetRoomSize()))
+func (self Instance) RoomSize() Float.X {
+	return Float.X(Float.X(class(self).GetRoomSize()))
 }
 
-func (self Instance) SetRoomSize(value float64) {
+func (self Instance) SetRoomSize(value Float.X) {
 	class(self).SetRoomSize(gd.Float(value))
 }
 
-func (self Instance) Damping() float64 {
-	return float64(float64(class(self).GetDamping()))
+func (self Instance) Damping() Float.X {
+	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-func (self Instance) SetDamping(value float64) {
+func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(gd.Float(value))
 }
 
-func (self Instance) Spread() float64 {
-	return float64(float64(class(self).GetSpread()))
+func (self Instance) Spread() Float.X {
+	return Float.X(Float.X(class(self).GetSpread()))
 }
 
-func (self Instance) SetSpread(value float64) {
+func (self Instance) SetSpread(value Float.X) {
 	class(self).SetSpread(gd.Float(value))
 }
 
-func (self Instance) Hipass() float64 {
-	return float64(float64(class(self).GetHpf()))
+func (self Instance) Hipass() Float.X {
+	return Float.X(Float.X(class(self).GetHpf()))
 }
 
-func (self Instance) SetHipass(value float64) {
+func (self Instance) SetHipass(value Float.X) {
 	class(self).SetHpf(gd.Float(value))
 }
 
-func (self Instance) Dry() float64 {
-	return float64(float64(class(self).GetDry()))
+func (self Instance) Dry() Float.X {
+	return Float.X(Float.X(class(self).GetDry()))
 }
 
-func (self Instance) SetDry(value float64) {
+func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(gd.Float(value))
 }
 
-func (self Instance) Wet() float64 {
-	return float64(float64(class(self).GetWet()))
+func (self Instance) Wet() Float.X {
+	return Float.X(Float.X(class(self).GetWet()))
 }
 
-func (self Instance) SetWet(value float64) {
+func (self Instance) SetWet(value Float.X) {
 	class(self).SetWet(gd.Float(value))
 }
 

@@ -9,6 +9,11 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Viewport"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Rect2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,7 +28,7 @@ At runtime, [Window]s will not close automatically when requested. You need to h
 	// Window methods that can be overridden by a [Class] that extends it.
 	type Window interface {
 		//Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
-		GetContentsMinimumSize() gd.Vector2
+		GetContentsMinimumSize() Vector2.XY
 	}
 */
 type Instance [1]classdb.Window
@@ -31,11 +36,11 @@ type Instance [1]classdb.Window
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
 */
-func (Instance) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -64,16 +69,16 @@ func (self Instance) ResetSize() {
 Returns the window's position including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member position].
 */
-func (self Instance) GetPositionWithDecorations() gd.Vector2i {
-	return gd.Vector2i(class(self).GetPositionWithDecorations())
+func (self Instance) GetPositionWithDecorations() Vector2i.XY {
+	return Vector2i.XY(class(self).GetPositionWithDecorations())
 }
 
 /*
 Returns the window's size including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member size].
 */
-func (self Instance) GetSizeWithDecorations() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSizeWithDecorations())
+func (self Instance) GetSizeWithDecorations() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSizeWithDecorations())
 }
 
 /*
@@ -150,8 +155,8 @@ func (self Instance) SetImeActive(active bool) {
 /*
 Moves IME to the given position.
 */
-func (self Instance) SetImePosition(position gd.Vector2i) {
-	class(self).SetImePosition(position)
+func (self Instance) SetImePosition(position Vector2i.XY) {
+	class(self).SetImePosition(gd.Vector2i(position))
 }
 
 /*
@@ -165,8 +170,8 @@ func (self Instance) IsEmbedded() bool {
 Returns the combined minimum size from the child [Control] nodes of the window. Use [method child_controls_changed] to update it when child nodes have changed.
 The value returned by this method can be overridden with [method _get_contents_minimum_size].
 */
-func (self Instance) GetContentsMinimumSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetContentsMinimumSize())
+func (self Instance) GetContentsMinimumSize() Vector2.XY {
+	return Vector2.XY(class(self).GetContentsMinimumSize())
 }
 
 /*
@@ -240,8 +245,8 @@ func (self Instance) AddThemeFontSizeOverride(name string, font_size int) {
 Creates a local override for a theme [Color] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_color_override].
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
-func (self Instance) AddThemeColorOverride(name string, color gd.Color) {
-	class(self).AddThemeColorOverride(gd.NewStringName(name), color)
+func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) {
+	class(self).AddThemeColorOverride(gd.NewStringName(name), gd.Color(color))
 }
 
 /*
@@ -330,8 +335,8 @@ func (self Instance) GetThemeFontSize(name string) int {
 Returns a [Color] from the first matching [Theme] in the tree if that [Theme] has a color item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for more details.
 */
-func (self Instance) GetThemeColor(name string) gd.Color {
-	return gd.Color(class(self).GetThemeColor(gd.NewStringName(name), gd.NewStringName("")))
+func (self Instance) GetThemeColor(name string) Color.RGBA {
+	return Color.RGBA(class(self).GetThemeColor(gd.NewStringName(name), gd.NewStringName("")))
 }
 
 /*
@@ -442,8 +447,8 @@ func (self Instance) HasThemeConstant(name string) bool {
 Returns the default base scale value from the first matching [Theme] in the tree if that [Theme] has a valid [member Theme.default_base_scale] value.
 See [method Control.get_theme_color] for details.
 */
-func (self Instance) GetThemeDefaultBaseScale() float64 {
-	return float64(float64(class(self).GetThemeDefaultBaseScale()))
+func (self Instance) GetThemeDefaultBaseScale() Float.X {
+	return Float.X(Float.X(class(self).GetThemeDefaultBaseScale()))
 }
 
 /*
@@ -490,14 +495,14 @@ If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]
 [b]Note:[/b] [param rect] must be in global coordinates if specified.
 */
 func (self Instance) Popup() {
-	class(self).Popup(gd.NewRect2i(0, 0, 0, 0))
+	class(self).Popup(gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
 Popups the [Window] with a position shifted by parent [Window]'s position. If the [Window] is embedded, has the same effect as [method popup].
 */
-func (self Instance) PopupOnParent(parent_rect gd.Rect2i) {
-	class(self).PopupOnParent(parent_rect)
+func (self Instance) PopupOnParent(parent_rect Rect2i.PositionSize) {
+	class(self).PopupOnParent(gd.Rect2i(parent_rect))
 }
 
 /*
@@ -505,7 +510,7 @@ Popups the [Window] at the center of the current screen, with optionally given m
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCentered() {
-	class(self).PopupCentered(gd.Vector2i{0, 0})
+	class(self).PopupCentered(gd.Vector2i(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -521,7 +526,7 @@ Popups the [Window] centered inside its parent [Window]. [param fallback_ratio] 
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCenteredClamped() {
-	class(self).PopupCenteredClamped(gd.Vector2i{0, 0}, gd.Float(0.75))
+	class(self).PopupCenteredClamped(gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
 }
 
 /*
@@ -529,15 +534,15 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusive(from_node objects.Node) {
-	class(self).PopupExclusive(from_node, gd.NewRect2i(0, 0, 0, 0))
+	class(self).PopupExclusive(from_node, gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_on_parent] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusiveOnParent(from_node objects.Node, parent_rect gd.Rect2i) {
-	class(self).PopupExclusiveOnParent(from_node, parent_rect)
+func (self Instance) PopupExclusiveOnParent(from_node objects.Node, parent_rect Rect2i.PositionSize) {
+	class(self).PopupExclusiveOnParent(from_node, gd.Rect2i(parent_rect))
 }
 
 /*
@@ -545,7 +550,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCentered(from_node objects.Node) {
-	class(self).PopupExclusiveCentered(from_node, gd.Vector2i{0, 0})
+	class(self).PopupExclusiveCentered(from_node, gd.Vector2i(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -561,7 +566,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCenteredClamped(from_node objects.Node) {
-	class(self).PopupExclusiveCenteredClamped(from_node, gd.Vector2i{0, 0}, gd.Float(0.75))
+	class(self).PopupExclusiveCenteredClamped(from_node, gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -599,20 +604,20 @@ func (self Instance) SetInitialPosition(value classdb.WindowWindowInitialPositio
 	class(self).SetInitialPosition(value)
 }
 
-func (self Instance) Position() gd.Vector2i {
-	return gd.Vector2i(class(self).GetPosition())
+func (self Instance) Position() Vector2i.XY {
+	return Vector2i.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2i) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2i.XY) {
+	class(self).SetPosition(gd.Vector2i(value))
 }
 
-func (self Instance) Size() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize())
+func (self Instance) Size() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector2i) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector2i.XY) {
+	class(self).SetSize(gd.Vector2i(value))
 }
 
 func (self Instance) CurrentScreen() int {
@@ -623,12 +628,12 @@ func (self Instance) SetCurrentScreen(value int) {
 	class(self).SetCurrentScreen(gd.Int(value))
 }
 
-func (self Instance) MousePassthroughPolygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetMousePassthroughPolygon().AsSlice())
+func (self Instance) MousePassthroughPolygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetMousePassthroughPolygon().AsSlice())
 }
 
-func (self Instance) SetMousePassthroughPolygon(value []gd.Vector2) {
-	class(self).SetMousePassthroughPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) {
+	class(self).SetMousePassthroughPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) Visible() bool {
@@ -743,20 +748,20 @@ func (self Instance) SetForceNative(value bool) {
 	class(self).SetForceNative(value)
 }
 
-func (self Instance) MinSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetMinSize())
+func (self Instance) MinSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetMinSize())
 }
 
-func (self Instance) SetMinSize(value gd.Vector2i) {
-	class(self).SetMinSize(value)
+func (self Instance) SetMinSize(value Vector2i.XY) {
+	class(self).SetMinSize(gd.Vector2i(value))
 }
 
-func (self Instance) MaxSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetMaxSize())
+func (self Instance) MaxSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetMaxSize())
 }
 
-func (self Instance) SetMaxSize(value gd.Vector2i) {
-	class(self).SetMaxSize(value)
+func (self Instance) SetMaxSize(value Vector2i.XY) {
+	class(self).SetMaxSize(gd.Vector2i(value))
 }
 
 func (self Instance) KeepTitleVisible() bool {
@@ -767,12 +772,12 @@ func (self Instance) SetKeepTitleVisible(value bool) {
 	class(self).SetKeepTitleVisible(value)
 }
 
-func (self Instance) ContentScaleSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetContentScaleSize())
+func (self Instance) ContentScaleSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetContentScaleSize())
 }
 
-func (self Instance) SetContentScaleSize(value gd.Vector2i) {
-	class(self).SetContentScaleSize(value)
+func (self Instance) SetContentScaleSize(value Vector2i.XY) {
+	class(self).SetContentScaleSize(gd.Vector2i(value))
 }
 
 func (self Instance) ContentScaleMode() classdb.WindowContentScaleMode {
@@ -799,11 +804,11 @@ func (self Instance) SetContentScaleStretch(value classdb.WindowContentScaleStre
 	class(self).SetContentScaleStretch(value)
 }
 
-func (self Instance) ContentScaleFactor() float64 {
-	return float64(float64(class(self).GetContentScaleFactor()))
+func (self Instance) ContentScaleFactor() Float.X {
+	return Float.X(Float.X(class(self).GetContentScaleFactor()))
 }
 
-func (self Instance) SetContentScaleFactor(value float64) {
+func (self Instance) SetContentScaleFactor(value Float.X) {
 	class(self).SetContentScaleFactor(gd.Float(value))
 }
 

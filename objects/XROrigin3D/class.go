@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,11 +36,11 @@ func New() Instance {
 	return Instance{classdb.XROrigin3D(object)}
 }
 
-func (self Instance) WorldScale() float64 {
-	return float64(float64(class(self).GetWorldScale()))
+func (self Instance) WorldScale() Float.X {
+	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
-func (self Instance) SetWorldScale(value float64) {
+func (self Instance) SetWorldScale(value Float.X) {
 	class(self).SetWorldScale(gd.Float(value))
 }
 

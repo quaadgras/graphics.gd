@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -94,19 +95,19 @@ func New() Instance {
 	return Instance{classdb.AudioStreamGenerator(object)}
 }
 
-func (self Instance) MixRate() float64 {
-	return float64(float64(class(self).GetMixRate()))
+func (self Instance) MixRate() Float.X {
+	return Float.X(Float.X(class(self).GetMixRate()))
 }
 
-func (self Instance) SetMixRate(value float64) {
+func (self Instance) SetMixRate(value Float.X) {
 	class(self).SetMixRate(gd.Float(value))
 }
 
-func (self Instance) BufferLength() float64 {
-	return float64(float64(class(self).GetBufferLength()))
+func (self Instance) BufferLength() Float.X {
+	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-func (self Instance) SetBufferLength(value float64) {
+func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(gd.Float(value))
 }
 

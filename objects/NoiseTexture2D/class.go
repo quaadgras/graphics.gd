@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,6 +40,14 @@ func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NoiseTexture2D"))
 	return Instance{classdb.NoiseTexture2D(object)}
+}
+
+func (self Instance) SetWidth(value int) {
+	class(self).SetWidth(gd.Int(value))
+}
+
+func (self Instance) SetHeight(value int) {
+	class(self).SetHeight(gd.Int(value))
 }
 
 func (self Instance) Invert() bool {
@@ -73,11 +82,11 @@ func (self Instance) SetSeamless(value bool) {
 	class(self).SetSeamless(value)
 }
 
-func (self Instance) SeamlessBlendSkirt() float64 {
-	return float64(float64(class(self).GetSeamlessBlendSkirt()))
+func (self Instance) SeamlessBlendSkirt() Float.X {
+	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
-func (self Instance) SetSeamlessBlendSkirt(value float64) {
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
 	class(self).SetSeamlessBlendSkirt(gd.Float(value))
 }
 
@@ -89,11 +98,11 @@ func (self Instance) SetAsNormalMap(value bool) {
 	class(self).SetAsNormalMap(value)
 }
 
-func (self Instance) BumpStrength() float64 {
-	return float64(float64(class(self).GetBumpStrength()))
+func (self Instance) BumpStrength() Float.X {
+	return Float.X(Float.X(class(self).GetBumpStrength()))
 }
 
-func (self Instance) SetBumpStrength(value float64) {
+func (self Instance) SetBumpStrength(value Float.X) {
 	class(self).SetBumpStrength(gd.Float(value))
 }
 

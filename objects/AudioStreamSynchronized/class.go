@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,15 +39,15 @@ func (self Instance) GetSyncStream(stream_index int) objects.AudioStream {
 /*
 Set the volume of one of the synchronized streams, by index.
 */
-func (self Instance) SetSyncStreamVolume(stream_index int, volume_db float64) {
+func (self Instance) SetSyncStreamVolume(stream_index int, volume_db Float.X) {
 	class(self).SetSyncStreamVolume(gd.Int(stream_index), gd.Float(volume_db))
 }
 
 /*
 Get the volume of one of the synchronized streams, by index.
 */
-func (self Instance) GetSyncStreamVolume(stream_index int) float64 {
-	return float64(float64(class(self).GetSyncStreamVolume(gd.Int(stream_index))))
+func (self Instance) GetSyncStreamVolume(stream_index int) Float.X {
+	return Float.X(Float.X(class(self).GetSyncStreamVolume(gd.Int(stream_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -8,6 +8,11 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,16 +30,16 @@ type Instance [1]classdb.Shape2D
 Returns [code]true[/code] if this shape is colliding with another.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) Collide(local_xform gd.Transform2D, with_shape objects.Shape2D, shape_xform gd.Transform2D) bool {
-	return bool(class(self).Collide(local_xform, with_shape, shape_xform))
+func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape objects.Shape2D, shape_xform Transform2D.OriginXY) bool {
+	return bool(class(self).Collide(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)))
 }
 
 /*
 Returns whether this shape would collide with another, if a given movement was applied.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotion(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape objects.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) bool {
-	return bool(class(self).CollideWithMotion(local_xform, local_motion, with_shape, shape_xform, shape_motion))
+func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape objects.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool {
+	return bool(class(self).CollideWithMotion(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)))
 }
 
 /*
@@ -43,8 +48,8 @@ If there are no collisions, the returned list is empty. Otherwise, the returned 
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) CollideAndGetContacts(local_xform gd.Transform2D, with_shape objects.Shape2D, shape_xform gd.Transform2D) []gd.Vector2 {
-	return []gd.Vector2(class(self).CollideAndGetContacts(local_xform, with_shape, shape_xform).AsSlice())
+func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape objects.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY {
+	return []Vector2.XY(class(self).CollideAndGetContacts(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)).AsSlice())
 }
 
 /*
@@ -53,22 +58,22 @@ If there would be no collisions, the returned list is empty. Otherwise, the retu
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape objects.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) []gd.Vector2 {
-	return []gd.Vector2(class(self).CollideWithMotionAndGetContacts(local_xform, local_motion, with_shape, shape_xform, shape_motion).AsSlice())
+func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape objects.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY {
+	return []Vector2.XY(class(self).CollideWithMotionAndGetContacts(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)).AsSlice())
 }
 
 /*
 Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [param color]. The exact drawing method is specific for each shape and cannot be configured.
 */
-func (self Instance) Draw(canvas_item gd.RID, color gd.Color) {
-	class(self).Draw(canvas_item, color)
+func (self Instance) Draw(canvas_item Resource.ID, color Color.RGBA) {
+	class(self).Draw(canvas_item, gd.Color(color))
 }
 
 /*
 Returns a [Rect2] representing the shapes boundary.
 */
-func (self Instance) GetRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRect())
+func (self Instance) GetRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -82,11 +87,11 @@ func New() Instance {
 	return Instance{classdb.Shape2D(object)}
 }
 
-func (self Instance) CustomSolverBias() float64 {
-	return float64(float64(class(self).GetCustomSolverBias()))
+func (self Instance) CustomSolverBias() Float.X {
+	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
-func (self Instance) SetCustomSolverBias(value float64) {
+func (self Instance) SetCustomSolverBias(value Float.X) {
 	class(self).SetCustomSolverBias(gd.Float(value))
 }
 

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.ViewportTexture(object)}
 }
 
-func (self Instance) ViewportPath() string {
-	return string(class(self).GetViewportPathInScene().String())
+func (self Instance) ViewportPath() Path.String {
+	return Path.String(class(self).GetViewportPathInScene().String())
 }
 
-func (self Instance) SetViewportPath(value string) {
-	class(self).SetViewportPathInScene(gd.NewString(value).NodePath())
+func (self Instance) SetViewportPath(value Path.String) {
+	class(self).SetViewportPathInScene(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

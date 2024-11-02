@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,8 +25,8 @@ type Instance [1]classdb.LightmapGIData
 /*
 Adds an object that is considered baked within this [LightmapGIData].
 */
-func (self Instance) AddUser(path string, uv_scale gd.Rect2, slice_index int, sub_instance int) {
-	class(self).AddUser(gd.NewString(path).NodePath(), uv_scale, gd.Int(slice_index), gd.Int(sub_instance))
+func (self Instance) AddUser(path Path.String, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) {
+	class(self).AddUser(gd.NewString(string(path)).NodePath(), gd.Rect2(uv_scale), gd.Int(slice_index), gd.Int(sub_instance))
 }
 
 /*
@@ -37,8 +39,8 @@ func (self Instance) GetUserCount() int {
 /*
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
-func (self Instance) GetUserPath(user_idx int) string {
-	return string(class(self).GetUserPath(gd.Int(user_idx)).String())
+func (self Instance) GetUserPath(user_idx int) Path.String {
+	return Path.String(class(self).GetUserPath(gd.Int(user_idx)).String())
 }
 
 /*

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -71,11 +72,11 @@ func (self Instance) SetProcessCallback(value classdb.TimerTimerProcessCallback)
 	class(self).SetTimerProcessCallback(value)
 }
 
-func (self Instance) WaitTime() float64 {
-	return float64(float64(class(self).GetWaitTime()))
+func (self Instance) WaitTime() Float.X {
+	return Float.X(Float.X(class(self).GetWaitTime()))
 }
 
-func (self Instance) SetWaitTime(value float64) {
+func (self Instance) SetWaitTime(value Float.X) {
 	class(self).SetWaitTime(gd.Float(value))
 }
 
@@ -103,8 +104,8 @@ func (self Instance) SetPaused(value bool) {
 	class(self).SetPaused(value)
 }
 
-func (self Instance) TimeLeft() float64 {
-	return float64(float64(class(self).GetTimeLeft()))
+func (self Instance) TimeLeft() Float.X {
+	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 
 //go:nosplit

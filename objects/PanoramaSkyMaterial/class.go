@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,11 +51,11 @@ func (self Instance) SetFilter(value bool) {
 	class(self).SetFilteringEnabled(value)
 }
 
-func (self Instance) EnergyMultiplier() float64 {
-	return float64(float64(class(self).GetEnergyMultiplier()))
+func (self Instance) EnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-func (self Instance) SetEnergyMultiplier(value float64) {
+func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(gd.Float(value))
 }
 

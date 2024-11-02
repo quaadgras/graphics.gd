@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationRootNode"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,22 +28,22 @@ type Instance [1]classdb.AnimationNodeBlendSpace2D
 /*
 Adds a new point that represents a [param node] at the position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
-func (self Instance) AddBlendPoint(node objects.AnimationRootNode, pos gd.Vector2) {
-	class(self).AddBlendPoint(node, pos, gd.Int(-1))
+func (self Instance) AddBlendPoint(node objects.AnimationRootNode, pos Vector2.XY) {
+	class(self).AddBlendPoint(node, gd.Vector2(pos), gd.Int(-1))
 }
 
 /*
 Updates the position of the point at index [param point] on the blend axis.
 */
-func (self Instance) SetBlendPointPosition(point int, pos gd.Vector2) {
-	class(self).SetBlendPointPosition(gd.Int(point), pos)
+func (self Instance) SetBlendPointPosition(point int, pos Vector2.XY) {
+	class(self).SetBlendPointPosition(gd.Int(point), gd.Vector2(pos))
 }
 
 /*
 Returns the position of the point at index [param point].
 */
-func (self Instance) GetBlendPointPosition(point int) gd.Vector2 {
-	return gd.Vector2(class(self).GetBlendPointPosition(gd.Int(point)))
+func (self Instance) GetBlendPointPosition(point int) Vector2.XY {
+	return Vector2.XY(class(self).GetBlendPointPosition(gd.Int(point)))
 }
 
 /*
@@ -120,28 +121,28 @@ func (self Instance) SetAutoTriangles(value bool) {
 	class(self).SetAutoTriangles(value)
 }
 
-func (self Instance) MinSpace() gd.Vector2 {
-	return gd.Vector2(class(self).GetMinSpace())
+func (self Instance) MinSpace() Vector2.XY {
+	return Vector2.XY(class(self).GetMinSpace())
 }
 
-func (self Instance) SetMinSpace(value gd.Vector2) {
-	class(self).SetMinSpace(value)
+func (self Instance) SetMinSpace(value Vector2.XY) {
+	class(self).SetMinSpace(gd.Vector2(value))
 }
 
-func (self Instance) MaxSpace() gd.Vector2 {
-	return gd.Vector2(class(self).GetMaxSpace())
+func (self Instance) MaxSpace() Vector2.XY {
+	return Vector2.XY(class(self).GetMaxSpace())
 }
 
-func (self Instance) SetMaxSpace(value gd.Vector2) {
-	class(self).SetMaxSpace(value)
+func (self Instance) SetMaxSpace(value Vector2.XY) {
+	class(self).SetMaxSpace(gd.Vector2(value))
 }
 
-func (self Instance) Snap() gd.Vector2 {
-	return gd.Vector2(class(self).GetSnap())
+func (self Instance) Snap() Vector2.XY {
+	return Vector2.XY(class(self).GetSnap())
 }
 
-func (self Instance) SetSnap(value gd.Vector2) {
-	class(self).SetSnap(value)
+func (self Instance) SetSnap(value Vector2.XY) {
+	class(self).SetSnap(gd.Vector2(value))
 }
 
 func (self Instance) XLabel() string {

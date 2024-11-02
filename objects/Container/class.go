@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -74,8 +75,8 @@ func (self Instance) QueueSort() {
 /*
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
-func (self Instance) FitChildInRect(child objects.Control, rect gd.Rect2) {
-	class(self).FitChildInRect(child, rect)
+func (self Instance) FitChildInRect(child objects.Control, rect Rect2.PositionSize) {
+	class(self).FitChildInRect(child, gd.Rect2(rect))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

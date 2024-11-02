@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -69,11 +70,11 @@ func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(gd.Int(value))
 }
 
-func (self Instance) Actions() gd.Array {
-	return gd.Array(class(self).GetActions())
+func (self Instance) Actions() Array.Any {
+	return Array.Any(class(self).GetActions())
 }
 
-func (self Instance) SetActions(value gd.Array) {
+func (self Instance) SetActions(value Array.Any) {
 	class(self).SetActions(value)
 }
 

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,15 +31,15 @@ func (self Instance) GetDefaultInputPort(atype classdb.VisualShaderNodePortType)
 /*
 Sets the default [param value] for the selected input [param port].
 */
-func (self Instance) SetInputPortDefaultValue(port int, value gd.Variant) {
-	class(self).SetInputPortDefaultValue(gd.Int(port), value, gd.NewVariant(([1]gd.Variant{}[0])))
+func (self Instance) SetInputPortDefaultValue(port int, value any) {
+	class(self).SetInputPortDefaultValue(gd.Int(port), gd.NewVariant(value), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*
 Returns the default value of the input [param port].
 */
-func (self Instance) GetInputPortDefaultValue(port int) gd.Variant {
-	return gd.Variant(class(self).GetInputPortDefaultValue(gd.Int(port)))
+func (self Instance) GetInputPortDefaultValue(port int) any {
+	return any(class(self).GetInputPortDefaultValue(gd.Int(port)).Interface())
 }
 
 /*
@@ -74,11 +75,11 @@ func (self Instance) SetOutputPortForPreview(value int) {
 	class(self).SetOutputPortForPreview(gd.Int(value))
 }
 
-func (self Instance) DefaultInputValues() gd.Array {
-	return gd.Array(class(self).GetDefaultInputValues())
+func (self Instance) DefaultInputValues() Array.Any {
+	return Array.Any(class(self).GetDefaultInputValues())
 }
 
-func (self Instance) SetDefaultInputValues(value gd.Array) {
+func (self Instance) SetDefaultInputValues(value Array.Any) {
 	class(self).SetDefaultInputValues(value)
 }
 

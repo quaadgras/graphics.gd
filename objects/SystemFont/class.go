@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Font"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,6 +51,14 @@ func (self Instance) FontItalic() bool {
 
 func (self Instance) SetFontItalic(value bool) {
 	class(self).SetFontItalic(value)
+}
+
+func (self Instance) SetFontWeight(value int) {
+	class(self).SetFontWeight(gd.Int(value))
+}
+
+func (self Instance) SetFontStretch(value int) {
+	class(self).SetFontStretch(gd.Int(value))
 }
 
 func (self Instance) Antialiasing() classdb.TextServerFontAntialiasing {
@@ -132,11 +141,11 @@ func (self Instance) SetMsdfSize(value int) {
 	class(self).SetMsdfSize(gd.Int(value))
 }
 
-func (self Instance) Oversampling() float64 {
-	return float64(float64(class(self).GetOversampling()))
+func (self Instance) Oversampling() Float.X {
+	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
-func (self Instance) SetOversampling(value float64) {
+func (self Instance) SetOversampling(value Float.X) {
 	class(self).SetOversampling(gd.Float(value))
 }
 

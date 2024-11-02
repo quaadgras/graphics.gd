@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,8 +37,8 @@ func (self Instance) ApplyRest() {
 /*
 Returns the node's [member rest] [Transform2D] if it doesn't have a parent, or its rest pose relative to its parent.
 */
-func (self Instance) GetSkeletonRest() gd.Transform2D {
-	return gd.Transform2D(class(self).GetSkeletonRest())
+func (self Instance) GetSkeletonRest() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetSkeletonRest())
 }
 
 /*
@@ -63,22 +65,22 @@ func (self Instance) GetAutocalculateLengthAndAngle() bool {
 /*
 Sets the length of the bone in the [Bone2D].
 */
-func (self Instance) SetLength(length float64) {
+func (self Instance) SetLength(length Float.X) {
 	class(self).SetLength(gd.Float(length))
 }
 
 /*
 Returns the length of the bone in the [Bone2D] node.
 */
-func (self Instance) GetLength() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) GetLength() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
 /*
 Sets the bone angle for the [Bone2D]. This is typically set to the rotation from the [Bone2D] to a child [Bone2D] node.
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
-func (self Instance) SetBoneAngle(angle float64) {
+func (self Instance) SetBoneAngle(angle Float.X) {
 	class(self).SetBoneAngle(gd.Float(angle))
 }
 
@@ -86,8 +88,8 @@ func (self Instance) SetBoneAngle(angle float64) {
 Returns the angle of the bone in the [Bone2D].
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
-func (self Instance) GetBoneAngle() float64 {
-	return float64(float64(class(self).GetBoneAngle()))
+func (self Instance) GetBoneAngle() Float.X {
+	return Float.X(Float.X(class(self).GetBoneAngle()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -101,12 +103,12 @@ func New() Instance {
 	return Instance{classdb.Bone2D(object)}
 }
 
-func (self Instance) Rest() gd.Transform2D {
-	return gd.Transform2D(class(self).GetRest())
+func (self Instance) Rest() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetRest())
 }
 
-func (self Instance) SetRest(value gd.Transform2D) {
-	class(self).SetRest(value)
+func (self Instance) SetRest(value Transform2D.OriginXY) {
+	class(self).SetRest(gd.Transform2D(value))
 }
 
 //go:nosplit

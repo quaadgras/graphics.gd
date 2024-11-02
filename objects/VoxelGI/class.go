@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,7 +33,7 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
 func (self Instance) Bake() {
-	class(self).Bake(([1]objects.Node{}[0]), false)
+	class(self).Bake([1]objects.Node{}[0], false)
 }
 
 /*
@@ -61,12 +62,12 @@ func (self Instance) SetSubdiv(value classdb.VoxelGISubdiv) {
 	class(self).SetSubdiv(value)
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
 func (self Instance) CameraAttributes() objects.CameraAttributes {

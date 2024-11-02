@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,15 +30,15 @@ type Instance [1]classdb.Line2D
 /*
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
-func (self Instance) SetPointPosition(index int, position gd.Vector2) {
-	class(self).SetPointPosition(gd.Int(index), position)
+func (self Instance) SetPointPosition(index int, position Vector2.XY) {
+	class(self).SetPointPosition(gd.Int(index), gd.Vector2(position))
 }
 
 /*
 Returns the position of the point at index [param index].
 */
-func (self Instance) GetPointPosition(index int) gd.Vector2 {
-	return gd.Vector2(class(self).GetPointPosition(gd.Int(index)))
+func (self Instance) GetPointPosition(index int) Vector2.XY {
+	return Vector2.XY(class(self).GetPointPosition(gd.Int(index)))
 }
 
 /*
@@ -49,8 +52,8 @@ func (self Instance) GetPointCount() int {
 Adds a point with the specified [param position] relative to the polyline's own position. If no [param index] is provided, the new point will be added to the end of the points array.
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
-func (self Instance) AddPoint(position gd.Vector2) {
-	class(self).AddPoint(position, gd.Int(-1))
+func (self Instance) AddPoint(position Vector2.XY) {
+	class(self).AddPoint(gd.Vector2(position), gd.Int(-1))
 }
 
 /*
@@ -78,12 +81,12 @@ func New() Instance {
 	return Instance{classdb.Line2D(object)}
 }
 
-func (self Instance) Points() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPoints().AsSlice())
+func (self Instance) Points() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPoints().AsSlice())
 }
 
-func (self Instance) SetPoints(value []gd.Vector2) {
-	class(self).SetPoints(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPoints(value []Vector2.XY) {
+	class(self).SetPoints(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) Closed() bool {
@@ -94,11 +97,11 @@ func (self Instance) SetClosed(value bool) {
 	class(self).SetClosed(value)
 }
 
-func (self Instance) Width() float64 {
-	return float64(float64(class(self).GetWidth()))
+func (self Instance) Width() Float.X {
+	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-func (self Instance) SetWidth(value float64) {
+func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(gd.Float(value))
 }
 
@@ -110,12 +113,12 @@ func (self Instance) SetWidthCurve(value objects.Curve) {
 	class(self).SetCurve(value)
 }
 
-func (self Instance) DefaultColor() gd.Color {
-	return gd.Color(class(self).GetDefaultColor())
+func (self Instance) DefaultColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDefaultColor())
 }
 
-func (self Instance) SetDefaultColor(value gd.Color) {
-	class(self).SetDefaultColor(value)
+func (self Instance) SetDefaultColor(value Color.RGBA) {
+	class(self).SetDefaultColor(gd.Color(value))
 }
 
 func (self Instance) Gradient() objects.Gradient {
@@ -166,11 +169,11 @@ func (self Instance) SetEndCapMode(value classdb.Line2DLineCapMode) {
 	class(self).SetEndCapMode(value)
 }
 
-func (self Instance) SharpLimit() float64 {
-	return float64(float64(class(self).GetSharpLimit()))
+func (self Instance) SharpLimit() Float.X {
+	return Float.X(Float.X(class(self).GetSharpLimit()))
 }
 
-func (self Instance) SetSharpLimit(value float64) {
+func (self Instance) SetSharpLimit(value Float.X) {
 	class(self).SetSharpLimit(gd.Float(value))
 }
 

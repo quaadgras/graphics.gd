@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,8 +27,8 @@ var query = PhysicsRayQueryParameters2D.create(global_position, global_position 
 var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func (self Instance) Create(from gd.Vector2, to gd.Vector2) objects.PhysicsRayQueryParameters2D {
-	return objects.PhysicsRayQueryParameters2D(class(self).Create(from, to, gd.Int(4294967295), ([1]gd.Array{}[0])))
+func (self Instance) Create(from Vector2.XY, to Vector2.XY) objects.PhysicsRayQueryParameters2D {
+	return objects.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), [1]gd.Array{}[0]))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -41,20 +42,20 @@ func New() Instance {
 	return Instance{classdb.PhysicsRayQueryParameters2D(object)}
 }
 
-func (self Instance) From() gd.Vector2 {
-	return gd.Vector2(class(self).GetFrom())
+func (self Instance) From() Vector2.XY {
+	return Vector2.XY(class(self).GetFrom())
 }
 
-func (self Instance) SetFrom(value gd.Vector2) {
-	class(self).SetFrom(value)
+func (self Instance) SetFrom(value Vector2.XY) {
+	class(self).SetFrom(gd.Vector2(value))
 }
 
-func (self Instance) To() gd.Vector2 {
-	return gd.Vector2(class(self).GetTo())
+func (self Instance) To() Vector2.XY {
+	return Vector2.XY(class(self).GetTo())
 }
 
-func (self Instance) SetTo(value gd.Vector2) {
-	class(self).SetTo(value)
+func (self Instance) SetTo(value Vector2.XY) {
+	class(self).SetTo(gd.Vector2(value))
 }
 
 func (self Instance) CollisionMask() int {

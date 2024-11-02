@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +26,8 @@ type Instance [1]classdb.InstancePlaceholder
 Returns the list of properties that will be applied to the node when [method create_instance] is called.
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
-func (self Instance) GetStoredValues() gd.Dictionary {
-	return gd.Dictionary(class(self).GetStoredValues(false))
+func (self Instance) GetStoredValues() Dictionary.Any {
+	return Dictionary.Any(class(self).GetStoredValues(false))
 }
 
 /*
@@ -34,7 +35,7 @@ Call this method to actually load in the node. The created node will be placed a
 [b]Note:[/b] [method create_instance] is not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
 func (self Instance) CreateInstance() objects.Node {
-	return objects.Node(class(self).CreateInstance(false, ([1]objects.PackedScene{}[0])))
+	return objects.Node(class(self).CreateInstance(false, [1]objects.PackedScene{}[0]))
 }
 
 /*

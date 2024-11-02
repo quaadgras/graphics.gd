@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Joint3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,15 +26,15 @@ type Instance [1]classdb.SliderJoint3D
 /*
 Assigns [param value] to the given parameter (see [enum Param] constants).
 */
-func (self Instance) SetParam(param classdb.SliderJoint3DParam, value float64) {
+func (self Instance) SetParam(param classdb.SliderJoint3DParam, value Float.X) {
 	class(self).SetParam(param, gd.Float(value))
 }
 
 /*
 Returns the value of the given parameter (see [enum Param] constants).
 */
-func (self Instance) GetParam(param classdb.SliderJoint3DParam) float64 {
-	return float64(float64(class(self).GetParam(param)))
+func (self Instance) GetParam(param classdb.SliderJoint3DParam) Float.X {
+	return Float.X(Float.X(class(self).GetParam(param)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

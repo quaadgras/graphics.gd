@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationRootNode"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,7 +28,7 @@ type Instance [1]classdb.AnimationNodeBlendTree
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
 func (self Instance) AddNode(name string, node objects.AnimationNode) {
-	class(self).AddNode(gd.NewStringName(name), node, gd.Vector2{0, 0})
+	class(self).AddNode(gd.NewStringName(name), node, gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
@@ -75,15 +76,15 @@ func (self Instance) DisconnectNode(input_node string, input_index int) {
 /*
 Modifies the position of a sub animation node.
 */
-func (self Instance) SetNodePosition(name string, position gd.Vector2) {
-	class(self).SetNodePosition(gd.NewStringName(name), position)
+func (self Instance) SetNodePosition(name string, position Vector2.XY) {
+	class(self).SetNodePosition(gd.NewStringName(name), gd.Vector2(position))
 }
 
 /*
 Returns the position of the sub animation node with the specified [param name].
 */
-func (self Instance) GetNodePosition(name string) gd.Vector2 {
-	return gd.Vector2(class(self).GetNodePosition(gd.NewStringName(name)))
+func (self Instance) GetNodePosition(name string) Vector2.XY {
+	return Vector2.XY(class(self).GetNodePosition(gd.NewStringName(name)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -97,12 +98,12 @@ func New() Instance {
 	return Instance{classdb.AnimationNodeBlendTree(object)}
 }
 
-func (self Instance) GraphOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetGraphOffset())
+func (self Instance) GraphOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetGraphOffset())
 }
 
-func (self Instance) SetGraphOffset(value gd.Vector2) {
-	class(self).SetGraphOffset(value)
+func (self Instance) SetGraphOffset(value Vector2.XY) {
+	class(self).SetGraphOffset(gd.Vector2(value))
 }
 
 /*

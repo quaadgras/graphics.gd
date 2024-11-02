@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,17 +32,17 @@ This class is intended to be overridden by video decoder extensions with custom 
 		//Returns the paused status, as set by [method _set_paused].
 		IsPaused() bool
 		//Returns the video duration in seconds, if known, or 0 if unknown.
-		GetLength() float64
+		GetLength() Float.X
 		//Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
-		GetPlaybackPosition() float64
+		GetPlaybackPosition() Float.X
 		//Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
-		Seek(time float64)
+		Seek(time Float.X)
 		//Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
 		SetAudioTrack(idx int)
 		//Allocates a [Texture2D] in which decoded video frames will be drawn.
 		GetTexture() objects.Texture2D
 		//Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
-		Update(delta float64)
+		Update(delta Float.X)
 		//Returns the number of audio channels.
 		GetChannels() int
 		//Returns the audio sample rate used for mixing.
@@ -106,7 +107,7 @@ func (Instance) _is_paused(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 /*
 Returns the video duration in seconds, if known, or 0 if unknown.
 */
-func (Instance) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -117,7 +118,7 @@ func (Instance) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.Extens
 /*
 Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
 */
-func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -128,11 +129,11 @@ func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) float64) (c
 /*
 Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
 */
-func (Instance) _seek(impl func(ptr unsafe.Pointer, time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _seek(impl func(ptr unsafe.Pointer, time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(time))
+		impl(self, Float.X(time))
 	}
 }
 
@@ -165,11 +166,11 @@ func (Instance) _get_texture(impl func(ptr unsafe.Pointer) objects.Texture2D) (c
 /*
 Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
 */
-func (Instance) _update(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _update(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(delta))
+		impl(self, Float.X(delta))
 	}
 }
 
@@ -199,7 +200,7 @@ func (Instance) _get_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
 func (self Instance) MixAudio(num_frames int) int {
-	return int(int(class(self).MixAudio(gd.Int(num_frames), gd.NewPackedFloat32Slice(([1][]float32{}[0])), gd.Int(0))))
+	return int(int(class(self).MixAudio(gd.Int(num_frames), gd.NewPackedFloat32Slice([1][]float32{}[0]), gd.Int(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,12 +41,12 @@ Extending this class allows you to define your own loader. Be sure to respect th
 		GetDependencies(path string, add_types bool) []string
 		//If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 		//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		RenameDependencies(path string, renames gd.Dictionary) error
+		RenameDependencies(path string, renames Dictionary.Any) error
 		Exists(path string) bool
 		GetClassesUsed(path string) []string
 		//Loads a resource when the engine finds this loader to be compatible. If the loaded resource is the result of an import, [param original_path] will target the source file. Returns a [Resource] object on success, or an [enum Error] constant in case of failure.
 		//The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
-		Load(path string, original_path string, use_sub_threads bool, cache_mode int) gd.Variant
+		Load(path string, original_path string, use_sub_threads bool, cache_mode int) any
 	}
 */
 type Instance [1]classdb.ResourceFormatLoader
@@ -162,7 +163,7 @@ func (Instance) _get_dependencies(impl func(ptr unsafe.Pointer, path string, add
 If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames gd.Dictionary) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames Dictionary.Any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -200,7 +201,7 @@ func (Instance) _get_classes_used(impl func(ptr unsafe.Pointer, path string) []s
 Loads a resource when the engine finds this loader to be compatible. If the loaded resource is the result of an import, [param original_path] will target the source file. Returns a [Resource] object on success, or an [enum Error] constant in case of failure.
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
-func (Instance) _load(impl func(ptr unsafe.Pointer, path string, original_path string, use_sub_threads bool, cache_mode int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _load(impl func(ptr unsafe.Pointer, path string, original_path string, use_sub_threads bool, cache_mode int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -210,7 +211,7 @@ func (Instance) _load(impl func(ptr unsafe.Pointer, path string, original_path s
 		var cache_mode = gd.UnsafeGet[gd.Int](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), original_path.String(), use_sub_threads, int(cache_mode))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}

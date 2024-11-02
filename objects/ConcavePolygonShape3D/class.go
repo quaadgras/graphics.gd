@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.ConcavePolygonShape3D(object)}
 }
 
-func (self Instance) Data() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetFaces().AsSlice())
+func (self Instance) Data() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetFaces().AsSlice())
 }
 
-func (self Instance) SetData(value []gd.Vector3) {
-	class(self).SetFaces(gd.NewPackedVector3Slice(value))
+func (self Instance) SetData(value []Vector3.XYZ) {
+	class(self).SetFaces(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) BackfaceCollision() bool {

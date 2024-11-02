@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationRootNode"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,22 +28,22 @@ type Instance [1]classdb.AnimationNodeBlendSpace1D
 /*
 Adds a new point that represents a [param node] on the virtual axis at a given position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
-func (self Instance) AddBlendPoint(node objects.AnimationRootNode, pos float64) {
+func (self Instance) AddBlendPoint(node objects.AnimationRootNode, pos Float.X) {
 	class(self).AddBlendPoint(node, gd.Float(pos), gd.Int(-1))
 }
 
 /*
 Updates the position of the point at index [param point] on the blend axis.
 */
-func (self Instance) SetBlendPointPosition(point int, pos float64) {
+func (self Instance) SetBlendPointPosition(point int, pos Float.X) {
 	class(self).SetBlendPointPosition(gd.Int(point), gd.Float(pos))
 }
 
 /*
 Returns the position of the point at index [param point].
 */
-func (self Instance) GetBlendPointPosition(point int) float64 {
-	return float64(float64(class(self).GetBlendPointPosition(gd.Int(point))))
+func (self Instance) GetBlendPointPosition(point int) Float.X {
+	return Float.X(Float.X(class(self).GetBlendPointPosition(gd.Int(point))))
 }
 
 /*
@@ -84,27 +85,27 @@ func New() Instance {
 	return Instance{classdb.AnimationNodeBlendSpace1D(object)}
 }
 
-func (self Instance) MinSpace() float64 {
-	return float64(float64(class(self).GetMinSpace()))
+func (self Instance) MinSpace() Float.X {
+	return Float.X(Float.X(class(self).GetMinSpace()))
 }
 
-func (self Instance) SetMinSpace(value float64) {
+func (self Instance) SetMinSpace(value Float.X) {
 	class(self).SetMinSpace(gd.Float(value))
 }
 
-func (self Instance) MaxSpace() float64 {
-	return float64(float64(class(self).GetMaxSpace()))
+func (self Instance) MaxSpace() Float.X {
+	return Float.X(Float.X(class(self).GetMaxSpace()))
 }
 
-func (self Instance) SetMaxSpace(value float64) {
+func (self Instance) SetMaxSpace(value Float.X) {
 	class(self).SetMaxSpace(gd.Float(value))
 }
 
-func (self Instance) Snap() float64 {
-	return float64(float64(class(self).GetSnap()))
+func (self Instance) Snap() Float.X {
+	return Float.X(Float.X(class(self).GetSnap()))
 }
 
-func (self Instance) SetSnap(value float64) {
+func (self Instance) SetSnap(value Float.X) {
 	class(self).SetSnap(gd.Float(value))
 }
 

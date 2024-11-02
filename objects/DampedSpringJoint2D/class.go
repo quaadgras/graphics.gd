@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Joint2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,35 +35,35 @@ func New() Instance {
 	return Instance{classdb.DampedSpringJoint2D(object)}
 }
 
-func (self Instance) Length() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) Length() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
-func (self Instance) SetLength(value float64) {
+func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(gd.Float(value))
 }
 
-func (self Instance) RestLength() float64 {
-	return float64(float64(class(self).GetRestLength()))
+func (self Instance) RestLength() Float.X {
+	return Float.X(Float.X(class(self).GetRestLength()))
 }
 
-func (self Instance) SetRestLength(value float64) {
+func (self Instance) SetRestLength(value Float.X) {
 	class(self).SetRestLength(gd.Float(value))
 }
 
-func (self Instance) Stiffness() float64 {
-	return float64(float64(class(self).GetStiffness()))
+func (self Instance) Stiffness() Float.X {
+	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
-func (self Instance) SetStiffness(value float64) {
+func (self Instance) SetStiffness(value Float.X) {
 	class(self).SetStiffness(gd.Float(value))
 }
 
-func (self Instance) Damping() float64 {
-	return float64(float64(class(self).GetDamping()))
+func (self Instance) Damping() Float.X {
+	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-func (self Instance) SetDamping(value float64) {
+func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(gd.Float(value))
 }
 

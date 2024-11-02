@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Plane"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,12 +33,12 @@ func New() Instance {
 	return Instance{classdb.WorldBoundaryShape3D(object)}
 }
 
-func (self Instance) Plane() gd.Plane {
-	return gd.Plane(class(self).GetPlane())
+func (self Instance) Plane() Plane.NormalD {
+	return Plane.NormalD(class(self).GetPlane())
 }
 
-func (self Instance) SetPlane(value gd.Plane) {
-	class(self).SetPlane(value)
+func (self Instance) SetPlane(value Plane.NormalD) {
+	class(self).SetPlane(gd.Plane(value))
 }
 
 //go:nosplit

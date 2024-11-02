@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,8 +47,8 @@ func (self Instance) IsCurrent() bool {
 /*
 Returns the listener's global orthonormalized [Transform3D].
 */
-func (self Instance) GetListenerTransform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetListenerTransform())
+func (self Instance) GetListenerTransform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetListenerTransform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

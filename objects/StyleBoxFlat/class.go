@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/StyleBox"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,7 +60,7 @@ func (self Instance) SetCornerRadiusAll(radius int) {
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
-func (self Instance) SetExpandMarginAll(size float64) {
+func (self Instance) SetExpandMarginAll(size Float.X) {
 	class(self).SetExpandMarginAll(gd.Float(size))
 }
 
@@ -72,12 +75,12 @@ func New() Instance {
 	return Instance{classdb.StyleBoxFlat(object)}
 }
 
-func (self Instance) BgColor() gd.Color {
-	return gd.Color(class(self).GetBgColor())
+func (self Instance) BgColor() Color.RGBA {
+	return Color.RGBA(class(self).GetBgColor())
 }
 
-func (self Instance) SetBgColor(value gd.Color) {
-	class(self).SetBgColor(value)
+func (self Instance) SetBgColor(value Color.RGBA) {
+	class(self).SetBgColor(gd.Color(value))
 }
 
 func (self Instance) DrawCenter() bool {
@@ -88,12 +91,12 @@ func (self Instance) SetDrawCenter(value bool) {
 	class(self).SetDrawCenter(value)
 }
 
-func (self Instance) Skew() gd.Vector2 {
-	return gd.Vector2(class(self).GetSkew())
+func (self Instance) Skew() Vector2.XY {
+	return Vector2.XY(class(self).GetSkew())
 }
 
-func (self Instance) SetSkew(value gd.Vector2) {
-	class(self).SetSkew(value)
+func (self Instance) SetSkew(value Vector2.XY) {
+	class(self).SetSkew(gd.Vector2(value))
 }
 
 func (self Instance) BorderWidthLeft() int {
@@ -128,12 +131,12 @@ func (self Instance) SetBorderWidthBottom(value int) {
 	class(self).SetBorderWidth(3, gd.Int(value))
 }
 
-func (self Instance) BorderColor() gd.Color {
-	return gd.Color(class(self).GetBorderColor())
+func (self Instance) BorderColor() Color.RGBA {
+	return Color.RGBA(class(self).GetBorderColor())
 }
 
-func (self Instance) SetBorderColor(value gd.Color) {
-	class(self).SetBorderColor(value)
+func (self Instance) SetBorderColor(value Color.RGBA) {
+	class(self).SetBorderColor(gd.Color(value))
 }
 
 func (self Instance) BorderBlend() bool {
@@ -184,44 +187,44 @@ func (self Instance) SetCornerDetail(value int) {
 	class(self).SetCornerDetail(gd.Int(value))
 }
 
-func (self Instance) ExpandMarginLeft() float64 {
-	return float64(float64(class(self).GetExpandMargin(0)))
+func (self Instance) ExpandMarginLeft() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
-func (self Instance) SetExpandMarginLeft(value float64) {
+func (self Instance) SetExpandMarginLeft(value Float.X) {
 	class(self).SetExpandMargin(0, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginTop() float64 {
-	return float64(float64(class(self).GetExpandMargin(1)))
+func (self Instance) ExpandMarginTop() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
-func (self Instance) SetExpandMarginTop(value float64) {
+func (self Instance) SetExpandMarginTop(value Float.X) {
 	class(self).SetExpandMargin(1, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginRight() float64 {
-	return float64(float64(class(self).GetExpandMargin(2)))
+func (self Instance) ExpandMarginRight() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
-func (self Instance) SetExpandMarginRight(value float64) {
+func (self Instance) SetExpandMarginRight(value Float.X) {
 	class(self).SetExpandMargin(2, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginBottom() float64 {
-	return float64(float64(class(self).GetExpandMargin(3)))
+func (self Instance) ExpandMarginBottom() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
-func (self Instance) SetExpandMarginBottom(value float64) {
+func (self Instance) SetExpandMarginBottom(value Float.X) {
 	class(self).SetExpandMargin(3, gd.Float(value))
 }
 
-func (self Instance) ShadowColor() gd.Color {
-	return gd.Color(class(self).GetShadowColor())
+func (self Instance) ShadowColor() Color.RGBA {
+	return Color.RGBA(class(self).GetShadowColor())
 }
 
-func (self Instance) SetShadowColor(value gd.Color) {
-	class(self).SetShadowColor(value)
+func (self Instance) SetShadowColor(value Color.RGBA) {
+	class(self).SetShadowColor(gd.Color(value))
 }
 
 func (self Instance) ShadowSize() int {
@@ -232,12 +235,12 @@ func (self Instance) SetShadowSize(value int) {
 	class(self).SetShadowSize(gd.Int(value))
 }
 
-func (self Instance) ShadowOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetShadowOffset())
+func (self Instance) ShadowOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetShadowOffset())
 }
 
-func (self Instance) SetShadowOffset(value gd.Vector2) {
-	class(self).SetShadowOffset(value)
+func (self Instance) SetShadowOffset(value Vector2.XY) {
+	class(self).SetShadowOffset(gd.Vector2(value))
 }
 
 func (self Instance) AntiAliasing() bool {
@@ -248,11 +251,11 @@ func (self Instance) SetAntiAliasing(value bool) {
 	class(self).SetAntiAliased(value)
 }
 
-func (self Instance) AntiAliasingSize() float64 {
-	return float64(float64(class(self).GetAaSize()))
+func (self Instance) AntiAliasingSize() Float.X {
+	return Float.X(Float.X(class(self).GetAaSize()))
 }
 
-func (self Instance) SetAntiAliasingSize(value float64) {
+func (self Instance) SetAntiAliasingSize(value Float.X) {
 	class(self).SetAaSize(gd.Float(value))
 }
 

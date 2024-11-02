@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,12 +36,12 @@ func New() Instance {
 	return Instance{classdb.ConvexPolygonShape3D(object)}
 }
 
-func (self Instance) Points() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetPoints().AsSlice())
+func (self Instance) Points() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetPoints().AsSlice())
 }
 
-func (self Instance) SetPoints(value []gd.Vector3) {
-	class(self).SetPoints(gd.NewPackedVector3Slice(value))
+func (self Instance) SetPoints(value []Vector3.XYZ) {
+	class(self).SetPoints(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
 }
 
 //go:nosplit

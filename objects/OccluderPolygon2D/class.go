@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -47,12 +48,12 @@ func (self Instance) SetCullMode(value classdb.OccluderPolygon2DCullMode) {
 	class(self).SetCullMode(value)
 }
 
-func (self Instance) Polygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPolygon().AsSlice())
+func (self Instance) Polygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPolygon().AsSlice())
 }
 
-func (self Instance) SetPolygon(value []gd.Vector2) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPolygon(value []Vector2.XY) {
+	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 //go:nosplit

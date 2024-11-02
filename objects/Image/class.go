@@ -8,6 +8,11 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Rect2i"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,8 +44,8 @@ func (self Instance) GetHeight() int {
 /*
 Returns the image's size (width and height).
 */
-func (self Instance) GetSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize())
+func (self Instance) GetSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize())
 }
 
 /*
@@ -376,64 +381,64 @@ func (self Instance) BumpMapToNormalMap() {
 Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
-func (self Instance) ComputeImageMetrics(compared_image objects.Image, use_luma bool) gd.Dictionary {
-	return gd.Dictionary(class(self).ComputeImageMetrics(compared_image, use_luma))
+func (self Instance) ComputeImageMetrics(compared_image objects.Image, use_luma bool) Dictionary.Any {
+	return Dictionary.Any(class(self).ComputeImageMetrics(compared_image, use_luma))
 }
 
 /*
 Copies [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlitRect(src objects.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	class(self).BlitRect(src, src_rect, dst)
+func (self Instance) BlitRect(src objects.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) {
+	class(self).BlitRect(src, gd.Rect2i(src_rect), gd.Vector2i(dst))
 }
 
 /*
 Blits [param src_rect] area from [param src] image to this image at the coordinates given by [param dst], clipped accordingly to both image bounds. [param src] pixel is copied onto [param dst] if the corresponding [param mask] pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlitRectMask(src objects.Image, mask objects.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	class(self).BlitRectMask(src, mask, src_rect, dst)
+func (self Instance) BlitRectMask(src objects.Image, mask objects.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) {
+	class(self).BlitRectMask(src, mask, gd.Rect2i(src_rect), gd.Vector2i(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlendRect(src objects.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	class(self).BlendRect(src, src_rect, dst)
+func (self Instance) BlendRect(src objects.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) {
+	class(self).BlendRect(src, gd.Rect2i(src_rect), gd.Vector2i(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image using [param mask] image at coordinates [param dst], clipped accordingly to both image bounds. Alpha channels are required for both [param src] and [param mask]. [param dst] pixels and [param src] pixels will blend if the corresponding mask pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlendRectMask(src objects.Image, mask objects.Image, src_rect gd.Rect2i, dst gd.Vector2i) {
-	class(self).BlendRectMask(src, mask, src_rect, dst)
+func (self Instance) BlendRectMask(src objects.Image, mask objects.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) {
+	class(self).BlendRectMask(src, mask, gd.Rect2i(src_rect), gd.Vector2i(dst))
 }
 
 /*
 Fills the image with [param color].
 */
-func (self Instance) Fill(color gd.Color) {
-	class(self).Fill(color)
+func (self Instance) Fill(color Color.RGBA) {
+	class(self).Fill(gd.Color(color))
 }
 
 /*
 Fills [param rect] with [param color].
 */
-func (self Instance) FillRect(rect gd.Rect2i, color gd.Color) {
-	class(self).FillRect(rect, color)
+func (self Instance) FillRect(rect Rect2i.PositionSize, color Color.RGBA) {
+	class(self).FillRect(gd.Rect2i(rect), gd.Color(color))
 }
 
 /*
 Returns a [Rect2i] enclosing the visible portion of the image, considering each pixel with a non-zero alpha channel as visible.
 */
-func (self Instance) GetUsedRect() gd.Rect2i {
-	return gd.Rect2i(class(self).GetUsedRect())
+func (self Instance) GetUsedRect() Rect2i.PositionSize {
+	return Rect2i.PositionSize(class(self).GetUsedRect())
 }
 
 /*
 Returns a new [Image] that is a copy of this [Image]'s area specified with [param region].
 */
-func (self Instance) GetRegion(region gd.Rect2i) objects.Image {
-	return objects.Image(class(self).GetRegion(region))
+func (self Instance) GetRegion(region Rect2i.PositionSize) objects.Image {
+	return objects.Image(class(self).GetRegion(gd.Rect2i(region)))
 }
 
 /*
@@ -447,16 +452,16 @@ func (self Instance) CopyFrom(src objects.Image) {
 Returns the color of the pixel at [param point].
 This is the same as [method get_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
-func (self Instance) GetPixelv(point gd.Vector2i) gd.Color {
-	return gd.Color(class(self).GetPixelv(point))
+func (self Instance) GetPixelv(point Vector2i.XY) Color.RGBA {
+	return Color.RGBA(class(self).GetPixelv(gd.Vector2i(point)))
 }
 
 /*
 Returns the color of the pixel at [code](x, y)[/code].
 This is the same as [method get_pixelv], but with two integer arguments instead of a [Vector2i] argument.
 */
-func (self Instance) GetPixel(x int, y int) gd.Color {
-	return gd.Color(class(self).GetPixel(gd.Int(x), gd.Int(y)))
+func (self Instance) GetPixel(x int, y int) Color.RGBA {
+	return Color.RGBA(class(self).GetPixel(gd.Int(x), gd.Int(y)))
 }
 
 /*
@@ -480,8 +485,8 @@ img.SetPixelv(new Vector2I(1, 2), Colors.Red); // Sets the color at (1, 2) to re
 [/codeblocks]
 This is the same as [method set_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
-func (self Instance) SetPixelv(point gd.Vector2i, color gd.Color) {
-	class(self).SetPixelv(point, color)
+func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) {
+	class(self).SetPixelv(gd.Vector2i(point), gd.Color(color))
 }
 
 /*
@@ -505,14 +510,14 @@ img.SetPixel(1, 2, Colors.Red); // Sets the color at (1, 2) to red.
 [/codeblocks]
 This is the same as [method set_pixelv], but with a two integer arguments instead of a [Vector2i] argument.
 */
-func (self Instance) SetPixel(x int, y int, color gd.Color) {
-	class(self).SetPixel(gd.Int(x), gd.Int(y), color)
+func (self Instance) SetPixel(x int, y int, color Color.RGBA) {
+	class(self).SetPixel(gd.Int(x), gd.Int(y), gd.Color(color))
 }
 
 /*
 Adjusts this image's [param brightness], [param contrast], and [param saturation] by the given values. Does not work if the image is compressed (see [method is_compressed]).
 */
-func (self Instance) AdjustBcs(brightness float64, contrast float64, saturation float64) {
+func (self Instance) AdjustBcs(brightness Float.X, contrast Float.X, saturation Float.X) {
 	class(self).AdjustBcs(gd.Float(brightness), gd.Float(contrast), gd.Float(saturation))
 }
 

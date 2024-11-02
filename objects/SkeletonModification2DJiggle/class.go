@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -54,15 +57,15 @@ func (self Instance) GetCollisionMask() int {
 /*
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) {
-	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), gd.NewString(bone2d_node).NodePath())
+func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node Path.String) {
+	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string {
-	return string(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetJiggleJointBone2dNode(joint_idx int) Path.String {
+	return Path.String(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -96,43 +99,43 @@ func (self Instance) GetJiggleJointOverride(joint_idx int) bool {
 /*
 Sets the of stiffness of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness float64) {
+func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness Float.X) {
 	class(self).SetJiggleJointStiffness(gd.Int(joint_idx), gd.Float(stiffness))
 }
 
 /*
 Returns the stiffness of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointStiffness(joint_idx int) float64 {
-	return float64(float64(class(self).GetJiggleJointStiffness(gd.Int(joint_idx))))
+func (self Instance) GetJiggleJointStiffness(joint_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetJiggleJointStiffness(gd.Int(joint_idx))))
 }
 
 /*
 Sets the of mass of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointMass(joint_idx int, mass float64) {
+func (self Instance) SetJiggleJointMass(joint_idx int, mass Float.X) {
 	class(self).SetJiggleJointMass(gd.Int(joint_idx), gd.Float(mass))
 }
 
 /*
 Returns the amount of mass of the jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointMass(joint_idx int) float64 {
-	return float64(float64(class(self).GetJiggleJointMass(gd.Int(joint_idx))))
+func (self Instance) GetJiggleJointMass(joint_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetJiggleJointMass(gd.Int(joint_idx))))
 }
 
 /*
 Sets the amount of damping of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointDamping(joint_idx int, damping float64) {
+func (self Instance) SetJiggleJointDamping(joint_idx int, damping Float.X) {
 	class(self).SetJiggleJointDamping(gd.Int(joint_idx), gd.Float(damping))
 }
 
 /*
 Returns the amount of damping of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointDamping(joint_idx int) float64 {
-	return float64(float64(class(self).GetJiggleJointDamping(gd.Int(joint_idx))))
+func (self Instance) GetJiggleJointDamping(joint_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetJiggleJointDamping(gd.Int(joint_idx))))
 }
 
 /*
@@ -152,15 +155,15 @@ func (self Instance) GetJiggleJointUseGravity(joint_idx int) bool {
 /*
 Sets the gravity vector of the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointGravity(joint_idx int, gravity gd.Vector2) {
-	class(self).SetJiggleJointGravity(gd.Int(joint_idx), gravity)
+func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) {
+	class(self).SetJiggleJointGravity(gd.Int(joint_idx), gd.Vector2(gravity))
 }
 
 /*
 Returns a [Vector2] representing the amount of gravity the Jiggle joint at [param joint_idx] is influenced by.
 */
-func (self Instance) GetJiggleJointGravity(joint_idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetJiggleJointGravity(gd.Int(joint_idx)))
+func (self Instance) GetJiggleJointGravity(joint_idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetJiggleJointGravity(gd.Int(joint_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -174,12 +177,12 @@ func New() Instance {
 	return Instance{classdb.SkeletonModification2DJiggle(object)}
 }
 
-func (self Instance) TargetNodepath() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNodepath(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) JiggleDataChainLength() int {
@@ -190,27 +193,27 @@ func (self Instance) SetJiggleDataChainLength(value int) {
 	class(self).SetJiggleDataChainLength(gd.Int(value))
 }
 
-func (self Instance) Stiffness() float64 {
-	return float64(float64(class(self).GetStiffness()))
+func (self Instance) Stiffness() Float.X {
+	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
-func (self Instance) SetStiffness(value float64) {
+func (self Instance) SetStiffness(value Float.X) {
 	class(self).SetStiffness(gd.Float(value))
 }
 
-func (self Instance) Mass() float64 {
-	return float64(float64(class(self).GetMass()))
+func (self Instance) Mass() Float.X {
+	return Float.X(Float.X(class(self).GetMass()))
 }
 
-func (self Instance) SetMass(value float64) {
+func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(gd.Float(value))
 }
 
-func (self Instance) Damping() float64 {
-	return float64(float64(class(self).GetDamping()))
+func (self Instance) Damping() Float.X {
+	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-func (self Instance) SetDamping(value float64) {
+func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(gd.Float(value))
 }
 
@@ -222,12 +225,12 @@ func (self Instance) SetUseGravity(value bool) {
 	class(self).SetUseGravity(value)
 }
 
-func (self Instance) Gravity() gd.Vector2 {
-	return gd.Vector2(class(self).GetGravity())
+func (self Instance) Gravity() Vector2.XY {
+	return Vector2.XY(class(self).GetGravity())
 }
 
-func (self Instance) SetGravity(value gd.Vector2) {
-	class(self).SetGravity(value)
+func (self Instance) SetGravity(value Vector2.XY) {
+	class(self).SetGravity(gd.Vector2(value))
 }
 
 //go:nosplit

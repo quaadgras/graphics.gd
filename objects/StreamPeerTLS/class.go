@@ -39,7 +39,7 @@ func (self Instance) AcceptStream(stream objects.StreamPeer, server_options obje
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToStream(stream objects.StreamPeer, common_name string) error {
-	return error(class(self).ConnectToStream(stream, gd.NewString(common_name), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).ConnectToStream(stream, gd.NewString(common_name), [1]objects.TLSOptions{}[0]))
 }
 
 /*

@@ -68,8 +68,8 @@ func (self Instance) TakeOverPath(path string) {
 /*
 Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture2D], [Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([DisplayServer], [RenderingServer], etc.), so this function will return the original [RID].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() ID {
+	return ID(class(self).GetRid())
 }
 
 /*

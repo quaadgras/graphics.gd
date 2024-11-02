@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,15 +35,15 @@ func (self Instance) GetTilesCount() int {
 /*
 Returns the tile coordinates ID of the tile with index [param index].
 */
-func (self Instance) GetTileId(index int) gd.Vector2i {
-	return gd.Vector2i(class(self).GetTileId(gd.Int(index)))
+func (self Instance) GetTileId(index int) Vector2i.XY {
+	return Vector2i.XY(class(self).GetTileId(gd.Int(index)))
 }
 
 /*
 Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
-func (self Instance) HasTile(atlas_coords gd.Vector2i) bool {
-	return bool(class(self).HasTile(atlas_coords))
+func (self Instance) HasTile(atlas_coords Vector2i.XY) bool {
+	return bool(class(self).HasTile(gd.Vector2i(atlas_coords)))
 }
 
 /*
@@ -50,22 +51,22 @@ Returns the number of alternatives tiles for the coordinates ID [param atlas_coo
 For [TileSetAtlasSource], this always return at least 1, as the base tile with ID 0 is always part of the alternatives list.
 Returns -1 if there is not tile at the given coords.
 */
-func (self Instance) GetAlternativeTilesCount(atlas_coords gd.Vector2i) int {
-	return int(int(class(self).GetAlternativeTilesCount(atlas_coords)))
+func (self Instance) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int {
+	return int(int(class(self).GetAlternativeTilesCount(gd.Vector2i(atlas_coords))))
 }
 
 /*
 Returns the alternative ID for the tile with coordinates ID [param atlas_coords] at index [param index].
 */
-func (self Instance) GetAlternativeTileId(atlas_coords gd.Vector2i, index int) int {
-	return int(int(class(self).GetAlternativeTileId(atlas_coords, gd.Int(index))))
+func (self Instance) GetAlternativeTileId(atlas_coords Vector2i.XY, index int) int {
+	return int(int(class(self).GetAlternativeTileId(gd.Vector2i(atlas_coords), gd.Int(index))))
 }
 
 /*
 Returns if the base tile at coordinates [param atlas_coords] has an alternative with ID [param alternative_tile].
 */
-func (self Instance) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile int) bool {
-	return bool(class(self).HasAlternativeTile(atlas_coords, gd.Int(alternative_tile)))
+func (self Instance) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) bool {
+	return bool(class(self).HasAlternativeTile(gd.Vector2i(atlas_coords), gd.Int(alternative_tile)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

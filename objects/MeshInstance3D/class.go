@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -81,7 +83,7 @@ func (self Instance) CreateConvexCollision() {
 This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShape3D] collision shapes calculated from the mesh geometry via convex decomposition. The convex decomposition operation can be controlled with parameters from the optional [param settings].
 */
 func (self Instance) CreateMultipleConvexCollisions() {
-	class(self).CreateMultipleConvexCollisions(([1]objects.MeshConvexDecompositionSettings{}[0]))
+	class(self).CreateMultipleConvexCollisions([1]objects.MeshConvexDecompositionSettings{}[0])
 }
 
 /*
@@ -101,14 +103,14 @@ func (self Instance) FindBlendShapeByName(name string) int {
 /*
 Returns the value of the blend shape at the given [param blend_shape_idx]. Returns [code]0.0[/code] and produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
-func (self Instance) GetBlendShapeValue(blend_shape_idx int) float64 {
-	return float64(float64(class(self).GetBlendShapeValue(gd.Int(blend_shape_idx))))
+func (self Instance) GetBlendShapeValue(blend_shape_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetBlendShapeValue(gd.Int(blend_shape_idx))))
 }
 
 /*
 Sets the value of the blend shape at [param blend_shape_idx] to [param value]. Produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
-func (self Instance) SetBlendShapeValue(blend_shape_idx int, value float64) {
+func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) {
 	class(self).SetBlendShapeValue(gd.Int(blend_shape_idx), gd.Float(value))
 }
 
@@ -124,7 +126,7 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 [b]Performance:[/b] [Mesh] data needs to be received from the GPU, stalling the [RenderingServer] in the process.
 */
 func (self Instance) BakeMeshFromCurrentBlendShapeMix() objects.ArrayMesh {
-	return objects.ArrayMesh(class(self).BakeMeshFromCurrentBlendShapeMix(([1]objects.ArrayMesh{}[0])))
+	return objects.ArrayMesh(class(self).BakeMeshFromCurrentBlendShapeMix([1]objects.ArrayMesh{}[0]))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -154,12 +156,12 @@ func (self Instance) SetSkin(value objects.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Instance) Skeleton() string {
-	return string(class(self).GetSkeletonPath().String())
+func (self Instance) Skeleton() Path.String {
+	return Path.String(class(self).GetSkeletonPath().String())
 }
 
-func (self Instance) SetSkeleton(value string) {
-	class(self).SetSkeletonPath(gd.NewString(value).NodePath())
+func (self Instance) SetSkeleton(value Path.String) {
+	class(self).SetSkeletonPath(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

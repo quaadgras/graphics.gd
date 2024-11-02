@@ -66,6 +66,11 @@ type (
 	Vector4i = gd.Vector4i
 )
 
+// Version returns the version of the Engine.
+func Version() gd.Version {
+	return gd.Global.GetGodotVersion()
+}
+
 func randomize() { //gd:randomize
 	rand.Seed(time.Now().UnixNano())
 }

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeConstant"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,12 +35,12 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeColorConstant(object)}
 }
 
-func (self Instance) Constant() gd.Color {
-	return gd.Color(class(self).GetConstant())
+func (self Instance) Constant() Color.RGBA {
+	return Color.RGBA(class(self).GetConstant())
 }
 
-func (self Instance) SetConstant(value gd.Color) {
-	class(self).SetConstant(value)
+func (self Instance) SetConstant(value Color.RGBA) {
+	class(self).SetConstant(gd.Color(value))
 }
 
 //go:nosplit

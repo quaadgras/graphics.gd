@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,28 +36,28 @@ func New() Instance {
 	return Instance{classdb.ParallaxLayer(object)}
 }
 
-func (self Instance) MotionScale() gd.Vector2 {
-	return gd.Vector2(class(self).GetMotionScale())
+func (self Instance) MotionScale() Vector2.XY {
+	return Vector2.XY(class(self).GetMotionScale())
 }
 
-func (self Instance) SetMotionScale(value gd.Vector2) {
-	class(self).SetMotionScale(value)
+func (self Instance) SetMotionScale(value Vector2.XY) {
+	class(self).SetMotionScale(gd.Vector2(value))
 }
 
-func (self Instance) MotionOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetMotionOffset())
+func (self Instance) MotionOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetMotionOffset())
 }
 
-func (self Instance) SetMotionOffset(value gd.Vector2) {
-	class(self).SetMotionOffset(value)
+func (self Instance) SetMotionOffset(value Vector2.XY) {
+	class(self).SetMotionOffset(gd.Vector2(value))
 }
 
-func (self Instance) MotionMirroring() gd.Vector2 {
-	return gd.Vector2(class(self).GetMirroring())
+func (self Instance) MotionMirroring() Vector2.XY {
+	return Vector2.XY(class(self).GetMirroring())
 }
 
-func (self Instance) SetMotionMirroring(value gd.Vector2) {
-	class(self).SetMirroring(value)
+func (self Instance) SetMotionMirroring(value Vector2.XY) {
+	class(self).SetMirroring(gd.Vector2(value))
 }
 
 //go:nosplit

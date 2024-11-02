@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,8 +23,8 @@ type Instance [1]classdb.UniformSetCacheRD
 /*
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
-func (self Instance) GetCache(shader gd.RID, set int, uniforms gd.Array) gd.RID {
-	return gd.RID(class(self).GetCache(shader, gd.Int(set), uniforms))
+func (self Instance) GetCache(shader Resource.ID, set int, uniforms gd.Array) Resource.ID {
+	return Resource.ID(class(self).GetCache(shader, gd.Int(set), uniforms))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

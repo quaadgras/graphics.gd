@@ -50,7 +50,7 @@ class_name VisualShaderNodeNoise
 		GetInputPortName(port int) string
 		//Override this method to define the default value for the specified input port. Prefer use this over [method VisualShaderNode.set_input_port_default_value].
 		//Defining this method is [b]required[/b]. If not overridden, the node has no default values for their input ports.
-		GetInputPortDefaultValue(port int) gd.Variant
+		GetInputPortDefaultValue(port int) any
 		//Override this method to define the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
 		//Defining this method is [b]optional[/b]. If not overridden, the connection will be created to the first valid port.
 		GetDefaultInputPort(atype classdb.VisualShaderNodePortType) int
@@ -207,12 +207,12 @@ func (Instance) _get_input_port_name(impl func(ptr unsafe.Pointer, port int) str
 Override this method to define the default value for the specified input port. Prefer use this over [method VisualShaderNode.set_input_port_default_value].
 Defining this method is [b]required[/b]. If not overridden, the node has no default values for their input ports.
 */
-func (Instance) _get_input_port_default_value(impl func(ptr unsafe.Pointer, port int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_input_port_default_value(impl func(ptr unsafe.Pointer, port int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var port = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}

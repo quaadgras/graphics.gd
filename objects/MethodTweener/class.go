@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Tweener"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,7 +26,7 @@ type Instance [1]classdb.MethodTweener
 /*
 Sets the time in seconds after which the [MethodTweener] will start interpolating. By default there's no delay.
 */
-func (self Instance) SetDelay(delay float64) objects.MethodTweener {
+func (self Instance) SetDelay(delay Float.X) objects.MethodTweener {
 	return objects.MethodTweener(class(self).SetDelay(gd.Float(delay)))
 }
 

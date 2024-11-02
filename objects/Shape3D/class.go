@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,19 +40,19 @@ func New() Instance {
 	return Instance{classdb.Shape3D(object)}
 }
 
-func (self Instance) CustomSolverBias() float64 {
-	return float64(float64(class(self).GetCustomSolverBias()))
+func (self Instance) CustomSolverBias() Float.X {
+	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
-func (self Instance) SetCustomSolverBias(value float64) {
+func (self Instance) SetCustomSolverBias(value Float.X) {
 	class(self).SetCustomSolverBias(gd.Float(value))
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 

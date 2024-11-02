@@ -7,6 +7,13 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,27 +37,27 @@ func New() Instance {
 	return Instance{classdb.CharFXTransform(object)}
 }
 
-func (self Instance) Transform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform())
+func (self Instance) Transform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-func (self Instance) SetTransform(value gd.Transform2D) {
-	class(self).SetTransform(value)
+func (self Instance) SetTransform(value Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Transform2D(value))
 }
 
-func (self Instance) Range() gd.Vector2i {
-	return gd.Vector2i(class(self).GetRange())
+func (self Instance) Range() Vector2i.XY {
+	return Vector2i.XY(class(self).GetRange())
 }
 
-func (self Instance) SetRange(value gd.Vector2i) {
-	class(self).SetRange(value)
+func (self Instance) SetRange(value Vector2i.XY) {
+	class(self).SetRange(gd.Vector2i(value))
 }
 
-func (self Instance) ElapsedTime() float64 {
-	return float64(float64(class(self).GetElapsedTime()))
+func (self Instance) ElapsedTime() Float.X {
+	return Float.X(Float.X(class(self).GetElapsedTime()))
 }
 
-func (self Instance) SetElapsedTime(value float64) {
+func (self Instance) SetElapsedTime(value Float.X) {
 	class(self).SetElapsedTime(gd.Float(value))
 }
 
@@ -70,27 +77,27 @@ func (self Instance) SetOutline(value bool) {
 	class(self).SetOutline(value)
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) Env() gd.Dictionary {
-	return gd.Dictionary(class(self).GetEnvironment())
+func (self Instance) Env() Dictionary.Any {
+	return Dictionary.Any(class(self).GetEnvironment())
 }
 
-func (self Instance) SetEnv(value gd.Dictionary) {
+func (self Instance) SetEnv(value Dictionary.Any) {
 	class(self).SetEnvironment(value)
 }
 
@@ -126,11 +133,11 @@ func (self Instance) SetRelativeIndex(value int) {
 	class(self).SetRelativeIndex(gd.Int(value))
 }
 
-func (self Instance) Font() gd.RID {
-	return gd.RID(class(self).GetFont())
+func (self Instance) Font() Resource.ID {
+	return Resource.ID(class(self).GetFont())
 }
 
-func (self Instance) SetFont(value gd.RID) {
+func (self Instance) SetFont(value Resource.ID) {
 	class(self).SetFont(value)
 }
 

@@ -10,6 +10,12 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2i"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -278,8 +284,8 @@ func (self Instance) GetNextVisibleLineOffsetFrom(line int, visible_amount int) 
 /*
 Similar to [method get_next_visible_line_offset_from], but takes into account the line wrap indexes. In the returned vector, [code]x[/code] is the line, [code]y[/code] is the wrap index.
 */
-func (self Instance) GetNextVisibleLineIndexOffsetFrom(line int, wrap_index int, visible_amount int) gd.Vector2i {
-	return gd.Vector2i(class(self).GetNextVisibleLineIndexOffsetFrom(gd.Int(line), gd.Int(wrap_index), gd.Int(visible_amount)))
+func (self Instance) GetNextVisibleLineIndexOffsetFrom(line int, wrap_index int, visible_amount int) Vector2i.XY {
+	return Vector2i.XY(class(self).GetNextVisibleLineIndexOffsetFrom(gd.Int(line), gd.Int(wrap_index), gd.Int(visible_amount)))
 }
 
 /*
@@ -442,8 +448,8 @@ if (result.X != -1)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) Search(text string, flags int, from_line int, from_column int) gd.Vector2i {
-	return gd.Vector2i(class(self).Search(gd.NewString(text), gd.Int(flags), gd.Int(from_line), gd.Int(from_column)))
+func (self Instance) Search(text string, flags int, from_line int, from_column int) Vector2i.XY {
+	return Vector2i.XY(class(self).Search(gd.NewString(text), gd.Int(flags), gd.Int(from_line), gd.Int(from_column)))
 }
 
 /*
@@ -456,45 +462,45 @@ func (self Instance) SetTooltipRequestFunc(callback gd.Callable) {
 /*
 Returns the local mouse position adjusted for the text direction.
 */
-func (self Instance) GetLocalMousePos() gd.Vector2 {
-	return gd.Vector2(class(self).GetLocalMousePos())
+func (self Instance) GetLocalMousePos() Vector2.XY {
+	return Vector2.XY(class(self).GetLocalMousePos())
 }
 
 /*
 Returns the word at [param position].
 */
-func (self Instance) GetWordAtPos(position gd.Vector2) string {
-	return string(class(self).GetWordAtPos(position).String())
+func (self Instance) GetWordAtPos(position Vector2.XY) string {
+	return string(class(self).GetWordAtPos(gd.Vector2(position)).String())
 }
 
 /*
 Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
-func (self Instance) GetLineColumnAtPos(position gd.Vector2i) gd.Vector2i {
-	return gd.Vector2i(class(self).GetLineColumnAtPos(position, true))
+func (self Instance) GetLineColumnAtPos(position Vector2i.XY) Vector2i.XY {
+	return Vector2i.XY(class(self).GetLineColumnAtPos(gd.Vector2i(position), true))
 }
 
 /*
 Returns the local position for the given [param line] and [param column]. If [code]x[/code] or [code]y[/code] of the returned vector equal [code]-1[/code], the position is outside of the viewable area of the control.
 [b]Note:[/b] The Y position corresponds to the bottom side of the line. Use [method get_rect_at_line_column] to get the top side position.
 */
-func (self Instance) GetPosAtLineColumn(line int, column int) gd.Vector2i {
-	return gd.Vector2i(class(self).GetPosAtLineColumn(gd.Int(line), gd.Int(column)))
+func (self Instance) GetPosAtLineColumn(line int, column int) Vector2i.XY {
+	return Vector2i.XY(class(self).GetPosAtLineColumn(gd.Int(line), gd.Int(column)))
 }
 
 /*
 Returns the local position and size for the grapheme at the given [param line] and [param column]. If [code]x[/code] or [code]y[/code] position of the returned rect equal [code]-1[/code], the position is outside of the viewable area of the control.
 [b]Note:[/b] The Y position of the returned rect corresponds to the top side of the line, unlike [method get_pos_at_line_column] which returns the bottom side.
 */
-func (self Instance) GetRectAtLineColumn(line int, column int) gd.Rect2i {
-	return gd.Rect2i(class(self).GetRectAtLineColumn(gd.Int(line), gd.Int(column)))
+func (self Instance) GetRectAtLineColumn(line int, column int) Rect2i.PositionSize {
+	return Rect2i.PositionSize(class(self).GetRectAtLineColumn(gd.Int(line), gd.Int(column)))
 }
 
 /*
 Returns the equivalent minimap line at [param position].
 */
-func (self Instance) GetMinimapLineAtPos(position gd.Vector2i) int {
-	return int(int(class(self).GetMinimapLineAtPos(position)))
+func (self Instance) GetMinimapLineAtPos(position Vector2i.XY) int {
+	return int(int(class(self).GetMinimapLineAtPos(gd.Vector2i(position))))
 }
 
 /*
@@ -626,8 +632,8 @@ func (self Instance) IsCaretVisible() bool {
 /*
 Returns the caret pixel draw position.
 */
-func (self Instance) GetCaretDrawPos() gd.Vector2 {
-	return gd.Vector2(class(self).GetCaretDrawPos(gd.Int(0)))
+func (self Instance) GetCaretDrawPos() Vector2.XY {
+	return Vector2.XY(class(self).GetCaretDrawPos(gd.Int(0)))
 }
 
 /*
@@ -884,8 +890,8 @@ func (self Instance) GetHScrollBar() objects.HScrollBar {
 /*
 Returns the scroll position for [param wrap_index] of [param line].
 */
-func (self Instance) GetScrollPosForLine(line int) float64 {
-	return float64(float64(class(self).GetScrollPosForLine(gd.Int(line), gd.Int(0))))
+func (self Instance) GetScrollPosForLine(line int) Float.X {
+	return Float.X(Float.X(class(self).GetScrollPosForLine(gd.Int(line), gd.Int(0))))
 }
 
 /*
@@ -1101,15 +1107,15 @@ func (self Instance) GetTotalGutterWidth() int {
 /*
 Sets the metadata for [param gutter] on [param line] to [param metadata].
 */
-func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata gd.Variant) {
-	class(self).SetLineGutterMetadata(gd.Int(line), gd.Int(gutter), metadata)
+func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata any) {
+	class(self).SetLineGutterMetadata(gd.Int(line), gd.Int(gutter), gd.NewVariant(metadata))
 }
 
 /*
 Returns the metadata currently in [param gutter] at [param line].
 */
-func (self Instance) GetLineGutterMetadata(line int, gutter int) gd.Variant {
-	return gd.Variant(class(self).GetLineGutterMetadata(gd.Int(line), gd.Int(gutter)))
+func (self Instance) GetLineGutterMetadata(line int, gutter int) any {
+	return any(class(self).GetLineGutterMetadata(gd.Int(line), gd.Int(gutter)).Interface())
 }
 
 /*
@@ -1143,15 +1149,15 @@ func (self Instance) GetLineGutterIcon(line int, gutter int) objects.Texture2D {
 /*
 Sets the color for [param gutter] on [param line] to [param color].
 */
-func (self Instance) SetLineGutterItemColor(line int, gutter int, color gd.Color) {
-	class(self).SetLineGutterItemColor(gd.Int(line), gd.Int(gutter), color)
+func (self Instance) SetLineGutterItemColor(line int, gutter int, color Color.RGBA) {
+	class(self).SetLineGutterItemColor(gd.Int(line), gd.Int(gutter), gd.Color(color))
 }
 
 /*
 Returns the color currently in [param gutter] at [param line].
 */
-func (self Instance) GetLineGutterItemColor(line int, gutter int) gd.Color {
-	return gd.Color(class(self).GetLineGutterItemColor(gd.Int(line), gd.Int(gutter)))
+func (self Instance) GetLineGutterItemColor(line int, gutter int) Color.RGBA {
+	return Color.RGBA(class(self).GetLineGutterItemColor(gd.Int(line), gd.Int(gutter)))
 }
 
 /*
@@ -1171,15 +1177,15 @@ func (self Instance) IsLineGutterClickable(line int, gutter int) bool {
 /*
 Sets the current background color of the line. Set to [code]Color(0, 0, 0, 0)[/code] for no color.
 */
-func (self Instance) SetLineBackgroundColor(line int, color gd.Color) {
-	class(self).SetLineBackgroundColor(gd.Int(line), color)
+func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) {
+	class(self).SetLineBackgroundColor(gd.Int(line), gd.Color(color))
 }
 
 /*
 Returns the current background color of the line. [code]Color(0, 0, 0, 0)[/code] is returned if no color is set.
 */
-func (self Instance) GetLineBackgroundColor(line int) gd.Color {
-	return gd.Color(class(self).GetLineBackgroundColor(gd.Int(line)))
+func (self Instance) GetLineBackgroundColor(line int) Color.RGBA {
+	return Color.RGBA(class(self).GetLineBackgroundColor(gd.Int(line)))
 }
 
 /*
@@ -1400,11 +1406,11 @@ func (self Instance) SetScrollSmooth(value bool) {
 	class(self).SetSmoothScrollEnabled(value)
 }
 
-func (self Instance) ScrollVScrollSpeed() float64 {
-	return float64(float64(class(self).GetVScrollSpeed()))
+func (self Instance) ScrollVScrollSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetVScrollSpeed()))
 }
 
-func (self Instance) SetScrollVScrollSpeed(value float64) {
+func (self Instance) SetScrollVScrollSpeed(value Float.X) {
 	class(self).SetVScrollSpeed(gd.Float(value))
 }
 
@@ -1416,11 +1422,11 @@ func (self Instance) SetScrollPastEndOfFile(value bool) {
 	class(self).SetScrollPastEndOfFileEnabled(value)
 }
 
-func (self Instance) ScrollVertical() float64 {
-	return float64(float64(class(self).GetVScroll()))
+func (self Instance) ScrollVertical() Float.X {
+	return Float.X(Float.X(class(self).GetVScroll()))
 }
 
-func (self Instance) SetScrollVertical(value float64) {
+func (self Instance) SetScrollVertical(value Float.X) {
 	class(self).SetVScroll(gd.Float(value))
 }
 
@@ -1472,11 +1478,11 @@ func (self Instance) SetCaretBlink(value bool) {
 	class(self).SetCaretBlinkEnabled(value)
 }
 
-func (self Instance) CaretBlinkInterval() float64 {
-	return float64(float64(class(self).GetCaretBlinkInterval()))
+func (self Instance) CaretBlinkInterval() Float.X {
+	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
-func (self Instance) SetCaretBlinkInterval(value float64) {
+func (self Instance) SetCaretBlinkInterval(value Float.X) {
 	class(self).SetCaretBlinkInterval(gd.Float(value))
 }
 
@@ -1608,11 +1614,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

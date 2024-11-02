@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStreamPlaybackResampled"
 import "grow.graphics/gd/objects/AudioStreamPlayback"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,8 +25,8 @@ type Instance [1]classdb.AudioStreamGeneratorPlayback
 /*
 Pushes a single audio data frame to the buffer. This is usually less efficient than [method push_buffer] in C# and compiled languages via GDExtension, but [method push_frame] may be [i]more[/i] efficient in GDScript.
 */
-func (self Instance) PushFrame(frame_ gd.Vector2) bool {
-	return bool(class(self).PushFrame(frame_))
+func (self Instance) PushFrame(frame_ Vector2.XY) bool {
+	return bool(class(self).PushFrame(gd.Vector2(frame_)))
 }
 
 /*
@@ -38,8 +39,8 @@ func (self Instance) CanPushBuffer(amount int) bool {
 /*
 Pushes several audio data frames to the buffer. This is usually more efficient than [method push_frame] in C# and compiled languages via GDExtension, but [method push_buffer] may be [i]less[/i] efficient in GDScript.
 */
-func (self Instance) PushBuffer(frames []gd.Vector2) bool {
-	return bool(class(self).PushBuffer(gd.NewPackedVector2Slice(frames)))
+func (self Instance) PushBuffer(frames []Vector2.XY) bool {
+	return bool(class(self).PushBuffer(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&frames)))))
 }
 
 /*

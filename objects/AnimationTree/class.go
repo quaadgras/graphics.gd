@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationMixer"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -55,20 +56,20 @@ func (self Instance) SetTreeRoot(value objects.AnimationRootNode) {
 	class(self).SetTreeRoot(value)
 }
 
-func (self Instance) AdvanceExpressionBaseNode() string {
-	return string(class(self).GetAdvanceExpressionBaseNode().String())
+func (self Instance) AdvanceExpressionBaseNode() Path.String {
+	return Path.String(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
-func (self Instance) SetAdvanceExpressionBaseNode(value string) {
-	class(self).SetAdvanceExpressionBaseNode(gd.NewString(value).NodePath())
+func (self Instance) SetAdvanceExpressionBaseNode(value Path.String) {
+	class(self).SetAdvanceExpressionBaseNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) AnimPlayer() string {
-	return string(class(self).GetAnimationPlayer().String())
+func (self Instance) AnimPlayer() Path.String {
+	return Path.String(class(self).GetAnimationPlayer().String())
 }
 
-func (self Instance) SetAnimPlayer(value string) {
-	class(self).SetAnimationPlayer(gd.NewString(value).NodePath())
+func (self Instance) SetAnimPlayer(value Path.String) {
+	class(self).SetAnimationPlayer(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

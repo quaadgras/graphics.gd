@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -80,16 +81,16 @@ func (self Instance) GetCurrentNode() string {
 /*
 Returns the playback position within the current animation state.
 */
-func (self Instance) GetCurrentPlayPosition() float64 {
-	return float64(float64(class(self).GetCurrentPlayPosition()))
+func (self Instance) GetCurrentPlayPosition() Float.X {
+	return Float.X(Float.X(class(self).GetCurrentPlayPosition()))
 }
 
 /*
 Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
 */
-func (self Instance) GetCurrentLength() float64 {
-	return float64(float64(class(self).GetCurrentLength()))
+func (self Instance) GetCurrentLength() Float.X {
+	return Float.X(Float.X(class(self).GetCurrentLength()))
 }
 
 /*

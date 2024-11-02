@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,7 +45,7 @@ An array variable can optionally be passed via [param progress], and will return
 */
 func LoadThreadedGetStatus(path string) classdb.ResourceLoaderThreadLoadStatus {
 	once.Do(singleton)
-	return classdb.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), ([1]gd.Array{}[0])))
+	return classdb.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), [1]Array.Any{}[0]))
 }
 
 /*

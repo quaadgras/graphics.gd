@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,15 +26,15 @@ type Instance [1]classdb.SkeletonModification2DLookAt
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
-func (self Instance) SetAdditionalRotation(rotation float64) {
+func (self Instance) SetAdditionalRotation(rotation Float.X) {
 	class(self).SetAdditionalRotation(gd.Float(rotation))
 }
 
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
-func (self Instance) GetAdditionalRotation() float64 {
-	return float64(float64(class(self).GetAdditionalRotation()))
+func (self Instance) GetAdditionalRotation() Float.X {
+	return Float.X(Float.X(class(self).GetAdditionalRotation()))
 }
 
 /*
@@ -52,29 +54,29 @@ func (self Instance) GetEnableConstraint() bool {
 /*
 Sets the constraint's minimum allowed angle.
 */
-func (self Instance) SetConstraintAngleMin(angle_min float64) {
+func (self Instance) SetConstraintAngleMin(angle_min Float.X) {
 	class(self).SetConstraintAngleMin(gd.Float(angle_min))
 }
 
 /*
 Returns the constraint's minimum allowed angle.
 */
-func (self Instance) GetConstraintAngleMin() float64 {
-	return float64(float64(class(self).GetConstraintAngleMin()))
+func (self Instance) GetConstraintAngleMin() Float.X {
+	return Float.X(Float.X(class(self).GetConstraintAngleMin()))
 }
 
 /*
 Sets the constraint's maximum allowed angle.
 */
-func (self Instance) SetConstraintAngleMax(angle_max float64) {
+func (self Instance) SetConstraintAngleMax(angle_max Float.X) {
 	class(self).SetConstraintAngleMax(gd.Float(angle_max))
 }
 
 /*
 Returns the constraint's maximum allowed angle.
 */
-func (self Instance) GetConstraintAngleMax() float64 {
-	return float64(float64(class(self).GetConstraintAngleMax()))
+func (self Instance) GetConstraintAngleMax() Float.X {
+	return Float.X(Float.X(class(self).GetConstraintAngleMax()))
 }
 
 /*
@@ -111,20 +113,20 @@ func (self Instance) SetBoneIndex(value int) {
 	class(self).SetBoneIndex(gd.Int(value))
 }
 
-func (self Instance) Bone2dNode() string {
-	return string(class(self).GetBone2dNode().String())
+func (self Instance) Bone2dNode() Path.String {
+	return Path.String(class(self).GetBone2dNode().String())
 }
 
-func (self Instance) SetBone2dNode(value string) {
-	class(self).SetBone2dNode(gd.NewString(value).NodePath())
+func (self Instance) SetBone2dNode(value Path.String) {
+	class(self).SetBone2dNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) TargetNodepath() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNodepath(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

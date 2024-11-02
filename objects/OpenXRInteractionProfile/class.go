@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -54,11 +55,11 @@ func (self Instance) SetInteractionProfilePath(value string) {
 	class(self).SetInteractionProfilePath(gd.NewString(value))
 }
 
-func (self Instance) Bindings() gd.Array {
-	return gd.Array(class(self).GetBindings())
+func (self Instance) Bindings() Array.Any {
+	return Array.Any(class(self).GetBindings())
 }
 
-func (self Instance) SetBindings(value gd.Array) {
+func (self Instance) SetBindings(value Array.Any) {
 	class(self).SetBindings(value)
 }
 

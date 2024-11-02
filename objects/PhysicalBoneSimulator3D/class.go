@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModifier3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,14 +42,14 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 func (self Instance) PhysicalBonesStartSimulation() {
-	class(self).PhysicalBonesStartSimulation(([1]gd.Array{}[0]))
+	class(self).PhysicalBonesStartSimulation([1]gd.Array{}[0])
 }
 
 /*
 Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesAddCollisionException(exception gd.RID) {
+func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) {
 	class(self).PhysicalBonesAddCollisionException(exception)
 }
 
@@ -56,7 +57,7 @@ func (self Instance) PhysicalBonesAddCollisionException(exception gd.RID) {
 Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesRemoveCollisionException(exception gd.RID) {
+func (self Instance) PhysicalBonesRemoveCollisionException(exception Resource.ID) {
 	class(self).PhysicalBonesRemoveCollisionException(exception)
 }
 

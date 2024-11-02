@@ -11,6 +11,9 @@ import "grow.graphics/gd/objects/PhysicsBody3D"
 import "grow.graphics/gd/objects/CollisionObject3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,11 +44,11 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state objects.Ph
 		impl(self, state)
 	}
 }
-func (self Instance) ApplyCentralImpulse(impulse gd.Vector3) {
-	class(self).ApplyCentralImpulse(impulse)
+func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) {
+	class(self).ApplyCentralImpulse(gd.Vector3(impulse))
 }
-func (self Instance) ApplyImpulse(impulse gd.Vector3) {
-	class(self).ApplyImpulse(impulse, gd.Vector3{0, 0, 0})
+func (self Instance) ApplyImpulse(impulse Vector3.XYZ) {
+	class(self).ApplyImpulse(gd.Vector3(impulse), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
 func (self Instance) GetSimulatePhysics() bool {
 	return bool(class(self).GetSimulatePhysics())
@@ -76,59 +79,59 @@ func (self Instance) SetJointType(value classdb.PhysicalBone3DJointType) {
 	class(self).SetJointType(value)
 }
 
-func (self Instance) JointOffset() gd.Transform3D {
-	return gd.Transform3D(class(self).GetJointOffset())
+func (self Instance) JointOffset() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetJointOffset())
 }
 
-func (self Instance) SetJointOffset(value gd.Transform3D) {
-	class(self).SetJointOffset(value)
+func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) {
+	class(self).SetJointOffset(gd.Transform3D(value))
 }
 
-func (self Instance) JointRotation() gd.Vector3 {
-	return gd.Vector3(class(self).GetJointRotation())
+func (self Instance) JointRotation() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetJointRotation())
 }
 
-func (self Instance) SetJointRotation(value gd.Vector3) {
-	class(self).SetJointRotation(value)
+func (self Instance) SetJointRotation(value Vector3.XYZ) {
+	class(self).SetJointRotation(gd.Vector3(value))
 }
 
-func (self Instance) BodyOffset() gd.Transform3D {
-	return gd.Transform3D(class(self).GetBodyOffset())
+func (self Instance) BodyOffset() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBodyOffset())
 }
 
-func (self Instance) SetBodyOffset(value gd.Transform3D) {
-	class(self).SetBodyOffset(value)
+func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) {
+	class(self).SetBodyOffset(gd.Transform3D(value))
 }
 
-func (self Instance) Mass() float64 {
-	return float64(float64(class(self).GetMass()))
+func (self Instance) Mass() Float.X {
+	return Float.X(Float.X(class(self).GetMass()))
 }
 
-func (self Instance) SetMass(value float64) {
+func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(gd.Float(value))
 }
 
-func (self Instance) Friction() float64 {
-	return float64(float64(class(self).GetFriction()))
+func (self Instance) Friction() Float.X {
+	return Float.X(Float.X(class(self).GetFriction()))
 }
 
-func (self Instance) SetFriction(value float64) {
+func (self Instance) SetFriction(value Float.X) {
 	class(self).SetFriction(gd.Float(value))
 }
 
-func (self Instance) Bounce() float64 {
-	return float64(float64(class(self).GetBounce()))
+func (self Instance) Bounce() Float.X {
+	return Float.X(Float.X(class(self).GetBounce()))
 }
 
-func (self Instance) SetBounce(value float64) {
+func (self Instance) SetBounce(value Float.X) {
 	class(self).SetBounce(gd.Float(value))
 }
 
-func (self Instance) GravityScale() float64 {
-	return float64(float64(class(self).GetGravityScale()))
+func (self Instance) GravityScale() Float.X {
+	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
-func (self Instance) SetGravityScale(value float64) {
+func (self Instance) SetGravityScale(value Float.X) {
 	class(self).SetGravityScale(gd.Float(value))
 }
 
@@ -148,11 +151,11 @@ func (self Instance) SetLinearDampMode(value classdb.PhysicalBone3DDampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
-func (self Instance) LinearDamp() float64 {
-	return float64(float64(class(self).GetLinearDamp()))
+func (self Instance) LinearDamp() Float.X {
+	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-func (self Instance) SetLinearDamp(value float64) {
+func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(gd.Float(value))
 }
 
@@ -164,28 +167,28 @@ func (self Instance) SetAngularDampMode(value classdb.PhysicalBone3DDampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
-func (self Instance) AngularDamp() float64 {
-	return float64(float64(class(self).GetAngularDamp()))
+func (self Instance) AngularDamp() Float.X {
+	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-func (self Instance) SetAngularDamp(value float64) {
+func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(gd.Float(value))
 }
 
-func (self Instance) LinearVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetLinearVelocity())
+func (self Instance) LinearVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-func (self Instance) SetLinearVelocity(value gd.Vector3) {
-	class(self).SetLinearVelocity(value)
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+	class(self).SetLinearVelocity(gd.Vector3(value))
 }
 
-func (self Instance) AngularVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetAngularVelocity())
+func (self Instance) AngularVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-func (self Instance) SetAngularVelocity(value gd.Vector3) {
-	class(self).SetAngularVelocity(value)
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+	class(self).SetAngularVelocity(gd.Vector3(value))
 }
 
 func (self Instance) CanSleep() bool {

@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,43 +33,43 @@ func New() Instance {
 	return Instance{classdb.AudioEffectPhaser(object)}
 }
 
-func (self Instance) RangeMinHz() float64 {
-	return float64(float64(class(self).GetRangeMinHz()))
+func (self Instance) RangeMinHz() Float.X {
+	return Float.X(Float.X(class(self).GetRangeMinHz()))
 }
 
-func (self Instance) SetRangeMinHz(value float64) {
+func (self Instance) SetRangeMinHz(value Float.X) {
 	class(self).SetRangeMinHz(gd.Float(value))
 }
 
-func (self Instance) RangeMaxHz() float64 {
-	return float64(float64(class(self).GetRangeMaxHz()))
+func (self Instance) RangeMaxHz() Float.X {
+	return Float.X(Float.X(class(self).GetRangeMaxHz()))
 }
 
-func (self Instance) SetRangeMaxHz(value float64) {
+func (self Instance) SetRangeMaxHz(value Float.X) {
 	class(self).SetRangeMaxHz(gd.Float(value))
 }
 
-func (self Instance) RateHz() float64 {
-	return float64(float64(class(self).GetRateHz()))
+func (self Instance) RateHz() Float.X {
+	return Float.X(Float.X(class(self).GetRateHz()))
 }
 
-func (self Instance) SetRateHz(value float64) {
+func (self Instance) SetRateHz(value Float.X) {
 	class(self).SetRateHz(gd.Float(value))
 }
 
-func (self Instance) Feedback() float64 {
-	return float64(float64(class(self).GetFeedback()))
+func (self Instance) Feedback() Float.X {
+	return Float.X(Float.X(class(self).GetFeedback()))
 }
 
-func (self Instance) SetFeedback(value float64) {
+func (self Instance) SetFeedback(value Float.X) {
 	class(self).SetFeedback(gd.Float(value))
 }
 
-func (self Instance) Depth() float64 {
-	return float64(float64(class(self).GetDepth()))
+func (self Instance) Depth() Float.X {
+	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-func (self Instance) SetDepth(value float64) {
+func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(gd.Float(value))
 }
 

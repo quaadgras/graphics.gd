@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,7 +32,7 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 func (self Instance) GetString() string {
-	return string(class(self).GetString(gd.NewVariant(0)).String())
+	return string(class(self).GetString(gd.NewVariant(gd.NewVariant(0))).String())
 }
 
 /*
@@ -39,7 +40,7 @@ Returns the starting position of the match within the source string. The startin
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetStart() int {
-	return int(int(class(self).GetStart(gd.NewVariant(0))))
+	return int(int(class(self).GetStart(gd.NewVariant(gd.NewVariant(0)))))
 }
 
 /*
@@ -47,7 +48,7 @@ Returns the end position of the match within the source string. The end position
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetEnd() int {
-	return int(int(class(self).GetEnd(gd.NewVariant(0))))
+	return int(int(class(self).GetEnd(gd.NewVariant(gd.NewVariant(0)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -65,8 +66,8 @@ func (self Instance) Subject() string {
 	return string(class(self).GetSubject().String())
 }
 
-func (self Instance) Names() gd.Dictionary {
-	return gd.Dictionary(class(self).GetNames())
+func (self Instance) Names() Dictionary.Any {
+	return Dictionary.Any(class(self).GetNames())
 }
 
 func (self Instance) Strings() []string {

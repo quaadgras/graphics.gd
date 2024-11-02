@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,35 +35,35 @@ func New() Instance {
 	return Instance{classdb.PathFollow2D(object)}
 }
 
-func (self Instance) Progress() float64 {
-	return float64(float64(class(self).GetProgress()))
+func (self Instance) Progress() Float.X {
+	return Float.X(Float.X(class(self).GetProgress()))
 }
 
-func (self Instance) SetProgress(value float64) {
+func (self Instance) SetProgress(value Float.X) {
 	class(self).SetProgress(gd.Float(value))
 }
 
-func (self Instance) ProgressRatio() float64 {
-	return float64(float64(class(self).GetProgressRatio()))
+func (self Instance) ProgressRatio() Float.X {
+	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
-func (self Instance) SetProgressRatio(value float64) {
+func (self Instance) SetProgressRatio(value Float.X) {
 	class(self).SetProgressRatio(gd.Float(value))
 }
 
-func (self Instance) HOffset() float64 {
-	return float64(float64(class(self).GetHOffset()))
+func (self Instance) HOffset() Float.X {
+	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
-func (self Instance) SetHOffset(value float64) {
+func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(gd.Float(value))
 }
 
-func (self Instance) VOffset() float64 {
-	return float64(float64(class(self).GetVOffset()))
+func (self Instance) VOffset() Float.X {
+	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
-func (self Instance) SetVOffset(value float64) {
+func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(gd.Float(value))
 }
 

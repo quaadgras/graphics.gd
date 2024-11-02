@@ -10,6 +10,11 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Rect2i"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,12 +32,12 @@ To force an update earlier on, call [method update_internals].
 		//Should return [code]true[/code] if the tile at coordinates [param coords] on layer [param layer] requires a runtime update.
 		//[b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
 		//[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		UseTileDataRuntimeUpdate(layer int, coords gd.Vector2i) bool
+		UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) bool
 		//Called with a TileData object about to be used internally by the TileMap, allowing its modification at runtime.
 		//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
 		//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 		//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		TileDataRuntimeUpdate(layer int, coords gd.Vector2i, tile_data objects.TileData)
+		TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data objects.TileData)
 	}
 */
 type Instance [1]classdb.TileMap
@@ -42,7 +47,7 @@ Should return [code]true[/code] if the tile at coordinates [param coords] on lay
 [b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
 [b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
 */
-func (Instance) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords gd.Vector2i) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -58,7 +63,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
 */
-func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords gd.Vector2i, tile_data objects.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY, tile_data objects.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -72,15 +77,15 @@ func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer in
 /*
 Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
 */
-func (self Instance) SetNavigationMap(layer int, mapping gd.RID) {
+func (self Instance) SetNavigationMap(layer int, mapping Resource.ID) {
 	class(self).SetNavigationMap(gd.Int(layer), mapping)
 }
 
 /*
 Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
 */
-func (self Instance) GetNavigationMap(layer int) gd.RID {
-	return gd.RID(class(self).GetNavigationMap(gd.Int(layer)))
+func (self Instance) GetNavigationMap(layer int) Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap(gd.Int(layer)))
 }
 
 /*
@@ -154,16 +159,16 @@ func (self Instance) IsLayerEnabled(layer int) bool {
 Sets a layer's color. It will be multiplied by tile's color and TileMap's modulate.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerModulate(layer int, modulate gd.Color) {
-	class(self).SetLayerModulate(gd.Int(layer), modulate)
+func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) {
+	class(self).SetLayerModulate(gd.Int(layer), gd.Color(modulate))
 }
 
 /*
 Returns a TileMap layer's modulate.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerModulate(layer int) gd.Color {
-	return gd.Color(class(self).GetLayerModulate(gd.Int(layer)))
+func (self Instance) GetLayerModulate(layer int) Color.RGBA {
+	return Color.RGBA(class(self).GetLayerModulate(gd.Int(layer)))
 }
 
 /*
@@ -236,7 +241,7 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerNavigationMap(layer int, mapping gd.RID) {
+func (self Instance) SetLayerNavigationMap(layer int, mapping Resource.ID) {
 	class(self).SetLayerNavigationMap(gd.Int(layer), mapping)
 }
 
@@ -246,8 +251,8 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerNavigationMap(layer int) gd.RID {
-	return gd.RID(class(self).GetLayerNavigationMap(gd.Int(layer)))
+func (self Instance) GetLayerNavigationMap(layer int) Resource.ID {
+	return Resource.ID(class(self).GetLayerNavigationMap(gd.Int(layer)))
 }
 
 /*
@@ -258,16 +263,16 @@ Sets the tile identifiers for the cell on layer [param layer] at coordinates [pa
 If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Vector2i(-1, -1)[/code] or [param alternative_tile] to [code]-1[/code], the cell will be erased. An erased cell gets [b]all[/b] its identifiers automatically set to their respective invalid values, namely [code]-1[/code], [code]Vector2i(-1, -1)[/code] and [code]-1[/code].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetCell(layer int, coords gd.Vector2i) {
-	class(self).SetCell(gd.Int(layer), coords, gd.Int(-1), gd.Vector2i{-1, -1}, gd.Int(0))
+func (self Instance) SetCell(layer int, coords Vector2i.XY) {
+	class(self).SetCell(gd.Int(layer), gd.Vector2i(coords), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(0))
 }
 
 /*
 Erases the cell on layer [param layer] at coordinates [param coords].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) EraseCell(layer int, coords gd.Vector2i) {
-	class(self).EraseCell(gd.Int(layer), coords)
+func (self Instance) EraseCell(layer int, coords Vector2i.XY) {
+	class(self).EraseCell(gd.Int(layer), gd.Vector2i(coords))
 }
 
 /*
@@ -275,8 +280,8 @@ Returns the tile source ID of the cell on layer [param layer] at coordinates [pa
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw source identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellSourceId(layer int, coords gd.Vector2i) int {
-	return int(int(class(self).GetCellSourceId(gd.Int(layer), coords, false)))
+func (self Instance) GetCellSourceId(layer int, coords Vector2i.XY) int {
+	return int(int(class(self).GetCellSourceId(gd.Int(layer), gd.Vector2i(coords), false)))
 }
 
 /*
@@ -284,8 +289,8 @@ Returns the tile atlas coordinates ID of the cell on layer [param layer] at coor
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw atlas coordinate identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellAtlasCoords(layer int, coords gd.Vector2i) gd.Vector2i {
-	return gd.Vector2i(class(self).GetCellAtlasCoords(gd.Int(layer), coords, false))
+func (self Instance) GetCellAtlasCoords(layer int, coords Vector2i.XY) Vector2i.XY {
+	return Vector2i.XY(class(self).GetCellAtlasCoords(gd.Int(layer), gd.Vector2i(coords), false))
 }
 
 /*
@@ -293,8 +298,8 @@ Returns the tile alternative ID of the cell on layer [param layer] at [param coo
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellAlternativeTile(layer int, coords gd.Vector2i) int {
-	return int(int(class(self).GetCellAlternativeTile(gd.Int(layer), coords, false)))
+func (self Instance) GetCellAlternativeTile(layer int, coords Vector2i.XY) int {
+	return int(int(class(self).GetCellAlternativeTile(gd.Int(layer), gd.Vector2i(coords), false)))
 }
 
 /*
@@ -313,21 +318,21 @@ func get_clicked_tile_power():
 [/codeblock]
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 */
-func (self Instance) GetCellTileData(layer int, coords gd.Vector2i) objects.TileData {
-	return objects.TileData(class(self).GetCellTileData(gd.Int(layer), coords, false))
+func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) objects.TileData {
+	return objects.TileData(class(self).GetCellTileData(gd.Int(layer), gd.Vector2i(coords), false))
 }
 
 /*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetCoordsForBodyRid(body gd.RID) gd.Vector2i {
-	return gd.Vector2i(class(self).GetCoordsForBodyRid(body))
+func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY {
+	return Vector2i.XY(class(self).GetCoordsForBodyRid(body))
 }
 
 /*
 Returns the tilemap layer of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetLayerForBodyRid(body gd.RID) int {
+func (self Instance) GetLayerForBodyRid(body Resource.ID) int {
 	return int(int(class(self).GetLayerForBodyRid(body)))
 }
 
@@ -342,16 +347,16 @@ func (self Instance) GetPattern(layer int, coords_array gd.Array) objects.TileMa
 /*
 Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
-func (self Instance) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern gd.Vector2i, pattern objects.TileMapPattern) gd.Vector2i {
-	return gd.Vector2i(class(self).MapPattern(position_in_tilemap, coords_in_pattern, pattern))
+func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern objects.TileMapPattern) Vector2i.XY {
+	return Vector2i.XY(class(self).MapPattern(gd.Vector2i(position_in_tilemap), gd.Vector2i(coords_in_pattern), pattern))
 }
 
 /*
 Paste the given [TileMapPattern] at the given [param position] and [param layer] in the tile map.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetPattern(layer int, position gd.Vector2i, pattern objects.TileMapPattern) {
-	class(self).SetPattern(gd.Int(layer), position, pattern)
+func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern objects.TileMapPattern) {
+	class(self).SetPattern(gd.Int(layer), gd.Vector2i(position), pattern)
 }
 
 /*
@@ -418,8 +423,8 @@ func (self Instance) NotifyRuntimeTileDataUpdate() {
 /*
 Returns the list of all neighbourings cells to the one at [param coords].
 */
-func (self Instance) GetSurroundingCells(coords gd.Vector2i) gd.Array {
-	return gd.Array(class(self).GetSurroundingCells(coords))
+func (self Instance) GetSurroundingCells(coords Vector2i.XY) gd.Array {
+	return gd.Array(class(self).GetSurroundingCells(gd.Vector2i(coords)))
 }
 
 /*
@@ -437,36 +442,36 @@ A cell is considered empty if its source identifier equals -1, its atlas coordin
 If [param layer] is negative, the layers are accessed from the last one.
 */
 func (self Instance) GetUsedCellsById(layer int) gd.Array {
-	return gd.Array(class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i{-1, -1}, gd.Int(-1)))
+	return gd.Array(class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))
 }
 
 /*
 Returns a rectangle enclosing the used (non-empty) tiles of the map, including all layers.
 */
-func (self Instance) GetUsedRect() gd.Rect2i {
-	return gd.Rect2i(class(self).GetUsedRect())
+func (self Instance) GetUsedRect() Rect2i.PositionSize {
+	return Rect2i.PositionSize(class(self).GetUsedRect())
 }
 
 /*
 Returns the centered position of a cell in the TileMap's local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
 [b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 */
-func (self Instance) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
-	return gd.Vector2(class(self).MapToLocal(map_position))
+func (self Instance) MapToLocal(map_position Vector2i.XY) Vector2.XY {
+	return Vector2.XY(class(self).MapToLocal(gd.Vector2i(map_position)))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 */
-func (self Instance) LocalToMap(local_position gd.Vector2) gd.Vector2i {
-	return gd.Vector2i(class(self).LocalToMap(local_position))
+func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY {
+	return Vector2i.XY(class(self).LocalToMap(gd.Vector2(local_position)))
 }
 
 /*
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
-func (self Instance) GetNeighborCell(coords gd.Vector2i, neighbor classdb.TileSetCellNeighbor) gd.Vector2i {
-	return gd.Vector2i(class(self).GetNeighborCell(coords, neighbor))
+func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor classdb.TileSetCellNeighbor) Vector2i.XY {
+	return Vector2i.XY(class(self).GetNeighborCell(gd.Vector2i(coords), neighbor))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

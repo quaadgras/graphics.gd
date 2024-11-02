@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture3D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,6 +41,18 @@ func New() Instance {
 	return Instance{classdb.NoiseTexture3D(object)}
 }
 
+func (self Instance) SetWidth(value int) {
+	class(self).SetWidth(gd.Int(value))
+}
+
+func (self Instance) SetHeight(value int) {
+	class(self).SetHeight(gd.Int(value))
+}
+
+func (self Instance) SetDepth(value int) {
+	class(self).SetDepth(gd.Int(value))
+}
+
 func (self Instance) Invert() bool {
 	return bool(class(self).GetInvert())
 }
@@ -56,11 +69,11 @@ func (self Instance) SetSeamless(value bool) {
 	class(self).SetSeamless(value)
 }
 
-func (self Instance) SeamlessBlendSkirt() float64 {
-	return float64(float64(class(self).GetSeamlessBlendSkirt()))
+func (self Instance) SeamlessBlendSkirt() Float.X {
+	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
-func (self Instance) SetSeamlessBlendSkirt(value float64) {
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
 	class(self).SetSeamlessBlendSkirt(gd.Float(value))
 }
 

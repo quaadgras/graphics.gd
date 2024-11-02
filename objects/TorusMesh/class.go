@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,19 +34,19 @@ func New() Instance {
 	return Instance{classdb.TorusMesh(object)}
 }
 
-func (self Instance) InnerRadius() float64 {
-	return float64(float64(class(self).GetInnerRadius()))
+func (self Instance) InnerRadius() Float.X {
+	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
-func (self Instance) SetInnerRadius(value float64) {
+func (self Instance) SetInnerRadius(value Float.X) {
 	class(self).SetInnerRadius(gd.Float(value))
 }
 
-func (self Instance) OuterRadius() float64 {
-	return float64(float64(class(self).GetOuterRadius()))
+func (self Instance) OuterRadius() Float.X {
+	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
-func (self Instance) SetOuterRadius(value float64) {
+func (self Instance) SetOuterRadius(value Float.X) {
 	class(self).SetOuterRadius(gd.Float(value))
 }
 

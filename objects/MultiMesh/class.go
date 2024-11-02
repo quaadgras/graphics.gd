@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,29 +32,29 @@ type Instance [1]classdb.MultiMesh
 /*
 Sets the [Transform3D] for a specific instance.
 */
-func (self Instance) SetInstanceTransform(instance int, transform gd.Transform3D) {
-	class(self).SetInstanceTransform(gd.Int(instance), transform)
+func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) {
+	class(self).SetInstanceTransform(gd.Int(instance), gd.Transform3D(transform))
 }
 
 /*
 Sets the [Transform2D] for a specific instance.
 */
-func (self Instance) SetInstanceTransform2d(instance int, transform gd.Transform2D) {
-	class(self).SetInstanceTransform2d(gd.Int(instance), transform)
+func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) {
+	class(self).SetInstanceTransform2d(gd.Int(instance), gd.Transform2D(transform))
 }
 
 /*
 Returns the [Transform3D] of a specific instance.
 */
-func (self Instance) GetInstanceTransform(instance int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetInstanceTransform(gd.Int(instance)))
+func (self Instance) GetInstanceTransform(instance int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetInstanceTransform(gd.Int(instance)))
 }
 
 /*
 Returns the [Transform2D] of a specific instance.
 */
-func (self Instance) GetInstanceTransform2d(instance int) gd.Transform2D {
-	return gd.Transform2D(class(self).GetInstanceTransform2d(gd.Int(instance)))
+func (self Instance) GetInstanceTransform2d(instance int) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetInstanceTransform2d(gd.Int(instance)))
 }
 
 /*
@@ -58,15 +62,15 @@ Sets the color of a specific instance by [i]multiplying[/i] the mesh's existing 
 [b]Note:[/b] Each component is stored in 32 bits in the Forward+ and Mobile rendering methods, but is packed into 16 bits in the Compatibility rendering method.
 For the color to take effect, ensure that [member use_colors] is [code]true[/code] on the [MultiMesh] and [member BaseMaterial3D.vertex_color_use_as_albedo] is [code]true[/code] on the material. If you intend to set an absolute color instead of tinting, make sure the material's albedo color is set to pure white ([code]Color(1, 1, 1)[/code]).
 */
-func (self Instance) SetInstanceColor(instance int, color gd.Color) {
-	class(self).SetInstanceColor(gd.Int(instance), color)
+func (self Instance) SetInstanceColor(instance int, color Color.RGBA) {
+	class(self).SetInstanceColor(gd.Int(instance), gd.Color(color))
 }
 
 /*
 Gets a specific instance's color multiplier.
 */
-func (self Instance) GetInstanceColor(instance int) gd.Color {
-	return gd.Color(class(self).GetInstanceColor(gd.Int(instance)))
+func (self Instance) GetInstanceColor(instance int) Color.RGBA {
+	return Color.RGBA(class(self).GetInstanceColor(gd.Int(instance)))
 }
 
 /*
@@ -75,22 +79,22 @@ Sets custom data for a specific instance. [param custom_data] is a [Color] type 
 For the custom data to be used, ensure that [member use_custom_data] is [code]true[/code].
 This custom instance data has to be manually accessed in your custom shader using [code]INSTANCE_CUSTOM[/code].
 */
-func (self Instance) SetInstanceCustomData(instance int, custom_data gd.Color) {
-	class(self).SetInstanceCustomData(gd.Int(instance), custom_data)
+func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) {
+	class(self).SetInstanceCustomData(gd.Int(instance), gd.Color(custom_data))
 }
 
 /*
 Returns the custom data that has been set for a specific instance.
 */
-func (self Instance) GetInstanceCustomData(instance int) gd.Color {
-	return gd.Color(class(self).GetInstanceCustomData(gd.Int(instance)))
+func (self Instance) GetInstanceCustomData(instance int) Color.RGBA {
+	return Color.RGBA(class(self).GetInstanceCustomData(gd.Int(instance)))
 }
 
 /*
 Returns the visibility axis-aligned bounding box in local space.
 */
-func (self Instance) GetAabb() gd.AABB {
-	return gd.AABB(class(self).GetAabb())
+func (self Instance) GetAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetAabb())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -128,12 +132,12 @@ func (self Instance) SetUseCustomData(value bool) {
 	class(self).SetUseCustomData(value)
 }
 
-func (self Instance) CustomAabb() gd.AABB {
-	return gd.AABB(class(self).GetCustomAabb())
+func (self Instance) CustomAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-func (self Instance) SetCustomAabb(value gd.AABB) {
-	class(self).SetCustomAabb(value)
+func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+	class(self).SetCustomAabb(gd.AABB(value))
 }
 
 func (self Instance) InstanceCount() int {

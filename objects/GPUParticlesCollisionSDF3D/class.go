@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/GPUParticlesCollision3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -53,12 +55,12 @@ func New() Instance {
 	return Instance{classdb.GPUParticlesCollisionSDF3D(object)}
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
 func (self Instance) Resolution() classdb.GPUParticlesCollisionSDF3DResolution {
@@ -69,11 +71,11 @@ func (self Instance) SetResolution(value classdb.GPUParticlesCollisionSDF3DResol
 	class(self).SetResolution(value)
 }
 
-func (self Instance) Thickness() float64 {
-	return float64(float64(class(self).GetThickness()))
+func (self Instance) Thickness() Float.X {
+	return Float.X(Float.X(class(self).GetThickness()))
 }
 
-func (self Instance) SetThickness(value float64) {
+func (self Instance) SetThickness(value Float.X) {
 	class(self).SetThickness(gd.Float(value))
 }
 

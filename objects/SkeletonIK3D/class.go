@@ -10,6 +10,10 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModifier3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -96,12 +100,12 @@ func (self Instance) SetTipBone(value string) {
 	class(self).SetTipBone(gd.NewStringName(value))
 }
 
-func (self Instance) Target() gd.Transform3D {
-	return gd.Transform3D(class(self).GetTargetTransform())
+func (self Instance) Target() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetTargetTransform())
 }
 
-func (self Instance) SetTarget(value gd.Transform3D) {
-	class(self).SetTargetTransform(value)
+func (self Instance) SetTarget(value Transform3D.BasisOrigin) {
+	class(self).SetTargetTransform(gd.Transform3D(value))
 }
 
 func (self Instance) OverrideTipBasis() bool {
@@ -120,27 +124,27 @@ func (self Instance) SetUseMagnet(value bool) {
 	class(self).SetUseMagnet(value)
 }
 
-func (self Instance) Magnet() gd.Vector3 {
-	return gd.Vector3(class(self).GetMagnetPosition())
+func (self Instance) Magnet() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetMagnetPosition())
 }
 
-func (self Instance) SetMagnet(value gd.Vector3) {
-	class(self).SetMagnetPosition(value)
+func (self Instance) SetMagnet(value Vector3.XYZ) {
+	class(self).SetMagnetPosition(gd.Vector3(value))
 }
 
-func (self Instance) TargetNode() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNode() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNode(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNode(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) MinDistance() float64 {
-	return float64(float64(class(self).GetMinDistance()))
+func (self Instance) MinDistance() Float.X {
+	return Float.X(Float.X(class(self).GetMinDistance()))
 }
 
-func (self Instance) SetMinDistance(value float64) {
+func (self Instance) SetMinDistance(value Float.X) {
 	class(self).SetMinDistance(gd.Float(value))
 }
 
@@ -152,11 +156,11 @@ func (self Instance) SetMaxIterations(value int) {
 	class(self).SetMaxIterations(gd.Int(value))
 }
 
-func (self Instance) Interpolation() float64 {
-	return float64(float64(class(self).GetInterpolation()))
+func (self Instance) Interpolation() Float.X {
+	return Float.X(Float.X(class(self).GetInterpolation()))
 }
 
-func (self Instance) SetInterpolation(value float64) {
+func (self Instance) SetInterpolation(value Float.X) {
 	class(self).SetInterpolation(gd.Float(value))
 }
 

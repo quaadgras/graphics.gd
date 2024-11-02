@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,8 +43,8 @@ func (self Instance) GetBone(idx int) objects.Bone2D {
 /*
 Returns the [RID] of a Skeleton2D instance.
 */
-func (self Instance) GetSkeleton() gd.RID {
-	return gd.RID(class(self).GetSkeleton())
+func (self Instance) GetSkeleton() Resource.ID {
+	return Resource.ID(class(self).GetSkeleton())
 }
 
 /*
@@ -61,7 +64,7 @@ func (self Instance) GetModificationStack() objects.SkeletonModificationStack2D 
 /*
 Executes all the modifications on the [SkeletonModificationStack2D], if the Skeleton2D has one assigned.
 */
-func (self Instance) ExecuteModifications(delta float64, execution_mode int) {
+func (self Instance) ExecuteModifications(delta Float.X, execution_mode int) {
 	class(self).ExecuteModifications(gd.Float(delta), gd.Int(execution_mode))
 }
 
@@ -70,15 +73,15 @@ Sets the local pose transform, [param override_pose], for the bone at [param bon
 [param strength] is the interpolation strength that will be used when applying the pose, and [param persistent] determines if the applied pose will remain.
 [b]Note:[/b] The pose transform needs to be a local transform relative to the [Bone2D] node at [param bone_idx]!
 */
-func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose gd.Transform2D, strength float64, persistent bool) {
-	class(self).SetBoneLocalPoseOverride(gd.Int(bone_idx), override_pose, gd.Float(strength), persistent)
+func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose Transform2D.OriginXY, strength Float.X, persistent bool) {
+	class(self).SetBoneLocalPoseOverride(gd.Int(bone_idx), gd.Transform2D(override_pose), gd.Float(strength), persistent)
 }
 
 /*
 Returns the local pose override transform for [param bone_idx].
 */
-func (self Instance) GetBoneLocalPoseOverride(bone_idx int) gd.Transform2D {
-	return gd.Transform2D(class(self).GetBoneLocalPoseOverride(gd.Int(bone_idx)))
+func (self Instance) GetBoneLocalPoseOverride(bone_idx int) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetBoneLocalPoseOverride(gd.Int(bone_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

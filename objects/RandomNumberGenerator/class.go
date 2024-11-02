@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,23 +39,23 @@ func (self Instance) Randi() int {
 /*
 Returns a pseudo-random float between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
-func (self Instance) Randf() float64 {
-	return float64(float64(class(self).Randf()))
+func (self Instance) Randf() Float.X {
+	return Float.X(Float.X(class(self).Randf()))
 }
 
 /*
 Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distributed[/url], pseudo-random floating-point number from the specified [param mean] and a standard [param deviation]. This is also known as a Gaussian distribution.
 [b]Note:[/b] This method uses the [url=https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform]Box-Muller transform[/url] algorithm.
 */
-func (self Instance) Randfn() float64 {
-	return float64(float64(class(self).Randfn(gd.Float(0.0), gd.Float(1.0))))
+func (self Instance) Randfn() Float.X {
+	return Float.X(Float.X(class(self).Randfn(gd.Float(0.0), gd.Float(1.0))))
 }
 
 /*
 Returns a pseudo-random float between [param from] and [param to] (inclusive).
 */
-func (self Instance) RandfRange(from float64, to float64) float64 {
-	return float64(float64(class(self).RandfRange(gd.Float(from), gd.Float(to))))
+func (self Instance) RandfRange(from Float.X, to Float.X) Float.X {
+	return Float.X(Float.X(class(self).RandfRange(gd.Float(from), gd.Float(to))))
 }
 
 /*

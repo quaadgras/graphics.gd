@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,15 +39,15 @@ func (self Instance) ToNode() objects.Camera3D {
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary gd.Dictionary) objects.GLTFCamera {
+func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFCamera {
 	return objects.GLTFCamera(class(self).FromDictionary(dictionary))
 }
 
 /*
 Serializes this GLTFCamera instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() gd.Dictionary {
-	return gd.Dictionary(class(self).ToDictionary())
+func (self Instance) ToDictionary() Dictionary.Any {
+	return Dictionary.Any(class(self).ToDictionary())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -67,35 +69,35 @@ func (self Instance) SetPerspective(value bool) {
 	class(self).SetPerspective(value)
 }
 
-func (self Instance) Fov() float64 {
-	return float64(float64(class(self).GetFov()))
+func (self Instance) Fov() Float.X {
+	return Float.X(Float.X(class(self).GetFov()))
 }
 
-func (self Instance) SetFov(value float64) {
+func (self Instance) SetFov(value Float.X) {
 	class(self).SetFov(gd.Float(value))
 }
 
-func (self Instance) SizeMag() float64 {
-	return float64(float64(class(self).GetSizeMag()))
+func (self Instance) SizeMag() Float.X {
+	return Float.X(Float.X(class(self).GetSizeMag()))
 }
 
-func (self Instance) SetSizeMag(value float64) {
+func (self Instance) SetSizeMag(value Float.X) {
 	class(self).SetSizeMag(gd.Float(value))
 }
 
-func (self Instance) DepthFar() float64 {
-	return float64(float64(class(self).GetDepthFar()))
+func (self Instance) DepthFar() Float.X {
+	return Float.X(Float.X(class(self).GetDepthFar()))
 }
 
-func (self Instance) SetDepthFar(value float64) {
+func (self Instance) SetDepthFar(value Float.X) {
 	class(self).SetDepthFar(gd.Float(value))
 }
 
-func (self Instance) DepthNear() float64 {
-	return float64(float64(class(self).GetDepthNear()))
+func (self Instance) DepthNear() Float.X {
+	return Float.X(Float.X(class(self).GetDepthNear()))
 }
 
-func (self Instance) SetDepthNear(value float64) {
+func (self Instance) SetDepthNear(value Float.X) {
 	class(self).SetDepthNear(gd.Float(value))
 }
 

@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,12 +41,16 @@ func (self Instance) SetButtonIndex(value JoyButton) {
 	class(self).SetButtonIndex(value)
 }
 
-func (self Instance) Pressure() float64 {
-	return float64(float64(class(self).GetPressure()))
+func (self Instance) Pressure() Float.X {
+	return Float.X(Float.X(class(self).GetPressure()))
 }
 
-func (self Instance) SetPressure(value float64) {
+func (self Instance) SetPressure(value Float.X) {
 	class(self).SetPressure(gd.Float(value))
+}
+
+func (self Instance) SetPressed(value bool) {
+	class(self).SetPressed(value)
 }
 
 //go:nosplit

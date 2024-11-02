@@ -11,6 +11,10 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,20 +45,20 @@ func New() Instance {
 	return Instance{classdb.Label3D(object)}
 }
 
-func (self Instance) PixelSize() float64 {
-	return float64(float64(class(self).GetPixelSize()))
+func (self Instance) PixelSize() Float.X {
+	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
-func (self Instance) SetPixelSize(value float64) {
+func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(gd.Float(value))
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
 func (self Instance) Billboard() classdb.BaseMaterial3DBillboardMode {
@@ -105,19 +109,19 @@ func (self Instance) SetAlphaCut(value classdb.Label3DAlphaCutMode) {
 	class(self).SetAlphaCutMode(value)
 }
 
-func (self Instance) AlphaScissorThreshold() float64 {
-	return float64(float64(class(self).GetAlphaScissorThreshold()))
+func (self Instance) AlphaScissorThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
-func (self Instance) SetAlphaScissorThreshold(value float64) {
+func (self Instance) SetAlphaScissorThreshold(value Float.X) {
 	class(self).SetAlphaScissorThreshold(gd.Float(value))
 }
 
-func (self Instance) AlphaHashScale() float64 {
-	return float64(float64(class(self).GetAlphaHashScale()))
+func (self Instance) AlphaHashScale() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
-func (self Instance) SetAlphaHashScale(value float64) {
+func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(gd.Float(value))
 }
 
@@ -129,11 +133,11 @@ func (self Instance) SetAlphaAntialiasingMode(value classdb.BaseMaterial3DAlphaA
 	class(self).SetAlphaAntialiasing(value)
 }
 
-func (self Instance) AlphaAntialiasingEdge() float64 {
-	return float64(float64(class(self).GetAlphaAntialiasingEdge()))
+func (self Instance) AlphaAntialiasingEdge() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
-func (self Instance) SetAlphaAntialiasingEdge(value float64) {
+func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(gd.Float(value))
 }
 
@@ -161,20 +165,20 @@ func (self Instance) SetOutlineRenderPriority(value int) {
 	class(self).SetOutlineRenderPriority(gd.Int(value))
 }
 
-func (self Instance) Modulate() gd.Color {
-	return gd.Color(class(self).GetModulate())
+func (self Instance) Modulate() Color.RGBA {
+	return Color.RGBA(class(self).GetModulate())
 }
 
-func (self Instance) SetModulate(value gd.Color) {
-	class(self).SetModulate(value)
+func (self Instance) SetModulate(value Color.RGBA) {
+	class(self).SetModulate(gd.Color(value))
 }
 
-func (self Instance) OutlineModulate() gd.Color {
-	return gd.Color(class(self).GetOutlineModulate())
+func (self Instance) OutlineModulate() Color.RGBA {
+	return Color.RGBA(class(self).GetOutlineModulate())
 }
 
-func (self Instance) SetOutlineModulate(value gd.Color) {
-	class(self).SetOutlineModulate(value)
+func (self Instance) SetOutlineModulate(value Color.RGBA) {
+	class(self).SetOutlineModulate(gd.Color(value))
 }
 
 func (self Instance) Text() string {
@@ -233,11 +237,11 @@ func (self Instance) SetUppercase(value bool) {
 	class(self).SetUppercase(value)
 }
 
-func (self Instance) LineSpacing() float64 {
-	return float64(float64(class(self).GetLineSpacing()))
+func (self Instance) LineSpacing() Float.X {
+	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
-func (self Instance) SetLineSpacing(value float64) {
+func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(gd.Float(value))
 }
 
@@ -257,11 +261,11 @@ func (self Instance) SetJustificationFlags(value classdb.TextServerJustification
 	class(self).SetJustificationFlags(value)
 }
 
-func (self Instance) Width() float64 {
-	return float64(float64(class(self).GetWidth()))
+func (self Instance) Width() Float.X {
+	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-func (self Instance) SetWidth(value float64) {
+func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(gd.Float(value))
 }
 
@@ -289,11 +293,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

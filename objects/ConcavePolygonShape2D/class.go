@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.ConcavePolygonShape2D(object)}
 }
 
-func (self Instance) Segments() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetSegments().AsSlice())
+func (self Instance) Segments() []Vector2.XY {
+	return []Vector2.XY(class(self).GetSegments().AsSlice())
 }
 
-func (self Instance) SetSegments(value []gd.Vector2) {
-	class(self).SetSegments(gd.NewPackedVector2Slice(value))
+func (self Instance) SetSegments(value []Vector2.XY) {
+	class(self).SetSegments(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 //go:nosplit

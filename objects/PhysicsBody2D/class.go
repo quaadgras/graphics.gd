@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,8 +32,8 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 [param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
-func (self Instance) MoveAndCollide(motion gd.Vector2) objects.KinematicCollision2D {
-	return objects.KinematicCollision2D(class(self).MoveAndCollide(motion, false, gd.Float(0.08), false))
+func (self Instance) MoveAndCollide(motion Vector2.XY) objects.KinematicCollision2D {
+	return objects.KinematicCollision2D(class(self).MoveAndCollide(gd.Vector2(motion), false, gd.Float(0.08), false))
 }
 
 /*
@@ -41,15 +43,15 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 [param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
-func (self Instance) TestMove(from gd.Transform2D, motion gd.Vector2) bool {
-	return bool(class(self).TestMove(from, motion, ([1]objects.KinematicCollision2D{}[0]), gd.Float(0.08), false))
+func (self Instance) TestMove(from Transform2D.OriginXY, motion Vector2.XY) bool {
+	return bool(class(self).TestMove(gd.Transform2D(from), gd.Vector2(motion), [1]objects.KinematicCollision2D{}[0], gd.Float(0.08), false))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
 */
-func (self Instance) GetGravity() gd.Vector2 {
-	return gd.Vector2(class(self).GetGravity())
+func (self Instance) GetGravity() Vector2.XY {
+	return Vector2.XY(class(self).GetGravity())
 }
 
 /*

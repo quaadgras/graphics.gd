@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CanvasLayer"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,44 +34,44 @@ func New() Instance {
 	return Instance{classdb.ParallaxBackground(object)}
 }
 
-func (self Instance) ScrollOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollOffset())
+func (self Instance) ScrollOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-func (self Instance) SetScrollOffset(value gd.Vector2) {
-	class(self).SetScrollOffset(value)
+func (self Instance) SetScrollOffset(value Vector2.XY) {
+	class(self).SetScrollOffset(gd.Vector2(value))
 }
 
-func (self Instance) ScrollBaseOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollBaseOffset())
+func (self Instance) ScrollBaseOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollBaseOffset())
 }
 
-func (self Instance) SetScrollBaseOffset(value gd.Vector2) {
-	class(self).SetScrollBaseOffset(value)
+func (self Instance) SetScrollBaseOffset(value Vector2.XY) {
+	class(self).SetScrollBaseOffset(gd.Vector2(value))
 }
 
-func (self Instance) ScrollBaseScale() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollBaseScale())
+func (self Instance) ScrollBaseScale() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollBaseScale())
 }
 
-func (self Instance) SetScrollBaseScale(value gd.Vector2) {
-	class(self).SetScrollBaseScale(value)
+func (self Instance) SetScrollBaseScale(value Vector2.XY) {
+	class(self).SetScrollBaseScale(gd.Vector2(value))
 }
 
-func (self Instance) ScrollLimitBegin() gd.Vector2 {
-	return gd.Vector2(class(self).GetLimitBegin())
+func (self Instance) ScrollLimitBegin() Vector2.XY {
+	return Vector2.XY(class(self).GetLimitBegin())
 }
 
-func (self Instance) SetScrollLimitBegin(value gd.Vector2) {
-	class(self).SetLimitBegin(value)
+func (self Instance) SetScrollLimitBegin(value Vector2.XY) {
+	class(self).SetLimitBegin(gd.Vector2(value))
 }
 
-func (self Instance) ScrollLimitEnd() gd.Vector2 {
-	return gd.Vector2(class(self).GetLimitEnd())
+func (self Instance) ScrollLimitEnd() Vector2.XY {
+	return Vector2.XY(class(self).GetLimitEnd())
 }
 
-func (self Instance) SetScrollLimitEnd(value gd.Vector2) {
-	class(self).SetLimitEnd(value)
+func (self Instance) SetScrollLimitEnd(value Vector2.XY) {
+	class(self).SetLimitEnd(gd.Vector2(value))
 }
 
 func (self Instance) ScrollIgnoreCameraZoom() bool {

@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,8 +25,8 @@ type Instance [1]classdb.XRPose
 /*
 Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
 */
-func (self Instance) GetAdjustedTransform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetAdjustedTransform())
+func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetAdjustedTransform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -54,28 +56,28 @@ func (self Instance) SetName(value string) {
 	class(self).SetName(gd.NewStringName(value))
 }
 
-func (self Instance) Transform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetTransform())
+func (self Instance) Transform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
-func (self Instance) SetTransform(value gd.Transform3D) {
-	class(self).SetTransform(value)
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
+	class(self).SetTransform(gd.Transform3D(value))
 }
 
-func (self Instance) LinearVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetLinearVelocity())
+func (self Instance) LinearVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-func (self Instance) SetLinearVelocity(value gd.Vector3) {
-	class(self).SetLinearVelocity(value)
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+	class(self).SetLinearVelocity(gd.Vector3(value))
 }
 
-func (self Instance) AngularVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetAngularVelocity())
+func (self Instance) AngularVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-func (self Instance) SetAngularVelocity(value gd.Vector3) {
-	class(self).SetAngularVelocity(value)
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+	class(self).SetAngularVelocity(gd.Vector3(value))
 }
 
 func (self Instance) TrackingConfidence() classdb.XRPoseTrackingConfidence {

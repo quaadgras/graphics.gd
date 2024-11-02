@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Light2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,11 +36,11 @@ func New() Instance {
 	return Instance{classdb.DirectionalLight2D(object)}
 }
 
-func (self Instance) MaxDistance() float64 {
-	return float64(float64(class(self).GetMaxDistance()))
+func (self Instance) MaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
-func (self Instance) SetMaxDistance(value float64) {
+func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(gd.Float(value))
 }
 

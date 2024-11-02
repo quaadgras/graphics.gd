@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -94,15 +97,15 @@ func (self Instance) GetNavigationMesh() objects.NavigationMesh {
 /*
 Appends a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines.
 */
-func (self Instance) AddOutline(outline []gd.Vector2) {
-	class(self).AddOutline(gd.NewPackedVector2Slice(outline))
+func (self Instance) AddOutline(outline []Vector2.XY) {
+	class(self).AddOutline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&outline))))
 }
 
 /*
 Adds a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines at a fixed position.
 */
-func (self Instance) AddOutlineAtIndex(outline []gd.Vector2, index int) {
-	class(self).AddOutlineAtIndex(gd.NewPackedVector2Slice(outline), gd.Int(index))
+func (self Instance) AddOutlineAtIndex(outline []Vector2.XY, index int) {
+	class(self).AddOutlineAtIndex(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&outline))), gd.Int(index))
 }
 
 /*
@@ -115,15 +118,15 @@ func (self Instance) GetOutlineCount() int {
 /*
 Changes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
-func (self Instance) SetOutline(idx int, outline []gd.Vector2) {
-	class(self).SetOutline(gd.Int(idx), gd.NewPackedVector2Slice(outline))
+func (self Instance) SetOutline(idx int, outline []Vector2.XY) {
+	class(self).SetOutline(gd.Int(idx), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&outline))))
 }
 
 /*
 Returns a [PackedVector2Array] containing the vertices of an outline that was created in the editor or by script.
 */
-func (self Instance) GetOutline(idx int) []gd.Vector2 {
-	return []gd.Vector2(class(self).GetOutline(gd.Int(idx)).AsSlice())
+func (self Instance) GetOutline(idx int) []Vector2.XY {
+	return []Vector2.XY(class(self).GetOutline(gd.Int(idx)).AsSlice())
 }
 
 /*
@@ -179,12 +182,12 @@ func New() Instance {
 	return Instance{classdb.NavigationPolygon(object)}
 }
 
-func (self Instance) Vertices() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetVertices().AsSlice())
+func (self Instance) Vertices() []Vector2.XY {
+	return []Vector2.XY(class(self).GetVertices().AsSlice())
 }
 
-func (self Instance) SetVertices(value []gd.Vector2) {
-	class(self).SetVertices(gd.NewPackedVector2Slice(value))
+func (self Instance) SetVertices(value []Vector2.XY) {
+	class(self).SetVertices(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) ParsedGeometryType() classdb.NavigationPolygonParsedGeometryType {
@@ -219,44 +222,44 @@ func (self Instance) SetSourceGeometryGroupName(value string) {
 	class(self).SetSourceGeometryGroupName(gd.NewStringName(value))
 }
 
-func (self Instance) CellSize() float64 {
-	return float64(float64(class(self).GetCellSize()))
+func (self Instance) CellSize() Float.X {
+	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
-func (self Instance) SetCellSize(value float64) {
+func (self Instance) SetCellSize(value Float.X) {
 	class(self).SetCellSize(gd.Float(value))
 }
 
-func (self Instance) BorderSize() float64 {
-	return float64(float64(class(self).GetBorderSize()))
+func (self Instance) BorderSize() Float.X {
+	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
-func (self Instance) SetBorderSize(value float64) {
+func (self Instance) SetBorderSize(value Float.X) {
 	class(self).SetBorderSize(gd.Float(value))
 }
 
-func (self Instance) AgentRadius() float64 {
-	return float64(float64(class(self).GetAgentRadius()))
+func (self Instance) AgentRadius() Float.X {
+	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
-func (self Instance) SetAgentRadius(value float64) {
+func (self Instance) SetAgentRadius(value Float.X) {
 	class(self).SetAgentRadius(gd.Float(value))
 }
 
-func (self Instance) BakingRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetBakingRect())
+func (self Instance) BakingRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetBakingRect())
 }
 
-func (self Instance) SetBakingRect(value gd.Rect2) {
-	class(self).SetBakingRect(value)
+func (self Instance) SetBakingRect(value Rect2.PositionSize) {
+	class(self).SetBakingRect(gd.Rect2(value))
 }
 
-func (self Instance) BakingRectOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetBakingRectOffset())
+func (self Instance) BakingRectOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetBakingRectOffset())
 }
 
-func (self Instance) SetBakingRectOffset(value gd.Vector2) {
-	class(self).SetBakingRectOffset(value)
+func (self Instance) SetBakingRectOffset(value Vector2.XY) {
+	class(self).SetBakingRectOffset(gd.Vector2(value))
 }
 
 /*

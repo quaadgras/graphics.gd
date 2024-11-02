@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -76,7 +77,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) SetFrameAndProgress(frame_ int, progress float64) {
+func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) {
 	class(self).SetFrameAndProgress(gd.Int(frame_), gd.Float(progress))
 }
 
@@ -84,8 +85,8 @@ func (self Instance) SetFrameAndProgress(frame_ int, progress float64) {
 Returns the actual playing speed of current animation or [code]0[/code] if not playing. This speed is the [member speed_scale] property multiplied by [code]custom_speed[/code] argument specified when calling the [method play] method.
 Returns a negative value if the current animation is playing backwards.
 */
-func (self Instance) GetPlayingSpeed() float64 {
-	return float64(float64(class(self).GetPlayingSpeed()))
+func (self Instance) GetPlayingSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetPlayingSpeed()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -131,19 +132,19 @@ func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(gd.Int(value))
 }
 
-func (self Instance) FrameProgress() float64 {
-	return float64(float64(class(self).GetFrameProgress()))
+func (self Instance) FrameProgress() Float.X {
+	return Float.X(Float.X(class(self).GetFrameProgress()))
 }
 
-func (self Instance) SetFrameProgress(value float64) {
+func (self Instance) SetFrameProgress(value Float.X) {
 	class(self).SetFrameProgress(gd.Float(value))
 }
 
-func (self Instance) SpeedScale() float64 {
-	return float64(float64(class(self).GetSpeedScale()))
+func (self Instance) SpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-func (self Instance) SetSpeedScale(value float64) {
+func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(gd.Float(value))
 }
 

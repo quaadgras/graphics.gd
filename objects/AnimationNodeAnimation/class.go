@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationRootNode"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,11 +58,11 @@ func (self Instance) SetUseCustomTimeline(value bool) {
 	class(self).SetUseCustomTimeline(value)
 }
 
-func (self Instance) TimelineLength() float64 {
-	return float64(float64(class(self).GetTimelineLength()))
+func (self Instance) TimelineLength() Float.X {
+	return Float.X(Float.X(class(self).GetTimelineLength()))
 }
 
-func (self Instance) SetTimelineLength(value float64) {
+func (self Instance) SetTimelineLength(value Float.X) {
 	class(self).SetTimelineLength(gd.Float(value))
 }
 
@@ -73,11 +74,11 @@ func (self Instance) SetStretchTimeScale(value bool) {
 	class(self).SetStretchTimeScale(value)
 }
 
-func (self Instance) StartOffset() float64 {
-	return float64(float64(class(self).GetStartOffset()))
+func (self Instance) StartOffset() Float.X {
+	return Float.X(Float.X(class(self).GetStartOffset()))
 }
 
-func (self Instance) SetStartOffset(value float64) {
+func (self Instance) SetStartOffset(value Float.X) {
 	class(self).SetStartOffset(gd.Float(value))
 }
 

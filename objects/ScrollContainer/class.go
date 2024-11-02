@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -87,19 +88,19 @@ func (self Instance) SetScrollVertical(value int) {
 	class(self).SetVScroll(gd.Int(value))
 }
 
-func (self Instance) ScrollHorizontalCustomStep() float64 {
-	return float64(float64(class(self).GetHorizontalCustomStep()))
+func (self Instance) ScrollHorizontalCustomStep() Float.X {
+	return Float.X(Float.X(class(self).GetHorizontalCustomStep()))
 }
 
-func (self Instance) SetScrollHorizontalCustomStep(value float64) {
+func (self Instance) SetScrollHorizontalCustomStep(value Float.X) {
 	class(self).SetHorizontalCustomStep(gd.Float(value))
 }
 
-func (self Instance) ScrollVerticalCustomStep() float64 {
-	return float64(float64(class(self).GetVerticalCustomStep()))
+func (self Instance) ScrollVerticalCustomStep() Float.X {
+	return Float.X(Float.X(class(self).GetVerticalCustomStep()))
 }
 
-func (self Instance) SetScrollVerticalCustomStep(value float64) {
+func (self Instance) SetScrollVerticalCustomStep(value Float.X) {
 	class(self).SetVerticalCustomStep(gd.Float(value))
 }
 

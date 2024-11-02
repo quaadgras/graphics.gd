@@ -9,6 +9,10 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,7 +28,7 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 	type CollisionObject3D interface {
 		//Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 		//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(camera objects.Camera3D, event objects.InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx int)
+		InputEvent(camera objects.Camera3D, event objects.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)
 		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
 		MouseEnter()
 		//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
@@ -37,7 +41,7 @@ type Instance [1]classdb.CollisionObject3D
 Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 [b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
-func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera objects.Camera3D, event objects.InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera objects.Camera3D, event objects.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var camera = objects.Camera3D{pointers.New[classdb.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(camera[0])
@@ -102,8 +106,8 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool {
 /*
 Returns the object's [RID].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
@@ -130,15 +134,15 @@ func (self Instance) GetShapeOwners() []int32 {
 /*
 Sets the [Transform3D] of the given shape owner.
 */
-func (self Instance) ShapeOwnerSetTransform(owner_id int, transform gd.Transform3D) {
-	class(self).ShapeOwnerSetTransform(gd.Int(owner_id), transform)
+func (self Instance) ShapeOwnerSetTransform(owner_id int, transform Transform3D.BasisOrigin) {
+	class(self).ShapeOwnerSetTransform(gd.Int(owner_id), gd.Transform3D(transform))
 }
 
 /*
 Returns the shape owner's [Transform3D].
 */
-func (self Instance) ShapeOwnerGetTransform(owner_id int) gd.Transform3D {
-	return gd.Transform3D(class(self).ShapeOwnerGetTransform(gd.Int(owner_id)))
+func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).ShapeOwnerGetTransform(gd.Int(owner_id)))
 }
 
 /*
@@ -246,11 +250,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) CollisionPriority() float64 {
-	return float64(float64(class(self).GetCollisionPriority()))
+func (self Instance) CollisionPriority() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-func (self Instance) SetCollisionPriority(value float64) {
+func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(gd.Float(value))
 }
 
@@ -691,7 +695,7 @@ func (self class) ShapeFindOwner(shape_index gd.Int) gd.Int {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnInputEvent(cb func(camera objects.Node, event objects.InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx int)) {
+func (self Instance) OnInputEvent(cb func(camera objects.Node, event objects.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) {
 	self[0].AsObject().Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
 }
 

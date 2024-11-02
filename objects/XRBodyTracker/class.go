@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRPositionalTracker"
 import "grow.graphics/gd/objects/XRTracker"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,15 +40,15 @@ func (self Instance) GetJointFlags(joint classdb.XRBodyTrackerJoint) classdb.XRB
 /*
 Sets the transform for the given body joint.
 */
-func (self Instance) SetJointTransform(joint classdb.XRBodyTrackerJoint, transform gd.Transform3D) {
-	class(self).SetJointTransform(joint, transform)
+func (self Instance) SetJointTransform(joint classdb.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) {
+	class(self).SetJointTransform(joint, gd.Transform3D(transform))
 }
 
 /*
 Returns the transform for the given body joint.
 */
-func (self Instance) GetJointTransform(joint classdb.XRBodyTrackerJoint) gd.Transform3D {
-	return gd.Transform3D(class(self).GetJointTransform(joint))
+func (self Instance) GetJointTransform(joint classdb.XRBodyTrackerJoint) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetJointTransform(joint))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

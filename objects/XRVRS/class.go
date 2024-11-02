@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,8 +26,8 @@ type Instance [1]classdb.XRVRS
 Generates the VRS texture based on a render [param target_size] adjusted by our VRS tile size. For each eyes focal point passed in [param eye_foci] a layer is created. Focal point should be in NDC.
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
-func (self Instance) MakeVrsTexture(target_size gd.Vector2, eye_foci []gd.Vector2) gd.RID {
-	return gd.RID(class(self).MakeVrsTexture(target_size, gd.NewPackedVector2Slice(eye_foci)))
+func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) Resource.ID {
+	return Resource.ID(class(self).MakeVrsTexture(gd.Vector2(target_size), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&eye_foci)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -38,19 +41,19 @@ func New() Instance {
 	return Instance{classdb.XRVRS(object)}
 }
 
-func (self Instance) VrsMinRadius() float64 {
-	return float64(float64(class(self).GetVrsMinRadius()))
+func (self Instance) VrsMinRadius() Float.X {
+	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-func (self Instance) SetVrsMinRadius(value float64) {
+func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(gd.Float(value))
 }
 
-func (self Instance) VrsStrength() float64 {
-	return float64(float64(class(self).GetVrsStrength()))
+func (self Instance) VrsStrength() Float.X {
+	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-func (self Instance) SetVrsStrength(value float64) {
+func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(gd.Float(value))
 }
 

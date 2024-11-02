@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -62,7 +63,7 @@ func EraseAction(action string) {
 /*
 Sets a deadzone value for the action.
 */
-func ActionSetDeadzone(action string, deadzone float64) {
+func ActionSetDeadzone(action string, deadzone Float.X) {
 	once.Do(singleton)
 	class(self).ActionSetDeadzone(gd.NewStringName(action), gd.Float(deadzone))
 }
@@ -70,9 +71,9 @@ func ActionSetDeadzone(action string, deadzone float64) {
 /*
 Returns a deadzone value for the action.
 */
-func ActionGetDeadzone(action string) float64 {
+func ActionGetDeadzone(action string) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ActionGetDeadzone(gd.NewStringName(action))))
+	return Float.X(Float.X(class(self).ActionGetDeadzone(gd.NewStringName(action))))
 }
 
 /*

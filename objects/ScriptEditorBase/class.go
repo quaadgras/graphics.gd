@@ -13,6 +13,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -94,7 +95,7 @@ func (self Instance) OnRequestSaveHistory(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnRequestSavePreviousState(cb func(state gd.Dictionary)) {
+func (self Instance) OnRequestSavePreviousState(cb func(state Dictionary.Any)) {
 	self[0].AsObject().Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), 0)
 }
 

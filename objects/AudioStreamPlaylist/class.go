@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,8 +22,8 @@ type Instance [1]classdb.AudioStreamPlaylist
 /*
 Returns the BPM of the playlist, which can vary depending on the clip being played.
 */
-func (self Instance) GetBpm() float64 {
-	return float64(float64(class(self).GetBpm()))
+func (self Instance) GetBpm() Float.X {
+	return Float.X(Float.X(class(self).GetBpm()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -52,11 +53,11 @@ func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
-func (self Instance) FadeTime() float64 {
-	return float64(float64(class(self).GetFadeTime()))
+func (self Instance) FadeTime() Float.X {
+	return Float.X(Float.X(class(self).GetFadeTime()))
 }
 
-func (self Instance) SetFadeTime(value float64) {
+func (self Instance) SetFadeTime(value Float.X) {
 	class(self).SetFadeTime(gd.Float(value))
 }
 

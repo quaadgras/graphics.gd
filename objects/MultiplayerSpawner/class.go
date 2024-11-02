@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -55,7 +56,7 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
 func (self Instance) Spawn() objects.Node {
-	return objects.Node(class(self).Spawn(gd.NewVariant(([1]gd.Variant{}[0]))))
+	return objects.Node(class(self).Spawn(gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -69,12 +70,12 @@ func New() Instance {
 	return Instance{classdb.MultiplayerSpawner(object)}
 }
 
-func (self Instance) SpawnPath() string {
-	return string(class(self).GetSpawnPath().String())
+func (self Instance) SpawnPath() Path.String {
+	return Path.String(class(self).GetSpawnPath().String())
 }
 
-func (self Instance) SetSpawnPath(value string) {
-	class(self).SetSpawnPath(gd.NewString(value).NodePath())
+func (self Instance) SetSpawnPath(value Path.String) {
+	class(self).SetSpawnPath(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) SpawnLimit() int {

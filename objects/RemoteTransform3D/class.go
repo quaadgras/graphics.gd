@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,12 +41,12 @@ func New() Instance {
 	return Instance{classdb.RemoteTransform3D(object)}
 }
 
-func (self Instance) RemotePath() string {
-	return string(class(self).GetRemoteNode().String())
+func (self Instance) RemotePath() Path.String {
+	return Path.String(class(self).GetRemoteNode().String())
 }
 
-func (self Instance) SetRemotePath(value string) {
-	class(self).SetRemoteNode(gd.NewString(value).NodePath())
+func (self Instance) SetRemotePath(value Path.String) {
+	class(self).SetRemoteNode(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) UseGlobalCoordinates() bool {

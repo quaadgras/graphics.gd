@@ -41,6 +41,10 @@ func (self Instance) SetGradient(value objects.Gradient) {
 	class(self).SetGradient(value)
 }
 
+func (self Instance) SetWidth(value int) {
+	class(self).SetWidth(gd.Int(value))
+}
+
 func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }

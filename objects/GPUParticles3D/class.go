@@ -11,6 +11,12 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,16 +41,16 @@ func (self Instance) Restart() {
 /*
 Returns the axis-aligned bounding box that contains all the particles that are active in the current frame.
 */
-func (self Instance) CaptureAabb() gd.AABB {
-	return gd.AABB(class(self).CaptureAabb())
+func (self Instance) CaptureAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).CaptureAabb())
 }
 
 /*
 Emits a single particle. Whether [param xform], [param velocity], [param color] and [param custom] are applied depends on the value of [param flags]. See [enum EmitFlags].
 The default ParticleProcessMaterial will overwrite [param color] and use the contents of [param custom] as [code](rotation, age, animation, lifetime)[/code].
 */
-func (self Instance) EmitParticle(xform gd.Transform3D, velocity gd.Vector3, color gd.Color, custom gd.Color, flags int) {
-	class(self).EmitParticle(xform, velocity, color, custom, gd.Int(flags))
+func (self Instance) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, flags int) {
+	class(self).EmitParticle(gd.Transform3D(xform), gd.Vector3(velocity), gd.Color(color), gd.Color(custom), gd.Int(flags))
 }
 
 /*
@@ -81,35 +87,35 @@ func (self Instance) SetAmount(value int) {
 	class(self).SetAmount(gd.Int(value))
 }
 
-func (self Instance) AmountRatio() float64 {
-	return float64(float64(class(self).GetAmountRatio()))
+func (self Instance) AmountRatio() Float.X {
+	return Float.X(Float.X(class(self).GetAmountRatio()))
 }
 
-func (self Instance) SetAmountRatio(value float64) {
+func (self Instance) SetAmountRatio(value Float.X) {
 	class(self).SetAmountRatio(gd.Float(value))
 }
 
-func (self Instance) SubEmitter() string {
-	return string(class(self).GetSubEmitter().String())
+func (self Instance) SubEmitter() Path.String {
+	return Path.String(class(self).GetSubEmitter().String())
 }
 
-func (self Instance) SetSubEmitter(value string) {
-	class(self).SetSubEmitter(gd.NewString(value).NodePath())
+func (self Instance) SetSubEmitter(value Path.String) {
+	class(self).SetSubEmitter(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) Lifetime() float64 {
-	return float64(float64(class(self).GetLifetime()))
+func (self Instance) Lifetime() Float.X {
+	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
-func (self Instance) SetLifetime(value float64) {
+func (self Instance) SetLifetime(value Float.X) {
 	class(self).SetLifetime(gd.Float(value))
 }
 
-func (self Instance) InterpToEnd() float64 {
-	return float64(float64(class(self).GetInterpToEnd()))
+func (self Instance) InterpToEnd() Float.X {
+	return Float.X(Float.X(class(self).GetInterpToEnd()))
 }
 
-func (self Instance) SetInterpToEnd(value float64) {
+func (self Instance) SetInterpToEnd(value Float.X) {
 	class(self).SetInterpToEnd(gd.Float(value))
 }
 
@@ -121,35 +127,35 @@ func (self Instance) SetOneShot(value bool) {
 	class(self).SetOneShot(value)
 }
 
-func (self Instance) Preprocess() float64 {
-	return float64(float64(class(self).GetPreProcessTime()))
+func (self Instance) Preprocess() Float.X {
+	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
-func (self Instance) SetPreprocess(value float64) {
+func (self Instance) SetPreprocess(value Float.X) {
 	class(self).SetPreProcessTime(gd.Float(value))
 }
 
-func (self Instance) SpeedScale() float64 {
-	return float64(float64(class(self).GetSpeedScale()))
+func (self Instance) SpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-func (self Instance) SetSpeedScale(value float64) {
+func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(gd.Float(value))
 }
 
-func (self Instance) Explosiveness() float64 {
-	return float64(float64(class(self).GetExplosivenessRatio()))
+func (self Instance) Explosiveness() Float.X {
+	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
-func (self Instance) SetExplosiveness(value float64) {
+func (self Instance) SetExplosiveness(value Float.X) {
 	class(self).SetExplosivenessRatio(gd.Float(value))
 }
 
-func (self Instance) Randomness() float64 {
-	return float64(float64(class(self).GetRandomnessRatio()))
+func (self Instance) Randomness() Float.X {
+	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
-func (self Instance) SetRandomness(value float64) {
+func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(gd.Float(value))
 }
 
@@ -177,20 +183,20 @@ func (self Instance) SetFractDelta(value bool) {
 	class(self).SetFractionalDelta(value)
 }
 
-func (self Instance) CollisionBaseSize() float64 {
-	return float64(float64(class(self).GetCollisionBaseSize()))
+func (self Instance) CollisionBaseSize() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionBaseSize()))
 }
 
-func (self Instance) SetCollisionBaseSize(value float64) {
+func (self Instance) SetCollisionBaseSize(value Float.X) {
 	class(self).SetCollisionBaseSize(gd.Float(value))
 }
 
-func (self Instance) VisibilityAabb() gd.AABB {
-	return gd.AABB(class(self).GetVisibilityAabb())
+func (self Instance) VisibilityAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetVisibilityAabb())
 }
 
-func (self Instance) SetVisibilityAabb(value gd.AABB) {
-	class(self).SetVisibilityAabb(value)
+func (self Instance) SetVisibilityAabb(value AABB.PositionSize) {
+	class(self).SetVisibilityAabb(gd.AABB(value))
 }
 
 func (self Instance) LocalCoords() bool {
@@ -225,11 +231,11 @@ func (self Instance) SetTrailEnabled(value bool) {
 	class(self).SetTrailEnabled(value)
 }
 
-func (self Instance) TrailLifetime() float64 {
-	return float64(float64(class(self).GetTrailLifetime()))
+func (self Instance) TrailLifetime() Float.X {
+	return Float.X(Float.X(class(self).GetTrailLifetime()))
 }
 
-func (self Instance) SetTrailLifetime(value float64) {
+func (self Instance) SetTrailLifetime(value Float.X) {
 	class(self).SetTrailLifetime(gd.Float(value))
 }
 

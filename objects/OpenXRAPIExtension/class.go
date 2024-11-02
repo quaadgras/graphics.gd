@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,14 +46,14 @@ func (self Instance) GetSession() int {
 /*
 Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html]XrPosef[/url].
 */
-func (self Instance) TransformFromPose(pose unsafe.Pointer) gd.Transform3D {
-	return gd.Transform3D(class(self).TransformFromPose(pose))
+func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).TransformFromPose(pose))
 }
 
 /*
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
-func (self Instance) XrResult(result int, format string, args gd.Array) bool {
+func (self Instance) XrResult(result int, format string, args Array.Any) bool {
 	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), args))
 }
 

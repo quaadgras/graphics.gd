@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,15 +41,15 @@ func (self Instance) GetContactBody() objects.Node3D {
 /*
 Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
 */
-func (self Instance) GetSkidinfo() float64 {
-	return float64(float64(class(self).GetSkidinfo()))
+func (self Instance) GetSkidinfo() Float.X {
+	return Float.X(Float.X(class(self).GetSkidinfo()))
 }
 
 /*
 Returns the rotational speed of the wheel in revolutions per minute.
 */
-func (self Instance) GetRpm() float64 {
-	return float64(float64(class(self).GetRpm()))
+func (self Instance) GetRpm() Float.X {
+	return Float.X(Float.X(class(self).GetRpm()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -62,27 +63,27 @@ func New() Instance {
 	return Instance{classdb.VehicleWheel3D(object)}
 }
 
-func (self Instance) EngineForce() float64 {
-	return float64(float64(class(self).GetEngineForce()))
+func (self Instance) EngineForce() Float.X {
+	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
-func (self Instance) SetEngineForce(value float64) {
+func (self Instance) SetEngineForce(value Float.X) {
 	class(self).SetEngineForce(gd.Float(value))
 }
 
-func (self Instance) Brake() float64 {
-	return float64(float64(class(self).GetBrake()))
+func (self Instance) Brake() Float.X {
+	return Float.X(Float.X(class(self).GetBrake()))
 }
 
-func (self Instance) SetBrake(value float64) {
+func (self Instance) SetBrake(value Float.X) {
 	class(self).SetBrake(gd.Float(value))
 }
 
-func (self Instance) Steering() float64 {
-	return float64(float64(class(self).GetSteering()))
+func (self Instance) Steering() Float.X {
+	return Float.X(Float.X(class(self).GetSteering()))
 }
 
-func (self Instance) SetSteering(value float64) {
+func (self Instance) SetSteering(value Float.X) {
 	class(self).SetSteering(gd.Float(value))
 }
 
@@ -102,75 +103,75 @@ func (self Instance) SetUseAsSteering(value bool) {
 	class(self).SetUseAsSteering(value)
 }
 
-func (self Instance) WheelRollInfluence() float64 {
-	return float64(float64(class(self).GetRollInfluence()))
+func (self Instance) WheelRollInfluence() Float.X {
+	return Float.X(Float.X(class(self).GetRollInfluence()))
 }
 
-func (self Instance) SetWheelRollInfluence(value float64) {
+func (self Instance) SetWheelRollInfluence(value Float.X) {
 	class(self).SetRollInfluence(gd.Float(value))
 }
 
-func (self Instance) WheelRadius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) WheelRadius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetWheelRadius(value float64) {
+func (self Instance) SetWheelRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) WheelRestLength() float64 {
-	return float64(float64(class(self).GetSuspensionRestLength()))
+func (self Instance) WheelRestLength() Float.X {
+	return Float.X(Float.X(class(self).GetSuspensionRestLength()))
 }
 
-func (self Instance) SetWheelRestLength(value float64) {
+func (self Instance) SetWheelRestLength(value Float.X) {
 	class(self).SetSuspensionRestLength(gd.Float(value))
 }
 
-func (self Instance) WheelFrictionSlip() float64 {
-	return float64(float64(class(self).GetFrictionSlip()))
+func (self Instance) WheelFrictionSlip() Float.X {
+	return Float.X(Float.X(class(self).GetFrictionSlip()))
 }
 
-func (self Instance) SetWheelFrictionSlip(value float64) {
+func (self Instance) SetWheelFrictionSlip(value Float.X) {
 	class(self).SetFrictionSlip(gd.Float(value))
 }
 
-func (self Instance) SuspensionTravel() float64 {
-	return float64(float64(class(self).GetSuspensionTravel()))
+func (self Instance) SuspensionTravel() Float.X {
+	return Float.X(Float.X(class(self).GetSuspensionTravel()))
 }
 
-func (self Instance) SetSuspensionTravel(value float64) {
+func (self Instance) SetSuspensionTravel(value Float.X) {
 	class(self).SetSuspensionTravel(gd.Float(value))
 }
 
-func (self Instance) SuspensionStiffness() float64 {
-	return float64(float64(class(self).GetSuspensionStiffness()))
+func (self Instance) SuspensionStiffness() Float.X {
+	return Float.X(Float.X(class(self).GetSuspensionStiffness()))
 }
 
-func (self Instance) SetSuspensionStiffness(value float64) {
+func (self Instance) SetSuspensionStiffness(value Float.X) {
 	class(self).SetSuspensionStiffness(gd.Float(value))
 }
 
-func (self Instance) SuspensionMaxForce() float64 {
-	return float64(float64(class(self).GetSuspensionMaxForce()))
+func (self Instance) SuspensionMaxForce() Float.X {
+	return Float.X(Float.X(class(self).GetSuspensionMaxForce()))
 }
 
-func (self Instance) SetSuspensionMaxForce(value float64) {
+func (self Instance) SetSuspensionMaxForce(value Float.X) {
 	class(self).SetSuspensionMaxForce(gd.Float(value))
 }
 
-func (self Instance) DampingCompression() float64 {
-	return float64(float64(class(self).GetDampingCompression()))
+func (self Instance) DampingCompression() Float.X {
+	return Float.X(Float.X(class(self).GetDampingCompression()))
 }
 
-func (self Instance) SetDampingCompression(value float64) {
+func (self Instance) SetDampingCompression(value Float.X) {
 	class(self).SetDampingCompression(gd.Float(value))
 }
 
-func (self Instance) DampingRelaxation() float64 {
-	return float64(float64(class(self).GetDampingRelaxation()))
+func (self Instance) DampingRelaxation() Float.X {
+	return Float.X(Float.X(class(self).GetDampingRelaxation()))
 }
 
-func (self Instance) SetDampingRelaxation(value float64) {
+func (self Instance) SetDampingRelaxation(value Float.X) {
 	class(self).SetDampingRelaxation(gd.Float(value))
 }
 

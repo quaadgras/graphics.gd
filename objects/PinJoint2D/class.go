@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Joint2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,11 +35,11 @@ func New() Instance {
 	return Instance{classdb.PinJoint2D(object)}
 }
 
-func (self Instance) Softness() float64 {
-	return float64(float64(class(self).GetSoftness()))
+func (self Instance) Softness() Float.X {
+	return Float.X(Float.X(class(self).GetSoftness()))
 }
 
-func (self Instance) SetSoftness(value float64) {
+func (self Instance) SetSoftness(value Float.X) {
 	class(self).SetSoftness(gd.Float(value))
 }
 
@@ -50,19 +51,19 @@ func (self Instance) SetAngularLimitEnabled(value bool) {
 	class(self).SetAngularLimitEnabled(value)
 }
 
-func (self Instance) AngularLimitLower() float64 {
-	return float64(float64(class(self).GetAngularLimitLower()))
+func (self Instance) AngularLimitLower() Float.X {
+	return Float.X(Float.X(class(self).GetAngularLimitLower()))
 }
 
-func (self Instance) SetAngularLimitLower(value float64) {
+func (self Instance) SetAngularLimitLower(value Float.X) {
 	class(self).SetAngularLimitLower(gd.Float(value))
 }
 
-func (self Instance) AngularLimitUpper() float64 {
-	return float64(float64(class(self).GetAngularLimitUpper()))
+func (self Instance) AngularLimitUpper() Float.X {
+	return Float.X(Float.X(class(self).GetAngularLimitUpper()))
 }
 
-func (self Instance) SetAngularLimitUpper(value float64) {
+func (self Instance) SetAngularLimitUpper(value Float.X) {
 	class(self).SetAngularLimitUpper(gd.Float(value))
 }
 
@@ -74,11 +75,11 @@ func (self Instance) SetMotorEnabled(value bool) {
 	class(self).SetMotorEnabled(value)
 }
 
-func (self Instance) MotorTargetVelocity() float64 {
-	return float64(float64(class(self).GetMotorTargetVelocity()))
+func (self Instance) MotorTargetVelocity() Float.X {
+	return Float.X(Float.X(class(self).GetMotorTargetVelocity()))
 }
 
-func (self Instance) SetMotorTargetVelocity(value float64) {
+func (self Instance) SetMotorTargetVelocity(value Float.X) {
 	class(self).SetMotorTargetVelocity(gd.Float(value))
 }
 

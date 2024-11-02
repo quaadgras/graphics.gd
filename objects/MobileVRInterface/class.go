@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRInterface"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,83 +42,83 @@ func New() Instance {
 	return Instance{classdb.MobileVRInterface(object)}
 }
 
-func (self Instance) EyeHeight() float64 {
-	return float64(float64(class(self).GetEyeHeight()))
+func (self Instance) EyeHeight() Float.X {
+	return Float.X(Float.X(class(self).GetEyeHeight()))
 }
 
-func (self Instance) SetEyeHeight(value float64) {
+func (self Instance) SetEyeHeight(value Float.X) {
 	class(self).SetEyeHeight(gd.Float(value))
 }
 
-func (self Instance) Iod() float64 {
-	return float64(float64(class(self).GetIod()))
+func (self Instance) Iod() Float.X {
+	return Float.X(Float.X(class(self).GetIod()))
 }
 
-func (self Instance) SetIod(value float64) {
+func (self Instance) SetIod(value Float.X) {
 	class(self).SetIod(gd.Float(value))
 }
 
-func (self Instance) DisplayWidth() float64 {
-	return float64(float64(class(self).GetDisplayWidth()))
+func (self Instance) DisplayWidth() Float.X {
+	return Float.X(Float.X(class(self).GetDisplayWidth()))
 }
 
-func (self Instance) SetDisplayWidth(value float64) {
+func (self Instance) SetDisplayWidth(value Float.X) {
 	class(self).SetDisplayWidth(gd.Float(value))
 }
 
-func (self Instance) DisplayToLens() float64 {
-	return float64(float64(class(self).GetDisplayToLens()))
+func (self Instance) DisplayToLens() Float.X {
+	return Float.X(Float.X(class(self).GetDisplayToLens()))
 }
 
-func (self Instance) SetDisplayToLens(value float64) {
+func (self Instance) SetDisplayToLens(value Float.X) {
 	class(self).SetDisplayToLens(gd.Float(value))
 }
 
-func (self Instance) OffsetRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetOffsetRect())
+func (self Instance) OffsetRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetOffsetRect())
 }
 
-func (self Instance) SetOffsetRect(value gd.Rect2) {
-	class(self).SetOffsetRect(value)
+func (self Instance) SetOffsetRect(value Rect2.PositionSize) {
+	class(self).SetOffsetRect(gd.Rect2(value))
 }
 
-func (self Instance) Oversample() float64 {
-	return float64(float64(class(self).GetOversample()))
+func (self Instance) Oversample() Float.X {
+	return Float.X(Float.X(class(self).GetOversample()))
 }
 
-func (self Instance) SetOversample(value float64) {
+func (self Instance) SetOversample(value Float.X) {
 	class(self).SetOversample(gd.Float(value))
 }
 
-func (self Instance) K1() float64 {
-	return float64(float64(class(self).GetK1()))
+func (self Instance) K1() Float.X {
+	return Float.X(Float.X(class(self).GetK1()))
 }
 
-func (self Instance) SetK1(value float64) {
+func (self Instance) SetK1(value Float.X) {
 	class(self).SetK1(gd.Float(value))
 }
 
-func (self Instance) K2() float64 {
-	return float64(float64(class(self).GetK2()))
+func (self Instance) K2() Float.X {
+	return Float.X(Float.X(class(self).GetK2()))
 }
 
-func (self Instance) SetK2(value float64) {
+func (self Instance) SetK2(value Float.X) {
 	class(self).SetK2(gd.Float(value))
 }
 
-func (self Instance) VrsMinRadius() float64 {
-	return float64(float64(class(self).GetVrsMinRadius()))
+func (self Instance) VrsMinRadius() Float.X {
+	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-func (self Instance) SetVrsMinRadius(value float64) {
+func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(gd.Float(value))
 }
 
-func (self Instance) VrsStrength() float64 {
-	return float64(float64(class(self).GetVrsStrength()))
+func (self Instance) VrsStrength() Float.X {
+	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-func (self Instance) SetVrsStrength(value float64) {
+func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(gd.Float(value))
 }
 

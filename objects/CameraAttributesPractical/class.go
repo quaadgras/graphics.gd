@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CameraAttributes"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,19 +42,19 @@ func (self Instance) SetDofBlurFarEnabled(value bool) {
 	class(self).SetDofBlurFarEnabled(value)
 }
 
-func (self Instance) DofBlurFarDistance() float64 {
-	return float64(float64(class(self).GetDofBlurFarDistance()))
+func (self Instance) DofBlurFarDistance() Float.X {
+	return Float.X(Float.X(class(self).GetDofBlurFarDistance()))
 }
 
-func (self Instance) SetDofBlurFarDistance(value float64) {
+func (self Instance) SetDofBlurFarDistance(value Float.X) {
 	class(self).SetDofBlurFarDistance(gd.Float(value))
 }
 
-func (self Instance) DofBlurFarTransition() float64 {
-	return float64(float64(class(self).GetDofBlurFarTransition()))
+func (self Instance) DofBlurFarTransition() Float.X {
+	return Float.X(Float.X(class(self).GetDofBlurFarTransition()))
 }
 
-func (self Instance) SetDofBlurFarTransition(value float64) {
+func (self Instance) SetDofBlurFarTransition(value Float.X) {
 	class(self).SetDofBlurFarTransition(gd.Float(value))
 }
 
@@ -65,43 +66,43 @@ func (self Instance) SetDofBlurNearEnabled(value bool) {
 	class(self).SetDofBlurNearEnabled(value)
 }
 
-func (self Instance) DofBlurNearDistance() float64 {
-	return float64(float64(class(self).GetDofBlurNearDistance()))
+func (self Instance) DofBlurNearDistance() Float.X {
+	return Float.X(Float.X(class(self).GetDofBlurNearDistance()))
 }
 
-func (self Instance) SetDofBlurNearDistance(value float64) {
+func (self Instance) SetDofBlurNearDistance(value Float.X) {
 	class(self).SetDofBlurNearDistance(gd.Float(value))
 }
 
-func (self Instance) DofBlurNearTransition() float64 {
-	return float64(float64(class(self).GetDofBlurNearTransition()))
+func (self Instance) DofBlurNearTransition() Float.X {
+	return Float.X(Float.X(class(self).GetDofBlurNearTransition()))
 }
 
-func (self Instance) SetDofBlurNearTransition(value float64) {
+func (self Instance) SetDofBlurNearTransition(value Float.X) {
 	class(self).SetDofBlurNearTransition(gd.Float(value))
 }
 
-func (self Instance) DofBlurAmount() float64 {
-	return float64(float64(class(self).GetDofBlurAmount()))
+func (self Instance) DofBlurAmount() Float.X {
+	return Float.X(Float.X(class(self).GetDofBlurAmount()))
 }
 
-func (self Instance) SetDofBlurAmount(value float64) {
+func (self Instance) SetDofBlurAmount(value Float.X) {
 	class(self).SetDofBlurAmount(gd.Float(value))
 }
 
-func (self Instance) AutoExposureMinSensitivity() float64 {
-	return float64(float64(class(self).GetAutoExposureMinSensitivity()))
+func (self Instance) AutoExposureMinSensitivity() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureMinSensitivity()))
 }
 
-func (self Instance) SetAutoExposureMinSensitivity(value float64) {
+func (self Instance) SetAutoExposureMinSensitivity(value Float.X) {
 	class(self).SetAutoExposureMinSensitivity(gd.Float(value))
 }
 
-func (self Instance) AutoExposureMaxSensitivity() float64 {
-	return float64(float64(class(self).GetAutoExposureMaxSensitivity()))
+func (self Instance) AutoExposureMaxSensitivity() Float.X {
+	return Float.X(Float.X(class(self).GetAutoExposureMaxSensitivity()))
 }
 
-func (self Instance) SetAutoExposureMaxSensitivity(value float64) {
+func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
 	class(self).SetAutoExposureMaxSensitivity(gd.Float(value))
 }
 

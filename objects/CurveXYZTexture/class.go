@@ -34,6 +34,10 @@ func New() Instance {
 	return Instance{classdb.CurveXYZTexture(object)}
 }
 
+func (self Instance) SetWidth(value int) {
+	class(self).SetWidth(gd.Int(value))
+}
+
 func (self Instance) CurveX() objects.Curve {
 	return objects.Curve(class(self).GetCurveX())
 }

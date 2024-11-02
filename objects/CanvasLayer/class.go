@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,15 +44,15 @@ func (self Instance) Hide() {
 /*
 Returns the transform from the [CanvasLayer]s coordinate system to the [Viewport]s coordinate system.
 */
-func (self Instance) GetFinalTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetFinalTransform())
+func (self Instance) GetFinalTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetFinalTransform())
 }
 
 /*
 Returns the RID of the canvas used by this layer.
 */
-func (self Instance) GetCanvas() gd.RID {
-	return gd.RID(class(self).GetCanvas())
+func (self Instance) GetCanvas() Resource.ID {
+	return Resource.ID(class(self).GetCanvas())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -78,36 +82,36 @@ func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
-func (self Instance) Rotation() float64 {
-	return float64(float64(class(self).GetRotation()))
+func (self Instance) Rotation() Float.X {
+	return Float.X(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value float64) {
+func (self Instance) SetRotation(value Float.X) {
 	class(self).SetRotation(gd.Float(value))
 }
 
-func (self Instance) Scale() gd.Vector2 {
-	return gd.Vector2(class(self).GetScale())
+func (self Instance) Scale() Vector2.XY {
+	return Vector2.XY(class(self).GetScale())
 }
 
-func (self Instance) SetScale(value gd.Vector2) {
-	class(self).SetScale(value)
+func (self Instance) SetScale(value Vector2.XY) {
+	class(self).SetScale(gd.Vector2(value))
 }
 
-func (self Instance) Transform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform())
+func (self Instance) Transform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-func (self Instance) SetTransform(value gd.Transform2D) {
-	class(self).SetTransform(value)
+func (self Instance) SetTransform(value Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Transform2D(value))
 }
 
 func (self Instance) CustomViewport() objects.Node {
@@ -126,11 +130,11 @@ func (self Instance) SetFollowViewportEnabled(value bool) {
 	class(self).SetFollowViewport(value)
 }
 
-func (self Instance) FollowViewportScale() float64 {
-	return float64(float64(class(self).GetFollowViewportScale()))
+func (self Instance) FollowViewportScale() Float.X {
+	return Float.X(Float.X(class(self).GetFollowViewportScale()))
 }
 
-func (self Instance) SetFollowViewportScale(value float64) {
+func (self Instance) SetFollowViewportScale(value Float.X) {
 	class(self).SetFollowViewportScale(gd.Float(value))
 }
 

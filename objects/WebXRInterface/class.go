@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRInterface"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -156,22 +158,22 @@ func (self Instance) GetInputSourceTargetRayMode(input_source_id int) classdb.We
 /*
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
-func (self Instance) GetDisplayRefreshRate() float64 {
-	return float64(float64(class(self).GetDisplayRefreshRate()))
+func (self Instance) GetDisplayRefreshRate() Float.X {
+	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
 /*
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
-func (self Instance) SetDisplayRefreshRate(refresh_rate float64) {
+func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) {
 	class(self).SetDisplayRefreshRate(gd.Float(refresh_rate))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() gd.Array {
-	return gd.Array(class(self).GetAvailableDisplayRefreshRates())
+func (self Instance) GetAvailableDisplayRefreshRates() Array.Any {
+	return Array.Any(class(self).GetAvailableDisplayRefreshRates())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

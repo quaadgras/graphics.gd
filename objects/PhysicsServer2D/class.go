@@ -8,6 +8,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,65 +40,65 @@ func singleton() {
 /*
 Creates a 2D world boundary shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the shape's normal direction and distance properties.
 */
-func WorldBoundaryShapeCreate() gd.RID {
+func WorldBoundaryShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).WorldBoundaryShapeCreate())
+	return Resource.ID(class(self).WorldBoundaryShapeCreate())
 }
 
 /*
 Creates a 2D separation ray shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the shape's [code]length[/code] and [code]slide_on_slope[/code] properties.
 */
-func SeparationRayShapeCreate() gd.RID {
+func SeparationRayShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SeparationRayShapeCreate())
+	return Resource.ID(class(self).SeparationRayShapeCreate())
 }
 
 /*
 Creates a 2D segment shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the segment's start and end points.
 */
-func SegmentShapeCreate() gd.RID {
+func SegmentShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SegmentShapeCreate())
+	return Resource.ID(class(self).SegmentShapeCreate())
 }
 
 /*
 Creates a 2D circle shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the circle's radius.
 */
-func CircleShapeCreate() gd.RID {
+func CircleShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CircleShapeCreate())
+	return Resource.ID(class(self).CircleShapeCreate())
 }
 
 /*
 Creates a 2D rectangle shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the rectangle's half-extents.
 */
-func RectangleShapeCreate() gd.RID {
+func RectangleShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).RectangleShapeCreate())
+	return Resource.ID(class(self).RectangleShapeCreate())
 }
 
 /*
 Creates a 2D capsule shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the capsule's height and radius.
 */
-func CapsuleShapeCreate() gd.RID {
+func CapsuleShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CapsuleShapeCreate())
+	return Resource.ID(class(self).CapsuleShapeCreate())
 }
 
 /*
 Creates a 2D convex polygon shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the convex polygon's points.
 */
-func ConvexPolygonShapeCreate() gd.RID {
+func ConvexPolygonShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).ConvexPolygonShapeCreate())
+	return Resource.ID(class(self).ConvexPolygonShapeCreate())
 }
 
 /*
 Creates a 2D concave polygon shape in the physics server, and returns the [RID] that identifies it. Use [method shape_set_data] to set the concave polygon's segments.
 */
-func ConcavePolygonShapeCreate() gd.RID {
+func ConcavePolygonShapeCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).ConcavePolygonShapeCreate())
+	return Resource.ID(class(self).ConcavePolygonShapeCreate())
 }
 
 /*
@@ -109,15 +113,15 @@ Sets the shape data that defines the configuration of the shape. The [param data
 - [constant SHAPE_CONCAVE_POLYGON]: a [PackedVector2Array] of length divisible by two (each pair of points forms one segment).
 [b]Warning:[/b] In the case of [constant SHAPE_CONVEX_POLYGON], this method does not check if the points supplied actually form a convex polygon (unlike the [member CollisionPolygon2D.polygon] property).
 */
-func ShapeSetData(shape gd.RID, data gd.Variant) {
+func ShapeSetData(shape Resource.ID, data any) {
 	once.Do(singleton)
-	class(self).ShapeSetData(shape, data)
+	class(self).ShapeSetData(shape, gd.NewVariant(data))
 }
 
 /*
 Returns the shape's type (see [enum ShapeType]).
 */
-func ShapeGetType(shape gd.RID) classdb.PhysicsServer2DShapeType {
+func ShapeGetType(shape Resource.ID) classdb.PhysicsServer2DShapeType {
 	once.Do(singleton)
 	return classdb.PhysicsServer2DShapeType(class(self).ShapeGetType(shape))
 }
@@ -125,23 +129,23 @@ func ShapeGetType(shape gd.RID) classdb.PhysicsServer2DShapeType {
 /*
 Returns the shape data that defines the configuration of the shape, such as the half-extents of a rectangle or the segments of a concave shape. See [method shape_set_data] for the precise format of this data in each case.
 */
-func ShapeGetData(shape gd.RID) gd.Variant {
+func ShapeGetData(shape Resource.ID) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).ShapeGetData(shape))
+	return any(class(self).ShapeGetData(shape).Interface())
 }
 
 /*
 Creates a 2D space in the physics server, and returns the [RID] that identifies it. A space contains bodies and areas, and controls the stepping of the physics simulation of the objects in it.
 */
-func SpaceCreate() gd.RID {
+func SpaceCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).SpaceCreate())
+	return Resource.ID(class(self).SpaceCreate())
 }
 
 /*
 Activates or deactivates the space. If [param active] is [code]false[/code], then the physics server will not do anything with this space in its physics step.
 */
-func SpaceSetActive(space gd.RID, active bool) {
+func SpaceSetActive(space Resource.ID, active bool) {
 	once.Do(singleton)
 	class(self).SpaceSetActive(space, active)
 }
@@ -149,7 +153,7 @@ func SpaceSetActive(space gd.RID, active bool) {
 /*
 Returns [code]true[/code] if the space is active.
 */
-func SpaceIsActive(space gd.RID) bool {
+func SpaceIsActive(space Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).SpaceIsActive(space))
 }
@@ -157,7 +161,7 @@ func SpaceIsActive(space gd.RID) bool {
 /*
 Sets the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
-func SpaceSetParam(space gd.RID, param classdb.PhysicsServer2DSpaceParameter, value float64) {
+func SpaceSetParam(space Resource.ID, param classdb.PhysicsServer2DSpaceParameter, value Float.X) {
 	once.Do(singleton)
 	class(self).SpaceSetParam(space, param, gd.Float(value))
 }
@@ -165,15 +169,15 @@ func SpaceSetParam(space gd.RID, param classdb.PhysicsServer2DSpaceParameter, va
 /*
 Returns the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
-func SpaceGetParam(space gd.RID, param classdb.PhysicsServer2DSpaceParameter) float64 {
+func SpaceGetParam(space Resource.ID, param classdb.PhysicsServer2DSpaceParameter) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).SpaceGetParam(space, param)))
+	return Float.X(Float.X(class(self).SpaceGetParam(space, param)))
 }
 
 /*
 Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
 */
-func SpaceGetDirectState(space gd.RID) objects.PhysicsDirectSpaceState2D {
+func SpaceGetDirectState(space Resource.ID) objects.PhysicsDirectSpaceState2D {
 	once.Do(singleton)
 	return objects.PhysicsDirectSpaceState2D(class(self).SpaceGetDirectState(space))
 }
@@ -182,16 +186,16 @@ func SpaceGetDirectState(space gd.RID) objects.PhysicsDirectSpaceState2D {
 Creates a 2D area object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and [code]monitorable[/code] set to [code]false[/code].
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
-func AreaCreate() gd.RID {
+func AreaCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaCreate())
+	return Resource.ID(class(self).AreaCreate())
 }
 
 /*
 Adds the area to the given space, after removing the area from the previously assigned space (if any).
 [b]Note:[/b] To remove an area from a space without immediately adding it back elsewhere, use [code]PhysicsServer2D.area_set_space(area, RID())[/code].
 */
-func AreaSetSpace(area gd.RID, space gd.RID) {
+func AreaSetSpace(area Resource.ID, space Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaSetSpace(area, space)
 }
@@ -199,23 +203,23 @@ func AreaSetSpace(area gd.RID, space gd.RID) {
 /*
 Returns the [RID] of the space assigned to the area. Returns an empty [RID] if no space is assigned.
 */
-func AreaGetSpace(area gd.RID) gd.RID {
+func AreaGetSpace(area Resource.ID) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaGetSpace(area))
+	return Resource.ID(class(self).AreaGetSpace(area))
 }
 
 /*
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of an area are usually referenced by their index in this array.
 */
-func AreaAddShape(area gd.RID, shape gd.RID) {
+func AreaAddShape(area Resource.ID, shape Resource.ID) {
 	once.Do(singleton)
-	class(self).AreaAddShape(area, shape, gd.NewTransform2D(1, 0, 0, 1, 0, 0), false)
+	class(self).AreaAddShape(area, shape, gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
 }
 
 /*
 Replaces the area's shape at the given index by another shape, while not affecting the [code]transform[/code] and [code]disabled[/code] properties at the same index.
 */
-func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
+func AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaSetShape(area, gd.Int(shape_idx), shape)
 }
@@ -223,15 +227,15 @@ func AreaSetShape(area gd.RID, shape_idx int, shape gd.RID) {
 /*
 Sets the local transform matrix of the area's shape with the given index.
 */
-func AreaSetShapeTransform(area gd.RID, shape_idx int, transform gd.Transform2D) {
+func AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
 	once.Do(singleton)
-	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), transform)
+	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), gd.Transform2D(transform))
 }
 
 /*
 Sets the disabled property of the area's shape with the given index. If [param disabled] is [code]true[/code], then the shape will not detect any other shapes entering or exiting it.
 */
-func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
+func AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
 	once.Do(singleton)
 	class(self).AreaSetShapeDisabled(area, gd.Int(shape_idx), disabled)
 }
@@ -239,7 +243,7 @@ func AreaSetShapeDisabled(area gd.RID, shape_idx int, disabled bool) {
 /*
 Returns the number of shapes added to the area.
 */
-func AreaGetShapeCount(area gd.RID) int {
+func AreaGetShapeCount(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetShapeCount(area)))
 }
@@ -247,23 +251,23 @@ func AreaGetShapeCount(area gd.RID) int {
 /*
 Returns the [RID] of the shape with the given index in the area's array of shapes.
 */
-func AreaGetShape(area gd.RID, shape_idx int) gd.RID {
+func AreaGetShape(area Resource.ID, shape_idx int) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
+	return Resource.ID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
 }
 
 /*
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
-func AreaGetShapeTransform(area gd.RID, shape_idx int) gd.Transform2D {
+func AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform2D.OriginXY {
 	once.Do(singleton)
-	return gd.Transform2D(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
+	return Transform2D.OriginXY(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
 }
 
 /*
 Removes the shape with the given index from the area's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the area's shapes which used to have indices higher than [param shape_idx] will have their index decreased by one.
 */
-func AreaRemoveShape(area gd.RID, shape_idx int) {
+func AreaRemoveShape(area Resource.ID, shape_idx int) {
 	once.Do(singleton)
 	class(self).AreaRemoveShape(area, gd.Int(shape_idx))
 }
@@ -271,7 +275,7 @@ func AreaRemoveShape(area gd.RID, shape_idx int) {
 /*
 Removes all shapes from the area. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
-func AreaClearShapes(area gd.RID) {
+func AreaClearShapes(area Resource.ID) {
 	once.Do(singleton)
 	class(self).AreaClearShapes(area)
 }
@@ -279,7 +283,7 @@ func AreaClearShapes(area gd.RID) {
 /*
 Assigns the area to one or many physics layers, via a bitmask.
 */
-func AreaSetCollisionLayer(area gd.RID, layer int) {
+func AreaSetCollisionLayer(area Resource.ID, layer int) {
 	once.Do(singleton)
 	class(self).AreaSetCollisionLayer(area, gd.Int(layer))
 }
@@ -287,7 +291,7 @@ func AreaSetCollisionLayer(area gd.RID, layer int) {
 /*
 Returns the physics layer or layers the area belongs to, as a bitmask.
 */
-func AreaGetCollisionLayer(area gd.RID) int {
+func AreaGetCollisionLayer(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionLayer(area)))
 }
@@ -295,7 +299,7 @@ func AreaGetCollisionLayer(area gd.RID) int {
 /*
 Sets which physics layers the area will monitor, via a bitmask.
 */
-func AreaSetCollisionMask(area gd.RID, mask int) {
+func AreaSetCollisionMask(area Resource.ID, mask int) {
 	once.Do(singleton)
 	class(self).AreaSetCollisionMask(area, gd.Int(mask))
 }
@@ -303,7 +307,7 @@ func AreaSetCollisionMask(area gd.RID, mask int) {
 /*
 Returns the physics layer or layers the area can contact with, as a bitmask.
 */
-func AreaGetCollisionMask(area gd.RID) int {
+func AreaGetCollisionMask(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionMask(area)))
 }
@@ -311,39 +315,39 @@ func AreaGetCollisionMask(area gd.RID) int {
 /*
 Sets the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
-func AreaSetParam(area gd.RID, param classdb.PhysicsServer2DAreaParameter, value gd.Variant) {
+func AreaSetParam(area Resource.ID, param classdb.PhysicsServer2DAreaParameter, value any) {
 	once.Do(singleton)
-	class(self).AreaSetParam(area, param, value)
+	class(self).AreaSetParam(area, param, gd.NewVariant(value))
 }
 
 /*
 Sets the transform matrix of the area.
 */
-func AreaSetTransform(area gd.RID, transform gd.Transform2D) {
+func AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY) {
 	once.Do(singleton)
-	class(self).AreaSetTransform(area, transform)
+	class(self).AreaSetTransform(area, gd.Transform2D(transform))
 }
 
 /*
 Returns the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
-func AreaGetParam(area gd.RID, param classdb.PhysicsServer2DAreaParameter) gd.Variant {
+func AreaGetParam(area Resource.ID, param classdb.PhysicsServer2DAreaParameter) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).AreaGetParam(area, param))
+	return any(class(self).AreaGetParam(area, param).Interface())
 }
 
 /*
 Returns the transform matrix of the area.
 */
-func AreaGetTransform(area gd.RID) gd.Transform2D {
+func AreaGetTransform(area Resource.ID) Transform2D.OriginXY {
 	once.Do(singleton)
-	return gd.Transform2D(class(self).AreaGetTransform(area))
+	return Transform2D.OriginXY(class(self).AreaGetTransform(area))
 }
 
 /*
 Attaches the [code]ObjectID[/code] of an [Object] to the area. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CollisionObject2D].
 */
-func AreaAttachObjectInstanceId(area gd.RID, id int) {
+func AreaAttachObjectInstanceId(area Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).AreaAttachObjectInstanceId(area, gd.Int(id))
 }
@@ -351,7 +355,7 @@ func AreaAttachObjectInstanceId(area gd.RID, id int) {
 /*
 Returns the [code]ObjectID[/code] attached to the area. Use [method @GlobalScope.instance_from_id] to retrieve an [Object] from a nonzero [code]ObjectID[/code].
 */
-func AreaGetObjectInstanceId(area gd.RID) int {
+func AreaGetObjectInstanceId(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetObjectInstanceId(area)))
 }
@@ -359,7 +363,7 @@ func AreaGetObjectInstanceId(area gd.RID) int {
 /*
 Attaches the [code]ObjectID[/code] of a canvas to the area. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CanvasLayer].
 */
-func AreaAttachCanvasInstanceId(area gd.RID, id int) {
+func AreaAttachCanvasInstanceId(area Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).AreaAttachCanvasInstanceId(area, gd.Int(id))
 }
@@ -367,7 +371,7 @@ func AreaAttachCanvasInstanceId(area gd.RID, id int) {
 /*
 Returns the [code]ObjectID[/code] of the canvas attached to the area. Use [method @GlobalScope.instance_from_id] to retrieve a [CanvasLayer] from a nonzero [code]ObjectID[/code].
 */
-func AreaGetCanvasInstanceId(area gd.RID) int {
+func AreaGetCanvasInstanceId(area Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCanvasInstanceId(area)))
 }
@@ -381,7 +385,7 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the body entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetMonitorCallback(area gd.RID, callback gd.Callable) {
+func AreaSetMonitorCallback(area Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).AreaSetMonitorCallback(area, callback)
 }
@@ -395,7 +399,7 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the other area entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable) {
+func AreaSetAreaMonitorCallback(area Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).AreaSetAreaMonitorCallback(area, callback)
 }
@@ -403,7 +407,7 @@ func AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable) {
 /*
 Sets whether the area is monitorable or not. If [param monitorable] is [code]true[/code], the area monitoring callback of other areas will be called when this area enters or exits them.
 */
-func AreaSetMonitorable(area gd.RID, monitorable bool) {
+func AreaSetMonitorable(area Resource.ID, monitorable bool) {
 	once.Do(singleton)
 	class(self).AreaSetMonitorable(area, monitorable)
 }
@@ -412,9 +416,9 @@ func AreaSetMonitorable(area gd.RID, monitorable bool) {
 Creates a 2D body object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and body mode set to [constant BODY_MODE_RIGID].
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
-func BodyCreate() gd.RID {
+func BodyCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyCreate())
+	return Resource.ID(class(self).BodyCreate())
 }
 
 /*
@@ -423,7 +427,7 @@ Adds the body to the given space, after removing the body from the previously as
 - If the parameter [constant BODY_PARAM_INERTIA] is set to a value [code]<= 0.0[/code], then the value of that parameter will be recalculated based on the body's shapes, mass, and center of mass.
 [b]Note:[/b] To remove a body from a space without immediately adding it back elsewhere, use [code]PhysicsServer2D.body_set_space(body, RID())[/code].
 */
-func BodySetSpace(body gd.RID, space gd.RID) {
+func BodySetSpace(body Resource.ID, space Resource.ID) {
 	once.Do(singleton)
 	class(self).BodySetSpace(body, space)
 }
@@ -431,15 +435,15 @@ func BodySetSpace(body gd.RID, space gd.RID) {
 /*
 Returns the [RID] of the space assigned to the body. Returns an empty [RID] if no space is assigned.
 */
-func BodyGetSpace(body gd.RID) gd.RID {
+func BodyGetSpace(body Resource.ID) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyGetSpace(body))
+	return Resource.ID(class(self).BodyGetSpace(body))
 }
 
 /*
 Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
-func BodySetMode(body gd.RID, mode classdb.PhysicsServer2DBodyMode) {
+func BodySetMode(body Resource.ID, mode classdb.PhysicsServer2DBodyMode) {
 	once.Do(singleton)
 	class(self).BodySetMode(body, mode)
 }
@@ -447,7 +451,7 @@ func BodySetMode(body gd.RID, mode classdb.PhysicsServer2DBodyMode) {
 /*
 Returns the body's mode (see [enum BodyMode]).
 */
-func BodyGetMode(body gd.RID) classdb.PhysicsServer2DBodyMode {
+func BodyGetMode(body Resource.ID) classdb.PhysicsServer2DBodyMode {
 	once.Do(singleton)
 	return classdb.PhysicsServer2DBodyMode(class(self).BodyGetMode(body))
 }
@@ -455,15 +459,15 @@ func BodyGetMode(body gd.RID) classdb.PhysicsServer2DBodyMode {
 /*
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of a body are usually referenced by their index in this array.
 */
-func BodyAddShape(body gd.RID, shape gd.RID) {
+func BodyAddShape(body Resource.ID, shape Resource.ID) {
 	once.Do(singleton)
-	class(self).BodyAddShape(body, shape, gd.NewTransform2D(1, 0, 0, 1, 0, 0), false)
+	class(self).BodyAddShape(body, shape, gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), false)
 }
 
 /*
 Replaces the body's shape at the given index by another shape, while not affecting the [code]transform[/code], [code]disabled[/code], and one-way collision properties at the same index.
 */
-func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
+func BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) {
 	once.Do(singleton)
 	class(self).BodySetShape(body, gd.Int(shape_idx), shape)
 }
@@ -471,15 +475,15 @@ func BodySetShape(body gd.RID, shape_idx int, shape gd.RID) {
 /*
 Sets the local transform matrix of the body's shape with the given index.
 */
-func BodySetShapeTransform(body gd.RID, shape_idx int, transform gd.Transform2D) {
+func BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
 	once.Do(singleton)
-	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), transform)
+	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), gd.Transform2D(transform))
 }
 
 /*
 Returns the number of shapes added to the body.
 */
-func BodyGetShapeCount(body gd.RID) int {
+func BodyGetShapeCount(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetShapeCount(body)))
 }
@@ -487,23 +491,23 @@ func BodyGetShapeCount(body gd.RID) int {
 /*
 Returns the [RID] of the shape with the given index in the body's array of shapes.
 */
-func BodyGetShape(body gd.RID, shape_idx int) gd.RID {
+func BodyGetShape(body Resource.ID, shape_idx int) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
+	return Resource.ID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
 }
 
 /*
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
-func BodyGetShapeTransform(body gd.RID, shape_idx int) gd.Transform2D {
+func BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform2D.OriginXY {
 	once.Do(singleton)
-	return gd.Transform2D(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
+	return Transform2D.OriginXY(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
 }
 
 /*
 Removes the shape with the given index from the body's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the body's shapes which used to have indices higher than [param shape_idx] will have their index decreased by one.
 */
-func BodyRemoveShape(body gd.RID, shape_idx int) {
+func BodyRemoveShape(body Resource.ID, shape_idx int) {
 	once.Do(singleton)
 	class(self).BodyRemoveShape(body, gd.Int(shape_idx))
 }
@@ -511,7 +515,7 @@ func BodyRemoveShape(body gd.RID, shape_idx int) {
 /*
 Removes all shapes from the body. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
-func BodyClearShapes(body gd.RID) {
+func BodyClearShapes(body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyClearShapes(body)
 }
@@ -519,7 +523,7 @@ func BodyClearShapes(body gd.RID) {
 /*
 Sets the disabled property of the body's shape with the given index. If [param disabled] is [code]true[/code], then the shape will be ignored in all collision detection.
 */
-func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
+func BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
 	once.Do(singleton)
 	class(self).BodySetShapeDisabled(body, gd.Int(shape_idx), disabled)
 }
@@ -527,7 +531,7 @@ func BodySetShapeDisabled(body gd.RID, shape_idx int, disabled bool) {
 /*
 Sets the one-way collision properties of the body's shape with the given index. If [param enable] is [code]true[/code], the one-way collision direction given by the shape's local upward axis [code]body_get_shape_transform(body, shape_idx).y[/code] will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
 */
-func BodySetShapeAsOneWayCollision(body gd.RID, shape_idx int, enable bool, margin float64) {
+func BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X) {
 	once.Do(singleton)
 	class(self).BodySetShapeAsOneWayCollision(body, gd.Int(shape_idx), enable, gd.Float(margin))
 }
@@ -535,7 +539,7 @@ func BodySetShapeAsOneWayCollision(body gd.RID, shape_idx int, enable bool, marg
 /*
 Attaches the [code]ObjectID[/code] of an [Object] to the body. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CollisionObject2D].
 */
-func BodyAttachObjectInstanceId(body gd.RID, id int) {
+func BodyAttachObjectInstanceId(body Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).BodyAttachObjectInstanceId(body, gd.Int(id))
 }
@@ -543,7 +547,7 @@ func BodyAttachObjectInstanceId(body gd.RID, id int) {
 /*
 Returns the [code]ObjectID[/code] attached to the body. Use [method @GlobalScope.instance_from_id] to retrieve an [Object] from a nonzero [code]ObjectID[/code].
 */
-func BodyGetObjectInstanceId(body gd.RID) int {
+func BodyGetObjectInstanceId(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetObjectInstanceId(body)))
 }
@@ -551,7 +555,7 @@ func BodyGetObjectInstanceId(body gd.RID) int {
 /*
 Attaches the [code]ObjectID[/code] of a canvas to the body. Use [method Object.get_instance_id] to get the [code]ObjectID[/code] of a [CanvasLayer].
 */
-func BodyAttachCanvasInstanceId(body gd.RID, id int) {
+func BodyAttachCanvasInstanceId(body Resource.ID, id int) {
 	once.Do(singleton)
 	class(self).BodyAttachCanvasInstanceId(body, gd.Int(id))
 }
@@ -559,7 +563,7 @@ func BodyAttachCanvasInstanceId(body gd.RID, id int) {
 /*
 Returns the [code]ObjectID[/code] of the canvas attached to the body. Use [method @GlobalScope.instance_from_id] to retrieve a [CanvasLayer] from a nonzero [code]ObjectID[/code].
 */
-func BodyGetCanvasInstanceId(body gd.RID) int {
+func BodyGetCanvasInstanceId(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCanvasInstanceId(body)))
 }
@@ -568,7 +572,7 @@ func BodyGetCanvasInstanceId(body gd.RID) int {
 Sets the continuous collision detection mode using one of the [enum CCDMode] constants.
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
-func BodySetContinuousCollisionDetectionMode(body gd.RID, mode classdb.PhysicsServer2DCCDMode) {
+func BodySetContinuousCollisionDetectionMode(body Resource.ID, mode classdb.PhysicsServer2DCCDMode) {
 	once.Do(singleton)
 	class(self).BodySetContinuousCollisionDetectionMode(body, mode)
 }
@@ -576,7 +580,7 @@ func BodySetContinuousCollisionDetectionMode(body gd.RID, mode classdb.PhysicsSe
 /*
 Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
-func BodyGetContinuousCollisionDetectionMode(body gd.RID) classdb.PhysicsServer2DCCDMode {
+func BodyGetContinuousCollisionDetectionMode(body Resource.ID) classdb.PhysicsServer2DCCDMode {
 	once.Do(singleton)
 	return classdb.PhysicsServer2DCCDMode(class(self).BodyGetContinuousCollisionDetectionMode(body))
 }
@@ -584,7 +588,7 @@ func BodyGetContinuousCollisionDetectionMode(body gd.RID) classdb.PhysicsServer2
 /*
 Sets the physics layer or layers the body belongs to, via a bitmask.
 */
-func BodySetCollisionLayer(body gd.RID, layer int) {
+func BodySetCollisionLayer(body Resource.ID, layer int) {
 	once.Do(singleton)
 	class(self).BodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -592,7 +596,7 @@ func BodySetCollisionLayer(body gd.RID, layer int) {
 /*
 Returns the physics layer or layers the body belongs to, as a bitmask.
 */
-func BodyGetCollisionLayer(body gd.RID) int {
+func BodyGetCollisionLayer(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionLayer(body)))
 }
@@ -600,7 +604,7 @@ func BodyGetCollisionLayer(body gd.RID) int {
 /*
 Sets the physics layer or layers the body can collide with, via a bitmask.
 */
-func BodySetCollisionMask(body gd.RID, mask int) {
+func BodySetCollisionMask(body Resource.ID, mask int) {
 	once.Do(singleton)
 	class(self).BodySetCollisionMask(body, gd.Int(mask))
 }
@@ -608,7 +612,7 @@ func BodySetCollisionMask(body gd.RID, mask int) {
 /*
 Returns the physics layer or layers the body can collide with, as a bitmask.
 */
-func BodyGetCollisionMask(body gd.RID) int {
+func BodyGetCollisionMask(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionMask(body)))
 }
@@ -616,7 +620,7 @@ func BodyGetCollisionMask(body gd.RID) int {
 /*
 Sets the body's collision priority. This is used in the depenetration phase of [method body_test_motion]. The higher the priority is, the lower the penetration into the body will be.
 */
-func BodySetCollisionPriority(body gd.RID, priority float64) {
+func BodySetCollisionPriority(body Resource.ID, priority Float.X) {
 	once.Do(singleton)
 	class(self).BodySetCollisionPriority(body, gd.Float(priority))
 }
@@ -624,31 +628,31 @@ func BodySetCollisionPriority(body gd.RID, priority float64) {
 /*
 Returns the body's collision priority. This is used in the depenetration phase of [method body_test_motion]. The higher the priority is, the lower the penetration into the body will be.
 */
-func BodyGetCollisionPriority(body gd.RID) float64 {
+func BodyGetCollisionPriority(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).BodyGetCollisionPriority(body)))
+	return Float.X(Float.X(class(self).BodyGetCollisionPriority(body)))
 }
 
 /*
 Sets the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
-func BodySetParam(body gd.RID, param classdb.PhysicsServer2DBodyParameter, value gd.Variant) {
+func BodySetParam(body Resource.ID, param classdb.PhysicsServer2DBodyParameter, value any) {
 	once.Do(singleton)
-	class(self).BodySetParam(body, param, value)
+	class(self).BodySetParam(body, param, gd.NewVariant(value))
 }
 
 /*
 Returns the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
-func BodyGetParam(body gd.RID, param classdb.PhysicsServer2DBodyParameter) gd.Variant {
+func BodyGetParam(body Resource.ID, param classdb.PhysicsServer2DBodyParameter) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetParam(body, param))
+	return any(class(self).BodyGetParam(body, param).Interface())
 }
 
 /*
 Restores the default inertia and center of mass of the body based on its shapes. This undoes any custom values previously set using [method body_set_param].
 */
-func BodyResetMassProperties(body gd.RID) {
+func BodyResetMassProperties(body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyResetMassProperties(body)
 }
@@ -657,17 +661,17 @@ func BodyResetMassProperties(body gd.RID) {
 Sets the value of a body's state. See [enum BodyState] for the list of available states.
 [b]Note:[/b] The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
-func BodySetState(body gd.RID, state classdb.PhysicsServer2DBodyState, value gd.Variant) {
+func BodySetState(body Resource.ID, state classdb.PhysicsServer2DBodyState, value any) {
 	once.Do(singleton)
-	class(self).BodySetState(body, state, value)
+	class(self).BodySetState(body, state, gd.NewVariant(value))
 }
 
 /*
 Returns the value of the given state of the body. See [enum BodyState] for the list of available states.
 */
-func BodyGetState(body gd.RID, state classdb.PhysicsServer2DBodyState) gd.Variant {
+func BodyGetState(body Resource.ID, state classdb.PhysicsServer2DBodyState) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).BodyGetState(body, state))
+	return any(class(self).BodyGetState(body, state).Interface())
 }
 
 /*
@@ -675,16 +679,16 @@ Applies a directional impulse to the body, at the body's center of mass. The imp
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
-func BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector2) {
+func BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyApplyCentralImpulse(body, impulse)
+	class(self).BodyApplyCentralImpulse(body, gd.Vector2(impulse))
 }
 
 /*
 Applies a rotational impulse to the body. The impulse does not affect position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
-func BodyApplyTorqueImpulse(body gd.RID, impulse float64) {
+func BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X) {
 	once.Do(singleton)
 	class(self).BodyApplyTorqueImpulse(body, gd.Float(impulse))
 }
@@ -694,33 +698,33 @@ Applies a positioned impulse to the body. The impulse can affect rotation if [pa
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyImpulse(body gd.RID, impulse gd.Vector2) {
+func BodyApplyImpulse(body Resource.ID, impulse Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyApplyImpulse(body, impulse, gd.Vector2{0, 0})
+	class(self).BodyApplyImpulse(body, gd.Vector2(impulse), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Applies a directional force to the body, at the body's center of mass. The force does not affect rotation. A force is time dependent and meant to be applied every physics update.
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
-func BodyApplyCentralForce(body gd.RID, force gd.Vector2) {
+func BodyApplyCentralForce(body Resource.ID, force Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyApplyCentralForce(body, force)
+	class(self).BodyApplyCentralForce(body, gd.Vector2(force))
 }
 
 /*
 Applies a positioned force to the body. The force can affect rotation if [param position] is different from the body's center of mass. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyForce(body gd.RID, force gd.Vector2) {
+func BodyApplyForce(body Resource.ID, force Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyApplyForce(body, force, gd.Vector2{0, 0})
+	class(self).BodyApplyForce(body, gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Applies a rotational force to the body. The force does not affect position. A force is time dependent and meant to be applied every physics update.
 */
-func BodyApplyTorque(body gd.RID, torque float64) {
+func BodyApplyTorque(body Resource.ID, torque Float.X) {
 	once.Do(singleton)
 	class(self).BodyApplyTorque(body, gd.Float(torque))
 }
@@ -729,24 +733,24 @@ func BodyApplyTorque(body gd.RID, torque float64) {
 Adds a constant directional force to the body. The force does not affect rotation. The force remains applied over time until cleared with [code]PhysicsServer2D.body_set_constant_force(body, Vector2(0, 0))[/code].
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
-func BodyAddConstantCentralForce(body gd.RID, force gd.Vector2) {
+func BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyAddConstantCentralForce(body, force)
+	class(self).BodyAddConstantCentralForce(body, gd.Vector2(force))
 }
 
 /*
 Adds a constant positioned force to the body. The force can affect rotation if [param position] is different from the body's center of mass. The force remains applied over time until cleared with [code]PhysicsServer2D.body_set_constant_force(body, Vector2(0, 0))[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyAddConstantForce(body gd.RID, force gd.Vector2) {
+func BodyAddConstantForce(body Resource.ID, force Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodyAddConstantForce(body, force, gd.Vector2{0, 0})
+	class(self).BodyAddConstantForce(body, gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a constant rotational force to the body. The force does not affect position. The force remains applied over time until cleared with [code]PhysicsServer2D.body_set_constant_torque(body, 0)[/code].
 */
-func BodyAddConstantTorque(body gd.RID, torque float64) {
+func BodyAddConstantTorque(body Resource.ID, torque Float.X) {
 	once.Do(singleton)
 	class(self).BodyAddConstantTorque(body, gd.Float(torque))
 }
@@ -755,25 +759,25 @@ func BodyAddConstantTorque(body gd.RID, torque float64) {
 Sets the body's total constant positional force applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodySetConstantForce(body gd.RID, force gd.Vector2) {
+func BodySetConstantForce(body Resource.ID, force Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodySetConstantForce(body, force)
+	class(self).BodySetConstantForce(body, gd.Vector2(force))
 }
 
 /*
 Returns the body's total constant positional force applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodyGetConstantForce(body gd.RID) gd.Vector2 {
+func BodyGetConstantForce(body Resource.ID) Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).BodyGetConstantForce(body))
+	return Vector2.XY(class(self).BodyGetConstantForce(body))
 }
 
 /*
 Sets the body's total constant rotational force applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodySetConstantTorque(body gd.RID, torque float64) {
+func BodySetConstantTorque(body Resource.ID, torque Float.X) {
 	once.Do(singleton)
 	class(self).BodySetConstantTorque(body, gd.Float(torque))
 }
@@ -782,23 +786,23 @@ func BodySetConstantTorque(body gd.RID, torque float64) {
 Returns the body's total constant rotational force applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodyGetConstantTorque(body gd.RID) float64 {
+func BodyGetConstantTorque(body Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).BodyGetConstantTorque(body)))
+	return Float.X(Float.X(class(self).BodyGetConstantTorque(body)))
 }
 
 /*
 Modifies the body's linear velocity so that its projection to the axis [code]axis_velocity.normalized()[/code] is exactly [code]axis_velocity.length()[/code]. This is useful for jumping behavior.
 */
-func BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector2) {
+func BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY) {
 	once.Do(singleton)
-	class(self).BodySetAxisVelocity(body, axis_velocity)
+	class(self).BodySetAxisVelocity(body, gd.Vector2(axis_velocity))
 }
 
 /*
 Adds [param excepted_body] to the body's list of collision exceptions, so that collisions with it are ignored.
 */
-func BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
+func BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyAddCollisionException(body, excepted_body)
 }
@@ -806,7 +810,7 @@ func BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
 /*
 Removes [param excepted_body] from the body's list of collision exceptions, so that collisions with it are no longer ignored.
 */
-func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
+func BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	once.Do(singleton)
 	class(self).BodyRemoveCollisionException(body, excepted_body)
 }
@@ -814,7 +818,7 @@ func BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
 /*
 Sets the maximum number of contacts that the body can report. If [param amount] is greater than zero, then the body will keep track of at most this many contacts with other bodies.
 */
-func BodySetMaxContactsReported(body gd.RID, amount int) {
+func BodySetMaxContactsReported(body Resource.ID, amount int) {
 	once.Do(singleton)
 	class(self).BodySetMaxContactsReported(body, gd.Int(amount))
 }
@@ -822,7 +826,7 @@ func BodySetMaxContactsReported(body gd.RID, amount int) {
 /*
 Returns the maximum number of contacts that the body can report. See [method body_set_max_contacts_reported].
 */
-func BodyGetMaxContactsReported(body gd.RID) int {
+func BodyGetMaxContactsReported(body Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).BodyGetMaxContactsReported(body)))
 }
@@ -831,7 +835,7 @@ func BodyGetMaxContactsReported(body gd.RID) int {
 Sets whether the body omits the standard force integration. If [param enable] is [code]true[/code], the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [method body_set_force_integration_callback] can be used to manually update the linear and angular velocity instead.
 This method is called when the property [member RigidBody2D.custom_integrator] is set.
 */
-func BodySetOmitForceIntegration(body gd.RID, enable bool) {
+func BodySetOmitForceIntegration(body Resource.ID, enable bool) {
 	once.Do(singleton)
 	class(self).BodySetOmitForceIntegration(body, enable)
 }
@@ -839,7 +843,7 @@ func BodySetOmitForceIntegration(body gd.RID, enable bool) {
 /*
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
-func BodyIsOmittingForceIntegration(body gd.RID) bool {
+func BodyIsOmittingForceIntegration(body Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).BodyIsOmittingForceIntegration(body))
 }
@@ -850,7 +854,7 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState2D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body gd.RID, callable gd.Callable) {
+func BodySetStateSyncCallback(body Resource.ID, callable gd.Callable) {
 	once.Do(singleton)
 	class(self).BodySetStateSyncCallback(body, callable)
 }
@@ -863,23 +867,23 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable) {
+func BodySetForceIntegrationCallback(body Resource.ID, callable gd.Callable) {
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(([1]gd.Variant{}[0])))
+	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*
 Returns [code]true[/code] if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 */
-func BodyTestMotion(body gd.RID, parameters objects.PhysicsTestMotionParameters2D) bool {
+func BodyTestMotion(body Resource.ID, parameters objects.PhysicsTestMotionParameters2D) bool {
 	once.Do(singleton)
-	return bool(class(self).BodyTestMotion(body, parameters, ([1]objects.PhysicsTestMotionResult2D{}[0])))
+	return bool(class(self).BodyTestMotion(body, parameters, [1]objects.PhysicsTestMotionResult2D{}[0]))
 }
 
 /*
 Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if the body is destroyed or not assigned to a space.
 */
-func BodyGetDirectState(body gd.RID) objects.PhysicsDirectBodyState2D {
+func BodyGetDirectState(body Resource.ID) objects.PhysicsDirectBodyState2D {
 	once.Do(singleton)
 	return objects.PhysicsDirectBodyState2D(class(self).BodyGetDirectState(body))
 }
@@ -887,15 +891,15 @@ func BodyGetDirectState(body gd.RID) objects.PhysicsDirectBodyState2D {
 /*
 Creates a 2D joint in the physics server, and returns the [RID] that identifies it. To set the joint type, use [method joint_make_damped_spring], [method joint_make_groove] or [method joint_make_pin]. Use [method joint_set_param] to set generic joint parameters.
 */
-func JointCreate() gd.RID {
+func JointCreate() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).JointCreate())
+	return Resource.ID(class(self).JointCreate())
 }
 
 /*
 Destroys the joint with the given [RID], creates a new uninitialized joint, and makes the [RID] refer to this new joint.
 */
-func JointClear(joint gd.RID) {
+func JointClear(joint Resource.ID) {
 	once.Do(singleton)
 	class(self).JointClear(joint)
 }
@@ -903,7 +907,7 @@ func JointClear(joint gd.RID) {
 /*
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
-func JointSetParam(joint gd.RID, param classdb.PhysicsServer2DJointParam, value float64) {
+func JointSetParam(joint Resource.ID, param classdb.PhysicsServer2DJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).JointSetParam(joint, param, gd.Float(value))
 }
@@ -911,15 +915,15 @@ func JointSetParam(joint gd.RID, param classdb.PhysicsServer2DJointParam, value 
 /*
 Returns the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
-func JointGetParam(joint gd.RID, param classdb.PhysicsServer2DJointParam) float64 {
+func JointGetParam(joint Resource.ID, param classdb.PhysicsServer2DJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).JointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).JointGetParam(joint, param)))
 }
 
 /*
 Sets whether the bodies attached to the [Joint2D] will collide with each other.
 */
-func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
+func JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
 	once.Do(singleton)
 	class(self).JointDisableCollisionsBetweenBodies(joint, disable)
 }
@@ -927,7 +931,7 @@ func JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
 /*
 Returns whether the bodies attached to the [Joint2D] will collide with each other.
 */
-func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
+func JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(joint))
 }
@@ -935,31 +939,31 @@ func JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
 /*
 Makes the joint a pin joint. If [param body_b] is an empty [RID], then [param body_a] is pinned to the point [param anchor] (given in global coordinates); otherwise, [param body_a] is pinned to [param body_b] at the point [param anchor] (given in global coordinates). To set the parameters which are specific to the pin joint, see [method pin_joint_set_param].
 */
-func JointMakePin(joint gd.RID, anchor gd.Vector2, body_a gd.RID) {
+func JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID) {
 	once.Do(singleton)
-	class(self).JointMakePin(joint, anchor, body_a, ([1]gd.RID{}[0]))
+	class(self).JointMakePin(joint, gd.Vector2(anchor), body_a, [1]Resource.ID{}[0])
 }
 
 /*
 Makes the joint a groove joint.
 */
-func JointMakeGroove(joint gd.RID, groove1_a gd.Vector2, groove2_a gd.Vector2, anchor_b gd.Vector2) {
+func JointMakeGroove(joint Resource.ID, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY) {
 	once.Do(singleton)
-	class(self).JointMakeGroove(joint, groove1_a, groove2_a, anchor_b, ([1]gd.RID{}[0]), ([1]gd.RID{}[0]))
+	class(self).JointMakeGroove(joint, gd.Vector2(groove1_a), gd.Vector2(groove2_a), gd.Vector2(anchor_b), [1]Resource.ID{}[0], [1]Resource.ID{}[0])
 }
 
 /*
 Makes the joint a damped spring joint, attached at the point [param anchor_a] (given in global coordinates) on the body [param body_a] and at the point [param anchor_b] (given in global coordinates) on the body [param body_b]. To set the parameters which are specific to the damped spring, see [method damped_spring_joint_set_param].
 */
-func JointMakeDampedSpring(joint gd.RID, anchor_a gd.Vector2, anchor_b gd.Vector2, body_a gd.RID) {
+func JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID) {
 	once.Do(singleton)
-	class(self).JointMakeDampedSpring(joint, anchor_a, anchor_b, body_a, ([1]gd.RID{}[0]))
+	class(self).JointMakeDampedSpring(joint, gd.Vector2(anchor_a), gd.Vector2(anchor_b), body_a, [1]Resource.ID{}[0])
 }
 
 /*
 Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
-func PinJointSetFlag(joint gd.RID, flag classdb.PhysicsServer2DPinJointFlag, enabled bool) {
+func PinJointSetFlag(joint Resource.ID, flag classdb.PhysicsServer2DPinJointFlag, enabled bool) {
 	once.Do(singleton)
 	class(self).PinJointSetFlag(joint, flag, enabled)
 }
@@ -967,7 +971,7 @@ func PinJointSetFlag(joint gd.RID, flag classdb.PhysicsServer2DPinJointFlag, ena
 /*
 Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
-func PinJointGetFlag(joint gd.RID, flag classdb.PhysicsServer2DPinJointFlag) bool {
+func PinJointGetFlag(joint Resource.ID, flag classdb.PhysicsServer2DPinJointFlag) bool {
 	once.Do(singleton)
 	return bool(class(self).PinJointGetFlag(joint, flag))
 }
@@ -975,7 +979,7 @@ func PinJointGetFlag(joint gd.RID, flag classdb.PhysicsServer2DPinJointFlag) boo
 /*
 Sets a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
-func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer2DPinJointParam, value float64) {
+func PinJointSetParam(joint Resource.ID, param classdb.PhysicsServer2DPinJointParam, value Float.X) {
 	once.Do(singleton)
 	class(self).PinJointSetParam(joint, param, gd.Float(value))
 }
@@ -983,15 +987,15 @@ func PinJointSetParam(joint gd.RID, param classdb.PhysicsServer2DPinJointParam, 
 /*
 Returns the value of a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
-func PinJointGetParam(joint gd.RID, param classdb.PhysicsServer2DPinJointParam) float64 {
+func PinJointGetParam(joint Resource.ID, param classdb.PhysicsServer2DPinJointParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).PinJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).PinJointGetParam(joint, param)))
 }
 
 /*
 Sets the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
-func DampedSpringJointSetParam(joint gd.RID, param classdb.PhysicsServer2DDampedSpringParam, value float64) {
+func DampedSpringJointSetParam(joint Resource.ID, param classdb.PhysicsServer2DDampedSpringParam, value Float.X) {
 	once.Do(singleton)
 	class(self).DampedSpringJointSetParam(joint, param, gd.Float(value))
 }
@@ -999,15 +1003,15 @@ func DampedSpringJointSetParam(joint gd.RID, param classdb.PhysicsServer2DDamped
 /*
 Returns the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
-func DampedSpringJointGetParam(joint gd.RID, param classdb.PhysicsServer2DDampedSpringParam) float64 {
+func DampedSpringJointGetParam(joint Resource.ID, param classdb.PhysicsServer2DDampedSpringParam) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).DampedSpringJointGetParam(joint, param)))
+	return Float.X(Float.X(class(self).DampedSpringJointGetParam(joint, param)))
 }
 
 /*
 Returns the joint's type (see [enum JointType]).
 */
-func JointGetType(joint gd.RID) classdb.PhysicsServer2DJointType {
+func JointGetType(joint Resource.ID) classdb.PhysicsServer2DJointType {
 	once.Do(singleton)
 	return classdb.PhysicsServer2DJointType(class(self).JointGetType(joint))
 }
@@ -1015,7 +1019,7 @@ func JointGetType(joint gd.RID) classdb.PhysicsServer2DJointType {
 /*
 Destroys any of the objects created by PhysicsServer2D. If the [RID] passed is not one of the objects that can be created by PhysicsServer2D, an error will be printed to the console.
 */
-func FreeRid(rid gd.RID) {
+func FreeRid(rid Resource.ID) {
 	once.Do(singleton)
 	class(self).FreeRid(rid)
 }

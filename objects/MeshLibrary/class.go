@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,8 +48,8 @@ func (self Instance) SetItemMesh(id int, mesh objects.Mesh) {
 /*
 Sets the transform to apply to the item's mesh.
 */
-func (self Instance) SetItemMeshTransform(id int, mesh_transform gd.Transform3D) {
-	class(self).SetItemMeshTransform(gd.Int(id), mesh_transform)
+func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.BasisOrigin) {
+	class(self).SetItemMeshTransform(gd.Int(id), gd.Transform3D(mesh_transform))
 }
 
 /*
@@ -60,8 +62,8 @@ func (self Instance) SetItemNavigationMesh(id int, navigation_mesh objects.Navig
 /*
 Sets the transform to apply to the item's navigation mesh.
 */
-func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh gd.Transform3D) {
-	class(self).SetItemNavigationMeshTransform(gd.Int(id), navigation_mesh)
+func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh Transform3D.BasisOrigin) {
+	class(self).SetItemNavigationMeshTransform(gd.Int(id), gd.Transform3D(navigation_mesh))
 }
 
 /*
@@ -75,7 +77,7 @@ func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) {
 Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
-func (self Instance) SetItemShapes(id int, shapes gd.Array) {
+func (self Instance) SetItemShapes(id int, shapes Array.Any) {
 	class(self).SetItemShapes(gd.Int(id), shapes)
 }
 
@@ -103,8 +105,8 @@ func (self Instance) GetItemMesh(id int) objects.Mesh {
 /*
 Returns the transform applied to the item's mesh.
 */
-func (self Instance) GetItemMeshTransform(id int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetItemMeshTransform(gd.Int(id)))
+func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetItemMeshTransform(gd.Int(id)))
 }
 
 /*
@@ -117,8 +119,8 @@ func (self Instance) GetItemNavigationMesh(id int) objects.NavigationMesh {
 /*
 Returns the transform applied to the item's navigation mesh.
 */
-func (self Instance) GetItemNavigationMeshTransform(id int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetItemNavigationMeshTransform(gd.Int(id)))
+func (self Instance) GetItemNavigationMeshTransform(id int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetItemNavigationMeshTransform(gd.Int(id)))
 }
 
 /*
@@ -132,8 +134,8 @@ func (self Instance) GetItemNavigationLayers(id int) int {
 Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
-func (self Instance) GetItemShapes(id int) gd.Array {
-	return gd.Array(class(self).GetItemShapes(gd.Int(id)))
+func (self Instance) GetItemShapes(id int) Array.Any {
+	return Array.Any(class(self).GetItemShapes(gd.Int(id)))
 }
 
 /*

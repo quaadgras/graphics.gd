@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeConstant"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,12 +34,12 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeTransformConstant(object)}
 }
 
-func (self Instance) Constant() gd.Transform3D {
-	return gd.Transform3D(class(self).GetConstant())
+func (self Instance) Constant() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetConstant())
 }
 
-func (self Instance) SetConstant(value gd.Transform3D) {
-	class(self).SetConstant(value)
+func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
+	class(self).SetConstant(gd.Transform3D(value))
 }
 
 //go:nosplit

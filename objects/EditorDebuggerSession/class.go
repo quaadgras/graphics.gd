@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,14 +25,14 @@ type Instance [1]classdb.EditorDebuggerSession
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 func (self Instance) SendMessage(message string) {
-	class(self).SendMessage(gd.NewString(message), ([1]gd.Array{}[0]))
+	class(self).SendMessage(gd.NewString(message), [1]Array.Any{}[0])
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) {
-	class(self).ToggleProfiler(gd.NewString(profiler), enable, ([1]gd.Array{}[0]))
+	class(self).ToggleProfiler(gd.NewString(profiler), enable, [1]Array.Any{}[0])
 }
 
 /*

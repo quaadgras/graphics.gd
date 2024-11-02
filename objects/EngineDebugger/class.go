@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -69,7 +70,7 @@ func HasProfiler(name string) bool {
 /*
 Calls the [code]add[/code] callable of the profiler with given [param name] and [param data].
 */
-func ProfilerAddFrameData(name string, data gd.Array) {
+func ProfilerAddFrameData(name string, data Array.Any) {
 	once.Do(singleton)
 	class(self).ProfilerAddFrameData(gd.NewStringName(name), data)
 }
@@ -79,7 +80,7 @@ Calls the [code]toggle[/code] callable of the profiler with given [param name] a
 */
 func ProfilerEnable(name string, enable bool) {
 	once.Do(singleton)
-	class(self).ProfilerEnable(gd.NewStringName(name), enable, ([1]gd.Array{}[0]))
+	class(self).ProfilerEnable(gd.NewStringName(name), enable, [1]Array.Any{}[0])
 }
 
 /*
@@ -118,7 +119,7 @@ func LinePoll() {
 /*
 Sends a message with given [param message] and [param data] array.
 */
-func SendMessage(message string, data gd.Array) {
+func SendMessage(message string, data Array.Any) {
 	once.Do(singleton)
 	class(self).SendMessage(gd.NewString(message), data)
 }

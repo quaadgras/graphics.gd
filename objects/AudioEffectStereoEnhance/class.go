@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,27 +33,27 @@ func New() Instance {
 	return Instance{classdb.AudioEffectStereoEnhance(object)}
 }
 
-func (self Instance) PanPullout() float64 {
-	return float64(float64(class(self).GetPanPullout()))
+func (self Instance) PanPullout() Float.X {
+	return Float.X(Float.X(class(self).GetPanPullout()))
 }
 
-func (self Instance) SetPanPullout(value float64) {
+func (self Instance) SetPanPullout(value Float.X) {
 	class(self).SetPanPullout(gd.Float(value))
 }
 
-func (self Instance) TimePulloutMs() float64 {
-	return float64(float64(class(self).GetTimePullout()))
+func (self Instance) TimePulloutMs() Float.X {
+	return Float.X(Float.X(class(self).GetTimePullout()))
 }
 
-func (self Instance) SetTimePulloutMs(value float64) {
+func (self Instance) SetTimePulloutMs(value Float.X) {
 	class(self).SetTimePullout(gd.Float(value))
 }
 
-func (self Instance) Surround() float64 {
-	return float64(float64(class(self).GetSurround()))
+func (self Instance) Surround() Float.X {
+	return Float.X(Float.X(class(self).GetSurround()))
 }
 
-func (self Instance) SetSurround(value float64) {
+func (self Instance) SetSurround(value Float.X) {
 	class(self).SetSurround(gd.Float(value))
 }
 

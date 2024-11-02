@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeConstant"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,12 +34,12 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeVec2Constant(object)}
 }
 
-func (self Instance) Constant() gd.Vector2 {
-	return gd.Vector2(class(self).GetConstant())
+func (self Instance) Constant() Vector2.XY {
+	return Vector2.XY(class(self).GetConstant())
 }
 
-func (self Instance) SetConstant(value gd.Vector2) {
-	class(self).SetConstant(value)
+func (self Instance) SetConstant(value Vector2.XY) {
+	class(self).SetConstant(gd.Vector2(value))
 }
 
 //go:nosplit

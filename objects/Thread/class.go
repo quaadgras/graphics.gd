@@ -61,8 +61,8 @@ Joins the [Thread] and waits for it to finish. Returns the output of the [Callab
 Should either be used when you want to retrieve the value returned from the method called by the [Thread] or before freeing the instance that contains the [Thread].
 To determine if this can be called without blocking the calling thread, check if [method is_alive] is [code]false[/code].
 */
-func (self Instance) WaitToFinish() gd.Variant {
-	return gd.Variant(class(self).WaitToFinish())
+func (self Instance) WaitToFinish() any {
+	return any(class(self).WaitToFinish().Interface())
 }
 
 /*

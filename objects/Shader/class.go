@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,8 +51,8 @@ func (self Instance) GetDefaultTextureParameter(name string) objects.Texture2D {
 Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [method ShaderMaterial.set_shader_parameter] and [method ShaderMaterial.get_shader_parameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [method Object.get_property_list].
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
-func (self Instance) GetShaderUniformList() gd.Array {
-	return gd.Array(class(self).GetShaderUniformList(false))
+func (self Instance) GetShaderUniformList() Array.Any {
+	return Array.Any(class(self).GetShaderUniformList(false))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

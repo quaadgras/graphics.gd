@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/PhysicsBody3D"
 import "grow.graphics/gd/objects/CollisionObject3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,20 +45,20 @@ func (self Instance) SetPhysicsMaterialOverride(value objects.PhysicsMaterial) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
-func (self Instance) ConstantLinearVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetConstantLinearVelocity())
+func (self Instance) ConstantLinearVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetConstantLinearVelocity())
 }
 
-func (self Instance) SetConstantLinearVelocity(value gd.Vector3) {
-	class(self).SetConstantLinearVelocity(value)
+func (self Instance) SetConstantLinearVelocity(value Vector3.XYZ) {
+	class(self).SetConstantLinearVelocity(gd.Vector3(value))
 }
 
-func (self Instance) ConstantAngularVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetConstantAngularVelocity())
+func (self Instance) ConstantAngularVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetConstantAngularVelocity())
 }
 
-func (self Instance) SetConstantAngularVelocity(value gd.Vector3) {
-	class(self).SetConstantAngularVelocity(value)
+func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
+	class(self).SetConstantAngularVelocity(gd.Vector3(value))
 }
 
 //go:nosplit

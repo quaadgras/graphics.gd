@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,12 +37,12 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 		//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
 		//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Process(delta float64)
+		Process(delta Float.X)
 		//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
 		//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
 		//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		PhysicsProcess(delta float64)
+		PhysicsProcess(delta Float.X)
 		//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
 		//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
 		EnterTree()
@@ -102,11 +105,11 @@ It is only called if processing is enabled, which is done automatically if this 
 Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (Instance) _process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(delta))
+		impl(self, Float.X(delta))
 	}
 }
 
@@ -116,11 +119,11 @@ It is only called if physics processing is enabled, which is done automatically 
 Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(delta))
+		impl(self, Float.X(delta))
 	}
 }
 
@@ -359,8 +362,8 @@ func (self Instance) GetChild(idx int) objects.Node {
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
-func (self Instance) HasNode(path string) bool {
-	return bool(class(self).HasNode(gd.NewString(path).NodePath()))
+func (self Instance) HasNode(path Path.String) bool {
+	return bool(class(self).HasNode(gd.NewString(string(path)).NodePath()))
 }
 
 /*
@@ -397,15 +400,15 @@ GetNode("/root/MyGame");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNode(path string) objects.Node {
-	return objects.Node(class(self).GetNode(gd.NewString(path).NodePath()))
+func (self Instance) GetNode(path Path.String) objects.Node {
+	return objects.Node(class(self).GetNode(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
-func (self Instance) GetNodeOrNull(path string) objects.Node {
-	return objects.Node(class(self).GetNodeOrNull(gd.NewString(path).NodePath()))
+func (self Instance) GetNodeOrNull(path Path.String) objects.Node {
+	return objects.Node(class(self).GetNodeOrNull(gd.NewString(string(path)).NodePath()))
 }
 
 /*
@@ -449,8 +452,8 @@ func (self Instance) FindParent(pattern string) objects.Node {
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
-func (self Instance) HasNodeAndResource(path string) bool {
-	return bool(class(self).HasNodeAndResource(gd.NewString(path).NodePath()))
+func (self Instance) HasNodeAndResource(path Path.String) bool {
+	return bool(class(self).HasNodeAndResource(gd.NewString(string(path)).NodePath()))
 }
 
 /*
@@ -494,8 +497,8 @@ GD.Print(c[2]);             // Prints ^":region"
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNodeAndResource(path string) gd.Array {
-	return gd.Array(class(self).GetNodeAndResource(gd.NewString(path).NodePath()))
+func (self Instance) GetNodeAndResource(path Path.String) Array.Any {
+	return Array.Any(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))
 }
 
 /*
@@ -529,8 +532,8 @@ func (self Instance) IsGreaterThan(node objects.Node) bool {
 /*
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
-func (self Instance) GetPath() string {
-	return string(class(self).GetPath().String())
+func (self Instance) GetPath() Path.String {
+	return Path.String(class(self).GetPath().String())
 }
 
 /*
@@ -538,8 +541,8 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Instance) GetPathTo(node objects.Node) string {
-	return string(class(self).GetPathTo(node, false).String())
+func (self Instance) GetPathTo(node objects.Node) Path.String {
+	return Path.String(class(self).GetPathTo(node, false).String())
 }
 
 /*
@@ -693,7 +696,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) {
-	class(self).PropagateCall(gd.NewStringName(method), ([1]gd.Array{}[0]), false)
+	class(self).PropagateCall(gd.NewStringName(method), [1]Array.Any{}[0], false)
 }
 
 /*
@@ -707,8 +710,8 @@ func (self Instance) SetPhysicsProcess(enable bool) {
 /*
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
 */
-func (self Instance) GetPhysicsProcessDeltaTime() float64 {
-	return float64(float64(class(self).GetPhysicsProcessDeltaTime()))
+func (self Instance) GetPhysicsProcessDeltaTime() Float.X {
+	return Float.X(Float.X(class(self).GetPhysicsProcessDeltaTime()))
 }
 
 /*
@@ -721,8 +724,8 @@ func (self Instance) IsPhysicsProcessing() bool {
 /*
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
 */
-func (self Instance) GetProcessDeltaTime() float64 {
-	return float64(float64(class(self).GetProcessDeltaTime()))
+func (self Instance) GetProcessDeltaTime() Float.X {
+	return Float.X(Float.X(class(self).GetProcessDeltaTime()))
 }
 
 /*
@@ -1032,8 +1035,8 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 - [code]channel[/code]: an [int] representing the channel to send the RPC on.
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
-func (self Instance) RpcConfig(method string, config gd.Variant) {
-	class(self).RpcConfig(gd.NewStringName(method), config)
+func (self Instance) RpcConfig(method string, config any) {
+	class(self).RpcConfig(gd.NewStringName(method), gd.NewVariant(config))
 }
 
 /*
@@ -1068,8 +1071,8 @@ func (self Instance) UpdateConfigurationWarnings() {
 /*
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
-func (self Instance) SetDeferredThreadGroup(property string, value gd.Variant) {
-	class(self).SetDeferredThreadGroup(gd.NewStringName(property), value)
+func (self Instance) SetDeferredThreadGroup(property string, value any) {
+	class(self).SetDeferredThreadGroup(gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
@@ -1082,8 +1085,8 @@ func (self Instance) NotifyDeferredThreadGroup(what int) {
 /*
 Similar to [method call_thread_safe], but for setting properties.
 */
-func (self Instance) SetThreadSafe(property string, value gd.Variant) {
-	class(self).SetThreadSafe(gd.NewStringName(property), value)
+func (self Instance) SetThreadSafe(property string, value any) {
+	class(self).SetThreadSafe(gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*

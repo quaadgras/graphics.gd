@@ -9,6 +9,11 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -108,8 +113,8 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurfaceFromArrays(primitive classdb.MeshPrimitiveType, arrays gd.Array) {
-	class(self).AddSurfaceFromArrays(primitive, arrays, ([1]gd.Array{}[0]), ([1]gd.Dictionary{}[0]), 0)
+func (self Instance) AddSurfaceFromArrays(primitive classdb.MeshPrimitiveType, arrays Array.Any) {
+	class(self).AddSurfaceFromArrays(primitive, arrays, [1]gd.Array{}[0], [1]Dictionary.Any{}[0], 0)
 }
 
 /*
@@ -187,8 +192,8 @@ func (self Instance) RegenNormalMaps() {
 /*
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
-func (self Instance) LightmapUnwrap(transform gd.Transform3D, texel_size float64) error {
-	return error(class(self).LightmapUnwrap(transform, gd.Float(texel_size)))
+func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error {
+	return error(class(self).LightmapUnwrap(gd.Transform3D(transform), gd.Float(texel_size)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -210,12 +215,12 @@ func (self Instance) SetBlendShapeMode(value classdb.MeshBlendShapeMode) {
 	class(self).SetBlendShapeMode(value)
 }
 
-func (self Instance) CustomAabb() gd.AABB {
-	return gd.AABB(class(self).GetCustomAabb())
+func (self Instance) CustomAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-func (self Instance) SetCustomAabb(value gd.AABB) {
-	class(self).SetCustomAabb(value)
+func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+	class(self).SetCustomAabb(gd.AABB(value))
 }
 
 func (self Instance) ShadowMesh() objects.ArrayMesh {

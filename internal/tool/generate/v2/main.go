@@ -138,9 +138,42 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
-			imported[super.Name] = true
-			fmt.Fprintf(file, "import \"grow.graphics/gd/objects/%s\"\n", super.Name)
+			path := fmt.Sprintf("grow.graphics/gd/objects/%s", super.Name)
+			if !imported[path] {
+				imported[path] = true
+				fmt.Fprintf(file, "import %q\n", path)
+			}
 			super = classDB[super.Inherits]
+		}
+	}
+	for _, method := range class.Methods {
+		if method.IsVararg {
+			continue
+		}
+		for _, arg := range method.Arguments {
+			switch arg.Type {
+			case "Array", "Dictionary", "Signal", "Callable":
+			default:
+				if arg.DefaultValue != nil {
+					continue
+				}
+			}
+			if need := importsVariant(class, arg.Type); need != "" && !imported[need] {
+				imported[need] = true
+				fmt.Fprintf(file, "import %q\n", need)
+			}
+		}
+		if need := importsVariant(class, method.ReturnValue.Type); need != "" && !imported[need] {
+			imported[need] = true
+			fmt.Fprintf(file, "import %q\n", need)
+		}
+	}
+	for _, signal := range class.Signals {
+		for _, arg := range signal.Arguments {
+			if need := importsVariant(class, arg.Type); need != "" && !imported[need] {
+				imported[need] = true
+				fmt.Fprintf(file, "import %q\n", need)
+			}
 		}
 	}
 	fmt.Fprintln(file)
@@ -178,9 +211,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 						if i > 0 {
 							fmt.Fprint(file, ", ")
 						}
-						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(arg.Meta, arg.Type))
+						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, arg.Meta, arg.Type))
 					}
-					fmt.Fprint(file, ") ", classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type))
+					fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type))
 					fmt.Fprintln(file)
 				}
 			}

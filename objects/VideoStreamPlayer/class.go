@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -58,8 +59,8 @@ func (self Instance) GetStreamName() string {
 The length of the current stream, in seconds.
 [b]Note:[/b] For [VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
-func (self Instance) GetStreamLength() float64 {
-	return float64(float64(class(self).GetStreamLength()))
+func (self Instance) GetStreamLength() Float.X {
+	return Float.X(Float.X(class(self).GetStreamLength()))
 }
 
 /*
@@ -96,19 +97,19 @@ func (self Instance) SetStream(value objects.VideoStream) {
 	class(self).SetStream(value)
 }
 
-func (self Instance) VolumeDb() float64 {
-	return float64(float64(class(self).GetVolumeDb()))
+func (self Instance) VolumeDb() Float.X {
+	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-func (self Instance) SetVolumeDb(value float64) {
+func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(gd.Float(value))
 }
 
-func (self Instance) Volume() float64 {
-	return float64(float64(class(self).GetVolume()))
+func (self Instance) Volume() Float.X {
+	return Float.X(Float.X(class(self).GetVolume()))
 }
 
-func (self Instance) SetVolume(value float64) {
+func (self Instance) SetVolume(value Float.X) {
 	class(self).SetVolume(gd.Float(value))
 }
 
@@ -152,11 +153,11 @@ func (self Instance) SetBufferingMsec(value int) {
 	class(self).SetBufferingMsec(gd.Int(value))
 }
 
-func (self Instance) StreamPosition() float64 {
-	return float64(float64(class(self).GetStreamPosition()))
+func (self Instance) StreamPosition() Float.X {
+	return Float.X(Float.X(class(self).GetStreamPosition()))
 }
 
-func (self Instance) SetStreamPosition(value float64) {
+func (self Instance) SetStreamPosition(value Float.X) {
 	class(self).SetStreamPosition(gd.Float(value))
 }
 

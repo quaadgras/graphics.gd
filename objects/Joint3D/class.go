@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,8 +26,8 @@ type Instance [1]classdb.Joint3D
 /*
 Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -39,20 +41,20 @@ func New() Instance {
 	return Instance{classdb.Joint3D(object)}
 }
 
-func (self Instance) NodeA() string {
-	return string(class(self).GetNodeA().String())
+func (self Instance) NodeA() Path.String {
+	return Path.String(class(self).GetNodeA().String())
 }
 
-func (self Instance) SetNodeA(value string) {
-	class(self).SetNodeA(gd.NewString(value).NodePath())
+func (self Instance) SetNodeA(value Path.String) {
+	class(self).SetNodeA(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) NodeB() string {
-	return string(class(self).GetNodeB().String())
+func (self Instance) NodeB() Path.String {
+	return Path.String(class(self).GetNodeB().String())
 }
 
-func (self Instance) SetNodeB(value string) {
-	class(self).SetNodeB(gd.NewString(value).NodePath())
+func (self Instance) SetNodeB(value Path.String) {
+	class(self).SetNodeB(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) SolverPriority() int {

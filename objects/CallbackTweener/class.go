@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Tweener"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,7 +31,7 @@ var tween = get_tree().create_tween()
 tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after 2 seconds
 [/codeblock]
 */
-func (self Instance) SetDelay(delay float64) objects.CallbackTweener {
+func (self Instance) SetDelay(delay Float.X) objects.CallbackTweener {
 	return objects.CallbackTweener(class(self).SetDelay(gd.Float(delay)))
 }
 

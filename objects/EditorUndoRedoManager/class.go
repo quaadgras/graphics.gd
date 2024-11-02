@@ -33,7 +33,7 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) {
-	class(self).CreateAction(gd.NewString(name), 0, ([1]gd.Object{}[0]), false)
+	class(self).CreateAction(gd.NewString(name), 0, [1]gd.Object{}[0], false)
 }
 
 /*
@@ -62,16 +62,16 @@ func (self Instance) ForceFixedHistory() {
 Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
-func (self Instance) AddDoProperty(obj gd.Object, property string, value gd.Variant) {
-	class(self).AddDoProperty(obj, gd.NewStringName(property), value)
+func (self Instance) AddDoProperty(obj gd.Object, property string, value any) {
+	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
-func (self Instance) AddUndoProperty(obj gd.Object, property string, value gd.Variant) {
-	class(self).AddUndoProperty(obj, gd.NewStringName(property), value)
+func (self Instance) AddUndoProperty(obj gd.Object, property string, value any) {
+	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*

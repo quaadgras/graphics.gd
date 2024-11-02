@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,36 +48,36 @@ func (self Instance) SetUpdateMode(value classdb.ReflectionProbeUpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
-func (self Instance) Intensity() float64 {
-	return float64(float64(class(self).GetIntensity()))
+func (self Instance) Intensity() Float.X {
+	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
-func (self Instance) SetIntensity(value float64) {
+func (self Instance) SetIntensity(value Float.X) {
 	class(self).SetIntensity(gd.Float(value))
 }
 
-func (self Instance) MaxDistance() float64 {
-	return float64(float64(class(self).GetMaxDistance()))
+func (self Instance) MaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
-func (self Instance) SetMaxDistance(value float64) {
+func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(gd.Float(value))
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
-func (self Instance) OriginOffset() gd.Vector3 {
-	return gd.Vector3(class(self).GetOriginOffset())
+func (self Instance) OriginOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetOriginOffset())
 }
 
-func (self Instance) SetOriginOffset(value gd.Vector3) {
-	class(self).SetOriginOffset(value)
+func (self Instance) SetOriginOffset(value Vector3.XYZ) {
+	class(self).SetOriginOffset(gd.Vector3(value))
 }
 
 func (self Instance) BoxProjection() bool {
@@ -117,11 +120,11 @@ func (self Instance) SetReflectionMask(value int) {
 	class(self).SetReflectionMask(gd.Int(value))
 }
 
-func (self Instance) MeshLodThreshold() float64 {
-	return float64(float64(class(self).GetMeshLodThreshold()))
+func (self Instance) MeshLodThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
-func (self Instance) SetMeshLodThreshold(value float64) {
+func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(gd.Float(value))
 }
 
@@ -133,19 +136,19 @@ func (self Instance) SetAmbientMode(value classdb.ReflectionProbeAmbientMode) {
 	class(self).SetAmbientMode(value)
 }
 
-func (self Instance) AmbientColor() gd.Color {
-	return gd.Color(class(self).GetAmbientColor())
+func (self Instance) AmbientColor() Color.RGBA {
+	return Color.RGBA(class(self).GetAmbientColor())
 }
 
-func (self Instance) SetAmbientColor(value gd.Color) {
-	class(self).SetAmbientColor(value)
+func (self Instance) SetAmbientColor(value Color.RGBA) {
+	class(self).SetAmbientColor(gd.Color(value))
 }
 
-func (self Instance) AmbientColorEnergy() float64 {
-	return float64(float64(class(self).GetAmbientColorEnergy()))
+func (self Instance) AmbientColorEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetAmbientColorEnergy()))
 }
 
-func (self Instance) SetAmbientColorEnergy(value float64) {
+func (self Instance) SetAmbientColorEnergy(value Float.X) {
 	class(self).SetAmbientColorEnergy(gd.Float(value))
 }
 

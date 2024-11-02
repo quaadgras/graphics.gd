@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/BaseButton"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -83,11 +84,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

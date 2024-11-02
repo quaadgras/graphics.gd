@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MultiplayerPeer"
 import "grow.graphics/gd/objects/PacketPeer"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,14 +28,14 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 func (self Instance) CreateClient(url string) error {
-	return error(class(self).CreateClient(gd.NewString(url), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).CreateClient(gd.NewString(url), [1]objects.TLSOptions{}[0]))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 func (self Instance) CreateServer(port int) error {
-	return error(class(self).CreateServer(gd.Int(port), gd.NewString("*"), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).CreateServer(gd.Int(port), gd.NewString("*"), [1]objects.TLSOptions{}[0]))
 }
 
 /*
@@ -101,11 +102,11 @@ func (self Instance) SetOutboundBufferSize(value int) {
 	class(self).SetOutboundBufferSize(gd.Int(value))
 }
 
-func (self Instance) HandshakeTimeout() float64 {
-	return float64(float64(class(self).GetHandshakeTimeout()))
+func (self Instance) HandshakeTimeout() Float.X {
+	return Float.X(Float.X(class(self).GetHandshakeTimeout()))
 }
 
-func (self Instance) SetHandshakeTimeout(value float64) {
+func (self Instance) SetHandshakeTimeout(value Float.X) {
 	class(self).SetHandshakeTimeout(gd.Float(value))
 }
 

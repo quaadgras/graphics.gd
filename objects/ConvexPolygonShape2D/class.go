@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,8 +28,8 @@ type Instance [1]classdb.ConvexPolygonShape2D
 /*
 Based on the set of points provided, this assigns the [member points] property using the convex hull algorithm, removing all unneeded points. See [method Geometry2D.convex_hull] for details.
 */
-func (self Instance) SetPointCloud(point_cloud []gd.Vector2) {
-	class(self).SetPointCloud(gd.NewPackedVector2Slice(point_cloud))
+func (self Instance) SetPointCloud(point_cloud []Vector2.XY) {
+	class(self).SetPointCloud(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&point_cloud))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -42,12 +43,12 @@ func New() Instance {
 	return Instance{classdb.ConvexPolygonShape2D(object)}
 }
 
-func (self Instance) Points() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPoints().AsSlice())
+func (self Instance) Points() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPoints().AsSlice())
 }
 
-func (self Instance) SetPoints(value []gd.Vector2) {
-	class(self).SetPoints(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPoints(value []Vector2.XY) {
+	class(self).SetPoints(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 /*

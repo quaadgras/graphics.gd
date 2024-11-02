@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeParameter"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,12 +42,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
-func (self Instance) DefaultValue() gd.Color {
-	return gd.Color(class(self).GetDefaultValue())
+func (self Instance) DefaultValue() Color.RGBA {
+	return Color.RGBA(class(self).GetDefaultValue())
 }
 
-func (self Instance) SetDefaultValue(value gd.Color) {
-	class(self).SetDefaultValue(value)
+func (self Instance) SetDefaultValue(value Color.RGBA) {
+	class(self).SetDefaultValue(gd.Color(value))
 }
 
 //go:nosplit

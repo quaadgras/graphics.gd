@@ -192,7 +192,25 @@ func NewVariant(v any) Variant {
 			var arg = callframe.Arg(frame, pointers.Get(class.AsObject()))
 			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
 		} else {
-			panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
+			rtype := reflect.TypeOf(v)
+			value := reflect.ValueOf(v)
+			switch rtype.Kind() {
+			case reflect.String:
+				var s = NewString(value.String())
+				var arg = callframe.Arg(frame, pointers.Get(s))
+				Global.variant.FromType[TypeString](ret, arg.Uintptr())
+			case reflect.Map:
+				var dict = NewDictionary()
+				for _, key := range value.MapKeys() {
+					var k = NewVariant(key.Interface())
+					var v = NewVariant(value.MapIndex(key).Interface())
+					dict.SetIndex(k, v)
+				}
+				var arg = callframe.Arg(frame, pointers.Get(dict))
+				Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
+			default:
+				panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
+			}
 		}
 	}
 	var variant = pointers.New[Variant](ret.Get())

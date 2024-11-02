@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,21 +26,21 @@ type Instance [1]classdb.SpringArm3D
 /*
 Returns the spring arm's current length.
 */
-func (self Instance) GetHitLength() float64 {
-	return float64(float64(class(self).GetHitLength()))
+func (self Instance) GetHitLength() Float.X {
+	return Float.X(Float.X(class(self).GetHitLength()))
 }
 
 /*
 Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) AddExcludedObject(rid gd.RID) {
+func (self Instance) AddExcludedObject(rid Resource.ID) {
 	class(self).AddExcludedObject(rid)
 }
 
 /*
 Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) RemoveExcludedObject(rid gd.RID) bool {
+func (self Instance) RemoveExcludedObject(rid Resource.ID) bool {
 	return bool(class(self).RemoveExcludedObject(rid))
 }
 
@@ -76,19 +78,19 @@ func (self Instance) SetShape(value objects.Shape3D) {
 	class(self).SetShape(value)
 }
 
-func (self Instance) SpringLength() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) SpringLength() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
-func (self Instance) SetSpringLength(value float64) {
+func (self Instance) SetSpringLength(value Float.X) {
 	class(self).SetLength(gd.Float(value))
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 

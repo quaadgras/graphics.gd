@@ -8,6 +8,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -82,9 +86,9 @@ func HasSystemMenu(menu_id classdb.NativeMenuSystemMenus) bool {
 Returns RID of a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetSystemMenu(menu_id classdb.NativeMenuSystemMenus) gd.RID {
+func GetSystemMenu(menu_id classdb.NativeMenuSystemMenus) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).GetSystemMenu(menu_id))
+	return Resource.ID(class(self).GetSystemMenu(menu_id))
 }
 
 /*
@@ -100,16 +104,16 @@ func GetSystemMenuName(menu_id classdb.NativeMenuSystemMenus) string {
 Creates a new global menu object.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func CreateMenu() gd.RID {
+func CreateMenu() Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).CreateMenu())
+	return Resource.ID(class(self).CreateMenu())
 }
 
 /*
 Returns [code]true[/code] if [param rid] is valid global menu.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func HasMenu(rid gd.RID) bool {
+func HasMenu(rid Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).HasMenu(rid))
 }
@@ -118,7 +122,7 @@ func HasMenu(rid gd.RID) bool {
 Frees a global menu object created by this [NativeMenu].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FreeMenu(rid gd.RID) {
+func FreeMenu(rid Resource.ID) {
 	once.Do(singleton)
 	class(self).FreeMenu(rid)
 }
@@ -127,25 +131,25 @@ func FreeMenu(rid gd.RID) {
 Returns global menu size.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetSize(rid gd.RID) gd.Vector2 {
+func GetSize(rid Resource.ID) Vector2.XY {
 	once.Do(singleton)
-	return gd.Vector2(class(self).GetSize(rid))
+	return Vector2.XY(class(self).GetSize(rid))
 }
 
 /*
 Shows the global menu at [param position] in the screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func Popup(rid gd.RID, position gd.Vector2i) {
+func Popup(rid Resource.ID, position Vector2i.XY) {
 	once.Do(singleton)
-	class(self).Popup(rid, position)
+	class(self).Popup(rid, gd.Vector2i(position))
 }
 
 /*
 Sets the menu text layout direction from right-to-left if [param is_rtl] is [code]true[/code].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetInterfaceDirection(rid gd.RID, is_rtl bool) {
+func SetInterfaceDirection(rid Resource.ID, is_rtl bool) {
 	once.Do(singleton)
 	class(self).SetInterfaceDirection(rid, is_rtl)
 }
@@ -154,7 +158,7 @@ func SetInterfaceDirection(rid gd.RID, is_rtl bool) {
 Registers callable to emit after the menu is closed.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupOpenCallback(rid gd.RID, callback gd.Callable) {
+func SetPopupOpenCallback(rid Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).SetPopupOpenCallback(rid, callback)
 }
@@ -163,7 +167,7 @@ func SetPopupOpenCallback(rid gd.RID, callback gd.Callable) {
 Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupOpenCallback(rid gd.RID) gd.Callable {
+func GetPopupOpenCallback(rid Resource.ID) gd.Callable {
 	once.Do(singleton)
 	return gd.Callable(class(self).GetPopupOpenCallback(rid))
 }
@@ -173,7 +177,7 @@ Registers callable to emit when the menu is about to show.
 [b]Note:[/b] The OS can simulate menu opening to track menu item changes and global shortcuts, in which case the corresponding close callback is not triggered. Use [method is_opened] to check if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupCloseCallback(rid gd.RID, callback gd.Callable) {
+func SetPopupCloseCallback(rid Resource.ID, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).SetPopupCloseCallback(rid, callback)
 }
@@ -182,7 +186,7 @@ func SetPopupCloseCallback(rid gd.RID, callback gd.Callable) {
 Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupCloseCallback(rid gd.RID) gd.Callable {
+func GetPopupCloseCallback(rid Resource.ID) gd.Callable {
 	once.Do(singleton)
 	return gd.Callable(class(self).GetPopupCloseCallback(rid))
 }
@@ -191,7 +195,7 @@ func GetPopupCloseCallback(rid gd.RID) gd.Callable {
 Sets the minimum width of the global menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetMinimumWidth(rid gd.RID, width float64) {
+func SetMinimumWidth(rid Resource.ID, width Float.X) {
 	once.Do(singleton)
 	class(self).SetMinimumWidth(rid, gd.Float(width))
 }
@@ -200,16 +204,16 @@ func SetMinimumWidth(rid gd.RID, width float64) {
 Returns global menu minimum width.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetMinimumWidth(rid gd.RID) float64 {
+func GetMinimumWidth(rid Resource.ID) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetMinimumWidth(rid)))
+	return Float.X(Float.X(class(self).GetMinimumWidth(rid)))
 }
 
 /*
 Returns [code]true[/code] if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsOpened(rid gd.RID) bool {
+func IsOpened(rid Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).IsOpened(rid))
 }
@@ -219,9 +223,9 @@ Adds an item that will act as a submenu of the global menu [param rid]. The [par
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSubmenuItem(rid gd.RID, label string, submenu_rid gd.RID) int {
+func AddSubmenuItem(rid Resource.ID, label string, submenu_rid Resource.ID) int {
 	once.Do(singleton)
-	return int(int(class(self).AddSubmenuItem(rid, gd.NewString(label), submenu_rid, gd.NewVariant(([1]gd.Variant{}[0])), gd.Int(-1))))
+	return int(int(class(self).AddSubmenuItem(rid, gd.NewString(label), submenu_rid, gd.NewVariant(gd.NewVariant(([1]any{}[0]))), gd.Int(-1))))
 }
 
 /*
@@ -232,9 +236,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddItem(rid gd.RID, label string) int {
+func AddItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddItem(rid, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -245,9 +249,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddCheckItem(rid gd.RID, label string) int {
+func AddCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -258,9 +262,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItem(rid gd.RID, icon objects.Texture2D, label string) int {
+func AddIconItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -271,9 +275,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItem(rid gd.RID, icon objects.Texture2D, label string) int {
+func AddIconCheckItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -285,9 +289,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddRadioCheckItem(rid gd.RID, label string) int {
+func AddRadioCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -299,9 +303,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItem(rid gd.RID, icon objects.Texture2D, label string) int {
+func AddIconRadioCheckItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -314,9 +318,9 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddMultistateItem(rid gd.RID, label string, max_states int, default_state int) int {
+func AddMultistateItem(rid Resource.ID, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -324,7 +328,7 @@ Adds a separator between items to the global menu [param rid]. Separators also o
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSeparator(rid gd.RID) int {
+func AddSeparator(rid Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).AddSeparator(rid, gd.Int(-1))))
 }
@@ -333,7 +337,7 @@ func AddSeparator(rid gd.RID) int {
 Returns the index of the item with the specified [param text]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithText(rid gd.RID, text string) int {
+func FindItemIndexWithText(rid Resource.ID, text string) int {
 	once.Do(singleton)
 	return int(int(class(self).FindItemIndexWithText(rid, gd.NewString(text))))
 }
@@ -342,16 +346,16 @@ func FindItemIndexWithText(rid gd.RID, text string) int {
 Returns the index of the item with the specified [param tag]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithTag(rid gd.RID, tag gd.Variant) int {
+func FindItemIndexWithTag(rid Resource.ID, tag any) int {
 	once.Do(singleton)
-	return int(int(class(self).FindItemIndexWithTag(rid, tag)))
+	return int(int(class(self).FindItemIndexWithTag(rid, gd.NewVariant(tag))))
 }
 
 /*
 Returns the index of the item with the submenu specified by [param submenu_rid]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithSubmenu(rid gd.RID, submenu_rid gd.RID) int {
+func FindItemIndexWithSubmenu(rid Resource.ID, submenu_rid Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).FindItemIndexWithSubmenu(rid, submenu_rid)))
 }
@@ -360,7 +364,7 @@ func FindItemIndexWithSubmenu(rid gd.RID, submenu_rid gd.RID) int {
 Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemChecked(rid gd.RID, idx int) bool {
+func IsItemChecked(rid Resource.ID, idx int) bool {
 	once.Do(singleton)
 	return bool(class(self).IsItemChecked(rid, gd.Int(idx)))
 }
@@ -369,7 +373,7 @@ func IsItemChecked(rid gd.RID, idx int) bool {
 Returns [code]true[/code] if the item at index [param idx] is checkable in some way, i.e. if it has a checkbox or radio button.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemCheckable(rid gd.RID, idx int) bool {
+func IsItemCheckable(rid Resource.ID, idx int) bool {
 	once.Do(singleton)
 	return bool(class(self).IsItemCheckable(rid, gd.Int(idx)))
 }
@@ -379,7 +383,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemRadioCheckable(rid gd.RID, idx int) bool {
+func IsItemRadioCheckable(rid Resource.ID, idx int) bool {
 	once.Do(singleton)
 	return bool(class(self).IsItemRadioCheckable(rid, gd.Int(idx)))
 }
@@ -388,7 +392,7 @@ func IsItemRadioCheckable(rid gd.RID, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCallback(rid gd.RID, idx int) gd.Callable {
+func GetItemCallback(rid Resource.ID, idx int) gd.Callable {
 	once.Do(singleton)
 	return gd.Callable(class(self).GetItemCallback(rid, gd.Int(idx)))
 }
@@ -397,7 +401,7 @@ func GetItemCallback(rid gd.RID, idx int) gd.Callable {
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemKeyCallback(rid gd.RID, idx int) gd.Callable {
+func GetItemKeyCallback(rid Resource.ID, idx int) gd.Callable {
 	once.Do(singleton)
 	return gd.Callable(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
 }
@@ -406,16 +410,16 @@ func GetItemKeyCallback(rid gd.RID, idx int) gd.Callable {
 Returns the metadata of the specified item, which might be of any type. You can set it with [method set_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemTag(rid gd.RID, idx int) gd.Variant {
+func GetItemTag(rid Resource.ID, idx int) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).GetItemTag(rid, gd.Int(idx)))
+	return any(class(self).GetItemTag(rid, gd.Int(idx)).Interface())
 }
 
 /*
 Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemText(rid gd.RID, idx int) string {
+func GetItemText(rid Resource.ID, idx int) string {
 	once.Do(singleton)
 	return string(class(self).GetItemText(rid, gd.Int(idx)).String())
 }
@@ -424,16 +428,16 @@ func GetItemText(rid gd.RID, idx int) string {
 Returns the submenu ID of the item at index [param idx]. See [method add_submenu_item] for more info on how to add a submenu.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemSubmenu(rid gd.RID, idx int) gd.RID {
+func GetItemSubmenu(rid Resource.ID, idx int) Resource.ID {
 	once.Do(singleton)
-	return gd.RID(class(self).GetItemSubmenu(rid, gd.Int(idx)))
+	return Resource.ID(class(self).GetItemSubmenu(rid, gd.Int(idx)))
 }
 
 /*
 Returns the accelerator of the item at index [param idx]. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemAccelerator(rid gd.RID, idx int) Key {
+func GetItemAccelerator(rid Resource.ID, idx int) Key {
 	once.Do(singleton)
 	return Key(class(self).GetItemAccelerator(rid, gd.Int(idx)))
 }
@@ -443,7 +447,7 @@ Returns [code]true[/code] if the item at index [param idx] is disabled. When it 
 See [method set_item_disabled] for more info on how to disable an item.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemDisabled(rid gd.RID, idx int) bool {
+func IsItemDisabled(rid Resource.ID, idx int) bool {
 	once.Do(singleton)
 	return bool(class(self).IsItemDisabled(rid, gd.Int(idx)))
 }
@@ -453,7 +457,7 @@ Returns [code]true[/code] if the item at index [param idx] is hidden.
 See [method set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsItemHidden(rid gd.RID, idx int) bool {
+func IsItemHidden(rid Resource.ID, idx int) bool {
 	once.Do(singleton)
 	return bool(class(self).IsItemHidden(rid, gd.Int(idx)))
 }
@@ -462,7 +466,7 @@ func IsItemHidden(rid gd.RID, idx int) bool {
 Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemTooltip(rid gd.RID, idx int) string {
+func GetItemTooltip(rid Resource.ID, idx int) string {
 	once.Do(singleton)
 	return string(class(self).GetItemTooltip(rid, gd.Int(idx)).String())
 }
@@ -471,7 +475,7 @@ func GetItemTooltip(rid gd.RID, idx int) string {
 Returns the state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemState(rid gd.RID, idx int) int {
+func GetItemState(rid Resource.ID, idx int) int {
 	once.Do(singleton)
 	return int(int(class(self).GetItemState(rid, gd.Int(idx))))
 }
@@ -480,7 +484,7 @@ func GetItemState(rid gd.RID, idx int) int {
 Returns number of states of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemMaxStates(rid gd.RID, idx int) int {
+func GetItemMaxStates(rid Resource.ID, idx int) int {
 	once.Do(singleton)
 	return int(int(class(self).GetItemMaxStates(rid, gd.Int(idx))))
 }
@@ -489,7 +493,7 @@ func GetItemMaxStates(rid gd.RID, idx int) int {
 Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemIcon(rid gd.RID, idx int) objects.Texture2D {
+func GetItemIcon(rid Resource.ID, idx int) objects.Texture2D {
 	once.Do(singleton)
 	return objects.Texture2D(class(self).GetItemIcon(rid, gd.Int(idx)))
 }
@@ -498,7 +502,7 @@ func GetItemIcon(rid gd.RID, idx int) objects.Texture2D {
 Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemIndentationLevel(rid gd.RID, idx int) int {
+func GetItemIndentationLevel(rid Resource.ID, idx int) int {
 	once.Do(singleton)
 	return int(int(class(self).GetItemIndentationLevel(rid, gd.Int(idx))))
 }
@@ -507,7 +511,7 @@ func GetItemIndentationLevel(rid gd.RID, idx int) int {
 Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemChecked(rid gd.RID, idx int, checked bool) {
+func SetItemChecked(rid Resource.ID, idx int, checked bool) {
 	once.Do(singleton)
 	class(self).SetItemChecked(rid, gd.Int(idx), checked)
 }
@@ -516,7 +520,7 @@ func SetItemChecked(rid gd.RID, idx int, checked bool) {
 Sets whether the item at index [param idx] has a checkbox. If [code]false[/code], sets the type of the item to plain text.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemCheckable(rid gd.RID, idx int, checkable bool) {
+func SetItemCheckable(rid Resource.ID, idx int, checkable bool) {
 	once.Do(singleton)
 	class(self).SetItemCheckable(rid, gd.Int(idx), checkable)
 }
@@ -526,7 +530,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemRadioCheckable(rid gd.RID, idx int, checkable bool) {
+func SetItemRadioCheckable(rid Resource.ID, idx int, checkable bool) {
 	once.Do(singleton)
 	class(self).SetItemRadioCheckable(rid, gd.Int(idx), checkable)
 }
@@ -536,7 +540,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemCallback(rid gd.RID, idx int, callback gd.Callable) {
+func SetItemCallback(rid Resource.ID, idx int, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).SetItemCallback(rid, gd.Int(idx), callback)
 }
@@ -546,7 +550,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemHoverCallbacks(rid gd.RID, idx int, callback gd.Callable) {
+func SetItemHoverCallbacks(rid Resource.ID, idx int, callback gd.Callable) {
 	once.Do(singleton)
 	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), callback)
 }
@@ -556,7 +560,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] The [param key_callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemKeyCallback(rid gd.RID, idx int, key_callback gd.Callable) {
+func SetItemKeyCallback(rid Resource.ID, idx int, key_callback gd.Callable) {
 	once.Do(singleton)
 	class(self).SetItemKeyCallback(rid, gd.Int(idx), key_callback)
 }
@@ -565,16 +569,16 @@ func SetItemKeyCallback(rid gd.RID, idx int, key_callback gd.Callable) {
 Sets the metadata of an item, which may be of any type. You can later get it with [method get_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemTag(rid gd.RID, idx int, tag gd.Variant) {
+func SetItemTag(rid Resource.ID, idx int, tag any) {
 	once.Do(singleton)
-	class(self).SetItemTag(rid, gd.Int(idx), tag)
+	class(self).SetItemTag(rid, gd.Int(idx), gd.NewVariant(tag))
 }
 
 /*
 Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemText(rid gd.RID, idx int, text string) {
+func SetItemText(rid Resource.ID, idx int, text string) {
 	once.Do(singleton)
 	class(self).SetItemText(rid, gd.Int(idx), gd.NewString(text))
 }
@@ -583,7 +587,7 @@ func SetItemText(rid gd.RID, idx int, text string) {
 Sets the submenu RID of the item at index [param idx]. The submenu is a global menu that would be shown when the item is clicked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemSubmenu(rid gd.RID, idx int, submenu_rid gd.RID) {
+func SetItemSubmenu(rid Resource.ID, idx int, submenu_rid Resource.ID) {
 	once.Do(singleton)
 	class(self).SetItemSubmenu(rid, gd.Int(idx), submenu_rid)
 }
@@ -592,7 +596,7 @@ func SetItemSubmenu(rid gd.RID, idx int, submenu_rid gd.RID) {
 Sets the accelerator of the item at index [param idx]. [param keycode] can be a single [enum Key], or a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemAccelerator(rid gd.RID, idx int, keycode Key) {
+func SetItemAccelerator(rid Resource.ID, idx int, keycode Key) {
 	once.Do(singleton)
 	class(self).SetItemAccelerator(rid, gd.Int(idx), keycode)
 }
@@ -601,7 +605,7 @@ func SetItemAccelerator(rid gd.RID, idx int, keycode Key) {
 Enables/disables the item at index [param idx]. When it is disabled, it can't be selected and its action can't be invoked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemDisabled(rid gd.RID, idx int, disabled bool) {
+func SetItemDisabled(rid Resource.ID, idx int, disabled bool) {
 	once.Do(singleton)
 	class(self).SetItemDisabled(rid, gd.Int(idx), disabled)
 }
@@ -610,7 +614,7 @@ func SetItemDisabled(rid gd.RID, idx int, disabled bool) {
 Hides/shows the item at index [param idx]. When it is hidden, an item does not appear in a menu and its action cannot be invoked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemHidden(rid gd.RID, idx int, hidden bool) {
+func SetItemHidden(rid Resource.ID, idx int, hidden bool) {
 	once.Do(singleton)
 	class(self).SetItemHidden(rid, gd.Int(idx), hidden)
 }
@@ -619,7 +623,7 @@ func SetItemHidden(rid gd.RID, idx int, hidden bool) {
 Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemTooltip(rid gd.RID, idx int, tooltip string) {
+func SetItemTooltip(rid Resource.ID, idx int, tooltip string) {
 	once.Do(singleton)
 	class(self).SetItemTooltip(rid, gd.Int(idx), gd.NewString(tooltip))
 }
@@ -628,7 +632,7 @@ func SetItemTooltip(rid gd.RID, idx int, tooltip string) {
 Sets the state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemState(rid gd.RID, idx int, state int) {
+func SetItemState(rid Resource.ID, idx int, state int) {
 	once.Do(singleton)
 	class(self).SetItemState(rid, gd.Int(idx), gd.Int(state))
 }
@@ -637,7 +641,7 @@ func SetItemState(rid gd.RID, idx int, state int) {
 Sets number of state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemMaxStates(rid gd.RID, idx int, max_states int) {
+func SetItemMaxStates(rid Resource.ID, idx int, max_states int) {
 	once.Do(singleton)
 	class(self).SetItemMaxStates(rid, gd.Int(idx), gd.Int(max_states))
 }
@@ -647,7 +651,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] This method is not supported by macOS Dock menu items.
 */
-func SetItemIcon(rid gd.RID, idx int, icon objects.Texture2D) {
+func SetItemIcon(rid Resource.ID, idx int, icon objects.Texture2D) {
 	once.Do(singleton)
 	class(self).SetItemIcon(rid, gd.Int(idx), icon)
 }
@@ -656,7 +660,7 @@ func SetItemIcon(rid gd.RID, idx int, icon objects.Texture2D) {
 Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemIndentationLevel(rid gd.RID, idx int, level int) {
+func SetItemIndentationLevel(rid Resource.ID, idx int, level int) {
 	once.Do(singleton)
 	class(self).SetItemIndentationLevel(rid, gd.Int(idx), gd.Int(level))
 }
@@ -665,7 +669,7 @@ func SetItemIndentationLevel(rid gd.RID, idx int, level int) {
 Returns number of items in the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCount(rid gd.RID) int {
+func GetItemCount(rid Resource.ID) int {
 	once.Do(singleton)
 	return int(int(class(self).GetItemCount(rid)))
 }
@@ -674,7 +678,7 @@ func GetItemCount(rid gd.RID) int {
 Return [code]true[/code] is global menu is a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsSystemMenu(rid gd.RID) bool {
+func IsSystemMenu(rid Resource.ID) bool {
 	once.Do(singleton)
 	return bool(class(self).IsSystemMenu(rid))
 }
@@ -684,7 +688,7 @@ Removes the item at index [param idx] from the global menu [param rid].
 [b]Note:[/b] The indices of items after the removed item will be shifted by one.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func RemoveItem(rid gd.RID, idx int) {
+func RemoveItem(rid Resource.ID, idx int) {
 	once.Do(singleton)
 	class(self).RemoveItem(rid, gd.Int(idx))
 }
@@ -693,7 +697,7 @@ func RemoveItem(rid gd.RID, idx int) {
 Removes all items from the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func Clear(rid gd.RID) {
+func Clear(rid Resource.ID) {
 	once.Do(singleton)
 	class(self).Clear(rid)
 }

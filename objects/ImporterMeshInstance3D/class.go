@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,12 +47,12 @@ func (self Instance) SetSkin(value objects.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Instance) SkeletonPath() string {
-	return string(class(self).GetSkeletonPath().String())
+func (self Instance) SkeletonPath() Path.String {
+	return Path.String(class(self).GetSkeletonPath().String())
 }
 
-func (self Instance) SetSkeletonPath(value string) {
-	class(self).SetSkeletonPath(gd.NewString(value).NodePath())
+func (self Instance) SetSkeletonPath(value Path.String) {
+	class(self).SetSkeletonPath(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) LayerMask() int {
@@ -69,35 +71,35 @@ func (self Instance) SetCastShadow(value classdb.GeometryInstance3DShadowCasting
 	class(self).SetCastShadowsSetting(value)
 }
 
-func (self Instance) VisibilityRangeBegin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeBegin()))
+func (self Instance) VisibilityRangeBegin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
-func (self Instance) SetVisibilityRangeBegin(value float64) {
+func (self Instance) SetVisibilityRangeBegin(value Float.X) {
 	class(self).SetVisibilityRangeBegin(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeBeginMargin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeBeginMargin()))
+func (self Instance) VisibilityRangeBeginMargin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
-func (self Instance) SetVisibilityRangeBeginMargin(value float64) {
+func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
 	class(self).SetVisibilityRangeBeginMargin(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeEnd() float64 {
-	return float64(float64(class(self).GetVisibilityRangeEnd()))
+func (self Instance) VisibilityRangeEnd() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
-func (self Instance) SetVisibilityRangeEnd(value float64) {
+func (self Instance) SetVisibilityRangeEnd(value Float.X) {
 	class(self).SetVisibilityRangeEnd(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeEndMargin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeEndMargin()))
+func (self Instance) VisibilityRangeEndMargin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
-func (self Instance) SetVisibilityRangeEndMargin(value float64) {
+func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(gd.Float(value))
 }
 

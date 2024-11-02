@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -85,7 +86,7 @@ func GetBusChannels(bus_idx int) int {
 /*
 Sets the volume of the bus at index [param bus_idx] to [param volume_db].
 */
-func SetBusVolumeDb(bus_idx int, volume_db float64) {
+func SetBusVolumeDb(bus_idx int, volume_db Float.X) {
 	once.Do(singleton)
 	class(self).SetBusVolumeDb(gd.Int(bus_idx), gd.Float(volume_db))
 }
@@ -93,9 +94,9 @@ func SetBusVolumeDb(bus_idx int, volume_db float64) {
 /*
 Returns the volume of the bus at index [param bus_idx] in dB.
 */
-func GetBusVolumeDb(bus_idx int) float64 {
+func GetBusVolumeDb(bus_idx int) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetBusVolumeDb(gd.Int(bus_idx))))
+	return Float.X(Float.X(class(self).GetBusVolumeDb(gd.Int(bus_idx))))
 }
 
 /*
@@ -229,17 +230,17 @@ func IsBusEffectEnabled(bus_idx int, effect_idx int) bool {
 /*
 Returns the peak volume of the left speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeLeftDb(bus_idx int, channel int) float64 {
+func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetBusPeakVolumeLeftDb(gd.Int(bus_idx), gd.Int(channel))))
+	return Float.X(Float.X(class(self).GetBusPeakVolumeLeftDb(gd.Int(bus_idx), gd.Int(channel))))
 }
 
 /*
 Returns the peak volume of the right speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeRightDb(bus_idx int, channel int) float64 {
+func GetBusPeakVolumeRightDb(bus_idx int, channel int) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetBusPeakVolumeRightDb(gd.Int(bus_idx), gd.Int(channel))))
+	return Float.X(Float.X(class(self).GetBusPeakVolumeRightDb(gd.Int(bus_idx), gd.Int(channel))))
 }
 
 /*
@@ -270,9 +271,9 @@ func GetSpeakerMode() classdb.AudioServerSpeakerMode {
 /*
 Returns the sample rate at the output of the [AudioServer].
 */
-func GetMixRate() float64 {
+func GetMixRate() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetMixRate()))
+	return Float.X(Float.X(class(self).GetMixRate()))
 }
 
 /*
@@ -286,26 +287,26 @@ func GetOutputDeviceList() []string {
 /*
 Returns the relative time until the next mix occurs.
 */
-func GetTimeToNextMix() float64 {
+func GetTimeToNextMix() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetTimeToNextMix()))
+	return Float.X(Float.X(class(self).GetTimeToNextMix()))
 }
 
 /*
 Returns the relative time since the last mix occurred.
 */
-func GetTimeSinceLastMix() float64 {
+func GetTimeSinceLastMix() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetTimeSinceLastMix()))
+	return Float.X(Float.X(class(self).GetTimeSinceLastMix()))
 }
 
 /*
 Returns the audio driver's effective output latency. This is based on [member ProjectSettings.audio/driver/output_latency], but the exact returned value will differ depending on the operating system and audio driver.
 [b]Note:[/b] This can be expensive; it is not recommended to call [method get_output_latency] every frame.
 */
-func GetOutputLatency() float64 {
+func GetOutputLatency() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetOutputLatency()))
+	return Float.X(Float.X(class(self).GetOutputLatency()))
 }
 
 /*
@@ -391,11 +392,11 @@ func SetInputDevice(value string) {
 	class(self).SetInputDevice(gd.NewString(value))
 }
 
-func PlaybackSpeedScale() float64 {
-	return float64(float64(class(self).GetPlaybackSpeedScale()))
+func PlaybackSpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetPlaybackSpeedScale()))
 }
 
-func SetPlaybackSpeedScale(value float64) {
+func SetPlaybackSpeedScale(value Float.X) {
 	class(self).SetPlaybackSpeedScale(gd.Float(value))
 }
 

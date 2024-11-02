@@ -7,6 +7,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Projection"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,16 +28,16 @@ type Instance [1]classdb.RenderSceneData
 Returns the camera transform used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a centered transform.
 */
-func (self Instance) GetCamTransform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetCamTransform())
+func (self Instance) GetCamTransform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetCamTransform())
 }
 
 /*
 Returns the camera projection used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a combined projection.
 */
-func (self Instance) GetCamProjection() gd.Projection {
-	return gd.Projection(class(self).GetCamProjection())
+func (self Instance) GetCamProjection() Projection.XYZW {
+	return Projection.XYZW(class(self).GetCamProjection())
 }
 
 /*
@@ -46,23 +50,23 @@ func (self Instance) GetViewCount() int {
 /*
 Returns the eye offset per view used to render this frame. This is the offset between our camera transform and the eye transform.
 */
-func (self Instance) GetViewEyeOffset(view int) gd.Vector3 {
-	return gd.Vector3(class(self).GetViewEyeOffset(gd.Int(view)))
+func (self Instance) GetViewEyeOffset(view int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetViewEyeOffset(gd.Int(view)))
 }
 
 /*
 Returns the view projection per view used to render this frame.
 [b]Note:[/b] If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
-func (self Instance) GetViewProjection(view int) gd.Projection {
-	return gd.Projection(class(self).GetViewProjection(gd.Int(view)))
+func (self Instance) GetViewProjection(view int) Projection.XYZW {
+	return Projection.XYZW(class(self).GetViewProjection(gd.Int(view)))
 }
 
 /*
 Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
-func (self Instance) GetUniformBuffer() gd.RID {
-	return gd.RID(class(self).GetUniformBuffer())
+func (self Instance) GetUniformBuffer() Resource.ID {
+	return Resource.ID(class(self).GetUniformBuffer())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

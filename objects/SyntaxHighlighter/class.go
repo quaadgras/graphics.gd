@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,7 +24,7 @@ Base class for syntax highlighters. Provides syntax highlighting data to a [Text
 	type SyntaxHighlighter interface {
 		//Virtual method which can be overridden to return syntax highlighting data.
 		//See [method get_line_syntax_highlighting] for more details.
-		GetLineSyntaxHighlighting(line int) gd.Dictionary
+		GetLineSyntaxHighlighting(line int) Dictionary.Any
 		//Virtual method which can be overridden to clear any local caches.
 		ClearHighlightingCache()
 		//Virtual method which can be overridden to update any local caches.
@@ -36,7 +37,7 @@ type Instance [1]classdb.SyntaxHighlighter
 Virtual method which can be overridden to return syntax highlighting data.
 See [method get_line_syntax_highlighting] for more details.
 */
-func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var line = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -87,8 +88,8 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 [/codeblock]
 This will color columns 0-4 red, and columns 5-eol in green.
 */
-func (self Instance) GetLineSyntaxHighlighting(line int) gd.Dictionary {
-	return gd.Dictionary(class(self).GetLineSyntaxHighlighting(gd.Int(line)))
+func (self Instance) GetLineSyntaxHighlighting(line int) Dictionary.Any {
+	return Dictionary.Any(class(self).GetLineSyntaxHighlighting(gd.Int(line)))
 }
 
 /*

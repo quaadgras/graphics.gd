@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MultiplayerAPI"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -78,12 +80,12 @@ func New() Instance {
 	return Instance{classdb.SceneMultiplayer(object)}
 }
 
-func (self Instance) RootPath() string {
-	return string(class(self).GetRootPath().String())
+func (self Instance) RootPath() Path.String {
+	return Path.String(class(self).GetRootPath().String())
 }
 
-func (self Instance) SetRootPath(value string) {
-	class(self).SetRootPath(gd.NewString(value).NodePath())
+func (self Instance) SetRootPath(value Path.String) {
+	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) AuthCallback() gd.Callable {
@@ -94,11 +96,11 @@ func (self Instance) SetAuthCallback(value gd.Callable) {
 	class(self).SetAuthCallback(value)
 }
 
-func (self Instance) AuthTimeout() float64 {
-	return float64(float64(class(self).GetAuthTimeout()))
+func (self Instance) AuthTimeout() Float.X {
+	return Float.X(Float.X(class(self).GetAuthTimeout()))
 }
 
-func (self Instance) SetAuthTimeout(value float64) {
+func (self Instance) SetAuthTimeout(value Float.X) {
 	class(self).SetAuthTimeout(gd.Float(value))
 }
 

@@ -83,7 +83,7 @@ func (self Instance) OnPropertySelected(cb func(property string)) {
 	self[0].AsObject().Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPropertyKeyed(cb func(property string, value gd.Variant, advance bool)) {
+func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance bool)) {
 	self[0].AsObject().Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
 }
 

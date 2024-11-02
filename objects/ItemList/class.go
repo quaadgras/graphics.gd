@@ -10,6 +10,11 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,7 +37,7 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If selectable is [code]true[/code], the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int {
-	return int(int(class(self).AddItem(gd.NewString(text), ([1]objects.Texture2D{}[0]), true)))
+	return int(int(class(self).AddItem(gd.NewString(text), [1]objects.Texture2D{}[0], true)))
 }
 
 /*
@@ -115,29 +120,29 @@ func (self Instance) IsItemIconTransposed(idx int) bool {
 /*
 Sets the region of item's icon used. The whole icon will be used if the region has no area.
 */
-func (self Instance) SetItemIconRegion(idx int, rect gd.Rect2) {
-	class(self).SetItemIconRegion(gd.Int(idx), rect)
+func (self Instance) SetItemIconRegion(idx int, rect Rect2.PositionSize) {
+	class(self).SetItemIconRegion(gd.Int(idx), gd.Rect2(rect))
 }
 
 /*
 Returns the region of item's icon used. The whole icon will be used if the region has no area.
 */
-func (self Instance) GetItemIconRegion(idx int) gd.Rect2 {
-	return gd.Rect2(class(self).GetItemIconRegion(gd.Int(idx)))
+func (self Instance) GetItemIconRegion(idx int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetItemIconRegion(gd.Int(idx)))
 }
 
 /*
 Sets a modulating [Color] of the item associated with the specified index.
 */
-func (self Instance) SetItemIconModulate(idx int, modulate gd.Color) {
-	class(self).SetItemIconModulate(gd.Int(idx), modulate)
+func (self Instance) SetItemIconModulate(idx int, modulate Color.RGBA) {
+	class(self).SetItemIconModulate(gd.Int(idx), gd.Color(modulate))
 }
 
 /*
 Returns a [Color] modulating item's icon at the specified index.
 */
-func (self Instance) GetItemIconModulate(idx int) gd.Color {
-	return gd.Color(class(self).GetItemIconModulate(gd.Int(idx)))
+func (self Instance) GetItemIconModulate(idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetItemIconModulate(gd.Int(idx)))
 }
 
 /*
@@ -172,51 +177,51 @@ func (self Instance) IsItemDisabled(idx int) bool {
 /*
 Sets a value (of any type) to be stored with the item associated with the specified index.
 */
-func (self Instance) SetItemMetadata(idx int, metadata gd.Variant) {
-	class(self).SetItemMetadata(gd.Int(idx), metadata)
+func (self Instance) SetItemMetadata(idx int, metadata any) {
+	class(self).SetItemMetadata(gd.Int(idx), gd.NewVariant(metadata))
 }
 
 /*
 Returns the metadata value of the specified index.
 */
-func (self Instance) GetItemMetadata(idx int) gd.Variant {
-	return gd.Variant(class(self).GetItemMetadata(gd.Int(idx)))
+func (self Instance) GetItemMetadata(idx int) any {
+	return any(class(self).GetItemMetadata(gd.Int(idx)).Interface())
 }
 
 /*
 Sets the background color of the item specified by [param idx] index to the specified [Color].
 */
-func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color gd.Color) {
-	class(self).SetItemCustomBgColor(gd.Int(idx), custom_bg_color)
+func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color Color.RGBA) {
+	class(self).SetItemCustomBgColor(gd.Int(idx), gd.Color(custom_bg_color))
 }
 
 /*
 Returns the custom background color of the item specified by [param idx] index.
 */
-func (self Instance) GetItemCustomBgColor(idx int) gd.Color {
-	return gd.Color(class(self).GetItemCustomBgColor(gd.Int(idx)))
+func (self Instance) GetItemCustomBgColor(idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetItemCustomBgColor(gd.Int(idx)))
 }
 
 /*
 Sets the foreground color of the item specified by [param idx] index to the specified [Color].
 */
-func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color gd.Color) {
-	class(self).SetItemCustomFgColor(gd.Int(idx), custom_fg_color)
+func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color Color.RGBA) {
+	class(self).SetItemCustomFgColor(gd.Int(idx), gd.Color(custom_fg_color))
 }
 
 /*
 Returns the custom foreground color of the item specified by [param idx] index.
 */
-func (self Instance) GetItemCustomFgColor(idx int) gd.Color {
-	return gd.Color(class(self).GetItemCustomFgColor(gd.Int(idx)))
+func (self Instance) GetItemCustomFgColor(idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetItemCustomFgColor(gd.Int(idx)))
 }
 
 /*
 Returns the position and size of the item with the specified index, in the coordinate system of the [ItemList] node. If [param expand] is [code]true[/code] the last column expands to fill the rest of the row.
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
-func (self Instance) GetItemRect(idx int) gd.Rect2 {
-	return gd.Rect2(class(self).GetItemRect(gd.Int(idx), true))
+func (self Instance) GetItemRect(idx int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetItemRect(gd.Int(idx), true))
 }
 
 /*
@@ -323,8 +328,8 @@ Returns the item index at the given [param position].
 When there is no item at that point, -1 will be returned if [param exact] is [code]true[/code], and the closest item index will be returned otherwise.
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
-func (self Instance) GetItemAtPosition(position gd.Vector2) int {
-	return int(int(class(self).GetItemAtPosition(position, false)))
+func (self Instance) GetItemAtPosition(position Vector2.XY) int {
+	return int(int(class(self).GetItemAtPosition(gd.Vector2(position), false)))
 }
 
 /*
@@ -456,20 +461,20 @@ func (self Instance) SetIconMode(value classdb.ItemListIconMode) {
 	class(self).SetIconMode(value)
 }
 
-func (self Instance) IconScale() float64 {
-	return float64(float64(class(self).GetIconScale()))
+func (self Instance) IconScale() Float.X {
+	return Float.X(Float.X(class(self).GetIconScale()))
 }
 
-func (self Instance) SetIconScale(value float64) {
+func (self Instance) SetIconScale(value Float.X) {
 	class(self).SetIconScale(gd.Float(value))
 }
 
-func (self Instance) FixedIconSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetFixedIconSize())
+func (self Instance) FixedIconSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetFixedIconSize())
 }
 
-func (self Instance) SetFixedIconSize(value gd.Vector2i) {
-	class(self).SetFixedIconSize(value)
+func (self Instance) SetFixedIconSize(value Vector2i.XY) {
+	class(self).SetFixedIconSize(gd.Vector2i(value))
 }
 
 /*
@@ -1346,11 +1351,11 @@ func (self Instance) OnItemSelected(cb func(index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnEmptyClicked(cb func(at_position gd.Vector2, mouse_button_index int)) {
+func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnItemClicked(cb func(index int, at_position gd.Vector2, mouse_button_index int)) {
+func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), 0)
 }
 

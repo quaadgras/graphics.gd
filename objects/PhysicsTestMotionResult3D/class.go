@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,29 +25,29 @@ type Instance [1]classdb.PhysicsTestMotionResult3D
 /*
 Returns the moving object's travel before collision.
 */
-func (self Instance) GetTravel() gd.Vector3 {
-	return gd.Vector3(class(self).GetTravel())
+func (self Instance) GetTravel() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
-func (self Instance) GetRemainder() gd.Vector3 {
-	return gd.Vector3(class(self).GetRemainder())
+func (self Instance) GetRemainder() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRemainder())
 }
 
 /*
 Returns the maximum fraction of the motion that can occur without a collision, between [code]0[/code] and [code]1[/code].
 */
-func (self Instance) GetCollisionSafeFraction() float64 {
-	return float64(float64(class(self).GetCollisionSafeFraction()))
+func (self Instance) GetCollisionSafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionSafeFraction()))
 }
 
 /*
 Returns the minimum fraction of the motion needed to collide, if a collision occurred, between [code]0[/code] and [code]1[/code].
 */
-func (self Instance) GetCollisionUnsafeFraction() float64 {
-	return float64(float64(class(self).GetCollisionUnsafeFraction()))
+func (self Instance) GetCollisionUnsafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionUnsafeFraction()))
 }
 
 /*
@@ -57,22 +60,22 @@ func (self Instance) GetCollisionCount() int {
 /*
 Returns the point of collision in global coordinates given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetCollisionPoint() gd.Vector3 {
-	return gd.Vector3(class(self).GetCollisionPoint(gd.Int(0)))
+func (self Instance) GetCollisionPoint() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCollisionPoint(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetCollisionNormal() gd.Vector3 {
-	return gd.Vector3(class(self).GetCollisionNormal(gd.Int(0)))
+func (self Instance) GetCollisionNormal() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCollisionNormal(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's velocity given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetColliderVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetColliderVelocity(gd.Int(0)))
+func (self Instance) GetColliderVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetColliderVelocity(gd.Int(0)))
 }
 
 /*
@@ -85,8 +88,8 @@ func (self Instance) GetColliderId() int {
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetColliderRid() gd.RID {
-	return gd.RID(class(self).GetColliderRid(gd.Int(0)))
+func (self Instance) GetColliderRid() Resource.ID {
+	return Resource.ID(class(self).GetColliderRid(gd.Int(0)))
 }
 
 /*
@@ -113,8 +116,8 @@ func (self Instance) GetCollisionLocalShape() int {
 /*
 Returns the length of overlap along the collision normal given a collision index (the deepest collision by default), if a collision occurred.
 */
-func (self Instance) GetCollisionDepth() float64 {
-	return float64(float64(class(self).GetCollisionDepth(gd.Int(0))))
+func (self Instance) GetCollisionDepth() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionDepth(gd.Int(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

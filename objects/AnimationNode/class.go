@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,19 +33,19 @@ var current_delta = $AnimationTree[parameters/AnimationNodeName/current_delta]
 	// AnimationNode methods that can be overridden by a [Class] that extends it.
 	type AnimationNode interface {
 		//When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
-		GetChildNodes() gd.Dictionary
+		GetChildNodes() Dictionary.Any
 		//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
-		GetParameterList() gd.Array
+		GetParameterList() Array.Any
 		//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 		GetChildByName(name string) objects.AnimationNode
 		//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-		GetParameterDefaultValue(parameter string) gd.Variant
+		GetParameterDefaultValue(parameter string) any
 		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 		IsParameterReadOnly(parameter string) bool
 		//When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute.
 		//Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
 		//This function should return the delta.
-		Process(time float64, seek bool, is_external_seeking bool, test_only bool) float64
+		Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X
 		//When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
 		GetCaption() string
 		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
@@ -53,7 +57,7 @@ type Instance [1]classdb.AnimationNode
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
 */
-func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -68,7 +72,7 @@ func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary) (c
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 */
-func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -100,13 +104,13 @@ func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) ob
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
-func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -132,14 +136,14 @@ When inheriting from [AnimationRootNode], implement this virtual method to run s
 Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
 This function should return the delta.
 */
-func (Instance) _process(impl func(ptr unsafe.Pointer, time float64, seek bool, is_external_seeking bool, test_only bool) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr unsafe.Pointer, time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
 		var seek = gd.UnsafeGet[bool](p_args, 1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, float64(time), seek, is_external_seeking, test_only)
+		ret := impl(self, Float.X(time), seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, gd.Float(ret))
 	}
 }
@@ -215,51 +219,51 @@ func (self Instance) FindInput(name string) int {
 /*
 Adds or removes a path for the filter.
 */
-func (self Instance) SetFilterPath(path string, enable bool) {
-	class(self).SetFilterPath(gd.NewString(path).NodePath(), enable)
+func (self Instance) SetFilterPath(path Path.String, enable bool) {
+	class(self).SetFilterPath(gd.NewString(string(path)).NodePath(), enable)
 }
 
 /*
 Returns whether the given path is filtered.
 */
-func (self Instance) IsPathFiltered(path string) bool {
-	return bool(class(self).IsPathFiltered(gd.NewString(path).NodePath()))
+func (self Instance) IsPathFiltered(path Path.String) bool {
+	return bool(class(self).IsPathFiltered(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Blend an animation by [param blend] amount (name must be valid in the linked [AnimationPlayer]). A [param time] and [param delta] may be passed, as well as whether [param seeked] happened.
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
-func (self Instance) BlendAnimation(animation string, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64) {
+func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) {
 	class(self).BlendAnimation(gd.NewStringName(animation), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
-func (self Instance) BlendNode(name string, node objects.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64) float64 {
-	return float64(float64(class(self).BlendNode(gd.NewStringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
+func (self Instance) BlendNode(name string, node objects.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X {
+	return Float.X(Float.X(class(self).BlendNode(gd.NewStringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
-func (self Instance) BlendInput(input_index int, time float64, seek bool, is_external_seeking bool, blend float64) float64 {
-	return float64(float64(class(self).BlendInput(gd.Int(input_index), gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
+func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X {
+	return Float.X(Float.X(class(self).BlendInput(gd.Int(input_index), gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
-func (self Instance) SetParameter(name string, value gd.Variant) {
-	class(self).SetParameter(gd.NewStringName(name), value)
+func (self Instance) SetParameter(name string, value any) {
+	class(self).SetParameter(gd.NewStringName(name), gd.NewVariant(value))
 }
 
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
-func (self Instance) GetParameter(name string) gd.Variant {
-	return gd.Variant(class(self).GetParameter(gd.NewStringName(name)))
+func (self Instance) GetParameter(name string) any {
+	return any(class(self).GetParameter(gd.NewStringName(name)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

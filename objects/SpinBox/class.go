@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Range"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -111,11 +112,11 @@ func (self Instance) SetSuffix(value string) {
 	class(self).SetSuffix(gd.NewString(value))
 }
 
-func (self Instance) CustomArrowStep() float64 {
-	return float64(float64(class(self).GetCustomArrowStep()))
+func (self Instance) CustomArrowStep() Float.X {
+	return Float.X(Float.X(class(self).GetCustomArrowStep()))
 }
 
-func (self Instance) SetCustomArrowStep(value float64) {
+func (self Instance) SetCustomArrowStep(value Float.X) {
 	class(self).SetCustomArrowStep(gd.Float(value))
 }
 

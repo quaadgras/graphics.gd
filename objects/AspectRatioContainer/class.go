@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,11 +35,11 @@ func New() Instance {
 	return Instance{classdb.AspectRatioContainer(object)}
 }
 
-func (self Instance) Ratio() float64 {
-	return float64(float64(class(self).GetRatio()))
+func (self Instance) Ratio() Float.X {
+	return Float.X(Float.X(class(self).GetRatio()))
 }
 
-func (self Instance) SetRatio(value float64) {
+func (self Instance) SetRatio(value Float.X) {
 	class(self).SetRatio(gd.Float(value))
 }
 

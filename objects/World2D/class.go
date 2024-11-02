@@ -31,16 +31,16 @@ func New() Instance {
 	return Instance{classdb.World2D(object)}
 }
 
-func (self Instance) Canvas() gd.RID {
-	return gd.RID(class(self).GetCanvas())
+func (self Instance) Canvas() Resource.ID {
+	return Resource.ID(class(self).GetCanvas())
 }
 
-func (self Instance) Space() gd.RID {
-	return gd.RID(class(self).GetSpace())
+func (self Instance) Space() Resource.ID {
+	return Resource.ID(class(self).GetSpace())
 }
 
-func (self Instance) NavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) NavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
 func (self Instance) DirectSpaceState() objects.PhysicsDirectSpaceState2D {

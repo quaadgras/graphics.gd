@@ -10,6 +10,12 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,14 +55,14 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 func (self Instance) AddImage(image objects.Texture2D) {
-	class(self).AddImage(image, gd.Int(0), gd.Int(0), gd.Color{1, 1, 1, 1}, 5, gd.NewRect2(0, 0, 0, 0), gd.NewVariant(([1]gd.Variant{}[0])), false, gd.NewString(""), false)
+	class(self).AddImage(image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), false, gd.NewString(""), false)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
-func (self Instance) UpdateImage(key gd.Variant, mask classdb.RichTextLabelImageUpdateMask, image objects.Texture2D) {
-	class(self).UpdateImage(key, mask, image, gd.Int(0), gd.Int(0), gd.Color{1, 1, 1, 1}, 5, gd.NewRect2(0, 0, 0, 0), false, gd.NewString(""), false)
+func (self Instance) UpdateImage(key any, mask classdb.RichTextLabelImageUpdateMask, image objects.Texture2D) {
+	class(self).UpdateImage(gd.NewVariant(key), mask, image, gd.Int(0), gd.Int(0), gd.Color(gd.Color{1, 1, 1, 1}), 5, gd.Rect2(gd.NewRect2(0, 0, 0, 0)), false, gd.NewString(""), false)
 }
 
 /*
@@ -135,8 +141,8 @@ func (self Instance) PushMono() {
 /*
 Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
-func (self Instance) PushColor(color gd.Color) {
-	class(self).PushColor(color)
+func (self Instance) PushColor(color Color.RGBA) {
+	class(self).PushColor(gd.Color(color))
 }
 
 /*
@@ -149,15 +155,15 @@ func (self Instance) PushOutlineSize(outline_size int) {
 /*
 Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text outline for its duration.
 */
-func (self Instance) PushOutlineColor(color gd.Color) {
-	class(self).PushOutlineColor(color)
+func (self Instance) PushOutlineColor(color Color.RGBA) {
+	class(self).PushOutlineColor(gd.Color(color))
 }
 
 /*
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 func (self Instance) PushParagraph(alignment HorizontalAlignment) {
-	class(self).PushParagraph(alignment, 0, gd.NewString(""), 0, 163, gd.NewPackedFloat32Slice(([1][]float32{}[0])))
+	class(self).PushParagraph(alignment, 0, gd.NewString(""), 0, 163, gd.NewPackedFloat32Slice([1][]float32{}[0]))
 }
 
 /*
@@ -179,8 +185,8 @@ Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=som
 If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
-func (self Instance) PushMeta(data gd.Variant) {
-	class(self).PushMeta(data, 1)
+func (self Instance) PushMeta(data any) {
+	class(self).PushMeta(gd.NewVariant(data), 1)
 }
 
 /*
@@ -222,7 +228,7 @@ func (self Instance) PushTable(columns int) {
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) PushDropcap(s string, font objects.Font, size int) {
-	class(self).PushDropcap(gd.NewString(s), font, gd.Int(size), gd.NewRect2(0, 0, 0, 0), gd.Color{1, 1, 1, 1}, gd.Int(0), gd.Color{0, 0, 0, 0})
+	class(self).PushDropcap(gd.NewString(s), font, gd.Int(size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}), gd.Int(0), gd.Color(gd.Color{0, 0, 0, 0}))
 }
 
 /*
@@ -237,29 +243,29 @@ func (self Instance) SetTableColumnExpand(column int, expand bool) {
 /*
 Sets color of a table cell. Separate colors for alternating rows can be specified.
 */
-func (self Instance) SetCellRowBackgroundColor(odd_row_bg gd.Color, even_row_bg gd.Color) {
-	class(self).SetCellRowBackgroundColor(odd_row_bg, even_row_bg)
+func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) {
+	class(self).SetCellRowBackgroundColor(gd.Color(odd_row_bg), gd.Color(even_row_bg))
 }
 
 /*
 Sets color of a table cell border.
 */
-func (self Instance) SetCellBorderColor(color gd.Color) {
-	class(self).SetCellBorderColor(color)
+func (self Instance) SetCellBorderColor(color Color.RGBA) {
+	class(self).SetCellBorderColor(gd.Color(color))
 }
 
 /*
 Sets minimum and maximum size overrides for a table cell.
 */
-func (self Instance) SetCellSizeOverride(min_size gd.Vector2, max_size gd.Vector2) {
-	class(self).SetCellSizeOverride(min_size, max_size)
+func (self Instance) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) {
+	class(self).SetCellSizeOverride(gd.Vector2(min_size), gd.Vector2(max_size))
 }
 
 /*
 Sets inner padding of a table cell.
 */
-func (self Instance) SetCellPadding(padding gd.Rect2) {
-	class(self).SetCellPadding(padding)
+func (self Instance) SetCellPadding(padding Rect2.PositionSize) {
+	class(self).SetCellPadding(gd.Rect2(padding))
 }
 
 /*
@@ -272,21 +278,21 @@ func (self Instance) PushCell() {
 /*
 Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
-func (self Instance) PushFgcolor(fgcolor gd.Color) {
-	class(self).PushFgcolor(fgcolor)
+func (self Instance) PushFgcolor(fgcolor Color.RGBA) {
+	class(self).PushFgcolor(gd.Color(fgcolor))
 }
 
 /*
 Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
-func (self Instance) PushBgcolor(bgcolor gd.Color) {
-	class(self).PushBgcolor(bgcolor)
+func (self Instance) PushBgcolor(bgcolor Color.RGBA) {
+	class(self).PushBgcolor(gd.Color(bgcolor))
 }
 
 /*
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
-func (self Instance) PushCustomfx(effect objects.RichTextEffect, env gd.Dictionary) {
+func (self Instance) PushCustomfx(effect objects.RichTextEffect, env Dictionary.Any) {
 	class(self).PushCustomfx(effect, env)
 }
 
@@ -487,23 +493,23 @@ func (self Instance) GetContentWidth() int {
 Returns the vertical offset of the line found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
-func (self Instance) GetLineOffset(line int) float64 {
-	return float64(float64(class(self).GetLineOffset(gd.Int(line))))
+func (self Instance) GetLineOffset(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineOffset(gd.Int(line))))
 }
 
 /*
 Returns the vertical offset of the paragraph found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_ready] or [signal finished] to determine whether document is fully loaded.
 */
-func (self Instance) GetParagraphOffset(paragraph int) float64 {
-	return float64(float64(class(self).GetParagraphOffset(gd.Int(paragraph))))
+func (self Instance) GetParagraphOffset(paragraph int) Float.X {
+	return Float.X(Float.X(class(self).GetParagraphOffset(gd.Int(paragraph))))
 }
 
 /*
 Parses BBCode parameter [param expressions] into a dictionary.
 */
-func (self Instance) ParseExpressionsForValues(expressions []string) gd.Dictionary {
-	return gd.Dictionary(class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions)))
+func (self Instance) ParseExpressionsForValues(expressions []string) Dictionary.Any {
+	return Dictionary.Any(class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions)))
 }
 
 /*
@@ -532,8 +538,8 @@ func _ready():
 
 [/codeblock]
 */
-func (self Instance) InstallEffect(effect gd.Variant) {
-	class(self).InstallEffect(effect)
+func (self Instance) InstallEffect(effect any) {
+	class(self).InstallEffect(gd.NewVariant(effect))
 }
 
 /*
@@ -686,11 +692,11 @@ func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
-func (self Instance) CustomEffects() gd.Array {
-	return gd.Array(class(self).GetEffects())
+func (self Instance) CustomEffects() Array.Any {
+	return Array.Any(class(self).GetEffects())
 }
 
-func (self Instance) SetCustomEffects(value gd.Array) {
+func (self Instance) SetCustomEffects(value Array.Any) {
 	class(self).SetEffects(value)
 }
 
@@ -766,11 +772,11 @@ func (self Instance) SetVisibleCharactersBehavior(value classdb.TextServerVisibl
 	class(self).SetVisibleCharactersBehavior(value)
 }
 
-func (self Instance) VisibleRatio() float64 {
-	return float64(float64(class(self).GetVisibleRatio()))
+func (self Instance) VisibleRatio() Float.X {
+	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
-func (self Instance) SetVisibleRatio(value float64) {
+func (self Instance) SetVisibleRatio(value Float.X) {
 	class(self).SetVisibleRatio(gd.Float(value))
 }
 
@@ -798,11 +804,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 
@@ -2230,15 +2236,15 @@ func (self class) MenuOption(option gd.Int) {
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self Instance) OnMetaClicked(cb func(meta gd.Variant)) {
+func (self Instance) OnMetaClicked(cb func(meta any)) {
 	self[0].AsObject().Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnMetaHoverStarted(cb func(meta gd.Variant)) {
+func (self Instance) OnMetaHoverStarted(cb func(meta any)) {
 	self[0].AsObject().Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnMetaHoverEnded(cb func(meta gd.Variant)) {
+func (self Instance) OnMetaHoverEnded(cb func(meta any)) {
 	self[0].AsObject().Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), 0)
 }
 

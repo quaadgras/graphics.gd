@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,19 +43,19 @@ func (self Instance) SetTransparency(value classdb.BaseMaterial3DTransparency) {
 	class(self).SetTransparency(value)
 }
 
-func (self Instance) AlphaScissorThreshold() float64 {
-	return float64(float64(class(self).GetAlphaScissorThreshold()))
+func (self Instance) AlphaScissorThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
-func (self Instance) SetAlphaScissorThreshold(value float64) {
+func (self Instance) SetAlphaScissorThreshold(value Float.X) {
 	class(self).SetAlphaScissorThreshold(gd.Float(value))
 }
 
-func (self Instance) AlphaHashScale() float64 {
-	return float64(float64(class(self).GetAlphaHashScale()))
+func (self Instance) AlphaHashScale() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
-func (self Instance) SetAlphaHashScale(value float64) {
+func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(gd.Float(value))
 }
 
@@ -64,11 +67,11 @@ func (self Instance) SetAlphaAntialiasingMode(value classdb.BaseMaterial3DAlphaA
 	class(self).SetAlphaAntialiasing(value)
 }
 
-func (self Instance) AlphaAntialiasingEdge() float64 {
-	return float64(float64(class(self).GetAlphaAntialiasingEdge()))
+func (self Instance) AlphaAntialiasingEdge() Float.X {
+	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
-func (self Instance) SetAlphaAntialiasingEdge(value float64) {
+func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(gd.Float(value))
 }
 
@@ -160,12 +163,12 @@ func (self Instance) SetVertexColorIsSrgb(value bool) {
 	class(self).SetFlag(2, value)
 }
 
-func (self Instance) AlbedoColor() gd.Color {
-	return gd.Color(class(self).GetAlbedo())
+func (self Instance) AlbedoColor() Color.RGBA {
+	return Color.RGBA(class(self).GetAlbedo())
 }
 
-func (self Instance) SetAlbedoColor(value gd.Color) {
-	class(self).SetAlbedo(value)
+func (self Instance) SetAlbedoColor(value Color.RGBA) {
+	class(self).SetAlbedo(gd.Color(value))
 }
 
 func (self Instance) AlbedoTexture() objects.Texture2D {
@@ -200,19 +203,19 @@ func (self Instance) SetOrmTexture(value objects.Texture2D) {
 	class(self).SetTexture(17, value)
 }
 
-func (self Instance) Metallic() float64 {
-	return float64(float64(class(self).GetMetallic()))
+func (self Instance) Metallic() Float.X {
+	return Float.X(Float.X(class(self).GetMetallic()))
 }
 
-func (self Instance) SetMetallic(value float64) {
+func (self Instance) SetMetallic(value Float.X) {
 	class(self).SetMetallic(gd.Float(value))
 }
 
-func (self Instance) MetallicSpecular() float64 {
-	return float64(float64(class(self).GetSpecular()))
+func (self Instance) MetallicSpecular() Float.X {
+	return Float.X(Float.X(class(self).GetSpecular()))
 }
 
-func (self Instance) SetMetallicSpecular(value float64) {
+func (self Instance) SetMetallicSpecular(value Float.X) {
 	class(self).SetSpecular(gd.Float(value))
 }
 
@@ -232,11 +235,11 @@ func (self Instance) SetMetallicTextureChannel(value classdb.BaseMaterial3DTextu
 	class(self).SetMetallicTextureChannel(value)
 }
 
-func (self Instance) Roughness() float64 {
-	return float64(float64(class(self).GetRoughness()))
+func (self Instance) Roughness() Float.X {
+	return Float.X(Float.X(class(self).GetRoughness()))
 }
 
-func (self Instance) SetRoughness(value float64) {
+func (self Instance) SetRoughness(value Float.X) {
 	class(self).SetRoughness(gd.Float(value))
 }
 
@@ -264,27 +267,27 @@ func (self Instance) SetEmissionEnabled(value bool) {
 	class(self).SetFeature(0, value)
 }
 
-func (self Instance) Emission() gd.Color {
-	return gd.Color(class(self).GetEmission())
+func (self Instance) Emission() Color.RGBA {
+	return Color.RGBA(class(self).GetEmission())
 }
 
-func (self Instance) SetEmission(value gd.Color) {
-	class(self).SetEmission(value)
+func (self Instance) SetEmission(value Color.RGBA) {
+	class(self).SetEmission(gd.Color(value))
 }
 
-func (self Instance) EmissionEnergyMultiplier() float64 {
-	return float64(float64(class(self).GetEmissionEnergyMultiplier()))
+func (self Instance) EmissionEnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionEnergyMultiplier()))
 }
 
-func (self Instance) SetEmissionEnergyMultiplier(value float64) {
+func (self Instance) SetEmissionEnergyMultiplier(value Float.X) {
 	class(self).SetEmissionEnergyMultiplier(gd.Float(value))
 }
 
-func (self Instance) EmissionIntensity() float64 {
-	return float64(float64(class(self).GetEmissionIntensity()))
+func (self Instance) EmissionIntensity() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionIntensity()))
 }
 
-func (self Instance) SetEmissionIntensity(value float64) {
+func (self Instance) SetEmissionIntensity(value Float.X) {
 	class(self).SetEmissionIntensity(gd.Float(value))
 }
 
@@ -320,11 +323,11 @@ func (self Instance) SetNormalEnabled(value bool) {
 	class(self).SetFeature(1, value)
 }
 
-func (self Instance) NormalScale() float64 {
-	return float64(float64(class(self).GetNormalScale()))
+func (self Instance) NormalScale() Float.X {
+	return Float.X(Float.X(class(self).GetNormalScale()))
 }
 
-func (self Instance) SetNormalScale(value float64) {
+func (self Instance) SetNormalScale(value Float.X) {
 	class(self).SetNormalScale(gd.Float(value))
 }
 
@@ -344,19 +347,19 @@ func (self Instance) SetRimEnabled(value bool) {
 	class(self).SetFeature(2, value)
 }
 
-func (self Instance) Rim() float64 {
-	return float64(float64(class(self).GetRim()))
+func (self Instance) Rim() Float.X {
+	return Float.X(Float.X(class(self).GetRim()))
 }
 
-func (self Instance) SetRim(value float64) {
+func (self Instance) SetRim(value Float.X) {
 	class(self).SetRim(gd.Float(value))
 }
 
-func (self Instance) RimTint() float64 {
-	return float64(float64(class(self).GetRimTint()))
+func (self Instance) RimTint() Float.X {
+	return Float.X(Float.X(class(self).GetRimTint()))
 }
 
-func (self Instance) SetRimTint(value float64) {
+func (self Instance) SetRimTint(value Float.X) {
 	class(self).SetRimTint(gd.Float(value))
 }
 
@@ -376,19 +379,19 @@ func (self Instance) SetClearcoatEnabled(value bool) {
 	class(self).SetFeature(3, value)
 }
 
-func (self Instance) Clearcoat() float64 {
-	return float64(float64(class(self).GetClearcoat()))
+func (self Instance) Clearcoat() Float.X {
+	return Float.X(Float.X(class(self).GetClearcoat()))
 }
 
-func (self Instance) SetClearcoat(value float64) {
+func (self Instance) SetClearcoat(value Float.X) {
 	class(self).SetClearcoat(gd.Float(value))
 }
 
-func (self Instance) ClearcoatRoughness() float64 {
-	return float64(float64(class(self).GetClearcoatRoughness()))
+func (self Instance) ClearcoatRoughness() Float.X {
+	return Float.X(Float.X(class(self).GetClearcoatRoughness()))
 }
 
-func (self Instance) SetClearcoatRoughness(value float64) {
+func (self Instance) SetClearcoatRoughness(value Float.X) {
 	class(self).SetClearcoatRoughness(gd.Float(value))
 }
 
@@ -408,11 +411,11 @@ func (self Instance) SetAnisotropyEnabled(value bool) {
 	class(self).SetFeature(4, value)
 }
 
-func (self Instance) Anisotropy() float64 {
-	return float64(float64(class(self).GetAnisotropy()))
+func (self Instance) Anisotropy() Float.X {
+	return Float.X(Float.X(class(self).GetAnisotropy()))
 }
 
-func (self Instance) SetAnisotropy(value float64) {
+func (self Instance) SetAnisotropy(value Float.X) {
 	class(self).SetAnisotropy(gd.Float(value))
 }
 
@@ -432,11 +435,11 @@ func (self Instance) SetAoEnabled(value bool) {
 	class(self).SetFeature(5, value)
 }
 
-func (self Instance) AoLightAffect() float64 {
-	return float64(float64(class(self).GetAoLightAffect()))
+func (self Instance) AoLightAffect() Float.X {
+	return Float.X(Float.X(class(self).GetAoLightAffect()))
 }
 
-func (self Instance) SetAoLightAffect(value float64) {
+func (self Instance) SetAoLightAffect(value Float.X) {
 	class(self).SetAoLightAffect(gd.Float(value))
 }
 
@@ -472,11 +475,11 @@ func (self Instance) SetHeightmapEnabled(value bool) {
 	class(self).SetFeature(6, value)
 }
 
-func (self Instance) HeightmapScale() float64 {
-	return float64(float64(class(self).GetHeightmapScale()))
+func (self Instance) HeightmapScale() Float.X {
+	return Float.X(Float.X(class(self).GetHeightmapScale()))
 }
 
-func (self Instance) SetHeightmapScale(value float64) {
+func (self Instance) SetHeightmapScale(value Float.X) {
 	class(self).SetHeightmapScale(gd.Float(value))
 }
 
@@ -544,11 +547,11 @@ func (self Instance) SetSubsurfScatterEnabled(value bool) {
 	class(self).SetFeature(7, value)
 }
 
-func (self Instance) SubsurfScatterStrength() float64 {
-	return float64(float64(class(self).GetSubsurfaceScatteringStrength()))
+func (self Instance) SubsurfScatterStrength() Float.X {
+	return Float.X(Float.X(class(self).GetSubsurfaceScatteringStrength()))
 }
 
-func (self Instance) SetSubsurfScatterStrength(value float64) {
+func (self Instance) SetSubsurfScatterStrength(value Float.X) {
 	class(self).SetSubsurfaceScatteringStrength(gd.Float(value))
 }
 
@@ -576,12 +579,12 @@ func (self Instance) SetSubsurfScatterTransmittanceEnabled(value bool) {
 	class(self).SetFeature(8, value)
 }
 
-func (self Instance) SubsurfScatterTransmittanceColor() gd.Color {
-	return gd.Color(class(self).GetTransmittanceColor())
+func (self Instance) SubsurfScatterTransmittanceColor() Color.RGBA {
+	return Color.RGBA(class(self).GetTransmittanceColor())
 }
 
-func (self Instance) SetSubsurfScatterTransmittanceColor(value gd.Color) {
-	class(self).SetTransmittanceColor(value)
+func (self Instance) SetSubsurfScatterTransmittanceColor(value Color.RGBA) {
+	class(self).SetTransmittanceColor(gd.Color(value))
 }
 
 func (self Instance) SubsurfScatterTransmittanceTexture() objects.Texture2D {
@@ -592,19 +595,19 @@ func (self Instance) SetSubsurfScatterTransmittanceTexture(value objects.Texture
 	class(self).SetTexture(11, value)
 }
 
-func (self Instance) SubsurfScatterTransmittanceDepth() float64 {
-	return float64(float64(class(self).GetTransmittanceDepth()))
+func (self Instance) SubsurfScatterTransmittanceDepth() Float.X {
+	return Float.X(Float.X(class(self).GetTransmittanceDepth()))
 }
 
-func (self Instance) SetSubsurfScatterTransmittanceDepth(value float64) {
+func (self Instance) SetSubsurfScatterTransmittanceDepth(value Float.X) {
 	class(self).SetTransmittanceDepth(gd.Float(value))
 }
 
-func (self Instance) SubsurfScatterTransmittanceBoost() float64 {
-	return float64(float64(class(self).GetTransmittanceBoost()))
+func (self Instance) SubsurfScatterTransmittanceBoost() Float.X {
+	return Float.X(Float.X(class(self).GetTransmittanceBoost()))
 }
 
-func (self Instance) SetSubsurfScatterTransmittanceBoost(value float64) {
+func (self Instance) SetSubsurfScatterTransmittanceBoost(value Float.X) {
 	class(self).SetTransmittanceBoost(gd.Float(value))
 }
 
@@ -616,12 +619,12 @@ func (self Instance) SetBacklightEnabled(value bool) {
 	class(self).SetFeature(9, value)
 }
 
-func (self Instance) Backlight() gd.Color {
-	return gd.Color(class(self).GetBacklight())
+func (self Instance) Backlight() Color.RGBA {
+	return Color.RGBA(class(self).GetBacklight())
 }
 
-func (self Instance) SetBacklight(value gd.Color) {
-	class(self).SetBacklight(value)
+func (self Instance) SetBacklight(value Color.RGBA) {
+	class(self).SetBacklight(gd.Color(value))
 }
 
 func (self Instance) BacklightTexture() objects.Texture2D {
@@ -640,11 +643,11 @@ func (self Instance) SetRefractionEnabled(value bool) {
 	class(self).SetFeature(10, value)
 }
 
-func (self Instance) RefractionScale() float64 {
-	return float64(float64(class(self).GetRefraction()))
+func (self Instance) RefractionScale() Float.X {
+	return Float.X(Float.X(class(self).GetRefraction()))
 }
 
-func (self Instance) SetRefractionScale(value float64) {
+func (self Instance) SetRefractionScale(value Float.X) {
 	class(self).SetRefraction(gd.Float(value))
 }
 
@@ -712,20 +715,20 @@ func (self Instance) SetDetailNormal(value objects.Texture2D) {
 	class(self).SetTexture(16, value)
 }
 
-func (self Instance) Uv1Scale() gd.Vector3 {
-	return gd.Vector3(class(self).GetUv1Scale())
+func (self Instance) Uv1Scale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetUv1Scale())
 }
 
-func (self Instance) SetUv1Scale(value gd.Vector3) {
-	class(self).SetUv1Scale(value)
+func (self Instance) SetUv1Scale(value Vector3.XYZ) {
+	class(self).SetUv1Scale(gd.Vector3(value))
 }
 
-func (self Instance) Uv1Offset() gd.Vector3 {
-	return gd.Vector3(class(self).GetUv1Offset())
+func (self Instance) Uv1Offset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetUv1Offset())
 }
 
-func (self Instance) SetUv1Offset(value gd.Vector3) {
-	class(self).SetUv1Offset(value)
+func (self Instance) SetUv1Offset(value Vector3.XYZ) {
+	class(self).SetUv1Offset(gd.Vector3(value))
 }
 
 func (self Instance) Uv1Triplanar() bool {
@@ -736,11 +739,11 @@ func (self Instance) SetUv1Triplanar(value bool) {
 	class(self).SetFlag(6, value)
 }
 
-func (self Instance) Uv1TriplanarSharpness() float64 {
-	return float64(float64(class(self).GetUv1TriplanarBlendSharpness()))
+func (self Instance) Uv1TriplanarSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetUv1TriplanarBlendSharpness()))
 }
 
-func (self Instance) SetUv1TriplanarSharpness(value float64) {
+func (self Instance) SetUv1TriplanarSharpness(value Float.X) {
 	class(self).SetUv1TriplanarBlendSharpness(gd.Float(value))
 }
 
@@ -752,20 +755,20 @@ func (self Instance) SetUv1WorldTriplanar(value bool) {
 	class(self).SetFlag(8, value)
 }
 
-func (self Instance) Uv2Scale() gd.Vector3 {
-	return gd.Vector3(class(self).GetUv2Scale())
+func (self Instance) Uv2Scale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetUv2Scale())
 }
 
-func (self Instance) SetUv2Scale(value gd.Vector3) {
-	class(self).SetUv2Scale(value)
+func (self Instance) SetUv2Scale(value Vector3.XYZ) {
+	class(self).SetUv2Scale(gd.Vector3(value))
 }
 
-func (self Instance) Uv2Offset() gd.Vector3 {
-	return gd.Vector3(class(self).GetUv2Offset())
+func (self Instance) Uv2Offset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetUv2Offset())
 }
 
-func (self Instance) SetUv2Offset(value gd.Vector3) {
-	class(self).SetUv2Offset(value)
+func (self Instance) SetUv2Offset(value Vector3.XYZ) {
+	class(self).SetUv2Offset(gd.Vector3(value))
 }
 
 func (self Instance) Uv2Triplanar() bool {
@@ -776,11 +779,11 @@ func (self Instance) SetUv2Triplanar(value bool) {
 	class(self).SetFlag(7, value)
 }
 
-func (self Instance) Uv2TriplanarSharpness() float64 {
-	return float64(float64(class(self).GetUv2TriplanarBlendSharpness()))
+func (self Instance) Uv2TriplanarSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetUv2TriplanarBlendSharpness()))
 }
 
-func (self Instance) SetUv2TriplanarSharpness(value float64) {
+func (self Instance) SetUv2TriplanarSharpness(value Float.X) {
 	class(self).SetUv2TriplanarBlendSharpness(gd.Float(value))
 }
 
@@ -872,11 +875,11 @@ func (self Instance) SetGrow(value bool) {
 	class(self).SetGrowEnabled(value)
 }
 
-func (self Instance) GrowAmount() float64 {
-	return float64(float64(class(self).GetGrow()))
+func (self Instance) GrowAmount() Float.X {
+	return Float.X(Float.X(class(self).GetGrow()))
 }
 
-func (self Instance) SetGrowAmount(value float64) {
+func (self Instance) SetGrowAmount(value Float.X) {
 	class(self).SetGrow(gd.Float(value))
 }
 
@@ -896,11 +899,11 @@ func (self Instance) SetUsePointSize(value bool) {
 	class(self).SetFlag(3, value)
 }
 
-func (self Instance) PointSize() float64 {
-	return float64(float64(class(self).GetPointSize()))
+func (self Instance) PointSize() Float.X {
+	return Float.X(Float.X(class(self).GetPointSize()))
 }
 
-func (self Instance) SetPointSize(value float64) {
+func (self Instance) SetPointSize(value Float.X) {
 	class(self).SetPointSize(gd.Float(value))
 }
 
@@ -920,27 +923,27 @@ func (self Instance) SetProximityFadeEnabled(value bool) {
 	class(self).SetProximityFadeEnabled(value)
 }
 
-func (self Instance) ProximityFadeDistance() float64 {
-	return float64(float64(class(self).GetProximityFadeDistance()))
+func (self Instance) ProximityFadeDistance() Float.X {
+	return Float.X(Float.X(class(self).GetProximityFadeDistance()))
 }
 
-func (self Instance) SetProximityFadeDistance(value float64) {
+func (self Instance) SetProximityFadeDistance(value Float.X) {
 	class(self).SetProximityFadeDistance(gd.Float(value))
 }
 
-func (self Instance) MsdfPixelRange() float64 {
-	return float64(float64(class(self).GetMsdfPixelRange()))
+func (self Instance) MsdfPixelRange() Float.X {
+	return Float.X(Float.X(class(self).GetMsdfPixelRange()))
 }
 
-func (self Instance) SetMsdfPixelRange(value float64) {
+func (self Instance) SetMsdfPixelRange(value Float.X) {
 	class(self).SetMsdfPixelRange(gd.Float(value))
 }
 
-func (self Instance) MsdfOutlineSize() float64 {
-	return float64(float64(class(self).GetMsdfOutlineSize()))
+func (self Instance) MsdfOutlineSize() Float.X {
+	return Float.X(Float.X(class(self).GetMsdfOutlineSize()))
 }
 
-func (self Instance) SetMsdfOutlineSize(value float64) {
+func (self Instance) SetMsdfOutlineSize(value Float.X) {
 	class(self).SetMsdfOutlineSize(gd.Float(value))
 }
 
@@ -952,19 +955,19 @@ func (self Instance) SetDistanceFadeMode(value classdb.BaseMaterial3DDistanceFad
 	class(self).SetDistanceFade(value)
 }
 
-func (self Instance) DistanceFadeMinDistance() float64 {
-	return float64(float64(class(self).GetDistanceFadeMinDistance()))
+func (self Instance) DistanceFadeMinDistance() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeMinDistance()))
 }
 
-func (self Instance) SetDistanceFadeMinDistance(value float64) {
+func (self Instance) SetDistanceFadeMinDistance(value Float.X) {
 	class(self).SetDistanceFadeMinDistance(gd.Float(value))
 }
 
-func (self Instance) DistanceFadeMaxDistance() float64 {
-	return float64(float64(class(self).GetDistanceFadeMaxDistance()))
+func (self Instance) DistanceFadeMaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeMaxDistance()))
 }
 
-func (self Instance) SetDistanceFadeMaxDistance(value float64) {
+func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
 	class(self).SetDistanceFadeMaxDistance(gd.Float(value))
 }
 

@@ -21,6 +21,8 @@ type Chan[T any] struct {
 	proxy *gd.Signal
 }
 
+type Any = gd.Signal
+
 const ErrInvalidParameter = errors.ErrInvalidParameter
 
 // Attach connects this signal to the specified [Callable.Func]

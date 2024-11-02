@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,12 +33,12 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeResizableBase(object)}
 }
 
-func (self Instance) Size() gd.Vector2 {
-	return gd.Vector2(class(self).GetSize())
+func (self Instance) Size() Vector2.XY {
+	return Vector2.XY(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector2) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector2.XY) {
+	class(self).SetSize(gd.Vector2(value))
 }
 
 //go:nosplit

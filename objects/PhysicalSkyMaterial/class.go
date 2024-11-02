@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,75 +35,75 @@ func New() Instance {
 	return Instance{classdb.PhysicalSkyMaterial(object)}
 }
 
-func (self Instance) RayleighCoefficient() float64 {
-	return float64(float64(class(self).GetRayleighCoefficient()))
+func (self Instance) RayleighCoefficient() Float.X {
+	return Float.X(Float.X(class(self).GetRayleighCoefficient()))
 }
 
-func (self Instance) SetRayleighCoefficient(value float64) {
+func (self Instance) SetRayleighCoefficient(value Float.X) {
 	class(self).SetRayleighCoefficient(gd.Float(value))
 }
 
-func (self Instance) RayleighColor() gd.Color {
-	return gd.Color(class(self).GetRayleighColor())
+func (self Instance) RayleighColor() Color.RGBA {
+	return Color.RGBA(class(self).GetRayleighColor())
 }
 
-func (self Instance) SetRayleighColor(value gd.Color) {
-	class(self).SetRayleighColor(value)
+func (self Instance) SetRayleighColor(value Color.RGBA) {
+	class(self).SetRayleighColor(gd.Color(value))
 }
 
-func (self Instance) MieCoefficient() float64 {
-	return float64(float64(class(self).GetMieCoefficient()))
+func (self Instance) MieCoefficient() Float.X {
+	return Float.X(Float.X(class(self).GetMieCoefficient()))
 }
 
-func (self Instance) SetMieCoefficient(value float64) {
+func (self Instance) SetMieCoefficient(value Float.X) {
 	class(self).SetMieCoefficient(gd.Float(value))
 }
 
-func (self Instance) MieEccentricity() float64 {
-	return float64(float64(class(self).GetMieEccentricity()))
+func (self Instance) MieEccentricity() Float.X {
+	return Float.X(Float.X(class(self).GetMieEccentricity()))
 }
 
-func (self Instance) SetMieEccentricity(value float64) {
+func (self Instance) SetMieEccentricity(value Float.X) {
 	class(self).SetMieEccentricity(gd.Float(value))
 }
 
-func (self Instance) MieColor() gd.Color {
-	return gd.Color(class(self).GetMieColor())
+func (self Instance) MieColor() Color.RGBA {
+	return Color.RGBA(class(self).GetMieColor())
 }
 
-func (self Instance) SetMieColor(value gd.Color) {
-	class(self).SetMieColor(value)
+func (self Instance) SetMieColor(value Color.RGBA) {
+	class(self).SetMieColor(gd.Color(value))
 }
 
-func (self Instance) Turbidity() float64 {
-	return float64(float64(class(self).GetTurbidity()))
+func (self Instance) Turbidity() Float.X {
+	return Float.X(Float.X(class(self).GetTurbidity()))
 }
 
-func (self Instance) SetTurbidity(value float64) {
+func (self Instance) SetTurbidity(value Float.X) {
 	class(self).SetTurbidity(gd.Float(value))
 }
 
-func (self Instance) SunDiskScale() float64 {
-	return float64(float64(class(self).GetSunDiskScale()))
+func (self Instance) SunDiskScale() Float.X {
+	return Float.X(Float.X(class(self).GetSunDiskScale()))
 }
 
-func (self Instance) SetSunDiskScale(value float64) {
+func (self Instance) SetSunDiskScale(value Float.X) {
 	class(self).SetSunDiskScale(gd.Float(value))
 }
 
-func (self Instance) GroundColor() gd.Color {
-	return gd.Color(class(self).GetGroundColor())
+func (self Instance) GroundColor() Color.RGBA {
+	return Color.RGBA(class(self).GetGroundColor())
 }
 
-func (self Instance) SetGroundColor(value gd.Color) {
-	class(self).SetGroundColor(value)
+func (self Instance) SetGroundColor(value Color.RGBA) {
+	class(self).SetGroundColor(gd.Color(value))
 }
 
-func (self Instance) EnergyMultiplier() float64 {
-	return float64(float64(class(self).GetEnergyMultiplier()))
+func (self Instance) EnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-func (self Instance) SetEnergyMultiplier(value float64) {
+func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(gd.Float(value))
 }
 

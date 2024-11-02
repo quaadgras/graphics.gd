@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -298,15 +301,15 @@ func (self Instance) GetTerrainName(terrain_set int, terrain_index int) string {
 /*
 Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
 */
-func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color gd.Color) {
-	class(self).SetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index), color)
+func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color Color.RGBA) {
+	class(self).SetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index), gd.Color(color))
 }
 
 /*
 Returns a terrain's color.
 */
-func (self Instance) GetTerrainColor(terrain_set int, terrain_index int) gd.Color {
-	return gd.Color(class(self).GetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index)))
+func (self Instance) GetTerrainColor(terrain_set int, terrain_index int) Color.RGBA {
+	return Color.RGBA(class(self).GetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index)))
 }
 
 /*
@@ -466,30 +469,30 @@ Creates a coordinates-level proxy for the given identifiers. A proxy will map se
 This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
-func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from gd.Vector2i, source_to int, coords_to gd.Vector2i) {
-	class(self).SetCoordsLevelTileProxy(gd.Int(p_source_from), coords_from, gd.Int(source_to), coords_to)
+func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) {
+	class(self).SetCoordsLevelTileProxy(gd.Int(p_source_from), gd.Vector2i(coords_from), gd.Int(source_to), gd.Vector2i(coords_to))
 }
 
 /*
 Returns the coordinate-level proxy for the given identifiers. The returned array contains the two target identifiers of the proxy (source ID and atlas coordinates ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from gd.Vector2i) gd.Array {
-	return gd.Array(class(self).GetCoordsLevelTileProxy(gd.Int(source_from), coords_from))
+func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) Array.Any {
+	return Array.Any(class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))
 }
 
 /*
 Returns if there is a coodinates-level proxy for the given identifiers.
 */
-func (self Instance) HasCoordsLevelTileProxy(source_from int, coords_from gd.Vector2i) bool {
-	return bool(class(self).HasCoordsLevelTileProxy(gd.Int(source_from), coords_from))
+func (self Instance) HasCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) bool {
+	return bool(class(self).HasCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))
 }
 
 /*
 Removes a coordinates-level proxy for the given identifiers.
 */
-func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from gd.Vector2i) {
-	class(self).RemoveCoordsLevelTileProxy(gd.Int(source_from), coords_from)
+func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) {
+	class(self).RemoveCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from))
 }
 
 /*
@@ -497,30 +500,30 @@ Create an alternative-level proxy for the given identifiers. A proxy will map se
 This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
-func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from gd.Vector2i, alternative_from int, source_to int, coords_to gd.Vector2i, alternative_to int) {
-	class(self).SetAlternativeLevelTileProxy(gd.Int(source_from), coords_from, gd.Int(alternative_from), gd.Int(source_to), coords_to, gd.Int(alternative_to))
+func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) {
+	class(self).SetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from), gd.Int(source_to), gd.Vector2i(coords_to), gd.Int(alternative_to))
 }
 
 /*
 Returns the alternative-level proxy for the given identifiers. The returned array contains the three proxie's target identifiers (source ID, atlas coords ID and alternative tile ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from gd.Vector2i, alternative_from int) gd.Array {
-	return gd.Array(class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), coords_from, gd.Int(alternative_from)))
+func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) Array.Any {
+	return Array.Any(class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
 }
 
 /*
 Returns if there is an alternative-level proxy for the given identifiers.
 */
-func (self Instance) HasAlternativeLevelTileProxy(source_from int, coords_from gd.Vector2i, alternative_from int) bool {
-	return bool(class(self).HasAlternativeLevelTileProxy(gd.Int(source_from), coords_from, gd.Int(alternative_from)))
+func (self Instance) HasAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) bool {
+	return bool(class(self).HasAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
 }
 
 /*
 Removes an alternative-level proxy for the given identifiers.
 */
-func (self Instance) RemoveAlternativeLevelTileProxy(source_from int, coords_from gd.Vector2i, alternative_from int) {
-	class(self).RemoveAlternativeLevelTileProxy(gd.Int(source_from), coords_from, gd.Int(alternative_from))
+func (self Instance) RemoveAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) {
+	class(self).RemoveAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))
 }
 
 /*
@@ -528,8 +531,8 @@ According to the configured proxies, maps the provided identifiers to a new set 
 This function first look for matching alternative-level proxies, then coordinates-level proxies, then source-level proxies.
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
-func (self Instance) MapTileProxy(source_from int, coords_from gd.Vector2i, alternative_from int) gd.Array {
-	return gd.Array(class(self).MapTileProxy(gd.Int(source_from), coords_from, gd.Int(alternative_from)))
+func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) Array.Any {
+	return Array.Any(class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
 }
 
 /*
@@ -609,12 +612,12 @@ func (self Instance) SetTileOffsetAxis(value classdb.TileSetTileOffsetAxis) {
 	class(self).SetTileOffsetAxis(value)
 }
 
-func (self Instance) TileSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetTileSize())
+func (self Instance) TileSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetTileSize())
 }
 
-func (self Instance) SetTileSize(value gd.Vector2i) {
-	class(self).SetTileSize(value)
+func (self Instance) SetTileSize(value Vector2i.XY) {
+	class(self).SetTileSize(gd.Vector2i(value))
 }
 
 func (self Instance) UvClipping() bool {

@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -56,8 +58,8 @@ Waits for events on this connection and shuttles packets between the host and it
 Call this function regularly to handle connections, disconnections, and to receive new packets.
 [b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
 */
-func (self Instance) Service() gd.Array {
-	return gd.Array(class(self).Service(gd.Int(0)))
+func (self Instance) Service() Array.Any {
+	return Array.Any(class(self).Service(gd.Int(0)))
 }
 
 /*
@@ -108,7 +110,7 @@ func (self Instance) DtlsServerSetup(server_options objects.TLSOptions) error {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) DtlsClientSetup(hostname string) error {
-	return error(class(self).DtlsClientSetup(gd.NewString(hostname), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).DtlsClientSetup(gd.NewString(hostname), [1]objects.TLSOptions{}[0]))
 }
 
 /*
@@ -122,8 +124,8 @@ func (self Instance) RefuseNewConnections(refuse bool) {
 /*
 Returns and resets host statistics. See [enum HostStatistic] for more info.
 */
-func (self Instance) PopStatistic(statistic classdb.ENetConnectionHostStatistic) float64 {
-	return float64(float64(class(self).PopStatistic(statistic)))
+func (self Instance) PopStatistic(statistic classdb.ENetConnectionHostStatistic) Float.X {
+	return Float.X(Float.X(class(self).PopStatistic(statistic)))
 }
 
 /*

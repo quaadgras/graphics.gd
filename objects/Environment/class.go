@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,15 +30,15 @@ type Instance [1]classdb.Environment
 /*
 Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code] enables the level. Each level relies on the previous level. This means that enabling higher glow levels will slow down the glow effect rendering, even if previous levels aren't enabled.
 */
-func (self Instance) SetGlowLevel(idx int, intensity float64) {
+func (self Instance) SetGlowLevel(idx int, intensity Float.X) {
 	class(self).SetGlowLevel(gd.Int(idx), gd.Float(intensity))
 }
 
 /*
 Returns the intensity of the glow level [param idx].
 */
-func (self Instance) GetGlowLevel(idx int) float64 {
-	return float64(float64(class(self).GetGlowLevel(gd.Int(idx))))
+func (self Instance) GetGlowLevel(idx int) Float.X {
+	return Float.X(Float.X(class(self).GetGlowLevel(gd.Int(idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -57,27 +60,27 @@ func (self Instance) SetBackgroundMode(value classdb.EnvironmentBGMode) {
 	class(self).SetBackground(value)
 }
 
-func (self Instance) BackgroundColor() gd.Color {
-	return gd.Color(class(self).GetBgColor())
+func (self Instance) BackgroundColor() Color.RGBA {
+	return Color.RGBA(class(self).GetBgColor())
 }
 
-func (self Instance) SetBackgroundColor(value gd.Color) {
-	class(self).SetBgColor(value)
+func (self Instance) SetBackgroundColor(value Color.RGBA) {
+	class(self).SetBgColor(gd.Color(value))
 }
 
-func (self Instance) BackgroundEnergyMultiplier() float64 {
-	return float64(float64(class(self).GetBgEnergyMultiplier()))
+func (self Instance) BackgroundEnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetBgEnergyMultiplier()))
 }
 
-func (self Instance) SetBackgroundEnergyMultiplier(value float64) {
+func (self Instance) SetBackgroundEnergyMultiplier(value Float.X) {
 	class(self).SetBgEnergyMultiplier(gd.Float(value))
 }
 
-func (self Instance) BackgroundIntensity() float64 {
-	return float64(float64(class(self).GetBgIntensity()))
+func (self Instance) BackgroundIntensity() Float.X {
+	return Float.X(Float.X(class(self).GetBgIntensity()))
 }
 
-func (self Instance) SetBackgroundIntensity(value float64) {
+func (self Instance) SetBackgroundIntensity(value Float.X) {
 	class(self).SetBgIntensity(gd.Float(value))
 }
 
@@ -105,20 +108,20 @@ func (self Instance) SetSky(value objects.Sky) {
 	class(self).SetSky(value)
 }
 
-func (self Instance) SkyCustomFov() float64 {
-	return float64(float64(class(self).GetSkyCustomFov()))
+func (self Instance) SkyCustomFov() Float.X {
+	return Float.X(Float.X(class(self).GetSkyCustomFov()))
 }
 
-func (self Instance) SetSkyCustomFov(value float64) {
+func (self Instance) SetSkyCustomFov(value Float.X) {
 	class(self).SetSkyCustomFov(gd.Float(value))
 }
 
-func (self Instance) SkyRotation() gd.Vector3 {
-	return gd.Vector3(class(self).GetSkyRotation())
+func (self Instance) SkyRotation() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSkyRotation())
 }
 
-func (self Instance) SetSkyRotation(value gd.Vector3) {
-	class(self).SetSkyRotation(value)
+func (self Instance) SetSkyRotation(value Vector3.XYZ) {
+	class(self).SetSkyRotation(gd.Vector3(value))
 }
 
 func (self Instance) AmbientLightSource() classdb.EnvironmentAmbientSource {
@@ -129,27 +132,27 @@ func (self Instance) SetAmbientLightSource(value classdb.EnvironmentAmbientSourc
 	class(self).SetAmbientSource(value)
 }
 
-func (self Instance) AmbientLightColor() gd.Color {
-	return gd.Color(class(self).GetAmbientLightColor())
+func (self Instance) AmbientLightColor() Color.RGBA {
+	return Color.RGBA(class(self).GetAmbientLightColor())
 }
 
-func (self Instance) SetAmbientLightColor(value gd.Color) {
-	class(self).SetAmbientLightColor(value)
+func (self Instance) SetAmbientLightColor(value Color.RGBA) {
+	class(self).SetAmbientLightColor(gd.Color(value))
 }
 
-func (self Instance) AmbientLightSkyContribution() float64 {
-	return float64(float64(class(self).GetAmbientLightSkyContribution()))
+func (self Instance) AmbientLightSkyContribution() Float.X {
+	return Float.X(Float.X(class(self).GetAmbientLightSkyContribution()))
 }
 
-func (self Instance) SetAmbientLightSkyContribution(value float64) {
+func (self Instance) SetAmbientLightSkyContribution(value Float.X) {
 	class(self).SetAmbientLightSkyContribution(gd.Float(value))
 }
 
-func (self Instance) AmbientLightEnergy() float64 {
-	return float64(float64(class(self).GetAmbientLightEnergy()))
+func (self Instance) AmbientLightEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetAmbientLightEnergy()))
 }
 
-func (self Instance) SetAmbientLightEnergy(value float64) {
+func (self Instance) SetAmbientLightEnergy(value Float.X) {
 	class(self).SetAmbientLightEnergy(gd.Float(value))
 }
 
@@ -169,19 +172,19 @@ func (self Instance) SetTonemapMode(value classdb.EnvironmentToneMapper) {
 	class(self).SetTonemapper(value)
 }
 
-func (self Instance) TonemapExposure() float64 {
-	return float64(float64(class(self).GetTonemapExposure()))
+func (self Instance) TonemapExposure() Float.X {
+	return Float.X(Float.X(class(self).GetTonemapExposure()))
 }
 
-func (self Instance) SetTonemapExposure(value float64) {
+func (self Instance) SetTonemapExposure(value Float.X) {
 	class(self).SetTonemapExposure(gd.Float(value))
 }
 
-func (self Instance) TonemapWhite() float64 {
-	return float64(float64(class(self).GetTonemapWhite()))
+func (self Instance) TonemapWhite() Float.X {
+	return Float.X(Float.X(class(self).GetTonemapWhite()))
 }
 
-func (self Instance) SetTonemapWhite(value float64) {
+func (self Instance) SetTonemapWhite(value Float.X) {
 	class(self).SetTonemapWhite(gd.Float(value))
 }
 
@@ -201,27 +204,27 @@ func (self Instance) SetSsrMaxSteps(value int) {
 	class(self).SetSsrMaxSteps(gd.Int(value))
 }
 
-func (self Instance) SsrFadeIn() float64 {
-	return float64(float64(class(self).GetSsrFadeIn()))
+func (self Instance) SsrFadeIn() Float.X {
+	return Float.X(Float.X(class(self).GetSsrFadeIn()))
 }
 
-func (self Instance) SetSsrFadeIn(value float64) {
+func (self Instance) SetSsrFadeIn(value Float.X) {
 	class(self).SetSsrFadeIn(gd.Float(value))
 }
 
-func (self Instance) SsrFadeOut() float64 {
-	return float64(float64(class(self).GetSsrFadeOut()))
+func (self Instance) SsrFadeOut() Float.X {
+	return Float.X(Float.X(class(self).GetSsrFadeOut()))
 }
 
-func (self Instance) SetSsrFadeOut(value float64) {
+func (self Instance) SetSsrFadeOut(value Float.X) {
 	class(self).SetSsrFadeOut(gd.Float(value))
 }
 
-func (self Instance) SsrDepthTolerance() float64 {
-	return float64(float64(class(self).GetSsrDepthTolerance()))
+func (self Instance) SsrDepthTolerance() Float.X {
+	return Float.X(Float.X(class(self).GetSsrDepthTolerance()))
 }
 
-func (self Instance) SetSsrDepthTolerance(value float64) {
+func (self Instance) SetSsrDepthTolerance(value Float.X) {
 	class(self).SetSsrDepthTolerance(gd.Float(value))
 }
 
@@ -233,67 +236,67 @@ func (self Instance) SetSsaoEnabled(value bool) {
 	class(self).SetSsaoEnabled(value)
 }
 
-func (self Instance) SsaoRadius() float64 {
-	return float64(float64(class(self).GetSsaoRadius()))
+func (self Instance) SsaoRadius() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoRadius()))
 }
 
-func (self Instance) SetSsaoRadius(value float64) {
+func (self Instance) SetSsaoRadius(value Float.X) {
 	class(self).SetSsaoRadius(gd.Float(value))
 }
 
-func (self Instance) SsaoIntensity() float64 {
-	return float64(float64(class(self).GetSsaoIntensity()))
+func (self Instance) SsaoIntensity() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoIntensity()))
 }
 
-func (self Instance) SetSsaoIntensity(value float64) {
+func (self Instance) SetSsaoIntensity(value Float.X) {
 	class(self).SetSsaoIntensity(gd.Float(value))
 }
 
-func (self Instance) SsaoPower() float64 {
-	return float64(float64(class(self).GetSsaoPower()))
+func (self Instance) SsaoPower() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoPower()))
 }
 
-func (self Instance) SetSsaoPower(value float64) {
+func (self Instance) SetSsaoPower(value Float.X) {
 	class(self).SetSsaoPower(gd.Float(value))
 }
 
-func (self Instance) SsaoDetail() float64 {
-	return float64(float64(class(self).GetSsaoDetail()))
+func (self Instance) SsaoDetail() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoDetail()))
 }
 
-func (self Instance) SetSsaoDetail(value float64) {
+func (self Instance) SetSsaoDetail(value Float.X) {
 	class(self).SetSsaoDetail(gd.Float(value))
 }
 
-func (self Instance) SsaoHorizon() float64 {
-	return float64(float64(class(self).GetSsaoHorizon()))
+func (self Instance) SsaoHorizon() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoHorizon()))
 }
 
-func (self Instance) SetSsaoHorizon(value float64) {
+func (self Instance) SetSsaoHorizon(value Float.X) {
 	class(self).SetSsaoHorizon(gd.Float(value))
 }
 
-func (self Instance) SsaoSharpness() float64 {
-	return float64(float64(class(self).GetSsaoSharpness()))
+func (self Instance) SsaoSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoSharpness()))
 }
 
-func (self Instance) SetSsaoSharpness(value float64) {
+func (self Instance) SetSsaoSharpness(value Float.X) {
 	class(self).SetSsaoSharpness(gd.Float(value))
 }
 
-func (self Instance) SsaoLightAffect() float64 {
-	return float64(float64(class(self).GetSsaoDirectLightAffect()))
+func (self Instance) SsaoLightAffect() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoDirectLightAffect()))
 }
 
-func (self Instance) SetSsaoLightAffect(value float64) {
+func (self Instance) SetSsaoLightAffect(value Float.X) {
 	class(self).SetSsaoDirectLightAffect(gd.Float(value))
 }
 
-func (self Instance) SsaoAoChannelAffect() float64 {
-	return float64(float64(class(self).GetSsaoAoChannelAffect()))
+func (self Instance) SsaoAoChannelAffect() Float.X {
+	return Float.X(Float.X(class(self).GetSsaoAoChannelAffect()))
 }
 
-func (self Instance) SetSsaoAoChannelAffect(value float64) {
+func (self Instance) SetSsaoAoChannelAffect(value Float.X) {
 	class(self).SetSsaoAoChannelAffect(gd.Float(value))
 }
 
@@ -305,35 +308,35 @@ func (self Instance) SetSsilEnabled(value bool) {
 	class(self).SetSsilEnabled(value)
 }
 
-func (self Instance) SsilRadius() float64 {
-	return float64(float64(class(self).GetSsilRadius()))
+func (self Instance) SsilRadius() Float.X {
+	return Float.X(Float.X(class(self).GetSsilRadius()))
 }
 
-func (self Instance) SetSsilRadius(value float64) {
+func (self Instance) SetSsilRadius(value Float.X) {
 	class(self).SetSsilRadius(gd.Float(value))
 }
 
-func (self Instance) SsilIntensity() float64 {
-	return float64(float64(class(self).GetSsilIntensity()))
+func (self Instance) SsilIntensity() Float.X {
+	return Float.X(Float.X(class(self).GetSsilIntensity()))
 }
 
-func (self Instance) SetSsilIntensity(value float64) {
+func (self Instance) SetSsilIntensity(value Float.X) {
 	class(self).SetSsilIntensity(gd.Float(value))
 }
 
-func (self Instance) SsilSharpness() float64 {
-	return float64(float64(class(self).GetSsilSharpness()))
+func (self Instance) SsilSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetSsilSharpness()))
 }
 
-func (self Instance) SetSsilSharpness(value float64) {
+func (self Instance) SetSsilSharpness(value Float.X) {
 	class(self).SetSsilSharpness(gd.Float(value))
 }
 
-func (self Instance) SsilNormalRejection() float64 {
-	return float64(float64(class(self).GetSsilNormalRejection()))
+func (self Instance) SsilNormalRejection() Float.X {
+	return Float.X(Float.X(class(self).GetSsilNormalRejection()))
 }
 
-func (self Instance) SetSsilNormalRejection(value float64) {
+func (self Instance) SetSsilNormalRejection(value Float.X) {
 	class(self).SetSsilNormalRejection(gd.Float(value))
 }
 
@@ -361,11 +364,11 @@ func (self Instance) SetSdfgiReadSkyLight(value bool) {
 	class(self).SetSdfgiReadSkyLight(value)
 }
 
-func (self Instance) SdfgiBounceFeedback() float64 {
-	return float64(float64(class(self).GetSdfgiBounceFeedback()))
+func (self Instance) SdfgiBounceFeedback() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiBounceFeedback()))
 }
 
-func (self Instance) SetSdfgiBounceFeedback(value float64) {
+func (self Instance) SetSdfgiBounceFeedback(value Float.X) {
 	class(self).SetSdfgiBounceFeedback(gd.Float(value))
 }
 
@@ -377,27 +380,27 @@ func (self Instance) SetSdfgiCascades(value int) {
 	class(self).SetSdfgiCascades(gd.Int(value))
 }
 
-func (self Instance) SdfgiMinCellSize() float64 {
-	return float64(float64(class(self).GetSdfgiMinCellSize()))
+func (self Instance) SdfgiMinCellSize() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiMinCellSize()))
 }
 
-func (self Instance) SetSdfgiMinCellSize(value float64) {
+func (self Instance) SetSdfgiMinCellSize(value Float.X) {
 	class(self).SetSdfgiMinCellSize(gd.Float(value))
 }
 
-func (self Instance) SdfgiCascade0Distance() float64 {
-	return float64(float64(class(self).GetSdfgiCascade0Distance()))
+func (self Instance) SdfgiCascade0Distance() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiCascade0Distance()))
 }
 
-func (self Instance) SetSdfgiCascade0Distance(value float64) {
+func (self Instance) SetSdfgiCascade0Distance(value Float.X) {
 	class(self).SetSdfgiCascade0Distance(gd.Float(value))
 }
 
-func (self Instance) SdfgiMaxDistance() float64 {
-	return float64(float64(class(self).GetSdfgiMaxDistance()))
+func (self Instance) SdfgiMaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiMaxDistance()))
 }
 
-func (self Instance) SetSdfgiMaxDistance(value float64) {
+func (self Instance) SetSdfgiMaxDistance(value Float.X) {
 	class(self).SetSdfgiMaxDistance(gd.Float(value))
 }
 
@@ -409,27 +412,27 @@ func (self Instance) SetSdfgiYScale(value classdb.EnvironmentSDFGIYScale) {
 	class(self).SetSdfgiYScale(value)
 }
 
-func (self Instance) SdfgiEnergy() float64 {
-	return float64(float64(class(self).GetSdfgiEnergy()))
+func (self Instance) SdfgiEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiEnergy()))
 }
 
-func (self Instance) SetSdfgiEnergy(value float64) {
+func (self Instance) SetSdfgiEnergy(value Float.X) {
 	class(self).SetSdfgiEnergy(gd.Float(value))
 }
 
-func (self Instance) SdfgiNormalBias() float64 {
-	return float64(float64(class(self).GetSdfgiNormalBias()))
+func (self Instance) SdfgiNormalBias() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiNormalBias()))
 }
 
-func (self Instance) SetSdfgiNormalBias(value float64) {
+func (self Instance) SetSdfgiNormalBias(value Float.X) {
 	class(self).SetSdfgiNormalBias(gd.Float(value))
 }
 
-func (self Instance) SdfgiProbeBias() float64 {
-	return float64(float64(class(self).GetSdfgiProbeBias()))
+func (self Instance) SdfgiProbeBias() Float.X {
+	return Float.X(Float.X(class(self).GetSdfgiProbeBias()))
 }
 
-func (self Instance) SetSdfgiProbeBias(value float64) {
+func (self Instance) SetSdfgiProbeBias(value Float.X) {
 	class(self).SetSdfgiProbeBias(gd.Float(value))
 }
 
@@ -449,35 +452,35 @@ func (self Instance) SetGlowNormalized(value bool) {
 	class(self).SetGlowNormalized(value)
 }
 
-func (self Instance) GlowIntensity() float64 {
-	return float64(float64(class(self).GetGlowIntensity()))
+func (self Instance) GlowIntensity() Float.X {
+	return Float.X(Float.X(class(self).GetGlowIntensity()))
 }
 
-func (self Instance) SetGlowIntensity(value float64) {
+func (self Instance) SetGlowIntensity(value Float.X) {
 	class(self).SetGlowIntensity(gd.Float(value))
 }
 
-func (self Instance) GlowStrength() float64 {
-	return float64(float64(class(self).GetGlowStrength()))
+func (self Instance) GlowStrength() Float.X {
+	return Float.X(Float.X(class(self).GetGlowStrength()))
 }
 
-func (self Instance) SetGlowStrength(value float64) {
+func (self Instance) SetGlowStrength(value Float.X) {
 	class(self).SetGlowStrength(gd.Float(value))
 }
 
-func (self Instance) GlowMix() float64 {
-	return float64(float64(class(self).GetGlowMix()))
+func (self Instance) GlowMix() Float.X {
+	return Float.X(Float.X(class(self).GetGlowMix()))
 }
 
-func (self Instance) SetGlowMix(value float64) {
+func (self Instance) SetGlowMix(value Float.X) {
 	class(self).SetGlowMix(gd.Float(value))
 }
 
-func (self Instance) GlowBloom() float64 {
-	return float64(float64(class(self).GetGlowBloom()))
+func (self Instance) GlowBloom() Float.X {
+	return Float.X(Float.X(class(self).GetGlowBloom()))
 }
 
-func (self Instance) SetGlowBloom(value float64) {
+func (self Instance) SetGlowBloom(value Float.X) {
 	class(self).SetGlowBloom(gd.Float(value))
 }
 
@@ -489,35 +492,35 @@ func (self Instance) SetGlowBlendMode(value classdb.EnvironmentGlowBlendMode) {
 	class(self).SetGlowBlendMode(value)
 }
 
-func (self Instance) GlowHdrThreshold() float64 {
-	return float64(float64(class(self).GetGlowHdrBleedThreshold()))
+func (self Instance) GlowHdrThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetGlowHdrBleedThreshold()))
 }
 
-func (self Instance) SetGlowHdrThreshold(value float64) {
+func (self Instance) SetGlowHdrThreshold(value Float.X) {
 	class(self).SetGlowHdrBleedThreshold(gd.Float(value))
 }
 
-func (self Instance) GlowHdrScale() float64 {
-	return float64(float64(class(self).GetGlowHdrBleedScale()))
+func (self Instance) GlowHdrScale() Float.X {
+	return Float.X(Float.X(class(self).GetGlowHdrBleedScale()))
 }
 
-func (self Instance) SetGlowHdrScale(value float64) {
+func (self Instance) SetGlowHdrScale(value Float.X) {
 	class(self).SetGlowHdrBleedScale(gd.Float(value))
 }
 
-func (self Instance) GlowHdrLuminanceCap() float64 {
-	return float64(float64(class(self).GetGlowHdrLuminanceCap()))
+func (self Instance) GlowHdrLuminanceCap() Float.X {
+	return Float.X(Float.X(class(self).GetGlowHdrLuminanceCap()))
 }
 
-func (self Instance) SetGlowHdrLuminanceCap(value float64) {
+func (self Instance) SetGlowHdrLuminanceCap(value Float.X) {
 	class(self).SetGlowHdrLuminanceCap(gd.Float(value))
 }
 
-func (self Instance) GlowMapStrength() float64 {
-	return float64(float64(class(self).GetGlowMapStrength()))
+func (self Instance) GlowMapStrength() Float.X {
+	return Float.X(Float.X(class(self).GetGlowMapStrength()))
 }
 
-func (self Instance) SetGlowMapStrength(value float64) {
+func (self Instance) SetGlowMapStrength(value Float.X) {
 	class(self).SetGlowMapStrength(gd.Float(value))
 }
 
@@ -545,91 +548,91 @@ func (self Instance) SetFogMode(value classdb.EnvironmentFogMode) {
 	class(self).SetFogMode(value)
 }
 
-func (self Instance) FogLightColor() gd.Color {
-	return gd.Color(class(self).GetFogLightColor())
+func (self Instance) FogLightColor() Color.RGBA {
+	return Color.RGBA(class(self).GetFogLightColor())
 }
 
-func (self Instance) SetFogLightColor(value gd.Color) {
-	class(self).SetFogLightColor(value)
+func (self Instance) SetFogLightColor(value Color.RGBA) {
+	class(self).SetFogLightColor(gd.Color(value))
 }
 
-func (self Instance) FogLightEnergy() float64 {
-	return float64(float64(class(self).GetFogLightEnergy()))
+func (self Instance) FogLightEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetFogLightEnergy()))
 }
 
-func (self Instance) SetFogLightEnergy(value float64) {
+func (self Instance) SetFogLightEnergy(value Float.X) {
 	class(self).SetFogLightEnergy(gd.Float(value))
 }
 
-func (self Instance) FogSunScatter() float64 {
-	return float64(float64(class(self).GetFogSunScatter()))
+func (self Instance) FogSunScatter() Float.X {
+	return Float.X(Float.X(class(self).GetFogSunScatter()))
 }
 
-func (self Instance) SetFogSunScatter(value float64) {
+func (self Instance) SetFogSunScatter(value Float.X) {
 	class(self).SetFogSunScatter(gd.Float(value))
 }
 
-func (self Instance) FogDensity() float64 {
-	return float64(float64(class(self).GetFogDensity()))
+func (self Instance) FogDensity() Float.X {
+	return Float.X(Float.X(class(self).GetFogDensity()))
 }
 
-func (self Instance) SetFogDensity(value float64) {
+func (self Instance) SetFogDensity(value Float.X) {
 	class(self).SetFogDensity(gd.Float(value))
 }
 
-func (self Instance) FogAerialPerspective() float64 {
-	return float64(float64(class(self).GetFogAerialPerspective()))
+func (self Instance) FogAerialPerspective() Float.X {
+	return Float.X(Float.X(class(self).GetFogAerialPerspective()))
 }
 
-func (self Instance) SetFogAerialPerspective(value float64) {
+func (self Instance) SetFogAerialPerspective(value Float.X) {
 	class(self).SetFogAerialPerspective(gd.Float(value))
 }
 
-func (self Instance) FogSkyAffect() float64 {
-	return float64(float64(class(self).GetFogSkyAffect()))
+func (self Instance) FogSkyAffect() Float.X {
+	return Float.X(Float.X(class(self).GetFogSkyAffect()))
 }
 
-func (self Instance) SetFogSkyAffect(value float64) {
+func (self Instance) SetFogSkyAffect(value Float.X) {
 	class(self).SetFogSkyAffect(gd.Float(value))
 }
 
-func (self Instance) FogHeight() float64 {
-	return float64(float64(class(self).GetFogHeight()))
+func (self Instance) FogHeight() Float.X {
+	return Float.X(Float.X(class(self).GetFogHeight()))
 }
 
-func (self Instance) SetFogHeight(value float64) {
+func (self Instance) SetFogHeight(value Float.X) {
 	class(self).SetFogHeight(gd.Float(value))
 }
 
-func (self Instance) FogHeightDensity() float64 {
-	return float64(float64(class(self).GetFogHeightDensity()))
+func (self Instance) FogHeightDensity() Float.X {
+	return Float.X(Float.X(class(self).GetFogHeightDensity()))
 }
 
-func (self Instance) SetFogHeightDensity(value float64) {
+func (self Instance) SetFogHeightDensity(value Float.X) {
 	class(self).SetFogHeightDensity(gd.Float(value))
 }
 
-func (self Instance) FogDepthCurve() float64 {
-	return float64(float64(class(self).GetFogDepthCurve()))
+func (self Instance) FogDepthCurve() Float.X {
+	return Float.X(Float.X(class(self).GetFogDepthCurve()))
 }
 
-func (self Instance) SetFogDepthCurve(value float64) {
+func (self Instance) SetFogDepthCurve(value Float.X) {
 	class(self).SetFogDepthCurve(gd.Float(value))
 }
 
-func (self Instance) FogDepthBegin() float64 {
-	return float64(float64(class(self).GetFogDepthBegin()))
+func (self Instance) FogDepthBegin() Float.X {
+	return Float.X(Float.X(class(self).GetFogDepthBegin()))
 }
 
-func (self Instance) SetFogDepthBegin(value float64) {
+func (self Instance) SetFogDepthBegin(value Float.X) {
 	class(self).SetFogDepthBegin(gd.Float(value))
 }
 
-func (self Instance) FogDepthEnd() float64 {
-	return float64(float64(class(self).GetFogDepthEnd()))
+func (self Instance) FogDepthEnd() Float.X {
+	return Float.X(Float.X(class(self).GetFogDepthEnd()))
 }
 
-func (self Instance) SetFogDepthEnd(value float64) {
+func (self Instance) SetFogDepthEnd(value Float.X) {
 	class(self).SetFogDepthEnd(gd.Float(value))
 }
 
@@ -641,83 +644,83 @@ func (self Instance) SetVolumetricFogEnabled(value bool) {
 	class(self).SetVolumetricFogEnabled(value)
 }
 
-func (self Instance) VolumetricFogDensity() float64 {
-	return float64(float64(class(self).GetVolumetricFogDensity()))
+func (self Instance) VolumetricFogDensity() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogDensity()))
 }
 
-func (self Instance) SetVolumetricFogDensity(value float64) {
+func (self Instance) SetVolumetricFogDensity(value Float.X) {
 	class(self).SetVolumetricFogDensity(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogAlbedo() gd.Color {
-	return gd.Color(class(self).GetVolumetricFogAlbedo())
+func (self Instance) VolumetricFogAlbedo() Color.RGBA {
+	return Color.RGBA(class(self).GetVolumetricFogAlbedo())
 }
 
-func (self Instance) SetVolumetricFogAlbedo(value gd.Color) {
-	class(self).SetVolumetricFogAlbedo(value)
+func (self Instance) SetVolumetricFogAlbedo(value Color.RGBA) {
+	class(self).SetVolumetricFogAlbedo(gd.Color(value))
 }
 
-func (self Instance) VolumetricFogEmission() gd.Color {
-	return gd.Color(class(self).GetVolumetricFogEmission())
+func (self Instance) VolumetricFogEmission() Color.RGBA {
+	return Color.RGBA(class(self).GetVolumetricFogEmission())
 }
 
-func (self Instance) SetVolumetricFogEmission(value gd.Color) {
-	class(self).SetVolumetricFogEmission(value)
+func (self Instance) SetVolumetricFogEmission(value Color.RGBA) {
+	class(self).SetVolumetricFogEmission(gd.Color(value))
 }
 
-func (self Instance) VolumetricFogEmissionEnergy() float64 {
-	return float64(float64(class(self).GetVolumetricFogEmissionEnergy()))
+func (self Instance) VolumetricFogEmissionEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogEmissionEnergy()))
 }
 
-func (self Instance) SetVolumetricFogEmissionEnergy(value float64) {
+func (self Instance) SetVolumetricFogEmissionEnergy(value Float.X) {
 	class(self).SetVolumetricFogEmissionEnergy(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogGiInject() float64 {
-	return float64(float64(class(self).GetVolumetricFogGiInject()))
+func (self Instance) VolumetricFogGiInject() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogGiInject()))
 }
 
-func (self Instance) SetVolumetricFogGiInject(value float64) {
+func (self Instance) SetVolumetricFogGiInject(value Float.X) {
 	class(self).SetVolumetricFogGiInject(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogAnisotropy() float64 {
-	return float64(float64(class(self).GetVolumetricFogAnisotropy()))
+func (self Instance) VolumetricFogAnisotropy() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogAnisotropy()))
 }
 
-func (self Instance) SetVolumetricFogAnisotropy(value float64) {
+func (self Instance) SetVolumetricFogAnisotropy(value Float.X) {
 	class(self).SetVolumetricFogAnisotropy(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogLength() float64 {
-	return float64(float64(class(self).GetVolumetricFogLength()))
+func (self Instance) VolumetricFogLength() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogLength()))
 }
 
-func (self Instance) SetVolumetricFogLength(value float64) {
+func (self Instance) SetVolumetricFogLength(value Float.X) {
 	class(self).SetVolumetricFogLength(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogDetailSpread() float64 {
-	return float64(float64(class(self).GetVolumetricFogDetailSpread()))
+func (self Instance) VolumetricFogDetailSpread() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogDetailSpread()))
 }
 
-func (self Instance) SetVolumetricFogDetailSpread(value float64) {
+func (self Instance) SetVolumetricFogDetailSpread(value Float.X) {
 	class(self).SetVolumetricFogDetailSpread(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogAmbientInject() float64 {
-	return float64(float64(class(self).GetVolumetricFogAmbientInject()))
+func (self Instance) VolumetricFogAmbientInject() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogAmbientInject()))
 }
 
-func (self Instance) SetVolumetricFogAmbientInject(value float64) {
+func (self Instance) SetVolumetricFogAmbientInject(value Float.X) {
 	class(self).SetVolumetricFogAmbientInject(gd.Float(value))
 }
 
-func (self Instance) VolumetricFogSkyAffect() float64 {
-	return float64(float64(class(self).GetVolumetricFogSkyAffect()))
+func (self Instance) VolumetricFogSkyAffect() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogSkyAffect()))
 }
 
-func (self Instance) SetVolumetricFogSkyAffect(value float64) {
+func (self Instance) SetVolumetricFogSkyAffect(value Float.X) {
 	class(self).SetVolumetricFogSkyAffect(gd.Float(value))
 }
 
@@ -729,11 +732,11 @@ func (self Instance) SetVolumetricFogTemporalReprojectionEnabled(value bool) {
 	class(self).SetVolumetricFogTemporalReprojectionEnabled(value)
 }
 
-func (self Instance) VolumetricFogTemporalReprojectionAmount() float64 {
-	return float64(float64(class(self).GetVolumetricFogTemporalReprojectionAmount()))
+func (self Instance) VolumetricFogTemporalReprojectionAmount() Float.X {
+	return Float.X(Float.X(class(self).GetVolumetricFogTemporalReprojectionAmount()))
 }
 
-func (self Instance) SetVolumetricFogTemporalReprojectionAmount(value float64) {
+func (self Instance) SetVolumetricFogTemporalReprojectionAmount(value Float.X) {
 	class(self).SetVolumetricFogTemporalReprojectionAmount(gd.Float(value))
 }
 
@@ -745,27 +748,27 @@ func (self Instance) SetAdjustmentEnabled(value bool) {
 	class(self).SetAdjustmentEnabled(value)
 }
 
-func (self Instance) AdjustmentBrightness() float64 {
-	return float64(float64(class(self).GetAdjustmentBrightness()))
+func (self Instance) AdjustmentBrightness() Float.X {
+	return Float.X(Float.X(class(self).GetAdjustmentBrightness()))
 }
 
-func (self Instance) SetAdjustmentBrightness(value float64) {
+func (self Instance) SetAdjustmentBrightness(value Float.X) {
 	class(self).SetAdjustmentBrightness(gd.Float(value))
 }
 
-func (self Instance) AdjustmentContrast() float64 {
-	return float64(float64(class(self).GetAdjustmentContrast()))
+func (self Instance) AdjustmentContrast() Float.X {
+	return Float.X(Float.X(class(self).GetAdjustmentContrast()))
 }
 
-func (self Instance) SetAdjustmentContrast(value float64) {
+func (self Instance) SetAdjustmentContrast(value Float.X) {
 	class(self).SetAdjustmentContrast(gd.Float(value))
 }
 
-func (self Instance) AdjustmentSaturation() float64 {
-	return float64(float64(class(self).GetAdjustmentSaturation()))
+func (self Instance) AdjustmentSaturation() Float.X {
+	return Float.X(Float.X(class(self).GetAdjustmentSaturation()))
 }
 
-func (self Instance) SetAdjustmentSaturation(value float64) {
+func (self Instance) SetAdjustmentSaturation(value Float.X) {
 	class(self).SetAdjustmentSaturation(gd.Float(value))
 }
 

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,7 +36,7 @@ func (self Instance) Play() {
 /*
 Sets the position from which audio will be played, in seconds.
 */
-func (self Instance) SeekTo(to_position float64) {
+func (self Instance) SeekTo(to_position Float.X) {
 	class(self).SeekTo(gd.Float(to_position))
 }
 
@@ -49,8 +50,8 @@ func (self Instance) Stop() {
 /*
 Returns the position in the [AudioStream].
 */
-func (self Instance) GetPlaybackPosition() float64 {
-	return float64(float64(class(self).GetPlaybackPosition()))
+func (self Instance) GetPlaybackPosition() Float.X {
+	return Float.X(Float.X(class(self).GetPlaybackPosition()))
 }
 
 /*
@@ -86,19 +87,19 @@ func (self Instance) SetStream(value objects.AudioStream) {
 	class(self).SetStream(value)
 }
 
-func (self Instance) VolumeDb() float64 {
-	return float64(float64(class(self).GetVolumeDb()))
+func (self Instance) VolumeDb() Float.X {
+	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-func (self Instance) SetVolumeDb(value float64) {
+func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(gd.Float(value))
 }
 
-func (self Instance) PitchScale() float64 {
-	return float64(float64(class(self).GetPitchScale()))
+func (self Instance) PitchScale() Float.X {
+	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
-func (self Instance) SetPitchScale(value float64) {
+func (self Instance) SetPitchScale(value Float.X) {
 	class(self).SetPitchScale(gd.Float(value))
 }
 
@@ -122,19 +123,19 @@ func (self Instance) SetStreamPaused(value bool) {
 	class(self).SetStreamPaused(value)
 }
 
-func (self Instance) MaxDistance() float64 {
-	return float64(float64(class(self).GetMaxDistance()))
+func (self Instance) MaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
-func (self Instance) SetMaxDistance(value float64) {
+func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(gd.Float(value))
 }
 
-func (self Instance) Attenuation() float64 {
-	return float64(float64(class(self).GetAttenuation()))
+func (self Instance) Attenuation() Float.X {
+	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
-func (self Instance) SetAttenuation(value float64) {
+func (self Instance) SetAttenuation(value Float.X) {
 	class(self).SetAttenuation(gd.Float(value))
 }
 
@@ -146,11 +147,11 @@ func (self Instance) SetMaxPolyphony(value int) {
 	class(self).SetMaxPolyphony(gd.Int(value))
 }
 
-func (self Instance) PanningStrength() float64 {
-	return float64(float64(class(self).GetPanningStrength()))
+func (self Instance) PanningStrength() Float.X {
+	return Float.X(Float.X(class(self).GetPanningStrength()))
 }
 
-func (self Instance) SetPanningStrength(value float64) {
+func (self Instance) SetPanningStrength(value Float.X) {
 	class(self).SetPanningStrength(gd.Float(value))
 }
 

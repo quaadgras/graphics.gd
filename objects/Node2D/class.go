@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,80 +27,80 @@ type Instance [1]classdb.Node2D
 /*
 Applies a rotation to the node, in radians, starting from its current rotation.
 */
-func (self Instance) Rotate(radians float64) {
+func (self Instance) Rotate(radians Float.X) {
 	class(self).Rotate(gd.Float(radians))
 }
 
 /*
 Applies a local translation on the node's X axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
-func (self Instance) MoveLocalX(delta float64) {
+func (self Instance) MoveLocalX(delta Float.X) {
 	class(self).MoveLocalX(gd.Float(delta), false)
 }
 
 /*
 Applies a local translation on the node's Y axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
-func (self Instance) MoveLocalY(delta float64) {
+func (self Instance) MoveLocalY(delta Float.X) {
 	class(self).MoveLocalY(gd.Float(delta), false)
 }
 
 /*
 Translates the node by the given [param offset] in local coordinates.
 */
-func (self Instance) Translate(offset gd.Vector2) {
-	class(self).Translate(offset)
+func (self Instance) Translate(offset Vector2.XY) {
+	class(self).Translate(gd.Vector2(offset))
 }
 
 /*
 Adds the [param offset] vector to the node's global position.
 */
-func (self Instance) GlobalTranslate(offset gd.Vector2) {
-	class(self).GlobalTranslate(offset)
+func (self Instance) GlobalTranslate(offset Vector2.XY) {
+	class(self).GlobalTranslate(gd.Vector2(offset))
 }
 
 /*
 Multiplies the current scale by the [param ratio] vector.
 */
-func (self Instance) ApplyScale(ratio gd.Vector2) {
-	class(self).ApplyScale(ratio)
+func (self Instance) ApplyScale(ratio Vector2.XY) {
+	class(self).ApplyScale(gd.Vector2(ratio))
 }
 
 /*
 Rotates the node so that its local +X axis points towards the [param point], which is expected to use global coordinates.
 [param point] should not be the same as the node's position, otherwise the node always looks to the right.
 */
-func (self Instance) LookAt(point gd.Vector2) {
-	class(self).LookAt(point)
+func (self Instance) LookAt(point Vector2.XY) {
+	class(self).LookAt(gd.Vector2(point))
 }
 
 /*
 Returns the angle between the node and the [param point] in radians.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png]Illustration of the returned angle.[/url]
 */
-func (self Instance) GetAngleTo(point gd.Vector2) float64 {
-	return float64(float64(class(self).GetAngleTo(point)))
+func (self Instance) GetAngleTo(point Vector2.XY) Float.X {
+	return Float.X(Float.X(class(self).GetAngleTo(gd.Vector2(point))))
 }
 
 /*
 Transforms the provided global position into a position in local coordinate space. The output will be local relative to the [Node2D] it is called on. e.g. It is appropriate for determining the positions of child nodes, but it is not appropriate for determining its own position relative to its parent.
 */
-func (self Instance) ToLocal(global_point gd.Vector2) gd.Vector2 {
-	return gd.Vector2(class(self).ToLocal(global_point))
+func (self Instance) ToLocal(global_point Vector2.XY) Vector2.XY {
+	return Vector2.XY(class(self).ToLocal(gd.Vector2(global_point)))
 }
 
 /*
 Transforms the provided local position into a position in global coordinate space. The input is expected to be local relative to the [Node2D] it is called on. e.g. Applying this method to the positions of child nodes will correctly transform their positions into the global coordinate space, but applying it to a node's own position will give an incorrect result, as it will incorporate the node's own transformation into its global position.
 */
-func (self Instance) ToGlobal(local_point gd.Vector2) gd.Vector2 {
-	return gd.Vector2(class(self).ToGlobal(local_point))
+func (self Instance) ToGlobal(local_point Vector2.XY) Vector2.XY {
+	return Vector2.XY(class(self).ToGlobal(gd.Vector2(local_point)))
 }
 
 /*
 Returns the [Transform2D] relative to this node's parent.
 */
-func (self Instance) GetRelativeTransformToParent(parent objects.Node) gd.Transform2D {
-	return gd.Transform2D(class(self).GetRelativeTransformToParent(parent))
+func (self Instance) GetRelativeTransformToParent(parent objects.Node) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetRelativeTransformToParent(parent))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -111,84 +114,92 @@ func New() Instance {
 	return Instance{classdb.Node2D(object)}
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(value))
 }
 
-func (self Instance) Rotation() float64 {
-	return float64(float64(class(self).GetRotation()))
+func (self Instance) Rotation() Float.X {
+	return Float.X(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value float64) {
+func (self Instance) SetRotation(value Float.X) {
 	class(self).SetRotation(gd.Float(value))
 }
 
-func (self Instance) RotationDegrees() float64 {
-	return float64(float64(class(self).GetRotationDegrees()))
+func (self Instance) RotationDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value float64) {
+func (self Instance) SetRotationDegrees(value Float.X) {
 	class(self).SetRotationDegrees(gd.Float(value))
 }
 
-func (self Instance) Scale() gd.Vector2 {
-	return gd.Vector2(class(self).GetScale())
+func (self Instance) Scale() Vector2.XY {
+	return Vector2.XY(class(self).GetScale())
 }
 
-func (self Instance) SetScale(value gd.Vector2) {
-	class(self).SetScale(value)
+func (self Instance) SetScale(value Vector2.XY) {
+	class(self).SetScale(gd.Vector2(value))
 }
 
-func (self Instance) Skew() float64 {
-	return float64(float64(class(self).GetSkew()))
+func (self Instance) Skew() Float.X {
+	return Float.X(Float.X(class(self).GetSkew()))
 }
 
-func (self Instance) SetSkew(value float64) {
+func (self Instance) SetSkew(value Float.X) {
 	class(self).SetSkew(gd.Float(value))
 }
 
-func (self Instance) GlobalPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalPosition())
+func (self Instance) SetTransform(value Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Transform2D(value))
 }
 
-func (self Instance) SetGlobalPosition(value gd.Vector2) {
-	class(self).SetGlobalPosition(value)
+func (self Instance) GlobalPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-func (self Instance) GlobalRotation() float64 {
-	return float64(float64(class(self).GetGlobalRotation()))
+func (self Instance) SetGlobalPosition(value Vector2.XY) {
+	class(self).SetGlobalPosition(gd.Vector2(value))
 }
 
-func (self Instance) SetGlobalRotation(value float64) {
+func (self Instance) GlobalRotation() Float.X {
+	return Float.X(Float.X(class(self).GetGlobalRotation()))
+}
+
+func (self Instance) SetGlobalRotation(value Float.X) {
 	class(self).SetGlobalRotation(gd.Float(value))
 }
 
-func (self Instance) GlobalRotationDegrees() float64 {
-	return float64(float64(class(self).GetGlobalRotationDegrees()))
+func (self Instance) GlobalRotationDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetGlobalRotationDegrees()))
 }
 
-func (self Instance) SetGlobalRotationDegrees(value float64) {
+func (self Instance) SetGlobalRotationDegrees(value Float.X) {
 	class(self).SetGlobalRotationDegrees(gd.Float(value))
 }
 
-func (self Instance) GlobalScale() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalScale())
+func (self Instance) GlobalScale() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalScale())
 }
 
-func (self Instance) SetGlobalScale(value gd.Vector2) {
-	class(self).SetGlobalScale(value)
+func (self Instance) SetGlobalScale(value Vector2.XY) {
+	class(self).SetGlobalScale(gd.Vector2(value))
 }
 
-func (self Instance) GlobalSkew() float64 {
-	return float64(float64(class(self).GetGlobalSkew()))
+func (self Instance) GlobalSkew() Float.X {
+	return Float.X(Float.X(class(self).GetGlobalSkew()))
 }
 
-func (self Instance) SetGlobalSkew(value float64) {
+func (self Instance) SetGlobalSkew(value Float.X) {
 	class(self).SetGlobalSkew(gd.Float(value))
+}
+
+func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) {
+	class(self).SetGlobalTransform(gd.Transform2D(value))
 }
 
 //go:nosplit

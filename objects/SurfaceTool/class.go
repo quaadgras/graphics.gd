@@ -7,6 +7,14 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Plane"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -83,44 +91,44 @@ func (self Instance) Begin(primitive classdb.MeshPrimitiveType) {
 /*
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
-func (self Instance) AddVertex(vertex gd.Vector3) {
-	class(self).AddVertex(vertex)
+func (self Instance) AddVertex(vertex Vector3.XYZ) {
+	class(self).AddVertex(gd.Vector3(vertex))
 }
 
 /*
 Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
-func (self Instance) SetColor(color gd.Color) {
-	class(self).SetColor(color)
+func (self Instance) SetColor(color Color.RGBA) {
+	class(self).SetColor(gd.Color(color))
 }
 
 /*
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetNormal(normal gd.Vector3) {
-	class(self).SetNormal(normal)
+func (self Instance) SetNormal(normal Vector3.XYZ) {
+	class(self).SetNormal(gd.Vector3(normal))
 }
 
 /*
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetTangent(tangent gd.Plane) {
-	class(self).SetTangent(tangent)
+func (self Instance) SetTangent(tangent Plane.NormalD) {
+	class(self).SetTangent(gd.Plane(tangent))
 }
 
 /*
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetUv(uv gd.Vector2) {
-	class(self).SetUv(uv)
+func (self Instance) SetUv(uv Vector2.XY) {
+	class(self).SetUv(gd.Vector2(uv))
 }
 
 /*
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetUv2(uv2 gd.Vector2) {
-	class(self).SetUv2(uv2)
+func (self Instance) SetUv2(uv2 Vector2.XY) {
+	class(self).SetUv2(gd.Vector2(uv2))
 }
 
 /*
@@ -141,8 +149,8 @@ func (self Instance) SetWeights(weights []float32) {
 Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
-func (self Instance) SetCustom(channel_index int, custom_color gd.Color) {
-	class(self).SetCustom(gd.Int(channel_index), custom_color)
+func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) {
+	class(self).SetCustom(gd.Int(channel_index), gd.Color(custom_color))
 }
 
 /*
@@ -157,8 +165,8 @@ func (self Instance) SetSmoothGroup(index int) {
 Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) AddTriangleFan(vertices []gd.Vector3) {
-	class(self).AddTriangleFan(gd.NewPackedVector3Slice(vertices), gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), gd.NewPackedColorSlice(([1][]gd.Color{}[0])), gd.NewPackedVector2Slice(([1][]gd.Vector2{}[0])), gd.NewPackedVector3Slice(([1][]gd.Vector3{}[0])), ([1]gd.Array{}[0]))
+func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) {
+	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), [1]gd.Array{}[0])
 }
 
 /*
@@ -208,14 +216,14 @@ func (self Instance) OptimizeIndicesForCache() {
 /*
 Returns the axis-aligned bounding box of the vertex positions.
 */
-func (self Instance) GetAabb() gd.AABB {
-	return gd.AABB(class(self).GetAabb())
+func (self Instance) GetAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetAabb())
 }
 
 /*
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
-func (self Instance) GenerateLod(nd_threshold float64) []int32 {
+func (self Instance) GenerateLod(nd_threshold Float.X) []int32 {
 	return []int32(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).AsSlice())
 }
 
@@ -250,7 +258,7 @@ func (self Instance) CreateFrom(existing objects.Mesh, surface int) {
 /*
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) CreateFromArrays(arrays gd.Array) {
+func (self Instance) CreateFromArrays(arrays Array.Any) {
 	class(self).CreateFromArrays(arrays, 3)
 }
 
@@ -264,8 +272,8 @@ func (self Instance) CreateFromBlendShape(existing objects.Mesh, surface int, bl
 /*
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
-func (self Instance) AppendFrom(existing objects.Mesh, surface int, transform gd.Transform3D) {
-	class(self).AppendFrom(existing, gd.Int(surface), transform)
+func (self Instance) AppendFrom(existing objects.Mesh, surface int, transform Transform3D.BasisOrigin) {
+	class(self).AppendFrom(existing, gd.Int(surface), gd.Transform3D(transform))
 }
 
 /*
@@ -273,14 +281,14 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 func (self Instance) Commit() objects.ArrayMesh {
-	return objects.ArrayMesh(class(self).Commit(([1]objects.ArrayMesh{}[0]), gd.Int(0)))
+	return objects.ArrayMesh(class(self).Commit([1]objects.ArrayMesh{}[0], gd.Int(0)))
 }
 
 /*
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
-func (self Instance) CommitToArrays() gd.Array {
-	return gd.Array(class(self).CommitToArrays())
+func (self Instance) CommitToArrays() Array.Any {
+	return Array.Any(class(self).CommitToArrays())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

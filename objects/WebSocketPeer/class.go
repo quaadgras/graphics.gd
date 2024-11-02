@@ -56,7 +56,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 func (self Instance) ConnectToUrl(url string) error {
-	return error(class(self).ConnectToUrl(gd.NewString(url), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).ConnectToUrl(gd.NewString(url), [1]objects.TLSOptions{}[0]))
 }
 
 /*

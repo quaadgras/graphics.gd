@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -62,11 +63,11 @@ func (self Instance) SetUniqueNames(value gd.Array) {
 	class(self).SetUniqueNames(value)
 }
 
-func (self Instance) GodotBoneNode() gd.Dictionary {
-	return gd.Dictionary(class(self).GetGodotBoneNode())
+func (self Instance) GodotBoneNode() Dictionary.Any {
+	return Dictionary.Any(class(self).GetGodotBoneNode())
 }
 
-func (self Instance) SetGodotBoneNode(value gd.Dictionary) {
+func (self Instance) SetGodotBoneNode(value Dictionary.Any) {
 	class(self).SetGodotBoneNode(value)
 }
 

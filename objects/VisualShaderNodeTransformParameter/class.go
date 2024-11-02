@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeParameter"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,12 +42,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
-func (self Instance) DefaultValue() gd.Transform3D {
-	return gd.Transform3D(class(self).GetDefaultValue())
+func (self Instance) DefaultValue() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetDefaultValue())
 }
 
-func (self Instance) SetDefaultValue(value gd.Transform3D) {
-	class(self).SetDefaultValue(value)
+func (self Instance) SetDefaultValue(value Transform3D.BasisOrigin) {
+	class(self).SetDefaultValue(gd.Transform3D(value))
 }
 
 //go:nosplit

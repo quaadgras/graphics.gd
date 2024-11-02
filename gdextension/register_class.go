@@ -337,6 +337,14 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		converted = converted.Convert(field.Type())
 	}
 	if !converted.Type().AssignableTo(field.Type()) {
+		switch field.Type().Kind() {
+		case reflect.String:
+			s, ok := converted.Interface().(gd.String)
+			if ok {
+				field.SetString(s.String())
+				return true
+			}
+		}
 		return false
 	}
 	if obj, ok := val.(gd.IsClass); ok {

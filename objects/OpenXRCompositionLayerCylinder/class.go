@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/OpenXRCompositionLayer"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,27 +34,27 @@ func New() Instance {
 	return Instance{classdb.OpenXRCompositionLayerCylinder(object)}
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) AspectRatio() float64 {
-	return float64(float64(class(self).GetAspectRatio()))
+func (self Instance) AspectRatio() Float.X {
+	return Float.X(Float.X(class(self).GetAspectRatio()))
 }
 
-func (self Instance) SetAspectRatio(value float64) {
+func (self Instance) SetAspectRatio(value Float.X) {
 	class(self).SetAspectRatio(gd.Float(value))
 }
 
-func (self Instance) CentralAngle() float64 {
-	return float64(float64(class(self).GetCentralAngle()))
+func (self Instance) CentralAngle() Float.X {
+	return Float.X(Float.X(class(self).GetCentralAngle()))
 }
 
-func (self Instance) SetCentralAngle(value float64) {
+func (self Instance) SetCentralAngle(value Float.X) {
 	class(self).SetCentralAngle(gd.Float(value))
 }
 

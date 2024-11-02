@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -69,16 +71,16 @@ func (self Instance) GetNodeIndex(scene_node objects.Node) int {
 Gets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
-func (self Instance) GetAdditionalData(extension_name string) gd.Variant {
-	return gd.Variant(class(self).GetAdditionalData(gd.NewStringName(extension_name)))
+func (self Instance) GetAdditionalData(extension_name string) any {
+	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
 
 /*
 Sets additional arbitrary data in this [GLTFState] instance. This can be used to keep per-file state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data gd.Variant) {
-	class(self).SetAdditionalData(gd.NewStringName(extension_name), additional_data)
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -92,11 +94,11 @@ func New() Instance {
 	return Instance{classdb.GLTFState(object)}
 }
 
-func (self Instance) Json() gd.Dictionary {
-	return gd.Dictionary(class(self).GetJson())
+func (self Instance) Json() Dictionary.Any {
+	return Dictionary.Any(class(self).GetJson())
 }
 
-func (self Instance) SetJson(value gd.Dictionary) {
+func (self Instance) SetJson(value Dictionary.Any) {
 	class(self).SetJson(value)
 }
 
@@ -324,11 +326,11 @@ func (self Instance) SetHandleBinaryImage(value int) {
 	class(self).SetHandleBinaryImage(gd.Int(value))
 }
 
-func (self Instance) BakeFps() float64 {
-	return float64(float64(class(self).GetBakeFps()))
+func (self Instance) BakeFps() Float.X {
+	return Float.X(Float.X(class(self).GetBakeFps()))
 }
 
-func (self Instance) SetBakeFps(value float64) {
+func (self Instance) SetBakeFps(value Float.X) {
 	class(self).SetBakeFps(gd.Float(value))
 }
 

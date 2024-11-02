@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,22 +30,22 @@ type Instance [1]classdb.NavigationObstacle2D
 /*
 Returns the [RID] of this obstacle on the [NavigationServer2D].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
 */
-func (self Instance) SetNavigationMap(navigation_map gd.RID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
 	class(self).SetNavigationMap(navigation_map)
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 */
-func (self Instance) GetNavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
 /*
@@ -70,20 +73,20 @@ func New() Instance {
 	return Instance{classdb.NavigationObstacle2D(object)}
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) Vertices() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetVertices().AsSlice())
+func (self Instance) Vertices() []Vector2.XY {
+	return []Vector2.XY(class(self).GetVertices().AsSlice())
 }
 
-func (self Instance) SetVertices(value []gd.Vector2) {
-	class(self).SetVertices(gd.NewPackedVector2Slice(value))
+func (self Instance) SetVertices(value []Vector2.XY) {
+	class(self).SetVertices(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) AffectNavigationMesh() bool {
@@ -110,12 +113,12 @@ func (self Instance) SetAvoidanceEnabled(value bool) {
 	class(self).SetAvoidanceEnabled(value)
 }
 
-func (self Instance) Velocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetVelocity())
+func (self Instance) Velocity() Vector2.XY {
+	return Vector2.XY(class(self).GetVelocity())
 }
 
-func (self Instance) SetVelocity(value gd.Vector2) {
-	class(self).SetVelocity(value)
+func (self Instance) SetVelocity(value Vector2.XY) {
+	class(self).SetVelocity(gd.Vector2(value))
 }
 
 func (self Instance) AvoidanceLayers() int {

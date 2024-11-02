@@ -9,6 +9,12 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,17 +39,17 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
 		//If not overridden, default behavior is checking if the point is within control's Rect.
 		//[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
-		HasPoint(point gd.Vector2) bool
+		HasPoint(point Vector2.XY) bool
 		//User defined BiDi algorithm override function.
 		//Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
-		StructuredTextParser(args gd.Array, text string) gd.Array
+		StructuredTextParser(args Array.Any, text string) gd.Array
 		//Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [member custom_minimum_size] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
 		//If not overridden, defaults to [constant Vector2.ZERO].
 		//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
-		GetMinimumSize() gd.Vector2
+		GetMinimumSize() Vector2.XY
 		//Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
 		//[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
-		GetTooltip(at_position gd.Vector2) string
+		GetTooltip(at_position Vector2.XY) string
 		//Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns [code]null[/code] if there is no data to drag. Controls that want to receive drop data should implement [method _can_drop_data] and [method _drop_data]. [param at_position] is local to this control. Drag may be forced with [method force_drag].
 		//A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
 		//[codeblocks]
@@ -62,7 +68,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		GetDragData(at_position gd.Vector2) gd.Variant
+		GetDragData(at_position Vector2.XY) any
 		//Godot calls this method to test if [param data] from a control's [method _get_drag_data] can be dropped at [param at_position]. [param at_position] is local to this control.
 		//This method should only be used to test the data. Process the data in [method _drop_data].
 		//[codeblocks]
@@ -81,7 +87,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		CanDropData(at_position gd.Vector2, data gd.Variant) bool
+		CanDropData(at_position Vector2.XY, data any) bool
 		//Godot calls this method to pass you the [param data] from a control's [method _get_drag_data] result. Godot first calls [method _can_drop_data] to test if [param data] is allowed to drop at [param at_position] where [param at_position] is local to this control.
 		//[codeblocks]
 		//[gdscript]
@@ -103,7 +109,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		DropData(at_position gd.Vector2, data gd.Variant)
+		DropData(at_position Vector2.XY, data any)
 		//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
 		//The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
 		//The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
@@ -183,7 +189,7 @@ Virtual method to be implemented by the user. Returns whether the given [param p
 If not overridden, default behavior is checking if the point is within control's Rect.
 [b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 */
-func (Instance) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -196,7 +202,7 @@ func (Instance) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool)
 User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args gd.Array, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(args)
@@ -217,11 +223,11 @@ Virtual method to be implemented by the user. Returns the minimum size for this 
 If not overridden, defaults to [constant Vector2.ZERO].
 [b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
 */
-func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -229,7 +235,7 @@ func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb 
 Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
-func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -266,12 +272,12 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _get_drag_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -303,13 +309,13 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, at_position, data)
+		ret := impl(self, at_position, data.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -343,13 +349,13 @@ public override void _DropData(Vector2 atPosition, Variant data)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, at_position, data)
+		impl(self, at_position, data.Interface())
 	}
 }
 
@@ -471,15 +477,15 @@ func (self Instance) AcceptEvent() {
 /*
 Returns the minimum size for this control. See [member custom_minimum_size].
 */
-func (self Instance) GetMinimumSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetMinimumSize())
+func (self Instance) GetMinimumSize() Vector2.XY {
+	return Vector2.XY(class(self).GetMinimumSize())
 }
 
 /*
 Returns combined minimum size from [member custom_minimum_size] and [method get_minimum_size].
 */
-func (self Instance) GetCombinedMinimumSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetCombinedMinimumSize())
+func (self Instance) GetCombinedMinimumSize() Vector2.XY {
+	return Vector2.XY(class(self).GetCombinedMinimumSize())
 }
 
 /*
@@ -511,45 +517,45 @@ Sets the anchor for the specified [enum Side] to [param anchor]. A setter method
 If [param keep_offset] is [code]true[/code], offsets aren't updated after this operation.
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
-func (self Instance) SetAnchor(side Side, anchor float64) {
+func (self Instance) SetAnchor(side Side, anchor Float.X) {
 	class(self).SetAnchor(side, gd.Float(anchor), false, true)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
-func (self Instance) SetAnchorAndOffset(side Side, anchor float64, offset float64) {
+func (self Instance) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X) {
 	class(self).SetAnchorAndOffset(side, gd.Float(anchor), gd.Float(offset), false)
 }
 
 /*
 Sets [member offset_left] and [member offset_top] at the same time. Equivalent of changing [member position].
 */
-func (self Instance) SetBegin(position gd.Vector2) {
-	class(self).SetBegin(position)
+func (self Instance) SetBegin(position Vector2.XY) {
+	class(self).SetBegin(gd.Vector2(position))
 }
 
 /*
 Sets [member offset_right] and [member offset_bottom] at the same time.
 */
-func (self Instance) SetEnd(position gd.Vector2) {
-	class(self).SetEnd(position)
+func (self Instance) SetEnd(position Vector2.XY) {
+	class(self).SetEnd(gd.Vector2(position))
 }
 
 /*
 Sets the [member position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
-func (self Instance) SetPosition(position gd.Vector2) {
-	class(self).SetPosition(position, false)
+func (self Instance) SetPosition(position Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(position), false)
 }
 
 /*
 Sets the size (see [member size]).
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
-func (self Instance) SetSize(size gd.Vector2) {
-	class(self).SetSize(size, false)
+func (self Instance) SetSize(size Vector2.XY) {
+	class(self).SetSize(gd.Vector2(size), false)
 }
 
 /*
@@ -563,29 +569,29 @@ func (self Instance) ResetSize() {
 Sets the [member global_position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
-func (self Instance) SetGlobalPosition(position gd.Vector2) {
-	class(self).SetGlobalPosition(position, false)
+func (self Instance) SetGlobalPosition(position Vector2.XY) {
+	class(self).SetGlobalPosition(gd.Vector2(position), false)
 }
 
 /*
 Returns [member offset_left] and [member offset_top]. See also [member position].
 */
-func (self Instance) GetBegin() gd.Vector2 {
-	return gd.Vector2(class(self).GetBegin())
+func (self Instance) GetBegin() Vector2.XY {
+	return Vector2.XY(class(self).GetBegin())
 }
 
 /*
 Returns [member offset_right] and [member offset_bottom].
 */
-func (self Instance) GetEnd() gd.Vector2 {
-	return gd.Vector2(class(self).GetEnd())
+func (self Instance) GetEnd() Vector2.XY {
+	return Vector2.XY(class(self).GetEnd())
 }
 
 /*
 Returns the width/height occupied in the parent control.
 */
-func (self Instance) GetParentAreaSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetParentAreaSize())
+func (self Instance) GetParentAreaSize() Vector2.XY {
+	return Vector2.XY(class(self).GetParentAreaSize())
 }
 
 /*
@@ -598,8 +604,8 @@ popup_menu.reset_size()
 popup_menu.popup()
 [/codeblock]
 */
-func (self Instance) GetScreenPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetScreenPosition())
+func (self Instance) GetScreenPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetScreenPosition())
 }
 
 /*
@@ -607,8 +613,8 @@ Returns the position and size of the control in the coordinate system of the con
 [b]Note:[/b] If [member rotation] is not the default rotation, the resulting size is not meaningful.
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
-func (self Instance) GetRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRect())
+func (self Instance) GetRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRect())
 }
 
 /*
@@ -616,8 +622,8 @@ Returns the position and size of the control relative to the containing canvas. 
 [b]Note:[/b] If the node itself or any parent [CanvasItem] between the node and the canvas have a non default rotation or skew, the resulting size is likely not meaningful.
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
-func (self Instance) GetGlobalRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetGlobalRect())
+func (self Instance) GetGlobalRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetGlobalRect())
 }
 
 /*
@@ -758,8 +764,8 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddThemeColorOverride(name string, color gd.Color) {
-	class(self).AddThemeColorOverride(gd.NewStringName(name), color)
+func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) {
+	class(self).AddThemeColorOverride(gd.NewStringName(name), gd.Color(color))
 }
 
 /*
@@ -870,8 +876,8 @@ public override void _Ready()
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetThemeColor(name string) gd.Color {
-	return gd.Color(class(self).GetThemeColor(gd.NewStringName(name), gd.NewStringName("")))
+func (self Instance) GetThemeColor(name string) Color.RGBA {
+	return Color.RGBA(class(self).GetThemeColor(gd.NewStringName(name), gd.NewStringName("")))
 }
 
 /*
@@ -982,8 +988,8 @@ func (self Instance) HasThemeConstant(name string) bool {
 Returns the default base scale value from the first matching [Theme] in the tree if that [Theme] has a valid [member Theme.default_base_scale] value.
 See [method get_theme_color] for details.
 */
-func (self Instance) GetThemeDefaultBaseScale() float64 {
-	return float64(float64(class(self).GetThemeDefaultBaseScale()))
+func (self Instance) GetThemeDefaultBaseScale() Float.X {
+	return Float.X(Float.X(class(self).GetThemeDefaultBaseScale()))
 }
 
 /*
@@ -1015,22 +1021,22 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 [b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
 */
 func (self Instance) GetTooltip() string {
-	return string(class(self).GetTooltip(gd.Vector2{0, 0}).String())
+	return string(class(self).GetTooltip(gd.Vector2(gd.Vector2{0, 0})).String())
 }
 
 /*
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
 func (self Instance) GetCursorShape() classdb.ControlCursorShape {
-	return classdb.ControlCursorShape(class(self).GetCursorShape(gd.Vector2{0, 0}))
+	return classdb.ControlCursorShape(class(self).GetCursorShape(gd.Vector2(gd.Vector2{0, 0})))
 }
 
 /*
 Forces drag and bypasses [method _get_drag_data] and [method set_drag_preview] by passing [param data] and [param preview]. Drag will start even if the mouse is neither over nor pressed on this control.
 The methods [method _can_drop_data] and [method _drop_data] must be implemented on controls that want to receive drop data.
 */
-func (self Instance) ForceDrag(data gd.Variant, preview objects.Control) {
-	class(self).ForceDrag(data, preview)
+func (self Instance) ForceDrag(data any, preview objects.Control) {
+	class(self).ForceDrag(gd.NewVariant(data), preview)
 }
 
 /*
@@ -1115,8 +1121,8 @@ func (self Instance) IsDragSuccessful() bool {
 Moves the mouse cursor to [param position], relative to [member position] of this [Control].
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
-func (self Instance) WarpMouse(position gd.Vector2) {
-	class(self).WarpMouse(position)
+func (self Instance) WarpMouse(position Vector2.XY) {
+	class(self).WarpMouse(gd.Vector2(position))
 }
 
 /*
@@ -1152,12 +1158,12 @@ func (self Instance) SetClipContents(value bool) {
 	class(self).SetClipContents(value)
 }
 
-func (self Instance) CustomMinimumSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetCustomMinimumSize())
+func (self Instance) CustomMinimumSize() Vector2.XY {
+	return Vector2.XY(class(self).GetCustomMinimumSize())
 }
 
-func (self Instance) SetCustomMinimumSize(value gd.Vector2) {
-	class(self).SetCustomMinimumSize(value)
+func (self Instance) SetCustomMinimumSize(value Vector2.XY) {
+	class(self).SetCustomMinimumSize(gd.Vector2(value))
 }
 
 func (self Instance) LayoutDirection() classdb.ControlLayoutDirection {
@@ -1168,51 +1174,51 @@ func (self Instance) SetLayoutDirection(value classdb.ControlLayoutDirection) {
 	class(self).SetLayoutDirection(value)
 }
 
-func (self Instance) AnchorLeft() float64 {
-	return float64(float64(class(self).GetAnchor(0)))
+func (self Instance) AnchorLeft() Float.X {
+	return Float.X(Float.X(class(self).GetAnchor(0)))
 }
 
-func (self Instance) AnchorTop() float64 {
-	return float64(float64(class(self).GetAnchor(1)))
+func (self Instance) AnchorTop() Float.X {
+	return Float.X(Float.X(class(self).GetAnchor(1)))
 }
 
-func (self Instance) AnchorRight() float64 {
-	return float64(float64(class(self).GetAnchor(2)))
+func (self Instance) AnchorRight() Float.X {
+	return Float.X(Float.X(class(self).GetAnchor(2)))
 }
 
-func (self Instance) AnchorBottom() float64 {
-	return float64(float64(class(self).GetAnchor(3)))
+func (self Instance) AnchorBottom() Float.X {
+	return Float.X(Float.X(class(self).GetAnchor(3)))
 }
 
-func (self Instance) OffsetLeft() float64 {
-	return float64(float64(class(self).GetOffset(0)))
+func (self Instance) OffsetLeft() Float.X {
+	return Float.X(Float.X(class(self).GetOffset(0)))
 }
 
-func (self Instance) SetOffsetLeft(value float64) {
+func (self Instance) SetOffsetLeft(value Float.X) {
 	class(self).SetOffset(0, gd.Float(value))
 }
 
-func (self Instance) OffsetTop() float64 {
-	return float64(float64(class(self).GetOffset(1)))
+func (self Instance) OffsetTop() Float.X {
+	return Float.X(Float.X(class(self).GetOffset(1)))
 }
 
-func (self Instance) SetOffsetTop(value float64) {
+func (self Instance) SetOffsetTop(value Float.X) {
 	class(self).SetOffset(1, gd.Float(value))
 }
 
-func (self Instance) OffsetRight() float64 {
-	return float64(float64(class(self).GetOffset(2)))
+func (self Instance) OffsetRight() Float.X {
+	return Float.X(Float.X(class(self).GetOffset(2)))
 }
 
-func (self Instance) SetOffsetRight(value float64) {
+func (self Instance) SetOffsetRight(value Float.X) {
 	class(self).SetOffset(2, gd.Float(value))
 }
 
-func (self Instance) OffsetBottom() float64 {
-	return float64(float64(class(self).GetOffset(3)))
+func (self Instance) OffsetBottom() Float.X {
+	return Float.X(Float.X(class(self).GetOffset(3)))
 }
 
-func (self Instance) SetOffsetBottom(value float64) {
+func (self Instance) SetOffsetBottom(value Float.X) {
 	class(self).SetOffset(3, gd.Float(value))
 }
 
@@ -1232,48 +1238,48 @@ func (self Instance) SetGrowVertical(value classdb.ControlGrowDirection) {
 	class(self).SetVGrowDirection(value)
 }
 
-func (self Instance) Size() gd.Vector2 {
-	return gd.Vector2(class(self).GetSize())
+func (self Instance) Size() Vector2.XY {
+	return Vector2.XY(class(self).GetSize())
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) GlobalPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetGlobalPosition())
+func (self Instance) GlobalPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-func (self Instance) Rotation() float64 {
-	return float64(float64(class(self).GetRotation()))
+func (self Instance) Rotation() Float.X {
+	return Float.X(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value float64) {
+func (self Instance) SetRotation(value Float.X) {
 	class(self).SetRotation(gd.Float(value))
 }
 
-func (self Instance) RotationDegrees() float64 {
-	return float64(float64(class(self).GetRotationDegrees()))
+func (self Instance) RotationDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value float64) {
+func (self Instance) SetRotationDegrees(value Float.X) {
 	class(self).SetRotationDegrees(gd.Float(value))
 }
 
-func (self Instance) Scale() gd.Vector2 {
-	return gd.Vector2(class(self).GetScale())
+func (self Instance) Scale() Vector2.XY {
+	return Vector2.XY(class(self).GetScale())
 }
 
-func (self Instance) SetScale(value gd.Vector2) {
-	class(self).SetScale(value)
+func (self Instance) SetScale(value Vector2.XY) {
+	class(self).SetScale(gd.Vector2(value))
 }
 
-func (self Instance) PivotOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetPivotOffset())
+func (self Instance) PivotOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetPivotOffset())
 }
 
-func (self Instance) SetPivotOffset(value gd.Vector2) {
-	class(self).SetPivotOffset(value)
+func (self Instance) SetPivotOffset(value Vector2.XY) {
+	class(self).SetPivotOffset(gd.Vector2(value))
 }
 
 func (self Instance) SizeFlagsHorizontal() classdb.ControlSizeFlags {
@@ -1292,11 +1298,11 @@ func (self Instance) SetSizeFlagsVertical(value classdb.ControlSizeFlags) {
 	class(self).SetVSizeFlags(value)
 }
 
-func (self Instance) SizeFlagsStretchRatio() float64 {
-	return float64(float64(class(self).GetStretchRatio()))
+func (self Instance) SizeFlagsStretchRatio() Float.X {
+	return Float.X(Float.X(class(self).GetStretchRatio()))
 }
 
-func (self Instance) SetSizeFlagsStretchRatio(value float64) {
+func (self Instance) SetSizeFlagsStretchRatio(value Float.X) {
 	class(self).SetStretchRatio(gd.Float(value))
 }
 
@@ -1324,52 +1330,52 @@ func (self Instance) SetTooltipText(value string) {
 	class(self).SetTooltipText(gd.NewString(value))
 }
 
-func (self Instance) FocusNeighborLeft() string {
-	return string(class(self).GetFocusNeighbor(0).String())
+func (self Instance) FocusNeighborLeft() Path.String {
+	return Path.String(class(self).GetFocusNeighbor(0).String())
 }
 
-func (self Instance) SetFocusNeighborLeft(value string) {
-	class(self).SetFocusNeighbor(0, gd.NewString(value).NodePath())
+func (self Instance) SetFocusNeighborLeft(value Path.String) {
+	class(self).SetFocusNeighbor(0, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborTop() string {
-	return string(class(self).GetFocusNeighbor(1).String())
+func (self Instance) FocusNeighborTop() Path.String {
+	return Path.String(class(self).GetFocusNeighbor(1).String())
 }
 
-func (self Instance) SetFocusNeighborTop(value string) {
-	class(self).SetFocusNeighbor(1, gd.NewString(value).NodePath())
+func (self Instance) SetFocusNeighborTop(value Path.String) {
+	class(self).SetFocusNeighbor(1, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborRight() string {
-	return string(class(self).GetFocusNeighbor(2).String())
+func (self Instance) FocusNeighborRight() Path.String {
+	return Path.String(class(self).GetFocusNeighbor(2).String())
 }
 
-func (self Instance) SetFocusNeighborRight(value string) {
-	class(self).SetFocusNeighbor(2, gd.NewString(value).NodePath())
+func (self Instance) SetFocusNeighborRight(value Path.String) {
+	class(self).SetFocusNeighbor(2, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborBottom() string {
-	return string(class(self).GetFocusNeighbor(3).String())
+func (self Instance) FocusNeighborBottom() Path.String {
+	return Path.String(class(self).GetFocusNeighbor(3).String())
 }
 
-func (self Instance) SetFocusNeighborBottom(value string) {
-	class(self).SetFocusNeighbor(3, gd.NewString(value).NodePath())
+func (self Instance) SetFocusNeighborBottom(value Path.String) {
+	class(self).SetFocusNeighbor(3, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNext() string {
-	return string(class(self).GetFocusNext().String())
+func (self Instance) FocusNext() Path.String {
+	return Path.String(class(self).GetFocusNext().String())
 }
 
-func (self Instance) SetFocusNext(value string) {
-	class(self).SetFocusNext(gd.NewString(value).NodePath())
+func (self Instance) SetFocusNext(value Path.String) {
+	class(self).SetFocusNext(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusPrevious() string {
-	return string(class(self).GetFocusPrevious().String())
+func (self Instance) FocusPrevious() Path.String {
+	return Path.String(class(self).GetFocusPrevious().String())
 }
 
-func (self Instance) SetFocusPrevious(value string) {
-	class(self).SetFocusPrevious(gd.NewString(value).NodePath())
+func (self Instance) SetFocusPrevious(value Path.String) {
+	class(self).SetFocusPrevious(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) FocusMode() classdb.ControlFocusMode {

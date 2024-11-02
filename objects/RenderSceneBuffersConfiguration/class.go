@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,28 +33,28 @@ func New() Instance {
 	return Instance{classdb.RenderSceneBuffersConfiguration(object)}
 }
 
-func (self Instance) RenderTarget() gd.RID {
-	return gd.RID(class(self).GetRenderTarget())
+func (self Instance) RenderTarget() Resource.ID {
+	return Resource.ID(class(self).GetRenderTarget())
 }
 
-func (self Instance) SetRenderTarget(value gd.RID) {
+func (self Instance) SetRenderTarget(value Resource.ID) {
 	class(self).SetRenderTarget(value)
 }
 
-func (self Instance) InternalSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetInternalSize())
+func (self Instance) InternalSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetInternalSize())
 }
 
-func (self Instance) SetInternalSize(value gd.Vector2i) {
-	class(self).SetInternalSize(value)
+func (self Instance) SetInternalSize(value Vector2i.XY) {
+	class(self).SetInternalSize(gd.Vector2i(value))
 }
 
-func (self Instance) TargetSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetTargetSize())
+func (self Instance) TargetSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetTargetSize())
 }
 
-func (self Instance) SetTargetSize(value gd.Vector2i) {
-	class(self).SetTargetSize(value)
+func (self Instance) SetTargetSize(value Vector2i.XY) {
+	class(self).SetTargetSize(gd.Vector2i(value))
 }
 
 func (self Instance) ViewCount() int {
@@ -86,19 +89,19 @@ func (self Instance) SetScreenSpaceAa(value classdb.RenderingServerViewportScree
 	class(self).SetScreenSpaceAa(value)
 }
 
-func (self Instance) FsrSharpness() float64 {
-	return float64(float64(class(self).GetFsrSharpness()))
+func (self Instance) FsrSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
-func (self Instance) SetFsrSharpness(value float64) {
+func (self Instance) SetFsrSharpness(value Float.X) {
 	class(self).SetFsrSharpness(gd.Float(value))
 }
 
-func (self Instance) TextureMipmapBias() float64 {
-	return float64(float64(class(self).GetTextureMipmapBias()))
+func (self Instance) TextureMipmapBias() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
-func (self Instance) SetTextureMipmapBias(value float64) {
+func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(gd.Float(value))
 }
 

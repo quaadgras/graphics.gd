@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +27,8 @@ type Instance [1]classdb.PathFollow3D
 /*
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
-func (self Instance) CorrectPosture(transform gd.Transform3D, rotation_mode classdb.PathFollow3DRotationMode) gd.Transform3D {
-	return gd.Transform3D(class(self).CorrectPosture(transform, rotation_mode))
+func (self Instance) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode classdb.PathFollow3DRotationMode) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).CorrectPosture(gd.Transform3D(transform), rotation_mode))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -40,35 +42,35 @@ func New() Instance {
 	return Instance{classdb.PathFollow3D(object)}
 }
 
-func (self Instance) Progress() float64 {
-	return float64(float64(class(self).GetProgress()))
+func (self Instance) Progress() Float.X {
+	return Float.X(Float.X(class(self).GetProgress()))
 }
 
-func (self Instance) SetProgress(value float64) {
+func (self Instance) SetProgress(value Float.X) {
 	class(self).SetProgress(gd.Float(value))
 }
 
-func (self Instance) ProgressRatio() float64 {
-	return float64(float64(class(self).GetProgressRatio()))
+func (self Instance) ProgressRatio() Float.X {
+	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
-func (self Instance) SetProgressRatio(value float64) {
+func (self Instance) SetProgressRatio(value Float.X) {
 	class(self).SetProgressRatio(gd.Float(value))
 }
 
-func (self Instance) HOffset() float64 {
-	return float64(float64(class(self).GetHOffset()))
+func (self Instance) HOffset() Float.X {
+	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
-func (self Instance) SetHOffset(value float64) {
+func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(gd.Float(value))
 }
 
-func (self Instance) VOffset() float64 {
-	return float64(float64(class(self).GetVOffset()))
+func (self Instance) VOffset() Float.X {
+	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
-func (self Instance) SetVOffset(value float64) {
+func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(gd.Float(value))
 }
 

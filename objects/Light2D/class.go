@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,15 +27,15 @@ type Instance [1]classdb.Light2D
 /*
 Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
-func (self Instance) SetHeight(height float64) {
+func (self Instance) SetHeight(height Float.X) {
 	class(self).SetHeight(gd.Float(height))
 }
 
 /*
 Returns the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
-func (self Instance) GetHeight() float64 {
-	return float64(float64(class(self).GetHeight()))
+func (self Instance) GetHeight() Float.X {
+	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -63,19 +65,19 @@ func (self Instance) SetEditorOnly(value bool) {
 	class(self).SetEditorOnly(value)
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) Energy() float64 {
-	return float64(float64(class(self).GetEnergy()))
+func (self Instance) Energy() Float.X {
+	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
-func (self Instance) SetEnergy(value float64) {
+func (self Instance) SetEnergy(value Float.X) {
 	class(self).SetEnergy(gd.Float(value))
 }
 
@@ -135,12 +137,12 @@ func (self Instance) SetShadowEnabled(value bool) {
 	class(self).SetShadowEnabled(value)
 }
 
-func (self Instance) ShadowColor() gd.Color {
-	return gd.Color(class(self).GetShadowColor())
+func (self Instance) ShadowColor() Color.RGBA {
+	return Color.RGBA(class(self).GetShadowColor())
 }
 
-func (self Instance) SetShadowColor(value gd.Color) {
-	class(self).SetShadowColor(value)
+func (self Instance) SetShadowColor(value Color.RGBA) {
+	class(self).SetShadowColor(gd.Color(value))
 }
 
 func (self Instance) ShadowFilter() classdb.Light2DShadowFilter {
@@ -151,11 +153,11 @@ func (self Instance) SetShadowFilter(value classdb.Light2DShadowFilter) {
 	class(self).SetShadowFilter(value)
 }
 
-func (self Instance) ShadowFilterSmooth() float64 {
-	return float64(float64(class(self).GetShadowSmooth()))
+func (self Instance) ShadowFilterSmooth() Float.X {
+	return Float.X(Float.X(class(self).GetShadowSmooth()))
 }
 
-func (self Instance) SetShadowFilterSmooth(value float64) {
+func (self Instance) SetShadowFilterSmooth(value Float.X) {
 	class(self).SetShadowSmooth(gd.Float(value))
 }
 

@@ -13,6 +13,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,44 +31,44 @@ type Instance [1]classdb.ColorPicker
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
-func (self Instance) AddPreset(color gd.Color) {
-	class(self).AddPreset(color)
+func (self Instance) AddPreset(color Color.RGBA) {
+	class(self).AddPreset(gd.Color(color))
 }
 
 /*
 Removes the given color from the list of color presets of this color picker.
 */
-func (self Instance) ErasePreset(color gd.Color) {
-	class(self).ErasePreset(color)
+func (self Instance) ErasePreset(color Color.RGBA) {
+	class(self).ErasePreset(gd.Color(color))
 }
 
 /*
 Returns the list of colors in the presets of the color picker.
 */
-func (self Instance) GetPresets() []gd.Color {
-	return []gd.Color(class(self).GetPresets().AsSlice())
+func (self Instance) GetPresets() []Color.RGBA {
+	return []Color.RGBA(class(self).GetPresets().AsSlice())
 }
 
 /*
 Adds the given color to a list of color recent presets so that it can be picked later. Recent presets are the colors that were picked recently, a new preset is automatically created and added to recent presets when you pick a new color.
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
-func (self Instance) AddRecentPreset(color gd.Color) {
-	class(self).AddRecentPreset(color)
+func (self Instance) AddRecentPreset(color Color.RGBA) {
+	class(self).AddRecentPreset(gd.Color(color))
 }
 
 /*
 Removes the given color from the list of color recent presets of this color picker.
 */
-func (self Instance) EraseRecentPreset(color gd.Color) {
-	class(self).EraseRecentPreset(color)
+func (self Instance) EraseRecentPreset(color Color.RGBA) {
+	class(self).EraseRecentPreset(gd.Color(color))
 }
 
 /*
 Returns the list of colors in the recent presets of the color picker.
 */
-func (self Instance) GetRecentPresets() []gd.Color {
-	return []gd.Color(class(self).GetRecentPresets().AsSlice())
+func (self Instance) GetRecentPresets() []Color.RGBA {
+	return []Color.RGBA(class(self).GetRecentPresets().AsSlice())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -81,12 +82,12 @@ func New() Instance {
 	return Instance{classdb.ColorPicker(object)}
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetPickColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetPickColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetPickColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetPickColor(gd.Color(value))
 }
 
 func (self Instance) EditAlpha() bool {
@@ -453,15 +454,15 @@ func (self class) GetPickerShape() classdb.ColorPickerPickerShapeType {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnColorChanged(cb func(color gd.Color)) {
+func (self Instance) OnColorChanged(cb func(color Color.RGBA)) {
 	self[0].AsObject().Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPresetAdded(cb func(color gd.Color)) {
+func (self Instance) OnPresetAdded(cb func(color Color.RGBA)) {
 	self[0].AsObject().Connect(gd.NewStringName("preset_added"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPresetRemoved(cb func(color gd.Color)) {
+func (self Instance) OnPresetRemoved(cb func(color Color.RGBA)) {
 	self[0].AsObject().Connect(gd.NewStringName("preset_removed"), gd.NewCallable(cb), 0)
 }
 

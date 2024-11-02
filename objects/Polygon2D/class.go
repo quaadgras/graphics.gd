@@ -10,6 +10,11 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +30,8 @@ type Instance [1]classdb.Polygon2D
 /*
 Adds a bone with the specified [param path] and [param weights].
 */
-func (self Instance) AddBone(path string, weights []float32) {
-	class(self).AddBone(gd.NewString(path).NodePath(), gd.NewPackedFloat32Slice(weights))
+func (self Instance) AddBone(path Path.String, weights []float32) {
+	class(self).AddBone(gd.NewString(string(path)).NodePath(), gd.NewPackedFloat32Slice(weights))
 }
 
 /*
@@ -39,8 +44,8 @@ func (self Instance) GetBoneCount() int {
 /*
 Returns the path to the node associated with the specified bone.
 */
-func (self Instance) GetBonePath(index int) string {
-	return string(class(self).GetBonePath(gd.Int(index)).String())
+func (self Instance) GetBonePath(index int) Path.String {
+	return Path.String(class(self).GetBonePath(gd.Int(index)).String())
 }
 
 /*
@@ -67,8 +72,8 @@ func (self Instance) ClearBones() {
 /*
 Sets the path to the node associated with the specified bone.
 */
-func (self Instance) SetBonePath(index int, path string) {
-	class(self).SetBonePath(gd.Int(index), gd.NewString(path).NodePath())
+func (self Instance) SetBonePath(index int, path Path.String) {
+	class(self).SetBonePath(gd.Int(index), gd.NewString(string(path)).NodePath())
 }
 
 /*
@@ -89,20 +94,20 @@ func New() Instance {
 	return Instance{classdb.Polygon2D(object)}
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
 func (self Instance) Antialiased() bool {
@@ -121,36 +126,36 @@ func (self Instance) SetTexture(value objects.Texture2D) {
 	class(self).SetTexture(value)
 }
 
-func (self Instance) TextureOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetTextureOffset())
+func (self Instance) TextureOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetTextureOffset())
 }
 
-func (self Instance) SetTextureOffset(value gd.Vector2) {
-	class(self).SetTextureOffset(value)
+func (self Instance) SetTextureOffset(value Vector2.XY) {
+	class(self).SetTextureOffset(gd.Vector2(value))
 }
 
-func (self Instance) TextureScale() gd.Vector2 {
-	return gd.Vector2(class(self).GetTextureScale())
+func (self Instance) TextureScale() Vector2.XY {
+	return Vector2.XY(class(self).GetTextureScale())
 }
 
-func (self Instance) SetTextureScale(value gd.Vector2) {
-	class(self).SetTextureScale(value)
+func (self Instance) SetTextureScale(value Vector2.XY) {
+	class(self).SetTextureScale(gd.Vector2(value))
 }
 
-func (self Instance) TextureRotation() float64 {
-	return float64(float64(class(self).GetTextureRotation()))
+func (self Instance) TextureRotation() Float.X {
+	return Float.X(Float.X(class(self).GetTextureRotation()))
 }
 
-func (self Instance) SetTextureRotation(value float64) {
+func (self Instance) SetTextureRotation(value Float.X) {
 	class(self).SetTextureRotation(gd.Float(value))
 }
 
-func (self Instance) Skeleton() string {
-	return string(class(self).GetSkeleton().String())
+func (self Instance) Skeleton() Path.String {
+	return Path.String(class(self).GetSkeleton().String())
 }
 
-func (self Instance) SetSkeleton(value string) {
-	class(self).SetSkeleton(gd.NewString(value).NodePath())
+func (self Instance) SetSkeleton(value Path.String) {
+	class(self).SetSkeleton(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) InvertEnabled() bool {
@@ -161,43 +166,43 @@ func (self Instance) SetInvertEnabled(value bool) {
 	class(self).SetInvertEnabled(value)
 }
 
-func (self Instance) InvertBorder() float64 {
-	return float64(float64(class(self).GetInvertBorder()))
+func (self Instance) InvertBorder() Float.X {
+	return Float.X(Float.X(class(self).GetInvertBorder()))
 }
 
-func (self Instance) SetInvertBorder(value float64) {
+func (self Instance) SetInvertBorder(value Float.X) {
 	class(self).SetInvertBorder(gd.Float(value))
 }
 
-func (self Instance) Polygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPolygon().AsSlice())
+func (self Instance) Polygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPolygon().AsSlice())
 }
 
-func (self Instance) SetPolygon(value []gd.Vector2) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPolygon(value []Vector2.XY) {
+	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
-func (self Instance) Uv() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetUv().AsSlice())
+func (self Instance) Uv() []Vector2.XY {
+	return []Vector2.XY(class(self).GetUv().AsSlice())
 }
 
-func (self Instance) SetUv(value []gd.Vector2) {
-	class(self).SetUv(gd.NewPackedVector2Slice(value))
+func (self Instance) SetUv(value []Vector2.XY) {
+	class(self).SetUv(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
-func (self Instance) VertexColors() []gd.Color {
-	return []gd.Color(class(self).GetVertexColors().AsSlice())
+func (self Instance) VertexColors() []Color.RGBA {
+	return []Color.RGBA(class(self).GetVertexColors().AsSlice())
 }
 
-func (self Instance) SetVertexColors(value []gd.Color) {
-	class(self).SetVertexColors(gd.NewPackedColorSlice(value))
+func (self Instance) SetVertexColors(value []Color.RGBA) {
+	class(self).SetVertexColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
 }
 
-func (self Instance) Polygons() gd.Array {
-	return gd.Array(class(self).GetPolygons())
+func (self Instance) Polygons() Array.Any {
+	return Array.Any(class(self).GetPolygons())
 }
 
-func (self Instance) SetPolygons(value gd.Array) {
+func (self Instance) SetPolygons(value Array.Any) {
 	class(self).SetPolygons(value)
 }
 

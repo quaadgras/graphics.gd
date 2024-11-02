@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/AcceptDialog"
 import "grow.graphics/gd/objects/Window"
 import "grow.graphics/gd/objects/Viewport"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -93,8 +94,8 @@ func (self Instance) AddOption(name string, values []string, default_value_index
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
-func (self Instance) GetSelectedOptions() gd.Dictionary {
-	return gd.Dictionary(class(self).GetSelectedOptions())
+func (self Instance) GetSelectedOptions() Dictionary.Any {
+	return Dictionary.Any(class(self).GetSelectedOptions())
 }
 
 /*

@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/ResourceImporter"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -159,7 +161,7 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 		//Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
 		GetResourceType() string
 		//Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
-		GetPriority() float64
+		GetPriority() Float.X
 		//Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
 		GetImportOrder() int
 		//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
@@ -186,10 +188,10 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 		//[/csharp]
 		//[/codeblocks]
 		//Returns [code]true[/code] to make all options always visible.
-		GetOptionVisibility(path string, option_name string, options gd.Dictionary) bool
+		GetOptionVisibility(path string, option_name string, options Dictionary.Any) bool
 		//Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 		//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
-		Import(source_file string, save_path string, options gd.Dictionary, platform_variants gd.Array, gen_files gd.Array) error
+		Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) error
 		//Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
 		//If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
 		CanImportThreaded() bool
@@ -320,7 +322,7 @@ func (Instance) _get_resource_type(impl func(ptr unsafe.Pointer) string) (cb gd.
 /*
 Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
 */
-func (Instance) _get_priority(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_priority(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -369,7 +371,7 @@ public void _GetOptionVisibility(string option, Godot.Collections.Dictionary opt
 [/codeblocks]
 Returns [code]true[/code] to make all options always visible.
 */
-func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, option_name string, options gd.Dictionary) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, option_name string, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -387,7 +389,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 */
-func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_path string, options gd.Dictionary, platform_variants gd.Array, gen_files gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(source_file)
@@ -421,7 +423,7 @@ func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 func (self Instance) AppendImportExternalResource(path string) error {
-	return error(class(self).AppendImportExternalResource(gd.NewString(path), ([1]gd.Dictionary{}[0]), gd.NewString(""), gd.NewVariant(([1]gd.Variant{}[0]))))
+	return error(class(self).AppendImportExternalResource(gd.NewString(path), [1]Dictionary.Any{}[0], gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

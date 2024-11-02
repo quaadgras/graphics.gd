@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,6 +35,10 @@ func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderTexture2D"))
 	return Instance{classdb.PlaceholderTexture2D(object)}
+}
+
+func (self Instance) SetSize(value Vector2.XY) {
+	class(self).SetSize(gd.Vector2(value))
 }
 
 //go:nosplit

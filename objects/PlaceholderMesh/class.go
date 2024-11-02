@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,6 +33,10 @@ func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderMesh"))
 	return Instance{classdb.PlaceholderMesh(object)}
+}
+
+func (self Instance) SetAabb(value AABB.PositionSize) {
+	class(self).SetAabb(gd.AABB(value))
 }
 
 //go:nosplit

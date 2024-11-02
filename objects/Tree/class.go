@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -66,7 +68,7 @@ If [param parent] is [code]null[/code], the root item will be the parent, or the
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
 func (self Instance) CreateItem() objects.TreeItem {
-	return objects.TreeItem(class(self).CreateItem(([1]objects.TreeItem{}[0]), gd.Int(-1)))
+	return objects.TreeItem(class(self).CreateItem([1]objects.TreeItem{}[0], gd.Int(-1)))
 }
 
 /*
@@ -231,29 +233,29 @@ func (self Instance) EditSelected() bool {
 /*
 Returns the rectangle for custom popups. Helper to create custom cell controls that display a popup. See [method TreeItem.set_cell_mode].
 */
-func (self Instance) GetCustomPopupRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetCustomPopupRect())
+func (self Instance) GetCustomPopupRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetCustomPopupRect())
 }
 
 /*
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
-func (self Instance) GetItemAreaRect(item objects.TreeItem) gd.Rect2 {
-	return gd.Rect2(class(self).GetItemAreaRect(item, gd.Int(-1), gd.Int(-1)))
+func (self Instance) GetItemAreaRect(item objects.TreeItem) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetItemAreaRect(item, gd.Int(-1), gd.Int(-1)))
 }
 
 /*
 Returns the tree item at the specified position (relative to the tree origin position).
 */
-func (self Instance) GetItemAtPosition(position gd.Vector2) objects.TreeItem {
-	return objects.TreeItem(class(self).GetItemAtPosition(position))
+func (self Instance) GetItemAtPosition(position Vector2.XY) objects.TreeItem {
+	return objects.TreeItem(class(self).GetItemAtPosition(gd.Vector2(position)))
 }
 
 /*
 Returns the column index at [param position], or -1 if no item is there.
 */
-func (self Instance) GetColumnAtPosition(position gd.Vector2) int {
-	return int(int(class(self).GetColumnAtPosition(position)))
+func (self Instance) GetColumnAtPosition(position Vector2.XY) int {
+	return int(int(class(self).GetColumnAtPosition(gd.Vector2(position))))
 }
 
 /*
@@ -261,15 +263,15 @@ Returns the drop section at [param position], or -100 if no item is there.
 Values -1, 0, or 1 will be returned for the "above item", "on item", and "below item" drop sections, respectively. See [enum DropModeFlags] for a description of each drop section.
 To get the item which the returned drop section is relative to, use [method get_item_at_position].
 */
-func (self Instance) GetDropSectionAtPosition(position gd.Vector2) int {
-	return int(int(class(self).GetDropSectionAtPosition(position)))
+func (self Instance) GetDropSectionAtPosition(position Vector2.XY) int {
+	return int(int(class(self).GetDropSectionAtPosition(gd.Vector2(position))))
 }
 
 /*
 Returns the button ID at [param position], or -1 if no button is there.
 */
-func (self Instance) GetButtonIdAtPosition(position gd.Vector2) int {
-	return int(int(class(self).GetButtonIdAtPosition(position)))
+func (self Instance) GetButtonIdAtPosition(position Vector2.XY) int {
+	return int(int(class(self).GetButtonIdAtPosition(gd.Vector2(position))))
 }
 
 /*
@@ -340,8 +342,8 @@ func (self Instance) GetColumnTitleLanguage(column int) string {
 /*
 Returns the current scrolling position.
 */
-func (self Instance) GetScroll() gd.Vector2 {
-	return gd.Vector2(class(self).GetScroll())
+func (self Instance) GetScroll() Vector2.XY {
+	return Vector2.XY(class(self).GetScroll())
 }
 
 /*
@@ -1224,11 +1226,11 @@ func (self Instance) OnMultiSelected(cb func(item objects.TreeItem, column int, 
 	self[0].AsObject().Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnItemMouseSelected(cb func(mouse_position gd.Vector2, mouse_button_index int)) {
+func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnEmptyClicked(cb func(click_position gd.Vector2, mouse_button_index int)) {
+func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
 }
 

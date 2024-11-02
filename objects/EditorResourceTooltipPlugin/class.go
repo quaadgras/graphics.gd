@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,7 +35,7 @@ A plugin must be first registered with [method FileSystemDock.add_resource_toolt
 		//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
 		//    return base
 		//[/codeblock]
-		MakeTooltipForPath(path string, metadata gd.Dictionary, base objects.Control) objects.Control
+		MakeTooltipForPath(path string, metadata Dictionary.Any, base objects.Control) objects.Control
 	}
 */
 type Instance [1]classdb.EditorResourceTooltipPlugin
@@ -68,7 +69,7 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata gd.Dictionary, base objects.Control) objects.Control) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata Dictionary.Any, base objects.Control) objects.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)

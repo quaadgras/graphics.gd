@@ -3,12 +3,11 @@ package gdextension
 import (
 	"errors"
 	"os"
-	"runtime"
 	"unsafe"
 
+	gd "grow.graphics/gd/internal"
 	internal "grow.graphics/gd/internal"
 
-	"grow.graphics/gd/internal/mmm"
 	"runtime.link/api"
 	"runtime.link/api/stub"
 )
@@ -24,10 +23,6 @@ func init() {
 		}
 	}
 }
-
-type pinner mmm.Pointer[runtime.Pinner, pinner, [0]uintptr]
-
-func (p pinner) Free() { mmm.API(p).Unpin(); mmm.End(p) }
 
 var classDB internal.ExtensionToken
 var dlsymGD func(string) unsafe.Pointer
@@ -49,6 +44,11 @@ func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) ui
 	init.minimum_initialization_level = initializationLevel(internal.GDExtensionInitializationLevelScene)
 	doInitialization(init)
 	return 1
+}
+
+// LibraryPath is the path to the shared library that contains the GD extension.
+func LibraryPath() string {
+	return gd.Global.GetLibraryPath(gd.Global.ExtensionToken).String()
 }
 
 //go:linkname main main.main

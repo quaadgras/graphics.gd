@@ -8,6 +8,11 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +30,8 @@ type Instance [1]classdb.NavigationAgent2D
 /*
 Returns the [RID] of this agent on the [NavigationServer2D].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
@@ -46,36 +51,36 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool {
 /*
 Sets the [RID] of the navigation map this NavigationAgent node should use and also updates the [code]agent[/code] on the NavigationServer.
 */
-func (self Instance) SetNavigationMap(navigation_map gd.RID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
 	class(self).SetNavigationMap(navigation_map)
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
 */
-func (self Instance) GetNavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
 /*
 Returns the next position in global coordinates that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the position of the agent's parent. The use of this function once every physics frame is required to update the internal path logic of the NavigationAgent.
 */
-func (self Instance) GetNextPathPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetNextPathPosition())
+func (self Instance) GetNextPathPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetNextPathPosition())
 }
 
 /*
 Replaces the internal velocity in the collision avoidance simulation with [param velocity]. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
 */
-func (self Instance) SetVelocityForced(velocity gd.Vector2) {
-	class(self).SetVelocityForced(velocity)
+func (self Instance) SetVelocityForced(velocity Vector2.XY) {
+	class(self).SetVelocityForced(gd.Vector2(velocity))
 }
 
 /*
 Returns the distance to the target position, using the agent's global position. The user must set [member target_position] in order for this to be accurate.
 */
-func (self Instance) DistanceToTarget() float64 {
-	return float64(float64(class(self).DistanceToTarget()))
+func (self Instance) DistanceToTarget() Float.X {
+	return Float.X(Float.X(class(self).DistanceToTarget()))
 }
 
 /*
@@ -88,8 +93,8 @@ func (self Instance) GetCurrentNavigationResult() objects.NavigationPathQueryRes
 /*
 Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [method get_next_path_position] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
 */
-func (self Instance) GetCurrentNavigationPath() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetCurrentNavigationPath().AsSlice())
+func (self Instance) GetCurrentNavigationPath() []Vector2.XY {
+	return []Vector2.XY(class(self).GetCurrentNavigationPath().AsSlice())
 }
 
 /*
@@ -124,8 +129,8 @@ func (self Instance) IsNavigationFinished() bool {
 /*
 Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [signal path_changed] signal.
 */
-func (self Instance) GetFinalPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetFinalPosition())
+func (self Instance) GetFinalPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetFinalPosition())
 }
 
 /*
@@ -167,35 +172,35 @@ func New() Instance {
 	return Instance{classdb.NavigationAgent2D(object)}
 }
 
-func (self Instance) TargetPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetTargetPosition())
+func (self Instance) TargetPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetTargetPosition())
 }
 
-func (self Instance) SetTargetPosition(value gd.Vector2) {
-	class(self).SetTargetPosition(value)
+func (self Instance) SetTargetPosition(value Vector2.XY) {
+	class(self).SetTargetPosition(gd.Vector2(value))
 }
 
-func (self Instance) PathDesiredDistance() float64 {
-	return float64(float64(class(self).GetPathDesiredDistance()))
+func (self Instance) PathDesiredDistance() Float.X {
+	return Float.X(Float.X(class(self).GetPathDesiredDistance()))
 }
 
-func (self Instance) SetPathDesiredDistance(value float64) {
+func (self Instance) SetPathDesiredDistance(value Float.X) {
 	class(self).SetPathDesiredDistance(gd.Float(value))
 }
 
-func (self Instance) TargetDesiredDistance() float64 {
-	return float64(float64(class(self).GetTargetDesiredDistance()))
+func (self Instance) TargetDesiredDistance() Float.X {
+	return Float.X(Float.X(class(self).GetTargetDesiredDistance()))
 }
 
-func (self Instance) SetTargetDesiredDistance(value float64) {
+func (self Instance) SetTargetDesiredDistance(value Float.X) {
 	class(self).SetTargetDesiredDistance(gd.Float(value))
 }
 
-func (self Instance) PathMaxDistance() float64 {
-	return float64(float64(class(self).GetPathMaxDistance()))
+func (self Instance) PathMaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetPathMaxDistance()))
 }
 
-func (self Instance) SetPathMaxDistance(value float64) {
+func (self Instance) SetPathMaxDistance(value Float.X) {
 	class(self).SetPathMaxDistance(gd.Float(value))
 }
 
@@ -239,11 +244,11 @@ func (self Instance) SetSimplifyPath(value bool) {
 	class(self).SetSimplifyPath(value)
 }
 
-func (self Instance) SimplifyEpsilon() float64 {
-	return float64(float64(class(self).GetSimplifyEpsilon()))
+func (self Instance) SimplifyEpsilon() Float.X {
+	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
-func (self Instance) SetSimplifyEpsilon(value float64) {
+func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(gd.Float(value))
 }
 
@@ -255,27 +260,27 @@ func (self Instance) SetAvoidanceEnabled(value bool) {
 	class(self).SetAvoidanceEnabled(value)
 }
 
-func (self Instance) Velocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetVelocity())
+func (self Instance) Velocity() Vector2.XY {
+	return Vector2.XY(class(self).GetVelocity())
 }
 
-func (self Instance) SetVelocity(value gd.Vector2) {
-	class(self).SetVelocity(value)
+func (self Instance) SetVelocity(value Vector2.XY) {
+	class(self).SetVelocity(gd.Vector2(value))
 }
 
-func (self Instance) Radius() float64 {
-	return float64(float64(class(self).GetRadius()))
+func (self Instance) Radius() Float.X {
+	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-func (self Instance) SetRadius(value float64) {
+func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(gd.Float(value))
 }
 
-func (self Instance) NeighborDistance() float64 {
-	return float64(float64(class(self).GetNeighborDistance()))
+func (self Instance) NeighborDistance() Float.X {
+	return Float.X(Float.X(class(self).GetNeighborDistance()))
 }
 
-func (self Instance) SetNeighborDistance(value float64) {
+func (self Instance) SetNeighborDistance(value Float.X) {
 	class(self).SetNeighborDistance(gd.Float(value))
 }
 
@@ -287,27 +292,27 @@ func (self Instance) SetMaxNeighbors(value int) {
 	class(self).SetMaxNeighbors(gd.Int(value))
 }
 
-func (self Instance) TimeHorizonAgents() float64 {
-	return float64(float64(class(self).GetTimeHorizonAgents()))
+func (self Instance) TimeHorizonAgents() Float.X {
+	return Float.X(Float.X(class(self).GetTimeHorizonAgents()))
 }
 
-func (self Instance) SetTimeHorizonAgents(value float64) {
+func (self Instance) SetTimeHorizonAgents(value Float.X) {
 	class(self).SetTimeHorizonAgents(gd.Float(value))
 }
 
-func (self Instance) TimeHorizonObstacles() float64 {
-	return float64(float64(class(self).GetTimeHorizonObstacles()))
+func (self Instance) TimeHorizonObstacles() Float.X {
+	return Float.X(Float.X(class(self).GetTimeHorizonObstacles()))
 }
 
-func (self Instance) SetTimeHorizonObstacles(value float64) {
+func (self Instance) SetTimeHorizonObstacles(value Float.X) {
 	class(self).SetTimeHorizonObstacles(gd.Float(value))
 }
 
-func (self Instance) MaxSpeed() float64 {
-	return float64(float64(class(self).GetMaxSpeed()))
+func (self Instance) MaxSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetMaxSpeed()))
 }
 
-func (self Instance) SetMaxSpeed(value float64) {
+func (self Instance) SetMaxSpeed(value Float.X) {
 	class(self).SetMaxSpeed(gd.Float(value))
 }
 
@@ -327,11 +332,11 @@ func (self Instance) SetAvoidanceMask(value int) {
 	class(self).SetAvoidanceMask(gd.Int(value))
 }
 
-func (self Instance) AvoidancePriority() float64 {
-	return float64(float64(class(self).GetAvoidancePriority()))
+func (self Instance) AvoidancePriority() Float.X {
+	return Float.X(Float.X(class(self).GetAvoidancePriority()))
 }
 
-func (self Instance) SetAvoidancePriority(value float64) {
+func (self Instance) SetAvoidancePriority(value Float.X) {
 	class(self).SetAvoidancePriority(gd.Float(value))
 }
 
@@ -351,27 +356,27 @@ func (self Instance) SetDebugUseCustom(value bool) {
 	class(self).SetDebugUseCustom(value)
 }
 
-func (self Instance) DebugPathCustomColor() gd.Color {
-	return gd.Color(class(self).GetDebugPathCustomColor())
+func (self Instance) DebugPathCustomColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDebugPathCustomColor())
 }
 
-func (self Instance) SetDebugPathCustomColor(value gd.Color) {
-	class(self).SetDebugPathCustomColor(value)
+func (self Instance) SetDebugPathCustomColor(value Color.RGBA) {
+	class(self).SetDebugPathCustomColor(gd.Color(value))
 }
 
-func (self Instance) DebugPathCustomPointSize() float64 {
-	return float64(float64(class(self).GetDebugPathCustomPointSize()))
+func (self Instance) DebugPathCustomPointSize() Float.X {
+	return Float.X(Float.X(class(self).GetDebugPathCustomPointSize()))
 }
 
-func (self Instance) SetDebugPathCustomPointSize(value float64) {
+func (self Instance) SetDebugPathCustomPointSize(value Float.X) {
 	class(self).SetDebugPathCustomPointSize(gd.Float(value))
 }
 
-func (self Instance) DebugPathCustomLineWidth() float64 {
-	return float64(float64(class(self).GetDebugPathCustomLineWidth()))
+func (self Instance) DebugPathCustomLineWidth() Float.X {
+	return Float.X(Float.X(class(self).GetDebugPathCustomLineWidth()))
 }
 
-func (self Instance) SetDebugPathCustomLineWidth(value float64) {
+func (self Instance) SetDebugPathCustomLineWidth(value Float.X) {
 	class(self).SetDebugPathCustomLineWidth(gd.Float(value))
 }
 
@@ -1125,11 +1130,11 @@ func (self Instance) OnTargetReached(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnWaypointReached(cb func(details gd.Dictionary)) {
+func (self Instance) OnWaypointReached(cb func(details Dictionary.Any)) {
 	self[0].AsObject().Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnLinkReached(cb func(details gd.Dictionary)) {
+func (self Instance) OnLinkReached(cb func(details Dictionary.Any)) {
 	self[0].AsObject().Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), 0)
 }
 
@@ -1137,7 +1142,7 @@ func (self Instance) OnNavigationFinished(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnVelocityComputed(cb func(safe_velocity gd.Vector2)) {
+func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), 0)
 }
 

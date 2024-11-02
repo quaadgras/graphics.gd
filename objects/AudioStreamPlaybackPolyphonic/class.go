@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStreamPlayback"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,14 +34,14 @@ func (self Instance) PlayStream(stream objects.AudioStream) int {
 /*
 Change the stream volume (in db). The [param stream] argument is an integer ID returned by [method play_stream].
 */
-func (self Instance) SetStreamVolume(stream int, volume_db float64) {
+func (self Instance) SetStreamVolume(stream int, volume_db Float.X) {
 	class(self).SetStreamVolume(gd.Int(stream), gd.Float(volume_db))
 }
 
 /*
 Change the stream pitch scale. The [param stream] argument is an integer ID returned by [method play_stream].
 */
-func (self Instance) SetStreamPitchScale(stream int, pitch_scale float64) {
+func (self Instance) SetStreamPitchScale(stream int, pitch_scale Float.X) {
 	class(self).SetStreamPitchScale(gd.Int(stream), gd.Float(pitch_scale))
 }
 

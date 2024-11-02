@@ -12,6 +12,9 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,12 +30,12 @@ Slots can be configured in the Inspector dock once you add at least one child [C
 
 	// GraphNode methods that can be overridden by a [Class] that extends it.
 	type GraphNode interface {
-		DrawPort(slot_index int, position gd.Vector2i, left bool, color gd.Color)
+		DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA)
 	}
 */
 type Instance [1]classdb.GraphNode
 
-func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position gd.Vector2i, left bool, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var slot_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		var position = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -59,8 +62,8 @@ Additionally, [param draw_stylebox] can be used to enable or disable drawing of 
 Individual properties can also be set using one of the [code]set_slot_*[/code] methods.
 [b]Note:[/b] This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 */
-func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left gd.Color, enable_right_port bool, type_right int, color_right gd.Color) {
-	class(self).SetSlot(gd.Int(slot_index), enable_left_port, gd.Int(type_left), color_left, enable_right_port, gd.Int(type_right), color_right, ([1]objects.Texture2D{}[0]), ([1]objects.Texture2D{}[0]), true)
+func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) {
+	class(self).SetSlot(gd.Int(slot_index), enable_left_port, gd.Int(type_left), gd.Color(color_left), enable_right_port, gd.Int(type_right), gd.Color(color_right), [1]objects.Texture2D{}[0], [1]objects.Texture2D{}[0], true)
 }
 
 /*
@@ -108,15 +111,15 @@ func (self Instance) GetSlotTypeLeft(slot_index int) int {
 /*
 Sets the [Color] of the left (input) side of the slot with the given [param slot_index] to [param color].
 */
-func (self Instance) SetSlotColorLeft(slot_index int, color gd.Color) {
-	class(self).SetSlotColorLeft(gd.Int(slot_index), color)
+func (self Instance) SetSlotColorLeft(slot_index int, color Color.RGBA) {
+	class(self).SetSlotColorLeft(gd.Int(slot_index), gd.Color(color))
 }
 
 /*
 Returns the left (input) [Color] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotColorLeft(slot_index int) gd.Color {
-	return gd.Color(class(self).GetSlotColorLeft(gd.Int(slot_index)))
+func (self Instance) GetSlotColorLeft(slot_index int) Color.RGBA {
+	return Color.RGBA(class(self).GetSlotColorLeft(gd.Int(slot_index)))
 }
 
 /*
@@ -164,15 +167,15 @@ func (self Instance) GetSlotTypeRight(slot_index int) int {
 /*
 Sets the [Color] of the right (output) side of the slot with the given [param slot_index] to [param color].
 */
-func (self Instance) SetSlotColorRight(slot_index int, color gd.Color) {
-	class(self).SetSlotColorRight(gd.Int(slot_index), color)
+func (self Instance) SetSlotColorRight(slot_index int, color Color.RGBA) {
+	class(self).SetSlotColorRight(gd.Int(slot_index), gd.Color(color))
 }
 
 /*
 Returns the right (output) [Color] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotColorRight(slot_index int) gd.Color {
-	return gd.Color(class(self).GetSlotColorRight(gd.Int(slot_index)))
+func (self Instance) GetSlotColorRight(slot_index int) Color.RGBA {
+	return Color.RGBA(class(self).GetSlotColorRight(gd.Int(slot_index)))
 }
 
 /*
@@ -213,8 +216,8 @@ func (self Instance) GetInputPortCount() int {
 /*
 Returns the position of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortPosition(port_idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetInputPortPosition(gd.Int(port_idx)))
+func (self Instance) GetInputPortPosition(port_idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetInputPortPosition(gd.Int(port_idx)))
 }
 
 /*
@@ -227,8 +230,8 @@ func (self Instance) GetInputPortType(port_idx int) int {
 /*
 Returns the [Color] of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortColor(port_idx int) gd.Color {
-	return gd.Color(class(self).GetInputPortColor(gd.Int(port_idx)))
+func (self Instance) GetInputPortColor(port_idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetInputPortColor(gd.Int(port_idx)))
 }
 
 /*
@@ -248,8 +251,8 @@ func (self Instance) GetOutputPortCount() int {
 /*
 Returns the position of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortPosition(port_idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetOutputPortPosition(gd.Int(port_idx)))
+func (self Instance) GetOutputPortPosition(port_idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetOutputPortPosition(gd.Int(port_idx)))
 }
 
 /*
@@ -262,8 +265,8 @@ func (self Instance) GetOutputPortType(port_idx int) int {
 /*
 Returns the [Color] of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortColor(port_idx int) gd.Color {
-	return gd.Color(class(self).GetOutputPortColor(gd.Int(port_idx)))
+func (self Instance) GetOutputPortColor(port_idx int) Color.RGBA {
+	return Color.RGBA(class(self).GetOutputPortColor(gd.Int(port_idx)))
 }
 
 /*

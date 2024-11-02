@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -78,11 +79,11 @@ func (self Instance) SetRepeatW(value classdb.RenderingDeviceSamplerRepeatMode) 
 	class(self).SetRepeatW(value)
 }
 
-func (self Instance) LodBias() float64 {
-	return float64(float64(class(self).GetLodBias()))
+func (self Instance) LodBias() Float.X {
+	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
-func (self Instance) SetLodBias(value float64) {
+func (self Instance) SetLodBias(value Float.X) {
 	class(self).SetLodBias(gd.Float(value))
 }
 
@@ -94,11 +95,11 @@ func (self Instance) SetUseAnisotropy(value bool) {
 	class(self).SetUseAnisotropy(value)
 }
 
-func (self Instance) AnisotropyMax() float64 {
-	return float64(float64(class(self).GetAnisotropyMax()))
+func (self Instance) AnisotropyMax() Float.X {
+	return Float.X(Float.X(class(self).GetAnisotropyMax()))
 }
 
-func (self Instance) SetAnisotropyMax(value float64) {
+func (self Instance) SetAnisotropyMax(value Float.X) {
 	class(self).SetAnisotropyMax(gd.Float(value))
 }
 
@@ -118,19 +119,19 @@ func (self Instance) SetCompareOp(value classdb.RenderingDeviceCompareOperator) 
 	class(self).SetCompareOp(value)
 }
 
-func (self Instance) MinLod() float64 {
-	return float64(float64(class(self).GetMinLod()))
+func (self Instance) MinLod() Float.X {
+	return Float.X(Float.X(class(self).GetMinLod()))
 }
 
-func (self Instance) SetMinLod(value float64) {
+func (self Instance) SetMinLod(value Float.X) {
 	class(self).SetMinLod(gd.Float(value))
 }
 
-func (self Instance) MaxLod() float64 {
-	return float64(float64(class(self).GetMaxLod()))
+func (self Instance) MaxLod() Float.X {
+	return Float.X(Float.X(class(self).GetMaxLod()))
 }
 
-func (self Instance) SetMaxLod(value float64) {
+func (self Instance) SetMaxLod(value Float.X) {
 	class(self).SetMaxLod(gd.Float(value))
 }
 

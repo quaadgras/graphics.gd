@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,28 +33,28 @@ func New() Instance {
 	return Instance{classdb.NavigationPathQueryParameters3D(object)}
 }
 
-func (self Instance) Map() gd.RID {
-	return gd.RID(class(self).GetMap())
+func (self Instance) Map() Resource.ID {
+	return Resource.ID(class(self).GetMap())
 }
 
-func (self Instance) SetMap(value gd.RID) {
+func (self Instance) SetMap(value Resource.ID) {
 	class(self).SetMap(value)
 }
 
-func (self Instance) StartPosition() gd.Vector3 {
-	return gd.Vector3(class(self).GetStartPosition())
+func (self Instance) StartPosition() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetStartPosition())
 }
 
-func (self Instance) SetStartPosition(value gd.Vector3) {
-	class(self).SetStartPosition(value)
+func (self Instance) SetStartPosition(value Vector3.XYZ) {
+	class(self).SetStartPosition(gd.Vector3(value))
 }
 
-func (self Instance) TargetPosition() gd.Vector3 {
-	return gd.Vector3(class(self).GetTargetPosition())
+func (self Instance) TargetPosition() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
-func (self Instance) SetTargetPosition(value gd.Vector3) {
-	class(self).SetTargetPosition(value)
+func (self Instance) SetTargetPosition(value Vector3.XYZ) {
+	class(self).SetTargetPosition(gd.Vector3(value))
 }
 
 func (self Instance) NavigationLayers() int {
@@ -94,11 +97,11 @@ func (self Instance) SetSimplifyPath(value bool) {
 	class(self).SetSimplifyPath(value)
 }
 
-func (self Instance) SimplifyEpsilon() float64 {
-	return float64(float64(class(self).GetSimplifyEpsilon()))
+func (self Instance) SimplifyEpsilon() Float.X {
+	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
-func (self Instance) SetSimplifyEpsilon(value float64) {
+func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(gd.Float(value))
 }
 

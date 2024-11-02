@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -102,11 +103,11 @@ func (self Instance) SetImageFormat(value string) {
 	class(self).SetImageFormat(gd.NewString(value))
 }
 
-func (self Instance) LossyQuality() float64 {
-	return float64(float64(class(self).GetLossyQuality()))
+func (self Instance) LossyQuality() Float.X {
+	return Float.X(Float.X(class(self).GetLossyQuality()))
 }
 
-func (self Instance) SetLossyQuality(value float64) {
+func (self Instance) SetLossyQuality(value Float.X) {
 	class(self).SetLossyQuality(gd.Float(value))
 }
 

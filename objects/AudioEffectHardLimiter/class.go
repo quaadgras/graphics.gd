@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,27 +33,27 @@ func New() Instance {
 	return Instance{classdb.AudioEffectHardLimiter(object)}
 }
 
-func (self Instance) PreGainDb() float64 {
-	return float64(float64(class(self).GetPreGainDb()))
+func (self Instance) PreGainDb() Float.X {
+	return Float.X(Float.X(class(self).GetPreGainDb()))
 }
 
-func (self Instance) SetPreGainDb(value float64) {
+func (self Instance) SetPreGainDb(value Float.X) {
 	class(self).SetPreGainDb(gd.Float(value))
 }
 
-func (self Instance) CeilingDb() float64 {
-	return float64(float64(class(self).GetCeilingDb()))
+func (self Instance) CeilingDb() Float.X {
+	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
-func (self Instance) SetCeilingDb(value float64) {
+func (self Instance) SetCeilingDb(value Float.X) {
 	class(self).SetCeilingDb(gd.Float(value))
 }
 
-func (self Instance) Release() float64 {
-	return float64(float64(class(self).GetRelease()))
+func (self Instance) Release() Float.X {
+	return Float.X(Float.X(class(self).GetRelease()))
 }
 
-func (self Instance) SetRelease(value float64) {
+func (self Instance) SetRelease(value Float.X) {
 	class(self).SetRelease(gd.Float(value))
 }
 

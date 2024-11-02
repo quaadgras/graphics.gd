@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,19 +35,19 @@ func New() Instance {
 	return Instance{classdb.AudioEffectSpectrumAnalyzer(object)}
 }
 
-func (self Instance) BufferLength() float64 {
-	return float64(float64(class(self).GetBufferLength()))
+func (self Instance) BufferLength() Float.X {
+	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-func (self Instance) SetBufferLength(value float64) {
+func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(gd.Float(value))
 }
 
-func (self Instance) TapBackPos() float64 {
-	return float64(float64(class(self).GetTapBackPos()))
+func (self Instance) TapBackPos() Float.X {
+	return Float.X(Float.X(class(self).GetTapBackPos()))
 }
 
-func (self Instance) SetTapBackPos(value float64) {
+func (self Instance) SetTapBackPos(value Float.X) {
 	class(self).SetTapBackPos(gd.Float(value))
 }
 

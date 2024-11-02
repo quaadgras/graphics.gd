@@ -8,6 +8,11 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,22 +39,22 @@ func (self Instance) FindWorld2d() objects.World2D {
 /*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
-func (self Instance) GetFinalTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetFinalTransform())
+func (self Instance) GetFinalTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetFinalTransform())
 }
 
 /*
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
-func (self Instance) GetScreenTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetScreenTransform())
+func (self Instance) GetScreenTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetScreenTransform())
 }
 
 /*
 Returns the visible rectangle in global screen coordinates.
 */
-func (self Instance) GetVisibleRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetVisibleRect())
+func (self Instance) GetVisibleRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetVisibleRect())
 }
 
 /*
@@ -77,8 +82,8 @@ func (self Instance) GetTexture() objects.ViewportTexture {
 /*
 Returns the viewport's RID from the [RenderingServer].
 */
-func (self Instance) GetViewportRid() gd.RID {
-	return gd.RID(class(self).GetViewportRid())
+func (self Instance) GetViewportRid() Resource.ID {
+	return Resource.ID(class(self).GetViewportRid())
 }
 
 /*
@@ -123,16 +128,16 @@ func (self Instance) PushUnhandledInput(event objects.InputEvent) {
 /*
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
-func (self Instance) GetMousePosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetMousePosition())
+func (self Instance) GetMousePosition() Vector2.XY {
+	return Vector2.XY(class(self).GetMousePosition())
 }
 
 /*
 Moves the mouse pointer to the specified position in this [Viewport] using the coordinate system of this [Viewport].
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
-func (self Instance) WarpMouse(position gd.Vector2) {
-	class(self).WarpMouse(position)
+func (self Instance) WarpMouse(position Vector2.XY) {
+	class(self).WarpMouse(gd.Vector2(position))
 }
 
 /*
@@ -145,8 +150,8 @@ func (self Instance) UpdateMouseCursorState() {
 /*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
-func (self Instance) GuiGetDragData() gd.Variant {
-	return gd.Variant(class(self).GuiGetDragData())
+func (self Instance) GuiGetDragData() any {
+	return any(class(self).GuiGetDragData().Interface())
 }
 
 /*
@@ -377,11 +382,11 @@ func (self Instance) SetUseOcclusionCulling(value bool) {
 	class(self).SetUseOcclusionCulling(value)
 }
 
-func (self Instance) MeshLodThreshold() float64 {
-	return float64(float64(class(self).GetMeshLodThreshold()))
+func (self Instance) MeshLodThreshold() Float.X {
+	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
-func (self Instance) SetMeshLodThreshold(value float64) {
+func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(gd.Float(value))
 }
 
@@ -409,27 +414,27 @@ func (self Instance) SetScaling3dMode(value classdb.ViewportScaling3DMode) {
 	class(self).SetScaling3dMode(value)
 }
 
-func (self Instance) Scaling3dScale() float64 {
-	return float64(float64(class(self).GetScaling3dScale()))
+func (self Instance) Scaling3dScale() Float.X {
+	return Float.X(Float.X(class(self).GetScaling3dScale()))
 }
 
-func (self Instance) SetScaling3dScale(value float64) {
+func (self Instance) SetScaling3dScale(value Float.X) {
 	class(self).SetScaling3dScale(gd.Float(value))
 }
 
-func (self Instance) TextureMipmapBias() float64 {
-	return float64(float64(class(self).GetTextureMipmapBias()))
+func (self Instance) TextureMipmapBias() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
-func (self Instance) SetTextureMipmapBias(value float64) {
+func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(gd.Float(value))
 }
 
-func (self Instance) FsrSharpness() float64 {
-	return float64(float64(class(self).GetFsrSharpness()))
+func (self Instance) FsrSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
-func (self Instance) SetFsrSharpness(value float64) {
+func (self Instance) SetFsrSharpness(value Float.X) {
 	class(self).SetFsrSharpness(gd.Float(value))
 }
 
@@ -601,20 +606,20 @@ func (self Instance) SetPositionalShadowAtlasQuad3(value classdb.ViewportPositio
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
 }
 
-func (self Instance) CanvasTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetCanvasTransform())
+func (self Instance) CanvasTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
-func (self Instance) SetCanvasTransform(value gd.Transform2D) {
-	class(self).SetCanvasTransform(value)
+func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) {
+	class(self).SetCanvasTransform(gd.Transform2D(value))
 }
 
-func (self Instance) GlobalCanvasTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetGlobalCanvasTransform())
+func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetGlobalCanvasTransform())
 }
 
-func (self Instance) SetGlobalCanvasTransform(value gd.Transform2D) {
-	class(self).SetGlobalCanvasTransform(value)
+func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) {
+	class(self).SetGlobalCanvasTransform(gd.Transform2D(value))
 }
 
 func (self Instance) CanvasCullMask() int {

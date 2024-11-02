@@ -118,7 +118,7 @@ func (p *Array[S, W, T, P, M]) Index(i int) W { //gd:PackedArray[]
 func (p *Array[S, W, T, P, M]) Append(value W) bool { //gd:PackedArray.append
 	var zero S
 	if p.proxy != ([1]P{}[0]) {
-		return M(&p.proxy).Append(zero.conv(value))
+		return bool(M(&p.proxy).Append(zero.conv(value)))
 	}
 	p.local = append(p.local, value)
 	return true
@@ -242,7 +242,7 @@ func (p *Array[S, W, T, P, M]) Find(value W, from int) int { //gd:PackedArray.fi
 func (p *Array[S, W, T, P, M]) Has(value W) bool { //gd:PackedArray.has
 	var zero S
 	if p.proxy != ([1]P{}[0]) {
-		return M(&p.proxy).Has(zero.conv(value))
+		return bool(M(&p.proxy).Has(zero.conv(value)))
 	}
 	for _, v := range p.local {
 		if v == value {
@@ -275,7 +275,7 @@ func (p *Array[S, W, T, P, M]) Insert(idx int, value W) int { //gd:PackedArray.i
 // IsEmpty returns true if the array is empty.
 func (p *Array[S, W, T, P, M]) IsEmpty() bool { //gd:PackedArray.is_empty
 	if p.proxy != ([1]P{}[0]) {
-		return M(&p.proxy).IsEmpty()
+		return bool(M(&p.proxy).IsEmpty())
 	}
 	return len(p.local) == 0
 }
@@ -284,7 +284,7 @@ func (p *Array[S, W, T, P, M]) IsEmpty() bool { //gd:PackedArray.is_empty
 func (p *Array[S, W, T, P, M]) PushBack(value W) bool { //gd:PackedArray.push_back
 	var zero S
 	if p.proxy != ([1]P{}[0]) {
-		return M(&p.proxy).PushBack(zero.conv(value))
+		return bool(M(&p.proxy).PushBack(zero.conv(value)))
 	}
 	p.local = append(p.local, value)
 	return true

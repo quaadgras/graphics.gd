@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shader"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,8 +32,8 @@ func (self Instance) SetMode(mode classdb.ShaderMode) {
 /*
 Adds the specified [param node] to the shader.
 */
-func (self Instance) AddNode(atype classdb.VisualShaderType, node objects.VisualShaderNode, position gd.Vector2, id int) {
-	class(self).AddNode(atype, node, position, gd.Int(id))
+func (self Instance) AddNode(atype classdb.VisualShaderType, node objects.VisualShaderNode, position Vector2.XY, id int) {
+	class(self).AddNode(atype, node, gd.Vector2(position), gd.Int(id))
 }
 
 /*
@@ -45,15 +46,15 @@ func (self Instance) GetNode(atype classdb.VisualShaderType, id int) objects.Vis
 /*
 Sets the position of the specified node.
 */
-func (self Instance) SetNodePosition(atype classdb.VisualShaderType, id int, position gd.Vector2) {
-	class(self).SetNodePosition(atype, gd.Int(id), position)
+func (self Instance) SetNodePosition(atype classdb.VisualShaderType, id int, position Vector2.XY) {
+	class(self).SetNodePosition(atype, gd.Int(id), gd.Vector2(position))
 }
 
 /*
 Returns the position of the specified node within the shader graph.
 */
-func (self Instance) GetNodePosition(atype classdb.VisualShaderType, id int) gd.Vector2 {
-	return gd.Vector2(class(self).GetNodePosition(atype, gd.Int(id)))
+func (self Instance) GetNodePosition(atype classdb.VisualShaderType, id int) Vector2.XY {
+	return Vector2.XY(class(self).GetNodePosition(atype, gd.Int(id)))
 }
 
 /*
@@ -172,12 +173,12 @@ func New() Instance {
 	return Instance{classdb.VisualShader(object)}
 }
 
-func (self Instance) GraphOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetGraphOffset())
+func (self Instance) GraphOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetGraphOffset())
 }
 
-func (self Instance) SetGraphOffset(value gd.Vector2) {
-	class(self).SetGraphOffset(value)
+func (self Instance) SetGraphOffset(value Vector2.XY) {
+	class(self).SetGraphOffset(gd.Vector2(value))
 }
 
 /*

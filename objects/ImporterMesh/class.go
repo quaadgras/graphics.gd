@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -65,8 +69,8 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurface(primitive classdb.MeshPrimitiveType, arrays gd.Array) {
-	class(self).AddSurface(primitive, arrays, ([1]gd.Array{}[0]), ([1]gd.Dictionary{}[0]), ([1]objects.Material{}[0]), gd.NewString(""), gd.Int(0))
+func (self Instance) AddSurface(primitive classdb.MeshPrimitiveType, arrays Array.Any) {
+	class(self).AddSurface(primitive, arrays, [1]gd.Array{}[0], [1]Dictionary.Any{}[0], [1]objects.Material{}[0], gd.NewString(""), gd.Int(0))
 }
 
 /*
@@ -93,15 +97,15 @@ func (self Instance) GetSurfaceName(surface_idx int) string {
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
-func (self Instance) GetSurfaceArrays(surface_idx int) gd.Array {
-	return gd.Array(class(self).GetSurfaceArrays(gd.Int(surface_idx)))
+func (self Instance) GetSurfaceArrays(surface_idx int) Array.Any {
+	return Array.Any(class(self).GetSurfaceArrays(gd.Int(surface_idx)))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) gd.Array {
-	return gd.Array(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) Array.Any {
+	return Array.Any(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))
 }
 
 /*
@@ -114,8 +118,8 @@ func (self Instance) GetSurfaceLodCount(surface_idx int) int {
 /*
 Returns the screen ratio which activates a lod for a surface.
 */
-func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) float64 {
-	return float64(float64(class(self).GetSurfaceLodSize(gd.Int(surface_idx), gd.Int(lod_idx))))
+func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetSurfaceLodSize(gd.Int(surface_idx), gd.Int(lod_idx))))
 }
 
 /*
@@ -159,7 +163,7 @@ Generates all lods for this ImporterMesh.
 The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Instance) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array gd.Array) {
+func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array Array.Any) {
 	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), bone_transform_array)
 }
 
@@ -169,7 +173,7 @@ This method caches the returned mesh, and subsequent calls will return the cache
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
 func (self Instance) GetMesh() objects.ArrayMesh {
-	return objects.ArrayMesh(class(self).GetMesh(([1]objects.ArrayMesh{}[0])))
+	return objects.ArrayMesh(class(self).GetMesh([1]objects.ArrayMesh{}[0]))
 }
 
 /*
@@ -182,15 +186,15 @@ func (self Instance) Clear() {
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Instance) SetLightmapSizeHint(size gd.Vector2i) {
-	class(self).SetLightmapSizeHint(size)
+func (self Instance) SetLightmapSizeHint(size Vector2i.XY) {
+	class(self).SetLightmapSizeHint(gd.Vector2i(size))
 }
 
 /*
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Instance) GetLightmapSizeHint() gd.Vector2i {
-	return gd.Vector2i(class(self).GetLightmapSizeHint())
+func (self Instance) GetLightmapSizeHint() Vector2i.XY {
+	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

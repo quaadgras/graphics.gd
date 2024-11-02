@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"runtime"
 
+	"grow.graphics/gd"
 	"grow.graphics/gd/variant/Array"
 )
 
@@ -16,6 +17,8 @@ type Func interface {
 	Call(arg ...any) any
 	Bind(args ...any) Func
 }
+
+type Any = gd.Callable
 
 // New returns a new [Func] from the given value, if the value is not a Go func
 // then it will be wrapped as if it were a function without any arguments that

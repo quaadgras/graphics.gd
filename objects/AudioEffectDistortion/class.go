@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,35 +42,35 @@ func (self Instance) SetMode(value classdb.AudioEffectDistortionMode) {
 	class(self).SetMode(value)
 }
 
-func (self Instance) PreGain() float64 {
-	return float64(float64(class(self).GetPreGain()))
+func (self Instance) PreGain() Float.X {
+	return Float.X(Float.X(class(self).GetPreGain()))
 }
 
-func (self Instance) SetPreGain(value float64) {
+func (self Instance) SetPreGain(value Float.X) {
 	class(self).SetPreGain(gd.Float(value))
 }
 
-func (self Instance) KeepHfHz() float64 {
-	return float64(float64(class(self).GetKeepHfHz()))
+func (self Instance) KeepHfHz() Float.X {
+	return Float.X(Float.X(class(self).GetKeepHfHz()))
 }
 
-func (self Instance) SetKeepHfHz(value float64) {
+func (self Instance) SetKeepHfHz(value Float.X) {
 	class(self).SetKeepHfHz(gd.Float(value))
 }
 
-func (self Instance) Drive() float64 {
-	return float64(float64(class(self).GetDrive()))
+func (self Instance) Drive() Float.X {
+	return Float.X(Float.X(class(self).GetDrive()))
 }
 
-func (self Instance) SetDrive(value float64) {
+func (self Instance) SetDrive(value Float.X) {
 	class(self).SetDrive(gd.Float(value))
 }
 
-func (self Instance) PostGain() float64 {
-	return float64(float64(class(self).GetPostGain()))
+func (self Instance) PostGain() Float.X {
+	return Float.X(Float.X(class(self).GetPostGain()))
 }
 
-func (self Instance) SetPostGain(value float64) {
+func (self Instance) SetPostGain(value Float.X) {
 	class(self).SetPostGain(gd.Float(value))
 }
 

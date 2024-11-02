@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -68,11 +69,11 @@ func (self Instance) SetBakeMask(value int) {
 	class(self).SetBakeMask(gd.Int(value))
 }
 
-func (self Instance) BakeSimplificationDistance() float64 {
-	return float64(float64(class(self).GetBakeSimplificationDistance()))
+func (self Instance) BakeSimplificationDistance() Float.X {
+	return Float.X(Float.X(class(self).GetBakeSimplificationDistance()))
 }
 
-func (self Instance) SetBakeSimplificationDistance(value float64) {
+func (self Instance) SetBakeSimplificationDistance(value Float.X) {
 	class(self).SetBakeSimplificationDistance(gd.Float(value))
 }
 

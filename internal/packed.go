@@ -28,7 +28,7 @@ func (p PackedVector4Array) AsSlice() []Vector4 { return Global.PackedVector4Arr
 func (p PackedColorArray) AsSlice() []Color     { return Global.PackedColorArray.CopyAsSlice(p) }
 func (p PackedStringArray) Strings() []string {
 	var s = make([]string, p.Size())
-	for i := int64(0); i < p.Size(); i++ {
+	for i := Int(0); i < p.Size(); i++ {
 		s[i] = p.Index(i).String()
 	}
 	return s
@@ -88,11 +88,11 @@ func (p PackedInt32Array) Len() int { return int(p.Size()) }
 func (p PackedInt32Array) Cap() int { return int(p.Size()) }
 
 func (p PackedInt64Array) Index(idx Int) Int {
-	return Global.PackedInt64Array.Index(p, idx)
+	return Int(Global.PackedInt64Array.Index(p, idx))
 }
 
 func (p PackedInt64Array) SetIndex(idx Int, value Int) {
-	Global.PackedInt64Array.SetIndex(p, idx, value)
+	Global.PackedInt64Array.SetIndex(p, idx, int64(value))
 }
 
 func (p PackedInt64Array) Free() {
@@ -133,12 +133,12 @@ func (p PackedFloat32Array) UnsafePointer() unsafe.Pointer {
 	return Global.PackedFloat32Array.UnsafePointer(p)
 }
 
-func (p PackedFloat64Array) Index(idx Int) float64 {
-	return Global.PackedFloat64Array.Index(p, idx)
+func (p PackedFloat64Array) Index(idx Int) Float {
+	return Float(Global.PackedFloat64Array.Index(p, idx))
 }
 
-func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
-	Global.PackedFloat64Array.SetIndex(p, idx, value)
+func (p PackedFloat64Array) SetIndex(idx Int, value Float) {
+	Global.PackedFloat64Array.SetIndex(p, idx, float64(value))
 }
 
 func (p PackedFloat64Array) Free() {

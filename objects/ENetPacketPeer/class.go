@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PacketPeer"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -107,8 +108,8 @@ func (self Instance) GetRemotePort() int {
 /*
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
-func (self Instance) GetStatistic(statistic classdb.ENetPacketPeerPeerStatistic) float64 {
-	return float64(float64(class(self).GetStatistic(statistic)))
+func (self Instance) GetStatistic(statistic classdb.ENetPacketPeerPeerStatistic) Float.X {
+	return Float.X(Float.X(class(self).GetStatistic(statistic)))
 }
 
 /*

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,17 +24,17 @@ func (self Instance) SetBindCount(bind_count int) {
 func (self Instance) GetBindCount() int {
 	return int(int(class(self).GetBindCount()))
 }
-func (self Instance) AddBind(bone int, pose gd.Transform3D) {
-	class(self).AddBind(gd.Int(bone), pose)
+func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) {
+	class(self).AddBind(gd.Int(bone), gd.Transform3D(pose))
 }
-func (self Instance) AddNamedBind(name string, pose gd.Transform3D) {
-	class(self).AddNamedBind(gd.NewString(name), pose)
+func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) {
+	class(self).AddNamedBind(gd.NewString(name), gd.Transform3D(pose))
 }
-func (self Instance) SetBindPose(bind_index int, pose gd.Transform3D) {
-	class(self).SetBindPose(gd.Int(bind_index), pose)
+func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) {
+	class(self).SetBindPose(gd.Int(bind_index), gd.Transform3D(pose))
 }
-func (self Instance) GetBindPose(bind_index int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBindPose(gd.Int(bind_index)))
+func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBindPose(gd.Int(bind_index)))
 }
 func (self Instance) SetBindName(bind_index int, name string) {
 	class(self).SetBindName(gd.Int(bind_index), gd.NewStringName(name))

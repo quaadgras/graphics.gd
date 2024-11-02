@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,20 +59,20 @@ func (self Instance) SetOneWayCollision(value bool) {
 	class(self).SetOneWayCollision(value)
 }
 
-func (self Instance) OneWayCollisionMargin() float64 {
-	return float64(float64(class(self).GetOneWayCollisionMargin()))
+func (self Instance) OneWayCollisionMargin() Float.X {
+	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
-func (self Instance) SetOneWayCollisionMargin(value float64) {
+func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 	class(self).SetOneWayCollisionMargin(gd.Float(value))
 }
 
-func (self Instance) DebugColor() gd.Color {
-	return gd.Color(class(self).GetDebugColor())
+func (self Instance) DebugColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDebugColor())
 }
 
-func (self Instance) SetDebugColor(value gd.Color) {
-	class(self).SetDebugColor(value)
+func (self Instance) SetDebugColor(value Color.RGBA) {
+	class(self).SetDebugColor(gd.Color(value))
 }
 
 //go:nosplit

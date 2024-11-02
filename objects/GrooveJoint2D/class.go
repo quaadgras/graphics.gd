@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Joint2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,19 +35,19 @@ func New() Instance {
 	return Instance{classdb.GrooveJoint2D(object)}
 }
 
-func (self Instance) Length() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) Length() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
-func (self Instance) SetLength(value float64) {
+func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(gd.Float(value))
 }
 
-func (self Instance) InitialOffset() float64 {
-	return float64(float64(class(self).GetInitialOffset()))
+func (self Instance) InitialOffset() Float.X {
+	return Float.X(Float.X(class(self).GetInitialOffset()))
 }
 
-func (self Instance) SetInitialOffset(value float64) {
+func (self Instance) SetInitialOffset(value Float.X) {
 	class(self).SetInitialOffset(gd.Float(value))
 }
 

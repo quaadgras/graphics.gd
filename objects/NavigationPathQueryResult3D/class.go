@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,12 +38,12 @@ func New() Instance {
 	return Instance{classdb.NavigationPathQueryResult3D(object)}
 }
 
-func (self Instance) Path() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetPath().AsSlice())
+func (self Instance) Path() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetPath().AsSlice())
 }
 
-func (self Instance) SetPath(value []gd.Vector3) {
-	class(self).SetPath(gd.NewPackedVector3Slice(value))
+func (self Instance) SetPath(value []Vector3.XYZ) {
+	class(self).SetPath(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) PathTypes() []int32 {

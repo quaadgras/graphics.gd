@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,8 +25,8 @@ type Instance [1]classdb.Occluder3D
 /*
 Returns the occluder shape's vertex positions.
 */
-func (self Instance) GetVertices() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetVertices().AsSlice())
+func (self Instance) GetVertices() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetVertices().AsSlice())
 }
 
 /*

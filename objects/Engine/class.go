@@ -8,6 +8,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,9 +31,9 @@ func singleton() {
 /*
 Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
 */
-func GetPhysicsInterpolationFraction() float64 {
+func GetPhysicsInterpolationFraction() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetPhysicsInterpolationFraction()))
+	return Float.X(Float.X(class(self).GetPhysicsInterpolationFraction()))
 }
 
 /*
@@ -46,9 +48,9 @@ func GetFramesDrawn() int {
 /*
 Returns the average frames rendered every second (FPS), also known as the framerate.
 */
-func GetFramesPerSecond() float64 {
+func GetFramesPerSecond() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetFramesPerSecond()))
+	return Float.X(Float.X(class(self).GetFramesPerSecond()))
 }
 
 /*
@@ -162,17 +164,17 @@ else
 [/csharp]
 [/codeblocks]
 */
-func GetVersionInfo() gd.Dictionary {
+func GetVersionInfo() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetVersionInfo())
+	return Dictionary.Any(class(self).GetVersionInfo())
 }
 
 /*
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
-func GetAuthorInfo() gd.Dictionary {
+func GetAuthorInfo() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetAuthorInfo())
+	return Dictionary.Any(class(self).GetAuthorInfo())
 }
 
 /*
@@ -191,17 +193,17 @@ func GetCopyrightInfo() gd.Array {
 Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of strings:
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
-func GetDonorInfo() gd.Dictionary {
+func GetDonorInfo() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetDonorInfo())
+	return Dictionary.Any(class(self).GetDonorInfo())
 }
 
 /*
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
-func GetLicenseInfo() gd.Dictionary {
+func GetLicenseInfo() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetLicenseInfo())
+	return Dictionary.Any(class(self).GetLicenseInfo())
 }
 
 /*
@@ -442,19 +444,19 @@ func SetMaxFps(value int) {
 	class(self).SetMaxFps(gd.Int(value))
 }
 
-func TimeScale() float64 {
-	return float64(float64(class(self).GetTimeScale()))
+func TimeScale() Float.X {
+	return Float.X(Float.X(class(self).GetTimeScale()))
 }
 
-func SetTimeScale(value float64) {
+func SetTimeScale(value Float.X) {
 	class(self).SetTimeScale(gd.Float(value))
 }
 
-func PhysicsJitterFix() float64 {
-	return float64(float64(class(self).GetPhysicsJitterFix()))
+func PhysicsJitterFix() Float.X {
+	return Float.X(Float.X(class(self).GetPhysicsJitterFix()))
 }
 
-func SetPhysicsJitterFix(value float64) {
+func SetPhysicsJitterFix(value Float.X) {
 	class(self).SetPhysicsJitterFix(gd.Float(value))
 }
 

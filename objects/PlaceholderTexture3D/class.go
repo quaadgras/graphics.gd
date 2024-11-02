@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture3D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,12 +37,12 @@ func New() Instance {
 	return Instance{classdb.PlaceholderTexture3D(object)}
 }
 
-func (self Instance) Size() gd.Vector3i {
-	return gd.Vector3i(class(self).GetSize())
+func (self Instance) Size() Vector3i.XYZ {
+	return Vector3i.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3i) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3i.XYZ) {
+	class(self).SetSize(gd.Vector3i(value))
 }
 
 //go:nosplit

@@ -22,6 +22,8 @@ type Of[T any] struct {
 	fixed bool
 }
 
+type Any = gd.Array
+
 // New creates a new array with the given elements.
 func New[T any](elements ...T) Of[T] {
 	return Of[T]{
@@ -287,7 +289,7 @@ func IsEmpty[T any](array Of[T]) bool { return array.Size() == 0 } //gd:Array.is
 // IsReadOnly returns true if the array is read-only.
 func IsReadOnly[T any](array Of[T]) bool { //gd:Array.is_read_only
 	if array.array != (gd.Array{}) {
-		return array.array.IsReadOnly()
+		return bool(array.array.IsReadOnly())
 	}
 	return array.fixed
 }

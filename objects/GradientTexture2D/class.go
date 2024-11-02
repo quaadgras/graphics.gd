@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,6 +42,14 @@ func (self Instance) SetGradient(value objects.Gradient) {
 	class(self).SetGradient(value)
 }
 
+func (self Instance) SetWidth(value int) {
+	class(self).SetWidth(gd.Int(value))
+}
+
+func (self Instance) SetHeight(value int) {
+	class(self).SetHeight(gd.Int(value))
+}
+
 func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }
@@ -57,20 +66,20 @@ func (self Instance) SetFill(value classdb.GradientTexture2DFill) {
 	class(self).SetFill(value)
 }
 
-func (self Instance) FillFrom() gd.Vector2 {
-	return gd.Vector2(class(self).GetFillFrom())
+func (self Instance) FillFrom() Vector2.XY {
+	return Vector2.XY(class(self).GetFillFrom())
 }
 
-func (self Instance) SetFillFrom(value gd.Vector2) {
-	class(self).SetFillFrom(value)
+func (self Instance) SetFillFrom(value Vector2.XY) {
+	class(self).SetFillFrom(gd.Vector2(value))
 }
 
-func (self Instance) FillTo() gd.Vector2 {
-	return gd.Vector2(class(self).GetFillTo())
+func (self Instance) FillTo() Vector2.XY {
+	return Vector2.XY(class(self).GetFillTo())
 }
 
-func (self Instance) SetFillTo(value gd.Vector2) {
-	class(self).SetFillTo(value)
+func (self Instance) SetFillTo(value Vector2.XY) {
+	class(self).SetFillTo(gd.Vector2(value))
 }
 
 func (self Instance) Repeat() classdb.GradientTexture2DRepeat {

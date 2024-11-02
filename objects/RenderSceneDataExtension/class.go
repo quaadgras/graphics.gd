@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/RenderSceneData"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Projection"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,17 +25,17 @@ This class allows for a RenderSceneData implementation to be made in GDExtension
 	// RenderSceneDataExtension methods that can be overridden by a [Class] that extends it.
 	type RenderSceneDataExtension interface {
 		//Implement this in GDExtension to return the camera [Transform3D].
-		GetCamTransform() gd.Transform3D
+		GetCamTransform() Transform3D.BasisOrigin
 		//Implement this in GDExtension to return the camera [Projection].
-		GetCamProjection() gd.Projection
+		GetCamProjection() Projection.XYZW
 		//Implement this in GDExtension to return the view count.
 		GetViewCount() int
 		//Implement this in GDExtension to return the eye offset for the given [param view].
-		GetViewEyeOffset(view int) gd.Vector3
+		GetViewEyeOffset(view int) Vector3.XYZ
 		//Implement this in GDExtension to return the view [Projection] for the given [param view].
-		GetViewProjection(view int) gd.Projection
+		GetViewProjection(view int) Projection.XYZW
 		//Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
-		GetUniformBuffer() gd.RID
+		GetUniformBuffer() Resource.ID
 	}
 */
 type Instance [1]classdb.RenderSceneDataExtension
@@ -39,18 +43,18 @@ type Instance [1]classdb.RenderSceneDataExtension
 /*
 Implement this in GDExtension to return the camera [Transform3D].
 */
-func (Instance) _get_cam_transform(impl func(ptr unsafe.Pointer) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_cam_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transform3D(ret))
 	}
 }
 
 /*
 Implement this in GDExtension to return the camera [Projection].
 */
-func (Instance) _get_cam_projection(impl func(ptr unsafe.Pointer) gd.Projection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_cam_projection(impl func(ptr unsafe.Pointer) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -72,19 +76,19 @@ func (Instance) _get_view_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 /*
 Implement this in GDExtension to return the eye offset for the given [param view].
 */
-func (Instance) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view int) gd.Vector3) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector3(ret))
 	}
 }
 
 /*
 Implement this in GDExtension to return the view [Projection] for the given [param view].
 */
-func (Instance) _get_view_projection(impl func(ptr unsafe.Pointer, view int) gd.Projection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_view_projection(impl func(ptr unsafe.Pointer, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -96,7 +100,7 @@ func (Instance) _get_view_projection(impl func(ptr unsafe.Pointer, view int) gd.
 /*
 Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
-func (Instance) _get_uniform_buffer(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_uniform_buffer(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

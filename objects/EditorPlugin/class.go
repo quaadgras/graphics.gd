@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -234,7 +235,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    var state = {"zoom": zoom, "preferred_color": my_color}
 		//    return state
 		//[/codeblock]
-		GetState() gd.Dictionary
+		GetState() Dictionary.Any
 		//Restore the state saved by [method _get_state]. This method is called when the current scene tab is changed in the editor.
 		//[b]Note:[/b] Your plugin must implement [method _get_plugin_name], otherwise it will not be recognized and this method will not be called.
 		//[codeblock]
@@ -242,7 +243,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 		//    zoom = data.get("zoom", 1.0)
 		//    preferred_color = data.get("my_color", Color.WHITE)
 		//[/codeblock]
-		SetState(state gd.Dictionary)
+		SetState(state Dictionary.Any)
 		//Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
 		Clear()
 		//Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
@@ -685,7 +686,7 @@ func _get_state():
 
 [/codeblock]
 */
-func (Instance) _get_state(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_state(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -708,7 +709,7 @@ func _set_state(data):
 
 [/codeblock]
 */
-func (Instance) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(state)
@@ -891,7 +892,7 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc)
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToBottomPanel(control objects.Control, title string) objects.Button {
-	return objects.Button(class(self).AddControlToBottomPanel(control, gd.NewString(title), ([1]objects.Shortcut{}[0])))
+	return objects.Button(class(self).AddControlToBottomPanel(control, gd.NewString(title), [1]objects.Shortcut{}[0]))
 }
 
 /*
@@ -901,7 +902,7 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToDock(slot classdb.EditorPluginDockSlot, control objects.Control) {
-	class(self).AddControlToDock(slot, control, ([1]objects.Shortcut{}[0]))
+	class(self).AddControlToDock(slot, control, [1]objects.Shortcut{}[0])
 }
 
 /*

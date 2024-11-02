@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Shape2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,19 +34,19 @@ func New() Instance {
 	return Instance{classdb.WorldBoundaryShape2D(object)}
 }
 
-func (self Instance) Normal() gd.Vector2 {
-	return gd.Vector2(class(self).GetNormal())
+func (self Instance) Normal() Vector2.XY {
+	return Vector2.XY(class(self).GetNormal())
 }
 
-func (self Instance) SetNormal(value gd.Vector2) {
-	class(self).SetNormal(value)
+func (self Instance) SetNormal(value Vector2.XY) {
+	class(self).SetNormal(gd.Vector2(value))
 }
 
-func (self Instance) Distance() float64 {
-	return float64(float64(class(self).GetDistance()))
+func (self Instance) Distance() Float.X {
+	return Float.X(Float.X(class(self).GetDistance()))
 }
 
-func (self Instance) SetDistance(value float64) {
+func (self Instance) SetDistance(value Float.X) {
 	class(self).SetDistance(gd.Float(value))
 }
 

@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -80,10 +81,10 @@ public partial class CustomMainLoop : MainLoop
 		Initialize()
 		//Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		PhysicsProcess(delta float64) bool
+		PhysicsProcess(delta Float.X) bool
 		//Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		Process(delta float64) bool
+		Process(delta Float.X) bool
 		//Called before the program exits.
 		Finalize()
 	}
@@ -104,11 +105,11 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
-func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, float64(delta))
+		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -117,11 +118,11 @@ func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta float64) bo
 Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
-func (Instance) _process(impl func(ptr unsafe.Pointer, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, float64(delta))
+		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
 	}
 }

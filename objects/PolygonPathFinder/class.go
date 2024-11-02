@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -17,29 +20,29 @@ var _ = pointers.Root
 
 type Instance [1]classdb.PolygonPathFinder
 
-func (self Instance) Setup(points []gd.Vector2, connections []int32) {
-	class(self).Setup(gd.NewPackedVector2Slice(points), gd.NewPackedInt32Slice(connections))
+func (self Instance) Setup(points []Vector2.XY, connections []int32) {
+	class(self).Setup(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedInt32Slice(connections))
 }
-func (self Instance) FindPath(from gd.Vector2, to gd.Vector2) []gd.Vector2 {
-	return []gd.Vector2(class(self).FindPath(from, to).AsSlice())
+func (self Instance) FindPath(from Vector2.XY, to Vector2.XY) []Vector2.XY {
+	return []Vector2.XY(class(self).FindPath(gd.Vector2(from), gd.Vector2(to)).AsSlice())
 }
-func (self Instance) GetIntersections(from gd.Vector2, to gd.Vector2) []gd.Vector2 {
-	return []gd.Vector2(class(self).GetIntersections(from, to).AsSlice())
+func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.XY {
+	return []Vector2.XY(class(self).GetIntersections(gd.Vector2(from), gd.Vector2(to)).AsSlice())
 }
-func (self Instance) GetClosestPoint(point gd.Vector2) gd.Vector2 {
-	return gd.Vector2(class(self).GetClosestPoint(point))
+func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY {
+	return Vector2.XY(class(self).GetClosestPoint(gd.Vector2(point)))
 }
-func (self Instance) IsPointInside(point gd.Vector2) bool {
-	return bool(class(self).IsPointInside(point))
+func (self Instance) IsPointInside(point Vector2.XY) bool {
+	return bool(class(self).IsPointInside(gd.Vector2(point)))
 }
-func (self Instance) SetPointPenalty(idx int, penalty float64) {
+func (self Instance) SetPointPenalty(idx int, penalty Float.X) {
 	class(self).SetPointPenalty(gd.Int(idx), gd.Float(penalty))
 }
-func (self Instance) GetPointPenalty(idx int) float64 {
-	return float64(float64(class(self).GetPointPenalty(gd.Int(idx))))
+func (self Instance) GetPointPenalty(idx int) Float.X {
+	return Float.X(Float.X(class(self).GetPointPenalty(gd.Int(idx))))
 }
-func (self Instance) GetBounds() gd.Rect2 {
-	return gd.Rect2(class(self).GetBounds())
+func (self Instance) GetBounds() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

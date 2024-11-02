@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -59,15 +60,15 @@ func (self Instance) GetStream(index int) objects.AudioStream {
 /*
 Set the probability weight of the stream at the specified index. The higher this value, the more likely that the randomizer will choose this stream during random playback modes.
 */
-func (self Instance) SetStreamProbabilityWeight(index int, weight float64) {
+func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) {
 	class(self).SetStreamProbabilityWeight(gd.Int(index), gd.Float(weight))
 }
 
 /*
 Returns the probability weight associated with the stream at the given index.
 */
-func (self Instance) GetStreamProbabilityWeight(index int) float64 {
-	return float64(float64(class(self).GetStreamProbabilityWeight(gd.Int(index))))
+func (self Instance) GetStreamProbabilityWeight(index int) Float.X {
+	return Float.X(Float.X(class(self).GetStreamProbabilityWeight(gd.Int(index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -89,19 +90,19 @@ func (self Instance) SetPlaybackMode(value classdb.AudioStreamRandomizerPlayback
 	class(self).SetPlaybackMode(value)
 }
 
-func (self Instance) RandomPitch() float64 {
-	return float64(float64(class(self).GetRandomPitch()))
+func (self Instance) RandomPitch() Float.X {
+	return Float.X(Float.X(class(self).GetRandomPitch()))
 }
 
-func (self Instance) SetRandomPitch(value float64) {
+func (self Instance) SetRandomPitch(value Float.X) {
 	class(self).SetRandomPitch(gd.Float(value))
 }
 
-func (self Instance) RandomVolumeOffsetDb() float64 {
-	return float64(float64(class(self).GetRandomVolumeOffsetDb()))
+func (self Instance) RandomVolumeOffsetDb() Float.X {
+	return Float.X(Float.X(class(self).GetRandomVolumeOffsetDb()))
 }
 
-func (self Instance) SetRandomVolumeOffsetDb(value float64) {
+func (self Instance) SetRandomVolumeOffsetDb(value Float.X) {
 	class(self).SetRandomVolumeOffsetDb(gd.Float(value))
 }
 

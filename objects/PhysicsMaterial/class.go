@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,11 +32,11 @@ func New() Instance {
 	return Instance{classdb.PhysicsMaterial(object)}
 }
 
-func (self Instance) Friction() float64 {
-	return float64(float64(class(self).GetFriction()))
+func (self Instance) Friction() Float.X {
+	return Float.X(Float.X(class(self).GetFriction()))
 }
 
-func (self Instance) SetFriction(value float64) {
+func (self Instance) SetFriction(value Float.X) {
 	class(self).SetFriction(gd.Float(value))
 }
 
@@ -47,11 +48,11 @@ func (self Instance) SetRough(value bool) {
 	class(self).SetRough(value)
 }
 
-func (self Instance) Bounce() float64 {
-	return float64(float64(class(self).GetBounce()))
+func (self Instance) Bounce() Float.X {
+	return Float.X(Float.X(class(self).GetBounce()))
 }
 
-func (self Instance) SetBounce(value float64) {
+func (self Instance) SetBounce(value Float.X) {
 	class(self).SetBounce(gd.Float(value))
 }
 

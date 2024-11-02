@@ -11,6 +11,9 @@ import "grow.graphics/gd/objects/Range"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,28 +45,28 @@ func (self Instance) SetFillMode(value int) {
 	class(self).SetFillMode(gd.Int(value))
 }
 
-func (self Instance) RadialInitialAngle() float64 {
-	return float64(float64(class(self).GetRadialInitialAngle()))
+func (self Instance) RadialInitialAngle() Float.X {
+	return Float.X(Float.X(class(self).GetRadialInitialAngle()))
 }
 
-func (self Instance) SetRadialInitialAngle(value float64) {
+func (self Instance) SetRadialInitialAngle(value Float.X) {
 	class(self).SetRadialInitialAngle(gd.Float(value))
 }
 
-func (self Instance) RadialFillDegrees() float64 {
-	return float64(float64(class(self).GetFillDegrees()))
+func (self Instance) RadialFillDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetFillDegrees()))
 }
 
-func (self Instance) SetRadialFillDegrees(value float64) {
+func (self Instance) SetRadialFillDegrees(value Float.X) {
 	class(self).SetFillDegrees(gd.Float(value))
 }
 
-func (self Instance) RadialCenterOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetRadialCenterOffset())
+func (self Instance) RadialCenterOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetRadialCenterOffset())
 }
 
-func (self Instance) SetRadialCenterOffset(value gd.Vector2) {
-	class(self).SetRadialCenterOffset(value)
+func (self Instance) SetRadialCenterOffset(value Vector2.XY) {
+	class(self).SetRadialCenterOffset(gd.Vector2(value))
 }
 
 func (self Instance) NinePatchStretch() bool {
@@ -130,36 +133,36 @@ func (self Instance) SetTextureProgress(value objects.Texture2D) {
 	class(self).SetProgressTexture(value)
 }
 
-func (self Instance) TextureProgressOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetTextureProgressOffset())
+func (self Instance) TextureProgressOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetTextureProgressOffset())
 }
 
-func (self Instance) SetTextureProgressOffset(value gd.Vector2) {
-	class(self).SetTextureProgressOffset(value)
+func (self Instance) SetTextureProgressOffset(value Vector2.XY) {
+	class(self).SetTextureProgressOffset(gd.Vector2(value))
 }
 
-func (self Instance) TintUnder() gd.Color {
-	return gd.Color(class(self).GetTintUnder())
+func (self Instance) TintUnder() Color.RGBA {
+	return Color.RGBA(class(self).GetTintUnder())
 }
 
-func (self Instance) SetTintUnder(value gd.Color) {
-	class(self).SetTintUnder(value)
+func (self Instance) SetTintUnder(value Color.RGBA) {
+	class(self).SetTintUnder(gd.Color(value))
 }
 
-func (self Instance) TintOver() gd.Color {
-	return gd.Color(class(self).GetTintOver())
+func (self Instance) TintOver() Color.RGBA {
+	return Color.RGBA(class(self).GetTintOver())
 }
 
-func (self Instance) SetTintOver(value gd.Color) {
-	class(self).SetTintOver(value)
+func (self Instance) SetTintOver(value Color.RGBA) {
+	class(self).SetTintOver(gd.Color(value))
 }
 
-func (self Instance) TintProgress() gd.Color {
-	return gd.Color(class(self).GetTintProgress())
+func (self Instance) TintProgress() Color.RGBA {
+	return Color.RGBA(class(self).GetTintProgress())
 }
 
-func (self Instance) SetTintProgress(value gd.Color) {
-	class(self).SetTintProgress(value)
+func (self Instance) SetTintProgress(value Color.RGBA) {
+	class(self).SetTintProgress(gd.Color(value))
 }
 
 //go:nosplit

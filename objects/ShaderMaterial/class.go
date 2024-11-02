@@ -28,15 +28,15 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] [param param] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
-func (self Instance) SetShaderParameter(param string, value gd.Variant) {
-	class(self).SetShaderParameter(gd.NewStringName(param), value)
+func (self Instance) SetShaderParameter(param string, value any) {
+	class(self).SetShaderParameter(gd.NewStringName(param), gd.NewVariant(value))
 }
 
 /*
 Returns the current value set for this material of a uniform in the shader.
 */
-func (self Instance) GetShaderParameter(param string) gd.Variant {
-	return gd.Variant(class(self).GetShaderParameter(gd.NewStringName(param)))
+func (self Instance) GetShaderParameter(param string) any {
+	return any(class(self).GetShaderParameter(gd.NewStringName(param)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Viewport"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,20 +34,20 @@ func New() Instance {
 	return Instance{classdb.SubViewport(object)}
 }
 
-func (self Instance) Size() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize())
+func (self Instance) Size() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector2i) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector2i.XY) {
+	class(self).SetSize(gd.Vector2i(value))
 }
 
-func (self Instance) Size2dOverride() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize2dOverride())
+func (self Instance) Size2dOverride() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize2dOverride())
 }
 
-func (self Instance) SetSize2dOverride(value gd.Vector2i) {
-	class(self).SetSize2dOverride(value)
+func (self Instance) SetSize2dOverride(value Vector2i.XY) {
+	class(self).SetSize2dOverride(gd.Vector2i(value))
 }
 
 func (self Instance) Size2dOverrideStretch() bool {

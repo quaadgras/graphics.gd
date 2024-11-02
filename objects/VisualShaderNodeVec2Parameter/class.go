@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeParameter"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,12 +42,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
-func (self Instance) DefaultValue() gd.Vector2 {
-	return gd.Vector2(class(self).GetDefaultValue())
+func (self Instance) DefaultValue() Vector2.XY {
+	return Vector2.XY(class(self).GetDefaultValue())
 }
 
-func (self Instance) SetDefaultValue(value gd.Vector2) {
-	class(self).SetDefaultValue(value)
+func (self Instance) SetDefaultValue(value Vector2.XY) {
+	class(self).SetDefaultValue(gd.Vector2(value))
 }
 
 //go:nosplit

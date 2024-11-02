@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -71,27 +73,27 @@ func New() Instance {
 	return Instance{classdb.MultiplayerSynchronizer(object)}
 }
 
-func (self Instance) RootPath() string {
-	return string(class(self).GetRootPath().String())
+func (self Instance) RootPath() Path.String {
+	return Path.String(class(self).GetRootPath().String())
 }
 
-func (self Instance) SetRootPath(value string) {
-	class(self).SetRootPath(gd.NewString(value).NodePath())
+func (self Instance) SetRootPath(value Path.String) {
+	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) ReplicationInterval() float64 {
-	return float64(float64(class(self).GetReplicationInterval()))
+func (self Instance) ReplicationInterval() Float.X {
+	return Float.X(Float.X(class(self).GetReplicationInterval()))
 }
 
-func (self Instance) SetReplicationInterval(value float64) {
+func (self Instance) SetReplicationInterval(value Float.X) {
 	class(self).SetReplicationInterval(gd.Float(value))
 }
 
-func (self Instance) DeltaInterval() float64 {
-	return float64(float64(class(self).GetDeltaInterval()))
+func (self Instance) DeltaInterval() Float.X {
+	return Float.X(Float.X(class(self).GetDeltaInterval()))
 }
 
-func (self Instance) SetDeltaInterval(value float64) {
+func (self Instance) SetDeltaInterval(value Float.X) {
 	class(self).SetDeltaInterval(gd.Float(value))
 }
 

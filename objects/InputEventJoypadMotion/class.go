@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,11 +41,11 @@ func (self Instance) SetAxis(value JoyAxis) {
 	class(self).SetAxis(value)
 }
 
-func (self Instance) AxisValue() float64 {
-	return float64(float64(class(self).GetAxisValue()))
+func (self Instance) AxisValue() Float.X {
+	return Float.X(Float.X(class(self).GetAxisValue()))
 }
 
-func (self Instance) SetAxisValue(value float64) {
+func (self Instance) SetAxisValue(value Float.X) {
 	class(self).SetAxisValue(gd.Float(value))
 }
 

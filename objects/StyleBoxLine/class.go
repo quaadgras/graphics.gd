@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/StyleBox"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,27 +34,27 @@ func New() Instance {
 	return Instance{classdb.StyleBoxLine(object)}
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) GrowBegin() float64 {
-	return float64(float64(class(self).GetGrowBegin()))
+func (self Instance) GrowBegin() Float.X {
+	return Float.X(Float.X(class(self).GetGrowBegin()))
 }
 
-func (self Instance) SetGrowBegin(value float64) {
+func (self Instance) SetGrowBegin(value Float.X) {
 	class(self).SetGrowBegin(gd.Float(value))
 }
 
-func (self Instance) GrowEnd() float64 {
-	return float64(float64(class(self).GetGrowEnd()))
+func (self Instance) GrowEnd() Float.X {
+	return Float.X(Float.X(class(self).GetGrowEnd()))
 }
 
-func (self Instance) SetGrowEnd(value float64) {
+func (self Instance) SetGrowEnd(value Float.X) {
 	class(self).SetGrowEnd(gd.Float(value))
 }
 

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -43,20 +44,20 @@ func (self Instance) SetAtlas(value objects.Texture2D) {
 	class(self).SetAtlas(value)
 }
 
-func (self Instance) Region() gd.Rect2 {
-	return gd.Rect2(class(self).GetRegion())
+func (self Instance) Region() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRegion())
 }
 
-func (self Instance) SetRegion(value gd.Rect2) {
-	class(self).SetRegion(value)
+func (self Instance) SetRegion(value Rect2.PositionSize) {
+	class(self).SetRegion(gd.Rect2(value))
 }
 
-func (self Instance) Margin() gd.Rect2 {
-	return gd.Rect2(class(self).GetMargin())
+func (self Instance) Margin() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetMargin())
 }
 
-func (self Instance) SetMargin(value gd.Rect2) {
-	class(self).SetMargin(value)
+func (self Instance) SetMargin(value Rect2.PositionSize) {
+	class(self).SetMargin(gd.Rect2(value))
 }
 
 func (self Instance) FilterClip() bool {

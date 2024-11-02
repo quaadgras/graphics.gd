@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,12 +50,12 @@ func (self Instance) SetDrawCenter(value bool) {
 	class(self).SetDrawCenter(value)
 }
 
-func (self Instance) RegionRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRegionRect())
+func (self Instance) RegionRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-func (self Instance) SetRegionRect(value gd.Rect2) {
-	class(self).SetRegionRect(value)
+func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+	class(self).SetRegionRect(gd.Rect2(value))
 }
 
 func (self Instance) PatchMarginLeft() int {

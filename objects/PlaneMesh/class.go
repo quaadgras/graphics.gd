@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,12 +36,12 @@ func New() Instance {
 	return Instance{classdb.PlaneMesh(object)}
 }
 
-func (self Instance) Size() gd.Vector2 {
-	return gd.Vector2(class(self).GetSize())
+func (self Instance) Size() Vector2.XY {
+	return Vector2.XY(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector2) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector2.XY) {
+	class(self).SetSize(gd.Vector2(value))
 }
 
 func (self Instance) SubdivideWidth() int {
@@ -58,12 +60,12 @@ func (self Instance) SetSubdivideDepth(value int) {
 	class(self).SetSubdivideDepth(gd.Int(value))
 }
 
-func (self Instance) CenterOffset() gd.Vector3 {
-	return gd.Vector3(class(self).GetCenterOffset())
+func (self Instance) CenterOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCenterOffset())
 }
 
-func (self Instance) SetCenterOffset(value gd.Vector3) {
-	class(self).SetCenterOffset(value)
+func (self Instance) SetCenterOffset(value Vector3.XYZ) {
+	class(self).SetCenterOffset(gd.Vector3(value))
 }
 
 func (self Instance) Orientation() classdb.PlaneMeshOrientation {

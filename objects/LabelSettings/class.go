@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,11 +34,11 @@ func New() Instance {
 	return Instance{classdb.LabelSettings(object)}
 }
 
-func (self Instance) LineSpacing() float64 {
-	return float64(float64(class(self).GetLineSpacing()))
+func (self Instance) LineSpacing() Float.X {
+	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
-func (self Instance) SetLineSpacing(value float64) {
+func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(gd.Float(value))
 }
 
@@ -55,12 +58,12 @@ func (self Instance) SetFontSize(value int) {
 	class(self).SetFontSize(gd.Int(value))
 }
 
-func (self Instance) FontColor() gd.Color {
-	return gd.Color(class(self).GetFontColor())
+func (self Instance) FontColor() Color.RGBA {
+	return Color.RGBA(class(self).GetFontColor())
 }
 
-func (self Instance) SetFontColor(value gd.Color) {
-	class(self).SetFontColor(value)
+func (self Instance) SetFontColor(value Color.RGBA) {
+	class(self).SetFontColor(gd.Color(value))
 }
 
 func (self Instance) OutlineSize() int {
@@ -71,12 +74,12 @@ func (self Instance) SetOutlineSize(value int) {
 	class(self).SetOutlineSize(gd.Int(value))
 }
 
-func (self Instance) OutlineColor() gd.Color {
-	return gd.Color(class(self).GetOutlineColor())
+func (self Instance) OutlineColor() Color.RGBA {
+	return Color.RGBA(class(self).GetOutlineColor())
 }
 
-func (self Instance) SetOutlineColor(value gd.Color) {
-	class(self).SetOutlineColor(value)
+func (self Instance) SetOutlineColor(value Color.RGBA) {
+	class(self).SetOutlineColor(gd.Color(value))
 }
 
 func (self Instance) ShadowSize() int {
@@ -87,20 +90,20 @@ func (self Instance) SetShadowSize(value int) {
 	class(self).SetShadowSize(gd.Int(value))
 }
 
-func (self Instance) ShadowColor() gd.Color {
-	return gd.Color(class(self).GetShadowColor())
+func (self Instance) ShadowColor() Color.RGBA {
+	return Color.RGBA(class(self).GetShadowColor())
 }
 
-func (self Instance) SetShadowColor(value gd.Color) {
-	class(self).SetShadowColor(value)
+func (self Instance) SetShadowColor(value Color.RGBA) {
+	class(self).SetShadowColor(gd.Color(value))
 }
 
-func (self Instance) ShadowOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetShadowOffset())
+func (self Instance) ShadowOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetShadowOffset())
 }
 
-func (self Instance) SetShadowOffset(value gd.Vector2) {
-	class(self).SetShadowOffset(value)
+func (self Instance) SetShadowOffset(value Vector2.XY) {
+	class(self).SetShadowOffset(gd.Vector2(value))
 }
 
 //go:nosplit

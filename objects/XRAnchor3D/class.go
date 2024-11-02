@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRNode3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Plane"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,15 +29,15 @@ type Instance [1]classdb.XRAnchor3D
 /*
 Returns the estimated size of the plane that was detected. Say when the anchor relates to a table in the real world, this is the estimated size of the surface of that table.
 */
-func (self Instance) GetSize() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) GetSize() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
 /*
 Returns a plane aligned with our anchor; handy for intersection testing.
 */
-func (self Instance) GetPlane() gd.Plane {
-	return gd.Plane(class(self).GetPlane())
+func (self Instance) GetPlane() Plane.NormalD {
+	return Plane.NormalD(class(self).GetPlane())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

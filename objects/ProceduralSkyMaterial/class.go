@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,35 +36,35 @@ func New() Instance {
 	return Instance{classdb.ProceduralSkyMaterial(object)}
 }
 
-func (self Instance) SkyTopColor() gd.Color {
-	return gd.Color(class(self).GetSkyTopColor())
+func (self Instance) SkyTopColor() Color.RGBA {
+	return Color.RGBA(class(self).GetSkyTopColor())
 }
 
-func (self Instance) SetSkyTopColor(value gd.Color) {
-	class(self).SetSkyTopColor(value)
+func (self Instance) SetSkyTopColor(value Color.RGBA) {
+	class(self).SetSkyTopColor(gd.Color(value))
 }
 
-func (self Instance) SkyHorizonColor() gd.Color {
-	return gd.Color(class(self).GetSkyHorizonColor())
+func (self Instance) SkyHorizonColor() Color.RGBA {
+	return Color.RGBA(class(self).GetSkyHorizonColor())
 }
 
-func (self Instance) SetSkyHorizonColor(value gd.Color) {
-	class(self).SetSkyHorizonColor(value)
+func (self Instance) SetSkyHorizonColor(value Color.RGBA) {
+	class(self).SetSkyHorizonColor(gd.Color(value))
 }
 
-func (self Instance) SkyCurve() float64 {
-	return float64(float64(class(self).GetSkyCurve()))
+func (self Instance) SkyCurve() Float.X {
+	return Float.X(Float.X(class(self).GetSkyCurve()))
 }
 
-func (self Instance) SetSkyCurve(value float64) {
+func (self Instance) SetSkyCurve(value Float.X) {
 	class(self).SetSkyCurve(gd.Float(value))
 }
 
-func (self Instance) SkyEnergyMultiplier() float64 {
-	return float64(float64(class(self).GetSkyEnergyMultiplier()))
+func (self Instance) SkyEnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetSkyEnergyMultiplier()))
 }
 
-func (self Instance) SetSkyEnergyMultiplier(value float64) {
+func (self Instance) SetSkyEnergyMultiplier(value Float.X) {
 	class(self).SetSkyEnergyMultiplier(gd.Float(value))
 }
 
@@ -74,59 +76,59 @@ func (self Instance) SetSkyCover(value objects.Texture2D) {
 	class(self).SetSkyCover(value)
 }
 
-func (self Instance) SkyCoverModulate() gd.Color {
-	return gd.Color(class(self).GetSkyCoverModulate())
+func (self Instance) SkyCoverModulate() Color.RGBA {
+	return Color.RGBA(class(self).GetSkyCoverModulate())
 }
 
-func (self Instance) SetSkyCoverModulate(value gd.Color) {
-	class(self).SetSkyCoverModulate(value)
+func (self Instance) SetSkyCoverModulate(value Color.RGBA) {
+	class(self).SetSkyCoverModulate(gd.Color(value))
 }
 
-func (self Instance) GroundBottomColor() gd.Color {
-	return gd.Color(class(self).GetGroundBottomColor())
+func (self Instance) GroundBottomColor() Color.RGBA {
+	return Color.RGBA(class(self).GetGroundBottomColor())
 }
 
-func (self Instance) SetGroundBottomColor(value gd.Color) {
-	class(self).SetGroundBottomColor(value)
+func (self Instance) SetGroundBottomColor(value Color.RGBA) {
+	class(self).SetGroundBottomColor(gd.Color(value))
 }
 
-func (self Instance) GroundHorizonColor() gd.Color {
-	return gd.Color(class(self).GetGroundHorizonColor())
+func (self Instance) GroundHorizonColor() Color.RGBA {
+	return Color.RGBA(class(self).GetGroundHorizonColor())
 }
 
-func (self Instance) SetGroundHorizonColor(value gd.Color) {
-	class(self).SetGroundHorizonColor(value)
+func (self Instance) SetGroundHorizonColor(value Color.RGBA) {
+	class(self).SetGroundHorizonColor(gd.Color(value))
 }
 
-func (self Instance) GroundCurve() float64 {
-	return float64(float64(class(self).GetGroundCurve()))
+func (self Instance) GroundCurve() Float.X {
+	return Float.X(Float.X(class(self).GetGroundCurve()))
 }
 
-func (self Instance) SetGroundCurve(value float64) {
+func (self Instance) SetGroundCurve(value Float.X) {
 	class(self).SetGroundCurve(gd.Float(value))
 }
 
-func (self Instance) GroundEnergyMultiplier() float64 {
-	return float64(float64(class(self).GetGroundEnergyMultiplier()))
+func (self Instance) GroundEnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetGroundEnergyMultiplier()))
 }
 
-func (self Instance) SetGroundEnergyMultiplier(value float64) {
+func (self Instance) SetGroundEnergyMultiplier(value Float.X) {
 	class(self).SetGroundEnergyMultiplier(gd.Float(value))
 }
 
-func (self Instance) SunAngleMax() float64 {
-	return float64(float64(class(self).GetSunAngleMax()))
+func (self Instance) SunAngleMax() Float.X {
+	return Float.X(Float.X(class(self).GetSunAngleMax()))
 }
 
-func (self Instance) SetSunAngleMax(value float64) {
+func (self Instance) SetSunAngleMax(value Float.X) {
 	class(self).SetSunAngleMax(gd.Float(value))
 }
 
-func (self Instance) SunCurve() float64 {
-	return float64(float64(class(self).GetSunCurve()))
+func (self Instance) SunCurve() Float.X {
+	return Float.X(Float.X(class(self).GetSunCurve()))
 }
 
-func (self Instance) SetSunCurve(value float64) {
+func (self Instance) SetSunCurve(value Float.X) {
 	class(self).SetSunCurve(gd.Float(value))
 }
 
@@ -138,11 +140,11 @@ func (self Instance) SetUseDebanding(value bool) {
 	class(self).SetUseDebanding(value)
 }
 
-func (self Instance) EnergyMultiplier() float64 {
-	return float64(float64(class(self).GetEnergyMultiplier()))
+func (self Instance) EnergyMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-func (self Instance) SetEnergyMultiplier(value float64) {
+func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(gd.Float(value))
 }
 

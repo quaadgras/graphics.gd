@@ -21,6 +21,8 @@ type Map[K comparable, V any] struct {
 	fixed bool
 }
 
+type Any = gd.Dictionary
+
 func New[K comparable, V any]() Map[K, V] {
 	return Map[K, V]{
 		value: make(map[K]V),
@@ -83,7 +85,7 @@ func Duplicate[K comparable, V any](m *Map[K, V]) Map[K, V] { //gd:Dictionary.du
 // iterate over the keys array instead.
 func (m *Map[K, V]) Erase(key K) bool { //gd:Dictionary.erase
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.Erase(variant.New(key))
+		return bool(m.proxy.Erase(variant.New(key)))
 	}
 	if _, ok := m.value[key]; !ok {
 		return false
@@ -130,7 +132,7 @@ func (m *Map[K, V]) GetOrAdd(key K, value V) V { //gd:Dictionary.get_or_add
 // Has returns true if the dictionary contains an entry with the given key.
 func (m *Map[K, V]) Has(key K) bool { //gd:Dictionary.has
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.Has(variant.New(key))
+		return bool(m.proxy.Has(variant.New(key)))
 	}
 	_, ok := m.value[key]
 	return ok
@@ -157,7 +159,7 @@ func (m *Map[K, V]) Hash() uint32 { //gd:Dictionary.hash
 // IsEmpty returns true if the dictionary is empty.
 func (m *Map[K, V]) IsEmpty() bool { //gd:Dictionary.is_empty
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.IsEmpty()
+		return bool(m.proxy.IsEmpty())
 	}
 	return len(m.value) == 0
 }
@@ -165,7 +167,7 @@ func (m *Map[K, V]) IsEmpty() bool { //gd:Dictionary.is_empty
 // IsReadOnly returns true if the dictionary is read-only.
 func (m *Map[K, V]) IsReadOnly() bool { //gd:Dictionary.is_read_only
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.IsReadOnly()
+		return bool(m.proxy.IsReadOnly())
 	}
 	return m.fixed
 }
@@ -217,7 +219,7 @@ func Merged[K comparable, V any](a *Map[K, V], b Map[K, V]) Map[K, V] { //gd:Dic
 // values, inner Dictionary and Array keys and values are compared recursively.
 func (m *Map[K, V]) RecursivelyEqualTo(other Map[K, V]) bool { //gd:Dictionary.recursive_equal
 	if m.proxy != (gd.Dictionary{}) && other.proxy != (gd.Dictionary{}) {
-		return m.proxy.RecursiveEqual(other.proxy, -1)
+		return bool(m.proxy.RecursiveEqual(other.proxy, -1))
 	}
 	if len(m.order) != len(other.order) {
 		return false

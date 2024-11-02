@@ -9,6 +9,12 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Projection"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,22 +30,22 @@ type Instance [1]classdb.Camera3D
 /*
 Returns a normal vector in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
-func (self Instance) ProjectRayNormal(screen_point gd.Vector2) gd.Vector3 {
-	return gd.Vector3(class(self).ProjectRayNormal(screen_point))
+func (self Instance) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ProjectRayNormal(gd.Vector2(screen_point)))
 }
 
 /*
 Returns a normal vector from the screen point location directed along the camera. Orthogonal cameras are normalized. Perspective cameras account for perspective, screen width/height, etc.
 */
-func (self Instance) ProjectLocalRayNormal(screen_point gd.Vector2) gd.Vector3 {
-	return gd.Vector3(class(self).ProjectLocalRayNormal(screen_point))
+func (self Instance) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ProjectLocalRayNormal(gd.Vector2(screen_point)))
 }
 
 /*
 Returns a 3D position in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
-func (self Instance) ProjectRayOrigin(screen_point gd.Vector2) gd.Vector3 {
-	return gd.Vector3(class(self).ProjectRayOrigin(screen_point))
+func (self Instance) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ProjectRayOrigin(gd.Vector2(screen_point)))
 }
 
 /*
@@ -52,44 +58,44 @@ control.visible = not get_viewport().get_camera_3d().is_position_behind(global_t
 control.position = get_viewport().get_camera_3d().unproject_position(global_transform.origin)
 [/codeblock]
 */
-func (self Instance) UnprojectPosition(world_point gd.Vector3) gd.Vector2 {
-	return gd.Vector2(class(self).UnprojectPosition(world_point))
+func (self Instance) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY {
+	return Vector2.XY(class(self).UnprojectPosition(gd.Vector3(world_point)))
 }
 
 /*
 Returns [code]true[/code] if the given position is behind the camera (the blue part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 [b]Note:[/b] A position which returns [code]false[/code] may still be outside the camera's field of view.
 */
-func (self Instance) IsPositionBehind(world_point gd.Vector3) bool {
-	return bool(class(self).IsPositionBehind(world_point))
+func (self Instance) IsPositionBehind(world_point Vector3.XYZ) bool {
+	return bool(class(self).IsPositionBehind(gd.Vector3(world_point)))
 }
 
 /*
 Returns the 3D point in world space that maps to the given 2D coordinate in the [Viewport] rectangle on a plane that is the given [param z_depth] distance into the scene away from the camera.
 */
-func (self Instance) ProjectPosition(screen_point gd.Vector2, z_depth float64) gd.Vector3 {
-	return gd.Vector3(class(self).ProjectPosition(screen_point, gd.Float(z_depth)))
+func (self Instance) ProjectPosition(screen_point Vector2.XY, z_depth Float.X) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ProjectPosition(gd.Vector2(screen_point), gd.Float(z_depth)))
 }
 
 /*
 Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPECTIVE]), by specifying a [param fov] (field of view) angle in degrees, and the [param z_near] and [param z_far] clip planes in world space units.
 */
-func (self Instance) SetPerspective(fov float64, z_near float64, z_far float64) {
+func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) {
 	class(self).SetPerspective(gd.Float(fov), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets the camera projection to orthogonal mode (see [constant PROJECTION_ORTHOGONAL]), by specifying a [param size], and the [param z_near] and [param z_far] clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 */
-func (self Instance) SetOrthogonal(size float64, z_near float64, z_far float64) {
+func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) {
 	class(self).SetOrthogonal(gd.Float(size), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets the camera projection to frustum mode (see [constant PROJECTION_FRUSTUM]), by specifying a [param size], an [param offset], and the [param z_near] and [param z_far] clip planes in world space units. See also [member frustum_offset].
 */
-func (self Instance) SetFrustum(size float64, offset gd.Vector2, z_near float64, z_far float64) {
-	class(self).SetFrustum(gd.Float(size), offset, gd.Float(z_near), gd.Float(z_far))
+func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) {
+	class(self).SetFrustum(gd.Float(size), gd.Vector2(offset), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
@@ -109,15 +115,15 @@ func (self Instance) ClearCurrent() {
 /*
 Returns the transform of the camera plus the vertical ([member v_offset]) and horizontal ([member h_offset]) offsets; and any other adjustments made to the position and orientation of the camera by subclassed cameras such as [XRCamera3D].
 */
-func (self Instance) GetCameraTransform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetCameraTransform())
+func (self Instance) GetCameraTransform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetCameraTransform())
 }
 
 /*
 Returns the projection matrix that this camera uses to render to its associated viewport. The camera must be part of the scene tree to function.
 */
-func (self Instance) GetCameraProjection() gd.Projection {
-	return gd.Projection(class(self).GetCameraProjection())
+func (self Instance) GetCameraProjection() Projection.XYZW {
+	return Projection.XYZW(class(self).GetCameraProjection())
 }
 
 /*
@@ -130,22 +136,22 @@ func (self Instance) GetFrustum() gd.Array {
 /*
 Returns [code]true[/code] if the given position is inside the camera's frustum (the green part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 */
-func (self Instance) IsPositionInFrustum(world_point gd.Vector3) bool {
-	return bool(class(self).IsPositionInFrustum(world_point))
+func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool {
+	return bool(class(self).IsPositionInFrustum(gd.Vector3(world_point)))
 }
 
 /*
 Returns the camera's RID from the [RenderingServer].
 */
-func (self Instance) GetCameraRid() gd.RID {
-	return gd.RID(class(self).GetCameraRid())
+func (self Instance) GetCameraRid() Resource.ID {
+	return Resource.ID(class(self).GetCameraRid())
 }
 
 /*
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
-func (self Instance) GetPyramidShapeRid() gd.RID {
-	return gd.RID(class(self).GetPyramidShapeRid())
+func (self Instance) GetPyramidShapeRid() Resource.ID {
+	return Resource.ID(class(self).GetPyramidShapeRid())
 }
 
 /*
@@ -213,19 +219,19 @@ func (self Instance) SetCompositor(value objects.Compositor) {
 	class(self).SetCompositor(value)
 }
 
-func (self Instance) HOffset() float64 {
-	return float64(float64(class(self).GetHOffset()))
+func (self Instance) HOffset() Float.X {
+	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
-func (self Instance) SetHOffset(value float64) {
+func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(gd.Float(value))
 }
 
-func (self Instance) VOffset() float64 {
-	return float64(float64(class(self).GetVOffset()))
+func (self Instance) VOffset() Float.X {
+	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
-func (self Instance) SetVOffset(value float64) {
+func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(gd.Float(value))
 }
 
@@ -253,43 +259,43 @@ func (self Instance) SetCurrent(value bool) {
 	class(self).SetCurrent(value)
 }
 
-func (self Instance) Fov() float64 {
-	return float64(float64(class(self).GetFov()))
+func (self Instance) Fov() Float.X {
+	return Float.X(Float.X(class(self).GetFov()))
 }
 
-func (self Instance) SetFov(value float64) {
+func (self Instance) SetFov(value Float.X) {
 	class(self).SetFov(gd.Float(value))
 }
 
-func (self Instance) Size() float64 {
-	return float64(float64(class(self).GetSize()))
+func (self Instance) Size() Float.X {
+	return Float.X(Float.X(class(self).GetSize()))
 }
 
-func (self Instance) SetSize(value float64) {
+func (self Instance) SetSize(value Float.X) {
 	class(self).SetSize(gd.Float(value))
 }
 
-func (self Instance) FrustumOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetFrustumOffset())
+func (self Instance) FrustumOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetFrustumOffset())
 }
 
-func (self Instance) SetFrustumOffset(value gd.Vector2) {
-	class(self).SetFrustumOffset(value)
+func (self Instance) SetFrustumOffset(value Vector2.XY) {
+	class(self).SetFrustumOffset(gd.Vector2(value))
 }
 
-func (self Instance) Near() float64 {
-	return float64(float64(class(self).GetNear()))
+func (self Instance) Near() Float.X {
+	return Float.X(Float.X(class(self).GetNear()))
 }
 
-func (self Instance) SetNear(value float64) {
+func (self Instance) SetNear(value Float.X) {
 	class(self).SetNear(gd.Float(value))
 }
 
-func (self Instance) Far() float64 {
-	return float64(float64(class(self).GetFar()))
+func (self Instance) Far() Float.X {
+	return Float.X(Float.X(class(self).GetFar()))
 }
 
-func (self Instance) SetFar(value float64) {
+func (self Instance) SetFar(value Float.X) {
 	class(self).SetFar(gd.Float(value))
 }
 

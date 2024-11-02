@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +27,8 @@ type Instance [1]classdb.Light3D
 /*
 Returns the [Color] of an idealized blackbody at the given [member light_temperature]. This value is calculated internally based on the [member light_temperature]. This [Color] is multiplied by [member light_color] before being sent to the [RenderingServer].
 */
-func (self Instance) GetCorrelatedColor() gd.Color {
-	return gd.Color(class(self).GetCorrelatedColor())
+func (self Instance) GetCorrelatedColor() Color.RGBA {
+	return Color.RGBA(class(self).GetCorrelatedColor())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -40,59 +42,59 @@ func New() Instance {
 	return Instance{classdb.Light3D(object)}
 }
 
-func (self Instance) LightIntensityLumens() float64 {
-	return float64(float64(class(self).GetParam(20)))
+func (self Instance) LightIntensityLumens() Float.X {
+	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
-func (self Instance) SetLightIntensityLumens(value float64) {
+func (self Instance) SetLightIntensityLumens(value Float.X) {
 	class(self).SetParam(20, gd.Float(value))
 }
 
-func (self Instance) LightIntensityLux() float64 {
-	return float64(float64(class(self).GetParam(20)))
+func (self Instance) LightIntensityLux() Float.X {
+	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
-func (self Instance) SetLightIntensityLux(value float64) {
+func (self Instance) SetLightIntensityLux(value Float.X) {
 	class(self).SetParam(20, gd.Float(value))
 }
 
-func (self Instance) LightTemperature() float64 {
-	return float64(float64(class(self).GetTemperature()))
+func (self Instance) LightTemperature() Float.X {
+	return Float.X(Float.X(class(self).GetTemperature()))
 }
 
-func (self Instance) SetLightTemperature(value float64) {
+func (self Instance) SetLightTemperature(value Float.X) {
 	class(self).SetTemperature(gd.Float(value))
 }
 
-func (self Instance) LightColor() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) LightColor() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetLightColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetLightColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) LightEnergy() float64 {
-	return float64(float64(class(self).GetParam(0)))
+func (self Instance) LightEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
-func (self Instance) SetLightEnergy(value float64) {
+func (self Instance) SetLightEnergy(value Float.X) {
 	class(self).SetParam(0, gd.Float(value))
 }
 
-func (self Instance) LightIndirectEnergy() float64 {
-	return float64(float64(class(self).GetParam(1)))
+func (self Instance) LightIndirectEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
-func (self Instance) SetLightIndirectEnergy(value float64) {
+func (self Instance) SetLightIndirectEnergy(value Float.X) {
 	class(self).SetParam(1, gd.Float(value))
 }
 
-func (self Instance) LightVolumetricFogEnergy() float64 {
-	return float64(float64(class(self).GetParam(2)))
+func (self Instance) LightVolumetricFogEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
-func (self Instance) SetLightVolumetricFogEnergy(value float64) {
+func (self Instance) SetLightVolumetricFogEnergy(value Float.X) {
 	class(self).SetParam(2, gd.Float(value))
 }
 
@@ -104,19 +106,19 @@ func (self Instance) SetLightProjector(value objects.Texture2D) {
 	class(self).SetProjector(value)
 }
 
-func (self Instance) LightSize() float64 {
-	return float64(float64(class(self).GetParam(5)))
+func (self Instance) LightSize() Float.X {
+	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
-func (self Instance) SetLightSize(value float64) {
+func (self Instance) SetLightSize(value Float.X) {
 	class(self).SetParam(5, gd.Float(value))
 }
 
-func (self Instance) LightAngularDistance() float64 {
-	return float64(float64(class(self).GetParam(5)))
+func (self Instance) LightAngularDistance() Float.X {
+	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
-func (self Instance) SetLightAngularDistance(value float64) {
+func (self Instance) SetLightAngularDistance(value Float.X) {
 	class(self).SetParam(5, gd.Float(value))
 }
 
@@ -128,11 +130,11 @@ func (self Instance) SetLightNegative(value bool) {
 	class(self).SetNegative(value)
 }
 
-func (self Instance) LightSpecular() float64 {
-	return float64(float64(class(self).GetParam(3)))
+func (self Instance) LightSpecular() Float.X {
+	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
-func (self Instance) SetLightSpecular(value float64) {
+func (self Instance) SetLightSpecular(value Float.X) {
 	class(self).SetParam(3, gd.Float(value))
 }
 
@@ -160,19 +162,19 @@ func (self Instance) SetShadowEnabled(value bool) {
 	class(self).SetShadow(value)
 }
 
-func (self Instance) ShadowBias() float64 {
-	return float64(float64(class(self).GetParam(15)))
+func (self Instance) ShadowBias() Float.X {
+	return Float.X(Float.X(class(self).GetParam(15)))
 }
 
-func (self Instance) SetShadowBias(value float64) {
+func (self Instance) SetShadowBias(value Float.X) {
 	class(self).SetParam(15, gd.Float(value))
 }
 
-func (self Instance) ShadowNormalBias() float64 {
-	return float64(float64(class(self).GetParam(14)))
+func (self Instance) ShadowNormalBias() Float.X {
+	return Float.X(Float.X(class(self).GetParam(14)))
 }
 
-func (self Instance) SetShadowNormalBias(value float64) {
+func (self Instance) SetShadowNormalBias(value Float.X) {
 	class(self).SetParam(14, gd.Float(value))
 }
 
@@ -184,27 +186,27 @@ func (self Instance) SetShadowReverseCullFace(value bool) {
 	class(self).SetShadowReverseCullFace(value)
 }
 
-func (self Instance) ShadowTransmittanceBias() float64 {
-	return float64(float64(class(self).GetParam(19)))
+func (self Instance) ShadowTransmittanceBias() Float.X {
+	return Float.X(Float.X(class(self).GetParam(19)))
 }
 
-func (self Instance) SetShadowTransmittanceBias(value float64) {
+func (self Instance) SetShadowTransmittanceBias(value Float.X) {
 	class(self).SetParam(19, gd.Float(value))
 }
 
-func (self Instance) ShadowOpacity() float64 {
-	return float64(float64(class(self).GetParam(17)))
+func (self Instance) ShadowOpacity() Float.X {
+	return Float.X(Float.X(class(self).GetParam(17)))
 }
 
-func (self Instance) SetShadowOpacity(value float64) {
+func (self Instance) SetShadowOpacity(value Float.X) {
 	class(self).SetParam(17, gd.Float(value))
 }
 
-func (self Instance) ShadowBlur() float64 {
-	return float64(float64(class(self).GetParam(18)))
+func (self Instance) ShadowBlur() Float.X {
+	return Float.X(Float.X(class(self).GetParam(18)))
 }
 
-func (self Instance) SetShadowBlur(value float64) {
+func (self Instance) SetShadowBlur(value Float.X) {
 	class(self).SetParam(18, gd.Float(value))
 }
 
@@ -216,27 +218,27 @@ func (self Instance) SetDistanceFadeEnabled(value bool) {
 	class(self).SetEnableDistanceFade(value)
 }
 
-func (self Instance) DistanceFadeBegin() float64 {
-	return float64(float64(class(self).GetDistanceFadeBegin()))
+func (self Instance) DistanceFadeBegin() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
-func (self Instance) SetDistanceFadeBegin(value float64) {
+func (self Instance) SetDistanceFadeBegin(value Float.X) {
 	class(self).SetDistanceFadeBegin(gd.Float(value))
 }
 
-func (self Instance) DistanceFadeShadow() float64 {
-	return float64(float64(class(self).GetDistanceFadeShadow()))
+func (self Instance) DistanceFadeShadow() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeShadow()))
 }
 
-func (self Instance) SetDistanceFadeShadow(value float64) {
+func (self Instance) SetDistanceFadeShadow(value Float.X) {
 	class(self).SetDistanceFadeShadow(gd.Float(value))
 }
 
-func (self Instance) DistanceFadeLength() float64 {
-	return float64(float64(class(self).GetDistanceFadeLength()))
+func (self Instance) DistanceFadeLength() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
-func (self Instance) SetDistanceFadeLength(value float64) {
+func (self Instance) SetDistanceFadeLength(value Float.X) {
 	class(self).SetDistanceFadeLength(gd.Float(value))
 }
 

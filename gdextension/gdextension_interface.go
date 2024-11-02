@@ -428,6 +428,7 @@ import "C"
 
 import (
 	"errors"
+	"fmt"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -436,8 +437,6 @@ import (
 	internal "grow.graphics/gd/internal"
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/gd/internal/pointers"
-
-	"grow.graphics/gd/internal/mmm"
 )
 
 func btoi(b bool) int {
@@ -2053,7 +2052,8 @@ func linkCGO(API *gd.API) {
 		var frame = callframe.New()
 		var p_class = callframe.Arg(frame, pointers.Get(class))
 		var p_signal = callframe.Arg(frame, pointers.Get(signal))
-		var p_list = cPropertyList(args) //FIXME
+		p_list, free := cPropertyList(args) //FIXME
+		defer free()
 		C.classdb_register_extension_class_signal(
 			C.uintptr_t(uintptr(classdb_register_extension_class_signal)),
 			C.uintptr_t(uintptr(library)),
@@ -2214,7 +2214,9 @@ func linkCGO(API *gd.API) {
 	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
 	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {
 		infoHandle := cgo.NewHandle(&info)
-		defer infoHandle.Delete()
+		gd.RegisterCleanup(func() {
+			infoHandle.Delete() // FIXME link this to class registration lifetime?
+		})
 
 		var pins runtime.Pinner
 		defer pins.Unpin()
@@ -2249,7 +2251,8 @@ func linkCGO(API *gd.API) {
 			pins.Pin(returnInfo)
 		}
 
-		var list = cPropertyList(info.Arguments)
+		var list, free = cPropertyList(info.Arguments)
+		defer free()
 
 		var firstMetadata *C.GDExtensionClassMethodArgumentMetadata
 		var metadatas = make([]C.GDExtensionClassMethodArgumentMetadata, 0, len(info.ArgumentsMetadata))
@@ -2407,18 +2410,9 @@ func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
 
 type FIXME *struct{}
 
-var propertyLists = make(map[*C.GDExtensionPropertyInfo]FIXME)
-
-type onFree mmm.Pointer[func(), onFree, [0]uintptr]
-
-func (cb onFree) Free() {
-	(*mmm.API(cb))()
-	mmm.End(cb)
-}
-
-func cPropertyList(list []gd.PropertyInfo) *C.GDExtensionPropertyInfo {
+func cPropertyList(list []gd.PropertyInfo) (*C.GDExtensionPropertyInfo, func()) {
 	if len(list) == 0 {
-		return nil
+		return nil, func() {}
 	}
 	var pins runtime.Pinner
 	var slice = make([]C.GDExtensionPropertyInfo, 0, len(list))
@@ -2440,26 +2434,25 @@ func cPropertyList(list []gd.PropertyInfo) *C.GDExtensionPropertyInfo {
 		})
 	}
 	pins.Pin(&slice[0])
-	//mmm.Pin[pinner](ctx.Lifetime, &pins, [0]uintptr{})
-	//propertyLists[&slice[0]] = ctx
-	del := func() {
-		delete(propertyLists, &slice[0])
+	return &slice[0], func() {
+		pins.Unpin()
 	}
-	_ = del
-	//mmm.Pin[onFree](ctx.Lifetime, &del, [0]uintptr{})
-	return &slice[0]
 }
+
+var propertyLists = make(map[uintptr]func())
 
 //export get_property_list_func
 func get_property_list_func(p_instance uintptr, p_length *uint32) *C.GDExtensionPropertyInfo {
 	list := cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetPropertyList()
 	*p_length = uint32(len(list))
-	return cPropertyList(list)
+	clist, free := cPropertyList(list)
+	propertyLists[p_instance] = free
+	return clist
 }
 
 //export free_property_list_func
-func free_property_list_func(_ uintptr, p_properties *C.GDExtensionPropertyInfo) {
-	// propertyLists[p_properties].End() // FIXME
+func free_property_list_func(p_instance uintptr, p_properties *C.GDExtensionPropertyInfo) {
+	propertyLists[p_instance]()
 }
 
 //export property_can_revert_func
@@ -2579,6 +2572,7 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 
 //export method_ptrcall
 func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
+	fmt.Println(p_method)
 	method := cgo.Handle(p_method).Value().(*gd.Method)
 	method.PointerCall(cgo.Handle(p_instance).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
 }

@@ -395,51 +395,51 @@ func Exp(x Float) Float {
 	return ret
 }
 
-func IsNan(x Float) bool {
+func IsNan(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_nan(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsInf(x Float) bool {
+func IsInf(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_inf(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsEqualApprox(a Float, b Float) bool {
+func IsEqualApprox(a Float, b Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_equal_approx(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsZeroApprox(x Float) bool {
+func IsZeroApprox(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_zero_approx(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsFinite(x Float) bool {
+func IsFinite(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_finite(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1190,20 +1190,20 @@ func InstanceFromId(instance_id Int) Object {
 	return ret
 }
 
-func IsInstanceIdValid(id Int) bool {
+func IsInstanceIdValid(id Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_instance_id_valid(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
 
-func IsInstanceValid(instance Variant) bool {
+func IsInstanceValid(instance Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(instance))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_instance_valid(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1229,11 +1229,11 @@ func RidFromInt64(base Int) RID {
 	return ret
 }
 
-func IsSame(a Variant, b Variant) bool {
+func IsSame(a Variant, b Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(a))
 	callframe.Arg(frame, pointers.Get(b))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.utility.is_same(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1544,10 +1544,10 @@ func (self String) Rfindn(what String, from Int) Int {
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self String) Match(expr String) bool {
+func (self String) Match(expr String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1559,10 +1559,10 @@ func (self String) Match(expr String) bool {
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self String) Matchn(expr String) bool {
+func (self String) Matchn(expr String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1574,10 +1574,10 @@ func (self String) Matchn(expr String) bool {
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
 //go:nosplit
-func (self String) BeginsWith(text String) bool {
+func (self String) BeginsWith(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1589,10 +1589,10 @@ func (self String) BeginsWith(text String) bool {
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
 //go:nosplit
-func (self String) EndsWith(text String) bool {
+func (self String) EndsWith(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1612,10 +1612,10 @@ print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsSubsequenceOf(text String) bool {
+func (self String) IsSubsequenceOf(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1627,10 +1627,10 @@ func (self String) IsSubsequenceOf(text String) bool {
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
 //go:nosplit
-func (self String) IsSubsequenceOfn(text String) bool {
+func (self String) IsSubsequenceOfn(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -1916,7 +1916,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self String) Split(delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self String) Split(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -1949,7 +1949,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self String) Rsplit(delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self String) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -1972,7 +1972,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self String) SplitFloats(delimiter String, allow_empty bool) PackedFloat64Array {
+func (self String) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -2086,7 +2086,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self String) StripEdges(left bool, right bool) String {
+func (self String) StripEdges(left Bool, right Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
@@ -2350,9 +2350,9 @@ func (self String) Sha256Buffer() PackedByteArray {
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
 //go:nosplit
-func (self String) IsEmpty() bool {
+func (self String) IsEmpty() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2376,10 +2376,10 @@ GD.Print("team".Contains("I"));  // Prints false
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
-func (self String) Contains(what String) bool {
+func (self String) Contains(what String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -2392,10 +2392,10 @@ Returns [code]true[/code] if the string contains [param what], [b]ignoring case[
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
 */
 //go:nosplit
-func (self String) Containsn(what String) bool {
+func (self String) Containsn(what String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -2408,9 +2408,9 @@ Returns [code]true[/code] if the string is a path to a file or directory, and it
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
 //go:nosplit
-func (self String) IsAbsolutePath() bool {
+func (self String) IsAbsolutePath() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2422,9 +2422,9 @@ func (self String) IsAbsolutePath() bool {
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
 //go:nosplit
-func (self String) IsRelativePath() bool {
+func (self String) IsRelativePath() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2488,7 +2488,7 @@ func (self String) GetFile() String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self String) XmlEscape(escape_quotes bool) String {
+func (self String) XmlEscape(escape_quotes Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -2646,9 +2646,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidIdentifier() bool {
+func (self String) IsValidIdentifier() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2667,9 +2667,9 @@ print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidInt() bool {
+func (self String) IsValidInt() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2687,9 +2687,9 @@ print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidFloat() bool {
+func (self String) IsValidFloat() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2709,10 +2709,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self String) IsValidHexNumber(with_prefix bool) bool {
+func (self String) IsValidHexNumber(with_prefix Bool) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, with_prefix)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -2724,9 +2724,9 @@ func (self String) IsValidHexNumber(with_prefix bool) bool {
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
 //go:nosplit
-func (self String) IsValidHtmlColor() bool {
+func (self String) IsValidHtmlColor() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2738,9 +2738,9 @@ func (self String) IsValidHtmlColor() bool {
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
 //go:nosplit
-func (self String) IsValidIpAddress() bool {
+func (self String) IsValidIpAddress() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -2752,9 +2752,9 @@ func (self String) IsValidIpAddress() bool {
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
 //go:nosplit
-func (self String) IsValidFilename() bool {
+func (self String) IsValidFilename() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -3107,7 +3107,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumInt64(number Int, base Int, capitalize_hex bool) String {
+func (self String) NumInt64(number Int, base Int, capitalize_hex Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3125,7 +3125,7 @@ By default, [param base] is set to decimal ([code]10[/code]). Other common bases
 If [param capitalize_hex] is [code]true[/code], digits higher than 9 are represented in uppercase.
 */
 //go:nosplit
-func (self String) NumUint64(number Int, base Int, capitalize_hex bool) String {
+func (self String) NumUint64(number Int, base Int, capitalize_hex Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
@@ -3474,10 +3474,10 @@ func (self StringName) Rfindn(what String, from Int) Int {
 Does a simple expression match (also called "glob" or "globbing"), where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self StringName) Match(expr String) bool {
+func (self StringName) Match(expr String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3489,10 +3489,10 @@ func (self StringName) Match(expr String) bool {
 Does a simple [b]case-insensitive[/b] expression match, where [code]*[/code] matches zero or more arbitrary characters and [code]?[/code] matches any single character except a period ([code].[/code]). An empty string or empty expression always evaluates to [code]false[/code].
 */
 //go:nosplit
-func (self StringName) Matchn(expr String) bool {
+func (self StringName) Matchn(expr String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expr))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3504,10 +3504,10 @@ func (self StringName) Matchn(expr String) bool {
 Returns [code]true[/code] if the string begins with the given [param text]. See also [method ends_with].
 */
 //go:nosplit
-func (self StringName) BeginsWith(text String) bool {
+func (self StringName) BeginsWith(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3519,10 +3519,10 @@ func (self StringName) BeginsWith(text String) bool {
 Returns [code]true[/code] if the string ends with the given [param text]. See also [method begins_with].
 */
 //go:nosplit
-func (self StringName) EndsWith(text String) bool {
+func (self StringName) EndsWith(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3542,10 +3542,10 @@ print("".is_subsequence_of(text))         # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsSubsequenceOf(text String) bool {
+func (self StringName) IsSubsequenceOf(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3557,10 +3557,10 @@ func (self StringName) IsSubsequenceOf(text String) bool {
 Returns [code]true[/code] if all characters of this string can be found in [param text] in their original order, [b]ignoring case[/b].
 */
 //go:nosplit
-func (self StringName) IsSubsequenceOfn(text String) bool {
+func (self StringName) IsSubsequenceOfn(text String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -3839,7 +3839,7 @@ GD.Print(someArray[2]); // Prints "Three"
 [b]Note:[/b] If you only need one substring from the array, consider using [method get_slice] which is faster. If you need to split strings with more complex rules, use the [RegEx] class instead.
 */
 //go:nosplit
-func (self StringName) Split(delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self StringName) Split(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -3872,7 +3872,7 @@ print(some_array[1])     # Prints "Four"
 [/codeblocks]
 */
 //go:nosplit
-func (self StringName) Rsplit(delimiter String, allow_empty bool, maxsplit Int) PackedStringArray {
+func (self StringName) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -3895,7 +3895,7 @@ var b = "1| ||4.5".split_floats("|", false) # b is [1.0, 4.5]
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) SplitFloats(delimiter String, allow_empty bool) PackedFloat64Array {
+func (self StringName) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
@@ -4009,7 +4009,7 @@ Strips all non-printable characters from the beginning and the end of the string
 If [param left] is [code]false[/code], ignores the string's beginning. Likewise, if [param right] is [code]false[/code], ignores the string's end.
 */
 //go:nosplit
-func (self StringName) StripEdges(left bool, right bool) String {
+func (self StringName) StripEdges(left Bool, right Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
@@ -4258,9 +4258,9 @@ func (self StringName) Sha256Buffer() PackedByteArray {
 Returns [code]true[/code] if the string's length is [code]0[/code] ([code]""[/code]). See also [method length].
 */
 //go:nosplit
-func (self StringName) IsEmpty() bool {
+func (self StringName) IsEmpty() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4284,10 +4284,10 @@ GD.Print("team".Contains("I"));  // Prints false
 If you need to know where [param what] is within the string, use [method find]. See also [method containsn].
 */
 //go:nosplit
-func (self StringName) Contains(what String) bool {
+func (self StringName) Contains(what String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -4300,10 +4300,10 @@ Returns [code]true[/code] if the string contains [param what], [b]ignoring case[
 If you need to know where [param what] is within the string, use [method findn]. See also [method contains].
 */
 //go:nosplit
-func (self StringName) Containsn(what String) bool {
+func (self StringName) Containsn(what String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -4316,9 +4316,9 @@ Returns [code]true[/code] if the string is a path to a file or directory, and it
 This includes all paths starting with [code]"res://"[/code], [code]"user://"[/code], [code]"C:\"[/code], [code]"/"[/code], etc.
 */
 //go:nosplit
-func (self StringName) IsAbsolutePath() bool {
+func (self StringName) IsAbsolutePath() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4330,9 +4330,9 @@ func (self StringName) IsAbsolutePath() bool {
 Returns [code]true[/code] if the string is a path, and its starting point is dependent on context. The path could begin from the current directory, or the current [Node] (if the string is derived from a [NodePath]), and may sometimes be prefixed with [code]"./"[/code]. This method is the opposite of [method is_absolute_path].
 */
 //go:nosplit
-func (self StringName) IsRelativePath() bool {
+func (self StringName) IsRelativePath() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4396,7 +4396,7 @@ func (self StringName) GetFile() String {
 Returns a copy of the string with special characters escaped using the XML standard. If [param escape_quotes] is [code]true[/code], the single quote ([code]'[/code]) and double quote ([code]"[/code]) characters are also escaped.
 */
 //go:nosplit
-func (self StringName) XmlEscape(escape_quotes bool) String {
+func (self StringName) XmlEscape(escape_quotes Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -4554,9 +4554,9 @@ print("MyMethod#2".is_valid_identifier()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidIdentifier() bool {
+func (self StringName) IsValidIdentifier() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4575,9 +4575,9 @@ print("-12".is_valid_int())  # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidInt() bool {
+func (self StringName) IsValidInt() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4595,9 +4595,9 @@ print("Hello".is_valid_float()) # Prints false
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidFloat() bool {
+func (self StringName) IsValidFloat() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4617,10 +4617,10 @@ print("0xDEADC0DE".is_valid_hex_number(true)) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self StringName) IsValidHexNumber(with_prefix bool) bool {
+func (self StringName) IsValidHexNumber(with_prefix Bool) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, with_prefix)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -4632,9 +4632,9 @@ func (self StringName) IsValidHexNumber(with_prefix bool) bool {
 Returns [code]true[/code] if this string is a valid color in hexadecimal HTML notation. The string must be a hexadecimal value (see [method is_valid_hex_number]) of either 3, 4, 6 or 8 digits, and may be prefixed by a hash sign ([code]#[/code]). Other HTML notations for colors, such as names or [code]hsl()[/code], are not considered valid. See also [method Color.html].
 */
 //go:nosplit
-func (self StringName) IsValidHtmlColor() bool {
+func (self StringName) IsValidHtmlColor() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4646,9 +4646,9 @@ func (self StringName) IsValidHtmlColor() bool {
 Returns [code]true[/code] if this string represents a well-formatted IPv4 or IPv6 address. This method considers [url=https://en.wikipedia.org/wiki/Reserved_IP_addresses]reserved IP addresses[/url] such as [code]"0.0.0.0"[/code] and [code]"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"[/code] as valid.
 */
 //go:nosplit
-func (self StringName) IsValidIpAddress() bool {
+func (self StringName) IsValidIpAddress() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4660,9 +4660,9 @@ func (self StringName) IsValidIpAddress() bool {
 Returns [code]true[/code] if this string does not contain characters that are not allowed in file names ([code]:[/code] [code]/[/code] [code]\[/code] [code]?[/code] [code]*[/code] [code]"[/code] [code]|[/code] [code]%[/code] [code]<[/code] [code]>[/code]).
 */
 //go:nosplit
-func (self StringName) IsValidFilename() bool {
+func (self StringName) IsValidFilename() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -4968,9 +4968,9 @@ func (self StringName) Hash() Int {
 Returns [code]true[/code] if the node path is absolute. Unlike a relative path, an absolute path is represented by a leading slash character ([code]/[/code]) and always begins from the [SceneTree]. It can be used to reliably access nodes from the root node (e.g. [code]"/root/Global"[/code] if an autoload named "Global" exists).
 */
 //go:nosplit
-func (self NodePath) IsAbsolute() bool {
+func (self NodePath) IsAbsolute() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.is_absolute(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5171,9 +5171,9 @@ func (self NodePath) GetAsPropertyPath() NodePath {
 Returns [code]true[/code] if the node path has been constructed from an empty [String] ([code]""[/code]).
 */
 //go:nosplit
-func (self NodePath) IsEmpty() bool {
+func (self NodePath) IsEmpty() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5216,9 +5216,9 @@ func (self Callable) Callv(arguments Array) Variant {
 Returns [code]true[/code] if this [Callable] has no target to call the method on.
 */
 //go:nosplit
-func (self Callable) IsNull() bool {
+func (self Callable) IsNull() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5234,9 +5234,9 @@ Returns [code]true[/code] if this [Callable] is a custom callable. Custom callab
 - for other purposes in the core, GDExtension, and C#.
 */
 //go:nosplit
-func (self Callable) IsCustom() bool {
+func (self Callable) IsCustom() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5248,9 +5248,9 @@ func (self Callable) IsCustom() bool {
 Returns [code]true[/code] if this [Callable] is a standard callable. This method is the opposite of [method is_custom]. Returns [code]false[/code] if this callable is a lambda function.
 */
 //go:nosplit
-func (self Callable) IsStandard() bool {
+func (self Callable) IsStandard() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_standard(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5262,9 +5262,9 @@ func (self Callable) IsStandard() bool {
 Returns [code]true[/code] if the callable's object exists and has a valid method name assigned, or is a custom callable.
 */
 //go:nosplit
-func (self Callable) IsValid() bool {
+func (self Callable) IsValid() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.is_valid(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5507,9 +5507,9 @@ func (self Callable) Bind(args ...Variant) Callable {
 Returns [code]true[/code] if the signal's name does not exist in its object, or the object is not valid.
 */
 //go:nosplit
-func (self Signal) IsNull() bool {
+func (self Signal) IsNull() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5600,10 +5600,10 @@ func (self Signal) Disconnect(callable Callable) {
 Returns [code]true[/code] if the specified [Callable] is connected to this signal.
 */
 //go:nosplit
-func (self Signal) IsConnected(callable Callable) bool {
+func (self Signal) IsConnected(callable Callable) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.is_connected(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -5661,9 +5661,9 @@ func (self Dictionary) Size() Int {
 Returns [code]true[/code] if the dictionary is empty (its size is [code]0[/code]). See also [method size].
 */
 //go:nosplit
-func (self Dictionary) IsEmpty() bool {
+func (self Dictionary) IsEmpty() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5723,7 +5723,7 @@ GD.Print(dict); // { "item": "sword", "quantity": 15, "color": "silver" }
 [b]Note:[/b] [method merge] is [i]not[/i] recursive. Nested dictionaries are considered as keys that can be overwritten or not depending on the value of [param overwrite], but they will never be merged together.
 */
 //go:nosplit
-func (self Dictionary) Merge(dictionary Dictionary, overwrite bool) {
+func (self Dictionary) Merge(dictionary Dictionary, overwrite Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
@@ -5746,7 +5746,7 @@ print(extra.merged(base, true))
 [/codeblock]
 */
 //go:nosplit
-func (self Dictionary) Merged(dictionary Dictionary, overwrite bool) Dictionary {
+func (self Dictionary) Merged(dictionary Dictionary, overwrite Bool) Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
@@ -5791,10 +5791,10 @@ if "Godot" in {"Godot": 4}:
 [b]Note:[/b] This method returns [code]true[/code] as long as the [param key] exists, even if its corresponding value is [code]null[/code].
 */
 //go:nosplit
-func (self Dictionary) Has(key Variant) bool {
+func (self Dictionary) Has(key Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -5810,10 +5810,10 @@ data.has_all(["height", "width"]) # Returns true
 [/codeblock]
 */
 //go:nosplit
-func (self Dictionary) HasAll(keys Array) bool {
+func (self Dictionary) HasAll(keys Array) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(keys))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.has_all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -5842,10 +5842,10 @@ Removes the dictionary entry by key, if it exists. Returns [code]true[/code] if 
 [b]Note:[/b] Do not erase entries while iterating over the dictionary. You can iterate over the [method keys] array instead.
 */
 //go:nosplit
-func (self Dictionary) Erase(key Variant) bool {
+func (self Dictionary) Erase(key Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -5916,7 +5916,7 @@ func (self Dictionary) Values() Array {
 Creates and returns a new copy of the dictionary. If [param deep] is [code]true[/code], inner [Dictionary] and [Array] keys and values are also copied, recursively.
 */
 //go:nosplit
-func (self Dictionary) Duplicate(deep bool) Dictionary {
+func (self Dictionary) Duplicate(deep Bool) Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -5975,9 +5975,9 @@ func (self Dictionary) MakeReadOnly() {
 Returns [code]true[/code] if the dictionary is read-only. See [method make_read_only]. Dictionaries are automatically read-only if declared with [code]const[/code] keyword.
 */
 //go:nosplit
-func (self Dictionary) IsReadOnly() bool {
+func (self Dictionary) IsReadOnly() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -5989,11 +5989,11 @@ func (self Dictionary) IsReadOnly() bool {
 Returns [code]true[/code] if the two dictionaries contain the same keys and values, inner [Dictionary] and [Array] keys and values are compared recursively.
 */
 //go:nosplit
-func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int) bool {
+func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, recursion_count)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.recursive_equal(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = r_ret.Get()
@@ -6019,9 +6019,9 @@ func (self Array) Size() Int {
 Returns [code]true[/code] if the array is empty ([code][][/code]). See also [method size].
 */
 //go:nosplit
-func (self Array) IsEmpty() bool {
+func (self Array) IsEmpty() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -6353,10 +6353,10 @@ if 4 in [2, 4, 6, 8]:
 [b]Note:[/b] For performance reasons, the search is affected by the [param value]'s [enum Variant.Type]. For example, [code]7[/code] ([int]) and [code]7.0[/code] ([float]) are not considered equal for this method.
 */
 //go:nosplit
-func (self Array) Has(value Variant) bool {
+func (self Array) Has(value Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -6502,7 +6502,7 @@ print(fruits.bsearch("Lemon", false)) # Prints 3, points at "Orange".
 [b]Note:[/b] Calling [method bsearch] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort] before calling this method.
 */
 //go:nosplit
-func (self Array) Bsearch(value Variant, before bool) Int {
+func (self Array) Bsearch(value Variant, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, before)
@@ -6541,7 +6541,7 @@ func _ready():
 [b]Note:[/b] Calling [method bsearch_custom] on an [i]unsorted[/i] array will result in unexpected behavior. Use [method sort_custom] with [param func] before calling this method.
 */
 //go:nosplit
-func (self Array) BsearchCustom(value Variant, fn Callable, before bool) Int {
+func (self Array) BsearchCustom(value Variant, fn Callable, before Bool) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(fn))
@@ -6571,7 +6571,7 @@ Returns a new copy of the array.
 By default, a [b]shallow[/b] copy is returned: all nested [Array] and [Dictionary] elements are shared with the original array. Modifying them in one array will also affect them in the other.[br]If [param deep] is [code]true[/code], a [b]deep[/b] copy is returned: all nested arrays and dictionaries are also duplicated (recursively).
 */
 //go:nosplit
-func (self Array) Duplicate(deep bool) Array {
+func (self Array) Duplicate(deep Bool) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -6599,7 +6599,7 @@ print(letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
 [/codeblock]
 */
 //go:nosplit
-func (self Array) Slice(begin Int, end Int, step Int, deep bool) Array {
+func (self Array) Slice(begin Int, end Int, step Int, deep Bool) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
@@ -6728,10 +6728,10 @@ See also [method all], [method filter], [method map] and [method reduce].
 [b]Note:[/b] For an empty array, this method always returns [code]false[/code].
 */
 //go:nosplit
-func (self Array) Any(method Callable) bool {
+func (self Array) Any(method Callable) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.any(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -6783,10 +6783,10 @@ See also [method any], [method filter], [method map] and [method reduce].
 [b]Note:[/b] For an empty array, this method [url=https://en.wikipedia.org/wiki/Vacuous_truth]always[/url] returns [code]true[/code].
 */
 //go:nosplit
-func (self Array) All(method Callable) bool {
+func (self Array) All(method Callable) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -6832,9 +6832,9 @@ print(numbers.is_typed()) # Prints true
 [/codeblock]
 */
 //go:nosplit
-func (self Array) IsTyped() bool {
+func (self Array) IsTyped() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -6846,10 +6846,10 @@ func (self Array) IsTyped() bool {
 Returns [code]true[/code] if this array is typed the same as the given [param array]. See also [method is_typed].
 */
 //go:nosplit
-func (self Array) IsSameTyped(array Array) bool {
+func (self Array) IsSameTyped(array Array) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_same_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = r_ret.Get()
@@ -6917,9 +6917,9 @@ Returns [code]true[/code] if the array is read-only. See [method make_read_only]
 In GDScript, arrays are automatically read-only if declared with the [code]const[/code] keyword.
 */
 //go:nosplit
-func (self Array) IsReadOnly() bool {
+func (self Array) IsReadOnly() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = r_ret.Get()
@@ -6947,10 +6947,10 @@ func (selfPtr *PackedByteArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) IsEmpty() bool {
+func (selfPtr *PackedByteArray) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -6979,11 +6979,11 @@ func (selfPtr *PackedByteArray) Set(index Int, value Int) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) PushBack(value Int) bool {
+func (selfPtr *PackedByteArray) PushBack(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -6996,11 +6996,11 @@ func (selfPtr *PackedByteArray) PushBack(value Int) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Append(value Int) bool {
+func (selfPtr *PackedByteArray) Append(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -7107,11 +7107,11 @@ func (selfPtr *PackedByteArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Has(value Int) bool {
+func (selfPtr *PackedByteArray) Has(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -7173,7 +7173,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) Bsearch(value Int, before bool) Int {
+func (selfPtr *PackedByteArray) Bsearch(value Int, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -7610,12 +7610,12 @@ func (selfPtr *PackedByteArray) DecodeDouble(byte_offset Int) Float {
 Returns [code]true[/code] if a valid [Variant] value can be decoded at the [param byte_offset]. Returns [code]false[/code] otherwise or when the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects bool) bool {
+func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Bool) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.has_encoded_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	pointers.Set(selfPtr, p_self.Get())
@@ -7628,7 +7628,7 @@ func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects boo
 Decodes a [Variant] from the bytes starting at [param byte_offset]. Returns [code]null[/code] if a valid variant can't be decoded or the value is [Object]-derived and [param allow_objects] is [code]false[/code].
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects bool) Variant {
+func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) Variant {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -7646,7 +7646,7 @@ func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects bool) V
 Decodes a size of a [Variant] from the bytes starting at [param byte_offset]. Requires at least 4 bytes of data starting at the offset, otherwise fails.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects bool) Int {
+func (selfPtr *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -7912,7 +7912,7 @@ func (selfPtr *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 Encodes a [Variant] at the index of [param byte_offset] bytes. A sufficient space must be allocated, depending on the encoded variant's size. If [param allow_objects] is [code]false[/code], [Object]-derived values are not permitted and will instead be serialized as ID-only.
 */
 //go:nosplit
-func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects bool) Int {
+func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_objects Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
@@ -7947,10 +7947,10 @@ func (selfPtr *PackedInt32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) IsEmpty() bool {
+func (selfPtr *PackedInt32Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -7979,11 +7979,11 @@ func (selfPtr *PackedInt32Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) PushBack(value Int) bool {
+func (selfPtr *PackedInt32Array) PushBack(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -7996,11 +7996,11 @@ func (selfPtr *PackedInt32Array) PushBack(value Int) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Append(value Int) bool {
+func (selfPtr *PackedInt32Array) Append(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8107,11 +8107,11 @@ func (selfPtr *PackedInt32Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Has(value Int) bool {
+func (selfPtr *PackedInt32Array) Has(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8190,7 +8190,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedInt32Array) Bsearch(value Int, before bool) Int {
+func (selfPtr *PackedInt32Array) Bsearch(value Int, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -8293,10 +8293,10 @@ func (selfPtr *PackedInt64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) IsEmpty() bool {
+func (selfPtr *PackedInt64Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8325,11 +8325,11 @@ func (selfPtr *PackedInt64Array) Set(index Int, value Int) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) PushBack(value Int) bool {
+func (selfPtr *PackedInt64Array) PushBack(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8342,11 +8342,11 @@ func (selfPtr *PackedInt64Array) PushBack(value Int) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Append(value Int) bool {
+func (selfPtr *PackedInt64Array) Append(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8453,11 +8453,11 @@ func (selfPtr *PackedInt64Array) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Has(value Int) bool {
+func (selfPtr *PackedInt64Array) Has(value Int) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8536,7 +8536,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedInt64Array) Bsearch(value Int, before bool) Int {
+func (selfPtr *PackedInt64Array) Bsearch(value Int, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -8639,10 +8639,10 @@ func (selfPtr *PackedFloat32Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) IsEmpty() bool {
+func (selfPtr *PackedFloat32Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8671,11 +8671,11 @@ func (selfPtr *PackedFloat32Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) PushBack(value Float) bool {
+func (selfPtr *PackedFloat32Array) PushBack(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8688,11 +8688,11 @@ func (selfPtr *PackedFloat32Array) PushBack(value Float) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Append(value Float) bool {
+func (selfPtr *PackedFloat32Array) Append(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8800,11 +8800,11 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Has(value Float) bool {
+func (selfPtr *PackedFloat32Array) Has(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -8885,7 +8885,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat32Array) Bsearch(value Float, before bool) Int {
+func (selfPtr *PackedFloat32Array) Bsearch(value Float, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -8991,10 +8991,10 @@ func (selfPtr *PackedFloat64Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) IsEmpty() bool {
+func (selfPtr *PackedFloat64Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9023,11 +9023,11 @@ func (selfPtr *PackedFloat64Array) Set(index Int, value Float) {
 Appends an element at the end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) PushBack(value Float) bool {
+func (selfPtr *PackedFloat64Array) PushBack(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9040,11 +9040,11 @@ func (selfPtr *PackedFloat64Array) PushBack(value Float) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Append(value Float) bool {
+func (selfPtr *PackedFloat64Array) Append(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9152,11 +9152,11 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Has(value Float) bool {
+func (selfPtr *PackedFloat64Array) Has(value Float) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9237,7 +9237,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] [constant @GDScript.NAN] doesn't behave the same as other numbers. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedFloat64Array) Bsearch(value Float, before bool) Int {
+func (selfPtr *PackedFloat64Array) Bsearch(value Float, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -9343,10 +9343,10 @@ func (selfPtr *PackedStringArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) IsEmpty() bool {
+func (selfPtr *PackedStringArray) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9375,11 +9375,11 @@ func (selfPtr *PackedStringArray) Set(index Int, value String) {
 Appends a string element at end of the array.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) PushBack(value String) bool {
+func (selfPtr *PackedStringArray) PushBack(value String) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9392,11 +9392,11 @@ func (selfPtr *PackedStringArray) PushBack(value String) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Append(value String) bool {
+func (selfPtr *PackedStringArray) Append(value String) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9503,11 +9503,11 @@ func (selfPtr *PackedStringArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Has(value String) bool {
+func (selfPtr *PackedStringArray) Has(value String) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9585,7 +9585,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedStringArray) Bsearch(value String, before bool) Int {
+func (selfPtr *PackedStringArray) Bsearch(value String, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
@@ -9688,10 +9688,10 @@ func (selfPtr *PackedVector2Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) IsEmpty() bool {
+func (selfPtr *PackedVector2Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9720,11 +9720,11 @@ func (selfPtr *PackedVector2Array) Set(index Int, value Vector2) {
 Inserts a [Vector2] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) PushBack(value Vector2) bool {
+func (selfPtr *PackedVector2Array) PushBack(value Vector2) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9737,11 +9737,11 @@ func (selfPtr *PackedVector2Array) PushBack(value Vector2) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Append(value Vector2) bool {
+func (selfPtr *PackedVector2Array) Append(value Vector2) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9849,11 +9849,11 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Has(value Vector2) bool {
+func (selfPtr *PackedVector2Array) Has(value Vector2) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -9933,7 +9933,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector2Array) Bsearch(value Vector2, before bool) Int {
+func (selfPtr *PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -10039,10 +10039,10 @@ func (selfPtr *PackedVector3Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) IsEmpty() bool {
+func (selfPtr *PackedVector3Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10071,11 +10071,11 @@ func (selfPtr *PackedVector3Array) Set(index Int, value Vector3) {
 Inserts a [Vector3] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) PushBack(value Vector3) bool {
+func (selfPtr *PackedVector3Array) PushBack(value Vector3) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10088,11 +10088,11 @@ func (selfPtr *PackedVector3Array) PushBack(value Vector3) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Append(value Vector3) bool {
+func (selfPtr *PackedVector3Array) Append(value Vector3) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10200,11 +10200,11 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Has(value Vector3) bool {
+func (selfPtr *PackedVector3Array) Has(value Vector3) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10284,7 +10284,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector3Array) Bsearch(value Vector3, before bool) Int {
+func (selfPtr *PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -10390,10 +10390,10 @@ func (selfPtr *PackedColorArray) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) IsEmpty() bool {
+func (selfPtr *PackedColorArray) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10422,11 +10422,11 @@ func (selfPtr *PackedColorArray) Set(index Int, value Color) {
 Appends a value to the array.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) PushBack(value Color) bool {
+func (selfPtr *PackedColorArray) PushBack(value Color) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10439,11 +10439,11 @@ func (selfPtr *PackedColorArray) PushBack(value Color) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Append(value Color) bool {
+func (selfPtr *PackedColorArray) Append(value Color) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10550,11 +10550,11 @@ func (selfPtr *PackedColorArray) Clear() {
 Returns [code]true[/code] if the array contains [param value].
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Has(value Color) bool {
+func (selfPtr *PackedColorArray) Has(value Color) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10632,7 +10632,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Calling [method bsearch] on an unsorted array results in unexpected behavior.
 */
 //go:nosplit
-func (selfPtr *PackedColorArray) Bsearch(value Color, before bool) Int {
+func (selfPtr *PackedColorArray) Bsearch(value Color, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -10735,10 +10735,10 @@ func (selfPtr *PackedVector4Array) Size() Int {
 Returns [code]true[/code] if the array is empty.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) IsEmpty() bool {
+func (selfPtr *PackedVector4Array) IsEmpty() Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10767,11 +10767,11 @@ func (selfPtr *PackedVector4Array) Set(index Int, value Vector4) {
 Inserts a [Vector4] at the end.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) PushBack(value Vector4) bool {
+func (selfPtr *PackedVector4Array) PushBack(value Vector4) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10784,11 +10784,11 @@ func (selfPtr *PackedVector4Array) PushBack(value Vector4) bool {
 Appends an element at the end of the array (alias of [method push_back]).
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Append(value Vector4) bool {
+func (selfPtr *PackedVector4Array) Append(value Vector4) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10896,11 +10896,11 @@ Returns [code]true[/code] if the array contains [param value].
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Has(value Vector4) bool {
+func (selfPtr *PackedVector4Array) Has(value Vector4) Bool {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	pointers.Set(selfPtr, p_self.Get())
@@ -10980,7 +10980,7 @@ Finds the index of an existing value (or the insertion index that maintains sort
 [b]Note:[/b] Vectors with [constant @GDScript.NAN] elements don't behave the same as other vectors. Therefore, the results from this method may not be accurate if NaNs are included.
 */
 //go:nosplit
-func (selfPtr *PackedVector4Array) Bsearch(value Vector4, before bool) Int {
+func (selfPtr *PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
@@ -11101,10 +11101,10 @@ sprite2D.IsClass("Node3D");   // Returns false
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations in the object's script.
 */
 //go:nosplit
-func (self Object) IsClass(class String) bool {
+func (self Object) IsClass(class String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11268,10 +11268,10 @@ Returns [code]true[/code] if the given [param property] has a custom default val
 [b]Note:[/b] This method is used by the Inspector dock to display a revert icon. The object must implement [method _property_can_revert] to customize the default value. If [method _property_can_revert] is not implemented, this method returns [code]false[/code].
 */
 //go:nosplit
-func (self Object) PropertyCanRevert(property StringName) bool {
+func (self Object) PropertyCanRevert(property StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_can_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11320,7 +11320,7 @@ player.Notification(NotificationEnterTree, true);
 [/codeblocks]
 */
 //go:nosplit
-func (self Object) Notification(what Int, reversed bool) {
+func (self Object) Notification(what Int, reversed Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	callframe.Arg(frame, reversed)
@@ -11435,10 +11435,10 @@ Returns [code]true[/code] if a metadata entry is found with the given [param nam
 [b]Note:[/b] Metadata that has a name starting with an underscore ([code]_[/code]) is considered editor-only. Editor-only metadata is not displayed in the Inspector and should not be edited, although it can still be found by this method.
 */
 //go:nosplit
-func (self Object) HasMeta(name StringName) bool {
+func (self Object) HasMeta(name StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11498,10 +11498,10 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 Returns [code]true[/code] if the given user-defined [param signal] name exists. Only signals added with [method add_user_signal] are included. See also [method remove_user_signal].
 */
 //go:nosplit
-func (self Object) HasUserSignal(signal StringName) bool {
+func (self Object) HasUserSignal(signal StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11587,10 +11587,10 @@ Returns [code]true[/code] if the given [param method] name exists in the object.
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) HasMethod(method StringName) bool {
+func (self Object) HasMethod(method StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11617,10 +11617,10 @@ Returns [code]true[/code] if the given [param signal] name exists in the object.
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) HasSignal(signal StringName) bool {
+func (self Object) HasSignal(signal StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11833,11 +11833,11 @@ Returns [code]true[/code] if a connection exists between the given [param signal
 [b]Note:[/b] In C#, [param signal] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]SignalName[/code] class to avoid allocating a new [StringName] on each call.
 */
 //go:nosplit
-func (self Object) IsConnected(signal StringName, callable Callable) bool {
+func (self Object) IsConnected(signal StringName, callable Callable) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11848,7 +11848,7 @@ func (self Object) IsConnected(signal StringName, callable Callable) bool {
 If set to [code]true[/code], the object becomes unable to emit signals. As such, [method emit_signal] and signal connections will not work, until it is set to [code]false[/code].
 */
 //go:nosplit
-func (self Object) SetBlockSignals(enable bool) {
+func (self Object) SetBlockSignals(enable Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
@@ -11860,9 +11860,9 @@ func (self Object) SetBlockSignals(enable bool) {
 Returns [code]true[/code] if the object is blocking its signals from being emitted. See [method set_block_signals].
 */
 //go:nosplit
-func (self Object) IsBlockingSignals() bool {
+func (self Object) IsBlockingSignals() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_blocking_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11884,7 +11884,7 @@ func (self Object) NotifyPropertyListChanged() {
 If set to [code]true[/code], allows the object to translate messages with [method tr] and [method tr_n]. Enabled by default. See also [method can_translate_messages].
 */
 //go:nosplit
-func (self Object) SetMessageTranslation(enable bool) {
+func (self Object) SetMessageTranslation(enable Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret callframe.Nil
@@ -11896,9 +11896,9 @@ func (self Object) SetMessageTranslation(enable bool) {
 Returns [code]true[/code] if the object is allowed to translate messages with [method tr] and [method tr_n]. See also [method set_message_translation].
 */
 //go:nosplit
-func (self Object) CanTranslateMessages() bool {
+func (self Object) CanTranslateMessages() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_can_translate_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11949,9 +11949,9 @@ func (self Object) TrN(message StringName, plural_message StringName, n Int, con
 Returns [code]true[/code] if the [method Node.queue_free] method was called for the object.
 */
 //go:nosplit
-func (self Object) IsQueuedForDeletion() bool {
+func (self Object) IsQueuedForDeletion() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_queued_for_deletion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11978,9 +11978,9 @@ Initializes the internal reference counter. Use this only if you really know wha
 Returns whether the initialization was successful.
 */
 //go:nosplit
-func (self RefCounted) InitRef() bool {
+func (self RefCounted) InitRef() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_init_ref, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11992,9 +11992,9 @@ Increments the internal reference counter. Use this only if you really know what
 Returns [code]true[/code] if the increment was successful, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self RefCounted) Reference() bool {
+func (self RefCounted) Reference() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -12006,9 +12006,9 @@ Decrements the internal reference counter. Use this only if you really know what
 Returns [code]true[/code] if the object should be freed after the decrement, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self RefCounted) Unreference() bool {
+func (self RefCounted) Unreference() Bool {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Ret[Bool](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_unreference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
 	frame.Free()

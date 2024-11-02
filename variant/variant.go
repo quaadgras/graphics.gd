@@ -26,6 +26,19 @@ func New(val any) gd.Variant {
 	return gd.NewVariant(val)
 }
 
+// Call attempts to call the given method on the given variant value with the given arguments.
+func Call(val any, name string, args ...any) any {
+	arguments := make([]gd.Variant, len(args))
+	for i, arg := range args {
+		arguments[i] = gd.NewVariant(arg)
+	}
+	result, err := gd.NewVariant(val).Call(gd.NewStringName(name), arguments...)
+	if err != nil {
+		panic(err)
+	}
+	return result.Interface()
+}
+
 type Type int
 
 const (
@@ -308,7 +321,7 @@ func Hash(v any) uint32 { //gd:hash
 
 // Equal compares two Variants and returns true if they are equal.
 func Equal(a, b any) bool { //gd:is_same
-	return gd.IsSame(gd.NewVariant(a), gd.NewVariant(b))
+	return bool(gd.IsSame(gd.NewVariant(a), gd.NewVariant(b)))
 }
 
 type Operator int

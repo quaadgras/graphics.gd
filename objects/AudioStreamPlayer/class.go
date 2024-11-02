@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,7 +33,7 @@ func (self Instance) Play() {
 /*
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
-func (self Instance) SeekTo(to_position float64) {
+func (self Instance) SeekTo(to_position Float.X) {
 	class(self).SeekTo(gd.Float(to_position))
 }
 
@@ -47,8 +48,8 @@ func (self Instance) Stop() {
 Returns the position in the [AudioStream] of the latest sound, in seconds. Returns [code]0.0[/code] if no sounds are playing.
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
 */
-func (self Instance) GetPlaybackPosition() float64 {
-	return float64(float64(class(self).GetPlaybackPosition()))
+func (self Instance) GetPlaybackPosition() Float.X {
+	return Float.X(Float.X(class(self).GetPlaybackPosition()))
 }
 
 /*
@@ -84,19 +85,19 @@ func (self Instance) SetStream(value objects.AudioStream) {
 	class(self).SetStream(value)
 }
 
-func (self Instance) VolumeDb() float64 {
-	return float64(float64(class(self).GetVolumeDb()))
+func (self Instance) VolumeDb() Float.X {
+	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-func (self Instance) SetVolumeDb(value float64) {
+func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(gd.Float(value))
 }
 
-func (self Instance) PitchScale() float64 {
-	return float64(float64(class(self).GetPitchScale()))
+func (self Instance) PitchScale() Float.X {
+	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
-func (self Instance) SetPitchScale(value float64) {
+func (self Instance) SetPitchScale(value Float.X) {
 	class(self).SetPitchScale(gd.Float(value))
 }
 

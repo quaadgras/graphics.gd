@@ -97,7 +97,7 @@ type Instance [1]classdb.AESContext
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Instance) Start(mode classdb.AESContextMode, key []byte) error {
-	return error(class(self).Start(mode, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice(([1][]byte{}[0]))))
+	return error(class(self).Start(mode, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice([1][]byte{}[0])))
 }
 
 /*

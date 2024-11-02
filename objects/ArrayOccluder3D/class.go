@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Occluder3D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +26,8 @@ type Instance [1]classdb.ArrayOccluder3D
 /*
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
-func (self Instance) SetArrays(vertices []gd.Vector3, indices []int32) {
-	class(self).SetArrays(gd.NewPackedVector3Slice(vertices), gd.NewPackedInt32Slice(indices))
+func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) {
+	class(self).SetArrays(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedInt32Slice(indices))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -38,6 +39,14 @@ func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ArrayOccluder3D"))
 	return Instance{classdb.ArrayOccluder3D(object)}
+}
+
+func (self Instance) SetVertices(value []Vector3.XYZ) {
+	class(self).SetVertices(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
+}
+
+func (self Instance) SetIndices(value []int32) {
+	class(self).SetIndices(gd.NewPackedInt32Slice(value))
 }
 
 /*

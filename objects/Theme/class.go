@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -239,16 +241,16 @@ func (self Instance) GetFontSizeTypeList() []string {
 /*
 Creates or changes the value of the [Color] property defined by [param name] and [param theme_type]. Use [method clear_color] to remove the property.
 */
-func (self Instance) SetColor(name string, theme_type string, color gd.Color) {
-	class(self).SetColor(gd.NewStringName(name), gd.NewStringName(theme_type), color)
+func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) {
+	class(self).SetColor(gd.NewStringName(name), gd.NewStringName(theme_type), gd.Color(color))
 }
 
 /*
 Returns the [Color] property defined by [param name] and [param theme_type], if it exists.
 Returns the default color value if the property doesn't exist. Use [method has_color] to check for existence.
 */
-func (self Instance) GetColor(name string, theme_type string) gd.Color {
-	return gd.Color(class(self).GetColor(gd.NewStringName(name), gd.NewStringName(theme_type)))
+func (self Instance) GetColor(name string, theme_type string) Color.RGBA {
+	return Color.RGBA(class(self).GetColor(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
 /*
@@ -371,8 +373,8 @@ Creates or changes the value of the theme property of [param data_type] defined 
 Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) SetThemeItem(data_type classdb.ThemeDataType, name string, theme_type string, value gd.Variant) {
-	class(self).SetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type), value)
+func (self Instance) SetThemeItem(data_type classdb.ThemeDataType, name string, theme_type string, value any) {
+	class(self).SetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type), gd.NewVariant(value))
 }
 
 /*
@@ -380,8 +382,8 @@ Returns the theme property of [param data_type] defined by [param name] and [par
 Returns the engine fallback value if the property doesn't exist (see [ThemeDB]). Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItem(data_type classdb.ThemeDataType, name string, theme_type string) gd.Variant {
-	return gd.Variant(class(self).GetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type)))
+func (self Instance) GetThemeItem(data_type classdb.ThemeDataType, name string, theme_type string) any {
+	return any(class(self).GetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type)).Interface())
 }
 
 /*
@@ -513,11 +515,11 @@ func New() Instance {
 	return Instance{classdb.Theme(object)}
 }
 
-func (self Instance) DefaultBaseScale() float64 {
-	return float64(float64(class(self).GetDefaultBaseScale()))
+func (self Instance) DefaultBaseScale() Float.X {
+	return Float.X(Float.X(class(self).GetDefaultBaseScale()))
 }
 
-func (self Instance) SetDefaultBaseScale(value float64) {
+func (self Instance) SetDefaultBaseScale(value Float.X) {
 	class(self).SetDefaultBaseScale(gd.Float(value))
 }
 

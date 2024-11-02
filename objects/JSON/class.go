@@ -97,15 +97,15 @@ The [param indent] parameter controls if and how something is indented; its cont
 }
 [/codeblock]
 */
-func (self Instance) Stringify(data gd.Variant) string {
-	return string(class(self).Stringify(data, gd.NewString(""), true, false).String())
+func (self Instance) Stringify(data any) string {
+	return string(class(self).Stringify(gd.NewVariant(data), gd.NewString(""), true, false).String())
 }
 
 /*
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
-func (self Instance) ParseString(json_string string) gd.Variant {
-	return gd.Variant(class(self).ParseString(gd.NewString(json_string)))
+func (self Instance) ParseString(json_string string) any {
+	return any(class(self).ParseString(gd.NewString(json_string)).Interface())
 }
 
 /*
@@ -150,12 +150,12 @@ func New() Instance {
 	return Instance{classdb.JSON(object)}
 }
 
-func (self Instance) Data() gd.Variant {
-	return gd.Variant(class(self).GetData())
+func (self Instance) Data() any {
+	return any(class(self).GetData().Interface())
 }
 
-func (self Instance) SetData(value gd.Variant) {
-	class(self).SetData(value)
+func (self Instance) SetData(value any) {
+	class(self).SetData(gd.NewVariant(value))
 }
 
 /*

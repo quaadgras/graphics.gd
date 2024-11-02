@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,35 +34,35 @@ func New() Instance {
 	return Instance{classdb.AudioEffectLimiter(object)}
 }
 
-func (self Instance) CeilingDb() float64 {
-	return float64(float64(class(self).GetCeilingDb()))
+func (self Instance) CeilingDb() Float.X {
+	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
-func (self Instance) SetCeilingDb(value float64) {
+func (self Instance) SetCeilingDb(value Float.X) {
 	class(self).SetCeilingDb(gd.Float(value))
 }
 
-func (self Instance) ThresholdDb() float64 {
-	return float64(float64(class(self).GetThresholdDb()))
+func (self Instance) ThresholdDb() Float.X {
+	return Float.X(Float.X(class(self).GetThresholdDb()))
 }
 
-func (self Instance) SetThresholdDb(value float64) {
+func (self Instance) SetThresholdDb(value Float.X) {
 	class(self).SetThresholdDb(gd.Float(value))
 }
 
-func (self Instance) SoftClipDb() float64 {
-	return float64(float64(class(self).GetSoftClipDb()))
+func (self Instance) SoftClipDb() Float.X {
+	return Float.X(Float.X(class(self).GetSoftClipDb()))
 }
 
-func (self Instance) SetSoftClipDb(value float64) {
+func (self Instance) SetSoftClipDb(value Float.X) {
 	class(self).SetSoftClipDb(gd.Float(value))
 }
 
-func (self Instance) SoftClipRatio() float64 {
-	return float64(float64(class(self).GetSoftClipRatio()))
+func (self Instance) SoftClipRatio() Float.X {
+	return Float.X(Float.X(class(self).GetSoftClipRatio()))
 }
 
-func (self Instance) SetSoftClipRatio(value float64) {
+func (self Instance) SetSoftClipRatio(value Float.X) {
 	class(self).SetSoftClipRatio(gd.Float(value))
 }
 

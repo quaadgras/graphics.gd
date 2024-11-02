@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Rect2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,8 +25,8 @@ type Instance [1]classdb.BitMap
 /*
 Creates a bitmap with the specified size, filled with [code]false[/code].
 */
-func (self Instance) Create(size gd.Vector2i) {
-	class(self).Create(size)
+func (self Instance) Create(size Vector2i.XY) {
+	class(self).Create(gd.Vector2i(size))
 }
 
 /*
@@ -37,8 +39,8 @@ func (self Instance) CreateFromImageAlpha(image objects.Image) {
 /*
 Sets the bitmap's element at the specified position, to the specified value.
 */
-func (self Instance) SetBitv(position gd.Vector2i, bit bool) {
-	class(self).SetBitv(position, bit)
+func (self Instance) SetBitv(position Vector2i.XY, bit bool) {
+	class(self).SetBitv(gd.Vector2i(position), bit)
 }
 
 /*
@@ -51,8 +53,8 @@ func (self Instance) SetBit(x int, y int, bit bool) {
 /*
 Returns bitmap's value at the specified position.
 */
-func (self Instance) GetBitv(position gd.Vector2i) bool {
-	return bool(class(self).GetBitv(position))
+func (self Instance) GetBitv(position Vector2i.XY) bool {
+	return bool(class(self).GetBitv(gd.Vector2i(position)))
 }
 
 /*
@@ -65,8 +67,8 @@ func (self Instance) GetBit(x int, y int) bool {
 /*
 Sets a rectangular portion of the bitmap to the specified value.
 */
-func (self Instance) SetBitRect(rect gd.Rect2i, bit bool) {
-	class(self).SetBitRect(rect, bit)
+func (self Instance) SetBitRect(rect Rect2i.PositionSize, bit bool) {
+	class(self).SetBitRect(gd.Rect2i(rect), bit)
 }
 
 /*
@@ -79,22 +81,22 @@ func (self Instance) GetTrueBitCount() int {
 /*
 Returns bitmap's dimensions.
 */
-func (self Instance) GetSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetSize())
+func (self Instance) GetSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetSize())
 }
 
 /*
 Resizes the image to [param new_size].
 */
-func (self Instance) Resize(new_size gd.Vector2i) {
-	class(self).Resize(new_size)
+func (self Instance) Resize(new_size Vector2i.XY) {
+	class(self).Resize(gd.Vector2i(new_size))
 }
 
 /*
 Applies morphological dilation or erosion to the bitmap. If [param pixels] is positive, dilation is applied to the bitmap. If [param pixels] is negative, erosion is applied to the bitmap. [param rect] defines the area where the morphological operation is applied. Pixels located outside the [param rect] are unaffected by [method grow_mask].
 */
-func (self Instance) GrowMask(pixels int, rect gd.Rect2i) {
-	class(self).GrowMask(gd.Int(pixels), rect)
+func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) {
+	class(self).GrowMask(gd.Int(pixels), gd.Rect2i(rect))
 }
 
 /*
@@ -112,8 +114,8 @@ Rect2(Vector2(), get_size())
 [/codeblock]
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
-func (self Instance) OpaqueToPolygons(rect gd.Rect2i) gd.Array {
-	return gd.Array(class(self).OpaqueToPolygons(rect, gd.Float(2.0)))
+func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) gd.Array {
+	return gd.Array(class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

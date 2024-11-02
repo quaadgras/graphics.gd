@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -53,11 +54,11 @@ func New() Instance {
 	return Instance{classdb.SceneTreeTimer(object)}
 }
 
-func (self Instance) TimeLeft() float64 {
-	return float64(float64(class(self).GetTimeLeft()))
+func (self Instance) TimeLeft() Float.X {
+	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 
-func (self Instance) SetTimeLeft(value float64) {
+func (self Instance) SetTimeLeft(value Float.X) {
 	class(self).SetTimeLeft(gd.Float(value))
 }
 

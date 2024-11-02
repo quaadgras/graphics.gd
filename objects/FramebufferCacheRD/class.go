@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,8 +23,8 @@ type Instance [1]classdb.FramebufferCacheRD
 /*
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
-func (self Instance) GetCacheMultipass(textures gd.Array, passes gd.Array, views int) gd.RID {
-	return gd.RID(class(self).GetCacheMultipass(textures, passes, gd.Int(views)))
+func (self Instance) GetCacheMultipass(textures gd.Array, passes gd.Array, views int) Resource.ID {
+	return Resource.ID(class(self).GetCacheMultipass(textures, passes, gd.Int(views)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

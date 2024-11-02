@@ -8,6 +8,12 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,11 +33,11 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 		//Virtual method to override the surface array index length for a custom class extending [Mesh].
 		SurfaceGetArrayIndexLen(index int) int
 		//Virtual method to override the surface arrays for a custom class extending [Mesh].
-		SurfaceGetArrays(index int) gd.Array
+		SurfaceGetArrays(index int) Array.Any
 		//Virtual method to override the blend shape arrays for a custom class extending [Mesh].
 		SurfaceGetBlendShapeArrays(index int) gd.Array
 		//Virtual method to override the surface LODs for a custom class extending [Mesh].
-		SurfaceGetLods(index int) gd.Dictionary
+		SurfaceGetLods(index int) Dictionary.Any
 		//Virtual method to override the surface format for a custom class extending [Mesh].
 		SurfaceGetFormat(index int) int
 		//Virtual method to override the surface primitive type for a custom class extending [Mesh].
@@ -47,7 +53,7 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 		//Virtual method to override the names of blend shapes for a custom class extending [Mesh].
 		SetBlendShapeName(index int, name string)
 		//Virtual method to override the [AABB] for a custom class extending [Mesh].
-		GetAabb() gd.AABB
+		GetAabb() AABB.PositionSize
 	}
 */
 type Instance [1]classdb.Mesh
@@ -90,7 +96,7 @@ func (Instance) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index
 /*
 Virtual method to override the surface arrays for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -122,7 +128,7 @@ func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, in
 /*
 Virtual method to override the surface LODs for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -231,11 +237,11 @@ func (Instance) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, n
 /*
 Virtual method to override the [AABB] for a custom class extending [Mesh].
 */
-func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.AABB(ret))
 	}
 }
 
@@ -243,15 +249,15 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.Extensio
 Returns the smallest [AABB] enclosing this mesh in local space. Not affected by [code]custom_aabb[/code].
 [b]Note:[/b] This is only implemented for [ArrayMesh] and [PrimitiveMesh].
 */
-func (self Instance) GetAabb() gd.AABB {
-	return gd.AABB(class(self).GetAabb())
+func (self Instance) GetAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetAabb())
 }
 
 /*
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
-func (self Instance) GetFaces() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetFaces().AsSlice())
+func (self Instance) GetFaces() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetFaces().AsSlice())
 }
 
 /*
@@ -264,8 +270,8 @@ func (self Instance) GetSurfaceCount() int {
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [method ArrayMesh.add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetArrays(surf_idx int) gd.Array {
-	return gd.Array(class(self).SurfaceGetArrays(gd.Int(surf_idx)))
+func (self Instance) SurfaceGetArrays(surf_idx int) Array.Any {
+	return Array.Any(class(self).SurfaceGetArrays(gd.Int(surf_idx)))
 }
 
 /*
@@ -318,7 +324,7 @@ func (self Instance) CreateConvexShape() objects.ConvexPolygonShape3D {
 Calculate an outline mesh at a defined offset (margin) from the original mesh.
 [b]Note:[/b] This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
 */
-func (self Instance) CreateOutline(margin float64) objects.Mesh {
+func (self Instance) CreateOutline(margin Float.X) objects.Mesh {
 	return objects.Mesh(class(self).CreateOutline(gd.Float(margin)))
 }
 
@@ -340,12 +346,12 @@ func New() Instance {
 	return Instance{classdb.Mesh(object)}
 }
 
-func (self Instance) LightmapSizeHint() gd.Vector2i {
-	return gd.Vector2i(class(self).GetLightmapSizeHint())
+func (self Instance) LightmapSizeHint() Vector2i.XY {
+	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
-func (self Instance) SetLightmapSizeHint(value gd.Vector2i) {
-	class(self).SetLightmapSizeHint(value)
+func (self Instance) SetLightmapSizeHint(value Vector2i.XY) {
+	class(self).SetLightmapSizeHint(gd.Vector2i(value))
 }
 
 /*

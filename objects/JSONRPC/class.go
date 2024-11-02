@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,8 +29,8 @@ Given a Dictionary which takes the form of a JSON-RPC request: unpack the reques
 To add new supported methods extend the JSONRPC class and call [method process_action] on your subclass.
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
-func (self Instance) ProcessAction(action gd.Variant) gd.Variant {
-	return gd.Variant(class(self).ProcessAction(action, false))
+func (self Instance) ProcessAction(action any) any {
+	return any(class(self).ProcessAction(gd.NewVariant(action), false).Interface())
 }
 func (self Instance) ProcessString(action string) string {
 	return string(class(self).ProcessString(gd.NewString(action)).String())
@@ -41,8 +42,8 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param params]: An array or dictionary of parameters being passed to the method.
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
-func (self Instance) MakeRequest(method string, params gd.Variant, id gd.Variant) gd.Dictionary {
-	return gd.Dictionary(class(self).MakeRequest(gd.NewString(method), params, id))
+func (self Instance) MakeRequest(method string, params any, id any) Dictionary.Any {
+	return Dictionary.Any(class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id)))
 }
 
 /*
@@ -50,8 +51,8 @@ When a server has received and processed a request, it is expected to send a res
 - [param result]: The return value of the function which was called.
 - [param id]: The ID of the request this response is targeted to.
 */
-func (self Instance) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary {
-	return gd.Dictionary(class(self).MakeResponse(result, id))
+func (self Instance) MakeResponse(result any, id any) Dictionary.Any {
+	return Dictionary.Any(class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id)))
 }
 
 /*
@@ -59,8 +60,8 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param method]: Name of the method being called.
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
-func (self Instance) MakeNotification(method string, params gd.Variant) gd.Dictionary {
-	return gd.Dictionary(class(self).MakeNotification(gd.NewString(method), params))
+func (self Instance) MakeNotification(method string, params any) Dictionary.Any {
+	return Dictionary.Any(class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params)))
 }
 
 /*
@@ -69,8 +70,8 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param message]: A custom message about this error.
 - [param id]: The request this error is a response to.
 */
-func (self Instance) MakeResponseError(code int, message string) gd.Dictionary {
-	return gd.Dictionary(class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(([1]gd.Variant{}[0]))))
+func (self Instance) MakeResponseError(code int, message string) Dictionary.Any {
+	return Dictionary.Any(class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

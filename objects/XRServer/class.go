@@ -8,6 +8,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,9 +32,9 @@ func singleton() {
 /*
 Returns the reference frame transform. Mostly used internally and exposed for GDExtension build interfaces.
 */
-func GetReferenceFrame() gd.Transform3D {
+func GetReferenceFrame() Transform3D.BasisOrigin {
 	once.Do(singleton)
-	return gd.Transform3D(class(self).GetReferenceFrame())
+	return Transform3D.BasisOrigin(class(self).GetReferenceFrame())
 }
 
 /*
@@ -58,9 +61,9 @@ func CenterOnHmd(rotation_mode classdb.XRServerRotationMode, keep_height bool) {
 /*
 Returns the primary interface's transformation.
 */
-func GetHmdTransform() gd.Transform3D {
+func GetHmdTransform() Transform3D.BasisOrigin {
 	once.Do(singleton)
-	return gd.Transform3D(class(self).GetHmdTransform())
+	return Transform3D.BasisOrigin(class(self).GetHmdTransform())
 }
 
 /*
@@ -130,9 +133,9 @@ func RemoveTracker(tracker objects.XRTracker) {
 /*
 Returns a dictionary of trackers for [param tracker_types].
 */
-func GetTrackers(tracker_types int) gd.Dictionary {
+func GetTrackers(tracker_types int) Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GetTrackers(gd.Int(tracker_types)))
+	return Dictionary.Any(class(self).GetTrackers(gd.Int(tracker_types)))
 }
 
 /*
@@ -150,20 +153,20 @@ type class [1]classdb.XRServer
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-func WorldScale() float64 {
-	return float64(float64(class(self).GetWorldScale()))
+func WorldScale() Float.X {
+	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
-func SetWorldScale(value float64) {
+func SetWorldScale(value Float.X) {
 	class(self).SetWorldScale(gd.Float(value))
 }
 
-func WorldOrigin() gd.Transform3D {
-	return gd.Transform3D(class(self).GetWorldOrigin())
+func WorldOrigin() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetWorldOrigin())
 }
 
-func SetWorldOrigin(value gd.Transform3D) {
-	class(self).SetWorldOrigin(value)
+func SetWorldOrigin(value Transform3D.BasisOrigin) {
+	class(self).SetWorldOrigin(gd.Transform3D(value))
 }
 
 func PrimaryInterface() objects.XRInterface {

@@ -8,6 +8,15 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Rect2i"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Vector3i"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -98,7 +107,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -118,7 +127,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -138,7 +147,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -158,7 +167,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconCheckItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -179,7 +188,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddRadioCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -200,7 +209,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconRadioCheckItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -222,7 +231,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), ([1]gd.Callable{}[0]), ([1]gd.Callable{}[0]), gd.NewVariant(([1]gd.Variant{}[0])), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -256,9 +265,9 @@ func GlobalMenuGetItemIndexFromText(menu_root string, text string) int {
 Returns the index of the item with the specified [param tag]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIndexFromTag(menu_root string, tag gd.Variant) int {
+func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuGetItemIndexFromTag(gd.NewString(menu_root), tag)))
+	return int(int(class(self).GlobalMenuGetItemIndexFromTag(gd.NewString(menu_root), gd.NewVariant(tag))))
 }
 
 /*
@@ -311,9 +320,9 @@ func GlobalMenuGetItemKeyCallback(menu_root string, idx int) gd.Callable {
 Returns the metadata of the specified item, which might be of any type. You can set it with [method global_menu_set_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemTag(menu_root string, idx int) gd.Variant {
+func GlobalMenuGetItemTag(menu_root string, idx int) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).GlobalMenuGetItemTag(gd.NewString(menu_root), gd.Int(idx)))
+	return any(class(self).GlobalMenuGetItemTag(gd.NewString(menu_root), gd.Int(idx)).Interface())
 }
 
 /*
@@ -470,9 +479,9 @@ func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback gd.Cal
 Sets the metadata of an item, which may be of any type. You can later get it with [method global_menu_get_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemTag(menu_root string, idx int, tag gd.Variant) {
+func GlobalMenuSetItemTag(menu_root string, idx int, tag any) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemTag(gd.NewString(menu_root), gd.Int(idx), tag)
+	class(self).GlobalMenuSetItemTag(gd.NewString(menu_root), gd.Int(idx), gd.NewVariant(tag))
 }
 
 /*
@@ -606,9 +615,9 @@ func GlobalMenuClear(menu_root string) {
 Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetSystemMenuRoots() gd.Dictionary {
+func GlobalMenuGetSystemMenuRoots() Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).GlobalMenuGetSystemMenuRoots())
+	return Dictionary.Any(class(self).GlobalMenuGetSystemMenuRoots())
 }
 
 /*
@@ -738,18 +747,18 @@ func IsDarkMode() bool {
 Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent color is unknown.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetAccentColor() gd.Color {
+func GetAccentColor() Color.RGBA {
 	once.Do(singleton)
-	return gd.Color(class(self).GetAccentColor())
+	return Color.RGBA(class(self).GetAccentColor())
 }
 
 /*
 Returns the OS theme base color (default control background). Returns [code]Color(0, 0, 0, 0)[/code] if the base color is unknown.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetBaseColor() gd.Color {
+func GetBaseColor() Color.RGBA {
 	once.Do(singleton)
-	return gd.Color(class(self).GetBaseColor())
+	return Color.RGBA(class(self).GetBaseColor())
 }
 
 /*
@@ -781,17 +790,17 @@ func MouseGetMode() classdb.DisplayServerMouseMode {
 Sets the mouse cursor position to the given [param position] relative to an origin at the upper left corner of the currently focused game Window Manager window.
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS, and Linux (X11/Wayland). It has no effect on Android, iOS, and Web.
 */
-func WarpMouse(position gd.Vector2i) {
+func WarpMouse(position Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WarpMouse(position)
+	class(self).WarpMouse(gd.Vector2i(position))
 }
 
 /*
 Returns the mouse cursor's current position in screen coordinates.
 */
-func MouseGetPosition() gd.Vector2i {
+func MouseGetPosition() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).MouseGetPosition())
+	return Vector2i.XY(class(self).MouseGetPosition())
 }
 
 /*
@@ -873,9 +882,9 @@ func GetDisplayCutouts() gd.Array {
 /*
 Returns the unobscured area of the display where interactive controls should be rendered. See also [method get_display_cutouts].
 */
-func GetDisplaySafeArea() gd.Rect2i {
+func GetDisplaySafeArea() Rect2i.PositionSize {
 	once.Do(singleton)
-	return gd.Rect2i(class(self).GetDisplaySafeArea())
+	return Rect2i.PositionSize(class(self).GetDisplaySafeArea())
 }
 
 /*
@@ -905,9 +914,9 @@ func GetKeyboardFocusScreen() int {
 /*
 Returns index of the screen which contains specified rectangle.
 */
-func GetScreenFromRect(rect gd.Rect2) int {
+func GetScreenFromRect(rect Rect2.PositionSize) int {
 	once.Do(singleton)
-	return int(int(class(self).GetScreenFromRect(rect)))
+	return int(int(class(self).GetScreenFromRect(gd.Rect2(rect))))
 }
 
 /*
@@ -924,25 +933,25 @@ Returns the screen's top-left corner position in pixels. On multi-monitor setups
 See also [method screen_get_size].
 [b]Note:[/b] On Linux (Wayland) this method always returns [code](0, 0)[/code].
 */
-func ScreenGetPosition() gd.Vector2i {
+func ScreenGetPosition() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).ScreenGetPosition(gd.Int(-1)))
+	return Vector2i.XY(class(self).ScreenGetPosition(gd.Int(-1)))
 }
 
 /*
 Returns the screen's size in pixels. See also [method screen_get_position] and [method screen_get_usable_rect].
 */
-func ScreenGetSize() gd.Vector2i {
+func ScreenGetSize() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).ScreenGetSize(gd.Int(-1)))
+	return Vector2i.XY(class(self).ScreenGetSize(gd.Int(-1)))
 }
 
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [method screen_get_size].
 */
-func ScreenGetUsableRect() gd.Rect2i {
+func ScreenGetUsableRect() Rect2i.PositionSize {
 	once.Do(singleton)
-	return gd.Rect2i(class(self).ScreenGetUsableRect(gd.Int(-1)))
+	return Rect2i.PositionSize(class(self).ScreenGetUsableRect(gd.Int(-1)))
 }
 
 /*
@@ -972,9 +981,9 @@ Returns the scale factor of the specified screen by index.
 [b]Note:[/b] On Linux (Wayland), the returned value is accurate only when [param screen] is [constant SCREEN_OF_MAIN_WINDOW]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. [code]1.25[/code] would get rounded up to [code]2.0[/code]).
 [b]Note:[/b] This method is implemented only on macOS and Linux (Wayland).
 */
-func ScreenGetScale() float64 {
+func ScreenGetScale() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ScreenGetScale(gd.Int(-1))))
+	return Float.X(Float.X(class(self).ScreenGetScale(gd.Int(-1))))
 }
 
 /*
@@ -990,9 +999,9 @@ Returns the greatest scale factor of all screens.
 [b]Note:[/b] On macOS returned value is [code]2.0[/code] if there is at least one hiDPI (Retina) screen in the system, and [code]1.0[/code] in all other cases.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func ScreenGetMaxScale() float64 {
+func ScreenGetMaxScale() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ScreenGetMaxScale()))
+	return Float.X(Float.X(class(self).ScreenGetMaxScale()))
 }
 
 /*
@@ -1007,9 +1016,9 @@ if refresh_rate < 0:
 
 [/codeblock]
 */
-func ScreenGetRefreshRate() float64 {
+func ScreenGetRefreshRate() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).ScreenGetRefreshRate(gd.Int(-1))))
+	return Float.X(Float.X(class(self).ScreenGetRefreshRate(gd.Int(-1))))
 }
 
 /*
@@ -1017,9 +1026,9 @@ Returns color of the display pixel at the [param position].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetPixel(position gd.Vector2i) gd.Color {
+func ScreenGetPixel(position Vector2i.XY) Color.RGBA {
 	once.Do(singleton)
-	return gd.Color(class(self).ScreenGetPixel(position))
+	return Color.RGBA(class(self).ScreenGetPixel(gd.Vector2i(position)))
 }
 
 /*
@@ -1087,9 +1096,9 @@ Returns the ID of the window at the specified screen [param position] (in pixels
 +-------------+ +-------+
 [/codeblock]
 */
-func GetWindowAtScreenPosition(position gd.Vector2i) int {
+func GetWindowAtScreenPosition(position Vector2i.XY) int {
 	once.Do(singleton)
-	return int(int(class(self).GetWindowAtScreenPosition(position)))
+	return int(int(class(self).GetWindowAtScreenPosition(gd.Vector2i(position))))
 }
 
 /*
@@ -1112,17 +1121,17 @@ func WindowGetActivePopup() int {
 /*
 Sets the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system. Clicking this area will not auto-close this popup.
 */
-func WindowSetPopupSafeRect(window int, rect gd.Rect2i) {
+func WindowSetPopupSafeRect(window int, rect Rect2i.PositionSize) {
 	once.Do(singleton)
-	class(self).WindowSetPopupSafeRect(gd.Int(window), rect)
+	class(self).WindowSetPopupSafeRect(gd.Int(window), gd.Rect2i(rect))
 }
 
 /*
 Returns the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system.
 */
-func WindowGetPopupSafeRect(window int) gd.Rect2i {
+func WindowGetPopupSafeRect(window int) Rect2i.PositionSize {
 	once.Do(singleton)
-	return gd.Rect2i(class(self).WindowGetPopupSafeRect(gd.Int(window)))
+	return Rect2i.PositionSize(class(self).WindowGetPopupSafeRect(gd.Int(window)))
 }
 
 /*
@@ -1139,9 +1148,9 @@ func WindowSetTitle(title string) {
 Returns the estimated window title bar size (including text and window buttons) for the window specified by [param window_id] (in pixels). This method does not change the window title.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func WindowGetTitleSize(title string) gd.Vector2i {
+func WindowGetTitleSize(title string) Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetTitleSize(gd.NewString(title), gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetTitleSize(gd.NewString(title), gd.Int(0)))
 }
 
 /*
@@ -1172,9 +1181,9 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
 [b]Note:[/b] This method is implemented on Linux (X11), macOS and Windows.
 */
-func WindowSetMousePassthrough(region []gd.Vector2) {
+func WindowSetMousePassthrough(region []Vector2.XY) {
 	once.Do(singleton)
-	class(self).WindowSetMousePassthrough(gd.NewPackedVector2Slice(region), gd.Int(0))
+	class(self).WindowSetMousePassthrough(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&region))), gd.Int(0))
 }
 
 /*
@@ -1196,17 +1205,17 @@ func WindowSetCurrentScreen(screen int) {
 /*
 Returns the position of the client area of the given window on the screen.
 */
-func WindowGetPosition() gd.Vector2i {
+func WindowGetPosition() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetPosition(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetPosition(gd.Int(0)))
 }
 
 /*
 Returns the position of the given window on the screen including the borders drawn by the operating system. See also [method window_get_position].
 */
-func WindowGetPositionWithDecorations() gd.Vector2i {
+func WindowGetPositionWithDecorations() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetPositionWithDecorations(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetPositionWithDecorations(gd.Int(0)))
 }
 
 /*
@@ -1224,26 +1233,26 @@ See also [method window_get_position] and [method window_set_size].
 [b]Note:[/b] It's recommended to change this value using [member Window.position] instead.
 [b]Note:[/b] On Linux (Wayland): this method is a no-op.
 */
-func WindowSetPosition(position gd.Vector2i) {
+func WindowSetPosition(position Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetPosition(position, gd.Int(0))
+	class(self).WindowSetPosition(gd.Vector2i(position), gd.Int(0))
 }
 
 /*
 Returns the size of the window specified by [param window_id] (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [method window_get_size_with_decorations], [method window_set_size] and [method window_get_position].
 */
-func WindowGetSize() gd.Vector2i {
+func WindowGetSize() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetSize(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetSize(gd.Int(0)))
 }
 
 /*
 Sets the size of the given window to [param size] (in pixels). See also [method window_get_size] and [method window_get_position].
 [b]Note:[/b] It's recommended to change this value using [member Window.size] instead.
 */
-func WindowSetSize(size gd.Vector2i) {
+func WindowSetSize(size Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetSize(size, gd.Int(0))
+	class(self).WindowSetSize(gd.Vector2i(size), gd.Int(0))
 }
 
 /*
@@ -1303,9 +1312,9 @@ func WindowGetAttachedInstanceId() int {
 /*
 Returns the window's maximum size (in pixels). See also [method window_set_max_size].
 */
-func WindowGetMaxSize() gd.Vector2i {
+func WindowGetMaxSize() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetMaxSize(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetMaxSize(gd.Int(0)))
 }
 
 /*
@@ -1313,17 +1322,17 @@ Sets the maximum size of the window specified by [param window_id] in pixels. No
 [b]Note:[/b] It's recommended to change this value using [member Window.max_size] instead.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMaxSize(max_size gd.Vector2i) {
+func WindowSetMaxSize(max_size Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetMaxSize(max_size, gd.Int(0))
+	class(self).WindowSetMaxSize(gd.Vector2i(max_size), gd.Int(0))
 }
 
 /*
 Returns the window's minimum size (in pixels). See also [method window_set_min_size].
 */
-func WindowGetMinSize() gd.Vector2i {
+func WindowGetMinSize() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetMinSize(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetMinSize(gd.Int(0)))
 }
 
 /*
@@ -1332,17 +1341,17 @@ Sets the minimum size for the given window to [param min_size] in pixels. Normal
 [b]Note:[/b] By default, the main window has a minimum size of [code]Vector2i(64, 64)[/code]. This prevents issues that can arise when the window is resized to a near-zero size.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMinSize(min_size gd.Vector2i) {
+func WindowSetMinSize(min_size Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetMinSize(min_size, gd.Int(0))
+	class(self).WindowSetMinSize(gd.Vector2i(min_size), gd.Int(0))
 }
 
 /*
 Returns the size of the window specified by [param window_id] (in pixels), including the borders drawn by the operating system. See also [method window_get_size].
 */
-func WindowGetSizeWithDecorations() gd.Vector2i {
+func WindowGetSizeWithDecorations() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).WindowGetSizeWithDecorations(gd.Int(0)))
+	return Vector2i.XY(class(self).WindowGetSizeWithDecorations(gd.Int(0)))
 }
 
 /*
@@ -1382,17 +1391,17 @@ func WindowGetFlag(flag classdb.DisplayServerWindowFlags) bool {
 When [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set, set offset to the center of the first titlebar button.
 [b]Note:[/b] This flag is implemented only on macOS.
 */
-func WindowSetWindowButtonsOffset(offset gd.Vector2i) {
+func WindowSetWindowButtonsOffset(offset Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetWindowButtonsOffset(offset, gd.Int(0))
+	class(self).WindowSetWindowButtonsOffset(gd.Vector2i(offset), gd.Int(0))
 }
 
 /*
 Returns left margins ([code]x[/code]), right margins ([code]y[/code]) and height ([code]z[/code]) of the title that are safe to use (contains no buttons or other elements) when [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set.
 */
-func WindowGetSafeTitleMargins() gd.Vector3i {
+func WindowGetSafeTitleMargins() Vector3i.XYZ {
 	once.Do(singleton)
-	return gd.Vector3i(class(self).WindowGetSafeTitleMargins(gd.Int(0)))
+	return Vector3i.XYZ(class(self).WindowGetSafeTitleMargins(gd.Int(0)))
 }
 
 /*
@@ -1458,9 +1467,9 @@ func WindowSetImeActive(active bool) {
 /*
 Sets the position of the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] popup for the specified [param window_id]. Only effective if [method window_set_ime_active] was set to [code]true[/code] for the specified [param window_id].
 */
-func WindowSetImePosition(position gd.Vector2i) {
+func WindowSetImePosition(position Vector2i.XY) {
 	once.Do(singleton)
-	class(self).WindowSetImePosition(position, gd.Int(0))
+	class(self).WindowSetImePosition(gd.Vector2i(position), gd.Int(0))
 }
 
 /*
@@ -1512,9 +1521,9 @@ func WindowMinimizeOnTitleDblClick() bool {
 Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] composition string, with the [Vector2i]'s [code]x[/code] component being the caret position and [code]y[/code] being the length of the selection.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func ImeGetSelection() gd.Vector2i {
+func ImeGetSelection() Vector2i.XY {
 	once.Do(singleton)
-	return gd.Vector2i(class(self).ImeGetSelection())
+	return Vector2i.XY(class(self).ImeGetSelection())
 }
 
 /*
@@ -1538,7 +1547,7 @@ Shows the virtual keyboard if the platform has one.
 */
 func VirtualKeyboardShow(existing_text string) {
 	once.Do(singleton)
-	class(self).VirtualKeyboardShow(gd.NewString(existing_text), gd.NewRect2(0, 0, 0, 0), 0, gd.Int(-1), gd.Int(-1), gd.Int(-1))
+	class(self).VirtualKeyboardShow(gd.NewString(existing_text), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), 0, gd.Int(-1), gd.Int(-1), gd.Int(-1))
 }
 
 /*
@@ -1579,7 +1588,7 @@ Sets a custom mouse cursor image for the given [param shape]. This means the use
 */
 func CursorSetCustomImage(cursor objects.Resource) {
 	once.Do(singleton)
-	class(self).CursorSetCustomImage(cursor, 0, gd.Vector2{0, 0})
+	class(self).CursorSetCustomImage(cursor, 0, gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
@@ -1783,7 +1792,7 @@ Sets the application status indicator native popup menu.
 [b]Note:[/b] On Windows, the menu is activated by the right mouse button, selecting the status icon and pressing [kbd]Shift + F10[/kbd], or the applications key. The menu's activation callback for the other mouse buttons is still triggered.
 [b]Note:[/b] Native popup is only supported if [NativeMenu] supports the [constant NativeMenu.FEATURE_POPUP_MENU] feature.
 */
-func StatusIndicatorSetMenu(id int, menu_rid gd.RID) {
+func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) {
 	once.Do(singleton)
 	class(self).StatusIndicatorSetMenu(gd.Int(id), menu_rid)
 }
@@ -1801,9 +1810,9 @@ func StatusIndicatorSetCallback(id int, callback gd.Callable) {
 Returns the rectangle for the given status indicator [param id] in screen coordinates. If the status indicator is not visible, returns an empty [Rect2].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorGetRect(id int) gd.Rect2 {
+func StatusIndicatorGetRect(id int) Rect2.PositionSize {
 	once.Do(singleton)
-	return gd.Rect2(class(self).StatusIndicatorGetRect(gd.Int(id)))
+	return Rect2.PositionSize(class(self).StatusIndicatorGetRect(gd.Int(id)))
 }
 
 /*

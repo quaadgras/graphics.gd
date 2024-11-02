@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SyntaxHighlighter"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,8 +27,8 @@ type Instance [1]classdb.CodeHighlighter
 Sets the color for a keyword.
 The keyword cannot contain any symbols except '_'.
 */
-func (self Instance) AddKeywordColor(keyword string, color gd.Color) {
-	class(self).AddKeywordColor(gd.NewString(keyword), color)
+func (self Instance) AddKeywordColor(keyword string, color Color.RGBA) {
+	class(self).AddKeywordColor(gd.NewString(keyword), gd.Color(color))
 }
 
 /*
@@ -46,8 +48,8 @@ func (self Instance) HasKeywordColor(keyword string) bool {
 /*
 Returns the color for a keyword.
 */
-func (self Instance) GetKeywordColor(keyword string) gd.Color {
-	return gd.Color(class(self).GetKeywordColor(gd.NewString(keyword)))
+func (self Instance) GetKeywordColor(keyword string) Color.RGBA {
+	return Color.RGBA(class(self).GetKeywordColor(gd.NewString(keyword)))
 }
 
 /*
@@ -62,8 +64,8 @@ Sets the color for a member keyword.
 The member keyword cannot contain any symbols except '_'.
 It will not be highlighted if preceded by a '.'.
 */
-func (self Instance) AddMemberKeywordColor(member_keyword string, color gd.Color) {
-	class(self).AddMemberKeywordColor(gd.NewString(member_keyword), color)
+func (self Instance) AddMemberKeywordColor(member_keyword string, color Color.RGBA) {
+	class(self).AddMemberKeywordColor(gd.NewString(member_keyword), gd.Color(color))
 }
 
 /*
@@ -83,8 +85,8 @@ func (self Instance) HasMemberKeywordColor(member_keyword string) bool {
 /*
 Returns the color for a member keyword.
 */
-func (self Instance) GetMemberKeywordColor(member_keyword string) gd.Color {
-	return gd.Color(class(self).GetMemberKeywordColor(gd.NewString(member_keyword)))
+func (self Instance) GetMemberKeywordColor(member_keyword string) Color.RGBA {
+	return Color.RGBA(class(self).GetMemberKeywordColor(gd.NewString(member_keyword)))
 }
 
 /*
@@ -98,8 +100,8 @@ func (self Instance) ClearMemberKeywordColors() {
 Adds a color region (such as for comments or strings) from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
-func (self Instance) AddColorRegion(start_key string, end_key string, color gd.Color) {
-	class(self).AddColorRegion(gd.NewString(start_key), gd.NewString(end_key), color, false)
+func (self Instance) AddColorRegion(start_key string, end_key string, color Color.RGBA) {
+	class(self).AddColorRegion(gd.NewString(start_key), gd.NewString(end_key), gd.Color(color), false)
 }
 
 /*
@@ -134,59 +136,59 @@ func New() Instance {
 	return Instance{classdb.CodeHighlighter(object)}
 }
 
-func (self Instance) NumberColor() gd.Color {
-	return gd.Color(class(self).GetNumberColor())
+func (self Instance) NumberColor() Color.RGBA {
+	return Color.RGBA(class(self).GetNumberColor())
 }
 
-func (self Instance) SetNumberColor(value gd.Color) {
-	class(self).SetNumberColor(value)
+func (self Instance) SetNumberColor(value Color.RGBA) {
+	class(self).SetNumberColor(gd.Color(value))
 }
 
-func (self Instance) SymbolColor() gd.Color {
-	return gd.Color(class(self).GetSymbolColor())
+func (self Instance) SymbolColor() Color.RGBA {
+	return Color.RGBA(class(self).GetSymbolColor())
 }
 
-func (self Instance) SetSymbolColor(value gd.Color) {
-	class(self).SetSymbolColor(value)
+func (self Instance) SetSymbolColor(value Color.RGBA) {
+	class(self).SetSymbolColor(gd.Color(value))
 }
 
-func (self Instance) FunctionColor() gd.Color {
-	return gd.Color(class(self).GetFunctionColor())
+func (self Instance) FunctionColor() Color.RGBA {
+	return Color.RGBA(class(self).GetFunctionColor())
 }
 
-func (self Instance) SetFunctionColor(value gd.Color) {
-	class(self).SetFunctionColor(value)
+func (self Instance) SetFunctionColor(value Color.RGBA) {
+	class(self).SetFunctionColor(gd.Color(value))
 }
 
-func (self Instance) MemberVariableColor() gd.Color {
-	return gd.Color(class(self).GetMemberVariableColor())
+func (self Instance) MemberVariableColor() Color.RGBA {
+	return Color.RGBA(class(self).GetMemberVariableColor())
 }
 
-func (self Instance) SetMemberVariableColor(value gd.Color) {
-	class(self).SetMemberVariableColor(value)
+func (self Instance) SetMemberVariableColor(value Color.RGBA) {
+	class(self).SetMemberVariableColor(gd.Color(value))
 }
 
-func (self Instance) KeywordColors() gd.Dictionary {
-	return gd.Dictionary(class(self).GetKeywordColors())
+func (self Instance) KeywordColors() Dictionary.Any {
+	return Dictionary.Any(class(self).GetKeywordColors())
 }
 
-func (self Instance) SetKeywordColors(value gd.Dictionary) {
+func (self Instance) SetKeywordColors(value Dictionary.Any) {
 	class(self).SetKeywordColors(value)
 }
 
-func (self Instance) MemberKeywordColors() gd.Dictionary {
-	return gd.Dictionary(class(self).GetMemberKeywordColors())
+func (self Instance) MemberKeywordColors() Dictionary.Any {
+	return Dictionary.Any(class(self).GetMemberKeywordColors())
 }
 
-func (self Instance) SetMemberKeywordColors(value gd.Dictionary) {
+func (self Instance) SetMemberKeywordColors(value Dictionary.Any) {
 	class(self).SetMemberKeywordColors(value)
 }
 
-func (self Instance) ColorRegions() gd.Dictionary {
-	return gd.Dictionary(class(self).GetColorRegions())
+func (self Instance) ColorRegions() Dictionary.Any {
+	return Dictionary.Any(class(self).GetColorRegions())
 }
 
-func (self Instance) SetColorRegions(value gd.Dictionary) {
+func (self Instance) SetColorRegions(value Dictionary.Any) {
 	class(self).SetColorRegions(value)
 }
 

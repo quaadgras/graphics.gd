@@ -7,6 +7,12 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,7 +36,7 @@ func (self Instance) Clear() {
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) SetBidiOverride(override gd.Array) {
+func (self Instance) SetBidiOverride(override Array.Any) {
 	class(self).SetBidiOverride(override)
 }
 
@@ -38,7 +44,7 @@ func (self Instance) SetBidiOverride(override gd.Array) {
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) SetDropcap(text string, font objects.Font, font_size int) bool {
-	return bool(class(self).SetDropcap(gd.NewString(text), font, gd.Int(font_size), gd.NewRect2(0, 0, 0, 0), gd.NewString("")))
+	return bool(class(self).SetDropcap(gd.NewString(text), font, gd.Int(font_size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewString("")))
 }
 
 /*
@@ -52,21 +58,21 @@ func (self Instance) ClearDropcap() {
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font objects.Font, font_size int) bool {
-	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(([1]gd.Variant{}[0]))))
+	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Instance) AddObject(key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).AddObject(key, size, 5, gd.Int(1), gd.Float(0.0)))
+func (self Instance) AddObject(key any, size Vector2.XY) bool {
+	return bool(class(self).AddObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Int(1), gd.Float(0.0)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Instance) ResizeObject(key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).ResizeObject(key, size, 5, gd.Float(0.0)))
+func (self Instance) ResizeObject(key any, size Vector2.XY) bool {
+	return bool(class(self).ResizeObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Float(0.0)))
 }
 
 /*
@@ -79,36 +85,36 @@ func (self Instance) TabAlign(tab_stops []float32) {
 /*
 Returns the size of the bounding box of the paragraph, without line breaks.
 */
-func (self Instance) GetNonWrappedSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetNonWrappedSize())
+func (self Instance) GetNonWrappedSize() Vector2.XY {
+	return Vector2.XY(class(self).GetNonWrappedSize())
 }
 
 /*
 Returns the size of the bounding box of the paragraph.
 */
-func (self Instance) GetSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetSize())
+func (self Instance) GetSize() Vector2.XY {
+	return Vector2.XY(class(self).GetSize())
 }
 
 /*
 Returns TextServer full string buffer RID.
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Returns TextServer line buffer RID.
 */
-func (self Instance) GetLineRid(line int) gd.RID {
-	return gd.RID(class(self).GetLineRid(gd.Int(line)))
+func (self Instance) GetLineRid(line int) Resource.ID {
+	return Resource.ID(class(self).GetLineRid(gd.Int(line)))
 }
 
 /*
 Returns drop cap text buffer RID.
 */
-func (self Instance) GetDropcapRid() gd.RID {
-	return gd.RID(class(self).GetDropcapRid())
+func (self Instance) GetDropcapRid() Resource.ID {
+	return Resource.ID(class(self).GetDropcapRid())
 }
 
 /*
@@ -121,71 +127,71 @@ func (self Instance) GetLineCount() int {
 /*
 Returns array of inline objects in the line.
 */
-func (self Instance) GetLineObjects(line int) gd.Array {
-	return gd.Array(class(self).GetLineObjects(gd.Int(line)))
+func (self Instance) GetLineObjects(line int) Array.Any {
+	return Array.Any(class(self).GetLineObjects(gd.Int(line)))
 }
 
 /*
 Returns bounding rectangle of the inline object.
 */
-func (self Instance) GetLineObjectRect(line int, key gd.Variant) gd.Rect2 {
-	return gd.Rect2(class(self).GetLineObjectRect(gd.Int(line), key))
+func (self Instance) GetLineObjectRect(line int, key any) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetLineObjectRect(gd.Int(line), gd.NewVariant(key)))
 }
 
 /*
 Returns size of the bounding box of the line of text. Returned size is rounded up.
 */
-func (self Instance) GetLineSize(line int) gd.Vector2 {
-	return gd.Vector2(class(self).GetLineSize(gd.Int(line)))
+func (self Instance) GetLineSize(line int) Vector2.XY {
+	return Vector2.XY(class(self).GetLineSize(gd.Int(line)))
 }
 
 /*
 Returns character range of the line.
 */
-func (self Instance) GetLineRange(line int) gd.Vector2i {
-	return gd.Vector2i(class(self).GetLineRange(gd.Int(line)))
+func (self Instance) GetLineRange(line int) Vector2i.XY {
+	return Vector2i.XY(class(self).GetLineRange(gd.Int(line)))
 }
 
 /*
 Returns the text line ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (self Instance) GetLineAscent(line int) float64 {
-	return float64(float64(class(self).GetLineAscent(gd.Int(line))))
+func (self Instance) GetLineAscent(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineAscent(gd.Int(line))))
 }
 
 /*
 Returns the text line descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (self Instance) GetLineDescent(line int) float64 {
-	return float64(float64(class(self).GetLineDescent(gd.Int(line))))
+func (self Instance) GetLineDescent(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineDescent(gd.Int(line))))
 }
 
 /*
 Returns width (for horizontal layout) or height (for vertical) of the line of text.
 */
-func (self Instance) GetLineWidth(line int) float64 {
-	return float64(float64(class(self).GetLineWidth(gd.Int(line))))
+func (self Instance) GetLineWidth(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineWidth(gd.Int(line))))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) GetLineUnderlinePosition(line int) float64 {
-	return float64(float64(class(self).GetLineUnderlinePosition(gd.Int(line))))
+func (self Instance) GetLineUnderlinePosition(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineUnderlinePosition(gd.Int(line))))
 }
 
 /*
 Returns thickness of the underline.
 */
-func (self Instance) GetLineUnderlineThickness(line int) float64 {
-	return float64(float64(class(self).GetLineUnderlineThickness(gd.Int(line))))
+func (self Instance) GetLineUnderlineThickness(line int) Float.X {
+	return Float.X(Float.X(class(self).GetLineUnderlineThickness(gd.Int(line))))
 }
 
 /*
 Returns drop cap bounding box size.
 */
-func (self Instance) GetDropcapSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetDropcapSize())
+func (self Instance) GetDropcapSize() Vector2.XY {
+	return Vector2.XY(class(self).GetDropcapSize())
 }
 
 /*
@@ -198,50 +204,50 @@ func (self Instance) GetDropcapLines() int {
 /*
 Draw all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) Draw(canvas gd.RID, pos gd.Vector2) {
-	class(self).Draw(canvas, pos, gd.Color{1, 1, 1, 1}, gd.Color{1, 1, 1, 1})
+func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) {
+	class(self).Draw(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawOutline(canvas gd.RID, pos gd.Vector2) {
-	class(self).DrawOutline(canvas, pos, gd.Int(1), gd.Color{1, 1, 1, 1}, gd.Color{1, 1, 1, 1})
+func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) {
+	class(self).DrawOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLine(canvas gd.RID, pos gd.Vector2, line int) {
-	class(self).DrawLine(canvas, pos, gd.Int(line), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawLine(canvas Resource.ID, pos Vector2.XY, line int) {
+	class(self).DrawLine(canvas, gd.Vector2(pos), gd.Int(line), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outline of the single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLineOutline(canvas gd.RID, pos gd.Vector2, line int) {
-	class(self).DrawLineOutline(canvas, pos, gd.Int(line), gd.Int(1), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawLineOutline(canvas Resource.ID, pos Vector2.XY, line int) {
+	class(self).DrawLineOutline(canvas, gd.Vector2(pos), gd.Int(line), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcap(canvas gd.RID, pos gd.Vector2) {
-	class(self).DrawDropcap(canvas, pos, gd.Color{1, 1, 1, 1})
+func (self Instance) DrawDropcap(canvas Resource.ID, pos Vector2.XY) {
+	class(self).DrawDropcap(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap outline into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcapOutline(canvas gd.RID, pos gd.Vector2) {
-	class(self).DrawDropcapOutline(canvas, pos, gd.Int(1), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawDropcapOutline(canvas Resource.ID, pos Vector2.XY) {
+	class(self).DrawDropcapOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns caret character offset at the specified coordinates. This function always returns a valid position.
 */
-func (self Instance) HitTest(coords gd.Vector2) int {
-	return int(int(class(self).HitTest(coords)))
+func (self Instance) HitTest(coords Vector2.XY) int {
+	return int(int(class(self).HitTest(gd.Vector2(coords))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -335,11 +341,11 @@ func (self Instance) SetEllipsisChar(value string) {
 	class(self).SetEllipsisChar(gd.NewString(value))
 }
 
-func (self Instance) Width() float64 {
-	return float64(float64(class(self).GetWidth()))
+func (self Instance) Width() Float.X {
+	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-func (self Instance) SetWidth(value float64) {
+func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(gd.Float(value))
 }
 

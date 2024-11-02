@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,11 +42,15 @@ func (self Instance) SetAction(value string) {
 	class(self).SetAction(gd.NewStringName(value))
 }
 
-func (self Instance) Strength() float64 {
-	return float64(float64(class(self).GetStrength()))
+func (self Instance) SetPressed(value bool) {
+	class(self).SetPressed(value)
 }
 
-func (self Instance) SetStrength(value float64) {
+func (self Instance) Strength() Float.X {
+	return Float.X(Float.X(class(self).GetStrength()))
+}
+
+func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(gd.Float(value))
 }
 

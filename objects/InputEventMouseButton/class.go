@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/InputEventWithModifiers"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,11 +37,11 @@ func New() Instance {
 	return Instance{classdb.InputEventMouseButton(object)}
 }
 
-func (self Instance) Factor() float64 {
-	return float64(float64(class(self).GetFactor()))
+func (self Instance) Factor() Float.X {
+	return Float.X(Float.X(class(self).GetFactor()))
 }
 
-func (self Instance) SetFactor(value float64) {
+func (self Instance) SetFactor(value Float.X) {
 	class(self).SetFactor(gd.Float(value))
 }
 
@@ -50,6 +51,14 @@ func (self Instance) ButtonIndex() MouseButton {
 
 func (self Instance) SetButtonIndex(value MouseButton) {
 	class(self).SetButtonIndex(value)
+}
+
+func (self Instance) SetCanceled(value bool) {
+	class(self).SetCanceled(value)
+}
+
+func (self Instance) SetPressed(value bool) {
+	class(self).SetPressed(value)
 }
 
 func (self Instance) DoubleClick() bool {

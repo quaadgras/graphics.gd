@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,12 +35,12 @@ func New() Instance {
 	return Instance{classdb.GraphElement(object)}
 }
 
-func (self Instance) PositionOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetPositionOffset())
+func (self Instance) PositionOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetPositionOffset())
 }
 
-func (self Instance) SetPositionOffset(value gd.Vector2) {
-	class(self).SetPositionOffset(value)
+func (self Instance) SetPositionOffset(value Vector2.XY) {
+	class(self).SetPositionOffset(gd.Vector2(value))
 }
 
 func (self Instance) Resizable() bool {
@@ -184,15 +185,15 @@ func (self Instance) OnDeleteRequest(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResizeRequest(cb func(new_size gd.Vector2)) {
+func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResizeEnd(cb func(new_size gd.Vector2)) {
+func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnDragged(cb func(from gd.Vector2, to gd.Vector2)) {
+func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
 }
 

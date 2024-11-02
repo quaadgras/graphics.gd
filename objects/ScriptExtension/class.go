@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Script"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -186,20 +187,20 @@ func (Instance) _has_static_method(impl func(ptr unsafe.Pointer, method string) 
 /*
 Return the expected argument count for the given [param method], or [code]null[/code] if it can't be determined (which will then fall back to the default behavior).
 */
-func (Instance) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, method string) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, method string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var method = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(method)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_method_info(impl func(ptr unsafe.Pointer, method string) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_method_info(impl func(ptr unsafe.Pointer, method string) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var method = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(method)
@@ -277,13 +278,13 @@ func (Instance) _has_property_default_value(impl func(ptr unsafe.Pointer, proper
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_property_default_value(impl func(ptr unsafe.Pointer, property string) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_property_default_value(impl func(ptr unsafe.Pointer, property string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var property = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(property)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, property.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -327,7 +328,7 @@ func (Instance) _get_member_line(impl func(ptr unsafe.Pointer, member string) in
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
-func (Instance) _get_constants(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constants(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -356,11 +357,11 @@ func (Instance) _is_placeholder_fallback_enabled(impl func(ptr unsafe.Pointer) b
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_rpc_config(impl func(ptr unsafe.Pointer) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_rpc_config(impl func(ptr unsafe.Pointer) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}

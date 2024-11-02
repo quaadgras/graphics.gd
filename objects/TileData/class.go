@@ -7,6 +7,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,29 +41,29 @@ func (self Instance) GetOccluder(layer_id int) objects.OccluderPolygon2D {
 /*
 Sets the constant linear velocity. This does not move the tile. This linear velocity is applied to objects colliding with this tile. This is useful to create conveyor belts.
 */
-func (self Instance) SetConstantLinearVelocity(layer_id int, velocity gd.Vector2) {
-	class(self).SetConstantLinearVelocity(gd.Int(layer_id), velocity)
+func (self Instance) SetConstantLinearVelocity(layer_id int, velocity Vector2.XY) {
+	class(self).SetConstantLinearVelocity(gd.Int(layer_id), gd.Vector2(velocity))
 }
 
 /*
 Returns the constant linear velocity applied to objects colliding with this tile.
 */
-func (self Instance) GetConstantLinearVelocity(layer_id int) gd.Vector2 {
-	return gd.Vector2(class(self).GetConstantLinearVelocity(gd.Int(layer_id)))
+func (self Instance) GetConstantLinearVelocity(layer_id int) Vector2.XY {
+	return Vector2.XY(class(self).GetConstantLinearVelocity(gd.Int(layer_id)))
 }
 
 /*
 Sets the constant angular velocity. This does not rotate the tile. This angular velocity is applied to objects colliding with this tile.
 */
-func (self Instance) SetConstantAngularVelocity(layer_id int, velocity float64) {
+func (self Instance) SetConstantAngularVelocity(layer_id int, velocity Float.X) {
 	class(self).SetConstantAngularVelocity(gd.Int(layer_id), gd.Float(velocity))
 }
 
 /*
 Returns the constant angular velocity applied to objects colliding with this tile.
 */
-func (self Instance) GetConstantAngularVelocity(layer_id int) float64 {
-	return float64(float64(class(self).GetConstantAngularVelocity(gd.Int(layer_id))))
+func (self Instance) GetConstantAngularVelocity(layer_id int) Float.X {
+	return Float.X(Float.X(class(self).GetConstantAngularVelocity(gd.Int(layer_id))))
 }
 
 /*
@@ -93,15 +97,15 @@ func (self Instance) RemoveCollisionPolygon(layer_id int, polygon_index int) {
 /*
 Sets the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
-func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []gd.Vector2) {
-	class(self).SetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index), gd.NewPackedVector2Slice(polygon))
+func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []Vector2.XY) {
+	class(self).SetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))))
 }
 
 /*
 Returns the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
-func (self Instance) GetCollisionPolygonPoints(layer_id int, polygon_index int) []gd.Vector2 {
-	return []gd.Vector2(class(self).GetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index)).AsSlice())
+func (self Instance) GetCollisionPolygonPoints(layer_id int, polygon_index int) []Vector2.XY {
+	return []Vector2.XY(class(self).GetCollisionPolygonPoints(gd.Int(layer_id), gd.Int(polygon_index)).AsSlice())
 }
 
 /*
@@ -121,15 +125,15 @@ func (self Instance) IsCollisionPolygonOneWay(layer_id int, polygon_index int) b
 /*
 Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
-func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin float64) {
+func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) {
 	class(self).SetCollisionPolygonOneWayMargin(gd.Int(layer_id), gd.Int(polygon_index), gd.Float(one_way_margin))
 }
 
 /*
 Returns the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
-func (self Instance) GetCollisionPolygonOneWayMargin(layer_id int, polygon_index int) float64 {
-	return float64(float64(class(self).GetCollisionPolygonOneWayMargin(gd.Int(layer_id), gd.Int(polygon_index))))
+func (self Instance) GetCollisionPolygonOneWayMargin(layer_id int, polygon_index int) Float.X {
+	return Float.X(Float.X(class(self).GetCollisionPolygonOneWayMargin(gd.Int(layer_id), gd.Int(polygon_index))))
 }
 
 /*
@@ -171,29 +175,29 @@ func (self Instance) GetNavigationPolygon(layer_id int) objects.NavigationPolygo
 /*
 Sets the tile's custom data value for the TileSet custom data layer with name [param layer_name].
 */
-func (self Instance) SetCustomData(layer_name string, value gd.Variant) {
-	class(self).SetCustomData(gd.NewString(layer_name), value)
+func (self Instance) SetCustomData(layer_name string, value any) {
+	class(self).SetCustomData(gd.NewString(layer_name), gd.NewVariant(value))
 }
 
 /*
 Returns the custom data value for custom data layer named [param layer_name].
 */
-func (self Instance) GetCustomData(layer_name string) gd.Variant {
-	return gd.Variant(class(self).GetCustomData(gd.NewString(layer_name)))
+func (self Instance) GetCustomData(layer_name string) any {
+	return any(class(self).GetCustomData(gd.NewString(layer_name)).Interface())
 }
 
 /*
 Sets the tile's custom data value for the TileSet custom data layer with index [param layer_id].
 */
-func (self Instance) SetCustomDataByLayerId(layer_id int, value gd.Variant) {
-	class(self).SetCustomDataByLayerId(gd.Int(layer_id), value)
+func (self Instance) SetCustomDataByLayerId(layer_id int, value any) {
+	class(self).SetCustomDataByLayerId(gd.Int(layer_id), gd.NewVariant(value))
 }
 
 /*
 Returns the custom data value for custom data layer with index [param layer_id].
 */
-func (self Instance) GetCustomDataByLayerId(layer_id int) gd.Variant {
-	return gd.Variant(class(self).GetCustomDataByLayerId(gd.Int(layer_id)))
+func (self Instance) GetCustomDataByLayerId(layer_id int) any {
+	return any(class(self).GetCustomDataByLayerId(gd.Int(layer_id)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -231,20 +235,20 @@ func (self Instance) SetTranspose(value bool) {
 	class(self).SetTranspose(value)
 }
 
-func (self Instance) TextureOrigin() gd.Vector2i {
-	return gd.Vector2i(class(self).GetTextureOrigin())
+func (self Instance) TextureOrigin() Vector2i.XY {
+	return Vector2i.XY(class(self).GetTextureOrigin())
 }
 
-func (self Instance) SetTextureOrigin(value gd.Vector2i) {
-	class(self).SetTextureOrigin(value)
+func (self Instance) SetTextureOrigin(value Vector2i.XY) {
+	class(self).SetTextureOrigin(gd.Vector2i(value))
 }
 
-func (self Instance) Modulate() gd.Color {
-	return gd.Color(class(self).GetModulate())
+func (self Instance) Modulate() Color.RGBA {
+	return Color.RGBA(class(self).GetModulate())
 }
 
-func (self Instance) SetModulate(value gd.Color) {
-	class(self).SetModulate(value)
+func (self Instance) SetModulate(value Color.RGBA) {
+	class(self).SetModulate(gd.Color(value))
 }
 
 func (self Instance) Material() objects.Material {
@@ -287,11 +291,11 @@ func (self Instance) SetTerrain(value int) {
 	class(self).SetTerrain(gd.Int(value))
 }
 
-func (self Instance) Probability() float64 {
-	return float64(float64(class(self).GetProbability()))
+func (self Instance) Probability() Float.X {
+	return Float.X(Float.X(class(self).GetProbability()))
 }
 
-func (self Instance) SetProbability(value float64) {
+func (self Instance) SetProbability(value Float.X) {
 	class(self).SetProbability(gd.Float(value))
 }
 

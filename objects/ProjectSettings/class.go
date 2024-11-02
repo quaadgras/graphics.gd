@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,9 +51,9 @@ ProjectSettings.SetSetting("application/config/name", "Example");
 [/codeblocks]
 This can also be used to erase custom project settings. To do this change the setting value to [code]null[/code].
 */
-func SetSetting(name string, value gd.Variant) {
+func SetSetting(name string, value any) {
 	once.Do(singleton)
-	class(self).SetSetting(gd.NewString(name), value)
+	class(self).SetSetting(gd.NewString(name), gd.NewVariant(value))
 }
 
 /*
@@ -70,9 +71,9 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 [/codeblocks]
 [b]Note:[/b] This method doesn't take potential feature overrides into account automatically. Use [method get_setting_with_override] to handle seamlessly.
 */
-func GetSetting(name string) gd.Variant {
+func GetSetting(name string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).GetSetting(gd.NewString(name), gd.NewVariant(([1]gd.Variant{}[0]))))
+	return any(class(self).GetSetting(gd.NewString(name), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*
@@ -89,9 +90,9 @@ GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 [/codeblocks]
 Then the overridden setting will be returned instead if the project is running on the [i]Windows[/i] operating system.
 */
-func GetSettingWithOverride(name string) gd.Variant {
+func GetSettingWithOverride(name string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).GetSettingWithOverride(gd.NewStringName(name)))
+	return any(class(self).GetSettingWithOverride(gd.NewStringName(name)).Interface())
 }
 
 /*
@@ -127,9 +128,9 @@ func GetOrder(name string) int {
 /*
 Sets the specified setting's initial value. This is the value the setting reverts to.
 */
-func SetInitialValue(name string, value gd.Variant) {
+func SetInitialValue(name string, value any) {
 	once.Do(singleton)
-	class(self).SetInitialValue(gd.NewString(name), value)
+	class(self).SetInitialValue(gd.NewString(name), gd.NewVariant(value))
 }
 
 /*
@@ -183,7 +184,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func AddPropertyInfo(hint gd.Dictionary) {
+func AddPropertyInfo(hint Dictionary.Any) {
 	once.Do(singleton)
 	class(self).AddPropertyInfo(hint)
 }

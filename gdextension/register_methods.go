@@ -6,6 +6,7 @@ import (
 
 	gd "grow.graphics/gd/internal"
 	"grow.graphics/gd/internal/pointers"
+	"grow.graphics/gd/variant/String"
 )
 
 func registerMethods(class gd.StringName, rtype reflect.Type) {
@@ -211,7 +212,16 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		default:
-			panic(fmt.Sprintf("gdextension: unsupported Godot -> Go type %v", method.Type().In(i)))
+			args[i] = reflect.New(method.Type().In(i)).Elem()
+			switch method.Type().In(i).Kind() {
+			case reflect.String:
+				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				val := pointers.New[gd.String](ptr)
+				defer val.Free()
+				args[i].SetString(val.String())
+			default:
+				panic(fmt.Sprintf("gdextension: unsupported Godot -> Go type %v", method.Type().In(i)))
+			}
 		}
 	}
 	rrets := method.Call(args)
@@ -303,7 +313,12 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 		case gd.PackedColorArray:
 			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
 		default:
-			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", method.Type().Out(0)))
+			switch rrets[0].Type().Kind() {
+			case reflect.String:
+				gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(String.New(rrets[0])))
+			default:
+				panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", method.Type().Out(0)))
+			}
 		}
 	}
 }

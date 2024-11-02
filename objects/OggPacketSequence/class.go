@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,8 +24,8 @@ type Instance [1]classdb.OggPacketSequence
 /*
 The length of this stream, in seconds.
 */
-func (self Instance) GetLength() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) GetLength() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -54,11 +55,11 @@ func (self Instance) SetGranulePositions(value []int64) {
 	class(self).SetPacketGranulePositions(gd.NewPackedInt64Slice(value))
 }
 
-func (self Instance) SamplingRate() float64 {
-	return float64(float64(class(self).GetSamplingRate()))
+func (self Instance) SamplingRate() Float.X {
+	return Float.X(Float.X(class(self).GetSamplingRate()))
 }
 
-func (self Instance) SetSamplingRate(value float64) {
+func (self Instance) SetSamplingRate(value Float.X) {
 	class(self).SetSamplingRate(gd.Float(value))
 }
 

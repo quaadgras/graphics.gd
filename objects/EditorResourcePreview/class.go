@@ -25,16 +25,16 @@ type Instance [1]classdb.EditorResourcePreview
 Queue a resource file located at [param path] for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueResourcePreview(path string, receiver gd.Object, receiver_func string, userdata gd.Variant) {
-	class(self).QueueResourcePreview(gd.NewString(path), receiver, gd.NewStringName(receiver_func), userdata)
+func (self Instance) QueueResourcePreview(path string, receiver gd.Object, receiver_func string, userdata any) {
+	class(self).QueueResourcePreview(gd.NewString(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
 /*
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueEditedResourcePreview(resource objects.Resource, receiver gd.Object, receiver_func string, userdata gd.Variant) {
-	class(self).QueueEditedResourcePreview(resource, receiver, gd.NewStringName(receiver_func), userdata)
+func (self Instance) QueueEditedResourcePreview(resource objects.Resource, receiver gd.Object, receiver_func string, userdata any) {
+	class(self).QueueEditedResourcePreview(resource, receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
 /*

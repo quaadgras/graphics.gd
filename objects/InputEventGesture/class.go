@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/InputEventWithModifiers"
 import "grow.graphics/gd/objects/InputEventFromWindow"
 import "grow.graphics/gd/objects/InputEvent"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,12 +35,12 @@ func New() Instance {
 	return Instance{classdb.InputEventGesture(object)}
 }
 
-func (self Instance) Position() gd.Vector2 {
-	return gd.Vector2(class(self).GetPosition())
+func (self Instance) Position() Vector2.XY {
+	return Vector2.XY(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector2) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector2.XY) {
+	class(self).SetPosition(gd.Vector2(value))
 }
 
 //go:nosplit

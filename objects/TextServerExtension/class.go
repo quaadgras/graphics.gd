@@ -8,6 +8,15 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/TextServer"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,10 +40,10 @@ External [TextServer] implementations should inherit from this class.
 		GetFeatures() int
 		//[b]Required.[/b]
 		//Frees an object created by this [TextServer].
-		FreeRid(rid gd.RID)
+		FreeRid(rid Resource.ID)
 		//[b]Required.[/b]
 		//Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
-		Has(rid gd.RID) bool
+		Has(rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 		LoadSupportData(filename string) bool
@@ -58,570 +67,570 @@ External [TextServer] implementations should inherit from this class.
 		TagToName(tag int) string
 		//[b]Required.[/b]
 		//Creates a new, empty font cache entry resource.
-		CreateFont() gd.RID
+		CreateFont() Resource.ID
 		//Optional, implement if font supports extra spacing or baseline offset.
 		//Creates a new variation existing font which is reusing the same glyph cache and font data.
-		CreateFontLinkedVariation(font_rid gd.RID) gd.RID
+		CreateFontLinkedVariation(font_rid Resource.ID) Resource.ID
 		//[b]Optional.[/b]
 		//Sets font source data, e.g contents of the dynamic font source file.
-		FontSetData(font_rid gd.RID, data []byte)
+		FontSetData(font_rid Resource.ID, data []byte)
 		//[b]Optional.[/b]
 		//Sets pointer to the font source data, e.g contents of the dynamic font source file.
-		FontSetDataPtr(font_rid gd.RID, data_ptr unsafe.Pointer, data_size int)
+		FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int)
 		//[b]Optional.[/b]
 		//Sets an active face index in the TrueType / OpenType collection.
-		FontSetFaceIndex(font_rid gd.RID, face_index int)
+		FontSetFaceIndex(font_rid Resource.ID, face_index int)
 		//[b]Optional.[/b]
 		//Returns an active face index in the TrueType / OpenType collection.
-		FontGetFaceIndex(font_rid gd.RID) int
+		FontGetFaceIndex(font_rid Resource.ID) int
 		//[b]Optional.[/b]
 		//Returns number of faces in the TrueType / OpenType collection.
-		FontGetFaceCount(font_rid gd.RID) int
+		FontGetFaceCount(font_rid Resource.ID) int
 		//[b]Optional.[/b]
 		//Sets the font style flags, see [enum TextServer.FontStyle].
-		FontSetStyle(font_rid gd.RID, style classdb.TextServerFontStyle)
+		FontSetStyle(font_rid Resource.ID, style classdb.TextServerFontStyle)
 		//[b]Optional.[/b]
 		//Returns font style flags, see [enum TextServer.FontStyle].
-		FontGetStyle(font_rid gd.RID) classdb.TextServerFontStyle
+		FontGetStyle(font_rid Resource.ID) classdb.TextServerFontStyle
 		//[b]Optional.[/b]
 		//Sets the font family name.
-		FontSetName(font_rid gd.RID, name string)
+		FontSetName(font_rid Resource.ID, name string)
 		//[b]Optional.[/b]
 		//Returns font family name.
-		FontGetName(font_rid gd.RID) string
+		FontGetName(font_rid Resource.ID) string
 		//[b]Optional.[/b]
 		//Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
-		FontGetOtNameStrings(font_rid gd.RID) gd.Dictionary
+		FontGetOtNameStrings(font_rid Resource.ID) Dictionary.Any
 		//[b]Optional.[/b]
 		//Sets the font style name.
-		FontSetStyleName(font_rid gd.RID, name_style string)
+		FontSetStyleName(font_rid Resource.ID, name_style string)
 		//[b]Optional.[/b]
 		//Returns font style name.
-		FontGetStyleName(font_rid gd.RID) string
+		FontGetStyleName(font_rid Resource.ID) string
 		//[b]Optional.[/b]
 		//Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
-		FontSetWeight(font_rid gd.RID, weight int)
+		FontSetWeight(font_rid Resource.ID, weight int)
 		//[b]Optional.[/b]
 		//Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
-		FontGetWeight(font_rid gd.RID) int
+		FontGetWeight(font_rid Resource.ID) int
 		//[b]Optional.[/b]
 		//Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
-		FontSetStretch(font_rid gd.RID, stretch int)
+		FontSetStretch(font_rid Resource.ID, stretch int)
 		//[b]Optional.[/b]
 		//Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
-		FontGetStretch(font_rid gd.RID) int
+		FontGetStretch(font_rid Resource.ID) int
 		//[b]Optional.[/b]
 		//Sets font anti-aliasing mode.
-		FontSetAntialiasing(font_rid gd.RID, antialiasing classdb.TextServerFontAntialiasing)
+		FontSetAntialiasing(font_rid Resource.ID, antialiasing classdb.TextServerFontAntialiasing)
 		//[b]Optional.[/b]
 		//Returns font anti-aliasing mode.
-		FontGetAntialiasing(font_rid gd.RID) classdb.TextServerFontAntialiasing
+		FontGetAntialiasing(font_rid Resource.ID) classdb.TextServerFontAntialiasing
 		//[b]Optional.[/b]
 		//If set to [code]true[/code], embedded font bitmap loading is disabled.
-		FontSetDisableEmbeddedBitmaps(font_rid gd.RID, disable_embedded_bitmaps bool)
+		FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool)
 		//[b]Optional.[/b]
 		//Returns whether the font's embedded bitmap loading is disabled.
-		FontGetDisableEmbeddedBitmaps(font_rid gd.RID) bool
+		FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//If set to [code]true[/code] font texture mipmap generation is enabled.
-		FontSetGenerateMipmaps(font_rid gd.RID, generate_mipmaps bool)
+		FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if font texture mipmap generation is enabled.
-		FontGetGenerateMipmaps(font_rid gd.RID) bool
+		FontGetGenerateMipmaps(font_rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
-		FontSetMultichannelSignedDistanceField(font_rid gd.RID, msdf bool)
+		FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
-		FontIsMultichannelSignedDistanceField(font_rid gd.RID) bool
+		FontIsMultichannelSignedDistanceField(font_rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//Sets the width of the range around the shape between the minimum and maximum representable signed distance.
-		FontSetMsdfPixelRange(font_rid gd.RID, msdf_pixel_range int)
+		FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int)
 		//[b]Optional.[/b]
 		//Returns the width of the range around the shape between the minimum and maximum representable signed distance.
-		FontGetMsdfPixelRange(font_rid gd.RID) int
+		FontGetMsdfPixelRange(font_rid Resource.ID) int
 		//[b]Optional.[/b]
 		//Sets source font size used to generate MSDF textures.
-		FontSetMsdfSize(font_rid gd.RID, msdf_size int)
+		FontSetMsdfSize(font_rid Resource.ID, msdf_size int)
 		//[b]Optional.[/b]
 		//Returns source font size used to generate MSDF textures.
-		FontGetMsdfSize(font_rid gd.RID) int
+		FontGetMsdfSize(font_rid Resource.ID) int
 		//[b]Required.[/b]
 		//Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
-		FontSetFixedSize(font_rid gd.RID, fixed_size int)
+		FontSetFixedSize(font_rid Resource.ID, fixed_size int)
 		//[b]Required.[/b]
 		//Returns bitmap font fixed size.
-		FontGetFixedSize(font_rid gd.RID) int
+		FontGetFixedSize(font_rid Resource.ID) int
 		//[b]Required.[/b]
 		//Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
-		FontSetFixedSizeScaleMode(font_rid gd.RID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode)
+		FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode)
 		//[b]Required.[/b]
 		//Returns bitmap font scaling mode.
-		FontGetFixedSizeScaleMode(font_rid gd.RID) classdb.TextServerFixedSizeScaleMode
+		FontGetFixedSizeScaleMode(font_rid Resource.ID) classdb.TextServerFixedSizeScaleMode
 		//[b]Optional.[/b]
 		//If set to [code]true[/code], system fonts can be automatically used as fallbacks.
-		FontSetAllowSystemFallback(font_rid gd.RID, allow_system_fallback bool)
+		FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
-		FontIsAllowSystemFallback(font_rid gd.RID) bool
+		FontIsAllowSystemFallback(font_rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
-		FontSetForceAutohinter(font_rid gd.RID, force_autohinter bool)
+		FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
-		FontIsForceAutohinter(font_rid gd.RID) bool
+		FontIsForceAutohinter(font_rid Resource.ID) bool
 		//[b]Optional.[/b]
 		//Sets font hinting mode. Used by dynamic fonts only.
-		FontSetHinting(font_rid gd.RID, hinting classdb.TextServerHinting)
+		FontSetHinting(font_rid Resource.ID, hinting classdb.TextServerHinting)
 		//[b]Optional.[/b]
 		//Returns the font hinting mode. Used by dynamic fonts only.
-		FontGetHinting(font_rid gd.RID) classdb.TextServerHinting
+		FontGetHinting(font_rid Resource.ID) classdb.TextServerHinting
 		//[b]Optional.[/b]
 		//Sets font subpixel glyph positioning mode.
-		FontSetSubpixelPositioning(font_rid gd.RID, subpixel_positioning classdb.TextServerSubpixelPositioning)
+		FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning classdb.TextServerSubpixelPositioning)
 		//[b]Optional.[/b]
 		//Returns font subpixel glyph positioning mode.
-		FontGetSubpixelPositioning(font_rid gd.RID) classdb.TextServerSubpixelPositioning
+		FontGetSubpixelPositioning(font_rid Resource.ID) classdb.TextServerSubpixelPositioning
 		//Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
-		FontSetEmbolden(font_rid gd.RID, strength float64)
+		FontSetEmbolden(font_rid Resource.ID, strength Float.X)
 		//[b]Optional.[/b]
 		//Returns font embolden strength.
-		FontGetEmbolden(font_rid gd.RID) float64
+		FontGetEmbolden(font_rid Resource.ID) Float.X
 		//[b]Optional.[/b]
 		//Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
-		FontSetSpacing(font_rid gd.RID, spacing classdb.TextServerSpacingType, value int)
+		FontSetSpacing(font_rid Resource.ID, spacing classdb.TextServerSpacingType, value int)
 		//[b]Optional.[/b]
 		//Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
-		FontGetSpacing(font_rid gd.RID, spacing classdb.TextServerSpacingType) int
+		FontGetSpacing(font_rid Resource.ID, spacing classdb.TextServerSpacingType) int
 		//[b]Optional.[/b]
 		//Sets extra baseline offset (as a fraction of font height).
-		FontSetBaselineOffset(font_rid gd.RID, baseline_offset float64)
+		FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X)
 		//[b]Optional.[/b]
 		//Returns extra baseline offset (as a fraction of font height).
-		FontGetBaselineOffset(font_rid gd.RID) float64
+		FontGetBaselineOffset(font_rid Resource.ID) Float.X
 		//[b]Optional.[/b]
 		//Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
-		FontSetTransform(font_rid gd.RID, transform gd.Transform2D)
+		FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY)
 		//[b]Optional.[/b]
 		//Returns 2D transform applied to the font outlines.
-		FontGetTransform(font_rid gd.RID) gd.Transform2D
+		FontGetTransform(font_rid Resource.ID) Transform2D.OriginXY
 		//[b]Optional.[/b]
 		//Sets variation coordinates for the specified font cache entry.
-		FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates gd.Dictionary)
+		FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any)
 		//[b]Optional.[/b]
 		//Returns variation coordinates for the specified font cache entry.
-		FontGetVariationCoordinates(font_rid gd.RID) gd.Dictionary
+		FontGetVariationCoordinates(font_rid Resource.ID) Dictionary.Any
 		//[b]Optional.[/b]
 		//Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
-		FontSetOversampling(font_rid gd.RID, oversampling float64)
+		FontSetOversampling(font_rid Resource.ID, oversampling Float.X)
 		//[b]Optional.[/b]
 		//Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
-		FontGetOversampling(font_rid gd.RID) float64
+		FontGetOversampling(font_rid Resource.ID) Float.X
 		//[b]Required.[/b]
 		//Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
-		FontGetSizeCacheList(font_rid gd.RID) gd.Array
+		FontGetSizeCacheList(font_rid Resource.ID) gd.Array
 		//[b]Required.[/b]
 		//Removes all font sizes from the cache entry.
-		FontClearSizeCache(font_rid gd.RID)
+		FontClearSizeCache(font_rid Resource.ID)
 		//[b]Required.[/b]
 		//Removes specified font size from the cache entry.
-		FontRemoveSizeCache(font_rid gd.RID, size gd.Vector2i)
+		FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)
 		//[b]Required.[/b]
 		//Sets the font ascent (number of pixels above the baseline).
-		FontSetAscent(font_rid gd.RID, size int, ascent float64)
+		FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)
 		//[b]Required.[/b]
 		//Returns the font ascent (number of pixels above the baseline).
-		FontGetAscent(font_rid gd.RID, size int) float64
+		FontGetAscent(font_rid Resource.ID, size int) Float.X
 		//[b]Required.[/b]
 		//Sets the font descent (number of pixels below the baseline).
-		FontSetDescent(font_rid gd.RID, size int, descent float64)
+		FontSetDescent(font_rid Resource.ID, size int, descent Float.X)
 		//[b]Required.[/b]
 		//Returns the font descent (number of pixels below the baseline).
-		FontGetDescent(font_rid gd.RID, size int) float64
+		FontGetDescent(font_rid Resource.ID, size int) Float.X
 		//[b]Required.[/b]
 		//Sets pixel offset of the underline below the baseline.
-		FontSetUnderlinePosition(font_rid gd.RID, size int, underline_position float64)
+		FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X)
 		//[b]Required.[/b]
 		//Returns pixel offset of the underline below the baseline.
-		FontGetUnderlinePosition(font_rid gd.RID, size int) float64
+		FontGetUnderlinePosition(font_rid Resource.ID, size int) Float.X
 		//[b]Required.[/b]
 		//Sets thickness of the underline in pixels.
-		FontSetUnderlineThickness(font_rid gd.RID, size int, underline_thickness float64)
+		FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X)
 		//[b]Required.[/b]
 		//Returns thickness of the underline in pixels.
-		FontGetUnderlineThickness(font_rid gd.RID, size int) float64
+		FontGetUnderlineThickness(font_rid Resource.ID, size int) Float.X
 		//[b]Required.[/b]
 		//Sets scaling factor of the color bitmap font.
-		FontSetScale(font_rid gd.RID, size int, scale float64)
+		FontSetScale(font_rid Resource.ID, size int, scale Float.X)
 		//[b]Required.[/b]
 		//Returns scaling factor of the color bitmap font.
-		FontGetScale(font_rid gd.RID, size int) float64
+		FontGetScale(font_rid Resource.ID, size int) Float.X
 		//[b]Required.[/b]
 		//Returns number of textures used by font cache entry.
-		FontGetTextureCount(font_rid gd.RID, size gd.Vector2i) int
+		FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) int
 		//[b]Required.[/b]
 		//Removes all textures from font cache entry.
-		FontClearTextures(font_rid gd.RID, size gd.Vector2i)
+		FontClearTextures(font_rid Resource.ID, size Vector2i.XY)
 		//[b]Required.[/b]
 		//Removes specified texture from the cache entry.
-		FontRemoveTexture(font_rid gd.RID, size gd.Vector2i, texture_index int)
+		FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int)
 		//[b]Required.[/b]
 		//Sets font cache texture image data.
-		FontSetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index int, image objects.Image)
+		FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image objects.Image)
 		//[b]Required.[/b]
 		//Returns font cache texture image data.
-		FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index int) objects.Image
+		FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) objects.Image
 		//[b]Optional.[/b]
 		//Sets array containing glyph packing data.
-		FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index int, offset []int32)
+		FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32)
 		//[b]Optional.[/b]
 		//Returns array containing glyph packing data.
-		FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index int) []int32
+		FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) []int32
 		//[b]Required.[/b]
 		//Returns list of rendered glyphs in the cache entry.
-		FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) []int32
+		FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) []int32
 		//[b]Required.[/b]
 		//Removes all rendered glyph information from the cache entry.
-		FontClearGlyphs(font_rid gd.RID, size gd.Vector2i)
+		FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)
 		//[b]Required.[/b]
 		//Removes specified rendered glyph information from the cache entry.
-		FontRemoveGlyph(font_rid gd.RID, size gd.Vector2i, glyph int)
+		FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int)
 		//[b]Required.[/b]
 		//Returns glyph advance (offset of the next glyph).
-		FontGetGlyphAdvance(font_rid gd.RID, size int, glyph int) gd.Vector2
+		FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) Vector2.XY
 		//[b]Required.[/b]
 		//Sets glyph advance (offset of the next glyph).
-		FontSetGlyphAdvance(font_rid gd.RID, size int, glyph int, advance gd.Vector2)
+		FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY)
 		//[b]Required.[/b]
 		//Returns glyph offset from the baseline.
-		FontGetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2
+		FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
 		//[b]Required.[/b]
 		//Sets glyph offset from the baseline.
-		FontSetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph int, offset gd.Vector2)
+		FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY)
 		//[b]Required.[/b]
 		//Returns size of the glyph.
-		FontGetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2
+		FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
 		//[b]Required.[/b]
 		//Sets size of the glyph.
-		FontSetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph int, gl_size gd.Vector2)
+		FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY)
 		//[b]Required.[/b]
 		//Returns rectangle in the cache texture containing the glyph.
-		FontGetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Rect2
+		FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) Rect2.PositionSize
 		//[b]Required.[/b]
 		//Sets rectangle in the cache texture containing the glyph.
-		FontSetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph int, uv_rect gd.Rect2)
+		FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)
 		//[b]Required.[/b]
 		//Returns index of the cache texture containing the glyph.
-		FontGetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph int) int
+		FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) int
 		//[b]Required.[/b]
 		//Sets index of the cache texture containing the glyph.
-		FontSetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph int, texture_idx int)
+		FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int)
 		//[b]Required.[/b]
 		//Returns resource ID of the cache texture containing the glyph.
-		FontGetGlyphTextureRid(font_rid gd.RID, size gd.Vector2i, glyph int) gd.RID
+		FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) Resource.ID
 		//[b]Required.[/b]
 		//Returns size of the cache texture containing the glyph.
-		FontGetGlyphTextureSize(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2
+		FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
 		//[b]Optional.[/b]
 		//Returns outline contours of the glyph.
-		FontGetGlyphContours(font_rid gd.RID, size int, index int) gd.Dictionary
+		FontGetGlyphContours(font_rid Resource.ID, size int, index int) Dictionary.Any
 		//[b]Optional.[/b]
 		//Returns list of the kerning overrides.
-		FontGetKerningList(font_rid gd.RID, size int) gd.Array
+		FontGetKerningList(font_rid Resource.ID, size int) gd.Array
 		//[b]Optional.[/b]
 		//Removes all kerning overrides.
-		FontClearKerningMap(font_rid gd.RID, size int)
+		FontClearKerningMap(font_rid Resource.ID, size int)
 		//[b]Optional.[/b]
 		//Removes kerning override for the pair of glyphs.
-		FontRemoveKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i)
+		FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY)
 		//[b]Optional.[/b]
 		//Sets kerning for the pair of glyphs.
-		FontSetKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i, kerning gd.Vector2)
+		FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)
 		//[b]Optional.[/b]
 		//Returns kerning for the pair of glyphs.
-		FontGetKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i) gd.Vector2
+		FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) Vector2.XY
 		//[b]Required.[/b]
 		//Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
-		FontGetGlyphIndex(font_rid gd.RID, size int, char int, variation_selector int) int
+		FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) int
 		//[b]Required.[/b]
 		//Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
-		FontGetCharFromGlyphIndex(font_rid gd.RID, size int, glyph_index int) int
+		FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) int
 		//[b]Required.[/b]
 		//Returns [code]true[/code] if a Unicode [param char] is available in the font.
-		FontHasChar(font_rid gd.RID, char int) bool
+		FontHasChar(font_rid Resource.ID, char int) bool
 		//[b]Required.[/b]
 		//Returns a string containing all the characters available in the font.
-		FontGetSupportedChars(font_rid gd.RID) string
+		FontGetSupportedChars(font_rid Resource.ID) string
 		//[b]Optional.[/b]
 		//Renders the range of characters to the font cache texture.
-		FontRenderRange(font_rid gd.RID, size gd.Vector2i, start int, end int)
+		FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int)
 		//[b]Optional.[/b]
 		//Renders specified glyph to the font cache texture.
-		FontRenderGlyph(font_rid gd.RID, size gd.Vector2i, index int)
+		FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int)
 		//[b]Required.[/b]
 		//Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
-		FontDrawGlyph(font_rid gd.RID, canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color)
+		FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
 		//[b]Required.[/b]
 		//Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
-		FontDrawGlyphOutline(font_rid gd.RID, canvas gd.RID, size int, outline_size int, pos gd.Vector2, index int, color gd.Color)
+		FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
-		FontIsLanguageSupported(font_rid gd.RID, language string) bool
+		FontIsLanguageSupported(font_rid Resource.ID, language string) bool
 		//[b]Optional.[/b]
 		//Adds override for [method _font_is_language_supported].
-		FontSetLanguageSupportOverride(font_rid gd.RID, language string, supported bool)
+		FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if support override is enabled for the [param language].
-		FontGetLanguageSupportOverride(font_rid gd.RID, language string) bool
+		FontGetLanguageSupportOverride(font_rid Resource.ID, language string) bool
 		//[b]Optional.[/b]
 		//Remove language support override.
-		FontRemoveLanguageSupportOverride(font_rid gd.RID, language string)
+		FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string)
 		//[b]Optional.[/b]
 		//Returns list of language support overrides.
-		FontGetLanguageSupportOverrides(font_rid gd.RID) []string
+		FontGetLanguageSupportOverrides(font_rid Resource.ID) []string
 		//[b]Optional.[/b]
 		//Returns [code]true[/code], if font supports given script (ISO 15924 code).
-		FontIsScriptSupported(font_rid gd.RID, script string) bool
+		FontIsScriptSupported(font_rid Resource.ID, script string) bool
 		//[b]Optional.[/b]
 		//Adds override for [method _font_is_script_supported].
-		FontSetScriptSupportOverride(font_rid gd.RID, script string, supported bool)
+		FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if support override is enabled for the [param script].
-		FontGetScriptSupportOverride(font_rid gd.RID, script string) bool
+		FontGetScriptSupportOverride(font_rid Resource.ID, script string) bool
 		//[b]Optional.[/b]
 		//Removes script support override.
-		FontRemoveScriptSupportOverride(font_rid gd.RID, script string)
+		FontRemoveScriptSupportOverride(font_rid Resource.ID, script string)
 		//[b]Optional.[/b]
 		//Returns list of script support overrides.
-		FontGetScriptSupportOverrides(font_rid gd.RID) []string
+		FontGetScriptSupportOverrides(font_rid Resource.ID) []string
 		//[b]Optional.[/b]
 		//Sets font OpenType feature set override.
-		FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides gd.Dictionary)
+		FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any)
 		//[b]Optional.[/b]
 		//Returns font OpenType feature set override.
-		FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary
+		FontGetOpentypeFeatureOverrides(font_rid Resource.ID) Dictionary.Any
 		//[b]Optional.[/b]
 		//Returns the dictionary of the supported OpenType features.
-		FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary
+		FontSupportedFeatureList(font_rid Resource.ID) Dictionary.Any
 		//[b]Optional.[/b]
 		//Returns the dictionary of the supported OpenType variation coordinates.
-		FontSupportedVariationList(font_rid gd.RID) gd.Dictionary
+		FontSupportedVariationList(font_rid Resource.ID) Dictionary.Any
 		//[b]Optional.[/b]
 		//Returns the font oversampling factor, shared by all fonts in the TextServer.
-		FontGetGlobalOversampling() float64
+		FontGetGlobalOversampling() Float.X
 		//[b]Optional.[/b]
 		//Sets oversampling factor, shared by all font in the TextServer.
-		FontSetGlobalOversampling(oversampling float64)
+		FontSetGlobalOversampling(oversampling Float.X)
 		//[b]Optional.[/b]
 		//Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
-		GetHexCodeBoxSize(size int, index int) gd.Vector2
+		GetHexCodeBoxSize(size int, index int) Vector2.XY
 		//[b]Optional.[/b]
 		//Draws box displaying character hexadecimal code.
-		DrawHexCodeBox(canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color)
+		DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
 		//[b]Required.[/b]
 		//Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
-		CreateShapedText(direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.RID
+		CreateShapedText(direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) Resource.ID
 		//[b]Required.[/b]
 		//Clears text buffer (removes text and inline objects).
-		ShapedTextClear(shaped gd.RID)
+		ShapedTextClear(shaped Resource.ID)
 		//[b]Optional.[/b]
 		//Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
-		ShapedTextSetDirection(shaped gd.RID, direction classdb.TextServerDirection)
+		ShapedTextSetDirection(shaped Resource.ID, direction classdb.TextServerDirection)
 		//[b]Optional.[/b]
 		//Returns direction of the text.
-		ShapedTextGetDirection(shaped gd.RID) classdb.TextServerDirection
+		ShapedTextGetDirection(shaped Resource.ID) classdb.TextServerDirection
 		//[b]Optional.[/b]
 		//Returns direction of the text, inferred by the BiDi algorithm.
-		ShapedTextGetInferredDirection(shaped gd.RID) classdb.TextServerDirection
+		ShapedTextGetInferredDirection(shaped Resource.ID) classdb.TextServerDirection
 		//[b]Optional.[/b]
 		//Overrides BiDi for the structured text.
-		ShapedTextSetBidiOverride(shaped gd.RID, override gd.Array)
+		ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any)
 		//[b]Optional.[/b]
 		//Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
-		ShapedTextSetCustomPunctuation(shaped gd.RID, punct string)
+		ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)
 		//[b]Optional.[/b]
 		//Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
-		ShapedTextGetCustomPunctuation(shaped gd.RID) string
+		ShapedTextGetCustomPunctuation(shaped Resource.ID) string
 		//[b]Optional.[/b]
 		//Sets ellipsis character used for text clipping.
-		ShapedTextSetCustomEllipsis(shaped gd.RID, char int)
+		ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)
 		//[b]Optional.[/b]
 		//Returns ellipsis character used for text clipping.
-		ShapedTextGetCustomEllipsis(shaped gd.RID) int
+		ShapedTextGetCustomEllipsis(shaped Resource.ID) int
 		//[b]Optional.[/b]
 		//Sets desired text orientation.
-		ShapedTextSetOrientation(shaped gd.RID, orientation classdb.TextServerOrientation)
+		ShapedTextSetOrientation(shaped Resource.ID, orientation classdb.TextServerOrientation)
 		//[b]Optional.[/b]
 		//Returns text orientation.
-		ShapedTextGetOrientation(shaped gd.RID) classdb.TextServerOrientation
+		ShapedTextGetOrientation(shaped Resource.ID) classdb.TextServerOrientation
 		//[b]Optional.[/b]
 		//If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
-		ShapedTextSetPreserveInvalid(shaped gd.RID, enabled bool)
+		ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
-		ShapedTextGetPreserveInvalid(shaped gd.RID) bool
+		ShapedTextGetPreserveInvalid(shaped Resource.ID) bool
 		//[b]Optional.[/b]
 		//If set to [code]true[/code] text buffer will display control characters.
-		ShapedTextSetPreserveControl(shaped gd.RID, enabled bool)
+		ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool)
 		//[b]Optional.[/b]
 		//Returns [code]true[/code] if text buffer is configured to display control characters.
-		ShapedTextGetPreserveControl(shaped gd.RID) bool
+		ShapedTextGetPreserveControl(shaped Resource.ID) bool
 		//[b]Optional.[/b]
 		//Sets extra spacing added between glyphs or lines in pixels.
-		ShapedTextSetSpacing(shaped gd.RID, spacing classdb.TextServerSpacingType, value int)
+		ShapedTextSetSpacing(shaped Resource.ID, spacing classdb.TextServerSpacingType, value int)
 		//[b]Optional.[/b]
 		//Returns extra spacing added between glyphs or lines in pixels.
-		ShapedTextGetSpacing(shaped gd.RID, spacing classdb.TextServerSpacingType) int
+		ShapedTextGetSpacing(shaped Resource.ID, spacing classdb.TextServerSpacingType) int
 		//[b]Required.[/b]
 		//Adds text span and font to draw it to the text buffer.
-		ShapedTextAddString(shaped gd.RID, text string, fonts gd.Array, size int, opentype_features gd.Dictionary, language string, meta gd.Variant) bool
+		ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) bool
 		//[b]Required.[/b]
 		//Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
-		ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length int, baseline float64) bool
+		ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool
 		//[b]Required.[/b]
 		//Sets new size and alignment of embedded object.
-		ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline float64) bool
+		ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool
 		//[b]Required.[/b]
 		//Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
-		ShapedGetSpanCount(shaped gd.RID) int
+		ShapedGetSpanCount(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns text span metadata.
-		ShapedGetSpanMeta(shaped gd.RID, index int) gd.Variant
+		ShapedGetSpanMeta(shaped Resource.ID, index int) any
 		//[b]Required.[/b]
 		//Changes text span font, font size, and OpenType features, without changing the text.
-		ShapedSetSpanUpdateFont(shaped gd.RID, index int, fonts gd.Array, size int, opentype_features gd.Dictionary)
+		ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any)
 		//[b]Required.[/b]
 		//Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
-		ShapedTextSubstr(shaped gd.RID, start int, length int) gd.RID
+		ShapedTextSubstr(shaped Resource.ID, start int, length int) Resource.ID
 		//[b]Required.[/b]
 		//Returns the parent buffer from which the substring originates.
-		ShapedTextGetParent(shaped gd.RID) gd.RID
+		ShapedTextGetParent(shaped Resource.ID) Resource.ID
 		//[b]Optional.[/b]
 		//Adjusts text width to fit to specified width, returns new text width.
-		ShapedTextFitToWidth(shaped gd.RID, width float64, justification_flags classdb.TextServerJustificationFlag) float64
+		ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags classdb.TextServerJustificationFlag) Float.X
 		//[b]Optional.[/b]
 		//Aligns shaped text to the given tab-stops.
-		ShapedTextTabAlign(shaped gd.RID, tab_stops []float32) float64
+		ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) Float.X
 		//[b]Required.[/b]
 		//Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
-		ShapedTextShape(shaped gd.RID) bool
+		ShapedTextShape(shaped Resource.ID) bool
 		//[b]Optional.[/b]
 		//Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
-		ShapedTextUpdateBreaks(shaped gd.RID) bool
+		ShapedTextUpdateBreaks(shaped Resource.ID) bool
 		//[b]Optional.[/b]
 		//Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
-		ShapedTextUpdateJustificationOps(shaped gd.RID) bool
+		ShapedTextUpdateJustificationOps(shaped Resource.ID) bool
 		//[b]Required.[/b]
 		//Returns [code]true[/code] if buffer is successfully shaped.
-		ShapedTextIsReady(shaped gd.RID) bool
+		ShapedTextIsReady(shaped Resource.ID) bool
 		//[b]Required.[/b]
 		//Returns an array of glyphs in the visual order.
-		ShapedTextGetGlyphs(shaped gd.RID) *classdb. Glyph
+		ShapedTextGetGlyphs(shaped Resource.ID) *classdb. Glyph
 		//[b]Required.[/b]
 		//Returns text glyphs in the logical order.
-		ShapedTextSortLogical(shaped gd.RID) *classdb. Glyph
+		ShapedTextSortLogical(shaped Resource.ID) *classdb. Glyph
 		//[b]Required.[/b]
 		//Returns number of glyphs in the buffer.
-		ShapedTextGetGlyphCount(shaped gd.RID) int
+		ShapedTextGetGlyphCount(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns substring buffer character range in the parent buffer.
-		ShapedTextGetRange(shaped gd.RID) gd.Vector2i
+		ShapedTextGetRange(shaped Resource.ID) Vector2i.XY
 		//[b]Optional.[/b]
 		//Breaks text to the lines and columns. Returns character ranges for each segment.
-		ShapedTextGetLineBreaksAdv(shaped gd.RID, width []float32, start int, once bool, break_flags classdb.TextServerLineBreakFlag) []int32
+		ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags classdb.TextServerLineBreakFlag) []int32
 		//[b]Optional.[/b]
 		//Breaks text to the lines and returns character ranges for each line.
-		ShapedTextGetLineBreaks(shaped gd.RID, width float64, start int, break_flags classdb.TextServerLineBreakFlag) []int32
+		ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags classdb.TextServerLineBreakFlag) []int32
 		//[b]Optional.[/b]
 		//Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
-		ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags classdb.TextServerGraphemeFlag, skip_grapheme_flags classdb.TextServerGraphemeFlag) []int32
+		ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags classdb.TextServerGraphemeFlag, skip_grapheme_flags classdb.TextServerGraphemeFlag) []int32
 		//[b]Required.[/b]
 		//Returns the position of the overrun trim.
-		ShapedTextGetTrimPos(shaped gd.RID) int
+		ShapedTextGetTrimPos(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns position of the ellipsis.
-		ShapedTextGetEllipsisPos(shaped gd.RID) int
+		ShapedTextGetEllipsisPos(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns number of glyphs in the ellipsis.
-		ShapedTextGetEllipsisGlyphCount(shaped gd.RID) int
+		ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns array of the glyphs in the ellipsis.
-		ShapedTextGetEllipsisGlyphs(shaped gd.RID) *classdb. Glyph
+		ShapedTextGetEllipsisGlyphs(shaped Resource.ID) *classdb. Glyph
 		//[b]Optional.[/b]
 		//Trims text if it exceeds the given width.
-		ShapedTextOverrunTrimToWidth(shaped gd.RID, width float64, trim_flags classdb.TextServerTextOverrunFlag)
+		ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags classdb.TextServerTextOverrunFlag)
 		//[b]Required.[/b]
 		//Returns array of inline objects.
-		ShapedTextGetObjects(shaped gd.RID) gd.Array
+		ShapedTextGetObjects(shaped Resource.ID) Array.Any
 		//[b]Required.[/b]
 		//Returns bounding rectangle of the inline object.
-		ShapedTextGetObjectRect(shaped gd.RID, key gd.Variant) gd.Rect2
+		ShapedTextGetObjectRect(shaped Resource.ID, key any) Rect2.PositionSize
 		//[b]Required.[/b]
 		//Returns the character range of the inline object.
-		ShapedTextGetObjectRange(shaped gd.RID, key gd.Variant) gd.Vector2i
+		ShapedTextGetObjectRange(shaped Resource.ID, key any) Vector2i.XY
 		//[b]Required.[/b]
 		//Returns the glyph index of the inline object.
-		ShapedTextGetObjectGlyph(shaped gd.RID, key gd.Variant) int
+		ShapedTextGetObjectGlyph(shaped Resource.ID, key any) int
 		//[b]Required.[/b]
 		//Returns size of the text.
-		ShapedTextGetSize(shaped gd.RID) gd.Vector2
+		ShapedTextGetSize(shaped Resource.ID) Vector2.XY
 		//[b]Required.[/b]
 		//Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
-		ShapedTextGetAscent(shaped gd.RID) float64
+		ShapedTextGetAscent(shaped Resource.ID) Float.X
 		//[b]Required.[/b]
 		//Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
-		ShapedTextGetDescent(shaped gd.RID) float64
+		ShapedTextGetDescent(shaped Resource.ID) Float.X
 		//[b]Required.[/b]
 		//Returns width (for horizontal layout) or height (for vertical) of the text.
-		ShapedTextGetWidth(shaped gd.RID) float64
+		ShapedTextGetWidth(shaped Resource.ID) Float.X
 		//[b]Required.[/b]
 		//Returns pixel offset of the underline below the baseline.
-		ShapedTextGetUnderlinePosition(shaped gd.RID) float64
+		ShapedTextGetUnderlinePosition(shaped Resource.ID) Float.X
 		//[b]Required.[/b]
 		//Returns thickness of the underline.
-		ShapedTextGetUnderlineThickness(shaped gd.RID) float64
+		ShapedTextGetUnderlineThickness(shaped Resource.ID) Float.X
 		//[b]Optional.[/b]
 		//Returns dominant direction of in the range of text.
-		ShapedTextGetDominantDirectionInRange(shaped gd.RID, start int, end int) int
+		ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) int
 		//[b]Optional.[/b]
 		//Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
-		ShapedTextGetCarets(shaped gd.RID, position int, caret *classdb.CaretInfo)
+		ShapedTextGetCarets(shaped Resource.ID, position int, caret *classdb.CaretInfo)
 		//[b]Optional.[/b]
 		//Returns selection rectangles for the specified character range.
-		ShapedTextGetSelection(shaped gd.RID, start int, end int) []gd.Vector2
+		ShapedTextGetSelection(shaped Resource.ID, start int, end int) []Vector2.XY
 		//[b]Optional.[/b]
 		//Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
-		ShapedTextHitTestGrapheme(shaped gd.RID, coord float64) int
+		ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) int
 		//[b]Optional.[/b]
 		//Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
-		ShapedTextHitTestPosition(shaped gd.RID, coord float64) int
+		ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) int
 		//[b]Optional.[/b]
 		//Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
-		ShapedTextDraw(shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, color gd.Color)
+		ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)
 		//[b]Optional.[/b]
 		//Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
-		ShapedTextDrawOutline(shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, outline_size int, color gd.Color)
+		ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)
 		//[b]Optional.[/b]
 		//Returns composite character's bounds as offsets from the start of the line.
-		ShapedTextGetGraphemeBounds(shaped gd.RID, pos int) gd.Vector2
+		ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) Vector2.XY
 		//[b]Optional.[/b]
 		//Returns grapheme end position closest to the [param pos].
-		ShapedTextNextGraphemePos(shaped gd.RID, pos int) int
+		ShapedTextNextGraphemePos(shaped Resource.ID, pos int) int
 		//[b]Optional.[/b]
 		//Returns grapheme start position closest to the [param pos].
-		ShapedTextPrevGraphemePos(shaped gd.RID, pos int) int
+		ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) int
 		//[b]Optional.[/b]
 		//Returns array of the composite character boundaries.
-		ShapedTextGetCharacterBreaks(shaped gd.RID) []int32
+		ShapedTextGetCharacterBreaks(shaped Resource.ID) []int32
 		//[b]Optional.[/b]
 		//Returns composite character end position closest to the [param pos].
-		ShapedTextNextCharacterPos(shaped gd.RID, pos int) int
+		ShapedTextNextCharacterPos(shaped Resource.ID, pos int) int
 		//[b]Optional.[/b]
 		//Returns composite character start position closest to the [param pos].
-		ShapedTextPrevCharacterPos(shaped gd.RID, pos int) int
+		ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) int
 		//[b]Optional.[/b]
 		//Returns composite character position closest to the [param pos].
-		ShapedTextClosestCharacterPos(shaped gd.RID, pos int) int
+		ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) int
 		//[b]Optional.[/b]
 		//Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
 		FormatNumber(number string, language string) string
@@ -661,7 +670,7 @@ External [TextServer] implementations should inherit from this class.
 		StringToTitle(s string, language string) string
 		//[b]Optional.[/b]
 		//Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
-		ParseStructuredText(parser_type classdb.TextServerStructuredTextParser, args gd.Array, text string) gd.Array
+		ParseStructuredText(parser_type classdb.TextServerStructuredTextParser, args Array.Any, text string) gd.Array
 		//[b]Optional.[/b]
 		//This method is called before text server is unregistered.
 		Cleanup()
@@ -714,7 +723,7 @@ func (Instance) _get_features(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 [b]Required.[/b]
 Frees an object created by this [TextServer].
 */
-func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid Resource.ID)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -726,7 +735,7 @@ func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid gd.RID)) (cb gd.Exte
 [b]Required.[/b]
 Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
 */
-func (Instance) _has(impl func(ptr unsafe.Pointer, rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has(impl func(ptr unsafe.Pointer, rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -844,7 +853,7 @@ func (Instance) _tag_to_name(impl func(ptr unsafe.Pointer, tag int) string) (cb 
 [b]Required.[/b]
 Creates a new, empty font cache entry resource.
 */
-func (Instance) _create_font(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_font(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -856,7 +865,7 @@ func (Instance) _create_font(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.Extens
 Optional, implement if font supports extra spacing or baseline offset.
 Creates a new variation existing font which is reusing the same glyph cache and font data.
 */
-func (Instance) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -869,7 +878,7 @@ func (Instance) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font
 [b]Optional.[/b]
 Sets font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid gd.RID, data []byte)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid Resource.ID, data []byte)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var data = pointers.New[gd.PackedByteArray](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -883,7 +892,7 @@ func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid gd.RID, da
 [b]Optional.[/b]
 Sets pointer to the font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid gd.RID, data_ptr unsafe.Pointer, data_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var data_ptr = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
@@ -897,7 +906,7 @@ func (Instance) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Optional.[/b]
 Sets an active face index in the TrueType / OpenType collection.
 */
-func (Instance) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, face_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid Resource.ID, face_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var face_index = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -910,7 +919,7 @@ func (Instance) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Returns an active face index in the TrueType / OpenType collection.
 */
-func (Instance) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -923,7 +932,7 @@ func (Instance) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Returns number of faces in the TrueType / OpenType collection.
 */
-func (Instance) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -936,7 +945,7 @@ func (Instance) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Sets the font style flags, see [enum TextServer.FontStyle].
 */
-func (Instance) _font_set_style(impl func(ptr unsafe.Pointer, font_rid gd.RID, style classdb.TextServerFontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_style(impl func(ptr unsafe.Pointer, font_rid Resource.ID, style classdb.TextServerFontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var style = gd.UnsafeGet[classdb.TextServerFontStyle](p_args, 1)
@@ -949,7 +958,7 @@ func (Instance) _font_set_style(impl func(ptr unsafe.Pointer, font_rid gd.RID, s
 [b]Optional.[/b]
 Returns font style flags, see [enum TextServer.FontStyle].
 */
-func (Instance) _font_get_style(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_style(impl func(ptr unsafe.Pointer, font_rid Resource.ID) classdb.TextServerFontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -962,7 +971,7 @@ func (Instance) _font_get_style(impl func(ptr unsafe.Pointer, font_rid gd.RID) c
 [b]Optional.[/b]
 Sets the font family name.
 */
-func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid Resource.ID, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var name = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -976,7 +985,7 @@ func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, na
 [b]Optional.[/b]
 Returns font family name.
 */
-func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid Resource.ID) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -993,7 +1002,7 @@ func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) st
 [b]Optional.[/b]
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1010,7 +1019,7 @@ func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets the font style name.
 */
-func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID, name_style string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid Resource.ID, name_style string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var name_style = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -1024,7 +1033,7 @@ func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Returns font style name.
 */
-func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid gd.RID) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid Resource.ID) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1041,7 +1050,7 @@ func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (Instance) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID, weight int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid Resource.ID, weight int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var weight = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1054,7 +1063,7 @@ func (Instance) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID, 
 [b]Optional.[/b]
 Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (Instance) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1067,7 +1076,7 @@ func (Instance) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid gd.RID) 
 [b]Optional.[/b]
 Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (Instance) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID, stretch int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid Resource.ID, stretch int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var stretch = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1080,7 +1089,7 @@ func (Instance) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (Instance) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1093,7 +1102,7 @@ func (Instance) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid gd.RID)
 [b]Optional.[/b]
 Sets font anti-aliasing mode.
 */
-func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd.RID, antialiasing classdb.TextServerFontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid Resource.ID, antialiasing classdb.TextServerFontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var antialiasing = gd.UnsafeGet[classdb.TextServerFontAntialiasing](p_args, 1)
@@ -1106,7 +1115,7 @@ func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Returns font anti-aliasing mode.
 */
-func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid Resource.ID) classdb.TextServerFontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1119,7 +1128,7 @@ func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 If set to [code]true[/code], embedded font bitmap loading is disabled.
 */
-func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid Resource.ID, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var disable_embedded_bitmaps = gd.UnsafeGet[bool](p_args, 1)
@@ -1132,7 +1141,7 @@ func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Returns whether the font's embedded bitmap loading is disabled.
 */
-func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1145,7 +1154,7 @@ func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 If set to [code]true[/code] font texture mipmap generation is enabled.
 */
-func (Instance) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid Resource.ID, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var generate_mipmaps = gd.UnsafeGet[bool](p_args, 1)
@@ -1158,7 +1167,7 @@ func (Instance) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns [code]true[/code] if font texture mipmap generation is enabled.
 */
-func (Instance) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1171,7 +1180,7 @@ func (Instance) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
 */
-func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid Resource.ID, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var msdf = gd.UnsafeGet[bool](p_args, 1)
@@ -1184,7 +1193,7 @@ func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr unsaf
 [b]Optional.[/b]
 Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 */
-func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1197,7 +1206,7 @@ func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe
 [b]Optional.[/b]
 Sets the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (Instance) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf_pixel_range int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid Resource.ID, msdf_pixel_range int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var msdf_pixel_range = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1210,7 +1219,7 @@ func (Instance) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (Instance) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1223,7 +1232,7 @@ func (Instance) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Sets source font size used to generate MSDF textures.
 */
-func (Instance) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, msdf_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID, msdf_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var msdf_size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1236,7 +1245,7 @@ func (Instance) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RI
 [b]Optional.[/b]
 Returns source font size used to generate MSDF textures.
 */
-func (Instance) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1249,7 +1258,7 @@ func (Instance) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid gd.RI
 [b]Required.[/b]
 Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
 */
-func (Instance) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, fixed_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID, fixed_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var fixed_size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1262,7 +1271,7 @@ func (Instance) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Returns bitmap font fixed size.
 */
-func (Instance) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1275,7 +1284,7 @@ func (Instance) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
-func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid gd.RID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid Resource.ID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var fixed_size_scale_mode = gd.UnsafeGet[classdb.TextServerFixedSizeScaleMode](p_args, 1)
@@ -1288,7 +1297,7 @@ func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, fo
 [b]Required.[/b]
 Returns bitmap font scaling mode.
 */
-func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerFixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid Resource.ID) classdb.TextServerFixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1301,7 +1310,7 @@ func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 If set to [code]true[/code], system fonts can be automatically used as fallbacks.
 */
-func (Instance) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid gd.RID, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid Resource.ID, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var allow_system_fallback = gd.UnsafeGet[bool](p_args, 1)
@@ -1314,7 +1323,7 @@ func (Instance) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
 */
-func (Instance) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1327,7 +1336,7 @@ func (Instance) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
 */
-func (Instance) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid gd.RID, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid Resource.ID, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var force_autohinter = gd.UnsafeGet[bool](p_args, 1)
@@ -1340,7 +1349,7 @@ func (Instance) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
 */
-func (Instance) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1353,7 +1362,7 @@ func (Instance) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets font hinting mode. Used by dynamic fonts only.
 */
-func (Instance) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID, hinting classdb.TextServerHinting)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid Resource.ID, hinting classdb.TextServerHinting)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var hinting = gd.UnsafeGet[classdb.TextServerHinting](p_args, 1)
@@ -1366,7 +1375,7 @@ func (Instance) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Returns the font hinting mode. Used by dynamic fonts only.
 */
-func (Instance) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerHinting) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid Resource.ID) classdb.TextServerHinting) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1379,7 +1388,7 @@ func (Instance) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid gd.RID)
 [b]Optional.[/b]
 Sets font subpixel glyph positioning mode.
 */
-func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid gd.RID, subpixel_positioning classdb.TextServerSubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid Resource.ID, subpixel_positioning classdb.TextServerSubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var subpixel_positioning = gd.UnsafeGet[classdb.TextServerSubpixelPositioning](p_args, 1)
@@ -1392,7 +1401,7 @@ func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns font subpixel glyph positioning mode.
 */
-func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid gd.RID) classdb.TextServerSubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid Resource.ID) classdb.TextServerSubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1404,12 +1413,12 @@ func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, fon
 /*
 Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (Instance) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID, strength float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid Resource.ID, strength Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var strength = gd.UnsafeGet[gd.Float](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, float64(strength))
+		impl(self, font_rid, Float.X(strength))
 	}
 }
 
@@ -1417,7 +1426,7 @@ func (Instance) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Optional.[/b]
 Returns font embolden strength.
 */
-func (Instance) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1430,7 +1439,7 @@ func (Instance) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Optional.[/b]
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (Instance) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID, spacing classdb.TextServerSpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid Resource.ID, spacing classdb.TextServerSpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args, 1)
@@ -1444,7 +1453,7 @@ func (Instance) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (Instance) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID, spacing classdb.TextServerSpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid Resource.ID, spacing classdb.TextServerSpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args, 1)
@@ -1458,12 +1467,12 @@ func (Instance) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Sets extra baseline offset (as a fraction of font height).
 */
-func (Instance) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, baseline_offset float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid Resource.ID, baseline_offset Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var baseline_offset = gd.UnsafeGet[gd.Float](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, float64(baseline_offset))
+		impl(self, font_rid, Float.X(baseline_offset))
 	}
 }
 
@@ -1471,7 +1480,7 @@ func (Instance) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns extra baseline offset (as a fraction of font height).
 */
-func (Instance) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1484,7 +1493,7 @@ func (Instance) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 */
-func (Instance) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid gd.RID, transform gd.Transform2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid Resource.ID, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var transform = gd.UnsafeGet[gd.Transform2D](p_args, 1)
@@ -1497,12 +1506,12 @@ func (Instance) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid gd.RI
 [b]Optional.[/b]
 Returns 2D transform applied to the font outlines.
 */
-func (Instance) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Transform2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transform2D(ret))
 	}
 }
 
@@ -1510,7 +1519,7 @@ func (Instance) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid gd.RI
 [b]Optional.[/b]
 Sets variation coordinates for the specified font cache entry.
 */
-func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid gd.RID, variation_coordinates gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid Resource.ID, variation_coordinates Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var variation_coordinates = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -1524,7 +1533,7 @@ func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns variation coordinates for the specified font cache entry.
 */
-func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1541,12 +1550,12 @@ func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (Instance) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid gd.RID, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid Resource.ID, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var oversampling = gd.UnsafeGet[gd.Float](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, float64(oversampling))
+		impl(self, font_rid, Float.X(oversampling))
 	}
 }
 
@@ -1554,7 +1563,7 @@ func (Instance) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (Instance) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1567,7 +1576,7 @@ func (Instance) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Required.[/b]
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (Instance) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid Resource.ID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1584,7 +1593,7 @@ func (Instance) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Removes all font sizes from the cache entry.
 */
-func (Instance) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid Resource.ID)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1596,7 +1605,7 @@ func (Instance) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Required.[/b]
 Removes specified font size from the cache entry.
 */
-func (Instance) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1609,13 +1618,13 @@ func (Instance) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Sets the font ascent (number of pixels above the baseline).
 */
-func (Instance) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, ascent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, ascent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var ascent = gd.UnsafeGet[gd.Float](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, int(size), float64(ascent))
+		impl(self, font_rid, int(size), Float.X(ascent))
 	}
 }
 
@@ -1623,7 +1632,7 @@ func (Instance) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, 
 [b]Required.[/b]
 Returns the font ascent (number of pixels above the baseline).
 */
-func (Instance) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1637,13 +1646,13 @@ func (Instance) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid gd.RID, 
 [b]Required.[/b]
 Sets the font descent (number of pixels below the baseline).
 */
-func (Instance) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, descent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, descent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var descent = gd.UnsafeGet[gd.Float](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, int(size), float64(descent))
+		impl(self, font_rid, int(size), Float.X(descent))
 	}
 }
 
@@ -1651,7 +1660,7 @@ func (Instance) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Required.[/b]
 Returns the font descent (number of pixels below the baseline).
 */
-func (Instance) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1665,13 +1674,13 @@ func (Instance) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Required.[/b]
 Sets pixel offset of the underline below the baseline.
 */
-func (Instance) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, underline_position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, underline_position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var underline_position = gd.UnsafeGet[gd.Float](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, int(size), float64(underline_position))
+		impl(self, font_rid, int(size), Float.X(underline_position))
 	}
 }
 
@@ -1679,7 +1688,7 @@ func (Instance) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (Instance) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1693,13 +1702,13 @@ func (Instance) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Sets thickness of the underline in pixels.
 */
-func (Instance) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, underline_thickness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, underline_thickness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var underline_thickness = gd.UnsafeGet[gd.Float](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, int(size), float64(underline_thickness))
+		impl(self, font_rid, int(size), Float.X(underline_thickness))
 	}
 }
 
@@ -1707,7 +1716,7 @@ func (Instance) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font
 [b]Required.[/b]
 Returns thickness of the underline in pixels.
 */
-func (Instance) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1721,13 +1730,13 @@ func (Instance) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font
 [b]Required.[/b]
 Sets scaling factor of the color bitmap font.
 */
-func (Instance) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, scale float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, scale Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var scale = gd.UnsafeGet[gd.Float](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, font_rid, int(size), float64(scale))
+		impl(self, font_rid, int(size), Float.X(scale))
 	}
 }
 
@@ -1735,7 +1744,7 @@ func (Instance) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, s
 [b]Required.[/b]
 Returns scaling factor of the color bitmap font.
 */
-func (Instance) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1749,7 +1758,7 @@ func (Instance) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid gd.RID, s
 [b]Required.[/b]
 Returns number of textures used by font cache entry.
 */
-func (Instance) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1763,7 +1772,7 @@ func (Instance) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Removes all textures from font cache entry.
 */
-func (Instance) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1776,7 +1785,7 @@ func (Instance) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Removes specified texture from the cache entry.
 */
-func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, texture_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1790,7 +1799,7 @@ func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Sets font cache texture image data.
 */
-func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int, image objects.Image)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, texture_index int, image objects.Image)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1806,7 +1815,7 @@ func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Returns font cache texture image data.
 */
-func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int) objects.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, texture_index int) objects.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1825,7 +1834,7 @@ func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid g
 [b]Optional.[/b]
 Sets array containing glyph packing data.
 */
-func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int, offset []int32)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1841,7 +1850,7 @@ func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns array containing glyph packing data.
 */
-func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, texture_index int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, texture_index int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1860,7 +1869,7 @@ func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Returns list of rendered glyphs in the cache entry.
 */
-func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1878,7 +1887,7 @@ func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Removes all rendered glyph information from the cache entry.
 */
-func (Instance) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1891,7 +1900,7 @@ func (Instance) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Required.[/b]
 Removes specified rendered glyph information from the cache entry.
 */
-func (Instance) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1905,14 +1914,14 @@ func (Instance) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Required.[/b]
 Returns glyph advance (offset of the next glyph).
 */
-func (Instance) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var glyph = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, int(size), int(glyph))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -1920,7 +1929,7 @@ func (Instance) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Sets glyph advance (offset of the next glyph).
 */
-func (Instance) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph int, advance gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph int, advance Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -1935,14 +1944,14 @@ func (Instance) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Returns glyph offset from the baseline.
 */
-func (Instance) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
 		var glyph = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, int(glyph))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -1950,7 +1959,7 @@ func (Instance) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Required.[/b]
 Sets glyph offset from the baseline.
 */
-func (Instance) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, offset gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1965,14 +1974,14 @@ func (Instance) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Required.[/b]
 Returns size of the glyph.
 */
-func (Instance) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
 		var glyph = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, int(glyph))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -1980,7 +1989,7 @@ func (Instance) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Sets size of the glyph.
 */
-func (Instance) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, gl_size gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -1995,14 +2004,14 @@ func (Instance) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Required.[/b]
 Returns rectangle in the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Rect2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
 		var glyph = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, int(glyph))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Rect2(ret))
 	}
 }
 
@@ -2010,7 +2019,7 @@ func (Instance) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Sets rectangle in the cache texture containing the glyph.
 */
-func (Instance) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, uv_rect gd.Rect2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2025,7 +2034,7 @@ func (Instance) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid g
 [b]Required.[/b]
 Returns index of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2040,7 +2049,7 @@ func (Instance) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Sets index of the cache texture containing the glyph.
 */
-func (Instance) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int, texture_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2055,7 +2064,7 @@ func (Instance) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Returns resource ID of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2070,14 +2079,14 @@ func (Instance) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Returns size of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
 		var glyph = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, int(glyph))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -2085,7 +2094,7 @@ func (Instance) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns outline contours of the glyph.
 */
-func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, index int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, index int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2104,7 +2113,7 @@ func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Returns list of the kerning overrides.
 */
-func (Instance) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2122,7 +2131,7 @@ func (Instance) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid gd
 [b]Optional.[/b]
 Removes all kerning overrides.
 */
-func (Instance) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2135,7 +2144,7 @@ func (Instance) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid g
 [b]Optional.[/b]
 Removes kerning override for the pair of glyphs.
 */
-func (Instance) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph_pair Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2149,7 +2158,7 @@ func (Instance) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid gd.R
 [b]Optional.[/b]
 Sets kerning for the pair of glyphs.
 */
-func (Instance) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i, kerning gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2164,14 +2173,14 @@ func (Instance) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Optional.[/b]
 Returns kerning for the pair of glyphs.
 */
-func (Instance) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_pair gd.Vector2i) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph_pair Vector2i.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[gd.Vector2i](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, int(size), glyph_pair)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -2179,7 +2188,7 @@ func (Instance) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid gd.RID,
 [b]Required.[/b]
 Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
 */
-func (Instance) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, char int, variation_selector int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, char int, variation_selector int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2195,7 +2204,7 @@ func (Instance) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid gd.
 [b]Required.[/b]
 Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
 */
-func (Instance) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_rid gd.RID, size int, glyph_index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size int, glyph_index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2210,7 +2219,7 @@ func (Instance) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, fo
 [b]Required.[/b]
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
-func (Instance) _font_has_char(impl func(ptr unsafe.Pointer, font_rid gd.RID, char int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_has_char(impl func(ptr unsafe.Pointer, font_rid Resource.ID, char int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var char = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2224,7 +2233,7 @@ func (Instance) _font_has_char(impl func(ptr unsafe.Pointer, font_rid gd.RID, ch
 [b]Required.[/b]
 Returns a string containing all the characters available in the font.
 */
-func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid gd.RID) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid Resource.ID) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2241,7 +2250,7 @@ func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Renders the range of characters to the font cache texture.
 */
-func (Instance) _font_render_range(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, start int, end int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_render_range(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, start int, end int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2256,7 +2265,7 @@ func (Instance) _font_render_range(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Optional.[/b]
 Renders specified glyph to the font cache texture.
 */
-func (Instance) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, size gd.Vector2i, index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid Resource.ID, size Vector2i.XY, index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
@@ -2270,7 +2279,7 @@ func (Instance) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID
 [b]Required.[/b]
 Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var canvas = gd.UnsafeGet[gd.RID](p_args, 1)
@@ -2287,7 +2296,7 @@ func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid gd.RID, 
 [b]Required.[/b]
 Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid gd.RID, canvas gd.RID, size int, outline_size int, pos gd.Vector2, index int, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var canvas = gd.UnsafeGet[gd.RID](p_args, 1)
@@ -2305,7 +2314,7 @@ func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
-func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid Resource.ID, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2320,7 +2329,7 @@ func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 Adds override for [method _font_is_language_supported].
 */
-func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, language string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2335,7 +2344,7 @@ func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
-func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2350,7 +2359,7 @@ func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Remove language support override.
 */
-func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, language string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, language string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2364,7 +2373,7 @@ func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Poin
 [b]Optional.[/b]
 Returns list of language support overrides.
 */
-func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid Resource.ID) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2381,7 +2390,7 @@ func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
-func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid Resource.ID, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2396,7 +2405,7 @@ func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Adds override for [method _font_is_script_supported].
 */
-func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, script string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2411,7 +2420,7 @@ func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
-func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2426,7 +2435,7 @@ func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Removes script support override.
 */
-func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid gd.RID, script string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid Resource.ID, script string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2440,7 +2449,7 @@ func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns list of script support overrides.
 */
-func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid Resource.ID) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2457,7 +2466,7 @@ func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Sets font OpenType feature set override.
 */
-func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID, overrides gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid Resource.ID, overrides Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		var overrides = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2471,7 +2480,7 @@ func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns font OpenType feature set override.
 */
-func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2488,7 +2497,7 @@ func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType features.
 */
-func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2505,7 +2514,7 @@ func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_rid gd.RID) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_rid Resource.ID) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2522,7 +2531,7 @@ func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns the font oversampling factor, shared by all fonts in the TextServer.
 */
-func (Instance) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -2534,11 +2543,11 @@ func (Instance) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) floa
 [b]Optional.[/b]
 Sets oversampling factor, shared by all font in the TextServer.
 */
-func (Instance) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var oversampling = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(oversampling))
+		impl(self, Float.X(oversampling))
 	}
 }
 
@@ -2546,13 +2555,13 @@ func (Instance) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, over
 [b]Optional.[/b]
 Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 */
-func (Instance) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, index int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, index int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var size = gd.UnsafeGet[gd.Int](p_args, 0)
 		var index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(size), int(index))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -2560,7 +2569,7 @@ func (Instance) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, i
 [b]Optional.[/b]
 Draws box displaying character hexadecimal code.
 */
-func (Instance) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var canvas = gd.UnsafeGet[gd.RID](p_args, 0)
 		var size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2576,7 +2585,7 @@ func (Instance) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas gd.RID, 
 [b]Required.[/b]
 Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
 */
-func (Instance) _create_shaped_text(impl func(ptr unsafe.Pointer, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_shaped_text(impl func(ptr unsafe.Pointer, direction classdb.TextServerDirection, orientation classdb.TextServerOrientation) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var direction = gd.UnsafeGet[classdb.TextServerDirection](p_args, 0)
 		var orientation = gd.UnsafeGet[classdb.TextServerOrientation](p_args, 1)
@@ -2590,7 +2599,7 @@ func (Instance) _create_shaped_text(impl func(ptr unsafe.Pointer, direction clas
 [b]Required.[/b]
 Clears text buffer (removes text and inline objects).
 */
-func (Instance) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped gd.RID)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped Resource.ID)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2602,7 +2611,7 @@ func (Instance) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped gd.RID))
 [b]Optional.[/b]
 Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 */
-func (Instance) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped gd.RID, direction classdb.TextServerDirection)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped Resource.ID, direction classdb.TextServerDirection)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var direction = gd.UnsafeGet[classdb.TextServerDirection](p_args, 1)
@@ -2615,7 +2624,7 @@ func (Instance) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns direction of the text.
 */
-func (Instance) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerDirection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped Resource.ID) classdb.TextServerDirection) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2628,7 +2637,7 @@ func (Instance) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns direction of the text, inferred by the BiDi algorithm.
 */
-func (Instance) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerDirection) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, shaped Resource.ID) classdb.TextServerDirection) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2641,7 +2650,7 @@ func (Instance) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Overrides BiDi for the structured text.
 */
-func (Instance) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped gd.RID, override gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped Resource.ID, override Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var override = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2655,7 +2664,7 @@ func (Instance) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID, punct string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped Resource.ID, punct string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var punct = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2669,7 +2678,7 @@ func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped gd.RID) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped Resource.ID) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2686,7 +2695,7 @@ func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Sets ellipsis character used for text clipping.
 */
-func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped gd.RID, char int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped Resource.ID, char int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var char = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2699,7 +2708,7 @@ func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns ellipsis character used for text clipping.
 */
-func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2712,7 +2721,7 @@ func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Sets desired text orientation.
 */
-func (Instance) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped gd.RID, orientation classdb.TextServerOrientation)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped Resource.ID, orientation classdb.TextServerOrientation)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var orientation = gd.UnsafeGet[classdb.TextServerOrientation](p_args, 1)
@@ -2725,7 +2734,7 @@ func (Instance) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Returns text orientation.
 */
-func (Instance) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped gd.RID) classdb.TextServerOrientation) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped Resource.ID) classdb.TextServerOrientation) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2738,7 +2747,7 @@ func (Instance) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
 */
-func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, shaped gd.RID, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, shaped Resource.ID, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
@@ -2751,7 +2760,7 @@ func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
 */
-func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2764,7 +2773,7 @@ func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display control characters.
 */
-func (Instance) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, shaped gd.RID, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, shaped Resource.ID, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
@@ -2777,7 +2786,7 @@ func (Instance) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display control characters.
 */
-func (Instance) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2790,7 +2799,7 @@ func (Instance) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Sets extra spacing added between glyphs or lines in pixels.
 */
-func (Instance) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped gd.RID, spacing classdb.TextServerSpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped Resource.ID, spacing classdb.TextServerSpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args, 1)
@@ -2804,7 +2813,7 @@ func (Instance) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped gd
 [b]Optional.[/b]
 Returns extra spacing added between glyphs or lines in pixels.
 */
-func (Instance) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped gd.RID, spacing classdb.TextServerSpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped Resource.ID, spacing classdb.TextServerSpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var spacing = gd.UnsafeGet[classdb.TextServerSpacingType](p_args, 1)
@@ -2818,7 +2827,7 @@ func (Instance) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped gd
 [b]Required.[/b]
 Adds text span and font to draw it to the text buffer.
 */
-func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID, text string, fonts gd.Array, size int, opentype_features gd.Dictionary, language string, meta gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -2833,7 +2842,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.
 		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 6))
 		defer pointers.End(meta)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, text.String(), fonts, int(size), opentype_features, language.String(), meta)
+		ret := impl(self, shaped, text.String(), fonts, int(size), opentype_features, language.String(), meta.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2842,7 +2851,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length int, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
@@ -2852,7 +2861,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.
 		var length = gd.UnsafeGet[gd.Int](p_args, 4)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 5)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, key, size, inline_align, int(length), float64(baseline))
+		ret := impl(self, shaped, key.Interface(), size, inline_align, int(length), Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2861,7 +2870,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Sets new size and alignment of embedded object.
 */
-func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
@@ -2870,7 +2879,7 @@ func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped 
 		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, key, size, inline_align, float64(baseline))
+		ret := impl(self, shaped, key.Interface(), size, inline_align, Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2879,7 +2888,7 @@ func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped 
 [b]Required.[/b]
 Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
 */
-func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2892,13 +2901,13 @@ func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped gd.R
 [b]Required.[/b]
 Returns text span metadata.
 */
-func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped gd.RID, index int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped Resource.ID, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, int(index))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}
@@ -2910,7 +2919,7 @@ func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped gd.RI
 [b]Required.[/b]
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped gd.RID, index int, fonts gd.Array, size int, opentype_features gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var index = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2928,7 +2937,7 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
 */
-func (Instance) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, length int) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped Resource.ID, start int, length int) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var start = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -2943,7 +2952,7 @@ func (Instance) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped gd.RID,
 [b]Required.[/b]
 Returns the parent buffer from which the substring originates.
 */
-func (Instance) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped Resource.ID) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2956,13 +2965,13 @@ func (Instance) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Optional.[/b]
 Adjusts text width to fit to specified width, returns new text width.
 */
-func (Instance) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, justification_flags classdb.TextServerJustificationFlag) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped Resource.ID, width Float.X, justification_flags classdb.TextServerJustificationFlag) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var width = gd.UnsafeGet[gd.Float](p_args, 1)
 		var justification_flags = gd.UnsafeGet[classdb.TextServerJustificationFlag](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, float64(width), justification_flags)
+		ret := impl(self, shaped, Float.X(width), justification_flags)
 		gd.UnsafeSet(p_back, gd.Float(ret))
 	}
 }
@@ -2971,7 +2980,7 @@ func (Instance) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped g
 [b]Optional.[/b]
 Aligns shaped text to the given tab-stops.
 */
-func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped gd.RID, tab_stops []float32) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped Resource.ID, tab_stops []float32) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var tab_stops = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -2986,7 +2995,7 @@ func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped gd.R
 [b]Required.[/b]
 Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
 */
-func (Instance) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -2999,7 +3008,7 @@ func (Instance) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped gd.RID) 
 [b]Optional.[/b]
 Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
 */
-func (Instance) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3012,7 +3021,7 @@ func (Instance) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
 */
-func (Instance) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3025,7 +3034,7 @@ func (Instance) _shaped_text_update_justification_ops(impl func(ptr unsafe.Point
 [b]Required.[/b]
 Returns [code]true[/code] if buffer is successfully shaped.
 */
-func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped gd.RID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped Resource.ID) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3038,7 +3047,7 @@ func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped gd.RI
 [b]Required.[/b]
 Returns an array of glyphs in the visual order.
 */
-func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3051,7 +3060,7 @@ func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Returns text glyphs in the logical order.
 */
-func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped Resource.ID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3064,7 +3073,7 @@ func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped g
 [b]Required.[/b]
 Returns number of glyphs in the buffer.
 */
-func (Instance) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3077,12 +3086,12 @@ func (Instance) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns substring buffer character range in the parent buffer.
 */
-func (Instance) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Vector2i) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped Resource.ID) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2i(ret))
 	}
 }
 
@@ -3090,7 +3099,7 @@ func (Instance) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped gd.R
 [b]Optional.[/b]
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped gd.RID, width []float32, start int, once bool, break_flags classdb.TextServerLineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped Resource.ID, width []float32, start int, once bool, break_flags classdb.TextServerLineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var width = pointers.New[gd.PackedFloat32Array](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -3112,14 +3121,14 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Breaks text to the lines and returns character ranges for each line.
 */
-func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, start int, break_flags classdb.TextServerLineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped Resource.ID, width Float.X, start int, break_flags classdb.TextServerLineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var width = gd.UnsafeGet[gd.Float](p_args, 1)
 		var start = gd.UnsafeGet[gd.Int](p_args, 2)
 		var break_flags = gd.UnsafeGet[classdb.TextServerLineBreakFlag](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, float64(width), int(start), break_flags)
+		ret := impl(self, shaped, Float.X(width), int(start), break_flags)
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
 		if !ok {
 			return
@@ -3132,7 +3141,7 @@ func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
 */
-func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID, grapheme_flags classdb.TextServerGraphemeFlag, skip_grapheme_flags classdb.TextServerGraphemeFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped Resource.ID, grapheme_flags classdb.TextServerGraphemeFlag, skip_grapheme_flags classdb.TextServerGraphemeFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var grapheme_flags = gd.UnsafeGet[classdb.TextServerGraphemeFlag](p_args, 1)
@@ -3151,7 +3160,7 @@ func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns the position of the overrun trim.
 */
-func (Instance) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3164,7 +3173,7 @@ func (Instance) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped g
 [b]Required.[/b]
 Returns position of the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3177,7 +3186,7 @@ func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns number of glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer, shaped gd.RID) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer, shaped Resource.ID) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3190,7 +3199,7 @@ func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Point
 [b]Required.[/b]
 Returns array of the glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *classdb.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3203,13 +3212,13 @@ func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Trims text if it exceeds the given width.
 */
-func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, shaped gd.RID, width float64, trim_flags classdb.TextServerTextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, shaped Resource.ID, width Float.X, trim_flags classdb.TextServerTextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var width = gd.UnsafeGet[gd.Float](p_args, 1)
 		var trim_flags = gd.UnsafeGet[classdb.TextServerTextOverrunFlag](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, shaped, float64(width), trim_flags)
+		impl(self, shaped, Float.X(width), trim_flags)
 	}
 }
 
@@ -3217,7 +3226,7 @@ func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer,
 [b]Required.[/b]
 Returns array of inline objects.
 */
-func (Instance) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped Resource.ID) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3234,14 +3243,14 @@ func (Instance) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped gd
 [b]Required.[/b]
 Returns bounding rectangle of the inline object.
 */
-func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Rect2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, key)
-		gd.UnsafeSet(p_back, ret)
+		ret := impl(self, shaped, key.Interface())
+		gd.UnsafeSet(p_back, gd.Rect2(ret))
 	}
 }
 
@@ -3249,14 +3258,14 @@ func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns the character range of the inline object.
 */
-func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Vector2i) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, key)
-		gd.UnsafeSet(p_back, ret)
+		ret := impl(self, shaped, key.Interface())
+		gd.UnsafeSet(p_back, gd.Vector2i(ret))
 	}
 }
 
@@ -3264,13 +3273,13 @@ func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns the glyph index of the inline object.
 */
-func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, key)
+		ret := impl(self, shaped, key.Interface())
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -3279,12 +3288,12 @@ func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns size of the text.
 */
-func (Instance) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped gd.RID) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped Resource.ID) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -3292,7 +3301,7 @@ func (Instance) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped gd.RI
 [b]Required.[/b]
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (Instance) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3305,7 +3314,7 @@ func (Instance) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Required.[/b]
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (Instance) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3318,7 +3327,7 @@ func (Instance) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped gd
 [b]Required.[/b]
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
-func (Instance) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3331,7 +3340,7 @@ func (Instance) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped gd.R
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (Instance) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, shaped gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, shaped Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3344,7 +3353,7 @@ func (Instance) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer
 [b]Required.[/b]
 Returns thickness of the underline.
 */
-func (Instance) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, shaped gd.RID) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, shaped Resource.ID) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3357,7 +3366,7 @@ func (Instance) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns dominant direction of in the range of text.
 */
-func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, end int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.Pointer, shaped Resource.ID, start int, end int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var start = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3372,7 +3381,7 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsaf
 [b]Optional.[/b]
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.RID, position int, caret *classdb.CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped Resource.ID, position int, caret *classdb.CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var position = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3386,14 +3395,14 @@ func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.
 [b]Optional.[/b]
 Returns selection rectangles for the specified character range.
 */
-func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped gd.RID, start int, end int) []gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped Resource.ID, start int, end int) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var start = gd.UnsafeGet[gd.Int](p_args, 1)
 		var end = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, int(start), int(end))
-		ptr, ok := pointers.End(gd.NewPackedVector2Slice(ret))
+		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
 		if !ok {
 			return
 		}
@@ -3405,12 +3414,12 @@ func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
 */
-func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped gd.RID, coord float64) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped Resource.ID, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var coord = gd.UnsafeGet[gd.Float](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, float64(coord))
+		ret := impl(self, shaped, Float.X(coord))
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -3419,12 +3428,12 @@ func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
-func (Instance) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped gd.RID, coord float64) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped Resource.ID, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var coord = gd.UnsafeGet[gd.Float](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, shaped, float64(coord))
+		ret := impl(self, shaped, Float.X(coord))
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -3433,7 +3442,7 @@ func (Instance) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var canvas = gd.UnsafeGet[gd.RID](p_args, 1)
@@ -3442,7 +3451,7 @@ func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped gd.RID, c
 		var clip_r = gd.UnsafeGet[gd.Float](p_args, 4)
 		var color = gd.UnsafeGet[gd.Color](p_args, 5)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, shaped, canvas, pos, float64(clip_l), float64(clip_r), color)
+		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), color)
 	}
 }
 
@@ -3450,7 +3459,7 @@ func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped gd.RID, c
 [b]Optional.[/b]
 Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped gd.RID, canvas gd.RID, pos gd.Vector2, clip_l float64, clip_r float64, outline_size int, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var canvas = gd.UnsafeGet[gd.RID](p_args, 1)
@@ -3460,7 +3469,7 @@ func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped g
 		var outline_size = gd.UnsafeGet[gd.Int](p_args, 5)
 		var color = gd.UnsafeGet[gd.Color](p_args, 6)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, shaped, canvas, pos, float64(clip_l), float64(clip_r), int(outline_size), color)
+		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), int(outline_size), color)
 	}
 }
 
@@ -3468,13 +3477,13 @@ func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped g
 [b]Optional.[/b]
 Returns composite character's bounds as offsets from the start of the line.
 */
-func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, int(pos))
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 
@@ -3482,7 +3491,7 @@ func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns grapheme end position closest to the [param pos].
 */
-func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3496,7 +3505,7 @@ func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns grapheme start position closest to the [param pos].
 */
-func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3510,7 +3519,7 @@ func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped gd.RID) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped Resource.ID) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3527,7 +3536,7 @@ func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns composite character end position closest to the [param pos].
 */
-func (Instance) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3541,7 +3550,7 @@ func (Instance) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Returns composite character start position closest to the [param pos].
 */
-func (Instance) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3555,7 +3564,7 @@ func (Instance) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Returns composite character position closest to the [param pos].
 */
-func (Instance) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, shaped gd.RID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, shaped Resource.ID, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var pos = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -3798,7 +3807,7 @@ func (Instance) _string_to_title(impl func(ptr unsafe.Pointer, s string, languag
 [b]Optional.[/b]
 Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
 */
-func (Instance) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type classdb.TextServerStructuredTextParser, args gd.Array, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type classdb.TextServerStructuredTextParser, args Array.Any, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var parser_type = gd.UnsafeGet[classdb.TextServerStructuredTextParser](p_args, 0)
 		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))

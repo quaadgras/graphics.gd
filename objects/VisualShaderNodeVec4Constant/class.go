@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualShaderNodeConstant"
 import "grow.graphics/gd/objects/VisualShaderNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Quaternion"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,12 +34,12 @@ func New() Instance {
 	return Instance{classdb.VisualShaderNodeVec4Constant(object)}
 }
 
-func (self Instance) Constant() gd.Quaternion {
-	return gd.Quaternion(class(self).GetConstant())
+func (self Instance) Constant() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetConstant())
 }
 
-func (self Instance) SetConstant(value gd.Quaternion) {
-	class(self).SetConstant(value)
+func (self Instance) SetConstant(value Quaternion.IJKX) {
+	class(self).SetConstant(gd.Quaternion(value))
 }
 
 //go:nosplit

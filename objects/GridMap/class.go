@@ -9,6 +9,12 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Vector3i"
+import "grow.graphics/gd/variant/Basis"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -56,7 +62,7 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 /*
 Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
-func (self Instance) SetNavigationMap(navigation_map gd.RID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
 	class(self).SetNavigationMap(navigation_map)
 }
 
@@ -64,8 +70,8 @@ func (self Instance) SetNavigationMap(navigation_map gd.RID) {
 Returns the [RID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
-func (self Instance) GetNavigationMap() gd.RID {
-	return gd.RID(class(self).GetNavigationMap())
+func (self Instance) GetNavigationMap() Resource.ID {
+	return Resource.ID(class(self).GetNavigationMap())
 }
 
 /*
@@ -73,57 +79,57 @@ Sets the mesh index for the cell referenced by its grid coordinates.
 A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
-func (self Instance) SetCellItem(position gd.Vector3i, item int) {
-	class(self).SetCellItem(position, gd.Int(item), gd.Int(0))
+func (self Instance) SetCellItem(position Vector3i.XYZ, item int) {
+	class(self).SetCellItem(gd.Vector3i(position), gd.Int(item), gd.Int(0))
 }
 
 /*
 The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [constant INVALID_CELL_ITEM] will be returned.
 */
-func (self Instance) GetCellItem(position gd.Vector3i) int {
-	return int(int(class(self).GetCellItem(position)))
+func (self Instance) GetCellItem(position Vector3i.XYZ) int {
+	return int(int(class(self).GetCellItem(gd.Vector3i(position))))
 }
 
 /*
 The orientation of the cell at the given grid coordinates. [code]-1[/code] is returned if the cell is empty.
 */
-func (self Instance) GetCellItemOrientation(position gd.Vector3i) int {
-	return int(int(class(self).GetCellItemOrientation(position)))
+func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) int {
+	return int(int(class(self).GetCellItemOrientation(gd.Vector3i(position))))
 }
 
 /*
 Returns the basis that gives the specified cell its orientation.
 */
-func (self Instance) GetCellItemBasis(position gd.Vector3i) gd.Basis {
-	return gd.Basis(class(self).GetCellItemBasis(position))
+func (self Instance) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ {
+	return Basis.XYZ(class(self).GetCellItemBasis(gd.Vector3i(position)))
 }
 
 /*
 Returns one of 24 possible rotations that lie along the vectors (x,y,z) with each component being either -1, 0, or 1. For further details, refer to the Godot source code.
 */
-func (self Instance) GetBasisWithOrthogonalIndex(index int) gd.Basis {
-	return gd.Basis(class(self).GetBasisWithOrthogonalIndex(gd.Int(index)))
+func (self Instance) GetBasisWithOrthogonalIndex(index int) Basis.XYZ {
+	return Basis.XYZ(class(self).GetBasisWithOrthogonalIndex(gd.Int(index)))
 }
 
 /*
 This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index (in the range from 0 to 23) of the point best representing the orientation of the object. For further details, refer to the Godot source code.
 */
-func (self Instance) GetOrthogonalIndexFromBasis(basis gd.Basis) int {
-	return int(int(class(self).GetOrthogonalIndexFromBasis(basis)))
+func (self Instance) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int {
+	return int(int(class(self).GetOrthogonalIndexFromBasis(gd.Basis(basis))))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node3D.to_local] before passing it to this method. See also [method map_to_local].
 */
-func (self Instance) LocalToMap(local_position gd.Vector3) gd.Vector3i {
-	return gd.Vector3i(class(self).LocalToMap(local_position))
+func (self Instance) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ {
+	return Vector3i.XYZ(class(self).LocalToMap(gd.Vector3(local_position)))
 }
 
 /*
 Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [method Node3D.to_global]. See also [method local_to_map].
 */
-func (self Instance) MapToLocal(map_position gd.Vector3i) gd.Vector3 {
-	return gd.Vector3(class(self).MapToLocal(map_position))
+func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ {
+	return Vector3.XYZ(class(self).MapToLocal(gd.Vector3i(map_position)))
 }
 
 /*
@@ -157,22 +163,22 @@ func (self Instance) GetUsedCellsByItem(item int) gd.Array {
 /*
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
-func (self Instance) GetMeshes() gd.Array {
-	return gd.Array(class(self).GetMeshes())
+func (self Instance) GetMeshes() Array.Any {
+	return Array.Any(class(self).GetMeshes())
 }
 
 /*
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
-func (self Instance) GetBakeMeshes() gd.Array {
-	return gd.Array(class(self).GetBakeMeshes())
+func (self Instance) GetBakeMeshes() Array.Any {
+	return Array.Any(class(self).GetBakeMeshes())
 }
 
 /*
 Returns [RID] of a baked mesh with the given [param idx].
 */
-func (self Instance) GetBakeMeshInstance(idx int) gd.RID {
-	return gd.RID(class(self).GetBakeMeshInstance(gd.Int(idx)))
+func (self Instance) GetBakeMeshInstance(idx int) Resource.ID {
+	return Resource.ID(class(self).GetBakeMeshInstance(gd.Int(idx)))
 }
 
 /*
@@ -216,12 +222,12 @@ func (self Instance) SetPhysicsMaterial(value objects.PhysicsMaterial) {
 	class(self).SetPhysicsMaterial(value)
 }
 
-func (self Instance) CellSize() gd.Vector3 {
-	return gd.Vector3(class(self).GetCellSize())
+func (self Instance) CellSize() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCellSize())
 }
 
-func (self Instance) SetCellSize(value gd.Vector3) {
-	class(self).SetCellSize(value)
+func (self Instance) SetCellSize(value Vector3.XYZ) {
+	class(self).SetCellSize(gd.Vector3(value))
 }
 
 func (self Instance) CellOctantSize() int {
@@ -256,11 +262,11 @@ func (self Instance) SetCellCenterZ(value bool) {
 	class(self).SetCenterZ(value)
 }
 
-func (self Instance) CellScale() float64 {
-	return float64(float64(class(self).GetCellScale()))
+func (self Instance) CellScale() Float.X {
+	return Float.X(Float.X(class(self).GetCellScale()))
 }
 
-func (self Instance) SetCellScale(value float64) {
+func (self Instance) SetCellScale(value Float.X) {
 	class(self).SetCellScale(gd.Float(value))
 }
 
@@ -280,11 +286,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) CollisionPriority() float64 {
-	return float64(float64(class(self).GetCollisionPriority()))
+func (self Instance) CollisionPriority() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-func (self Instance) SetCollisionPriority(value float64) {
+func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(gd.Float(value))
 }
 
@@ -831,7 +837,7 @@ func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size g
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_make_baked_meshes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self Instance) OnCellSizeChanged(cb func(cell_size gd.Vector3)) {
+func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ)) {
 	self[0].AsObject().Connect(gd.NewStringName("cell_size_changed"), gd.NewCallable(cb), 0)
 }
 

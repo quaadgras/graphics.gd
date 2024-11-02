@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,27 +34,27 @@ func New() Instance {
 	return Instance{classdb.CylinderMesh(object)}
 }
 
-func (self Instance) TopRadius() float64 {
-	return float64(float64(class(self).GetTopRadius()))
+func (self Instance) TopRadius() Float.X {
+	return Float.X(Float.X(class(self).GetTopRadius()))
 }
 
-func (self Instance) SetTopRadius(value float64) {
+func (self Instance) SetTopRadius(value Float.X) {
 	class(self).SetTopRadius(gd.Float(value))
 }
 
-func (self Instance) BottomRadius() float64 {
-	return float64(float64(class(self).GetBottomRadius()))
+func (self Instance) BottomRadius() Float.X {
+	return Float.X(Float.X(class(self).GetBottomRadius()))
 }
 
-func (self Instance) SetBottomRadius(value float64) {
+func (self Instance) SetBottomRadius(value Float.X) {
 	class(self).SetBottomRadius(gd.Float(value))
 }
 
-func (self Instance) Height() float64 {
-	return float64(float64(class(self).GetHeight()))
+func (self Instance) Height() Float.X {
+	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-func (self Instance) SetHeight(value float64) {
+func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(gd.Float(value))
 }
 

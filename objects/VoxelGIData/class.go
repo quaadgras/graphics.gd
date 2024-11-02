@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,22 +25,22 @@ var _ = pointers.Root
 */
 type Instance [1]classdb.VoxelGIData
 
-func (self Instance) Allocate(to_cell_xform gd.Transform3D, aabb gd.AABB, octree_size gd.Vector3, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) {
-	class(self).Allocate(to_cell_xform, aabb, octree_size, gd.NewPackedByteSlice(octree_cells), gd.NewPackedByteSlice(data_cells), gd.NewPackedByteSlice(distance_field), gd.NewPackedInt32Slice(level_counts))
+func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) {
+	class(self).Allocate(gd.Transform3D(to_cell_xform), gd.AABB(aabb), gd.Vector3(octree_size), gd.NewPackedByteSlice(octree_cells), gd.NewPackedByteSlice(data_cells), gd.NewPackedByteSlice(distance_field), gd.NewPackedInt32Slice(level_counts))
 }
 
 /*
 Returns the bounds of the baked voxel data as an [AABB], which should match [member VoxelGI.size] after being baked (which only contains the size as a [Vector3]).
 [b]Note:[/b] If the size was modified without baking the VoxelGI data, then the value of [method get_bounds] and [member VoxelGI.size] will not match.
 */
-func (self Instance) GetBounds() gd.AABB {
-	return gd.AABB(class(self).GetBounds())
+func (self Instance) GetBounds() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetBounds())
 }
-func (self Instance) GetOctreeSize() gd.Vector3 {
-	return gd.Vector3(class(self).GetOctreeSize())
+func (self Instance) GetOctreeSize() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetOctreeSize())
 }
-func (self Instance) GetToCellXform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetToCellXform())
+func (self Instance) GetToCellXform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetToCellXform())
 }
 func (self Instance) GetOctreeCells() []byte {
 	return []byte(class(self).GetOctreeCells().Bytes())
@@ -59,43 +63,43 @@ func New() Instance {
 	return Instance{classdb.VoxelGIData(object)}
 }
 
-func (self Instance) DynamicRange() float64 {
-	return float64(float64(class(self).GetDynamicRange()))
+func (self Instance) DynamicRange() Float.X {
+	return Float.X(Float.X(class(self).GetDynamicRange()))
 }
 
-func (self Instance) SetDynamicRange(value float64) {
+func (self Instance) SetDynamicRange(value Float.X) {
 	class(self).SetDynamicRange(gd.Float(value))
 }
 
-func (self Instance) Energy() float64 {
-	return float64(float64(class(self).GetEnergy()))
+func (self Instance) Energy() Float.X {
+	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
-func (self Instance) SetEnergy(value float64) {
+func (self Instance) SetEnergy(value Float.X) {
 	class(self).SetEnergy(gd.Float(value))
 }
 
-func (self Instance) Bias() float64 {
-	return float64(float64(class(self).GetBias()))
+func (self Instance) Bias() Float.X {
+	return Float.X(Float.X(class(self).GetBias()))
 }
 
-func (self Instance) SetBias(value float64) {
+func (self Instance) SetBias(value Float.X) {
 	class(self).SetBias(gd.Float(value))
 }
 
-func (self Instance) NormalBias() float64 {
-	return float64(float64(class(self).GetNormalBias()))
+func (self Instance) NormalBias() Float.X {
+	return Float.X(Float.X(class(self).GetNormalBias()))
 }
 
-func (self Instance) SetNormalBias(value float64) {
+func (self Instance) SetNormalBias(value Float.X) {
 	class(self).SetNormalBias(gd.Float(value))
 }
 
-func (self Instance) Propagation() float64 {
-	return float64(float64(class(self).GetPropagation()))
+func (self Instance) Propagation() Float.X {
+	return Float.X(Float.X(class(self).GetPropagation()))
 }
 
-func (self Instance) SetPropagation(value float64) {
+func (self Instance) SetPropagation(value Float.X) {
 	class(self).SetPropagation(gd.Float(value))
 }
 

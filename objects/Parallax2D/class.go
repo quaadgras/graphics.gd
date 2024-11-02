@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,36 +35,36 @@ func New() Instance {
 	return Instance{classdb.Parallax2D(object)}
 }
 
-func (self Instance) ScrollScale() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollScale())
+func (self Instance) ScrollScale() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollScale())
 }
 
-func (self Instance) SetScrollScale(value gd.Vector2) {
-	class(self).SetScrollScale(value)
+func (self Instance) SetScrollScale(value Vector2.XY) {
+	class(self).SetScrollScale(gd.Vector2(value))
 }
 
-func (self Instance) ScrollOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetScrollOffset())
+func (self Instance) ScrollOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-func (self Instance) SetScrollOffset(value gd.Vector2) {
-	class(self).SetScrollOffset(value)
+func (self Instance) SetScrollOffset(value Vector2.XY) {
+	class(self).SetScrollOffset(gd.Vector2(value))
 }
 
-func (self Instance) RepeatSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetRepeatSize())
+func (self Instance) RepeatSize() Vector2.XY {
+	return Vector2.XY(class(self).GetRepeatSize())
 }
 
-func (self Instance) SetRepeatSize(value gd.Vector2) {
-	class(self).SetRepeatSize(value)
+func (self Instance) SetRepeatSize(value Vector2.XY) {
+	class(self).SetRepeatSize(gd.Vector2(value))
 }
 
-func (self Instance) Autoscroll() gd.Vector2 {
-	return gd.Vector2(class(self).GetAutoscroll())
+func (self Instance) Autoscroll() Vector2.XY {
+	return Vector2.XY(class(self).GetAutoscroll())
 }
 
-func (self Instance) SetAutoscroll(value gd.Vector2) {
-	class(self).SetAutoscroll(value)
+func (self Instance) SetAutoscroll(value Vector2.XY) {
+	class(self).SetAutoscroll(gd.Vector2(value))
 }
 
 func (self Instance) RepeatTimes() int {
@@ -74,20 +75,20 @@ func (self Instance) SetRepeatTimes(value int) {
 	class(self).SetRepeatTimes(gd.Int(value))
 }
 
-func (self Instance) LimitBegin() gd.Vector2 {
-	return gd.Vector2(class(self).GetLimitBegin())
+func (self Instance) LimitBegin() Vector2.XY {
+	return Vector2.XY(class(self).GetLimitBegin())
 }
 
-func (self Instance) SetLimitBegin(value gd.Vector2) {
-	class(self).SetLimitBegin(value)
+func (self Instance) SetLimitBegin(value Vector2.XY) {
+	class(self).SetLimitBegin(gd.Vector2(value))
 }
 
-func (self Instance) LimitEnd() gd.Vector2 {
-	return gd.Vector2(class(self).GetLimitEnd())
+func (self Instance) LimitEnd() Vector2.XY {
+	return Vector2.XY(class(self).GetLimitEnd())
 }
 
-func (self Instance) SetLimitEnd(value gd.Vector2) {
-	class(self).SetLimitEnd(value)
+func (self Instance) SetLimitEnd(value Vector2.XY) {
+	class(self).SetLimitEnd(gd.Vector2(value))
 }
 
 func (self Instance) FollowViewport() bool {
@@ -106,12 +107,12 @@ func (self Instance) SetIgnoreCameraScroll(value bool) {
 	class(self).SetIgnoreCameraScroll(value)
 }
 
-func (self Instance) ScreenOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetScreenOffset())
+func (self Instance) ScreenOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetScreenOffset())
 }
 
-func (self Instance) SetScreenOffset(value gd.Vector2) {
-	class(self).SetScreenOffset(value)
+func (self Instance) SetScreenOffset(value Vector2.XY) {
+	class(self).SetScreenOffset(gd.Vector2(value))
 }
 
 //go:nosplit

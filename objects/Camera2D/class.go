@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -43,16 +45,16 @@ func (self Instance) IsCurrent() bool {
 Returns this camera's target position, in global coordinates.
 [b]Note:[/b] The returned value is not the same as [member Node2D.global_position], as it is affected by the drag properties. It is also not the same as the current position if [member position_smoothing_enabled] is [code]true[/code] (see [method get_screen_center_position]).
 */
-func (self Instance) GetTargetPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetTargetPosition())
+func (self Instance) GetTargetPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetTargetPosition())
 }
 
 /*
 Returns the center of the screen from this camera's point of view, in global coordinates.
 [b]Note:[/b] The exact targeted position of the camera may be different. See [method get_target_position].
 */
-func (self Instance) GetScreenCenterPosition() gd.Vector2 {
-	return gd.Vector2(class(self).GetScreenCenterPosition())
+func (self Instance) GetScreenCenterPosition() Vector2.XY {
+	return Vector2.XY(class(self).GetScreenCenterPosition())
 }
 
 /*
@@ -88,12 +90,12 @@ func New() Instance {
 	return Instance{classdb.Camera2D(object)}
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetOffset(gd.Vector2(value))
 }
 
 func (self Instance) AnchorMode() classdb.Camera2DAnchorMode {
@@ -120,12 +122,12 @@ func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
-func (self Instance) Zoom() gd.Vector2 {
-	return gd.Vector2(class(self).GetZoom())
+func (self Instance) Zoom() Vector2.XY {
+	return Vector2.XY(class(self).GetZoom())
 }
 
-func (self Instance) SetZoom(value gd.Vector2) {
-	class(self).SetZoom(value)
+func (self Instance) SetZoom(value Vector2.XY) {
+	class(self).SetZoom(gd.Vector2(value))
 }
 
 func (self Instance) CustomViewport() objects.Node {
@@ -192,11 +194,11 @@ func (self Instance) SetPositionSmoothingEnabled(value bool) {
 	class(self).SetPositionSmoothingEnabled(value)
 }
 
-func (self Instance) PositionSmoothingSpeed() float64 {
-	return float64(float64(class(self).GetPositionSmoothingSpeed()))
+func (self Instance) PositionSmoothingSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetPositionSmoothingSpeed()))
 }
 
-func (self Instance) SetPositionSmoothingSpeed(value float64) {
+func (self Instance) SetPositionSmoothingSpeed(value Float.X) {
 	class(self).SetPositionSmoothingSpeed(gd.Float(value))
 }
 
@@ -208,11 +210,11 @@ func (self Instance) SetRotationSmoothingEnabled(value bool) {
 	class(self).SetRotationSmoothingEnabled(value)
 }
 
-func (self Instance) RotationSmoothingSpeed() float64 {
-	return float64(float64(class(self).GetRotationSmoothingSpeed()))
+func (self Instance) RotationSmoothingSpeed() Float.X {
+	return Float.X(Float.X(class(self).GetRotationSmoothingSpeed()))
 }
 
-func (self Instance) SetRotationSmoothingSpeed(value float64) {
+func (self Instance) SetRotationSmoothingSpeed(value Float.X) {
 	class(self).SetRotationSmoothingSpeed(gd.Float(value))
 }
 
@@ -232,51 +234,51 @@ func (self Instance) SetDragVerticalEnabled(value bool) {
 	class(self).SetDragVerticalEnabled(value)
 }
 
-func (self Instance) DragHorizontalOffset() float64 {
-	return float64(float64(class(self).GetDragHorizontalOffset()))
+func (self Instance) DragHorizontalOffset() Float.X {
+	return Float.X(Float.X(class(self).GetDragHorizontalOffset()))
 }
 
-func (self Instance) SetDragHorizontalOffset(value float64) {
+func (self Instance) SetDragHorizontalOffset(value Float.X) {
 	class(self).SetDragHorizontalOffset(gd.Float(value))
 }
 
-func (self Instance) DragVerticalOffset() float64 {
-	return float64(float64(class(self).GetDragVerticalOffset()))
+func (self Instance) DragVerticalOffset() Float.X {
+	return Float.X(Float.X(class(self).GetDragVerticalOffset()))
 }
 
-func (self Instance) SetDragVerticalOffset(value float64) {
+func (self Instance) SetDragVerticalOffset(value Float.X) {
 	class(self).SetDragVerticalOffset(gd.Float(value))
 }
 
-func (self Instance) DragLeftMargin() float64 {
-	return float64(float64(class(self).GetDragMargin(0)))
+func (self Instance) DragLeftMargin() Float.X {
+	return Float.X(Float.X(class(self).GetDragMargin(0)))
 }
 
-func (self Instance) SetDragLeftMargin(value float64) {
+func (self Instance) SetDragLeftMargin(value Float.X) {
 	class(self).SetDragMargin(0, gd.Float(value))
 }
 
-func (self Instance) DragTopMargin() float64 {
-	return float64(float64(class(self).GetDragMargin(1)))
+func (self Instance) DragTopMargin() Float.X {
+	return Float.X(Float.X(class(self).GetDragMargin(1)))
 }
 
-func (self Instance) SetDragTopMargin(value float64) {
+func (self Instance) SetDragTopMargin(value Float.X) {
 	class(self).SetDragMargin(1, gd.Float(value))
 }
 
-func (self Instance) DragRightMargin() float64 {
-	return float64(float64(class(self).GetDragMargin(2)))
+func (self Instance) DragRightMargin() Float.X {
+	return Float.X(Float.X(class(self).GetDragMargin(2)))
 }
 
-func (self Instance) SetDragRightMargin(value float64) {
+func (self Instance) SetDragRightMargin(value Float.X) {
 	class(self).SetDragMargin(2, gd.Float(value))
 }
 
-func (self Instance) DragBottomMargin() float64 {
-	return float64(float64(class(self).GetDragMargin(3)))
+func (self Instance) DragBottomMargin() Float.X {
+	return Float.X(Float.X(class(self).GetDragMargin(3)))
 }
 
-func (self Instance) SetDragBottomMargin(value float64) {
+func (self Instance) SetDragBottomMargin(value Float.X) {
 	class(self).SetDragMargin(3, gd.Float(value))
 }
 

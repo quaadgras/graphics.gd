@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -118,31 +120,31 @@ func (self Instance) SetBoneTail(bone_idx int, bone_tail string) {
 /*
 Returns the reference pose transform for bone [param bone_idx].
 */
-func (self Instance) GetReferencePose(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetReferencePose(gd.Int(bone_idx)))
+func (self Instance) GetReferencePose(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetReferencePose(gd.Int(bone_idx)))
 }
 
 /*
 Sets the reference pose transform for bone [param bone_idx].
 */
-func (self Instance) SetReferencePose(bone_idx int, bone_name gd.Transform3D) {
-	class(self).SetReferencePose(gd.Int(bone_idx), bone_name)
+func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) {
+	class(self).SetReferencePose(gd.Int(bone_idx), gd.Transform3D(bone_name))
 }
 
 /*
 Returns the offset of the bone at [param bone_idx] that will be the button position in the [BoneMap] editor.
 This is the offset with origin at the top left corner of the square.
 */
-func (self Instance) GetHandleOffset(bone_idx int) gd.Vector2 {
-	return gd.Vector2(class(self).GetHandleOffset(gd.Int(bone_idx)))
+func (self Instance) GetHandleOffset(bone_idx int) Vector2.XY {
+	return Vector2.XY(class(self).GetHandleOffset(gd.Int(bone_idx)))
 }
 
 /*
 Sets the offset of the bone at [param bone_idx] that will be the button position in the [BoneMap] editor.
 This is the offset with origin at the top left corner of the square.
 */
-func (self Instance) SetHandleOffset(bone_idx int, handle_offset gd.Vector2) {
-	class(self).SetHandleOffset(gd.Int(bone_idx), handle_offset)
+func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) {
+	class(self).SetHandleOffset(gd.Int(bone_idx), gd.Vector2(handle_offset))
 }
 
 /*

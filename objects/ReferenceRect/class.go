@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,19 +35,19 @@ func New() Instance {
 	return Instance{classdb.ReferenceRect(object)}
 }
 
-func (self Instance) BorderColor() gd.Color {
-	return gd.Color(class(self).GetBorderColor())
+func (self Instance) BorderColor() Color.RGBA {
+	return Color.RGBA(class(self).GetBorderColor())
 }
 
-func (self Instance) SetBorderColor(value gd.Color) {
-	class(self).SetBorderColor(value)
+func (self Instance) SetBorderColor(value Color.RGBA) {
+	class(self).SetBorderColor(gd.Color(value))
 }
 
-func (self Instance) BorderWidth() float64 {
-	return float64(float64(class(self).GetBorderWidth()))
+func (self Instance) BorderWidth() Float.X {
+	return Float.X(Float.X(class(self).GetBorderWidth()))
 }
 
-func (self Instance) SetBorderWidth(value float64) {
+func (self Instance) SetBorderWidth(value Float.X) {
 	class(self).SetBorderWidth(gd.Float(value))
 }
 

@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,11 +52,11 @@ type class [1]classdb.ThemeDB
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
-func FallbackBaseScale() float64 {
-	return float64(float64(class(self).GetFallbackBaseScale()))
+func FallbackBaseScale() Float.X {
+	return Float.X(Float.X(class(self).GetFallbackBaseScale()))
 }
 
-func SetFallbackBaseScale(value float64) {
+func SetFallbackBaseScale(value Float.X) {
 	class(self).SetFallbackBaseScale(gd.Float(value))
 }
 

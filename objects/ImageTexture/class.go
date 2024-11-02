@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -75,8 +76,8 @@ func (self Instance) Update(image objects.Image) {
 /*
 Resizes the texture to the specified dimensions.
 */
-func (self Instance) SetSizeOverride(size gd.Vector2i) {
-	class(self).SetSizeOverride(size)
+func (self Instance) SetSizeOverride(size Vector2i.XY) {
+	class(self).SetSizeOverride(gd.Vector2i(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

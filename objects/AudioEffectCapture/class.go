@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -35,8 +37,8 @@ Gets the next [param frames] audio samples from the internal ring buffer.
 Returns a [PackedVector2Array] containing exactly [param frames] audio samples if available, or an empty [PackedVector2Array] if insufficient data was available.
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
-func (self Instance) GetBuffer(frames int) []gd.Vector2 {
-	return []gd.Vector2(class(self).GetBuffer(gd.Int(frames)).AsSlice())
+func (self Instance) GetBuffer(frames int) []Vector2.XY {
+	return []Vector2.XY(class(self).GetBuffer(gd.Int(frames)).AsSlice())
 }
 
 /*
@@ -86,11 +88,11 @@ func New() Instance {
 	return Instance{classdb.AudioEffectCapture(object)}
 }
 
-func (self Instance) BufferLength() float64 {
-	return float64(float64(class(self).GetBufferLength()))
+func (self Instance) BufferLength() Float.X {
+	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-func (self Instance) SetBufferLength(value float64) {
+func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(gd.Float(value))
 }
 

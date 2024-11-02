@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -392,50 +393,50 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 /*
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
-func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) gd.Dictionary {
-	return gd.Dictionary(class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), gd.NewString(content), gd.NewString(status)))
+func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) Dictionary.Any {
+	return Dictionary.Any(class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), gd.NewString(content), gd.NewString(status)))
 }
 
 /*
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
-func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) gd.Dictionary {
-	return gd.Dictionary(class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines)))
+func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) Dictionary.Any {
+	return Dictionary.Any(class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines)))
 }
 
 /*
 Helper function to create a [Dictionary] for storing old and new diff file paths.
 */
-func (self Instance) CreateDiffFile(new_file string, old_file string) gd.Dictionary {
-	return gd.Dictionary(class(self).CreateDiffFile(gd.NewString(new_file), gd.NewString(old_file)))
+func (self Instance) CreateDiffFile(new_file string, old_file string) Dictionary.Any {
+	return Dictionary.Any(class(self).CreateDiffFile(gd.NewString(new_file), gd.NewString(old_file)))
 }
 
 /*
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
-func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) gd.Dictionary {
-	return gd.Dictionary(class(self).CreateCommit(gd.NewString(msg), gd.NewString(author), gd.NewString(id), gd.Int(unix_timestamp), gd.Int(offset_minutes)))
+func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) Dictionary.Any {
+	return Dictionary.Any(class(self).CreateCommit(gd.NewString(msg), gd.NewString(author), gd.NewString(id), gd.Int(unix_timestamp), gd.Int(offset_minutes)))
 }
 
 /*
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
-func (self Instance) CreateStatusFile(file_path string, change_type classdb.EditorVCSInterfaceChangeType, area classdb.EditorVCSInterfaceTreeArea) gd.Dictionary {
-	return gd.Dictionary(class(self).CreateStatusFile(gd.NewString(file_path), change_type, area))
+func (self Instance) CreateStatusFile(file_path string, change_type classdb.EditorVCSInterfaceChangeType, area classdb.EditorVCSInterfaceTreeArea) Dictionary.Any {
+	return Dictionary.Any(class(self).CreateStatusFile(gd.NewString(file_path), change_type, area))
 }
 
 /*
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
-func (self Instance) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks gd.Array) gd.Dictionary {
-	return gd.Dictionary(class(self).AddDiffHunksIntoDiffFile(diff_file, diff_hunks))
+func (self Instance) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks gd.Array) Dictionary.Any {
+	return Dictionary.Any(class(self).AddDiffHunksIntoDiffFile(diff_file, diff_hunks))
 }
 
 /*
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
-func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs gd.Array) gd.Dictionary {
-	return gd.Dictionary(class(self).AddLineDiffsIntoDiffHunk(diff_hunk, line_diffs))
+func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs gd.Array) Dictionary.Any {
+	return Dictionary.Any(class(self).AddLineDiffsIntoDiffHunk(diff_hunk, line_diffs))
 }
 
 /*

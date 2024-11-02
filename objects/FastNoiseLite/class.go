@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Noise"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,20 +51,20 @@ func (self Instance) SetSeed(value int) {
 	class(self).SetSeed(gd.Int(value))
 }
 
-func (self Instance) Frequency() float64 {
-	return float64(float64(class(self).GetFrequency()))
+func (self Instance) Frequency() Float.X {
+	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
-func (self Instance) SetFrequency(value float64) {
+func (self Instance) SetFrequency(value Float.X) {
 	class(self).SetFrequency(gd.Float(value))
 }
 
-func (self Instance) Offset() gd.Vector3 {
-	return gd.Vector3(class(self).GetOffset())
+func (self Instance) Offset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector3) {
-	class(self).SetOffset(value)
+func (self Instance) SetOffset(value Vector3.XYZ) {
+	class(self).SetOffset(gd.Vector3(value))
 }
 
 func (self Instance) FractalType() classdb.FastNoiseLiteFractalType {
@@ -81,35 +83,35 @@ func (self Instance) SetFractalOctaves(value int) {
 	class(self).SetFractalOctaves(gd.Int(value))
 }
 
-func (self Instance) FractalLacunarity() float64 {
-	return float64(float64(class(self).GetFractalLacunarity()))
+func (self Instance) FractalLacunarity() Float.X {
+	return Float.X(Float.X(class(self).GetFractalLacunarity()))
 }
 
-func (self Instance) SetFractalLacunarity(value float64) {
+func (self Instance) SetFractalLacunarity(value Float.X) {
 	class(self).SetFractalLacunarity(gd.Float(value))
 }
 
-func (self Instance) FractalGain() float64 {
-	return float64(float64(class(self).GetFractalGain()))
+func (self Instance) FractalGain() Float.X {
+	return Float.X(Float.X(class(self).GetFractalGain()))
 }
 
-func (self Instance) SetFractalGain(value float64) {
+func (self Instance) SetFractalGain(value Float.X) {
 	class(self).SetFractalGain(gd.Float(value))
 }
 
-func (self Instance) FractalWeightedStrength() float64 {
-	return float64(float64(class(self).GetFractalWeightedStrength()))
+func (self Instance) FractalWeightedStrength() Float.X {
+	return Float.X(Float.X(class(self).GetFractalWeightedStrength()))
 }
 
-func (self Instance) SetFractalWeightedStrength(value float64) {
+func (self Instance) SetFractalWeightedStrength(value Float.X) {
 	class(self).SetFractalWeightedStrength(gd.Float(value))
 }
 
-func (self Instance) FractalPingPongStrength() float64 {
-	return float64(float64(class(self).GetFractalPingPongStrength()))
+func (self Instance) FractalPingPongStrength() Float.X {
+	return Float.X(Float.X(class(self).GetFractalPingPongStrength()))
 }
 
-func (self Instance) SetFractalPingPongStrength(value float64) {
+func (self Instance) SetFractalPingPongStrength(value Float.X) {
 	class(self).SetFractalPingPongStrength(gd.Float(value))
 }
 
@@ -121,11 +123,11 @@ func (self Instance) SetCellularDistanceFunction(value classdb.FastNoiseLiteCell
 	class(self).SetCellularDistanceFunction(value)
 }
 
-func (self Instance) CellularJitter() float64 {
-	return float64(float64(class(self).GetCellularJitter()))
+func (self Instance) CellularJitter() Float.X {
+	return Float.X(Float.X(class(self).GetCellularJitter()))
 }
 
-func (self Instance) SetCellularJitter(value float64) {
+func (self Instance) SetCellularJitter(value Float.X) {
 	class(self).SetCellularJitter(gd.Float(value))
 }
 
@@ -153,19 +155,19 @@ func (self Instance) SetDomainWarpType(value classdb.FastNoiseLiteDomainWarpType
 	class(self).SetDomainWarpType(value)
 }
 
-func (self Instance) DomainWarpAmplitude() float64 {
-	return float64(float64(class(self).GetDomainWarpAmplitude()))
+func (self Instance) DomainWarpAmplitude() Float.X {
+	return Float.X(Float.X(class(self).GetDomainWarpAmplitude()))
 }
 
-func (self Instance) SetDomainWarpAmplitude(value float64) {
+func (self Instance) SetDomainWarpAmplitude(value Float.X) {
 	class(self).SetDomainWarpAmplitude(gd.Float(value))
 }
 
-func (self Instance) DomainWarpFrequency() float64 {
-	return float64(float64(class(self).GetDomainWarpFrequency()))
+func (self Instance) DomainWarpFrequency() Float.X {
+	return Float.X(Float.X(class(self).GetDomainWarpFrequency()))
 }
 
-func (self Instance) SetDomainWarpFrequency(value float64) {
+func (self Instance) SetDomainWarpFrequency(value Float.X) {
 	class(self).SetDomainWarpFrequency(gd.Float(value))
 }
 
@@ -185,19 +187,19 @@ func (self Instance) SetDomainWarpFractalOctaves(value int) {
 	class(self).SetDomainWarpFractalOctaves(gd.Int(value))
 }
 
-func (self Instance) DomainWarpFractalLacunarity() float64 {
-	return float64(float64(class(self).GetDomainWarpFractalLacunarity()))
+func (self Instance) DomainWarpFractalLacunarity() Float.X {
+	return Float.X(Float.X(class(self).GetDomainWarpFractalLacunarity()))
 }
 
-func (self Instance) SetDomainWarpFractalLacunarity(value float64) {
+func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) {
 	class(self).SetDomainWarpFractalLacunarity(gd.Float(value))
 }
 
-func (self Instance) DomainWarpFractalGain() float64 {
-	return float64(float64(class(self).GetDomainWarpFractalGain()))
+func (self Instance) DomainWarpFractalGain() Float.X {
+	return Float.X(Float.X(class(self).GetDomainWarpFractalGain()))
 }
 
-func (self Instance) SetDomainWarpFractalGain(value float64) {
+func (self Instance) SetDomainWarpFractalGain(value Float.X) {
 	class(self).SetDomainWarpFractalGain(gd.Float(value))
 }
 

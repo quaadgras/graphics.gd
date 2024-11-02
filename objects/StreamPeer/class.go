@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,22 +32,22 @@ func (self Instance) PutData(data []byte) error {
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
-func (self Instance) PutPartialData(data []byte) gd.Array {
-	return gd.Array(class(self).PutPartialData(gd.NewPackedByteSlice(data)))
+func (self Instance) PutPartialData(data []byte) Array.Any {
+	return Array.Any(class(self).PutPartialData(gd.NewPackedByteSlice(data)))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
-func (self Instance) GetData(bytes int) gd.Array {
-	return gd.Array(class(self).GetData(gd.Int(bytes)))
+func (self Instance) GetData(bytes int) Array.Any {
+	return Array.Any(class(self).GetData(gd.Int(bytes)))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
-func (self Instance) GetPartialData(bytes int) gd.Array {
-	return gd.Array(class(self).GetPartialData(gd.Int(bytes)))
+func (self Instance) GetPartialData(bytes int) Array.Any {
+	return Array.Any(class(self).GetPartialData(gd.Int(bytes)))
 }
 
 /*
@@ -114,14 +116,14 @@ func (self Instance) PutU64(value int) {
 /*
 Puts a single-precision float into the stream.
 */
-func (self Instance) PutFloat(value float64) {
+func (self Instance) PutFloat(value Float.X) {
 	class(self).PutFloat(gd.Float(value))
 }
 
 /*
 Puts a double-precision float into the stream.
 */
-func (self Instance) PutDouble(value float64) {
+func (self Instance) PutDouble(value Float.X) {
 	class(self).PutDouble(gd.Float(value))
 }
 
@@ -161,8 +163,8 @@ func (self Instance) PutUtf8String(value string) {
 Puts a Variant into the stream. If [param full_objects] is [code]true[/code] encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func (self Instance) PutVar(value gd.Variant) {
-	class(self).PutVar(value, false)
+func (self Instance) PutVar(value any) {
+	class(self).PutVar(gd.NewVariant(value), false)
 }
 
 /*
@@ -224,15 +226,15 @@ func (self Instance) GetU64() int {
 /*
 Gets a single-precision float from the stream.
 */
-func (self Instance) GetFloat() float64 {
-	return float64(float64(class(self).GetFloat()))
+func (self Instance) GetFloat() Float.X {
+	return Float.X(Float.X(class(self).GetFloat()))
 }
 
 /*
 Gets a double-precision float from the stream.
 */
-func (self Instance) GetDouble() float64 {
-	return float64(float64(class(self).GetDouble()))
+func (self Instance) GetDouble() Float.X {
+	return Float.X(Float.X(class(self).GetDouble()))
 }
 
 /*
@@ -254,8 +256,8 @@ Gets a Variant from the stream. If [param allow_objects] is [code]true[/code], d
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func (self Instance) GetVar() gd.Variant {
-	return gd.Variant(class(self).GetVar(false))
+func (self Instance) GetVar() any {
+	return any(class(self).GetVar(false).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

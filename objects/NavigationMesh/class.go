@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -88,12 +91,12 @@ func New() Instance {
 	return Instance{classdb.NavigationMesh(object)}
 }
 
-func (self Instance) Vertices() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetVertices().AsSlice())
+func (self Instance) Vertices() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetVertices().AsSlice())
 }
 
-func (self Instance) SetVertices(value []gd.Vector3) {
-	class(self).SetVertices(gd.NewPackedVector3Slice(value))
+func (self Instance) SetVertices(value []Vector3.XYZ) {
+	class(self).SetVertices(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) SamplePartitionType() classdb.NavigationMeshSamplePartitionType {
@@ -136,115 +139,115 @@ func (self Instance) SetGeometrySourceGroupName(value string) {
 	class(self).SetSourceGroupName(gd.NewStringName(value))
 }
 
-func (self Instance) CellSize() float64 {
-	return float64(float64(class(self).GetCellSize()))
+func (self Instance) CellSize() Float.X {
+	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
-func (self Instance) SetCellSize(value float64) {
+func (self Instance) SetCellSize(value Float.X) {
 	class(self).SetCellSize(gd.Float(value))
 }
 
-func (self Instance) CellHeight() float64 {
-	return float64(float64(class(self).GetCellHeight()))
+func (self Instance) CellHeight() Float.X {
+	return Float.X(Float.X(class(self).GetCellHeight()))
 }
 
-func (self Instance) SetCellHeight(value float64) {
+func (self Instance) SetCellHeight(value Float.X) {
 	class(self).SetCellHeight(gd.Float(value))
 }
 
-func (self Instance) BorderSize() float64 {
-	return float64(float64(class(self).GetBorderSize()))
+func (self Instance) BorderSize() Float.X {
+	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
-func (self Instance) SetBorderSize(value float64) {
+func (self Instance) SetBorderSize(value Float.X) {
 	class(self).SetBorderSize(gd.Float(value))
 }
 
-func (self Instance) AgentHeight() float64 {
-	return float64(float64(class(self).GetAgentHeight()))
+func (self Instance) AgentHeight() Float.X {
+	return Float.X(Float.X(class(self).GetAgentHeight()))
 }
 
-func (self Instance) SetAgentHeight(value float64) {
+func (self Instance) SetAgentHeight(value Float.X) {
 	class(self).SetAgentHeight(gd.Float(value))
 }
 
-func (self Instance) AgentRadius() float64 {
-	return float64(float64(class(self).GetAgentRadius()))
+func (self Instance) AgentRadius() Float.X {
+	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
-func (self Instance) SetAgentRadius(value float64) {
+func (self Instance) SetAgentRadius(value Float.X) {
 	class(self).SetAgentRadius(gd.Float(value))
 }
 
-func (self Instance) AgentMaxClimb() float64 {
-	return float64(float64(class(self).GetAgentMaxClimb()))
+func (self Instance) AgentMaxClimb() Float.X {
+	return Float.X(Float.X(class(self).GetAgentMaxClimb()))
 }
 
-func (self Instance) SetAgentMaxClimb(value float64) {
+func (self Instance) SetAgentMaxClimb(value Float.X) {
 	class(self).SetAgentMaxClimb(gd.Float(value))
 }
 
-func (self Instance) AgentMaxSlope() float64 {
-	return float64(float64(class(self).GetAgentMaxSlope()))
+func (self Instance) AgentMaxSlope() Float.X {
+	return Float.X(Float.X(class(self).GetAgentMaxSlope()))
 }
 
-func (self Instance) SetAgentMaxSlope(value float64) {
+func (self Instance) SetAgentMaxSlope(value Float.X) {
 	class(self).SetAgentMaxSlope(gd.Float(value))
 }
 
-func (self Instance) RegionMinSize() float64 {
-	return float64(float64(class(self).GetRegionMinSize()))
+func (self Instance) RegionMinSize() Float.X {
+	return Float.X(Float.X(class(self).GetRegionMinSize()))
 }
 
-func (self Instance) SetRegionMinSize(value float64) {
+func (self Instance) SetRegionMinSize(value Float.X) {
 	class(self).SetRegionMinSize(gd.Float(value))
 }
 
-func (self Instance) RegionMergeSize() float64 {
-	return float64(float64(class(self).GetRegionMergeSize()))
+func (self Instance) RegionMergeSize() Float.X {
+	return Float.X(Float.X(class(self).GetRegionMergeSize()))
 }
 
-func (self Instance) SetRegionMergeSize(value float64) {
+func (self Instance) SetRegionMergeSize(value Float.X) {
 	class(self).SetRegionMergeSize(gd.Float(value))
 }
 
-func (self Instance) EdgeMaxLength() float64 {
-	return float64(float64(class(self).GetEdgeMaxLength()))
+func (self Instance) EdgeMaxLength() Float.X {
+	return Float.X(Float.X(class(self).GetEdgeMaxLength()))
 }
 
-func (self Instance) SetEdgeMaxLength(value float64) {
+func (self Instance) SetEdgeMaxLength(value Float.X) {
 	class(self).SetEdgeMaxLength(gd.Float(value))
 }
 
-func (self Instance) EdgeMaxError() float64 {
-	return float64(float64(class(self).GetEdgeMaxError()))
+func (self Instance) EdgeMaxError() Float.X {
+	return Float.X(Float.X(class(self).GetEdgeMaxError()))
 }
 
-func (self Instance) SetEdgeMaxError(value float64) {
+func (self Instance) SetEdgeMaxError(value Float.X) {
 	class(self).SetEdgeMaxError(gd.Float(value))
 }
 
-func (self Instance) VerticesPerPolygon() float64 {
-	return float64(float64(class(self).GetVerticesPerPolygon()))
+func (self Instance) VerticesPerPolygon() Float.X {
+	return Float.X(Float.X(class(self).GetVerticesPerPolygon()))
 }
 
-func (self Instance) SetVerticesPerPolygon(value float64) {
+func (self Instance) SetVerticesPerPolygon(value Float.X) {
 	class(self).SetVerticesPerPolygon(gd.Float(value))
 }
 
-func (self Instance) DetailSampleDistance() float64 {
-	return float64(float64(class(self).GetDetailSampleDistance()))
+func (self Instance) DetailSampleDistance() Float.X {
+	return Float.X(Float.X(class(self).GetDetailSampleDistance()))
 }
 
-func (self Instance) SetDetailSampleDistance(value float64) {
+func (self Instance) SetDetailSampleDistance(value Float.X) {
 	class(self).SetDetailSampleDistance(gd.Float(value))
 }
 
-func (self Instance) DetailSampleMaxError() float64 {
-	return float64(float64(class(self).GetDetailSampleMaxError()))
+func (self Instance) DetailSampleMaxError() Float.X {
+	return Float.X(Float.X(class(self).GetDetailSampleMaxError()))
 }
 
-func (self Instance) SetDetailSampleMaxError(value float64) {
+func (self Instance) SetDetailSampleMaxError(value Float.X) {
 	class(self).SetDetailSampleMaxError(gd.Float(value))
 }
 
@@ -272,20 +275,20 @@ func (self Instance) SetFilterWalkableLowHeightSpans(value bool) {
 	class(self).SetFilterWalkableLowHeightSpans(value)
 }
 
-func (self Instance) FilterBakingAabb() gd.AABB {
-	return gd.AABB(class(self).GetFilterBakingAabb())
+func (self Instance) FilterBakingAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetFilterBakingAabb())
 }
 
-func (self Instance) SetFilterBakingAabb(value gd.AABB) {
-	class(self).SetFilterBakingAabb(value)
+func (self Instance) SetFilterBakingAabb(value AABB.PositionSize) {
+	class(self).SetFilterBakingAabb(gd.AABB(value))
 }
 
-func (self Instance) FilterBakingAabbOffset() gd.Vector3 {
-	return gd.Vector3(class(self).GetFilterBakingAabbOffset())
+func (self Instance) FilterBakingAabbOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetFilterBakingAabbOffset())
 }
 
-func (self Instance) SetFilterBakingAabbOffset(value gd.Vector3) {
-	class(self).SetFilterBakingAabbOffset(value)
+func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) {
+	class(self).SetFilterBakingAabbOffset(gd.Vector3(value))
 }
 
 //go:nosplit

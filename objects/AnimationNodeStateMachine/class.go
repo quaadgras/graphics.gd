@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AnimationRootNode"
 import "grow.graphics/gd/objects/AnimationNode"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,7 +38,7 @@ type Instance [1]classdb.AnimationNodeStateMachine
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
 func (self Instance) AddNode(name string, node objects.AnimationNode) {
-	class(self).AddNode(gd.NewStringName(name), node, gd.Vector2{0, 0})
+	class(self).AddNode(gd.NewStringName(name), node, gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
@@ -85,15 +86,15 @@ func (self Instance) GetNodeName(node objects.AnimationNode) string {
 /*
 Sets the animation node's coordinates. Used for display in the editor.
 */
-func (self Instance) SetNodePosition(name string, position gd.Vector2) {
-	class(self).SetNodePosition(gd.NewStringName(name), position)
+func (self Instance) SetNodePosition(name string, position Vector2.XY) {
+	class(self).SetNodePosition(gd.NewStringName(name), gd.Vector2(position))
 }
 
 /*
 Returns the given animation node's coordinates. Used for display in the editor.
 */
-func (self Instance) GetNodePosition(name string) gd.Vector2 {
-	return gd.Vector2(class(self).GetNodePosition(gd.NewStringName(name)))
+func (self Instance) GetNodePosition(name string) Vector2.XY {
+	return Vector2.XY(class(self).GetNodePosition(gd.NewStringName(name)))
 }
 
 /*
@@ -155,15 +156,15 @@ func (self Instance) RemoveTransition(from string, to string) {
 /*
 Sets the draw offset of the graph. Used for display in the editor.
 */
-func (self Instance) SetGraphOffset(offset gd.Vector2) {
-	class(self).SetGraphOffset(offset)
+func (self Instance) SetGraphOffset(offset Vector2.XY) {
+	class(self).SetGraphOffset(gd.Vector2(offset))
 }
 
 /*
 Returns the draw offset of the graph. Used for display in the editor.
 */
-func (self Instance) GetGraphOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetGraphOffset())
+func (self Instance) GetGraphOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetGraphOffset())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

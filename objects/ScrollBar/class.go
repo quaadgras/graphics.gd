@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Range"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,11 +35,11 @@ func New() Instance {
 	return Instance{classdb.ScrollBar(object)}
 }
 
-func (self Instance) CustomStep() float64 {
-	return float64(float64(class(self).GetCustomStep()))
+func (self Instance) CustomStep() Float.X {
+	return Float.X(Float.X(class(self).GetCustomStep()))
 }
 
-func (self Instance) SetCustomStep(value float64) {
+func (self Instance) SetCustomStep(value Float.X) {
 	class(self).SetCustomStep(gd.Float(value))
 }
 

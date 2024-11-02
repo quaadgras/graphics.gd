@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,15 +26,15 @@ type Instance [1]classdb.SkeletonModification2DPhysicalBones
 Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
-func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node string) {
-	class(self).SetPhysicalBoneNode(gd.Int(joint_idx), gd.NewString(physicalbone2d_node).NodePath())
+func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node Path.String) {
+	class(self).SetPhysicalBoneNode(gd.Int(joint_idx), gd.NewString(string(physicalbone2d_node)).NodePath())
 }
 
 /*
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
-func (self Instance) GetPhysicalBoneNode(joint_idx int) string {
-	return string(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
+func (self Instance) GetPhysicalBoneNode(joint_idx int) Path.String {
+	return Path.String(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -48,7 +49,7 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 func (self Instance) StartSimulation() {
-	class(self).StartSimulation(([1]gd.Array{}[0]))
+	class(self).StartSimulation([1]gd.Array{}[0])
 }
 
 /*
@@ -56,7 +57,7 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 func (self Instance) StopSimulation() {
-	class(self).StopSimulation(([1]gd.Array{}[0]))
+	class(self).StopSimulation([1]gd.Array{}[0])
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -9,6 +9,11 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Quaternion"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -116,22 +121,22 @@ func (self Instance) GetParentlessBones() []int32 {
 /*
 Returns the rest transform for a bone [param bone_idx].
 */
-func (self Instance) GetBoneRest(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBoneRest(gd.Int(bone_idx)))
+func (self Instance) GetBoneRest(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBoneRest(gd.Int(bone_idx)))
 }
 
 /*
 Sets the rest transform for bone [param bone_idx].
 */
-func (self Instance) SetBoneRest(bone_idx int, rest gd.Transform3D) {
-	class(self).SetBoneRest(gd.Int(bone_idx), rest)
+func (self Instance) SetBoneRest(bone_idx int, rest Transform3D.BasisOrigin) {
+	class(self).SetBoneRest(gd.Int(bone_idx), gd.Transform3D(rest))
 }
 
 /*
 Returns the global rest transform for [param bone_idx].
 */
-func (self Instance) GetBoneGlobalRest(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBoneGlobalRest(gd.Int(bone_idx)))
+func (self Instance) GetBoneGlobalRest(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalRest(gd.Int(bone_idx)))
 }
 func (self Instance) CreateSkinFromRestTransforms() objects.Skin {
 	return objects.Skin(class(self).CreateSkinFromRestTransforms())
@@ -162,57 +167,57 @@ func (self Instance) ClearBones() {
 Returns the pose transform of the specified bone.
 [b]Note:[/b] This is the pose you set to the skeleton in the process, the final pose can get overridden by modifiers in the deferred process, if you want to access the final pose, use [signal SkeletonModifier3D.modification_processed].
 */
-func (self Instance) GetBonePose(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBonePose(gd.Int(bone_idx)))
+func (self Instance) GetBonePose(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBonePose(gd.Int(bone_idx)))
 }
 
 /*
 Sets the pose transform, [param pose], for the bone at [param bone_idx].
 */
-func (self Instance) SetBonePose(bone_idx int, pose gd.Transform3D) {
-	class(self).SetBonePose(gd.Int(bone_idx), pose)
+func (self Instance) SetBonePose(bone_idx int, pose Transform3D.BasisOrigin) {
+	class(self).SetBonePose(gd.Int(bone_idx), gd.Transform3D(pose))
 }
 
 /*
 Sets the pose position of the bone at [param bone_idx] to [param position]. [param position] is a [Vector3] describing a position local to the [Skeleton3D] node.
 */
-func (self Instance) SetBonePosePosition(bone_idx int, position gd.Vector3) {
-	class(self).SetBonePosePosition(gd.Int(bone_idx), position)
+func (self Instance) SetBonePosePosition(bone_idx int, position Vector3.XYZ) {
+	class(self).SetBonePosePosition(gd.Int(bone_idx), gd.Vector3(position))
 }
 
 /*
 Sets the pose rotation of the bone at [param bone_idx] to [param rotation]. [param rotation] is a [Quaternion] describing a rotation in the bone's local coordinate space with respect to the rotation of any parent bones.
 */
-func (self Instance) SetBonePoseRotation(bone_idx int, rotation gd.Quaternion) {
-	class(self).SetBonePoseRotation(gd.Int(bone_idx), rotation)
+func (self Instance) SetBonePoseRotation(bone_idx int, rotation Quaternion.IJKX) {
+	class(self).SetBonePoseRotation(gd.Int(bone_idx), gd.Quaternion(rotation))
 }
 
 /*
 Sets the pose scale of the bone at [param bone_idx] to [param scale].
 */
-func (self Instance) SetBonePoseScale(bone_idx int, scale gd.Vector3) {
-	class(self).SetBonePoseScale(gd.Int(bone_idx), scale)
+func (self Instance) SetBonePoseScale(bone_idx int, scale Vector3.XYZ) {
+	class(self).SetBonePoseScale(gd.Int(bone_idx), gd.Vector3(scale))
 }
 
 /*
 Returns the pose position of the bone at [param bone_idx]. The returned [Vector3] is in the local coordinate space of the [Skeleton3D] node.
 */
-func (self Instance) GetBonePosePosition(bone_idx int) gd.Vector3 {
-	return gd.Vector3(class(self).GetBonePosePosition(gd.Int(bone_idx)))
+func (self Instance) GetBonePosePosition(bone_idx int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetBonePosePosition(gd.Int(bone_idx)))
 }
 
 /*
 Returns the pose rotation of the bone at [param bone_idx]. The returned [Quaternion] is local to the bone with respect to the rotation of any parent bones.
 */
-func (self Instance) GetBonePoseRotation(bone_idx int) gd.Quaternion {
-	return gd.Quaternion(class(self).GetBonePoseRotation(gd.Int(bone_idx)))
+func (self Instance) GetBonePoseRotation(bone_idx int) Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetBonePoseRotation(gd.Int(bone_idx)))
 }
 
 /*
 Returns the pose scale of the bone at [param bone_idx].
 */
-func (self Instance) GetBonePoseScale(bone_idx int) gd.Vector3 {
-	return gd.Vector3(class(self).GetBonePoseScale(gd.Int(bone_idx)))
+func (self Instance) GetBonePoseScale(bone_idx int) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetBonePoseScale(gd.Int(bone_idx)))
 }
 
 /*
@@ -247,16 +252,16 @@ func (self Instance) SetBoneEnabled(bone_idx int) {
 Returns the overall transform of the specified bone, with respect to the skeleton. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
 [b]Note:[/b] This is the global pose you set to the skeleton in the process, the final global pose can get overridden by modifiers in the deferred process, if you want to access the final global pose, use [signal SkeletonModifier3D.modification_processed].
 */
-func (self Instance) GetBoneGlobalPose(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBoneGlobalPose(gd.Int(bone_idx)))
+func (self Instance) GetBoneGlobalPose(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPose(gd.Int(bone_idx)))
 }
 
 /*
 Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [b]Note:[/b] If other bone poses have been changed, this method executes a dirty poses recalculation and will cause performance to deteriorate. If you know that multiple global poses will be applied, consider using [method set_bone_pose] with precalculation.
 */
-func (self Instance) SetBoneGlobalPose(bone_idx int, pose gd.Transform3D) {
-	class(self).SetBoneGlobalPose(gd.Int(bone_idx), pose)
+func (self Instance) SetBoneGlobalPose(bone_idx int, pose Transform3D.BasisOrigin) {
+	class(self).SetBoneGlobalPose(gd.Int(bone_idx), gd.Transform3D(pose))
 }
 
 /*
@@ -285,22 +290,22 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 [param amount] is the interpolation strength that will be used when applying the pose, and [param persistent] determines if the applied pose will remain.
 [b]Note:[/b] The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [method Transform3D.affine_inverse] of the node's [member Node3D.global_transform] by the desired world transform.
 */
-func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose gd.Transform3D, amount float64) {
-	class(self).SetBoneGlobalPoseOverride(gd.Int(bone_idx), pose, gd.Float(amount), false)
+func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X) {
+	class(self).SetBoneGlobalPoseOverride(gd.Int(bone_idx), gd.Transform3D(pose), gd.Float(amount), false)
 }
 
 /*
 Returns the global pose override transform for [param bone_idx].
 */
-func (self Instance) GetBoneGlobalPoseOverride(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBoneGlobalPoseOverride(gd.Int(bone_idx)))
+func (self Instance) GetBoneGlobalPoseOverride(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseOverride(gd.Int(bone_idx)))
 }
 
 /*
 Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
 */
-func (self Instance) GetBoneGlobalPoseNoOverride(bone_idx int) gd.Transform3D {
-	return gd.Transform3D(class(self).GetBoneGlobalPoseNoOverride(gd.Int(bone_idx)))
+func (self Instance) GetBoneGlobalPoseNoOverride(bone_idx int) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetBoneGlobalPoseNoOverride(gd.Int(bone_idx)))
 }
 
 /*
@@ -315,14 +320,14 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 func (self Instance) PhysicalBonesStartSimulation() {
-	class(self).PhysicalBonesStartSimulation(([1]gd.Array{}[0]))
+	class(self).PhysicalBonesStartSimulation([1]gd.Array{}[0])
 }
 
 /*
 Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesAddCollisionException(exception gd.RID) {
+func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) {
 	class(self).PhysicalBonesAddCollisionException(exception)
 }
 
@@ -330,7 +335,7 @@ func (self Instance) PhysicalBonesAddCollisionException(exception gd.RID) {
 Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesRemoveCollisionException(exception gd.RID) {
+func (self Instance) PhysicalBonesRemoveCollisionException(exception Resource.ID) {
 	class(self).PhysicalBonesRemoveCollisionException(exception)
 }
 
@@ -345,11 +350,11 @@ func New() Instance {
 	return Instance{classdb.Skeleton3D(object)}
 }
 
-func (self Instance) MotionScale() float64 {
-	return float64(float64(class(self).GetMotionScale()))
+func (self Instance) MotionScale() Float.X {
+	return Float.X(Float.X(class(self).GetMotionScale()))
 }
 
-func (self Instance) SetMotionScale(value float64) {
+func (self Instance) SetMotionScale(value Float.X) {
 	class(self).SetMotionScale(gd.Float(value))
 }
 

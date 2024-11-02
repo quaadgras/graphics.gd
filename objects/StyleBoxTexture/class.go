@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/StyleBox"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,14 +27,14 @@ type Instance [1]classdb.StyleBoxTexture
 /*
 Sets the margin to [param size] pixels for all sides.
 */
-func (self Instance) SetTextureMarginAll(size float64) {
+func (self Instance) SetTextureMarginAll(size Float.X) {
 	class(self).SetTextureMarginAll(gd.Float(size))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
-func (self Instance) SetExpandMarginAll(size float64) {
+func (self Instance) SetExpandMarginAll(size Float.X) {
 	class(self).SetExpandMarginAll(gd.Float(size))
 }
 
@@ -54,67 +57,67 @@ func (self Instance) SetTexture(value objects.Texture2D) {
 	class(self).SetTexture(value)
 }
 
-func (self Instance) TextureMarginLeft() float64 {
-	return float64(float64(class(self).GetTextureMargin(0)))
+func (self Instance) TextureMarginLeft() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMargin(0)))
 }
 
-func (self Instance) SetTextureMarginLeft(value float64) {
+func (self Instance) SetTextureMarginLeft(value Float.X) {
 	class(self).SetTextureMargin(0, gd.Float(value))
 }
 
-func (self Instance) TextureMarginTop() float64 {
-	return float64(float64(class(self).GetTextureMargin(1)))
+func (self Instance) TextureMarginTop() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMargin(1)))
 }
 
-func (self Instance) SetTextureMarginTop(value float64) {
+func (self Instance) SetTextureMarginTop(value Float.X) {
 	class(self).SetTextureMargin(1, gd.Float(value))
 }
 
-func (self Instance) TextureMarginRight() float64 {
-	return float64(float64(class(self).GetTextureMargin(2)))
+func (self Instance) TextureMarginRight() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMargin(2)))
 }
 
-func (self Instance) SetTextureMarginRight(value float64) {
+func (self Instance) SetTextureMarginRight(value Float.X) {
 	class(self).SetTextureMargin(2, gd.Float(value))
 }
 
-func (self Instance) TextureMarginBottom() float64 {
-	return float64(float64(class(self).GetTextureMargin(3)))
+func (self Instance) TextureMarginBottom() Float.X {
+	return Float.X(Float.X(class(self).GetTextureMargin(3)))
 }
 
-func (self Instance) SetTextureMarginBottom(value float64) {
+func (self Instance) SetTextureMarginBottom(value Float.X) {
 	class(self).SetTextureMargin(3, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginLeft() float64 {
-	return float64(float64(class(self).GetExpandMargin(0)))
+func (self Instance) ExpandMarginLeft() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
-func (self Instance) SetExpandMarginLeft(value float64) {
+func (self Instance) SetExpandMarginLeft(value Float.X) {
 	class(self).SetExpandMargin(0, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginTop() float64 {
-	return float64(float64(class(self).GetExpandMargin(1)))
+func (self Instance) ExpandMarginTop() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
-func (self Instance) SetExpandMarginTop(value float64) {
+func (self Instance) SetExpandMarginTop(value Float.X) {
 	class(self).SetExpandMargin(1, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginRight() float64 {
-	return float64(float64(class(self).GetExpandMargin(2)))
+func (self Instance) ExpandMarginRight() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
-func (self Instance) SetExpandMarginRight(value float64) {
+func (self Instance) SetExpandMarginRight(value Float.X) {
 	class(self).SetExpandMargin(2, gd.Float(value))
 }
 
-func (self Instance) ExpandMarginBottom() float64 {
-	return float64(float64(class(self).GetExpandMargin(3)))
+func (self Instance) ExpandMarginBottom() Float.X {
+	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
-func (self Instance) SetExpandMarginBottom(value float64) {
+func (self Instance) SetExpandMarginBottom(value Float.X) {
 	class(self).SetExpandMargin(3, gd.Float(value))
 }
 
@@ -134,20 +137,20 @@ func (self Instance) SetAxisStretchVertical(value classdb.StyleBoxTextureAxisStr
 	class(self).SetVAxisStretchMode(value)
 }
 
-func (self Instance) RegionRect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRegionRect())
+func (self Instance) RegionRect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-func (self Instance) SetRegionRect(value gd.Rect2) {
-	class(self).SetRegionRect(value)
+func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+	class(self).SetRegionRect(gd.Rect2(value))
 }
 
-func (self Instance) ModulateColor() gd.Color {
-	return gd.Color(class(self).GetModulate())
+func (self Instance) ModulateColor() Color.RGBA {
+	return Color.RGBA(class(self).GetModulate())
 }
 
-func (self Instance) SetModulateColor(value gd.Color) {
-	class(self).SetModulate(value)
+func (self Instance) SetModulateColor(value Color.RGBA) {
+	class(self).SetModulate(gd.Color(value))
 }
 
 func (self Instance) DrawCenter() bool {

@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/SkeletonModification2D"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,15 +29,15 @@ type Instance [1]classdb.SkeletonModification2DCCDIK
 /*
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath string) {
-	class(self).SetCcdikJointBone2dNode(gd.Int(joint_idx), gd.NewString(bone2d_nodepath).NodePath())
+func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath Path.String) {
+	class(self).SetCcdikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointBone2dNode(joint_idx int) string {
-	return string(class(self).GetCcdikJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetCcdikJointBone2dNode(joint_idx int) Path.String {
+	return Path.String(class(self).GetCcdikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -83,29 +85,29 @@ func (self Instance) GetCcdikJointEnableConstraint(joint_idx int) bool {
 /*
 Sets the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min float64) {
+func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Float.X) {
 	class(self).SetCcdikJointConstraintAngleMin(gd.Int(joint_idx), gd.Float(angle_min))
 }
 
 /*
 Returns the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) float64 {
-	return float64(float64(class(self).GetCcdikJointConstraintAngleMin(gd.Int(joint_idx))))
+func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetCcdikJointConstraintAngleMin(gd.Int(joint_idx))))
 }
 
 /*
 Sets the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max float64) {
+func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Float.X) {
 	class(self).SetCcdikJointConstraintAngleMax(gd.Int(joint_idx), gd.Float(angle_max))
 }
 
 /*
 Returns the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) float64 {
-	return float64(float64(class(self).GetCcdikJointConstraintAngleMax(gd.Int(joint_idx))))
+func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetCcdikJointConstraintAngleMax(gd.Int(joint_idx))))
 }
 
 /*
@@ -134,20 +136,20 @@ func New() Instance {
 	return Instance{classdb.SkeletonModification2DCCDIK(object)}
 }
 
-func (self Instance) TargetNodepath() string {
-	return string(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() Path.String {
+	return Path.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value string) {
-	class(self).SetTargetNode(gd.NewString(value).NodePath())
+func (self Instance) SetTargetNodepath(value Path.String) {
+	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) TipNodepath() string {
-	return string(class(self).GetTipNode().String())
+func (self Instance) TipNodepath() Path.String {
+	return Path.String(class(self).GetTipNode().String())
 }
 
-func (self Instance) SetTipNodepath(value string) {
-	class(self).SetTipNode(gd.NewString(value).NodePath())
+func (self Instance) SetTipNodepath(value Path.String) {
+	class(self).SetTipNode(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) CcdikDataChainLength() int {

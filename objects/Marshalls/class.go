@@ -30,9 +30,9 @@ func singleton() {
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func VariantToBase64(variant gd.Variant) string {
+func VariantToBase64(variant any) string {
 	once.Do(singleton)
-	return string(class(self).VariantToBase64(variant, false).String())
+	return string(class(self).VariantToBase64(gd.NewVariant(variant), false).String())
 }
 
 /*
@@ -40,9 +40,9 @@ Returns a decoded [Variant] corresponding to the Base64-encoded string [param ba
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func Base64ToVariant(base64_str string) gd.Variant {
+func Base64ToVariant(base64_str string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).Base64ToVariant(gd.NewString(base64_str), false))
+	return any(class(self).Base64ToVariant(gd.NewString(base64_str), false).Interface())
 }
 
 /*

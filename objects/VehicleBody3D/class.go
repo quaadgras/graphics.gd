@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/PhysicsBody3D"
 import "grow.graphics/gd/objects/CollisionObject3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,27 +38,27 @@ func New() Instance {
 	return Instance{classdb.VehicleBody3D(object)}
 }
 
-func (self Instance) EngineForce() float64 {
-	return float64(float64(class(self).GetEngineForce()))
+func (self Instance) EngineForce() Float.X {
+	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
-func (self Instance) SetEngineForce(value float64) {
+func (self Instance) SetEngineForce(value Float.X) {
 	class(self).SetEngineForce(gd.Float(value))
 }
 
-func (self Instance) Brake() float64 {
-	return float64(float64(class(self).GetBrake()))
+func (self Instance) Brake() Float.X {
+	return Float.X(Float.X(class(self).GetBrake()))
 }
 
-func (self Instance) SetBrake(value float64) {
+func (self Instance) SetBrake(value Float.X) {
 	class(self).SetBrake(gd.Float(value))
 }
 
-func (self Instance) Steering() float64 {
-	return float64(float64(class(self).GetSteering()))
+func (self Instance) Steering() Float.X {
+	return Float.X(Float.X(class(self).GetSteering()))
 }
 
-func (self Instance) SetSteering(value float64) {
+func (self Instance) SetSteering(value Float.X) {
 	class(self).SetSteering(gd.Float(value))
 }
 

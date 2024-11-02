@@ -13,6 +13,9 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,12 +40,12 @@ func New() Instance {
 	return Instance{classdb.CSGPolygon3D(object)}
 }
 
-func (self Instance) Polygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPolygon().AsSlice())
+func (self Instance) Polygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPolygon().AsSlice())
 }
 
-func (self Instance) SetPolygon(value []gd.Vector2) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPolygon(value []Vector2.XY) {
+	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) Mode() classdb.CSGPolygon3DMode {
@@ -53,19 +56,19 @@ func (self Instance) SetMode(value classdb.CSGPolygon3DMode) {
 	class(self).SetMode(value)
 }
 
-func (self Instance) Depth() float64 {
-	return float64(float64(class(self).GetDepth()))
+func (self Instance) Depth() Float.X {
+	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-func (self Instance) SetDepth(value float64) {
+func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(gd.Float(value))
 }
 
-func (self Instance) SpinDegrees() float64 {
-	return float64(float64(class(self).GetSpinDegrees()))
+func (self Instance) SpinDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetSpinDegrees()))
 }
 
-func (self Instance) SetSpinDegrees(value float64) {
+func (self Instance) SetSpinDegrees(value Float.X) {
 	class(self).SetSpinDegrees(gd.Float(value))
 }
 
@@ -77,12 +80,12 @@ func (self Instance) SetSpinSides(value int) {
 	class(self).SetSpinSides(gd.Int(value))
 }
 
-func (self Instance) PathNode() string {
-	return string(class(self).GetPathNode().String())
+func (self Instance) PathNode() Path.String {
+	return Path.String(class(self).GetPathNode().String())
 }
 
-func (self Instance) SetPathNode(value string) {
-	class(self).SetPathNode(gd.NewString(value).NodePath())
+func (self Instance) SetPathNode(value Path.String) {
+	class(self).SetPathNode(gd.NewString(string(value)).NodePath())
 }
 
 func (self Instance) PathIntervalType() classdb.CSGPolygon3DPathIntervalType {
@@ -93,19 +96,19 @@ func (self Instance) SetPathIntervalType(value classdb.CSGPolygon3DPathIntervalT
 	class(self).SetPathIntervalType(value)
 }
 
-func (self Instance) PathInterval() float64 {
-	return float64(float64(class(self).GetPathInterval()))
+func (self Instance) PathInterval() Float.X {
+	return Float.X(Float.X(class(self).GetPathInterval()))
 }
 
-func (self Instance) SetPathInterval(value float64) {
+func (self Instance) SetPathInterval(value Float.X) {
 	class(self).SetPathInterval(gd.Float(value))
 }
 
-func (self Instance) PathSimplifyAngle() float64 {
-	return float64(float64(class(self).GetPathSimplifyAngle()))
+func (self Instance) PathSimplifyAngle() Float.X {
+	return Float.X(Float.X(class(self).GetPathSimplifyAngle()))
 }
 
-func (self Instance) SetPathSimplifyAngle(value float64) {
+func (self Instance) SetPathSimplifyAngle(value Float.X) {
 	class(self).SetPathSimplifyAngle(gd.Float(value))
 }
 
@@ -133,11 +136,11 @@ func (self Instance) SetPathContinuousU(value bool) {
 	class(self).SetPathContinuousU(value)
 }
 
-func (self Instance) PathUDistance() float64 {
-	return float64(float64(class(self).GetPathUDistance()))
+func (self Instance) PathUDistance() Float.X {
+	return Float.X(Float.X(class(self).GetPathUDistance()))
 }
 
-func (self Instance) SetPathUDistance(value float64) {
+func (self Instance) SetPathUDistance(value Float.X) {
 	class(self).SetPathUDistance(gd.Float(value))
 }
 

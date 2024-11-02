@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/GeometryInstance3D"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -62,8 +64,8 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 /*
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
-func (self Instance) GetMeshes() gd.Array {
-	return gd.Array(class(self).GetMeshes())
+func (self Instance) GetMeshes() Array.Any {
+	return Array.Any(class(self).GetMeshes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -85,11 +87,11 @@ func (self Instance) SetOperation(value classdb.CSGShape3DOperation) {
 	class(self).SetOperation(value)
 }
 
-func (self Instance) Snap() float64 {
-	return float64(float64(class(self).GetSnap()))
+func (self Instance) Snap() Float.X {
+	return Float.X(Float.X(class(self).GetSnap()))
 }
 
-func (self Instance) SetSnap(value float64) {
+func (self Instance) SetSnap(value Float.X) {
 	class(self).SetSnap(gd.Float(value))
 }
 
@@ -125,11 +127,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) CollisionPriority() float64 {
-	return float64(float64(class(self).GetCollisionPriority()))
+func (self Instance) CollisionPriority() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-func (self Instance) SetCollisionPriority(value float64) {
+func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(gd.Float(value))
 }
 

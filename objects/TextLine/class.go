@@ -7,6 +7,11 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -30,7 +35,7 @@ func (self Instance) Clear() {
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) SetBidiOverride(override gd.Array) {
+func (self Instance) SetBidiOverride(override Array.Any) {
 	class(self).SetBidiOverride(override)
 }
 
@@ -38,21 +43,21 @@ func (self Instance) SetBidiOverride(override gd.Array) {
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font objects.Font, font_size int) bool {
-	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(([1]gd.Variant{}[0]))))
+	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Instance) AddObject(key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).AddObject(key, size, 5, gd.Int(1), gd.Float(0.0)))
+func (self Instance) AddObject(key any, size Vector2.XY) bool {
+	return bool(class(self).AddObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Int(1), gd.Float(0.0)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Instance) ResizeObject(key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).ResizeObject(key, size, 5, gd.Float(0.0)))
+func (self Instance) ResizeObject(key any, size Vector2.XY) bool {
+	return bool(class(self).ResizeObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Float(0.0)))
 }
 
 /*
@@ -65,84 +70,84 @@ func (self Instance) TabAlign(tab_stops []float32) {
 /*
 Returns array of inline objects.
 */
-func (self Instance) GetObjects() gd.Array {
-	return gd.Array(class(self).GetObjects())
+func (self Instance) GetObjects() Array.Any {
+	return Array.Any(class(self).GetObjects())
 }
 
 /*
 Returns bounding rectangle of the inline object.
 */
-func (self Instance) GetObjectRect(key gd.Variant) gd.Rect2 {
-	return gd.Rect2(class(self).GetObjectRect(key))
+func (self Instance) GetObjectRect(key any) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetObjectRect(gd.NewVariant(key)))
 }
 
 /*
 Returns size of the bounding box of the text.
 */
-func (self Instance) GetSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetSize())
+func (self Instance) GetSize() Vector2.XY {
+	return Vector2.XY(class(self).GetSize())
 }
 
 /*
 Returns TextServer buffer RID.
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (self Instance) GetLineAscent() float64 {
-	return float64(float64(class(self).GetLineAscent()))
+func (self Instance) GetLineAscent() Float.X {
+	return Float.X(Float.X(class(self).GetLineAscent()))
 }
 
 /*
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (self Instance) GetLineDescent() float64 {
-	return float64(float64(class(self).GetLineDescent()))
+func (self Instance) GetLineDescent() Float.X {
+	return Float.X(Float.X(class(self).GetLineDescent()))
 }
 
 /*
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
-func (self Instance) GetLineWidth() float64 {
-	return float64(float64(class(self).GetLineWidth()))
+func (self Instance) GetLineWidth() Float.X {
+	return Float.X(Float.X(class(self).GetLineWidth()))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) GetLineUnderlinePosition() float64 {
-	return float64(float64(class(self).GetLineUnderlinePosition()))
+func (self Instance) GetLineUnderlinePosition() Float.X {
+	return Float.X(Float.X(class(self).GetLineUnderlinePosition()))
 }
 
 /*
 Returns thickness of the underline.
 */
-func (self Instance) GetLineUnderlineThickness() float64 {
-	return float64(float64(class(self).GetLineUnderlineThickness()))
+func (self Instance) GetLineUnderlineThickness() Float.X {
+	return Float.X(Float.X(class(self).GetLineUnderlineThickness()))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) Draw(canvas gd.RID, pos gd.Vector2) {
-	class(self).Draw(canvas, pos, gd.Color{1, 1, 1, 1})
+func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) {
+	class(self).Draw(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawOutline(canvas gd.RID, pos gd.Vector2) {
-	class(self).DrawOutline(canvas, pos, gd.Int(1), gd.Color{1, 1, 1, 1})
+func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) {
+	class(self).DrawOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
-func (self Instance) HitTest(coords float64) int {
+func (self Instance) HitTest(coords Float.X) int {
 	return int(int(class(self).HitTest(gd.Float(coords))))
 }
 
@@ -189,11 +194,11 @@ func (self Instance) SetPreserveControl(value bool) {
 	class(self).SetPreserveControl(value)
 }
 
-func (self Instance) Width() float64 {
-	return float64(float64(class(self).GetWidth()))
+func (self Instance) Width() Float.X {
+	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-func (self Instance) SetWidth(value float64) {
+func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(gd.Float(value))
 }
 

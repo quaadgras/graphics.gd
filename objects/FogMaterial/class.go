@@ -9,6 +9,8 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,43 +35,43 @@ func New() Instance {
 	return Instance{classdb.FogMaterial(object)}
 }
 
-func (self Instance) Density() float64 {
-	return float64(float64(class(self).GetDensity()))
+func (self Instance) Density() Float.X {
+	return Float.X(Float.X(class(self).GetDensity()))
 }
 
-func (self Instance) SetDensity(value float64) {
+func (self Instance) SetDensity(value Float.X) {
 	class(self).SetDensity(gd.Float(value))
 }
 
-func (self Instance) Albedo() gd.Color {
-	return gd.Color(class(self).GetAlbedo())
+func (self Instance) Albedo() Color.RGBA {
+	return Color.RGBA(class(self).GetAlbedo())
 }
 
-func (self Instance) SetAlbedo(value gd.Color) {
-	class(self).SetAlbedo(value)
+func (self Instance) SetAlbedo(value Color.RGBA) {
+	class(self).SetAlbedo(gd.Color(value))
 }
 
-func (self Instance) Emission() gd.Color {
-	return gd.Color(class(self).GetEmission())
+func (self Instance) Emission() Color.RGBA {
+	return Color.RGBA(class(self).GetEmission())
 }
 
-func (self Instance) SetEmission(value gd.Color) {
-	class(self).SetEmission(value)
+func (self Instance) SetEmission(value Color.RGBA) {
+	class(self).SetEmission(gd.Color(value))
 }
 
-func (self Instance) HeightFalloff() float64 {
-	return float64(float64(class(self).GetHeightFalloff()))
+func (self Instance) HeightFalloff() Float.X {
+	return Float.X(Float.X(class(self).GetHeightFalloff()))
 }
 
-func (self Instance) SetHeightFalloff(value float64) {
+func (self Instance) SetHeightFalloff(value Float.X) {
 	class(self).SetHeightFalloff(gd.Float(value))
 }
 
-func (self Instance) EdgeFade() float64 {
-	return float64(float64(class(self).GetEdgeFade()))
+func (self Instance) EdgeFade() Float.X {
+	return Float.X(Float.X(class(self).GetEdgeFade()))
 }
 
-func (self Instance) SetEdgeFade(value float64) {
+func (self Instance) SetEdgeFade(value Float.X) {
 	class(self).SetEdgeFade(gd.Float(value))
 }
 

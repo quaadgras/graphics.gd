@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,15 +30,15 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 [b]Note:[/b] Per-instance shader uniforms are currently only available in 3D, so there is no 2D equivalent of this method.
 */
-func (self Instance) SetInstanceShaderParameter(name string, value gd.Variant) {
-	class(self).SetInstanceShaderParameter(gd.NewStringName(name), value)
+func (self Instance) SetInstanceShaderParameter(name string, value any) {
+	class(self).SetInstanceShaderParameter(gd.NewStringName(name), gd.NewVariant(value))
 }
 
 /*
 Get the value of a shader parameter as set on this instance.
 */
-func (self Instance) GetInstanceShaderParameter(name string) gd.Variant {
-	return gd.Variant(class(self).GetInstanceShaderParameter(gd.NewStringName(name)))
+func (self Instance) GetInstanceShaderParameter(name string) any {
+	return any(class(self).GetInstanceShaderParameter(gd.NewStringName(name)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -66,11 +68,11 @@ func (self Instance) SetMaterialOverlay(value objects.Material) {
 	class(self).SetMaterialOverlay(value)
 }
 
-func (self Instance) Transparency() float64 {
-	return float64(float64(class(self).GetTransparency()))
+func (self Instance) Transparency() Float.X {
+	return Float.X(Float.X(class(self).GetTransparency()))
 }
 
-func (self Instance) SetTransparency(value float64) {
+func (self Instance) SetTransparency(value Float.X) {
 	class(self).SetTransparency(gd.Float(value))
 }
 
@@ -82,27 +84,27 @@ func (self Instance) SetCastShadow(value classdb.GeometryInstance3DShadowCasting
 	class(self).SetCastShadowsSetting(value)
 }
 
-func (self Instance) ExtraCullMargin() float64 {
-	return float64(float64(class(self).GetExtraCullMargin()))
+func (self Instance) ExtraCullMargin() Float.X {
+	return Float.X(Float.X(class(self).GetExtraCullMargin()))
 }
 
-func (self Instance) SetExtraCullMargin(value float64) {
+func (self Instance) SetExtraCullMargin(value Float.X) {
 	class(self).SetExtraCullMargin(gd.Float(value))
 }
 
-func (self Instance) CustomAabb() gd.AABB {
-	return gd.AABB(class(self).GetCustomAabb())
+func (self Instance) CustomAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-func (self Instance) SetCustomAabb(value gd.AABB) {
-	class(self).SetCustomAabb(value)
+func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+	class(self).SetCustomAabb(gd.AABB(value))
 }
 
-func (self Instance) LodBias() float64 {
-	return float64(float64(class(self).GetLodBias()))
+func (self Instance) LodBias() Float.X {
+	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
-func (self Instance) SetLodBias(value float64) {
+func (self Instance) SetLodBias(value Float.X) {
 	class(self).SetLodBias(gd.Float(value))
 }
 
@@ -130,35 +132,35 @@ func (self Instance) SetGiLightmapScale(value classdb.GeometryInstance3DLightmap
 	class(self).SetLightmapScale(value)
 }
 
-func (self Instance) VisibilityRangeBegin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeBegin()))
+func (self Instance) VisibilityRangeBegin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
-func (self Instance) SetVisibilityRangeBegin(value float64) {
+func (self Instance) SetVisibilityRangeBegin(value Float.X) {
 	class(self).SetVisibilityRangeBegin(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeBeginMargin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeBeginMargin()))
+func (self Instance) VisibilityRangeBeginMargin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
-func (self Instance) SetVisibilityRangeBeginMargin(value float64) {
+func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
 	class(self).SetVisibilityRangeBeginMargin(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeEnd() float64 {
-	return float64(float64(class(self).GetVisibilityRangeEnd()))
+func (self Instance) VisibilityRangeEnd() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
-func (self Instance) SetVisibilityRangeEnd(value float64) {
+func (self Instance) SetVisibilityRangeEnd(value Float.X) {
 	class(self).SetVisibilityRangeEnd(gd.Float(value))
 }
 
-func (self Instance) VisibilityRangeEndMargin() float64 {
-	return float64(float64(class(self).GetVisibilityRangeEndMargin()))
+func (self Instance) VisibilityRangeEndMargin() Float.X {
+	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
-func (self Instance) SetVisibilityRangeEndMargin(value float64) {
+func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(gd.Float(value))
 }
 

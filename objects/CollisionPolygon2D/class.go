@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,12 +44,12 @@ func (self Instance) SetBuildMode(value classdb.CollisionPolygon2DBuildMode) {
 	class(self).SetBuildMode(value)
 }
 
-func (self Instance) Polygon() []gd.Vector2 {
-	return []gd.Vector2(class(self).GetPolygon().AsSlice())
+func (self Instance) Polygon() []Vector2.XY {
+	return []Vector2.XY(class(self).GetPolygon().AsSlice())
 }
 
-func (self Instance) SetPolygon(value []gd.Vector2) {
-	class(self).SetPolygon(gd.NewPackedVector2Slice(value))
+func (self Instance) SetPolygon(value []Vector2.XY) {
+	class(self).SetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&value))))
 }
 
 func (self Instance) Disabled() bool {
@@ -66,11 +68,11 @@ func (self Instance) SetOneWayCollision(value bool) {
 	class(self).SetOneWayCollision(value)
 }
 
-func (self Instance) OneWayCollisionMargin() float64 {
-	return float64(float64(class(self).GetOneWayCollisionMargin()))
+func (self Instance) OneWayCollisionMargin() Float.X {
+	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
-func (self Instance) SetOneWayCollisionMargin(value float64) {
+func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 	class(self).SetOneWayCollisionMargin(gd.Float(value))
 }
 

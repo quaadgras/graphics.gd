@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,21 +40,21 @@ func (self Instance) ToNode() objects.Light3D {
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary gd.Dictionary) objects.GLTFLight {
+func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFLight {
 	return objects.GLTFLight(class(self).FromDictionary(dictionary))
 }
 
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() gd.Dictionary {
-	return gd.Dictionary(class(self).ToDictionary())
+func (self Instance) ToDictionary() Dictionary.Any {
+	return Dictionary.Any(class(self).ToDictionary())
 }
-func (self Instance) GetAdditionalData(extension_name string) gd.Variant {
-	return gd.Variant(class(self).GetAdditionalData(gd.NewStringName(extension_name)))
+func (self Instance) GetAdditionalData(extension_name string) any {
+	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
-func (self Instance) SetAdditionalData(extension_name string, additional_data gd.Variant) {
-	class(self).SetAdditionalData(gd.NewStringName(extension_name), additional_data)
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -65,19 +68,19 @@ func New() Instance {
 	return Instance{classdb.GLTFLight(object)}
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) Intensity() float64 {
-	return float64(float64(class(self).GetIntensity()))
+func (self Instance) Intensity() Float.X {
+	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
-func (self Instance) SetIntensity(value float64) {
+func (self Instance) SetIntensity(value Float.X) {
 	class(self).SetIntensity(gd.Float(value))
 }
 
@@ -89,27 +92,27 @@ func (self Instance) SetLightType(value string) {
 	class(self).SetLightType(gd.NewString(value))
 }
 
-func (self Instance) Range() float64 {
-	return float64(float64(class(self).GetRange()))
+func (self Instance) Range() Float.X {
+	return Float.X(Float.X(class(self).GetRange()))
 }
 
-func (self Instance) SetRange(value float64) {
+func (self Instance) SetRange(value Float.X) {
 	class(self).SetRange(gd.Float(value))
 }
 
-func (self Instance) InnerConeAngle() float64 {
-	return float64(float64(class(self).GetInnerConeAngle()))
+func (self Instance) InnerConeAngle() Float.X {
+	return Float.X(Float.X(class(self).GetInnerConeAngle()))
 }
 
-func (self Instance) SetInnerConeAngle(value float64) {
+func (self Instance) SetInnerConeAngle(value Float.X) {
 	class(self).SetInnerConeAngle(gd.Float(value))
 }
 
-func (self Instance) OuterConeAngle() float64 {
-	return float64(float64(class(self).GetOuterConeAngle()))
+func (self Instance) OuterConeAngle() Float.X {
+	return Float.X(Float.X(class(self).GetOuterConeAngle()))
 }
 
-func (self Instance) SetOuterConeAngle(value float64) {
+func (self Instance) SetOuterConeAngle(value Float.X) {
 	class(self).SetOuterConeAngle(gd.Float(value))
 }
 

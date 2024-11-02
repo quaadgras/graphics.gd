@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,12 +43,12 @@ func (self Instance) SetCopyMode(value classdb.BackBufferCopyCopyMode) {
 	class(self).SetCopyMode(value)
 }
 
-func (self Instance) Rect() gd.Rect2 {
-	return gd.Rect2(class(self).GetRect())
+func (self Instance) Rect() Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).GetRect())
 }
 
-func (self Instance) SetRect(value gd.Rect2) {
-	class(self).SetRect(value)
+func (self Instance) SetRect(value Rect2.PositionSize) {
+	class(self).SetRect(gd.Rect2(value))
 }
 
 //go:nosplit

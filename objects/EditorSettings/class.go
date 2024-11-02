@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,15 +52,15 @@ func (self Instance) HasSetting(name string) bool {
 /*
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
-func (self Instance) SetSetting(name string, value gd.Variant) {
-	class(self).SetSetting(gd.NewString(name), value)
+func (self Instance) SetSetting(name string, value any) {
+	class(self).SetSetting(gd.NewString(name), gd.NewVariant(value))
 }
 
 /*
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
-func (self Instance) GetSetting(name string) gd.Variant {
-	return gd.Variant(class(self).GetSetting(gd.NewString(name)))
+func (self Instance) GetSetting(name string) any {
+	return any(class(self).GetSetting(gd.NewString(name)).Interface())
 }
 
 /*
@@ -72,8 +73,8 @@ func (self Instance) Erase(property string) {
 /*
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
-func (self Instance) SetInitialValue(name string, value gd.Variant, update_current bool) {
-	class(self).SetInitialValue(gd.NewStringName(name), value, update_current)
+func (self Instance) SetInitialValue(name string, value any, update_current bool) {
+	class(self).SetInitialValue(gd.NewStringName(name), gd.NewVariant(value), update_current)
 }
 
 /*
@@ -113,22 +114,22 @@ settings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddPropertyInfo(info gd.Dictionary) {
+func (self Instance) AddPropertyInfo(info Dictionary.Any) {
 	class(self).AddPropertyInfo(info)
 }
 
 /*
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
-func (self Instance) SetProjectMetadata(section string, key string, data gd.Variant) {
-	class(self).SetProjectMetadata(gd.NewString(section), gd.NewString(key), data)
+func (self Instance) SetProjectMetadata(section string, key string, data any) {
+	class(self).SetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(data))
 }
 
 /*
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
-func (self Instance) GetProjectMetadata(section string, key string) gd.Variant {
-	return gd.Variant(class(self).GetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(([1]gd.Variant{}[0]))))
+func (self Instance) GetProjectMetadata(section string, key string) any {
+	return any(class(self).GetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*

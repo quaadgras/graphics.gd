@@ -12,6 +12,9 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,8 +60,8 @@ func (self Instance) GetContactCount() int {
 /*
 Sets the body's velocity on the given axis. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
-func (self Instance) SetAxisVelocity(axis_velocity gd.Vector2) {
-	class(self).SetAxisVelocity(axis_velocity)
+func (self Instance) SetAxisVelocity(axis_velocity Vector2.XY) {
+	class(self).SetAxisVelocity(gd.Vector2(axis_velocity))
 }
 
 /*
@@ -67,7 +70,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 func (self Instance) ApplyCentralImpulse() {
-	class(self).ApplyCentralImpulse(gd.Vector2{0, 0})
+	class(self).ApplyCentralImpulse(gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
@@ -75,8 +78,8 @@ Applies a positioned impulse to the body.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) ApplyImpulse(impulse gd.Vector2) {
-	class(self).ApplyImpulse(impulse, gd.Vector2{0, 0})
+func (self Instance) ApplyImpulse(impulse Vector2.XY) {
+	class(self).ApplyImpulse(gd.Vector2(impulse), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
@@ -84,7 +87,7 @@ Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
-func (self Instance) ApplyTorqueImpulse(torque float64) {
+func (self Instance) ApplyTorqueImpulse(torque Float.X) {
 	class(self).ApplyTorqueImpulse(gd.Float(torque))
 }
 
@@ -92,23 +95,23 @@ func (self Instance) ApplyTorqueImpulse(torque float64) {
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
-func (self Instance) ApplyCentralForce(force gd.Vector2) {
-	class(self).ApplyCentralForce(force)
+func (self Instance) ApplyCentralForce(force Vector2.XY) {
+	class(self).ApplyCentralForce(gd.Vector2(force))
 }
 
 /*
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) ApplyForce(force gd.Vector2) {
-	class(self).ApplyForce(force, gd.Vector2{0, 0})
+func (self Instance) ApplyForce(force Vector2.XY) {
+	class(self).ApplyForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
-func (self Instance) ApplyTorque(torque float64) {
+func (self Instance) ApplyTorque(torque Float.X) {
 	class(self).ApplyTorque(gd.Float(torque))
 }
 
@@ -116,22 +119,22 @@ func (self Instance) ApplyTorque(torque float64) {
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with [code]constant_force = Vector2(0, 0)[/code].
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
-func (self Instance) AddConstantCentralForce(force gd.Vector2) {
-	class(self).AddConstantCentralForce(force)
+func (self Instance) AddConstantCentralForce(force Vector2.XY) {
+	class(self).AddConstantCentralForce(gd.Vector2(force))
 }
 
 /*
 Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]constant_force = Vector2(0, 0)[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) AddConstantForce(force gd.Vector2) {
-	class(self).AddConstantForce(force, gd.Vector2{0, 0})
+func (self Instance) AddConstantForce(force Vector2.XY) {
+	class(self).AddConstantForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
-func (self Instance) AddConstantTorque(torque float64) {
+func (self Instance) AddConstantTorque(torque Float.X) {
 	class(self).AddConstantTorque(gd.Float(torque))
 }
 
@@ -154,11 +157,11 @@ func New() Instance {
 	return Instance{classdb.RigidBody2D(object)}
 }
 
-func (self Instance) Mass() float64 {
-	return float64(float64(class(self).GetMass()))
+func (self Instance) Mass() Float.X {
+	return Float.X(Float.X(class(self).GetMass()))
 }
 
-func (self Instance) SetMass(value float64) {
+func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(gd.Float(value))
 }
 
@@ -170,11 +173,11 @@ func (self Instance) SetPhysicsMaterialOverride(value objects.PhysicsMaterial) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
-func (self Instance) GravityScale() float64 {
-	return float64(float64(class(self).GetGravityScale()))
+func (self Instance) GravityScale() Float.X {
+	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
-func (self Instance) SetGravityScale(value float64) {
+func (self Instance) SetGravityScale(value Float.X) {
 	class(self).SetGravityScale(gd.Float(value))
 }
 
@@ -186,19 +189,19 @@ func (self Instance) SetCenterOfMassMode(value classdb.RigidBody2DCenterOfMassMo
 	class(self).SetCenterOfMassMode(value)
 }
 
-func (self Instance) CenterOfMass() gd.Vector2 {
-	return gd.Vector2(class(self).GetCenterOfMass())
+func (self Instance) CenterOfMass() Vector2.XY {
+	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
-func (self Instance) SetCenterOfMass(value gd.Vector2) {
-	class(self).SetCenterOfMass(value)
+func (self Instance) SetCenterOfMass(value Vector2.XY) {
+	class(self).SetCenterOfMass(gd.Vector2(value))
 }
 
-func (self Instance) Inertia() float64 {
-	return float64(float64(class(self).GetInertia()))
+func (self Instance) Inertia() Float.X {
+	return Float.X(Float.X(class(self).GetInertia()))
 }
 
-func (self Instance) SetInertia(value float64) {
+func (self Instance) SetInertia(value Float.X) {
 	class(self).SetInertia(gd.Float(value))
 }
 
@@ -274,12 +277,12 @@ func (self Instance) SetMaxContactsReported(value int) {
 	class(self).SetMaxContactsReported(gd.Int(value))
 }
 
-func (self Instance) LinearVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetLinearVelocity())
+func (self Instance) LinearVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
-func (self Instance) SetLinearVelocity(value gd.Vector2) {
-	class(self).SetLinearVelocity(value)
+func (self Instance) SetLinearVelocity(value Vector2.XY) {
+	class(self).SetLinearVelocity(gd.Vector2(value))
 }
 
 func (self Instance) LinearDampMode() classdb.RigidBody2DDampMode {
@@ -290,19 +293,19 @@ func (self Instance) SetLinearDampMode(value classdb.RigidBody2DDampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
-func (self Instance) LinearDamp() float64 {
-	return float64(float64(class(self).GetLinearDamp()))
+func (self Instance) LinearDamp() Float.X {
+	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-func (self Instance) SetLinearDamp(value float64) {
+func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(gd.Float(value))
 }
 
-func (self Instance) AngularVelocity() float64 {
-	return float64(float64(class(self).GetAngularVelocity()))
+func (self Instance) AngularVelocity() Float.X {
+	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
-func (self Instance) SetAngularVelocity(value float64) {
+func (self Instance) SetAngularVelocity(value Float.X) {
 	class(self).SetAngularVelocity(gd.Float(value))
 }
 
@@ -314,27 +317,27 @@ func (self Instance) SetAngularDampMode(value classdb.RigidBody2DDampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
-func (self Instance) AngularDamp() float64 {
-	return float64(float64(class(self).GetAngularDamp()))
+func (self Instance) AngularDamp() Float.X {
+	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-func (self Instance) SetAngularDamp(value float64) {
+func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(gd.Float(value))
 }
 
-func (self Instance) ConstantForce() gd.Vector2 {
-	return gd.Vector2(class(self).GetConstantForce())
+func (self Instance) ConstantForce() Vector2.XY {
+	return Vector2.XY(class(self).GetConstantForce())
 }
 
-func (self Instance) SetConstantForce(value gd.Vector2) {
-	class(self).SetConstantForce(value)
+func (self Instance) SetConstantForce(value Vector2.XY) {
+	class(self).SetConstantForce(gd.Vector2(value))
 }
 
-func (self Instance) ConstantTorque() float64 {
-	return float64(float64(class(self).GetConstantTorque()))
+func (self Instance) ConstantTorque() Float.X {
+	return Float.X(Float.X(class(self).GetConstantTorque()))
 }
 
-func (self Instance) SetConstantTorque(value float64) {
+func (self Instance) SetConstantTorque(value Float.X) {
 	class(self).SetConstantTorque(gd.Float(value))
 }
 
@@ -948,11 +951,11 @@ func (self class) GetCollidingBodies() gd.Array {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid gd.RID, body objects.Node, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid Resource.ID, body objects.Node, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid gd.RID, body objects.Node, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid Resource.ID, body objects.Node, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject().Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,7 +23,7 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 	// SkeletonModification2D methods that can be overridden by a [Class] that extends it.
 	type SkeletonModification2D interface {
 		//Executes the given modification. This is where the modification performs whatever function it is designed to do.
-		Execute(delta float64)
+		Execute(delta Float.X)
 		//Called when the modification is setup. This is where the modification performs initialization.
 		SetupModification(modification_stack objects.SkeletonModificationStack2D)
 		//Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
@@ -35,11 +36,11 @@ type Instance [1]classdb.SkeletonModification2D
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
-func (Instance) _execute(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(delta))
+		impl(self, Float.X(delta))
 	}
 }
 
@@ -90,8 +91,8 @@ func (self Instance) GetIsSetup() bool {
 /*
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
-func (self Instance) ClampAngle(angle float64, min float64, max float64, invert bool) float64 {
-	return float64(float64(class(self).ClampAngle(gd.Float(angle), gd.Float(min), gd.Float(max), invert)))
+func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X {
+	return Float.X(Float.X(class(self).ClampAngle(gd.Float(angle), gd.Float(min), gd.Float(max), invert)))
 }
 
 /*

@@ -27,7 +27,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		if i > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, ")) {\n\t")
 	fmt.Fprintf(w, `self[0].AsObject().Connect(gd.NewStringName("%s"), gd.NewCallable(cb), 0)`, signal.Name)
@@ -56,7 +56,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		classDB.simpleVirtualCall(w, class, method)
 		return
 	}
-	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))
@@ -68,7 +68,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			if i > 0 {
 				fmt.Fprint(w, ", ")
 			}
-			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
 		}
 	}
 	fmt.Fprint(w, ") ")
@@ -93,7 +93,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			val = *arg.DefaultValue
 			val = strings.TrimPrefix(val, "&")
 			if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
-				val = "([1]" + classDB.convertTypeSimple(arg.Meta, arg.Type) + "{}[0])"
+				val = "([1]" + classDB.convertTypeSimple(class, arg.Meta, arg.Type) + "{}[0])"
 			} else {
 				if strings.Contains(val, "(") {
 					switch {
@@ -127,7 +127,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 }
 
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
-	resultSimple := classDB.convertTypeSimple(method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := classDB.isPointer(resultExpert)
 	if method.IsStatic {
@@ -136,7 +136,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr unsafe.Pointer", method.Name)
 	for _, arg := range method.Arguments {
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
 	fmt.Fprintf(w, "\treturn func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")

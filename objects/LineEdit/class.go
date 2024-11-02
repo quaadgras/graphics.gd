@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -116,8 +118,8 @@ func (self Instance) GetSelectionToColumn() int {
 /*
 Returns the scroll offset due to [member caret_column], as a number of characters.
 */
-func (self Instance) GetScrollOffset() float64 {
-	return float64(float64(class(self).GetScrollOffset()))
+func (self Instance) GetScrollOffset() Float.X {
+	return Float.X(Float.X(class(self).GetScrollOffset()))
 }
 
 /*
@@ -379,11 +381,11 @@ func (self Instance) SetCaretBlink(value bool) {
 	class(self).SetCaretBlinkEnabled(value)
 }
 
-func (self Instance) CaretBlinkInterval() float64 {
-	return float64(float64(class(self).GetCaretBlinkInterval()))
+func (self Instance) CaretBlinkInterval() Float.X {
+	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
-func (self Instance) SetCaretBlinkInterval(value float64) {
+func (self Instance) SetCaretBlinkInterval(value Float.X) {
 	class(self).SetCaretBlinkInterval(gd.Float(value))
 }
 
@@ -451,11 +453,11 @@ func (self Instance) SetStructuredTextBidiOverride(value classdb.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() gd.Array {
-	return gd.Array(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
+	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value gd.Array) {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 	class(self).SetStructuredTextBidiOverrideOptions(value)
 }
 

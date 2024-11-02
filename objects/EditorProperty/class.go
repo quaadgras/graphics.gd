@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -90,8 +91,8 @@ func (self Instance) SetBottomEditor(editor objects.Control) {
 /*
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
-func (self Instance) EmitChanged(property string, value gd.Variant) {
-	class(self).EmitChanged(gd.NewStringName(property), value, gd.NewStringName(""), false)
+func (self Instance) EmitChanged(property string, value any) {
+	class(self).EmitChanged(gd.NewStringName(property), gd.NewVariant(value), gd.NewStringName(""), false)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -386,11 +387,11 @@ func (self class) EmitChanged(property gd.StringName, value gd.Variant, field gd
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
 }
-func (self Instance) OnPropertyChanged(cb func(property string, value gd.Variant, field string, changing bool)) {
+func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool)) {
 	self[0].AsObject().Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value gd.Array)) {
+func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value Array.Any)) {
 	self[0].AsObject().Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), 0)
 }
 
@@ -402,7 +403,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string)) {
 	self[0].AsObject().Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value gd.Variant)) {
+func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any)) {
 	self[0].AsObject().Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), 0)
 }
 

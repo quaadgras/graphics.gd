@@ -12,6 +12,7 @@ import "grow.graphics/gd/objects/BaseButton"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -53,12 +54,12 @@ func New() Instance {
 	return Instance{classdb.ColorPickerButton(object)}
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetPickColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetPickColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetPickColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetPickColor(gd.Color(value))
 }
 
 func (self Instance) EditAlpha() bool {
@@ -134,7 +135,7 @@ func (self class) IsEditingAlpha() bool {
 	frame.Free()
 	return ret
 }
-func (self Instance) OnColorChanged(cb func(color gd.Color)) {
+func (self Instance) OnColorChanged(cb func(color Color.RGBA)) {
 	self[0].AsObject().Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), 0)
 }
 

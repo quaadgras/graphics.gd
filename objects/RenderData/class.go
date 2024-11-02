@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,15 +38,15 @@ func (self Instance) GetRenderSceneData() objects.RenderSceneData {
 /*
 Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetEnvironment() gd.RID {
-	return gd.RID(class(self).GetEnvironment())
+func (self Instance) GetEnvironment() Resource.ID {
+	return Resource.ID(class(self).GetEnvironment())
 }
 
 /*
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetCameraAttributes() gd.RID {
-	return gd.RID(class(self).GetCameraAttributes())
+func (self Instance) GetCameraAttributes() Resource.ID {
+	return Resource.ID(class(self).GetCameraAttributes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

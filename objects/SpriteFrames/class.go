@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -58,15 +59,15 @@ func (self Instance) GetAnimationNames() []string {
 /*
 Sets the speed for the [param anim] animation in frames per second.
 */
-func (self Instance) SetAnimationSpeed(anim string, fps float64) {
+func (self Instance) SetAnimationSpeed(anim string, fps Float.X) {
 	class(self).SetAnimationSpeed(gd.NewStringName(anim), gd.Float(fps))
 }
 
 /*
 Returns the speed in frames per second for the [param anim] animation.
 */
-func (self Instance) GetAnimationSpeed(anim string) float64 {
-	return float64(float64(class(self).GetAnimationSpeed(gd.NewStringName(anim))))
+func (self Instance) GetAnimationSpeed(anim string) Float.X {
+	return Float.X(Float.X(class(self).GetAnimationSpeed(gd.NewStringName(anim))))
 }
 
 /*
@@ -125,8 +126,8 @@ absolute_duration = relative_duration / (animation_fps * abs(playing_speed))
 [/codeblock]
 In this example, [code]playing_speed[/code] refers to either [method AnimatedSprite2D.get_playing_speed] or [method AnimatedSprite3D.get_playing_speed].
 */
-func (self Instance) GetFrameDuration(anim string, idx int) float64 {
-	return float64(float64(class(self).GetFrameDuration(gd.NewStringName(anim), gd.Int(idx))))
+func (self Instance) GetFrameDuration(anim string, idx int) Float.X {
+	return Float.X(Float.X(class(self).GetFrameDuration(gd.NewStringName(anim), gd.Int(idx))))
 }
 
 /*

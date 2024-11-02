@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -99,8 +102,8 @@ func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) 
 /*
 Returns the object's [RID].
 */
-func (self Instance) GetRid() gd.RID {
-	return gd.RID(class(self).GetRid())
+func (self Instance) GetRid() Resource.ID {
+	return Resource.ID(class(self).GetRid())
 }
 
 /*
@@ -155,15 +158,15 @@ func (self Instance) GetShapeOwners() []int32 {
 /*
 Sets the [Transform2D] of the given shape owner.
 */
-func (self Instance) ShapeOwnerSetTransform(owner_id int, transform gd.Transform2D) {
-	class(self).ShapeOwnerSetTransform(gd.Int(owner_id), transform)
+func (self Instance) ShapeOwnerSetTransform(owner_id int, transform Transform2D.OriginXY) {
+	class(self).ShapeOwnerSetTransform(gd.Int(owner_id), gd.Transform2D(transform))
 }
 
 /*
 Returns the shape owner's [Transform2D].
 */
-func (self Instance) ShapeOwnerGetTransform(owner_id int) gd.Transform2D {
-	return gd.Transform2D(class(self).ShapeOwnerGetTransform(gd.Int(owner_id)))
+func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).ShapeOwnerGetTransform(gd.Int(owner_id)))
 }
 
 /*
@@ -204,15 +207,15 @@ func (self Instance) IsShapeOwnerOneWayCollisionEnabled(owner_id int) bool {
 /*
 Sets the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id] to [param margin] pixels.
 */
-func (self Instance) ShapeOwnerSetOneWayCollisionMargin(owner_id int, margin float64) {
+func (self Instance) ShapeOwnerSetOneWayCollisionMargin(owner_id int, margin Float.X) {
 	class(self).ShapeOwnerSetOneWayCollisionMargin(gd.Int(owner_id), gd.Float(margin))
 }
 
 /*
 Returns the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id].
 */
-func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) float64 {
-	return float64(float64(class(self).GetShapeOwnerOneWayCollisionMargin(gd.Int(owner_id))))
+func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) Float.X {
+	return Float.X(Float.X(class(self).GetShapeOwnerOneWayCollisionMargin(gd.Int(owner_id))))
 }
 
 /*
@@ -299,11 +302,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) CollisionPriority() float64 {
-	return float64(float64(class(self).GetCollisionPriority()))
+func (self Instance) CollisionPriority() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-func (self Instance) SetCollisionPriority(value float64) {
+func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(gd.Float(value))
 }
 

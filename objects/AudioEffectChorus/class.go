@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,41 +22,41 @@ Adds a chorus audio effect. The effect applies a filter with voices to duplicate
 */
 type Instance [1]classdb.AudioEffectChorus
 
-func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms float64) {
+func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) {
 	class(self).SetVoiceDelayMs(gd.Int(voice_idx), gd.Float(delay_ms))
 }
-func (self Instance) GetVoiceDelayMs(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoiceDelayMs(gd.Int(voice_idx))))
+func (self Instance) GetVoiceDelayMs(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoiceDelayMs(gd.Int(voice_idx))))
 }
-func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz float64) {
+func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz Float.X) {
 	class(self).SetVoiceRateHz(gd.Int(voice_idx), gd.Float(rate_hz))
 }
-func (self Instance) GetVoiceRateHz(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoiceRateHz(gd.Int(voice_idx))))
+func (self Instance) GetVoiceRateHz(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoiceRateHz(gd.Int(voice_idx))))
 }
-func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms float64) {
+func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms Float.X) {
 	class(self).SetVoiceDepthMs(gd.Int(voice_idx), gd.Float(depth_ms))
 }
-func (self Instance) GetVoiceDepthMs(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoiceDepthMs(gd.Int(voice_idx))))
+func (self Instance) GetVoiceDepthMs(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoiceDepthMs(gd.Int(voice_idx))))
 }
-func (self Instance) SetVoiceLevelDb(voice_idx int, level_db float64) {
+func (self Instance) SetVoiceLevelDb(voice_idx int, level_db Float.X) {
 	class(self).SetVoiceLevelDb(gd.Int(voice_idx), gd.Float(level_db))
 }
-func (self Instance) GetVoiceLevelDb(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoiceLevelDb(gd.Int(voice_idx))))
+func (self Instance) GetVoiceLevelDb(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoiceLevelDb(gd.Int(voice_idx))))
 }
-func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz float64) {
+func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz Float.X) {
 	class(self).SetVoiceCutoffHz(gd.Int(voice_idx), gd.Float(cutoff_hz))
 }
-func (self Instance) GetVoiceCutoffHz(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoiceCutoffHz(gd.Int(voice_idx))))
+func (self Instance) GetVoiceCutoffHz(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoiceCutoffHz(gd.Int(voice_idx))))
 }
-func (self Instance) SetVoicePan(voice_idx int, pan float64) {
+func (self Instance) SetVoicePan(voice_idx int, pan Float.X) {
 	class(self).SetVoicePan(gd.Int(voice_idx), gd.Float(pan))
 }
-func (self Instance) GetVoicePan(voice_idx int) float64 {
-	return float64(float64(class(self).GetVoicePan(gd.Int(voice_idx))))
+func (self Instance) GetVoicePan(voice_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetVoicePan(gd.Int(voice_idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -77,19 +78,19 @@ func (self Instance) SetVoiceCount(value int) {
 	class(self).SetVoiceCount(gd.Int(value))
 }
 
-func (self Instance) Dry() float64 {
-	return float64(float64(class(self).GetDry()))
+func (self Instance) Dry() Float.X {
+	return Float.X(Float.X(class(self).GetDry()))
 }
 
-func (self Instance) SetDry(value float64) {
+func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(gd.Float(value))
 }
 
-func (self Instance) Wet() float64 {
-	return float64(float64(class(self).GetWet()))
+func (self Instance) Wet() Float.X {
+	return Float.X(Float.X(class(self).GetWet()))
 }
 
-func (self Instance) SetWet(value float64) {
+func (self Instance) SetWet(value Float.X) {
 	class(self).SetWet(gd.Float(value))
 }
 

@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,15 +25,15 @@ type Instance [1]classdb.AudioEffectEQ
 /*
 Sets band's gain at the specified index, in dB.
 */
-func (self Instance) SetBandGainDb(band_idx int, volume_db float64) {
+func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) {
 	class(self).SetBandGainDb(gd.Int(band_idx), gd.Float(volume_db))
 }
 
 /*
 Returns the band's gain at the specified index, in dB.
 */
-func (self Instance) GetBandGainDb(band_idx int) float64 {
-	return float64(float64(class(self).GetBandGainDb(gd.Int(band_idx))))
+func (self Instance) GetBandGainDb(band_idx int) Float.X {
+	return Float.X(Float.X(class(self).GetBandGainDb(gd.Int(band_idx))))
 }
 
 /*

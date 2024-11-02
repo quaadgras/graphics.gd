@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/VisibleOnScreenNotifier2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,12 +45,12 @@ func (self Instance) SetEnableMode(value classdb.VisibleOnScreenEnabler2DEnableM
 	class(self).SetEnableMode(value)
 }
 
-func (self Instance) EnableNodePath() string {
-	return string(class(self).GetEnableNodePath().String())
+func (self Instance) EnableNodePath() Path.String {
+	return Path.String(class(self).GetEnableNodePath().String())
 }
 
-func (self Instance) SetEnableNodePath(value string) {
-	class(self).SetEnableNodePath(gd.NewString(value).NodePath())
+func (self Instance) SetEnableNodePath(value Path.String) {
+	class(self).SetEnableNodePath(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

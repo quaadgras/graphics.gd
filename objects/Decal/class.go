@@ -10,6 +10,9 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,12 +41,12 @@ func New() Instance {
 	return Instance{classdb.Decal(object)}
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
 func (self Instance) TextureAlbedo() objects.Texture2D {
@@ -78,51 +81,51 @@ func (self Instance) SetTextureEmission(value objects.Texture2D) {
 	class(self).SetTexture(3, value)
 }
 
-func (self Instance) EmissionEnergy() float64 {
-	return float64(float64(class(self).GetEmissionEnergy()))
+func (self Instance) EmissionEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionEnergy()))
 }
 
-func (self Instance) SetEmissionEnergy(value float64) {
+func (self Instance) SetEmissionEnergy(value Float.X) {
 	class(self).SetEmissionEnergy(gd.Float(value))
 }
 
-func (self Instance) Modulate() gd.Color {
-	return gd.Color(class(self).GetModulate())
+func (self Instance) Modulate() Color.RGBA {
+	return Color.RGBA(class(self).GetModulate())
 }
 
-func (self Instance) SetModulate(value gd.Color) {
-	class(self).SetModulate(value)
+func (self Instance) SetModulate(value Color.RGBA) {
+	class(self).SetModulate(gd.Color(value))
 }
 
-func (self Instance) AlbedoMix() float64 {
-	return float64(float64(class(self).GetAlbedoMix()))
+func (self Instance) AlbedoMix() Float.X {
+	return Float.X(Float.X(class(self).GetAlbedoMix()))
 }
 
-func (self Instance) SetAlbedoMix(value float64) {
+func (self Instance) SetAlbedoMix(value Float.X) {
 	class(self).SetAlbedoMix(gd.Float(value))
 }
 
-func (self Instance) NormalFade() float64 {
-	return float64(float64(class(self).GetNormalFade()))
+func (self Instance) NormalFade() Float.X {
+	return Float.X(Float.X(class(self).GetNormalFade()))
 }
 
-func (self Instance) SetNormalFade(value float64) {
+func (self Instance) SetNormalFade(value Float.X) {
 	class(self).SetNormalFade(gd.Float(value))
 }
 
-func (self Instance) UpperFade() float64 {
-	return float64(float64(class(self).GetUpperFade()))
+func (self Instance) UpperFade() Float.X {
+	return Float.X(Float.X(class(self).GetUpperFade()))
 }
 
-func (self Instance) SetUpperFade(value float64) {
+func (self Instance) SetUpperFade(value Float.X) {
 	class(self).SetUpperFade(gd.Float(value))
 }
 
-func (self Instance) LowerFade() float64 {
-	return float64(float64(class(self).GetLowerFade()))
+func (self Instance) LowerFade() Float.X {
+	return Float.X(Float.X(class(self).GetLowerFade()))
 }
 
-func (self Instance) SetLowerFade(value float64) {
+func (self Instance) SetLowerFade(value Float.X) {
 	class(self).SetLowerFade(gd.Float(value))
 }
 
@@ -134,19 +137,19 @@ func (self Instance) SetDistanceFadeEnabled(value bool) {
 	class(self).SetEnableDistanceFade(value)
 }
 
-func (self Instance) DistanceFadeBegin() float64 {
-	return float64(float64(class(self).GetDistanceFadeBegin()))
+func (self Instance) DistanceFadeBegin() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
-func (self Instance) SetDistanceFadeBegin(value float64) {
+func (self Instance) SetDistanceFadeBegin(value Float.X) {
 	class(self).SetDistanceFadeBegin(gd.Float(value))
 }
 
-func (self Instance) DistanceFadeLength() float64 {
-	return float64(float64(class(self).GetDistanceFadeLength()))
+func (self Instance) DistanceFadeLength() Float.X {
+	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
-func (self Instance) SetDistanceFadeLength(value float64) {
+func (self Instance) SetDistanceFadeLength(value Float.X) {
 	class(self).SetDistanceFadeLength(gd.Float(value))
 }
 

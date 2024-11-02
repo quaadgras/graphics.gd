@@ -48,12 +48,12 @@ func (array Float32Array) make(local []float32, proxy gd.PackedFloat32Array) Flo
 // Float64Array is an array specifically designed to hold float64. Packs data tightly, so it saves
 // memory for large array sizes.
 type Float64Array struct {
-	Array[Float64Array, float64, float64, gd.PackedFloat64Array, *gd.PackedFloat64Array]
+	Array[Float64Array, float64, gd.Float, gd.PackedFloat64Array, *gd.PackedFloat64Array]
 }
 
 func (array Float64Array) less(a, b float64) bool       { return a < b }
-func (array Float64Array) conv(c float64) float64       { return c }
-func (array Float64Array) wrap(c float64) float64       { return c }
+func (array Float64Array) conv(c float64) gd.Float      { return gd.Float(c) }
+func (array Float64Array) wrap(c gd.Float) float64      { return float64(c) }
 func (array Float64Array) alloc() gd.PackedFloat64Array { return internal.NewPackedFloat64Array() }
 
 func (array Float64Array) make(local []float64, proxy gd.PackedFloat64Array) Float64Array {

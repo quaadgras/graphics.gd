@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/Popup"
 import "grow.graphics/gd/objects/Window"
 import "grow.graphics/gd/objects/Viewport"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -229,8 +231,8 @@ func (self Instance) SetItemIconMaxWidth(index int, width int) {
 /*
 Sets a modulating [Color] of the item's icon at the given [param index].
 */
-func (self Instance) SetItemIconModulate(index int, modulate gd.Color) {
-	class(self).SetItemIconModulate(gd.Int(index), modulate)
+func (self Instance) SetItemIconModulate(index int, modulate Color.RGBA) {
+	class(self).SetItemIconModulate(gd.Int(index), gd.Color(modulate))
 }
 
 /*
@@ -258,8 +260,8 @@ func (self Instance) SetItemAccelerator(index int, accel Key) {
 /*
 Sets the metadata of an item, which may be of any type. You can later get it with [method get_item_metadata], which provides a simple way of assigning context data to items.
 */
-func (self Instance) SetItemMetadata(index int, metadata gd.Variant) {
-	class(self).SetItemMetadata(gd.Int(index), metadata)
+func (self Instance) SetItemMetadata(index int, metadata any) {
+	class(self).SetItemMetadata(gd.Int(index), gd.NewVariant(metadata))
 }
 
 /*
@@ -399,8 +401,8 @@ func (self Instance) GetItemIconMaxWidth(index int) int {
 /*
 Returns a [Color] modulating the item's icon at the given [param index].
 */
-func (self Instance) GetItemIconModulate(index int) gd.Color {
-	return gd.Color(class(self).GetItemIconModulate(gd.Int(index)))
+func (self Instance) GetItemIconModulate(index int) Color.RGBA {
+	return Color.RGBA(class(self).GetItemIconModulate(gd.Int(index)))
 }
 
 /*
@@ -434,8 +436,8 @@ func (self Instance) GetItemAccelerator(index int) Key {
 /*
 Returns the metadata of the specified item, which might be of any type. You can set it with [method set_item_metadata], which provides a simple way of assigning context data to items.
 */
-func (self Instance) GetItemMetadata(index int) gd.Variant {
-	return gd.Variant(class(self).GetItemMetadata(gd.Int(index)))
+func (self Instance) GetItemMetadata(index int) any {
+	return any(class(self).GetItemMetadata(gd.Int(index)).Interface())
 }
 
 /*
@@ -612,11 +614,11 @@ func (self Instance) SetHideOnStateItemSelection(value bool) {
 	class(self).SetHideOnStateItemSelection(value)
 }
 
-func (self Instance) SubmenuPopupDelay() float64 {
-	return float64(float64(class(self).GetSubmenuPopupDelay()))
+func (self Instance) SubmenuPopupDelay() Float.X {
+	return Float.X(Float.X(class(self).GetSubmenuPopupDelay()))
 }
 
-func (self Instance) SetSubmenuPopupDelay(value float64) {
+func (self Instance) SetSubmenuPopupDelay(value Float.X) {
 	class(self).SetSubmenuPopupDelay(gd.Float(value))
 }
 

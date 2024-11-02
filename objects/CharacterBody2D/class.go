@@ -12,6 +12,8 @@ import "grow.graphics/gd/objects/CollisionObject2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -89,51 +91,51 @@ func (self Instance) IsOnWallOnly() bool {
 Returns the collision normal of the floor at the last collision point. Only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
-func (self Instance) GetFloorNormal() gd.Vector2 {
-	return gd.Vector2(class(self).GetFloorNormal())
+func (self Instance) GetFloorNormal() Vector2.XY {
+	return Vector2.XY(class(self).GetFloorNormal())
 }
 
 /*
 Returns the collision normal of the wall at the last collision point. Only valid after calling [method move_and_slide] and when [method is_on_wall] returns [code]true[/code].
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
-func (self Instance) GetWallNormal() gd.Vector2 {
-	return gd.Vector2(class(self).GetWallNormal())
+func (self Instance) GetWallNormal() Vector2.XY {
+	return Vector2.XY(class(self).GetWallNormal())
 }
 
 /*
 Returns the last motion applied to the [CharacterBody2D] during the last call to [method move_and_slide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
 */
-func (self Instance) GetLastMotion() gd.Vector2 {
-	return gd.Vector2(class(self).GetLastMotion())
+func (self Instance) GetLastMotion() Vector2.XY {
+	return Vector2.XY(class(self).GetLastMotion())
 }
 
 /*
 Returns the travel (position delta) that occurred during the last call to [method move_and_slide].
 */
-func (self Instance) GetPositionDelta() gd.Vector2 {
-	return gd.Vector2(class(self).GetPositionDelta())
+func (self Instance) GetPositionDelta() Vector2.XY {
+	return Vector2.XY(class(self).GetPositionDelta())
 }
 
 /*
 Returns the current real velocity since the last call to [method move_and_slide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [member velocity] which returns the requested velocity.
 */
-func (self Instance) GetRealVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetRealVelocity())
+func (self Instance) GetRealVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetRealVelocity())
 }
 
 /*
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
-func (self Instance) GetFloorAngle() float64 {
-	return float64(float64(class(self).GetFloorAngle(gd.Vector2{0, -1})))
+func (self Instance) GetFloorAngle() Float.X {
+	return Float.X(Float.X(class(self).GetFloorAngle(gd.Vector2(gd.Vector2{0, -1}))))
 }
 
 /*
 Returns the linear velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
-func (self Instance) GetPlatformVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetPlatformVelocity())
+func (self Instance) GetPlatformVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetPlatformVelocity())
 }
 
 /*
@@ -195,20 +197,20 @@ func (self Instance) SetMotionMode(value classdb.CharacterBody2DMotionMode) {
 	class(self).SetMotionMode(value)
 }
 
-func (self Instance) UpDirection() gd.Vector2 {
-	return gd.Vector2(class(self).GetUpDirection())
+func (self Instance) UpDirection() Vector2.XY {
+	return Vector2.XY(class(self).GetUpDirection())
 }
 
-func (self Instance) SetUpDirection(value gd.Vector2) {
-	class(self).SetUpDirection(value)
+func (self Instance) SetUpDirection(value Vector2.XY) {
+	class(self).SetUpDirection(gd.Vector2(value))
 }
 
-func (self Instance) Velocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetVelocity())
+func (self Instance) Velocity() Vector2.XY {
+	return Vector2.XY(class(self).GetVelocity())
 }
 
-func (self Instance) SetVelocity(value gd.Vector2) {
-	class(self).SetVelocity(value)
+func (self Instance) SetVelocity(value Vector2.XY) {
+	class(self).SetVelocity(gd.Vector2(value))
 }
 
 func (self Instance) SlideOnCeiling() bool {
@@ -227,11 +229,11 @@ func (self Instance) SetMaxSlides(value int) {
 	class(self).SetMaxSlides(gd.Int(value))
 }
 
-func (self Instance) WallMinSlideAngle() float64 {
-	return float64(float64(class(self).GetWallMinSlideAngle()))
+func (self Instance) WallMinSlideAngle() Float.X {
+	return Float.X(Float.X(class(self).GetWallMinSlideAngle()))
 }
 
-func (self Instance) SetWallMinSlideAngle(value float64) {
+func (self Instance) SetWallMinSlideAngle(value Float.X) {
 	class(self).SetWallMinSlideAngle(gd.Float(value))
 }
 
@@ -259,19 +261,19 @@ func (self Instance) SetFloorBlockOnWall(value bool) {
 	class(self).SetFloorBlockOnWallEnabled(value)
 }
 
-func (self Instance) FloorMaxAngle() float64 {
-	return float64(float64(class(self).GetFloorMaxAngle()))
+func (self Instance) FloorMaxAngle() Float.X {
+	return Float.X(Float.X(class(self).GetFloorMaxAngle()))
 }
 
-func (self Instance) SetFloorMaxAngle(value float64) {
+func (self Instance) SetFloorMaxAngle(value Float.X) {
 	class(self).SetFloorMaxAngle(gd.Float(value))
 }
 
-func (self Instance) FloorSnapLength() float64 {
-	return float64(float64(class(self).GetFloorSnapLength()))
+func (self Instance) FloorSnapLength() Float.X {
+	return Float.X(Float.X(class(self).GetFloorSnapLength()))
 }
 
-func (self Instance) SetFloorSnapLength(value float64) {
+func (self Instance) SetFloorSnapLength(value Float.X) {
 	class(self).SetFloorSnapLength(gd.Float(value))
 }
 
@@ -299,11 +301,11 @@ func (self Instance) SetPlatformWallLayers(value int) {
 	class(self).SetPlatformWallLayers(gd.Int(value))
 }
 
-func (self Instance) SafeMargin() float64 {
-	return float64(float64(class(self).GetSafeMargin()))
+func (self Instance) SafeMargin() Float.X {
+	return Float.X(Float.X(class(self).GetSafeMargin()))
 }
 
-func (self Instance) SetSafeMargin(value float64) {
+func (self Instance) SetSafeMargin(value Float.X) {
 	class(self).SetSafeMargin(gd.Float(value))
 }
 

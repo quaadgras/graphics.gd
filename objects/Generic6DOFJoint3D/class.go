@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Joint3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,23 +24,23 @@ The first 3 DOF represent the linear motion of the physics bodies and the last 3
 */
 type Instance [1]classdb.Generic6DOFJoint3D
 
-func (self Instance) SetParamX(param classdb.Generic6DOFJoint3DParam, value float64) {
+func (self Instance) SetParamX(param classdb.Generic6DOFJoint3DParam, value Float.X) {
 	class(self).SetParamX(param, gd.Float(value))
 }
-func (self Instance) GetParamX(param classdb.Generic6DOFJoint3DParam) float64 {
-	return float64(float64(class(self).GetParamX(param)))
+func (self Instance) GetParamX(param classdb.Generic6DOFJoint3DParam) Float.X {
+	return Float.X(Float.X(class(self).GetParamX(param)))
 }
-func (self Instance) SetParamY(param classdb.Generic6DOFJoint3DParam, value float64) {
+func (self Instance) SetParamY(param classdb.Generic6DOFJoint3DParam, value Float.X) {
 	class(self).SetParamY(param, gd.Float(value))
 }
-func (self Instance) GetParamY(param classdb.Generic6DOFJoint3DParam) float64 {
-	return float64(float64(class(self).GetParamY(param)))
+func (self Instance) GetParamY(param classdb.Generic6DOFJoint3DParam) Float.X {
+	return Float.X(Float.X(class(self).GetParamY(param)))
 }
-func (self Instance) SetParamZ(param classdb.Generic6DOFJoint3DParam, value float64) {
+func (self Instance) SetParamZ(param classdb.Generic6DOFJoint3DParam, value Float.X) {
 	class(self).SetParamZ(param, gd.Float(value))
 }
-func (self Instance) GetParamZ(param classdb.Generic6DOFJoint3DParam) float64 {
-	return float64(float64(class(self).GetParamZ(param)))
+func (self Instance) GetParamZ(param classdb.Generic6DOFJoint3DParam) Float.X {
+	return Float.X(Float.X(class(self).GetParamZ(param)))
 }
 func (self Instance) SetFlagX(flag classdb.Generic6DOFJoint3DFlag, value bool) {
 	class(self).SetFlagX(flag, value)

@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -69,9 +70,9 @@ func GetResolveItemAddress(id int) string {
 /*
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
-func GetResolveItemAddresses(id int) gd.Array {
+func GetResolveItemAddresses(id int) Array.Any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetResolveItemAddresses(gd.Int(id)))
+	return Array.Any(class(self).GetResolveItemAddresses(gd.Int(id)))
 }
 
 /*

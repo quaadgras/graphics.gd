@@ -8,6 +8,12 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Quaternion"
+import "grow.graphics/gd/variant/Basis"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -99,8 +105,8 @@ func (self Instance) ClearGizmos() {
 Set subgizmo selection for this node in the editor.
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
-func (self Instance) SetSubgizmoSelection(gizmo objects.Node3DGizmo, id int, transform gd.Transform3D) {
-	class(self).SetSubgizmoSelection(gizmo, gd.Int(id), transform)
+func (self Instance) SetSubgizmoSelection(gizmo objects.Node3DGizmo, id int, transform Transform3D.BasisOrigin) {
+	class(self).SetSubgizmoSelection(gizmo, gd.Int(id), gd.Transform3D(transform))
 }
 
 /*
@@ -162,70 +168,70 @@ func (self Instance) IsTransformNotificationEnabled() bool {
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians.
 */
-func (self Instance) Rotate(axis gd.Vector3, angle float64) {
-	class(self).Rotate(axis, gd.Float(angle))
+func (self Instance) Rotate(axis Vector3.XYZ, angle Float.X) {
+	class(self).Rotate(gd.Vector3(axis), gd.Float(angle))
 }
 
 /*
 Rotates the global (world) transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in global coordinate system.
 */
-func (self Instance) GlobalRotate(axis gd.Vector3, angle float64) {
-	class(self).GlobalRotate(axis, gd.Float(angle))
+func (self Instance) GlobalRotate(axis Vector3.XYZ, angle Float.X) {
+	class(self).GlobalRotate(gd.Vector3(axis), gd.Float(angle))
 }
 
 /*
 Scales the global (world) transformation by the given [Vector3] scale factors.
 */
-func (self Instance) GlobalScale(scale gd.Vector3) {
-	class(self).GlobalScale(scale)
+func (self Instance) GlobalScale(scale Vector3.XYZ) {
+	class(self).GlobalScale(gd.Vector3(scale))
 }
 
 /*
 Moves the global (world) transformation by [Vector3] offset. The offset is in global coordinate system.
 */
-func (self Instance) GlobalTranslate(offset gd.Vector3) {
-	class(self).GlobalTranslate(offset)
+func (self Instance) GlobalTranslate(offset Vector3.XYZ) {
+	class(self).GlobalTranslate(gd.Vector3(offset))
 }
 
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in object-local coordinate system.
 */
-func (self Instance) RotateObjectLocal(axis gd.Vector3, angle float64) {
-	class(self).RotateObjectLocal(axis, gd.Float(angle))
+func (self Instance) RotateObjectLocal(axis Vector3.XYZ, angle Float.X) {
+	class(self).RotateObjectLocal(gd.Vector3(axis), gd.Float(angle))
 }
 
 /*
 Scales the local transformation by given 3D scale factors in object-local coordinate system.
 */
-func (self Instance) ScaleObjectLocal(scale gd.Vector3) {
-	class(self).ScaleObjectLocal(scale)
+func (self Instance) ScaleObjectLocal(scale Vector3.XYZ) {
+	class(self).ScaleObjectLocal(gd.Vector3(scale))
 }
 
 /*
 Changes the node's position by the given offset [Vector3] in local space.
 */
-func (self Instance) TranslateObjectLocal(offset gd.Vector3) {
-	class(self).TranslateObjectLocal(offset)
+func (self Instance) TranslateObjectLocal(offset Vector3.XYZ) {
+	class(self).TranslateObjectLocal(gd.Vector3(offset))
 }
 
 /*
 Rotates the local transformation around the X axis by angle in radians.
 */
-func (self Instance) RotateX(angle float64) {
+func (self Instance) RotateX(angle Float.X) {
 	class(self).RotateX(gd.Float(angle))
 }
 
 /*
 Rotates the local transformation around the Y axis by angle in radians.
 */
-func (self Instance) RotateY(angle float64) {
+func (self Instance) RotateY(angle Float.X) {
 	class(self).RotateY(gd.Float(angle))
 }
 
 /*
 Rotates the local transformation around the Z axis by angle in radians.
 */
-func (self Instance) RotateZ(angle float64) {
+func (self Instance) RotateZ(angle Float.X) {
 	class(self).RotateZ(gd.Float(angle))
 }
 
@@ -233,8 +239,8 @@ func (self Instance) RotateZ(angle float64) {
 Changes the node's position by the given offset [Vector3].
 Note that the translation [param offset] is affected by the node's scale, so if scaled by e.g. [code](10, 1, 1)[/code], a translation by an offset of [code](2, 0, 0)[/code] would actually add 20 ([code]2 * 10[/code]) to the X coordinate.
 */
-func (self Instance) Translate(offset gd.Vector3) {
-	class(self).Translate(offset)
+func (self Instance) Translate(offset Vector3.XYZ) {
+	class(self).Translate(gd.Vector3(offset))
 }
 
 /*
@@ -258,29 +264,29 @@ The [param target] position cannot be the same as the node's position, the [para
 Operations take place in global space, which means that the node must be in the scene tree.
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */
-func (self Instance) LookAt(target gd.Vector3) {
-	class(self).LookAt(target, gd.Vector3{0, 1, 0}, false)
+func (self Instance) LookAt(target Vector3.XYZ) {
+	class(self).LookAt(gd.Vector3(target), gd.Vector3(gd.Vector3{0, 1, 0}), false)
 }
 
 /*
 Moves the node to the specified [param position], and then rotates the node to point toward the [param target] as per [method look_at]. Operations take place in global space.
 */
-func (self Instance) LookAtFromPosition(position gd.Vector3, target gd.Vector3) {
-	class(self).LookAtFromPosition(position, target, gd.Vector3{0, 1, 0}, false)
+func (self Instance) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ) {
+	class(self).LookAtFromPosition(gd.Vector3(position), gd.Vector3(target), gd.Vector3(gd.Vector3{0, 1, 0}), false)
 }
 
 /*
 Transforms [param global_point] from world space to this node's local space.
 */
-func (self Instance) ToLocal(global_point gd.Vector3) gd.Vector3 {
-	return gd.Vector3(class(self).ToLocal(global_point))
+func (self Instance) ToLocal(global_point Vector3.XYZ) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ToLocal(gd.Vector3(global_point)))
 }
 
 /*
 Transforms [param local_point] from this node's local space to world space.
 */
-func (self Instance) ToGlobal(local_point gd.Vector3) gd.Vector3 {
-	return gd.Vector3(class(self).ToGlobal(local_point))
+func (self Instance) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ {
+	return Vector3.XYZ(class(self).ToGlobal(gd.Vector3(local_point)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -294,68 +300,68 @@ func New() Instance {
 	return Instance{classdb.Node3D(object)}
 }
 
-func (self Instance) Transform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetTransform())
+func (self Instance) Transform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
-func (self Instance) SetTransform(value gd.Transform3D) {
-	class(self).SetTransform(value)
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
+	class(self).SetTransform(gd.Transform3D(value))
 }
 
-func (self Instance) GlobalTransform() gd.Transform3D {
-	return gd.Transform3D(class(self).GetGlobalTransform())
+func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetGlobalTransform())
 }
 
-func (self Instance) SetGlobalTransform(value gd.Transform3D) {
-	class(self).SetGlobalTransform(value)
+func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) {
+	class(self).SetGlobalTransform(gd.Transform3D(value))
 }
 
-func (self Instance) Position() gd.Vector3 {
-	return gd.Vector3(class(self).GetPosition())
+func (self Instance) Position() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetPosition())
 }
 
-func (self Instance) SetPosition(value gd.Vector3) {
-	class(self).SetPosition(value)
+func (self Instance) SetPosition(value Vector3.XYZ) {
+	class(self).SetPosition(gd.Vector3(value))
 }
 
-func (self Instance) Rotation() gd.Vector3 {
-	return gd.Vector3(class(self).GetRotation())
+func (self Instance) Rotation() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRotation())
 }
 
-func (self Instance) SetRotation(value gd.Vector3) {
-	class(self).SetRotation(value)
+func (self Instance) SetRotation(value Vector3.XYZ) {
+	class(self).SetRotation(gd.Vector3(value))
 }
 
-func (self Instance) RotationDegrees() gd.Vector3 {
-	return gd.Vector3(class(self).GetRotationDegrees())
+func (self Instance) RotationDegrees() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetRotationDegrees())
 }
 
-func (self Instance) SetRotationDegrees(value gd.Vector3) {
-	class(self).SetRotationDegrees(value)
+func (self Instance) SetRotationDegrees(value Vector3.XYZ) {
+	class(self).SetRotationDegrees(gd.Vector3(value))
 }
 
-func (self Instance) Quaternion() gd.Quaternion {
-	return gd.Quaternion(class(self).GetQuaternion())
+func (self Instance) Quaternion() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetQuaternion())
 }
 
-func (self Instance) SetQuaternion(value gd.Quaternion) {
-	class(self).SetQuaternion(value)
+func (self Instance) SetQuaternion(value Quaternion.IJKX) {
+	class(self).SetQuaternion(gd.Quaternion(value))
 }
 
-func (self Instance) Basis() gd.Basis {
-	return gd.Basis(class(self).GetBasis())
+func (self Instance) Basis() Basis.XYZ {
+	return Basis.XYZ(class(self).GetBasis())
 }
 
-func (self Instance) SetBasis(value gd.Basis) {
-	class(self).SetBasis(value)
+func (self Instance) SetBasis(value Basis.XYZ) {
+	class(self).SetBasis(gd.Basis(value))
 }
 
-func (self Instance) Scale() gd.Vector3 {
-	return gd.Vector3(class(self).GetScale())
+func (self Instance) Scale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetScale())
 }
 
-func (self Instance) SetScale(value gd.Vector3) {
-	class(self).SetScale(value)
+func (self Instance) SetScale(value Vector3.XYZ) {
+	class(self).SetScale(gd.Vector3(value))
 }
 
 func (self Instance) RotationEditMode() classdb.Node3DRotationEditMode {
@@ -382,36 +388,36 @@ func (self Instance) SetTopLevel(value bool) {
 	class(self).SetAsTopLevel(value)
 }
 
-func (self Instance) GlobalPosition() gd.Vector3 {
-	return gd.Vector3(class(self).GetGlobalPosition())
+func (self Instance) GlobalPosition() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetGlobalPosition())
 }
 
-func (self Instance) SetGlobalPosition(value gd.Vector3) {
-	class(self).SetGlobalPosition(value)
+func (self Instance) SetGlobalPosition(value Vector3.XYZ) {
+	class(self).SetGlobalPosition(gd.Vector3(value))
 }
 
-func (self Instance) GlobalBasis() gd.Basis {
-	return gd.Basis(class(self).GetGlobalBasis())
+func (self Instance) GlobalBasis() Basis.XYZ {
+	return Basis.XYZ(class(self).GetGlobalBasis())
 }
 
-func (self Instance) SetGlobalBasis(value gd.Basis) {
-	class(self).SetGlobalBasis(value)
+func (self Instance) SetGlobalBasis(value Basis.XYZ) {
+	class(self).SetGlobalBasis(gd.Basis(value))
 }
 
-func (self Instance) GlobalRotation() gd.Vector3 {
-	return gd.Vector3(class(self).GetGlobalRotation())
+func (self Instance) GlobalRotation() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetGlobalRotation())
 }
 
-func (self Instance) SetGlobalRotation(value gd.Vector3) {
-	class(self).SetGlobalRotation(value)
+func (self Instance) SetGlobalRotation(value Vector3.XYZ) {
+	class(self).SetGlobalRotation(gd.Vector3(value))
 }
 
-func (self Instance) GlobalRotationDegrees() gd.Vector3 {
-	return gd.Vector3(class(self).GetGlobalRotationDegrees())
+func (self Instance) GlobalRotationDegrees() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetGlobalRotationDegrees())
 }
 
-func (self Instance) SetGlobalRotationDegrees(value gd.Vector3) {
-	class(self).SetGlobalRotationDegrees(value)
+func (self Instance) SetGlobalRotationDegrees(value Vector3.XYZ) {
+	class(self).SetGlobalRotationDegrees(gd.Vector3(value))
 }
 
 func (self Instance) Visible() bool {
@@ -422,12 +428,12 @@ func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
-func (self Instance) VisibilityParent() string {
-	return string(class(self).GetVisibilityParent().String())
+func (self Instance) VisibilityParent() Path.String {
+	return Path.String(class(self).GetVisibilityParent().String())
 }
 
-func (self Instance) SetVisibilityParent(value string) {
-	class(self).SetVisibilityParent(gd.NewString(value).NodePath())
+func (self Instance) SetVisibilityParent(value Path.String) {
+	class(self).SetVisibilityParent(gd.NewString(string(value)).NodePath())
 }
 
 //go:nosplit

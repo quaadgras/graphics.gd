@@ -21,16 +21,16 @@ type Instance [1]classdb.GLTFAnimation
 Gets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
-func (self Instance) GetAdditionalData(extension_name string) gd.Variant {
-	return gd.Variant(class(self).GetAdditionalData(gd.NewStringName(extension_name)))
+func (self Instance) GetAdditionalData(extension_name string) any {
+	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
 
 /*
 Sets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data gd.Variant) {
-	class(self).SetAdditionalData(gd.NewStringName(extension_name), additional_data)
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

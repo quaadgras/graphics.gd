@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -43,8 +44,8 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 [code]shape[/code]: The shape index of the colliding shape.
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
-func (self Instance) IntersectRay(parameters objects.PhysicsRayQueryParameters3D) gd.Dictionary {
-	return gd.Dictionary(class(self).IntersectRay(parameters))
+func (self Instance) IntersectRay(parameters objects.PhysicsRayQueryParameters3D) Dictionary.Any {
+	return Dictionary.Any(class(self).IntersectRay(parameters))
 }
 
 /*
@@ -89,8 +90,8 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 If the shape did not intersect anything, then an empty dictionary is returned instead.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) GetRestInfo(parameters objects.PhysicsShapeQueryParameters3D) gd.Dictionary {
-	return gd.Dictionary(class(self).GetRestInfo(parameters))
+func (self Instance) GetRestInfo(parameters objects.PhysicsShapeQueryParameters3D) Dictionary.Any {
+	return Dictionary.Any(class(self).GetRestInfo(parameters))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

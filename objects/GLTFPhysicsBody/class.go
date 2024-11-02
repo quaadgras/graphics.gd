@@ -8,6 +8,11 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Quaternion"
+import "grow.graphics/gd/variant/Basis"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,15 +42,15 @@ func (self Instance) ToNode() objects.CollisionObject3D {
 /*
 Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] GLTF extension format.
 */
-func (self Instance) FromDictionary(dictionary gd.Dictionary) objects.GLTFPhysicsBody {
+func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsBody {
 	return objects.GLTFPhysicsBody(class(self).FromDictionary(dictionary))
 }
 
 /*
 Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] GLTF extension.
 */
-func (self Instance) ToDictionary() gd.Dictionary {
-	return gd.Dictionary(class(self).ToDictionary())
+func (self Instance) ToDictionary() Dictionary.Any {
+	return Dictionary.Any(class(self).ToDictionary())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -67,60 +72,60 @@ func (self Instance) SetBodyType(value string) {
 	class(self).SetBodyType(gd.NewString(value))
 }
 
-func (self Instance) Mass() float64 {
-	return float64(float64(class(self).GetMass()))
+func (self Instance) Mass() Float.X {
+	return Float.X(Float.X(class(self).GetMass()))
 }
 
-func (self Instance) SetMass(value float64) {
+func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(gd.Float(value))
 }
 
-func (self Instance) LinearVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetLinearVelocity())
+func (self Instance) LinearVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-func (self Instance) SetLinearVelocity(value gd.Vector3) {
-	class(self).SetLinearVelocity(value)
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+	class(self).SetLinearVelocity(gd.Vector3(value))
 }
 
-func (self Instance) AngularVelocity() gd.Vector3 {
-	return gd.Vector3(class(self).GetAngularVelocity())
+func (self Instance) AngularVelocity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-func (self Instance) SetAngularVelocity(value gd.Vector3) {
-	class(self).SetAngularVelocity(value)
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+	class(self).SetAngularVelocity(gd.Vector3(value))
 }
 
-func (self Instance) CenterOfMass() gd.Vector3 {
-	return gd.Vector3(class(self).GetCenterOfMass())
+func (self Instance) CenterOfMass() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetCenterOfMass())
 }
 
-func (self Instance) SetCenterOfMass(value gd.Vector3) {
-	class(self).SetCenterOfMass(value)
+func (self Instance) SetCenterOfMass(value Vector3.XYZ) {
+	class(self).SetCenterOfMass(gd.Vector3(value))
 }
 
-func (self Instance) InertiaDiagonal() gd.Vector3 {
-	return gd.Vector3(class(self).GetInertiaDiagonal())
+func (self Instance) InertiaDiagonal() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetInertiaDiagonal())
 }
 
-func (self Instance) SetInertiaDiagonal(value gd.Vector3) {
-	class(self).SetInertiaDiagonal(value)
+func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) {
+	class(self).SetInertiaDiagonal(gd.Vector3(value))
 }
 
-func (self Instance) InertiaOrientation() gd.Quaternion {
-	return gd.Quaternion(class(self).GetInertiaOrientation())
+func (self Instance) InertiaOrientation() Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetInertiaOrientation())
 }
 
-func (self Instance) SetInertiaOrientation(value gd.Quaternion) {
-	class(self).SetInertiaOrientation(value)
+func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) {
+	class(self).SetInertiaOrientation(gd.Quaternion(value))
 }
 
-func (self Instance) InertiaTensor() gd.Basis {
-	return gd.Basis(class(self).GetInertiaTensor())
+func (self Instance) InertiaTensor() Basis.XYZ {
+	return Basis.XYZ(class(self).GetInertiaTensor())
 }
 
-func (self Instance) SetInertiaTensor(value gd.Basis) {
-	class(self).SetInertiaTensor(value)
+func (self Instance) SetInertiaTensor(value Basis.XYZ) {
+	class(self).SetInertiaTensor(gd.Basis(value))
 }
 
 /*

@@ -7,40 +7,51 @@ import (
 
 	"grow.graphics/gd/internal/callframe"
 	"grow.graphics/gd/internal/pointers"
-	"grow.graphics/xy"
 
 	float "grow.graphics/gd/variant/Float"
 	gdVector3 "grow.graphics/gd/variant/Vector3"
 )
 
-type Bool = bool
-
 type (
-	Float       = float64
-	Int         = int64
-	Vector2     struct{ X, Y float.X }
-	Vector2i    struct{ X, Y int32 }
-	Rect2       = xy.Rect2
-	Rect2i      = xy.Rect2i
-	Vector3     struct{ X, Y, Z float.X }
-	Vector3i    struct{ X, Y, Z int32 }
-	Transform2D = xy.Transform2D
-	Vector4     struct{ X, Y, Z, W float.X }
-	Vector4i    struct{ X, Y, Z, W int32 }
-	Plane       = xy.Plane
-	Quaternion  = xy.Quaternion
-	AABB        = xy.AABB
-	Basis       = xy.Basis
-	Transform3D = xy.Transform3D
-	Projection  = xy.Projection
+	Bool     bool
+	Float    float64
+	Int      int64
+	Vector2  = struct{ X, Y float.X }
+	Vector2i = struct{ X, Y int32 }
+	Rect2    = struct {
+		Position Vector2
+		Size     Vector2
+	}
+	Rect2i = struct {
+		Position Vector2i
+		Size     Vector2i
+	}
+	Vector3     = struct{ X, Y, Z float.X }
+	Vector3i    = struct{ X, Y, Z int32 }
+	Transform2D = struct {
+		X, Y   Vector2
+		Origin Vector2
+	}
+	Vector4  = struct{ X, Y, Z, W float.X }
+	Vector4i = struct{ X, Y, Z, W int32 }
+	Plane    = struct {
+		Normal Vector3
+		D      float.X
+	}
+	Quaternion = struct{ I, J, K, X float.X }
+	AABB       = struct {
+		Position Vector3
+		Size     Vector3
+	}
+	Basis       = struct{ X, Y, Z Vector3 }
+	Transform3D = struct {
+		Basis  Basis
+		Origin Vector3
+	}
+	Projection = struct{ X, Y, Z, W Vector4 }
 )
 
-type Color struct{ R, G, B, A float.X }
-
-type (
-	Side       = xy.Side
-	EulerOrder = xy.EulerOrder
-)
+type Color = struct{ R, G, B, A float.X }
 
 type RID uint64
 

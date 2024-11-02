@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioStream"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,11 +41,11 @@ func (self Instance) SetData(value []byte) {
 	class(self).SetData(gd.NewPackedByteSlice(value))
 }
 
-func (self Instance) Bpm() float64 {
-	return float64(float64(class(self).GetBpm()))
+func (self Instance) Bpm() Float.X {
+	return Float.X(Float.X(class(self).GetBpm()))
 }
 
-func (self Instance) SetBpm(value float64) {
+func (self Instance) SetBpm(value Float.X) {
 	class(self).SetBpm(gd.Float(value))
 }
 
@@ -72,11 +73,11 @@ func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
-func (self Instance) LoopOffset() float64 {
-	return float64(float64(class(self).GetLoopOffset()))
+func (self Instance) LoopOffset() Float.X {
+	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
-func (self Instance) SetLoopOffset(value float64) {
+func (self Instance) SetLoopOffset(value Float.X) {
 	class(self).SetLoopOffset(gd.Float(value))
 }
 

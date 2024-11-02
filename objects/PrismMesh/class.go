@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/PrimitiveMesh"
 import "grow.graphics/gd/objects/Mesh"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,20 +35,20 @@ func New() Instance {
 	return Instance{classdb.PrismMesh(object)}
 }
 
-func (self Instance) LeftToRight() float64 {
-	return float64(float64(class(self).GetLeftToRight()))
+func (self Instance) LeftToRight() Float.X {
+	return Float.X(Float.X(class(self).GetLeftToRight()))
 }
 
-func (self Instance) SetLeftToRight(value float64) {
+func (self Instance) SetLeftToRight(value Float.X) {
 	class(self).SetLeftToRight(gd.Float(value))
 }
 
-func (self Instance) Size() gd.Vector3 {
-	return gd.Vector3(class(self).GetSize())
+func (self Instance) Size() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetSize())
 }
 
-func (self Instance) SetSize(value gd.Vector3) {
-	class(self).SetSize(value)
+func (self Instance) SetSize(value Vector3.XYZ) {
+	class(self).SetSize(gd.Vector3(value))
 }
 
 func (self Instance) SubdivideWidth() int {

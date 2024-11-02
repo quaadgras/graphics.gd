@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,7 +21,7 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 	// AudioStreamPlayback methods that can be overridden by a [Class] that extends it.
 	type AudioStreamPlayback interface {
 		//Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
-		Start(from_pos float64)
+		Start(from_pos Float.X)
 		//Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
 		Stop()
 		//Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
@@ -28,18 +29,18 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 		//Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
 		GetLoopCount() int
 		//Overridable method. Should return the current progress along the audio stream, in seconds.
-		GetPlaybackPosition() float64
+		GetPlaybackPosition() Float.X
 		//Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
-		Seek(position float64)
+		Seek(position Float.X)
 		//Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Mix(buffer *classdb.AudioFrame, rate_scale float64, frames int) int
+		Mix(buffer *classdb.AudioFrame, rate_scale Float.X, frames int) int
 		//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 		TagUsedStreams()
 		//Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
-		SetParameter(name string, value gd.Variant)
+		SetParameter(name string, value any)
 		//Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
-		GetParameter(name string) gd.Variant
+		GetParameter(name string) any
 	}
 */
 type Instance [1]classdb.AudioStreamPlayback
@@ -47,11 +48,11 @@ type Instance [1]classdb.AudioStreamPlayback
 /*
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
 */
-func (Instance) _start(impl func(ptr unsafe.Pointer, from_pos float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _start(impl func(ptr unsafe.Pointer, from_pos Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var from_pos = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(from_pos))
+		impl(self, Float.X(from_pos))
 	}
 }
 
@@ -90,7 +91,7 @@ func (Instance) _get_loop_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 /*
 Overridable method. Should return the current progress along the audio stream, in seconds.
 */
-func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -101,11 +102,11 @@ func (Instance) _get_playback_position(impl func(ptr unsafe.Pointer) float64) (c
 /*
 Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
 */
-func (Instance) _seek(impl func(ptr unsafe.Pointer, position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _seek(impl func(ptr unsafe.Pointer, position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var position = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(position))
+		impl(self, Float.X(position))
 	}
 }
 
@@ -113,13 +114,13 @@ func (Instance) _seek(impl func(ptr unsafe.Pointer, position float64)) (cb gd.Ex
 Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *classdb.AudioFrame, rate_scale float64, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *classdb.AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var buffer = gd.UnsafeGet[*classdb.AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[gd.Float](p_args, 1)
 		var frames = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, buffer, float64(rate_scale), int(frames))
+		ret := impl(self, buffer, Float.X(rate_scale), int(frames))
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -137,27 +138,27 @@ func (Instance) _tag_used_streams(impl func(ptr unsafe.Pointer)) (cb gd.Extensio
 /*
 Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
-func (Instance) _set_parameter(impl func(ptr unsafe.Pointer, name string, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_parameter(impl func(ptr unsafe.Pointer, name string, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(name)
 		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, name.String(), value)
+		impl(self, name.String(), value.Interface())
 	}
 }
 
 /*
 Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
-func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret))
 		if !ok {
 			return
 		}

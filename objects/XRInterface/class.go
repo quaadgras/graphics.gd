@@ -7,6 +7,13 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Projection"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -63,8 +70,8 @@ func (self Instance) Uninitialize() {
 Returns a [Dictionary] with extra system info. Interfaces are expected to return [code]XRRuntimeName[/code] and [code]XRRuntimeVersion[/code] providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
-func (self Instance) GetSystemInfo() gd.Dictionary {
-	return gd.Dictionary(class(self).GetSystemInfo())
+func (self Instance) GetSystemInfo() Dictionary.Any {
+	return Dictionary.Any(class(self).GetSystemInfo())
 }
 
 /*
@@ -77,8 +84,8 @@ func (self Instance) GetTrackingStatus() classdb.XRInterfaceTrackingStatus {
 /*
 Returns the resolution at which we should render our intermediate results before things like lens distortion are applied by the VR platform.
 */
-func (self Instance) GetRenderTargetSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetRenderTargetSize())
+func (self Instance) GetRenderTargetSize() Vector2.XY {
+	return Vector2.XY(class(self).GetRenderTargetSize())
 }
 
 /*
@@ -97,7 +104,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param duration_sec] is the duration of the pulse in seconds.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
-func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) {
+func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
 	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.NewStringName(tracker_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 
@@ -111,8 +118,8 @@ func (self Instance) SupportsPlayAreaMode(mode classdb.XRInterfacePlayAreaMode) 
 /*
 Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
-func (self Instance) GetPlayArea() []gd.Vector3 {
-	return []gd.Vector3(class(self).GetPlayArea().AsSlice())
+func (self Instance) GetPlayArea() []Vector3.XYZ {
+	return []Vector3.XYZ(class(self).GetPlayArea().AsSlice())
 }
 
 /*
@@ -156,22 +163,22 @@ Returns the transform for a view/eye.
 [param view] is the view/eye index.
 [param cam_transform] is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
 */
-func (self Instance) GetTransformForView(view int, cam_transform gd.Transform3D) gd.Transform3D {
-	return gd.Transform3D(class(self).GetTransformForView(gd.Int(view), cam_transform))
+func (self Instance) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin {
+	return Transform3D.BasisOrigin(class(self).GetTransformForView(gd.Int(view), gd.Transform3D(cam_transform)))
 }
 
 /*
 Returns the projection matrix for a view/eye.
 */
-func (self Instance) GetProjectionForView(view int, aspect float64, near float64, far float64) gd.Projection {
-	return gd.Projection(class(self).GetProjectionForView(gd.Int(view), gd.Float(aspect), gd.Float(near), gd.Float(far)))
+func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X, far Float.X) Projection.XYZW {
+	return Projection.XYZW(class(self).GetProjectionForView(gd.Int(view), gd.Float(aspect), gd.Float(near), gd.Float(far)))
 }
 
 /*
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
-func (self Instance) GetSupportedEnvironmentBlendModes() gd.Array {
-	return gd.Array(class(self).GetSupportedEnvironmentBlendModes())
+func (self Instance) GetSupportedEnvironmentBlendModes() Array.Any {
+	return Array.Any(class(self).GetSupportedEnvironmentBlendModes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

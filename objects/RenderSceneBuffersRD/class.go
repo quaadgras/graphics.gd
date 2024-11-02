@@ -8,6 +8,9 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/RenderSceneBuffers"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,29 +36,29 @@ func (self Instance) HasTexture(context string, name string) bool {
 /*
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTexture(context string, name string, data_format classdb.RenderingDeviceDataFormat, usage_bits int, texture_samples classdb.RenderingDeviceTextureSamples, size gd.Vector2i, layers int, mipmaps int, unique bool) gd.RID {
-	return gd.RID(class(self).CreateTexture(gd.NewStringName(context), gd.NewStringName(name), data_format, gd.Int(usage_bits), texture_samples, size, gd.Int(layers), gd.Int(mipmaps), unique))
+func (self Instance) CreateTexture(context string, name string, data_format classdb.RenderingDeviceDataFormat, usage_bits int, texture_samples classdb.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool) Resource.ID {
+	return Resource.ID(class(self).CreateTexture(gd.NewStringName(context), gd.NewStringName(name), data_format, gd.Int(usage_bits), texture_samples, gd.Vector2i(size), gd.Int(layers), gd.Int(mipmaps), unique))
 }
 
 /*
 Create a new texture using the given format and view and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTextureFromFormat(context string, name string, format objects.RDTextureFormat, view objects.RDTextureView, unique bool) gd.RID {
-	return gd.RID(class(self).CreateTextureFromFormat(gd.NewStringName(context), gd.NewStringName(name), format, view, unique))
+func (self Instance) CreateTextureFromFormat(context string, name string, format objects.RDTextureFormat, view objects.RDTextureView, unique bool) Resource.ID {
+	return Resource.ID(class(self).CreateTextureFromFormat(gd.NewStringName(context), gd.NewStringName(name), format, view, unique))
 }
 
 /*
 Create a new texture view for an existing texture and cache this under the given view_name. Will return the existing teture view if it already exists. Will error if the source texture doesn't exist.
 */
-func (self Instance) CreateTextureView(context string, name string, view_name string, view objects.RDTextureView) gd.RID {
-	return gd.RID(class(self).CreateTextureView(gd.NewStringName(context), gd.NewStringName(name), gd.NewStringName(view_name), view))
+func (self Instance) CreateTextureView(context string, name string, view_name string, view objects.RDTextureView) Resource.ID {
+	return Resource.ID(class(self).CreateTextureView(gd.NewStringName(context), gd.NewStringName(name), gd.NewStringName(view_name), view))
 }
 
 /*
 Returns a cached texture with this name.
 */
-func (self Instance) GetTexture(context string, name string) gd.RID {
-	return gd.RID(class(self).GetTexture(gd.NewStringName(context), gd.NewStringName(name)))
+func (self Instance) GetTexture(context string, name string) Resource.ID {
+	return Resource.ID(class(self).GetTexture(gd.NewStringName(context), gd.NewStringName(name)))
 }
 
 /*
@@ -68,22 +71,22 @@ func (self Instance) GetTextureFormat(context string, name string) objects.RDTex
 /*
 Returns a specific slice (layer or mipmap) for a cached texture.
 */
-func (self Instance) GetTextureSlice(context string, name string, layer int, mipmap int, layers int, mipmaps int) gd.RID {
-	return gd.RID(class(self).GetTextureSlice(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps)))
+func (self Instance) GetTextureSlice(context string, name string, layer int, mipmap int, layers int, mipmaps int) Resource.ID {
+	return Resource.ID(class(self).GetTextureSlice(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps)))
 }
 
 /*
 Returns a specific view of a slice (layer or mipmap) for a cached texture.
 */
-func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view objects.RDTextureView) gd.RID {
-	return gd.RID(class(self).GetTextureSliceView(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps), view))
+func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view objects.RDTextureView) Resource.ID {
+	return Resource.ID(class(self).GetTextureSliceView(gd.NewStringName(context), gd.NewStringName(name), gd.Int(layer), gd.Int(mipmap), gd.Int(layers), gd.Int(mipmaps), view))
 }
 
 /*
 Returns the texture size of a given slice of a cached texture.
 */
-func (self Instance) GetTextureSliceSize(context string, name string, mipmap int) gd.Vector2i {
-	return gd.Vector2i(class(self).GetTextureSliceSize(gd.NewStringName(context), gd.NewStringName(name), gd.Int(mipmap)))
+func (self Instance) GetTextureSliceSize(context string, name string, mipmap int) Vector2i.XY {
+	return Vector2i.XY(class(self).GetTextureSliceSize(gd.NewStringName(context), gd.NewStringName(name), gd.Int(mipmap)))
 }
 
 /*
@@ -97,54 +100,54 @@ func (self Instance) ClearContext(context string) {
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetColorTexture() gd.RID {
-	return gd.RID(class(self).GetColorTexture(false))
+func (self Instance) GetColorTexture() Resource.ID {
+	return Resource.ID(class(self).GetColorTexture(false))
 }
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetColorLayer(layer int) gd.RID {
-	return gd.RID(class(self).GetColorLayer(gd.Int(layer), false))
+func (self Instance) GetColorLayer(layer int) Resource.ID {
+	return Resource.ID(class(self).GetColorLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetDepthTexture() gd.RID {
-	return gd.RID(class(self).GetDepthTexture(false))
+func (self Instance) GetDepthTexture() Resource.ID {
+	return Resource.ID(class(self).GetDepthTexture(false))
 }
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetDepthLayer(layer int) gd.RID {
-	return gd.RID(class(self).GetDepthLayer(gd.Int(layer), false))
+func (self Instance) GetDepthLayer(layer int) Resource.ID {
+	return Resource.ID(class(self).GetDepthLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the velocity texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
 If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Instance) GetVelocityTexture() gd.RID {
-	return gd.RID(class(self).GetVelocityTexture(false))
+func (self Instance) GetVelocityTexture() Resource.ID {
+	return Resource.ID(class(self).GetVelocityTexture(false))
 }
 
 /*
 Returns the specified layer from the velocity texture we are rendering 3D content to.
 */
-func (self Instance) GetVelocityLayer(layer int) gd.RID {
-	return gd.RID(class(self).GetVelocityLayer(gd.Int(layer), false))
+func (self Instance) GetVelocityLayer(layer int) Resource.ID {
+	return Resource.ID(class(self).GetVelocityLayer(gd.Int(layer), false))
 }
 
 /*
 Returns the render target associated with this buffers object.
 */
-func (self Instance) GetRenderTarget() gd.RID {
-	return gd.RID(class(self).GetRenderTarget())
+func (self Instance) GetRenderTarget() Resource.ID {
+	return Resource.ID(class(self).GetRenderTarget())
 }
 
 /*
@@ -157,15 +160,15 @@ func (self Instance) GetViewCount() int {
 /*
 Returns the internal size of the render buffer (size before upscaling) with which textures are created by default.
 */
-func (self Instance) GetInternalSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetInternalSize())
+func (self Instance) GetInternalSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetInternalSize())
 }
 
 /*
 Returns the target size of the render buffer (size after upscaling).
 */
-func (self Instance) GetTargetSize() gd.Vector2i {
-	return gd.Vector2i(class(self).GetTargetSize())
+func (self Instance) GetTargetSize() Vector2i.XY {
+	return Vector2i.XY(class(self).GetTargetSize())
 }
 
 /*
@@ -178,8 +181,8 @@ func (self Instance) GetScaling3dMode() classdb.RenderingServerViewportScaling3D
 /*
 Returns the FSR sharpness value used while rendering the 3D content (if [method get_scaling_3d_mode] is an FSR mode).
 */
-func (self Instance) GetFsrSharpness() float64 {
-	return float64(float64(class(self).GetFsrSharpness()))
+func (self Instance) GetFsrSharpness() Float.X {
+	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
 /*

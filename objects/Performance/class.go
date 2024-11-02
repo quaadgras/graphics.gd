@@ -8,6 +8,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,9 +44,9 @@ GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS
 [/codeblocks]
 See [method get_custom_monitor] to query custom performance monitors' values.
 */
-func GetMonitor(monitor classdb.PerformanceMonitor) float64 {
+func GetMonitor(monitor classdb.PerformanceMonitor) Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetMonitor(monitor)))
+	return Float.X(Float.X(class(self).GetMonitor(monitor)))
 }
 
 /*
@@ -107,7 +109,7 @@ Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable gd.Callable) {
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), callable, ([1]gd.Array{}[0]))
+	class(self).AddCustomMonitor(gd.NewStringName(id), callable, [1]Array.Any{}[0])
 }
 
 /*
@@ -129,9 +131,9 @@ func HasCustomMonitor(id string) bool {
 /*
 Returns the value of custom monitor with given [param id]. The callable is called to get the value of custom monitor. See also [method has_custom_monitor]. Prints an error if the given [param id] is absent.
 */
-func GetCustomMonitor(id string) gd.Variant {
+func GetCustomMonitor(id string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).GetCustomMonitor(gd.NewStringName(id)))
+	return any(class(self).GetCustomMonitor(gd.NewStringName(id)).Interface())
 }
 
 /*

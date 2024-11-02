@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -233,22 +234,22 @@ func (self Instance) Get64() int {
 /*
 Returns the next 32 bits from the file as a floating-point number.
 */
-func (self Instance) GetFloat() float64 {
-	return float64(float64(class(self).GetFloat()))
+func (self Instance) GetFloat() Float.X {
+	return Float.X(Float.X(class(self).GetFloat()))
 }
 
 /*
 Returns the next 64 bits from the file as a floating-point number.
 */
-func (self Instance) GetDouble() float64 {
-	return float64(float64(class(self).GetDouble()))
+func (self Instance) GetDouble() Float.X {
+	return Float.X(Float.X(class(self).GetDouble()))
 }
 
 /*
 Returns the next bits from the file as a floating-point number.
 */
-func (self Instance) GetReal() float64 {
-	return float64(float64(class(self).GetReal()))
+func (self Instance) GetReal() Float.X {
+	return Float.X(Float.X(class(self).GetReal()))
 }
 
 /*
@@ -315,8 +316,8 @@ Returns the next [Variant] value from the file. If [param allow_objects] is [cod
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func (self Instance) GetVar() gd.Variant {
-	return gd.Variant(class(self).GetVar(false))
+func (self Instance) GetVar() any {
+	return any(class(self).GetVar(false).Interface())
 }
 
 /*
@@ -394,21 +395,21 @@ func (self Instance) Store64(value int) {
 /*
 Stores a floating-point number as 32 bits in the file.
 */
-func (self Instance) StoreFloat(value float64) {
+func (self Instance) StoreFloat(value Float.X) {
 	class(self).StoreFloat(gd.Float(value))
 }
 
 /*
 Stores a floating-point number as 64 bits in the file.
 */
-func (self Instance) StoreDouble(value float64) {
+func (self Instance) StoreDouble(value Float.X) {
 	class(self).StoreDouble(gd.Float(value))
 }
 
 /*
 Stores a floating-point number in the file.
 */
-func (self Instance) StoreReal(value float64) {
+func (self Instance) StoreReal(value Float.X) {
 	class(self).StoreReal(gd.Float(value))
 }
 
@@ -447,8 +448,8 @@ Stores any Variant value in the file. If [param full_objects] is [code]true[/cod
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
 */
-func (self Instance) StoreVar(value gd.Variant) {
-	class(self).StoreVar(value, false)
+func (self Instance) StoreVar(value any) {
+	class(self).StoreVar(gd.NewVariant(value), false)
 }
 
 /*

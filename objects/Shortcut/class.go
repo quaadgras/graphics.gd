@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -53,11 +54,11 @@ func New() Instance {
 	return Instance{classdb.Shortcut(object)}
 }
 
-func (self Instance) Events() gd.Array {
-	return gd.Array(class(self).GetEvents())
+func (self Instance) Events() Array.Any {
+	return Array.Any(class(self).GetEvents())
 }
 
-func (self Instance) SetEvents(value gd.Array) {
+func (self Instance) SetEvents(value Array.Any) {
 	class(self).SetEvents(value)
 }
 

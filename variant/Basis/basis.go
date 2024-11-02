@@ -33,7 +33,7 @@ import (
 // -Z to point forward (+X is right, +Y is up, and +Z is back). Other
 // objects may use different direction conventions. For more information,
 // see the 3D asset direction conventions tutorial.
-type XYZ struct {
+type XYZ = struct {
 
 	// The basis's X axis, and the column 0 of the matrix.
 	//

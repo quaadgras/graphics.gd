@@ -111,15 +111,15 @@ type Instance [1]classdb.ConfigFile
 /*
 Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a [code]null[/code] value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
 */
-func (self Instance) SetValue(section string, key string, value gd.Variant) {
-	class(self).SetValue(gd.NewString(section), gd.NewString(key), value)
+func (self Instance) SetValue(section string, key string, value any) {
+	class(self).SetValue(gd.NewString(section), gd.NewString(key), gd.NewVariant(value))
 }
 
 /*
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback [param default] value. If [param default] is not specified or set to [code]null[/code], an error is also raised.
 */
-func (self Instance) GetValue(section string, key string) gd.Variant {
-	return gd.Variant(class(self).GetValue(gd.NewString(section), gd.NewString(key), gd.NewVariant(([1]gd.Variant{}[0]))))
+func (self Instance) GetValue(section string, key string) any {
+	return any(class(self).GetValue(gd.NewString(section), gd.NewString(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*

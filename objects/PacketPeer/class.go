@@ -25,16 +25,16 @@ Gets a Variant. If [param allow_objects] is [code]true[/code], decoding objects 
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func (self Instance) GetVar() gd.Variant {
-	return gd.Variant(class(self).GetVar(false))
+func (self Instance) GetVar() any {
+	return any(class(self).GetVar(false).Interface())
 }
 
 /*
 Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func (self Instance) PutVar(v gd.Variant) error {
-	return error(class(self).PutVar(v, false))
+func (self Instance) PutVar(v any) error {
+	return error(class(self).PutVar(gd.NewVariant(v), false))
 }
 
 /*

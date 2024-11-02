@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,11 +23,11 @@ See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
 	// EngineProfiler methods that can be overridden by a [Class] that extends it.
 	type EngineProfiler interface {
 		//Called when the profiler is enabled/disabled, along with a set of [param options].
-		Toggle(enable bool, options gd.Array)
+		Toggle(enable bool, options Array.Any)
 		//Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
-		AddFrame(data gd.Array)
+		AddFrame(data Array.Any)
 		//Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
-		Tick(frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)
+		Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)
 	}
 */
 type Instance [1]classdb.EngineProfiler
@@ -33,7 +35,7 @@ type Instance [1]classdb.EngineProfiler
 /*
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
-func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
@@ -46,7 +48,7 @@ func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Ar
 /*
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
-func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(data)
@@ -58,14 +60,14 @@ func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array)) (cb gd.
 /*
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
-func (Instance) _tick(impl func(ptr unsafe.Pointer, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _tick(impl func(ptr unsafe.Pointer, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var frame_time = gd.UnsafeGet[gd.Float](p_args, 0)
 		var process_time = gd.UnsafeGet[gd.Float](p_args, 1)
 		var physics_time = gd.UnsafeGet[gd.Float](p_args, 2)
 		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, float64(frame_time), float64(process_time), float64(physics_time), float64(physics_frame_time))
+		impl(self, Float.X(frame_time), Float.X(process_time), Float.X(physics_time), Float.X(physics_frame_time))
 	}
 }
 

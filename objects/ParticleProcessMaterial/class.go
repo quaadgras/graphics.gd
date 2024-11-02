@@ -9,6 +9,10 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Material"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,11 +36,11 @@ func New() Instance {
 	return Instance{classdb.ParticleProcessMaterial(object)}
 }
 
-func (self Instance) LifetimeRandomness() float64 {
-	return float64(float64(class(self).GetLifetimeRandomness()))
+func (self Instance) LifetimeRandomness() Float.X {
+	return Float.X(Float.X(class(self).GetLifetimeRandomness()))
 }
 
-func (self Instance) SetLifetimeRandomness(value float64) {
+func (self Instance) SetLifetimeRandomness(value Float.X) {
 	class(self).SetLifetimeRandomness(gd.Float(value))
 }
 
@@ -72,20 +76,20 @@ func (self Instance) SetParticleFlagDampingAsFriction(value bool) {
 	class(self).SetParticleFlag(3, value)
 }
 
-func (self Instance) EmissionShapeOffset() gd.Vector3 {
-	return gd.Vector3(class(self).GetEmissionShapeOffset())
+func (self Instance) EmissionShapeOffset() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetEmissionShapeOffset())
 }
 
-func (self Instance) SetEmissionShapeOffset(value gd.Vector3) {
-	class(self).SetEmissionShapeOffset(value)
+func (self Instance) SetEmissionShapeOffset(value Vector3.XYZ) {
+	class(self).SetEmissionShapeOffset(gd.Vector3(value))
 }
 
-func (self Instance) EmissionShapeScale() gd.Vector3 {
-	return gd.Vector3(class(self).GetEmissionShapeScale())
+func (self Instance) EmissionShapeScale() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetEmissionShapeScale())
 }
 
-func (self Instance) SetEmissionShapeScale(value gd.Vector3) {
-	class(self).SetEmissionShapeScale(value)
+func (self Instance) SetEmissionShapeScale(value Vector3.XYZ) {
+	class(self).SetEmissionShapeScale(gd.Vector3(value))
 }
 
 func (self Instance) EmissionShape() classdb.ParticleProcessMaterialEmissionShape {
@@ -96,20 +100,20 @@ func (self Instance) SetEmissionShape(value classdb.ParticleProcessMaterialEmiss
 	class(self).SetEmissionShape(value)
 }
 
-func (self Instance) EmissionSphereRadius() float64 {
-	return float64(float64(class(self).GetEmissionSphereRadius()))
+func (self Instance) EmissionSphereRadius() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionSphereRadius()))
 }
 
-func (self Instance) SetEmissionSphereRadius(value float64) {
+func (self Instance) SetEmissionSphereRadius(value Float.X) {
 	class(self).SetEmissionSphereRadius(gd.Float(value))
 }
 
-func (self Instance) EmissionBoxExtents() gd.Vector3 {
-	return gd.Vector3(class(self).GetEmissionBoxExtents())
+func (self Instance) EmissionBoxExtents() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetEmissionBoxExtents())
 }
 
-func (self Instance) SetEmissionBoxExtents(value gd.Vector3) {
-	class(self).SetEmissionBoxExtents(value)
+func (self Instance) SetEmissionBoxExtents(value Vector3.XYZ) {
+	class(self).SetEmissionBoxExtents(gd.Vector3(value))
 }
 
 func (self Instance) EmissionPointTexture() objects.Texture2D {
@@ -144,59 +148,59 @@ func (self Instance) SetEmissionPointCount(value int) {
 	class(self).SetEmissionPointCount(gd.Int(value))
 }
 
-func (self Instance) EmissionRingAxis() gd.Vector3 {
-	return gd.Vector3(class(self).GetEmissionRingAxis())
+func (self Instance) EmissionRingAxis() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetEmissionRingAxis())
 }
 
-func (self Instance) SetEmissionRingAxis(value gd.Vector3) {
-	class(self).SetEmissionRingAxis(value)
+func (self Instance) SetEmissionRingAxis(value Vector3.XYZ) {
+	class(self).SetEmissionRingAxis(gd.Vector3(value))
 }
 
-func (self Instance) EmissionRingHeight() float64 {
-	return float64(float64(class(self).GetEmissionRingHeight()))
+func (self Instance) EmissionRingHeight() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionRingHeight()))
 }
 
-func (self Instance) SetEmissionRingHeight(value float64) {
+func (self Instance) SetEmissionRingHeight(value Float.X) {
 	class(self).SetEmissionRingHeight(gd.Float(value))
 }
 
-func (self Instance) EmissionRingRadius() float64 {
-	return float64(float64(class(self).GetEmissionRingRadius()))
+func (self Instance) EmissionRingRadius() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionRingRadius()))
 }
 
-func (self Instance) SetEmissionRingRadius(value float64) {
+func (self Instance) SetEmissionRingRadius(value Float.X) {
 	class(self).SetEmissionRingRadius(gd.Float(value))
 }
 
-func (self Instance) EmissionRingInnerRadius() float64 {
-	return float64(float64(class(self).GetEmissionRingInnerRadius()))
+func (self Instance) EmissionRingInnerRadius() Float.X {
+	return Float.X(Float.X(class(self).GetEmissionRingInnerRadius()))
 }
 
-func (self Instance) SetEmissionRingInnerRadius(value float64) {
+func (self Instance) SetEmissionRingInnerRadius(value Float.X) {
 	class(self).SetEmissionRingInnerRadius(gd.Float(value))
 }
 
-func (self Instance) Angle() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(7))
+func (self Instance) Angle() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(7))
 }
 
-func (self Instance) SetAngle(value gd.Vector2) {
-	class(self).SetParam(7, value)
+func (self Instance) SetAngle(value Vector2.XY) {
+	class(self).SetParam(7, gd.Vector2(value))
 }
 
-func (self Instance) AngleMin() float64 {
-	return float64(float64(class(self).GetParamMin(7)))
+func (self Instance) AngleMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(7)))
 }
 
-func (self Instance) SetAngleMin(value float64) {
+func (self Instance) SetAngleMin(value Float.X) {
 	class(self).SetParamMin(7, gd.Float(value))
 }
 
-func (self Instance) AngleMax() float64 {
-	return float64(float64(class(self).GetParamMax(7)))
+func (self Instance) AngleMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(7)))
 }
 
-func (self Instance) SetAngleMax(value float64) {
+func (self Instance) SetAngleMax(value Float.X) {
 	class(self).SetParamMax(7, gd.Float(value))
 }
 
@@ -208,91 +212,91 @@ func (self Instance) SetAngleCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(7, value)
 }
 
-func (self Instance) InheritVelocityRatio() float64 {
-	return float64(float64(class(self).GetInheritVelocityRatio()))
+func (self Instance) InheritVelocityRatio() Float.X {
+	return Float.X(Float.X(class(self).GetInheritVelocityRatio()))
 }
 
-func (self Instance) SetInheritVelocityRatio(value float64) {
+func (self Instance) SetInheritVelocityRatio(value Float.X) {
 	class(self).SetInheritVelocityRatio(gd.Float(value))
 }
 
-func (self Instance) VelocityPivot() gd.Vector3 {
-	return gd.Vector3(class(self).GetVelocityPivot())
+func (self Instance) VelocityPivot() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetVelocityPivot())
 }
 
-func (self Instance) SetVelocityPivot(value gd.Vector3) {
-	class(self).SetVelocityPivot(value)
+func (self Instance) SetVelocityPivot(value Vector3.XYZ) {
+	class(self).SetVelocityPivot(gd.Vector3(value))
 }
 
-func (self Instance) Direction() gd.Vector3 {
-	return gd.Vector3(class(self).GetDirection())
+func (self Instance) Direction() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetDirection())
 }
 
-func (self Instance) SetDirection(value gd.Vector3) {
-	class(self).SetDirection(value)
+func (self Instance) SetDirection(value Vector3.XYZ) {
+	class(self).SetDirection(gd.Vector3(value))
 }
 
-func (self Instance) Spread() float64 {
-	return float64(float64(class(self).GetSpread()))
+func (self Instance) Spread() Float.X {
+	return Float.X(Float.X(class(self).GetSpread()))
 }
 
-func (self Instance) SetSpread(value float64) {
+func (self Instance) SetSpread(value Float.X) {
 	class(self).SetSpread(gd.Float(value))
 }
 
-func (self Instance) Flatness() float64 {
-	return float64(float64(class(self).GetFlatness()))
+func (self Instance) Flatness() Float.X {
+	return Float.X(Float.X(class(self).GetFlatness()))
 }
 
-func (self Instance) SetFlatness(value float64) {
+func (self Instance) SetFlatness(value Float.X) {
 	class(self).SetFlatness(gd.Float(value))
 }
 
-func (self Instance) InitialVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(0))
+func (self Instance) InitialVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(0))
 }
 
-func (self Instance) SetInitialVelocity(value gd.Vector2) {
-	class(self).SetParam(0, value)
+func (self Instance) SetInitialVelocity(value Vector2.XY) {
+	class(self).SetParam(0, gd.Vector2(value))
 }
 
-func (self Instance) InitialVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(0)))
+func (self Instance) InitialVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(0)))
 }
 
-func (self Instance) SetInitialVelocityMin(value float64) {
+func (self Instance) SetInitialVelocityMin(value Float.X) {
 	class(self).SetParamMin(0, gd.Float(value))
 }
 
-func (self Instance) InitialVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(0)))
+func (self Instance) InitialVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(0)))
 }
 
-func (self Instance) SetInitialVelocityMax(value float64) {
+func (self Instance) SetInitialVelocityMax(value Float.X) {
 	class(self).SetParamMax(0, gd.Float(value))
 }
 
-func (self Instance) AngularVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(1))
+func (self Instance) AngularVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(1))
 }
 
-func (self Instance) SetAngularVelocity(value gd.Vector2) {
-	class(self).SetParam(1, value)
+func (self Instance) SetAngularVelocity(value Vector2.XY) {
+	class(self).SetParam(1, gd.Vector2(value))
 }
 
-func (self Instance) AngularVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(1)))
+func (self Instance) AngularVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(1)))
 }
 
-func (self Instance) SetAngularVelocityMin(value float64) {
+func (self Instance) SetAngularVelocityMin(value Float.X) {
 	class(self).SetParamMin(1, gd.Float(value))
 }
 
-func (self Instance) AngularVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(1)))
+func (self Instance) AngularVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(1)))
 }
 
-func (self Instance) SetAngularVelocityMax(value float64) {
+func (self Instance) SetAngularVelocityMax(value Float.X) {
 	class(self).SetParamMax(1, gd.Float(value))
 }
 
@@ -304,27 +308,27 @@ func (self Instance) SetAngularVelocityCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(1, value)
 }
 
-func (self Instance) DirectionalVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(16))
+func (self Instance) DirectionalVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(16))
 }
 
-func (self Instance) SetDirectionalVelocity(value gd.Vector2) {
-	class(self).SetParam(16, value)
+func (self Instance) SetDirectionalVelocity(value Vector2.XY) {
+	class(self).SetParam(16, gd.Vector2(value))
 }
 
-func (self Instance) DirectionalVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(16)))
+func (self Instance) DirectionalVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(16)))
 }
 
-func (self Instance) SetDirectionalVelocityMin(value float64) {
+func (self Instance) SetDirectionalVelocityMin(value Float.X) {
 	class(self).SetParamMin(16, gd.Float(value))
 }
 
-func (self Instance) DirectionalVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(16)))
+func (self Instance) DirectionalVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(16)))
 }
 
-func (self Instance) SetDirectionalVelocityMax(value float64) {
+func (self Instance) SetDirectionalVelocityMax(value Float.X) {
 	class(self).SetParamMax(16, gd.Float(value))
 }
 
@@ -336,27 +340,27 @@ func (self Instance) SetDirectionalVelocityCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(16, value)
 }
 
-func (self Instance) OrbitVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(2))
+func (self Instance) OrbitVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(2))
 }
 
-func (self Instance) SetOrbitVelocity(value gd.Vector2) {
-	class(self).SetParam(2, value)
+func (self Instance) SetOrbitVelocity(value Vector2.XY) {
+	class(self).SetParam(2, gd.Vector2(value))
 }
 
-func (self Instance) OrbitVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(2)))
+func (self Instance) OrbitVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(2)))
 }
 
-func (self Instance) SetOrbitVelocityMin(value float64) {
+func (self Instance) SetOrbitVelocityMin(value Float.X) {
 	class(self).SetParamMin(2, gd.Float(value))
 }
 
-func (self Instance) OrbitVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(2)))
+func (self Instance) OrbitVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(2)))
 }
 
-func (self Instance) SetOrbitVelocityMax(value float64) {
+func (self Instance) SetOrbitVelocityMax(value Float.X) {
 	class(self).SetParamMax(2, gd.Float(value))
 }
 
@@ -368,27 +372,27 @@ func (self Instance) SetOrbitVelocityCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(2, value)
 }
 
-func (self Instance) RadialVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(15))
+func (self Instance) RadialVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(15))
 }
 
-func (self Instance) SetRadialVelocity(value gd.Vector2) {
-	class(self).SetParam(15, value)
+func (self Instance) SetRadialVelocity(value Vector2.XY) {
+	class(self).SetParam(15, gd.Vector2(value))
 }
 
-func (self Instance) RadialVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(15)))
+func (self Instance) RadialVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(15)))
 }
 
-func (self Instance) SetRadialVelocityMin(value float64) {
+func (self Instance) SetRadialVelocityMin(value Float.X) {
 	class(self).SetParamMin(15, gd.Float(value))
 }
 
-func (self Instance) RadialVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(15)))
+func (self Instance) RadialVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(15)))
 }
 
-func (self Instance) SetRadialVelocityMax(value float64) {
+func (self Instance) SetRadialVelocityMax(value Float.X) {
 	class(self).SetParamMax(15, gd.Float(value))
 }
 
@@ -408,35 +412,35 @@ func (self Instance) SetVelocityLimitCurve(value objects.Texture2D) {
 	class(self).SetVelocityLimitCurve(value)
 }
 
-func (self Instance) Gravity() gd.Vector3 {
-	return gd.Vector3(class(self).GetGravity())
+func (self Instance) Gravity() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetGravity())
 }
 
-func (self Instance) SetGravity(value gd.Vector3) {
-	class(self).SetGravity(value)
+func (self Instance) SetGravity(value Vector3.XYZ) {
+	class(self).SetGravity(gd.Vector3(value))
 }
 
-func (self Instance) LinearAccel() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(3))
+func (self Instance) LinearAccel() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(3))
 }
 
-func (self Instance) SetLinearAccel(value gd.Vector2) {
-	class(self).SetParam(3, value)
+func (self Instance) SetLinearAccel(value Vector2.XY) {
+	class(self).SetParam(3, gd.Vector2(value))
 }
 
-func (self Instance) LinearAccelMin() float64 {
-	return float64(float64(class(self).GetParamMin(3)))
+func (self Instance) LinearAccelMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(3)))
 }
 
-func (self Instance) SetLinearAccelMin(value float64) {
+func (self Instance) SetLinearAccelMin(value Float.X) {
 	class(self).SetParamMin(3, gd.Float(value))
 }
 
-func (self Instance) LinearAccelMax() float64 {
-	return float64(float64(class(self).GetParamMax(3)))
+func (self Instance) LinearAccelMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(3)))
 }
 
-func (self Instance) SetLinearAccelMax(value float64) {
+func (self Instance) SetLinearAccelMax(value Float.X) {
 	class(self).SetParamMax(3, gd.Float(value))
 }
 
@@ -448,27 +452,27 @@ func (self Instance) SetLinearAccelCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(3, value)
 }
 
-func (self Instance) RadialAccel() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(4))
+func (self Instance) RadialAccel() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(4))
 }
 
-func (self Instance) SetRadialAccel(value gd.Vector2) {
-	class(self).SetParam(4, value)
+func (self Instance) SetRadialAccel(value Vector2.XY) {
+	class(self).SetParam(4, gd.Vector2(value))
 }
 
-func (self Instance) RadialAccelMin() float64 {
-	return float64(float64(class(self).GetParamMin(4)))
+func (self Instance) RadialAccelMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(4)))
 }
 
-func (self Instance) SetRadialAccelMin(value float64) {
+func (self Instance) SetRadialAccelMin(value Float.X) {
 	class(self).SetParamMin(4, gd.Float(value))
 }
 
-func (self Instance) RadialAccelMax() float64 {
-	return float64(float64(class(self).GetParamMax(4)))
+func (self Instance) RadialAccelMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(4)))
 }
 
-func (self Instance) SetRadialAccelMax(value float64) {
+func (self Instance) SetRadialAccelMax(value Float.X) {
 	class(self).SetParamMax(4, gd.Float(value))
 }
 
@@ -480,27 +484,27 @@ func (self Instance) SetRadialAccelCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(4, value)
 }
 
-func (self Instance) TangentialAccel() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(5))
+func (self Instance) TangentialAccel() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(5))
 }
 
-func (self Instance) SetTangentialAccel(value gd.Vector2) {
-	class(self).SetParam(5, value)
+func (self Instance) SetTangentialAccel(value Vector2.XY) {
+	class(self).SetParam(5, gd.Vector2(value))
 }
 
-func (self Instance) TangentialAccelMin() float64 {
-	return float64(float64(class(self).GetParamMin(5)))
+func (self Instance) TangentialAccelMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(5)))
 }
 
-func (self Instance) SetTangentialAccelMin(value float64) {
+func (self Instance) SetTangentialAccelMin(value Float.X) {
 	class(self).SetParamMin(5, gd.Float(value))
 }
 
-func (self Instance) TangentialAccelMax() float64 {
-	return float64(float64(class(self).GetParamMax(5)))
+func (self Instance) TangentialAccelMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(5)))
 }
 
-func (self Instance) SetTangentialAccelMax(value float64) {
+func (self Instance) SetTangentialAccelMax(value Float.X) {
 	class(self).SetParamMax(5, gd.Float(value))
 }
 
@@ -512,27 +516,27 @@ func (self Instance) SetTangentialAccelCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(5, value)
 }
 
-func (self Instance) Damping() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(6))
+func (self Instance) Damping() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(6))
 }
 
-func (self Instance) SetDamping(value gd.Vector2) {
-	class(self).SetParam(6, value)
+func (self Instance) SetDamping(value Vector2.XY) {
+	class(self).SetParam(6, gd.Vector2(value))
 }
 
-func (self Instance) DampingMin() float64 {
-	return float64(float64(class(self).GetParamMin(6)))
+func (self Instance) DampingMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(6)))
 }
 
-func (self Instance) SetDampingMin(value float64) {
+func (self Instance) SetDampingMin(value Float.X) {
 	class(self).SetParamMin(6, gd.Float(value))
 }
 
-func (self Instance) DampingMax() float64 {
-	return float64(float64(class(self).GetParamMax(6)))
+func (self Instance) DampingMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(6)))
 }
 
-func (self Instance) SetDampingMax(value float64) {
+func (self Instance) SetDampingMax(value Float.X) {
 	class(self).SetParamMax(6, gd.Float(value))
 }
 
@@ -552,27 +556,27 @@ func (self Instance) SetAttractorInteractionEnabled(value bool) {
 	class(self).SetAttractorInteractionEnabled(value)
 }
 
-func (self Instance) Scale() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(8))
+func (self Instance) Scale() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(8))
 }
 
-func (self Instance) SetScale(value gd.Vector2) {
-	class(self).SetParam(8, value)
+func (self Instance) SetScale(value Vector2.XY) {
+	class(self).SetParam(8, gd.Vector2(value))
 }
 
-func (self Instance) ScaleMin() float64 {
-	return float64(float64(class(self).GetParamMin(8)))
+func (self Instance) ScaleMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(8)))
 }
 
-func (self Instance) SetScaleMin(value float64) {
+func (self Instance) SetScaleMin(value Float.X) {
 	class(self).SetParamMin(8, gd.Float(value))
 }
 
-func (self Instance) ScaleMax() float64 {
-	return float64(float64(class(self).GetParamMax(8)))
+func (self Instance) ScaleMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(8)))
 }
 
-func (self Instance) SetScaleMax(value float64) {
+func (self Instance) SetScaleMax(value Float.X) {
 	class(self).SetParamMax(8, gd.Float(value))
 }
 
@@ -584,27 +588,27 @@ func (self Instance) SetScaleCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(8, value)
 }
 
-func (self Instance) ScaleOverVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(17))
+func (self Instance) ScaleOverVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(17))
 }
 
-func (self Instance) SetScaleOverVelocity(value gd.Vector2) {
-	class(self).SetParam(17, value)
+func (self Instance) SetScaleOverVelocity(value Vector2.XY) {
+	class(self).SetParam(17, gd.Vector2(value))
 }
 
-func (self Instance) ScaleOverVelocityMin() float64 {
-	return float64(float64(class(self).GetParamMin(17)))
+func (self Instance) ScaleOverVelocityMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(17)))
 }
 
-func (self Instance) SetScaleOverVelocityMin(value float64) {
+func (self Instance) SetScaleOverVelocityMin(value Float.X) {
 	class(self).SetParamMin(17, gd.Float(value))
 }
 
-func (self Instance) ScaleOverVelocityMax() float64 {
-	return float64(float64(class(self).GetParamMax(17)))
+func (self Instance) ScaleOverVelocityMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(17)))
 }
 
-func (self Instance) SetScaleOverVelocityMax(value float64) {
+func (self Instance) SetScaleOverVelocityMax(value Float.X) {
 	class(self).SetParamMax(17, gd.Float(value))
 }
 
@@ -616,12 +620,12 @@ func (self Instance) SetScaleOverVelocityCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(17, value)
 }
 
-func (self Instance) Color() gd.Color {
-	return gd.Color(class(self).GetColor())
+func (self Instance) Color() Color.RGBA {
+	return Color.RGBA(class(self).GetColor())
 }
 
-func (self Instance) SetColor(value gd.Color) {
-	class(self).SetColor(value)
+func (self Instance) SetColor(value Color.RGBA) {
+	class(self).SetColor(gd.Color(value))
 }
 
 func (self Instance) ColorRamp() objects.Texture2D {
@@ -656,27 +660,27 @@ func (self Instance) SetEmissionCurve(value objects.Texture2D) {
 	class(self).SetEmissionCurve(value)
 }
 
-func (self Instance) HueVariation() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(9))
+func (self Instance) HueVariation() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(9))
 }
 
-func (self Instance) SetHueVariation(value gd.Vector2) {
-	class(self).SetParam(9, value)
+func (self Instance) SetHueVariation(value Vector2.XY) {
+	class(self).SetParam(9, gd.Vector2(value))
 }
 
-func (self Instance) HueVariationMin() float64 {
-	return float64(float64(class(self).GetParamMin(9)))
+func (self Instance) HueVariationMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(9)))
 }
 
-func (self Instance) SetHueVariationMin(value float64) {
+func (self Instance) SetHueVariationMin(value Float.X) {
 	class(self).SetParamMin(9, gd.Float(value))
 }
 
-func (self Instance) HueVariationMax() float64 {
-	return float64(float64(class(self).GetParamMax(9)))
+func (self Instance) HueVariationMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(9)))
 }
 
-func (self Instance) SetHueVariationMax(value float64) {
+func (self Instance) SetHueVariationMax(value Float.X) {
 	class(self).SetParamMax(9, gd.Float(value))
 }
 
@@ -688,27 +692,27 @@ func (self Instance) SetHueVariationCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(9, value)
 }
 
-func (self Instance) AnimSpeed() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(10))
+func (self Instance) AnimSpeed() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(10))
 }
 
-func (self Instance) SetAnimSpeed(value gd.Vector2) {
-	class(self).SetParam(10, value)
+func (self Instance) SetAnimSpeed(value Vector2.XY) {
+	class(self).SetParam(10, gd.Vector2(value))
 }
 
-func (self Instance) AnimSpeedMin() float64 {
-	return float64(float64(class(self).GetParamMin(10)))
+func (self Instance) AnimSpeedMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(10)))
 }
 
-func (self Instance) SetAnimSpeedMin(value float64) {
+func (self Instance) SetAnimSpeedMin(value Float.X) {
 	class(self).SetParamMin(10, gd.Float(value))
 }
 
-func (self Instance) AnimSpeedMax() float64 {
-	return float64(float64(class(self).GetParamMax(10)))
+func (self Instance) AnimSpeedMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(10)))
 }
 
-func (self Instance) SetAnimSpeedMax(value float64) {
+func (self Instance) SetAnimSpeedMax(value Float.X) {
 	class(self).SetParamMax(10, gd.Float(value))
 }
 
@@ -720,27 +724,27 @@ func (self Instance) SetAnimSpeedCurve(value objects.Texture2D) {
 	class(self).SetParamTexture(10, value)
 }
 
-func (self Instance) AnimOffset() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(11))
+func (self Instance) AnimOffset() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(11))
 }
 
-func (self Instance) SetAnimOffset(value gd.Vector2) {
-	class(self).SetParam(11, value)
+func (self Instance) SetAnimOffset(value Vector2.XY) {
+	class(self).SetParam(11, gd.Vector2(value))
 }
 
-func (self Instance) AnimOffsetMin() float64 {
-	return float64(float64(class(self).GetParamMin(11)))
+func (self Instance) AnimOffsetMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(11)))
 }
 
-func (self Instance) SetAnimOffsetMin(value float64) {
+func (self Instance) SetAnimOffsetMin(value Float.X) {
 	class(self).SetParamMin(11, gd.Float(value))
 }
 
-func (self Instance) AnimOffsetMax() float64 {
-	return float64(float64(class(self).GetParamMax(11)))
+func (self Instance) AnimOffsetMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(11)))
 }
 
-func (self Instance) SetAnimOffsetMax(value float64) {
+func (self Instance) SetAnimOffsetMax(value Float.X) {
 	class(self).SetParamMax(11, gd.Float(value))
 }
 
@@ -760,83 +764,83 @@ func (self Instance) SetTurbulenceEnabled(value bool) {
 	class(self).SetTurbulenceEnabled(value)
 }
 
-func (self Instance) TurbulenceNoiseStrength() float64 {
-	return float64(float64(class(self).GetTurbulenceNoiseStrength()))
+func (self Instance) TurbulenceNoiseStrength() Float.X {
+	return Float.X(Float.X(class(self).GetTurbulenceNoiseStrength()))
 }
 
-func (self Instance) SetTurbulenceNoiseStrength(value float64) {
+func (self Instance) SetTurbulenceNoiseStrength(value Float.X) {
 	class(self).SetTurbulenceNoiseStrength(gd.Float(value))
 }
 
-func (self Instance) TurbulenceNoiseScale() float64 {
-	return float64(float64(class(self).GetTurbulenceNoiseScale()))
+func (self Instance) TurbulenceNoiseScale() Float.X {
+	return Float.X(Float.X(class(self).GetTurbulenceNoiseScale()))
 }
 
-func (self Instance) SetTurbulenceNoiseScale(value float64) {
+func (self Instance) SetTurbulenceNoiseScale(value Float.X) {
 	class(self).SetTurbulenceNoiseScale(gd.Float(value))
 }
 
-func (self Instance) TurbulenceNoiseSpeed() gd.Vector3 {
-	return gd.Vector3(class(self).GetTurbulenceNoiseSpeed())
+func (self Instance) TurbulenceNoiseSpeed() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetTurbulenceNoiseSpeed())
 }
 
-func (self Instance) SetTurbulenceNoiseSpeed(value gd.Vector3) {
-	class(self).SetTurbulenceNoiseSpeed(value)
+func (self Instance) SetTurbulenceNoiseSpeed(value Vector3.XYZ) {
+	class(self).SetTurbulenceNoiseSpeed(gd.Vector3(value))
 }
 
-func (self Instance) TurbulenceNoiseSpeedRandom() float64 {
-	return float64(float64(class(self).GetTurbulenceNoiseSpeedRandom()))
+func (self Instance) TurbulenceNoiseSpeedRandom() Float.X {
+	return Float.X(Float.X(class(self).GetTurbulenceNoiseSpeedRandom()))
 }
 
-func (self Instance) SetTurbulenceNoiseSpeedRandom(value float64) {
+func (self Instance) SetTurbulenceNoiseSpeedRandom(value Float.X) {
 	class(self).SetTurbulenceNoiseSpeedRandom(gd.Float(value))
 }
 
-func (self Instance) TurbulenceInfluence() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(13))
+func (self Instance) TurbulenceInfluence() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(13))
 }
 
-func (self Instance) SetTurbulenceInfluence(value gd.Vector2) {
-	class(self).SetParam(13, value)
+func (self Instance) SetTurbulenceInfluence(value Vector2.XY) {
+	class(self).SetParam(13, gd.Vector2(value))
 }
 
-func (self Instance) TurbulenceInfluenceMin() float64 {
-	return float64(float64(class(self).GetParamMin(13)))
+func (self Instance) TurbulenceInfluenceMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(13)))
 }
 
-func (self Instance) SetTurbulenceInfluenceMin(value float64) {
+func (self Instance) SetTurbulenceInfluenceMin(value Float.X) {
 	class(self).SetParamMin(13, gd.Float(value))
 }
 
-func (self Instance) TurbulenceInfluenceMax() float64 {
-	return float64(float64(class(self).GetParamMax(13)))
+func (self Instance) TurbulenceInfluenceMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(13)))
 }
 
-func (self Instance) SetTurbulenceInfluenceMax(value float64) {
+func (self Instance) SetTurbulenceInfluenceMax(value Float.X) {
 	class(self).SetParamMax(13, gd.Float(value))
 }
 
-func (self Instance) TurbulenceInitialDisplacement() gd.Vector2 {
-	return gd.Vector2(class(self).GetParam(14))
+func (self Instance) TurbulenceInitialDisplacement() Vector2.XY {
+	return Vector2.XY(class(self).GetParam(14))
 }
 
-func (self Instance) SetTurbulenceInitialDisplacement(value gd.Vector2) {
-	class(self).SetParam(14, value)
+func (self Instance) SetTurbulenceInitialDisplacement(value Vector2.XY) {
+	class(self).SetParam(14, gd.Vector2(value))
 }
 
-func (self Instance) TurbulenceInitialDisplacementMin() float64 {
-	return float64(float64(class(self).GetParamMin(14)))
+func (self Instance) TurbulenceInitialDisplacementMin() Float.X {
+	return Float.X(Float.X(class(self).GetParamMin(14)))
 }
 
-func (self Instance) SetTurbulenceInitialDisplacementMin(value float64) {
+func (self Instance) SetTurbulenceInitialDisplacementMin(value Float.X) {
 	class(self).SetParamMin(14, gd.Float(value))
 }
 
-func (self Instance) TurbulenceInitialDisplacementMax() float64 {
-	return float64(float64(class(self).GetParamMax(14)))
+func (self Instance) TurbulenceInitialDisplacementMax() Float.X {
+	return Float.X(Float.X(class(self).GetParamMax(14)))
 }
 
-func (self Instance) SetTurbulenceInitialDisplacementMax(value float64) {
+func (self Instance) SetTurbulenceInitialDisplacementMax(value Float.X) {
 	class(self).SetParamMax(14, gd.Float(value))
 }
 
@@ -856,19 +860,19 @@ func (self Instance) SetCollisionMode(value classdb.ParticleProcessMaterialColli
 	class(self).SetCollisionMode(value)
 }
 
-func (self Instance) CollisionFriction() float64 {
-	return float64(float64(class(self).GetCollisionFriction()))
+func (self Instance) CollisionFriction() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionFriction()))
 }
 
-func (self Instance) SetCollisionFriction(value float64) {
+func (self Instance) SetCollisionFriction(value Float.X) {
 	class(self).SetCollisionFriction(gd.Float(value))
 }
 
-func (self Instance) CollisionBounce() float64 {
-	return float64(float64(class(self).GetCollisionBounce()))
+func (self Instance) CollisionBounce() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionBounce()))
 }
 
-func (self Instance) SetCollisionBounce(value float64) {
+func (self Instance) SetCollisionBounce(value Float.X) {
 	class(self).SetCollisionBounce(gd.Float(value))
 }
 
@@ -888,11 +892,11 @@ func (self Instance) SetSubEmitterMode(value classdb.ParticleProcessMaterialSubE
 	class(self).SetSubEmitterMode(value)
 }
 
-func (self Instance) SubEmitterFrequency() float64 {
-	return float64(float64(class(self).GetSubEmitterFrequency()))
+func (self Instance) SubEmitterFrequency() Float.X {
+	return Float.X(Float.X(class(self).GetSubEmitterFrequency()))
 }
 
-func (self Instance) SetSubEmitterFrequency(value float64) {
+func (self Instance) SetSubEmitterFrequency(value Float.X) {
 	class(self).SetSubEmitterFrequency(gd.Float(value))
 }
 

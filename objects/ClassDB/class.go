@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -77,9 +78,9 @@ func CanInstantiate(class_ string) bool {
 /*
 Creates an instance of [param class].
 */
-func Instantiate(class_ string) gd.Variant {
+func Instantiate(class_ string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).Instantiate(gd.NewStringName(class_)))
+	return any(class(self).Instantiate(gd.NewStringName(class_)).Interface())
 }
 
 /*
@@ -93,9 +94,9 @@ func ClassHasSignal(class_ string, signal string) bool {
 /*
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
-func ClassGetSignal(class_ string, signal string) gd.Dictionary {
+func ClassGetSignal(class_ string, signal string) Dictionary.Any {
 	once.Do(singleton)
-	return gd.Dictionary(class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal)))
+	return Dictionary.Any(class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal)))
 }
 
 /*
@@ -117,25 +118,25 @@ func ClassGetPropertyList(class_ string) gd.Array {
 /*
 Returns the value of [param property] of [param object] or its ancestry.
 */
-func ClassGetProperty(obj gd.Object, property string) gd.Variant {
+func ClassGetProperty(obj gd.Object, property string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).ClassGetProperty(obj, gd.NewStringName(property)))
+	return any(class(self).ClassGetProperty(obj, gd.NewStringName(property)).Interface())
 }
 
 /*
 Sets [param property] value of [param object] to [param value].
 */
-func ClassSetProperty(obj gd.Object, property string, value gd.Variant) error {
+func ClassSetProperty(obj gd.Object, property string, value any) error {
 	once.Do(singleton)
-	return error(class(self).ClassSetProperty(obj, gd.NewStringName(property), value))
+	return error(class(self).ClassSetProperty(obj, gd.NewStringName(property), gd.NewVariant(value)))
 }
 
 /*
 Returns the default value of [param property] of [param class] or its ancestor classes.
 */
-func ClassGetPropertyDefaultValue(class_ string, property string) gd.Variant {
+func ClassGetPropertyDefaultValue(class_ string, property string) any {
 	once.Do(singleton)
-	return gd.Variant(class(self).ClassGetPropertyDefaultValue(gd.NewStringName(class_), gd.NewStringName(property)))
+	return any(class(self).ClassGetPropertyDefaultValue(gd.NewStringName(class_), gd.NewStringName(property)).Interface())
 }
 
 /*

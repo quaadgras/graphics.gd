@@ -10,6 +10,8 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/VisualInstance3D"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -54,11 +56,11 @@ func (self Instance) SetBounces(value int) {
 	class(self).SetBounces(gd.Int(value))
 }
 
-func (self Instance) BounceIndirectEnergy() float64 {
-	return float64(float64(class(self).GetBounceIndirectEnergy()))
+func (self Instance) BounceIndirectEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetBounceIndirectEnergy()))
 }
 
-func (self Instance) SetBounceIndirectEnergy(value float64) {
+func (self Instance) SetBounceIndirectEnergy(value Float.X) {
 	class(self).SetBounceIndirectEnergy(gd.Float(value))
 }
 
@@ -94,11 +96,11 @@ func (self Instance) SetUseDenoiser(value bool) {
 	class(self).SetUseDenoiser(value)
 }
 
-func (self Instance) DenoiserStrength() float64 {
-	return float64(float64(class(self).GetDenoiserStrength()))
+func (self Instance) DenoiserStrength() Float.X {
+	return Float.X(Float.X(class(self).GetDenoiserStrength()))
 }
 
-func (self Instance) SetDenoiserStrength(value float64) {
+func (self Instance) SetDenoiserStrength(value Float.X) {
 	class(self).SetDenoiserStrength(gd.Float(value))
 }
 
@@ -110,19 +112,19 @@ func (self Instance) SetDenoiserRange(value int) {
 	class(self).SetDenoiserRange(gd.Int(value))
 }
 
-func (self Instance) Bias() float64 {
-	return float64(float64(class(self).GetBias()))
+func (self Instance) Bias() Float.X {
+	return Float.X(Float.X(class(self).GetBias()))
 }
 
-func (self Instance) SetBias(value float64) {
+func (self Instance) SetBias(value Float.X) {
 	class(self).SetBias(gd.Float(value))
 }
 
-func (self Instance) TexelScale() float64 {
-	return float64(float64(class(self).GetTexelScale()))
+func (self Instance) TexelScale() Float.X {
+	return Float.X(Float.X(class(self).GetTexelScale()))
 }
 
-func (self Instance) SetTexelScale(value float64) {
+func (self Instance) SetTexelScale(value Float.X) {
 	class(self).SetTexelScale(gd.Float(value))
 }
 
@@ -150,19 +152,19 @@ func (self Instance) SetEnvironmentCustomSky(value objects.Sky) {
 	class(self).SetEnvironmentCustomSky(value)
 }
 
-func (self Instance) EnvironmentCustomColor() gd.Color {
-	return gd.Color(class(self).GetEnvironmentCustomColor())
+func (self Instance) EnvironmentCustomColor() Color.RGBA {
+	return Color.RGBA(class(self).GetEnvironmentCustomColor())
 }
 
-func (self Instance) SetEnvironmentCustomColor(value gd.Color) {
-	class(self).SetEnvironmentCustomColor(value)
+func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) {
+	class(self).SetEnvironmentCustomColor(gd.Color(value))
 }
 
-func (self Instance) EnvironmentCustomEnergy() float64 {
-	return float64(float64(class(self).GetEnvironmentCustomEnergy()))
+func (self Instance) EnvironmentCustomEnergy() Float.X {
+	return Float.X(Float.X(class(self).GetEnvironmentCustomEnergy()))
 }
 
-func (self Instance) SetEnvironmentCustomEnergy(value float64) {
+func (self Instance) SetEnvironmentCustomEnergy(value Float.X) {
 	class(self).SetEnvironmentCustomEnergy(gd.Float(value))
 }
 

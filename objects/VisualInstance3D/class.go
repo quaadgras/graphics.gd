@@ -9,6 +9,9 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/AABB"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,38 +24,38 @@ The [VisualInstance3D] is used to connect a resource to a visual representation.
 
 	// VisualInstance3D methods that can be overridden by a [Class] that extends it.
 	type VisualInstance3D interface {
-		GetAabb() gd.AABB
+		GetAabb() AABB.PositionSize
 	}
 */
 type Instance [1]classdb.VisualInstance3D
 
-func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.AABB(ret))
 	}
 }
 
 /*
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 */
-func (self Instance) SetBase(base gd.RID) {
+func (self Instance) SetBase(base Resource.ID) {
 	class(self).SetBase(base)
 }
 
 /*
 Returns the RID of the resource associated with this [VisualInstance3D]. For example, if the Node is a [MeshInstance3D], this will return the RID of the associated [Mesh].
 */
-func (self Instance) GetBase() gd.RID {
-	return gd.RID(class(self).GetBase())
+func (self Instance) GetBase() Resource.ID {
+	return Resource.ID(class(self).GetBase())
 }
 
 /*
 Returns the RID of this instance. This RID is the same as the RID returned by [method RenderingServer.instance_create]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance3D].
 */
-func (self Instance) GetInstance() gd.RID {
-	return gd.RID(class(self).GetInstance())
+func (self Instance) GetInstance() Resource.ID {
+	return Resource.ID(class(self).GetInstance())
 }
 
 /*
@@ -72,8 +75,8 @@ func (self Instance) GetLayerMaskValue(layer_number int) bool {
 /*
 Returns the [AABB] (also known as the bounding box) for this [VisualInstance3D].
 */
-func (self Instance) GetAabb() gd.AABB {
-	return gd.AABB(class(self).GetAabb())
+func (self Instance) GetAabb() AABB.PositionSize {
+	return AABB.PositionSize(class(self).GetAabb())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -95,11 +98,11 @@ func (self Instance) SetLayers(value int) {
 	class(self).SetLayerMask(gd.Int(value))
 }
 
-func (self Instance) SortingOffset() float64 {
-	return float64(float64(class(self).GetSortingOffset()))
+func (self Instance) SortingOffset() Float.X {
+	return Float.X(Float.X(class(self).GetSortingOffset()))
 }
 
-func (self Instance) SetSortingOffset(value float64) {
+func (self Instance) SetSortingOffset(value Float.X) {
 	class(self).SetSortingOffset(gd.Float(value))
 }
 

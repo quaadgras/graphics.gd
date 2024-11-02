@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MainLoop"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,7 +58,7 @@ public async Task SomeFunction()
 [/codeblocks]
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
-func (self Instance) CreateTimer(time_sec float64) objects.SceneTreeTimer {
+func (self Instance) CreateTimer(time_sec Float.X) objects.SceneTreeTimer {
 	return objects.SceneTreeTimer(class(self).CreateTimer(gd.Float(time_sec), true, false, false))
 }
 
@@ -117,8 +118,8 @@ func (self Instance) NotifyGroupFlags(call_flags int, group string, notification
 Sets the given [param property] to [param value] on all nodes inside this tree added to the given [param group]. Nodes that do not have the [param property] are ignored. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
-func (self Instance) SetGroupFlags(call_flags int, group string, property string, value gd.Variant) {
-	class(self).SetGroupFlags(gd.Int(call_flags), gd.NewStringName(group), gd.NewString(property), value)
+func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) {
+	class(self).SetGroupFlags(gd.Int(call_flags), gd.NewStringName(group), gd.NewString(property), gd.NewVariant(value))
 }
 
 /*
@@ -134,8 +135,8 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
-func (self Instance) SetGroup(group string, property string, value gd.Variant) {
-	class(self).SetGroup(gd.NewStringName(group), gd.NewString(property), value)
+func (self Instance) SetGroup(group string, property string, value any) {
+	class(self).SetGroup(gd.NewStringName(group), gd.NewString(property), gd.NewVariant(value))
 }
 
 /*
@@ -200,14 +201,14 @@ Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling als
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
 func (self Instance) SetMultiplayer(multiplayer objects.MultiplayerAPI) {
-	class(self).SetMultiplayer(multiplayer, gd.NewString("").NodePath())
+	class(self).SetMultiplayer(multiplayer, gd.NewString(string("")).NodePath())
 }
 
 /*
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
 func (self Instance) GetMultiplayer() objects.MultiplayerAPI {
-	return objects.MultiplayerAPI(class(self).GetMultiplayer(gd.NewString("").NodePath()))
+	return objects.MultiplayerAPI(class(self).GetMultiplayer(gd.NewString(string("")).NodePath()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

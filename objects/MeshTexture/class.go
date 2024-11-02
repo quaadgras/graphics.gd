@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Texture2D"
 import "grow.graphics/gd/objects/Texture"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,12 +50,12 @@ func (self Instance) SetBaseTexture(value objects.Texture2D) {
 	class(self).SetBaseTexture(value)
 }
 
-func (self Instance) ImageSize() gd.Vector2 {
-	return gd.Vector2(class(self).GetImageSize())
+func (self Instance) ImageSize() Vector2.XY {
+	return Vector2.XY(class(self).GetImageSize())
 }
 
-func (self Instance) SetImageSize(value gd.Vector2) {
-	class(self).SetImageSize(value)
+func (self Instance) SetImageSize(value Vector2.XY) {
+	class(self).SetImageSize(gd.Vector2(value))
 }
 
 //go:nosplit

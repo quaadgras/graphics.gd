@@ -7,6 +7,9 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,36 +25,36 @@ type Instance [1]classdb.PhysicsTestMotionResult2D
 /*
 Returns the moving object's travel before collision.
 */
-func (self Instance) GetTravel() gd.Vector2 {
-	return gd.Vector2(class(self).GetTravel())
+func (self Instance) GetTravel() Vector2.XY {
+	return Vector2.XY(class(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
-func (self Instance) GetRemainder() gd.Vector2 {
-	return gd.Vector2(class(self).GetRemainder())
+func (self Instance) GetRemainder() Vector2.XY {
+	return Vector2.XY(class(self).GetRemainder())
 }
 
 /*
 Returns the point of collision in global coordinates, if a collision occurred.
 */
-func (self Instance) GetCollisionPoint() gd.Vector2 {
-	return gd.Vector2(class(self).GetCollisionPoint())
+func (self Instance) GetCollisionPoint() Vector2.XY {
+	return Vector2.XY(class(self).GetCollisionPoint())
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision, if a collision occurred.
 */
-func (self Instance) GetCollisionNormal() gd.Vector2 {
-	return gd.Vector2(class(self).GetCollisionNormal())
+func (self Instance) GetCollisionNormal() Vector2.XY {
+	return Vector2.XY(class(self).GetCollisionNormal())
 }
 
 /*
 Returns the colliding body's velocity, if a collision occurred.
 */
-func (self Instance) GetColliderVelocity() gd.Vector2 {
-	return gd.Vector2(class(self).GetColliderVelocity())
+func (self Instance) GetColliderVelocity() Vector2.XY {
+	return Vector2.XY(class(self).GetColliderVelocity())
 }
 
 /*
@@ -64,8 +67,8 @@ func (self Instance) GetColliderId() int {
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D], if a collision occurred.
 */
-func (self Instance) GetColliderRid() gd.RID {
-	return gd.RID(class(self).GetColliderRid())
+func (self Instance) GetColliderRid() Resource.ID {
+	return Resource.ID(class(self).GetColliderRid())
 }
 
 /*
@@ -92,22 +95,22 @@ func (self Instance) GetCollisionLocalShape() int {
 /*
 Returns the length of overlap along the collision normal, if a collision occurred.
 */
-func (self Instance) GetCollisionDepth() float64 {
-	return float64(float64(class(self).GetCollisionDepth()))
+func (self Instance) GetCollisionDepth() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionDepth()))
 }
 
 /*
 Returns the maximum fraction of the motion that can occur without a collision, between [code]0[/code] and [code]1[/code].
 */
-func (self Instance) GetCollisionSafeFraction() float64 {
-	return float64(float64(class(self).GetCollisionSafeFraction()))
+func (self Instance) GetCollisionSafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionSafeFraction()))
 }
 
 /*
 Returns the minimum fraction of the motion needed to collide, if a collision occurred, between [code]0[/code] and [code]1[/code].
 */
-func (self Instance) GetCollisionUnsafeFraction() float64 {
-	return float64(float64(class(self).GetCollisionUnsafeFraction()))
+func (self Instance) GetCollisionUnsafeFraction() Float.X {
+	return Float.X(Float.X(class(self).GetCollisionUnsafeFraction()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

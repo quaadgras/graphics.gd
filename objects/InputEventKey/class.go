@@ -88,6 +88,10 @@ func New() Instance {
 	return Instance{classdb.InputEventKey(object)}
 }
 
+func (self Instance) SetPressed(value bool) {
+	class(self).SetPressed(value)
+}
+
 func (self Instance) Keycode() Key {
 	return Key(class(self).GetKeycode())
 }
@@ -126,6 +130,10 @@ func (self Instance) Location() KeyLocation {
 
 func (self Instance) SetLocation(value KeyLocation) {
 	class(self).SetLocation(value)
+}
+
+func (self Instance) SetEcho(value bool) {
+	class(self).SetEcho(value)
 }
 
 //go:nosplit

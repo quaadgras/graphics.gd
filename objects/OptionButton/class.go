@@ -73,8 +73,8 @@ func (self Instance) SetItemId(idx int, id int) {
 /*
 Sets the metadata of an item. Metadata may be of any type and can be used to store extra information about an item, such as an external string ID.
 */
-func (self Instance) SetItemMetadata(idx int, metadata gd.Variant) {
-	class(self).SetItemMetadata(gd.Int(idx), metadata)
+func (self Instance) SetItemMetadata(idx int, metadata any) {
+	class(self).SetItemMetadata(gd.Int(idx), gd.NewVariant(metadata))
 }
 
 /*
@@ -115,8 +115,8 @@ func (self Instance) GetItemIndex(id int) int {
 /*
 Retrieves the metadata of an item. Metadata may be any type and can be used to store extra information about an item, such as an external string ID.
 */
-func (self Instance) GetItemMetadata(idx int) gd.Variant {
-	return gd.Variant(class(self).GetItemMetadata(gd.Int(idx)))
+func (self Instance) GetItemMetadata(idx int) any {
+	return any(class(self).GetItemMetadata(gd.Int(idx)).Interface())
 }
 
 /*
@@ -172,8 +172,8 @@ func (self Instance) GetSelectedId() int {
 /*
 Gets the metadata of the selected item. Metadata for items can be set using [method set_item_metadata].
 */
-func (self Instance) GetSelectedMetadata() gd.Variant {
-	return gd.Variant(class(self).GetSelectedMetadata())
+func (self Instance) GetSelectedMetadata() any {
+	return any(class(self).GetSelectedMetadata().Interface())
 }
 
 /*

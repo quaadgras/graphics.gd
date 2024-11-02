@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,7 +39,7 @@ If you need to encode to a different format or pipe a stream through third-party
 		//[/codeblock]
 		HandlesFile(path string) bool
 		//Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-		WriteBegin(movie_size gd.Vector2i, fps int, base_path string) error
+		WriteBegin(movie_size Vector2i.XY, fps int, base_path string) error
 		//Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
 		WriteFrame(frame_image objects.Image, audio_frame_block unsafe.Pointer) error
 		//Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [method SceneTree.quit] is called.
@@ -94,7 +95,7 @@ func (Instance) _handles_file(impl func(ptr unsafe.Pointer, path string) bool) (
 /*
 Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 */
-func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps int, base_path string) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.XY, fps int, base_path string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)

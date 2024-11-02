@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -67,12 +68,12 @@ func (self Instance) SetFeedIsActive(value bool) {
 	class(self).SetActive(value)
 }
 
-func (self Instance) FeedTransform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform())
+func (self Instance) FeedTransform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-func (self Instance) SetFeedTransform(value gd.Transform2D) {
-	class(self).SetTransform(value)
+func (self Instance) SetFeedTransform(value Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Transform2D(value))
 }
 
 /*

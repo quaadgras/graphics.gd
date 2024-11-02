@@ -11,6 +11,8 @@ import "grow.graphics/gd/objects/Light2D"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,19 +44,19 @@ func (self Instance) SetTexture(value objects.Texture2D) {
 	class(self).SetTexture(value)
 }
 
-func (self Instance) Offset() gd.Vector2 {
-	return gd.Vector2(class(self).GetTextureOffset())
+func (self Instance) Offset() Vector2.XY {
+	return Vector2.XY(class(self).GetTextureOffset())
 }
 
-func (self Instance) SetOffset(value gd.Vector2) {
-	class(self).SetTextureOffset(value)
+func (self Instance) SetOffset(value Vector2.XY) {
+	class(self).SetTextureOffset(gd.Vector2(value))
 }
 
-func (self Instance) TextureScale() float64 {
-	return float64(float64(class(self).GetTextureScale()))
+func (self Instance) TextureScale() Float.X {
+	return Float.X(Float.X(class(self).GetTextureScale()))
 }
 
-func (self Instance) SetTextureScale(value float64) {
+func (self Instance) SetTextureScale(value Float.X) {
 	class(self).SetTextureScale(gd.Float(value))
 }
 

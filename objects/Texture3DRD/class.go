@@ -33,11 +33,11 @@ func New() Instance {
 	return Instance{classdb.Texture3DRD(object)}
 }
 
-func (self Instance) TextureRdRid() gd.RID {
-	return gd.RID(class(self).GetTextureRdRid())
+func (self Instance) TextureRdRid() Resource.ID {
+	return Resource.ID(class(self).GetTextureRdRid())
 }
 
-func (self Instance) SetTextureRdRid(value gd.RID) {
+func (self Instance) SetTextureRdRid(value Resource.ID) {
 	class(self).SetTextureRdRid(value)
 }
 

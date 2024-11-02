@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -193,9 +194,9 @@ func IsMultiWindowEnabled() bool {
 Returns the actual scale of the editor UI ([code]1.0[/code] being 100% scale). This can be used to adjust position and dimensions of the UI added by plugins.
 [b]Note:[/b] This value is set via the [code]interface/editor/display_scale[/code] and [code]interface/editor/custom_display_scale[/code] editor settings. Editor must be restarted for changes to be properly applied.
 */
-func GetEditorScale() float64 {
+func GetEditorScale() Float.X {
 	once.Do(singleton)
-	return float64(float64(class(self).GetEditorScale()))
+	return Float.X(Float.X(class(self).GetEditorScale()))
 }
 
 /*
@@ -204,7 +205,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialog(dialog objects.Window) {
 	once.Do(singleton)
-	class(self).PopupDialog(dialog, gd.NewRect2i(0, 0, 0, 0))
+	class(self).PopupDialog(dialog, gd.Rect2i(gd.NewRect2i(0, 0, 0, 0)))
 }
 
 /*
@@ -213,7 +214,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialogCentered(dialog objects.Window) {
 	once.Do(singleton)
-	class(self).PopupDialogCentered(dialog, gd.Vector2i{0, 0})
+	class(self).PopupDialogCentered(dialog, gd.Vector2i(gd.Vector2i{0, 0}))
 }
 
 /*
@@ -231,7 +232,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 func PopupDialogCenteredClamped(dialog objects.Window) {
 	once.Do(singleton)
-	class(self).PopupDialogCenteredClamped(dialog, gd.Vector2i{0, 0}, gd.Float(0.75))
+	class(self).PopupDialogCenteredClamped(dialog, gd.Vector2i(gd.Vector2i{0, 0}), gd.Float(0.75))
 }
 
 /*
@@ -274,7 +275,7 @@ func _on_node_selected(node_path):
 */
 func PopupNodeSelector(callback gd.Callable) {
 	once.Do(singleton)
-	class(self).PopupNodeSelector(callback, ([1]gd.Array{}[0]))
+	class(self).PopupNodeSelector(callback, [1]gd.Array{}[0])
 }
 
 /*
@@ -297,7 +298,7 @@ func _on_property_selected(property_path):
 */
 func PopupPropertySelector(obj gd.Object, callback gd.Callable) {
 	once.Do(singleton)
-	class(self).PopupPropertySelector(obj, callback, gd.NewPackedInt32Slice(([1][]int32{}[0])))
+	class(self).PopupPropertySelector(obj, callback, gd.NewPackedInt32Slice([1][]int32{}[0]))
 }
 
 /*

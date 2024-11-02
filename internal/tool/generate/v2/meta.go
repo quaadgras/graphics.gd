@@ -117,6 +117,35 @@ func isBuiltin(s string) bool {
 	}
 }
 
+func importsVariant(class gdjson.Class, s string) string {
+	switch s {
+	case "Float", "float":
+		return "grow.graphics/gd/variant/Float"
+	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
+		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":
+		return "grow.graphics/gd/variant/" + s
+	case "NodePath":
+		return "grow.graphics/gd/variant/Path"
+	case "RID":
+		if class.Name == "Resource" {
+			return ""
+		}
+		return "grow.graphics/gd/objects/Resource"
+	case "Array", "Dictionary", "Signal":
+		return "grow.graphics/gd/variant/" + s
+	case "PackedVector2Array":
+		return "grow.graphics/gd/variant/Vector2"
+	case "PackedVector3Array":
+		return "grow.graphics/gd/variant/Vector3"
+	case "PackedVector4Array":
+		return "grow.graphics/gd/variant/Vector4"
+	case "PackedColorArray":
+		return "grow.graphics/gd/variant/Color"
+	default:
+		return ""
+	}
+}
+
 func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	maybeInternal := func(name string) string {
 		return "gd." + name
@@ -215,7 +244,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 }
 
-func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
+func (classDB ClassDB) convertTypeSimple(class gdjson.Class, meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
 		return "gd.Array" // Of[+ classDB.convertType("", meta, gdType) + "]"
@@ -224,10 +253,10 @@ func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
 	case "int", "Int":
 		return "int"
 	case "float", "Float":
-		return "float64"
+		return "Float.X"
 	case "bool", "Bool":
 		return "bool"
-	case "String", "StringName", "NodePath":
+	case "String", "StringName":
 		return "string"
 	case "PackedByteArray":
 		return "[]byte"
@@ -242,15 +271,62 @@ func (classDB ClassDB) convertTypeSimple(meta string, gdType string) string {
 	case "PackedFloat64Array":
 		return "[]float64"
 	case "PackedVector2Array":
-		return "[]gd.Vector2"
+		return "[]Vector2.XY"
 	case "PackedVector3Array":
-		return "[]gd.Vector3"
+		return "[]Vector3.XYZ"
 	case "PackedVector4Array":
-		return "[]gd.Vector4"
+		return "[]Vector4.XYZW"
 	case "PackedColorArray":
-		return "[]gd.Color"
+		return "[]Color.RGBA"
 	case "enum::Error":
 		return "error"
+	case "Vector2":
+		return "Vector2.XY"
+	case "Vector2i":
+		return "Vector2i.XY"
+	case "Rect2":
+		return "Rect2.PositionSize"
+	case "Rect2i":
+		return "Rect2i.PositionSize"
+	case "Vector3":
+		return "Vector3.XYZ"
+	case "Vector3i":
+		return "Vector3i.XYZ"
+	case "Transform2D":
+		return "Transform2D.OriginXY"
+	case "Vector4":
+		return "Vector4.XYZW"
+	case "Vector4i":
+		return "Vector4i.XYZW"
+	case "Plane":
+		return "Plane.NormalD"
+	case "Quaternion":
+		return "Quaternion.IJKX"
+	case "AABB":
+		return "AABB.PositionSize"
+	case "Basis":
+		return "Basis.XYZ"
+	case "Transform3D":
+		return "Transform3D.BasisOrigin"
+	case "Projection":
+		return "Projection.XYZW"
+	case "Color":
+		return "Color.RGBA"
+	case "NodePath":
+		return "Path.String"
+	case "RID":
+		if class.Name == "Resource" {
+			return "ID"
+		}
+		return "Resource.ID"
+	case "Signal":
+		return "Signal.Any"
+	case "Dictionary":
+		return "Dictionary.Any"
+	case "Array":
+		return "Array.Any"
+	case "Variant":
+		return "any"
 	default:
 		return classDB.convertType("", meta, gdType)
 	}

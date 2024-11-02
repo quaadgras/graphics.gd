@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,7 +34,7 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error {
-	return error(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), ([1]objects.TLSOptions{}[0])))
+	return error(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), [1]objects.TLSOptions{}[0]))
 }
 
 /*
@@ -118,8 +119,8 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 
 [/codeblock]
 */
-func (self Instance) GetResponseHeadersAsDictionary() gd.Dictionary {
-	return gd.Dictionary(class(self).GetResponseHeadersAsDictionary())
+func (self Instance) GetResponseHeadersAsDictionary() Dictionary.Any {
+	return Dictionary.Any(class(self).GetResponseHeadersAsDictionary())
 }
 
 /*
@@ -203,7 +204,7 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) QueryStringFromDict(fields gd.Dictionary) string {
+func (self Instance) QueryStringFromDict(fields Dictionary.Any) string {
 	return string(class(self).QueryStringFromDict(fields).String())
 }
 

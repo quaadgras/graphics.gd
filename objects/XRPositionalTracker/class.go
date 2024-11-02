@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRTracker"
+import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Vector3"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,22 +50,22 @@ func (self Instance) InvalidatePose(name string) {
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
-func (self Instance) SetPose(name string, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence classdb.XRPoseTrackingConfidence) {
-	class(self).SetPose(gd.NewStringName(name), transform, linear_velocity, angular_velocity, tracking_confidence)
+func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence classdb.XRPoseTrackingConfidence) {
+	class(self).SetPose(gd.NewStringName(name), gd.Transform3D(transform), gd.Vector3(linear_velocity), gd.Vector3(angular_velocity), tracking_confidence)
 }
 
 /*
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
-func (self Instance) GetInput(name string) gd.Variant {
-	return gd.Variant(class(self).GetInput(gd.NewStringName(name)))
+func (self Instance) GetInput(name string) any {
+	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
 }
 
 /*
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
-func (self Instance) SetInput(name string, value gd.Variant) {
-	class(self).SetInput(gd.NewStringName(name), value)
+func (self Instance) SetInput(name string, value any) {
+	class(self).SetInput(gd.NewStringName(name), gd.NewVariant(value))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -227,11 +231,11 @@ func (self Instance) OnButtonReleased(cb func(name string)) {
 	self[0].AsObject().Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnInputFloatChanged(cb func(name string, value float64)) {
+func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X)) {
 	self[0].AsObject().Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnInputVector2Changed(cb func(name string, vector gd.Vector2)) {
+func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.XY)) {
 	self[0].AsObject().Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
 }
 

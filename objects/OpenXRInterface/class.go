@@ -8,6 +8,10 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/XRInterface"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Array"
+import "grow.graphics/gd/variant/Quaternion"
+import "grow.graphics/gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,15 +50,15 @@ func (self Instance) SetActionSetActive(name string, active bool) {
 /*
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
-func (self Instance) GetActionSets() gd.Array {
-	return gd.Array(class(self).GetActionSets())
+func (self Instance) GetActionSets() Array.Any {
+	return Array.Any(class(self).GetActionSets())
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() gd.Array {
-	return gd.Array(class(self).GetAvailableDisplayRefreshRates())
+func (self Instance) GetAvailableDisplayRefreshRates() Array.Any {
+	return Array.Any(class(self).GetAvailableDisplayRefreshRates())
 }
 
 /*
@@ -88,36 +92,36 @@ func (self Instance) GetHandJointFlags(hand classdb.OpenXRInterfaceHand, joint c
 /*
 If handtracking is enabled, returns the rotation of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR.
 */
-func (self Instance) GetHandJointRotation(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) gd.Quaternion {
-	return gd.Quaternion(class(self).GetHandJointRotation(hand, joint))
+func (self Instance) GetHandJointRotation(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) Quaternion.IJKX {
+	return Quaternion.IJKX(class(self).GetHandJointRotation(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the position of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
-func (self Instance) GetHandJointPosition(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) gd.Vector3 {
-	return gd.Vector3(class(self).GetHandJointPosition(hand, joint))
+func (self Instance) GetHandJointPosition(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetHandJointPosition(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the radius of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is without worldscale applied!
 */
-func (self Instance) GetHandJointRadius(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) float64 {
-	return float64(float64(class(self).GetHandJointRadius(hand, joint)))
+func (self Instance) GetHandJointRadius(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) Float.X {
+	return Float.X(Float.X(class(self).GetHandJointRadius(hand, joint)))
 }
 
 /*
 If handtracking is enabled, returns the linear velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
-func (self Instance) GetHandJointLinearVelocity(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) gd.Vector3 {
-	return gd.Vector3(class(self).GetHandJointLinearVelocity(hand, joint))
+func (self Instance) GetHandJointLinearVelocity(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetHandJointLinearVelocity(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the angular velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D]!
 */
-func (self Instance) GetHandJointAngularVelocity(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) gd.Vector3 {
-	return gd.Vector3(class(self).GetHandJointAngularVelocity(hand, joint))
+func (self Instance) GetHandJointAngularVelocity(hand classdb.OpenXRInterfaceHand, joint classdb.OpenXRInterfaceHandJoints) Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetHandJointAngularVelocity(hand, joint))
 }
 
 /*
@@ -155,19 +159,19 @@ func New() Instance {
 	return Instance{classdb.OpenXRInterface(object)}
 }
 
-func (self Instance) DisplayRefreshRate() float64 {
-	return float64(float64(class(self).GetDisplayRefreshRate()))
+func (self Instance) DisplayRefreshRate() Float.X {
+	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
-func (self Instance) SetDisplayRefreshRate(value float64) {
+func (self Instance) SetDisplayRefreshRate(value Float.X) {
 	class(self).SetDisplayRefreshRate(gd.Float(value))
 }
 
-func (self Instance) RenderTargetSizeMultiplier() float64 {
-	return float64(float64(class(self).GetRenderTargetSizeMultiplier()))
+func (self Instance) RenderTargetSizeMultiplier() Float.X {
+	return Float.X(Float.X(class(self).GetRenderTargetSizeMultiplier()))
 }
 
-func (self Instance) SetRenderTargetSizeMultiplier(value float64) {
+func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) {
 	class(self).SetRenderTargetSizeMultiplier(gd.Float(value))
 }
 
@@ -187,19 +191,19 @@ func (self Instance) SetFoveationDynamic(value bool) {
 	class(self).SetFoveationDynamic(value)
 }
 
-func (self Instance) VrsMinRadius() float64 {
-	return float64(float64(class(self).GetVrsMinRadius()))
+func (self Instance) VrsMinRadius() Float.X {
+	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-func (self Instance) SetVrsMinRadius(value float64) {
+func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(gd.Float(value))
 }
 
-func (self Instance) VrsStrength() float64 {
-	return float64(float64(class(self).GetVrsStrength()))
+func (self Instance) VrsStrength() Float.X {
+	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-func (self Instance) SetVrsStrength(value float64) {
+func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(gd.Float(value))
 }
 
@@ -584,7 +588,7 @@ func (self Instance) OnPoseRecentered(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnRefreshRateChanged(cb func(refresh_rate float64)) {
+func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X)) {
 	self[0].AsObject().Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 

@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,12 +26,12 @@ Base class for audio streams. Audio streams are used for sound effects and music
 		//Override this method to customize the name assigned to this audio stream. Unused by the engine.
 		GetStreamName() string
 		//Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
-		GetLength() float64
+		GetLength() Float.X
 		//Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
 		IsMonophonic() bool
 		//Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
-		GetBpm() float64
+		GetBpm() Float.X
 		//Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 		GetBeatCount() int
@@ -73,7 +74,7 @@ func (Instance) _get_stream_name(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 /*
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
-func (Instance) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -96,7 +97,7 @@ func (Instance) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.Extens
 Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (Instance) _get_bpm(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_bpm(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -134,8 +135,8 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array) (cb 
 /*
 Returns the length of the audio stream in seconds.
 */
-func (self Instance) GetLength() float64 {
-	return float64(float64(class(self).GetLength()))
+func (self Instance) GetLength() Float.X {
+	return Float.X(Float.X(class(self).GetLength()))
 }
 
 /*

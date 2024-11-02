@@ -8,6 +8,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -110,19 +111,19 @@ func New() Instance {
 	return Instance{classdb.OpenXRActionMap(object)}
 }
 
-func (self Instance) ActionSets() gd.Array {
-	return gd.Array(class(self).GetActionSets())
+func (self Instance) ActionSets() Array.Any {
+	return Array.Any(class(self).GetActionSets())
 }
 
-func (self Instance) SetActionSets(value gd.Array) {
+func (self Instance) SetActionSets(value Array.Any) {
 	class(self).SetActionSets(value)
 }
 
-func (self Instance) InteractionProfiles() gd.Array {
-	return gd.Array(class(self).GetInteractionProfiles())
+func (self Instance) InteractionProfiles() Array.Any {
+	return Array.Any(class(self).GetInteractionProfiles())
 }
 
-func (self Instance) SetInteractionProfiles(value gd.Array) {
+func (self Instance) SetInteractionProfiles(value Array.Any) {
 	class(self).SetInteractionProfiles(value)
 }
 

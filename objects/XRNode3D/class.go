@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node3D"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,7 +51,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param duration_sec] is the duration of the pulse in seconds.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
-func (self Instance) TriggerHapticPulse(action_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) {
+func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
 	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 

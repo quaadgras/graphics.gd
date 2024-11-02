@@ -7,6 +7,10 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -46,20 +50,20 @@ func (self Instance) SetExclude(value gd.Array) {
 	class(self).SetExclude(value)
 }
 
-func (self Instance) Margin() float64 {
-	return float64(float64(class(self).GetMargin()))
+func (self Instance) Margin() Float.X {
+	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-func (self Instance) SetMargin(value float64) {
+func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(gd.Float(value))
 }
 
-func (self Instance) Motion() gd.Vector2 {
-	return gd.Vector2(class(self).GetMotion())
+func (self Instance) Motion() Vector2.XY {
+	return Vector2.XY(class(self).GetMotion())
 }
 
-func (self Instance) SetMotion(value gd.Vector2) {
-	class(self).SetMotion(value)
+func (self Instance) SetMotion(value Vector2.XY) {
+	class(self).SetMotion(gd.Vector2(value))
 }
 
 func (self Instance) Shape() objects.Resource {
@@ -70,20 +74,20 @@ func (self Instance) SetShape(value objects.Resource) {
 	class(self).SetShape(value)
 }
 
-func (self Instance) ShapeRid() gd.RID {
-	return gd.RID(class(self).GetShapeRid())
+func (self Instance) ShapeRid() Resource.ID {
+	return Resource.ID(class(self).GetShapeRid())
 }
 
-func (self Instance) SetShapeRid(value gd.RID) {
+func (self Instance) SetShapeRid(value Resource.ID) {
 	class(self).SetShapeRid(value)
 }
 
-func (self Instance) Transform() gd.Transform2D {
-	return gd.Transform2D(class(self).GetTransform())
+func (self Instance) Transform() Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-func (self Instance) SetTransform(value gd.Transform2D) {
-	class(self).SetTransform(value)
+func (self Instance) SetTransform(value Transform2D.OriginXY) {
+	class(self).SetTransform(gd.Transform2D(value))
 }
 
 func (self Instance) CollideWithBodies() bool {

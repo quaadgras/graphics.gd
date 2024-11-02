@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,8 +26,8 @@ type Instance [1]classdb.Gradient
 /*
 Adds the specified color to the gradient, with the specified offset.
 */
-func (self Instance) AddPoint(offset float64, color gd.Color) {
-	class(self).AddPoint(gd.Float(offset), color)
+func (self Instance) AddPoint(offset Float.X, color Color.RGBA) {
+	class(self).AddPoint(gd.Float(offset), gd.Color(color))
 }
 
 /*
@@ -38,15 +40,15 @@ func (self Instance) RemovePoint(point int) {
 /*
 Sets the offset for the gradient color at index [param point].
 */
-func (self Instance) SetOffset(point int, offset float64) {
+func (self Instance) SetOffset(point int, offset Float.X) {
 	class(self).SetOffset(gd.Int(point), gd.Float(offset))
 }
 
 /*
 Returns the offset of the gradient color at index [param point].
 */
-func (self Instance) GetOffset(point int) float64 {
-	return float64(float64(class(self).GetOffset(gd.Int(point))))
+func (self Instance) GetOffset(point int) Float.X {
+	return Float.X(Float.X(class(self).GetOffset(gd.Int(point))))
 }
 
 /*
@@ -60,22 +62,22 @@ func (self Instance) Reverse() {
 /*
 Sets the color of the gradient color at index [param point].
 */
-func (self Instance) SetColor(point int, color gd.Color) {
-	class(self).SetColor(gd.Int(point), color)
+func (self Instance) SetColor(point int, color Color.RGBA) {
+	class(self).SetColor(gd.Int(point), gd.Color(color))
 }
 
 /*
 Returns the color of the gradient color at index [param point].
 */
-func (self Instance) GetColor(point int) gd.Color {
-	return gd.Color(class(self).GetColor(gd.Int(point)))
+func (self Instance) GetColor(point int) Color.RGBA {
+	return Color.RGBA(class(self).GetColor(gd.Int(point)))
 }
 
 /*
 Returns the interpolated color specified by [param offset].
 */
-func (self Instance) Sample(offset float64) gd.Color {
-	return gd.Color(class(self).Sample(gd.Float(offset)))
+func (self Instance) Sample(offset Float.X) Color.RGBA {
+	return Color.RGBA(class(self).Sample(gd.Float(offset)))
 }
 
 /*
@@ -120,12 +122,12 @@ func (self Instance) SetOffsets(value []float32) {
 	class(self).SetOffsets(gd.NewPackedFloat32Slice(value))
 }
 
-func (self Instance) Colors() []gd.Color {
-	return []gd.Color(class(self).GetColors().AsSlice())
+func (self Instance) Colors() []Color.RGBA {
+	return []Color.RGBA(class(self).GetColors().AsSlice())
 }
 
-func (self Instance) SetColors(value []gd.Color) {
-	class(self).SetColors(gd.NewPackedColorSlice(value))
+func (self Instance) SetColors(value []Color.RGBA) {
+	class(self).SetColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
 }
 
 /*

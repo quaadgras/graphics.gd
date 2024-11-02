@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,11 +33,11 @@ func New() Instance {
 	return Instance{classdb.AudioEffectDelay(object)}
 }
 
-func (self Instance) Dry() float64 {
-	return float64(float64(class(self).GetDry()))
+func (self Instance) Dry() Float.X {
+	return Float.X(Float.X(class(self).GetDry()))
 }
 
-func (self Instance) SetDry(value float64) {
+func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(gd.Float(value))
 }
 
@@ -48,27 +49,27 @@ func (self Instance) SetTap1Active(value bool) {
 	class(self).SetTap1Active(value)
 }
 
-func (self Instance) Tap1DelayMs() float64 {
-	return float64(float64(class(self).GetTap1DelayMs()))
+func (self Instance) Tap1DelayMs() Float.X {
+	return Float.X(Float.X(class(self).GetTap1DelayMs()))
 }
 
-func (self Instance) SetTap1DelayMs(value float64) {
+func (self Instance) SetTap1DelayMs(value Float.X) {
 	class(self).SetTap1DelayMs(gd.Float(value))
 }
 
-func (self Instance) Tap1LevelDb() float64 {
-	return float64(float64(class(self).GetTap1LevelDb()))
+func (self Instance) Tap1LevelDb() Float.X {
+	return Float.X(Float.X(class(self).GetTap1LevelDb()))
 }
 
-func (self Instance) SetTap1LevelDb(value float64) {
+func (self Instance) SetTap1LevelDb(value Float.X) {
 	class(self).SetTap1LevelDb(gd.Float(value))
 }
 
-func (self Instance) Tap1Pan() float64 {
-	return float64(float64(class(self).GetTap1Pan()))
+func (self Instance) Tap1Pan() Float.X {
+	return Float.X(Float.X(class(self).GetTap1Pan()))
 }
 
-func (self Instance) SetTap1Pan(value float64) {
+func (self Instance) SetTap1Pan(value Float.X) {
 	class(self).SetTap1Pan(gd.Float(value))
 }
 
@@ -80,27 +81,27 @@ func (self Instance) SetTap2Active(value bool) {
 	class(self).SetTap2Active(value)
 }
 
-func (self Instance) Tap2DelayMs() float64 {
-	return float64(float64(class(self).GetTap2DelayMs()))
+func (self Instance) Tap2DelayMs() Float.X {
+	return Float.X(Float.X(class(self).GetTap2DelayMs()))
 }
 
-func (self Instance) SetTap2DelayMs(value float64) {
+func (self Instance) SetTap2DelayMs(value Float.X) {
 	class(self).SetTap2DelayMs(gd.Float(value))
 }
 
-func (self Instance) Tap2LevelDb() float64 {
-	return float64(float64(class(self).GetTap2LevelDb()))
+func (self Instance) Tap2LevelDb() Float.X {
+	return Float.X(Float.X(class(self).GetTap2LevelDb()))
 }
 
-func (self Instance) SetTap2LevelDb(value float64) {
+func (self Instance) SetTap2LevelDb(value Float.X) {
 	class(self).SetTap2LevelDb(gd.Float(value))
 }
 
-func (self Instance) Tap2Pan() float64 {
-	return float64(float64(class(self).GetTap2Pan()))
+func (self Instance) Tap2Pan() Float.X {
+	return Float.X(Float.X(class(self).GetTap2Pan()))
 }
 
-func (self Instance) SetTap2Pan(value float64) {
+func (self Instance) SetTap2Pan(value Float.X) {
 	class(self).SetTap2Pan(gd.Float(value))
 }
 
@@ -112,27 +113,27 @@ func (self Instance) SetFeedbackActive(value bool) {
 	class(self).SetFeedbackActive(value)
 }
 
-func (self Instance) FeedbackDelayMs() float64 {
-	return float64(float64(class(self).GetFeedbackDelayMs()))
+func (self Instance) FeedbackDelayMs() Float.X {
+	return Float.X(Float.X(class(self).GetFeedbackDelayMs()))
 }
 
-func (self Instance) SetFeedbackDelayMs(value float64) {
+func (self Instance) SetFeedbackDelayMs(value Float.X) {
 	class(self).SetFeedbackDelayMs(gd.Float(value))
 }
 
-func (self Instance) FeedbackLevelDb() float64 {
-	return float64(float64(class(self).GetFeedbackLevelDb()))
+func (self Instance) FeedbackLevelDb() Float.X {
+	return Float.X(Float.X(class(self).GetFeedbackLevelDb()))
 }
 
-func (self Instance) SetFeedbackLevelDb(value float64) {
+func (self Instance) SetFeedbackLevelDb(value Float.X) {
 	class(self).SetFeedbackLevelDb(gd.Float(value))
 }
 
-func (self Instance) FeedbackLowpass() float64 {
-	return float64(float64(class(self).GetFeedbackLowpass()))
+func (self Instance) FeedbackLowpass() Float.X {
+	return Float.X(Float.X(class(self).GetFeedbackLowpass()))
 }
 
-func (self Instance) SetFeedbackLowpass(value float64) {
+func (self Instance) SetFeedbackLowpass(value Float.X) {
 	class(self).SetFeedbackLowpass(gd.Float(value))
 }
 

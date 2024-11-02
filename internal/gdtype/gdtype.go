@@ -47,17 +47,22 @@ func (name Name) End(val string) string {
 }
 
 func (name Name) ConvertToSimple(val string) string {
+	if strings.HasPrefix(val, "(") {
+		val = strings.TrimPrefix(val, "(")
+		val = strings.TrimSuffix(val, ")")
+	}
 	switch name {
 	case "gd.String":
 		return fmt.Sprintf("gd.NewString(%v)", val)
 	case "gd.StringName":
 		return fmt.Sprintf("gd.NewStringName(%v)", val)
 	case "gd.NodePath":
-		return fmt.Sprintf("gd.NewString(%v).NodePath()", val)
-	case "gd.Int":
-		return fmt.Sprintf("gd.Int(%v)", val)
-	case "gd.Float":
-		return fmt.Sprintf("gd.Float(%v)", val)
+		return fmt.Sprintf("gd.NewString(string(%v)).NodePath()", val)
+	case "gd.Int", "gd.Float", "gd.Vector2", "gd.Vector2i", "gd.Rect2", "gd.Rect2i",
+		"gd.Vector3", "gd.Vector3i", "gd.Transform2D", "gd.Quaternion",
+		"gd.AABB", "gd.Color", "gd.Plane", "gd.Basis", "gd.Transform3D",
+		"gd.Vector4", "gd.Vector4i":
+		return fmt.Sprintf("%s(%v)", name, val)
 	case "gd.PackedByteArray":
 		return fmt.Sprintf("gd.NewPackedByteSlice(%v)", val)
 	case "gd.PackedStringArray":
@@ -71,13 +76,27 @@ func (name Name) ConvertToSimple(val string) string {
 	case "gd.PackedFloat64Array":
 		return fmt.Sprintf("gd.NewPackedFloat64Slice(%v)", val)
 	case "gd.PackedVector2Array":
-		return fmt.Sprintf("gd.NewPackedVector2Slice(%v)", val)
+		if val == "[1][]Vector2.XY{}[0]" {
+			return "gd.NewPackedVector2Slice(nil)"
+		}
+		return fmt.Sprintf("gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&%v)))", val)
 	case "gd.PackedVector3Array":
-		return fmt.Sprintf("gd.NewPackedVector3Slice(%v)", val)
+		if val == "[1][]Vector3.XYZ{}[0]" {
+			return "gd.NewPackedVector3Slice(nil)"
+		}
+		return fmt.Sprintf("gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&%v)))", val)
 	case "gd.PackedVector4Array":
-		return fmt.Sprintf("gd.NewPackedVector4Slice(%v)", val)
+		if val == "[1][]Vector4.XYZW{}[0]" {
+			return "gd.NewPackedVector4Slice(nil)"
+		}
+		return fmt.Sprintf("gd.NewPackedVector4Slice(*(*[]gd.Vector4)(unsafe.Pointer(&%v)))", val)
 	case "gd.PackedColorArray":
-		return fmt.Sprintf("gd.NewPackedColorSlice(%v)", val)
+		if val == "[1][]Color.RGBA{}[0]" {
+			return "gd.NewPackedColorSlice(nil)"
+		}
+		return fmt.Sprintf("gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&%v)))", val)
+	case "gd.Variant":
+		return fmt.Sprintf("gd.NewVariant(%v)", val)
 	default:
 		return val
 	}
@@ -90,7 +109,7 @@ func (name Name) ConvertToGo(val string) string {
 	case "gd.Int":
 		return fmt.Sprintf("int(%v)", val)
 	case "gd.Float":
-		return fmt.Sprintf("float64(%v)", val)
+		return fmt.Sprintf("Float.X(%v)", val)
 	case "gd.PackedByteArray":
 		return fmt.Sprintf("%v.Bytes()", val)
 	case "gd.PackedStringArray":
@@ -98,6 +117,8 @@ func (name Name) ConvertToGo(val string) string {
 	case "gd.PackedInt32Array", "gd.PackedInt64Array", "gd.PackedFloat32Array", "gd.PackedFloat64Array",
 		"gd.PackedVector2Array", "gd.PackedVector3Array", "gd.PackedVector4Array", "gd.PackedColorArray":
 		return fmt.Sprintf("%v.AsSlice()", val)
+	case "gd.Variant":
+		return fmt.Sprintf("%v.Interface()", val)
 	default:
 		return val
 	}

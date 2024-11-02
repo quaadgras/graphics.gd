@@ -7,6 +7,15 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Transform2D"
+import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Vector2"
+import "grow.graphics/gd/variant/Rect2"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -104,56 +113,56 @@ func (self Instance) TagToName(tag int) string {
 /*
 Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
 */
-func (self Instance) Has(rid gd.RID) bool {
+func (self Instance) Has(rid Resource.ID) bool {
 	return bool(class(self).Has(rid))
 }
 
 /*
 Frees an object created by this [TextServer].
 */
-func (self Instance) FreeRid(rid gd.RID) {
+func (self Instance) FreeRid(rid Resource.ID) {
 	class(self).FreeRid(rid)
 }
 
 /*
 Creates a new, empty font cache entry resource. To free the resulting resource, use the [method free_rid] method.
 */
-func (self Instance) CreateFont() gd.RID {
-	return gd.RID(class(self).CreateFont())
+func (self Instance) CreateFont() Resource.ID {
+	return Resource.ID(class(self).CreateFont())
 }
 
 /*
 Creates a new variation existing font which is reusing the same glyph cache and font data. To free the resulting resource, use the [method free_rid] method.
 */
-func (self Instance) CreateFontLinkedVariation(font_rid gd.RID) gd.RID {
-	return gd.RID(class(self).CreateFontLinkedVariation(font_rid))
+func (self Instance) CreateFontLinkedVariation(font_rid Resource.ID) Resource.ID {
+	return Resource.ID(class(self).CreateFontLinkedVariation(font_rid))
 }
 
 /*
 Sets font source data, e.g contents of the dynamic font source file.
 */
-func (self Instance) FontSetData(font_rid gd.RID, data []byte) {
+func (self Instance) FontSetData(font_rid Resource.ID, data []byte) {
 	class(self).FontSetData(font_rid, gd.NewPackedByteSlice(data))
 }
 
 /*
 Sets an active face index in the TrueType / OpenType collection.
 */
-func (self Instance) FontSetFaceIndex(font_rid gd.RID, face_index int) {
+func (self Instance) FontSetFaceIndex(font_rid Resource.ID, face_index int) {
 	class(self).FontSetFaceIndex(font_rid, gd.Int(face_index))
 }
 
 /*
 Returns an active face index in the TrueType / OpenType collection.
 */
-func (self Instance) FontGetFaceIndex(font_rid gd.RID) int {
+func (self Instance) FontGetFaceIndex(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetFaceIndex(font_rid)))
 }
 
 /*
 Returns number of faces in the TrueType / OpenType collection.
 */
-func (self Instance) FontGetFaceCount(font_rid gd.RID) int {
+func (self Instance) FontGetFaceCount(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetFaceCount(font_rid)))
 }
 
@@ -161,49 +170,49 @@ func (self Instance) FontGetFaceCount(font_rid gd.RID) int {
 Sets the font style flags, see [enum FontStyle].
 [b]Note:[/b] This value is used for font matching only and will not affect font rendering. Use [method font_set_face_index], [method font_set_variation_coordinates], [method font_set_embolden], or [method font_set_transform] instead.
 */
-func (self Instance) FontSetStyle(font_rid gd.RID, style classdb.TextServerFontStyle) {
+func (self Instance) FontSetStyle(font_rid Resource.ID, style classdb.TextServerFontStyle) {
 	class(self).FontSetStyle(font_rid, style)
 }
 
 /*
 Returns font style flags, see [enum FontStyle].
 */
-func (self Instance) FontGetStyle(font_rid gd.RID) classdb.TextServerFontStyle {
+func (self Instance) FontGetStyle(font_rid Resource.ID) classdb.TextServerFontStyle {
 	return classdb.TextServerFontStyle(class(self).FontGetStyle(font_rid))
 }
 
 /*
 Sets the font family name.
 */
-func (self Instance) FontSetName(font_rid gd.RID, name string) {
+func (self Instance) FontSetName(font_rid Resource.ID, name string) {
 	class(self).FontSetName(font_rid, gd.NewString(name))
 }
 
 /*
 Returns font family name.
 */
-func (self Instance) FontGetName(font_rid gd.RID) string {
+func (self Instance) FontGetName(font_rid Resource.ID) string {
 	return string(class(self).FontGetName(font_rid).String())
 }
 
 /*
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (self Instance) FontGetOtNameStrings(font_rid gd.RID) gd.Dictionary {
-	return gd.Dictionary(class(self).FontGetOtNameStrings(font_rid))
+func (self Instance) FontGetOtNameStrings(font_rid Resource.ID) Dictionary.Any {
+	return Dictionary.Any(class(self).FontGetOtNameStrings(font_rid))
 }
 
 /*
 Sets the font style name.
 */
-func (self Instance) FontSetStyleName(font_rid gd.RID, name string) {
+func (self Instance) FontSetStyleName(font_rid Resource.ID, name string) {
 	class(self).FontSetStyleName(font_rid, gd.NewString(name))
 }
 
 /*
 Returns font style name.
 */
-func (self Instance) FontGetStyleName(font_rid gd.RID) string {
+func (self Instance) FontGetStyleName(font_rid Resource.ID) string {
 	return string(class(self).FontGetStyleName(font_rid).String())
 }
 
@@ -211,14 +220,14 @@ func (self Instance) FontGetStyleName(font_rid gd.RID) string {
 Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 [b]Note:[/b] This value is used for font matching only and will not affect font rendering. Use [method font_set_face_index], [method font_set_variation_coordinates], or [method font_set_embolden] instead.
 */
-func (self Instance) FontSetWeight(font_rid gd.RID, weight int) {
+func (self Instance) FontSetWeight(font_rid Resource.ID, weight int) {
 	class(self).FontSetWeight(font_rid, gd.Int(weight))
 }
 
 /*
 Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (self Instance) FontGetWeight(font_rid gd.RID) int {
+func (self Instance) FontGetWeight(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetWeight(font_rid)))
 }
 
@@ -226,56 +235,56 @@ func (self Instance) FontGetWeight(font_rid gd.RID) int {
 Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 [b]Note:[/b] This value is used for font matching only and will not affect font rendering. Use [method font_set_face_index], [method font_set_variation_coordinates], or [method font_set_transform] instead.
 */
-func (self Instance) FontSetStretch(font_rid gd.RID, weight int) {
+func (self Instance) FontSetStretch(font_rid Resource.ID, weight int) {
 	class(self).FontSetStretch(font_rid, gd.Int(weight))
 }
 
 /*
 Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (self Instance) FontGetStretch(font_rid gd.RID) int {
+func (self Instance) FontGetStretch(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetStretch(font_rid)))
 }
 
 /*
 Sets font anti-aliasing mode.
 */
-func (self Instance) FontSetAntialiasing(font_rid gd.RID, antialiasing classdb.TextServerFontAntialiasing) {
+func (self Instance) FontSetAntialiasing(font_rid Resource.ID, antialiasing classdb.TextServerFontAntialiasing) {
 	class(self).FontSetAntialiasing(font_rid, antialiasing)
 }
 
 /*
 Returns font anti-aliasing mode.
 */
-func (self Instance) FontGetAntialiasing(font_rid gd.RID) classdb.TextServerFontAntialiasing {
+func (self Instance) FontGetAntialiasing(font_rid Resource.ID) classdb.TextServerFontAntialiasing {
 	return classdb.TextServerFontAntialiasing(class(self).FontGetAntialiasing(font_rid))
 }
 
 /*
 If set to [code]true[/code], embedded font bitmap loading is disabled (bitmap-only and color fonts ignore this property).
 */
-func (self Instance) FontSetDisableEmbeddedBitmaps(font_rid gd.RID, disable_embedded_bitmaps bool) {
+func (self Instance) FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool) {
 	class(self).FontSetDisableEmbeddedBitmaps(font_rid, disable_embedded_bitmaps)
 }
 
 /*
 Returns whether the font's embedded bitmap loading is disabled.
 */
-func (self Instance) FontGetDisableEmbeddedBitmaps(font_rid gd.RID) bool {
+func (self Instance) FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) bool {
 	return bool(class(self).FontGetDisableEmbeddedBitmaps(font_rid))
 }
 
 /*
 If set to [code]true[/code] font texture mipmap generation is enabled.
 */
-func (self Instance) FontSetGenerateMipmaps(font_rid gd.RID, generate_mipmaps bool) {
+func (self Instance) FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool) {
 	class(self).FontSetGenerateMipmaps(font_rid, generate_mipmaps)
 }
 
 /*
 Returns [code]true[/code] if font texture mipmap generation is enabled.
 */
-func (self Instance) FontGetGenerateMipmaps(font_rid gd.RID) bool {
+func (self Instance) FontGetGenerateMipmaps(font_rid Resource.ID) bool {
 	return bool(class(self).FontGetGenerateMipmaps(font_rid))
 }
 
@@ -283,465 +292,465 @@ func (self Instance) FontGetGenerateMipmaps(font_rid gd.RID) bool {
 If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
 [b]Note:[/b] MSDF font rendering does not render glyphs with overlapping shapes correctly. Overlapping shapes are not valid per the OpenType standard, but are still commonly found in many font files, especially those converted by Google Fonts. To avoid issues with overlapping glyphs, consider downloading the font file directly from the type foundry instead of relying on Google Fonts.
 */
-func (self Instance) FontSetMultichannelSignedDistanceField(font_rid gd.RID, msdf bool) {
+func (self Instance) FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool) {
 	class(self).FontSetMultichannelSignedDistanceField(font_rid, msdf)
 }
 
 /*
 Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 */
-func (self Instance) FontIsMultichannelSignedDistanceField(font_rid gd.RID) bool {
+func (self Instance) FontIsMultichannelSignedDistanceField(font_rid Resource.ID) bool {
 	return bool(class(self).FontIsMultichannelSignedDistanceField(font_rid))
 }
 
 /*
 Sets the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (self Instance) FontSetMsdfPixelRange(font_rid gd.RID, msdf_pixel_range int) {
+func (self Instance) FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int) {
 	class(self).FontSetMsdfPixelRange(font_rid, gd.Int(msdf_pixel_range))
 }
 
 /*
 Returns the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (self Instance) FontGetMsdfPixelRange(font_rid gd.RID) int {
+func (self Instance) FontGetMsdfPixelRange(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetMsdfPixelRange(font_rid)))
 }
 
 /*
 Sets source font size used to generate MSDF textures.
 */
-func (self Instance) FontSetMsdfSize(font_rid gd.RID, msdf_size int) {
+func (self Instance) FontSetMsdfSize(font_rid Resource.ID, msdf_size int) {
 	class(self).FontSetMsdfSize(font_rid, gd.Int(msdf_size))
 }
 
 /*
 Returns source font size used to generate MSDF textures.
 */
-func (self Instance) FontGetMsdfSize(font_rid gd.RID) int {
+func (self Instance) FontGetMsdfSize(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetMsdfSize(font_rid)))
 }
 
 /*
 Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
 */
-func (self Instance) FontSetFixedSize(font_rid gd.RID, fixed_size int) {
+func (self Instance) FontSetFixedSize(font_rid Resource.ID, fixed_size int) {
 	class(self).FontSetFixedSize(font_rid, gd.Int(fixed_size))
 }
 
 /*
 Returns bitmap font fixed size.
 */
-func (self Instance) FontGetFixedSize(font_rid gd.RID) int {
+func (self Instance) FontGetFixedSize(font_rid Resource.ID) int {
 	return int(int(class(self).FontGetFixedSize(font_rid)))
 }
 
 /*
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
-func (self Instance) FontSetFixedSizeScaleMode(font_rid gd.RID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode) {
+func (self Instance) FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode classdb.TextServerFixedSizeScaleMode) {
 	class(self).FontSetFixedSizeScaleMode(font_rid, fixed_size_scale_mode)
 }
 
 /*
 Returns bitmap font scaling mode.
 */
-func (self Instance) FontGetFixedSizeScaleMode(font_rid gd.RID) classdb.TextServerFixedSizeScaleMode {
+func (self Instance) FontGetFixedSizeScaleMode(font_rid Resource.ID) classdb.TextServerFixedSizeScaleMode {
 	return classdb.TextServerFixedSizeScaleMode(class(self).FontGetFixedSizeScaleMode(font_rid))
 }
 
 /*
 If set to [code]true[/code], system fonts can be automatically used as fallbacks.
 */
-func (self Instance) FontSetAllowSystemFallback(font_rid gd.RID, allow_system_fallback bool) {
+func (self Instance) FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool) {
 	class(self).FontSetAllowSystemFallback(font_rid, allow_system_fallback)
 }
 
 /*
 Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
 */
-func (self Instance) FontIsAllowSystemFallback(font_rid gd.RID) bool {
+func (self Instance) FontIsAllowSystemFallback(font_rid Resource.ID) bool {
 	return bool(class(self).FontIsAllowSystemFallback(font_rid))
 }
 
 /*
 If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
 */
-func (self Instance) FontSetForceAutohinter(font_rid gd.RID, force_autohinter bool) {
+func (self Instance) FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool) {
 	class(self).FontSetForceAutohinter(font_rid, force_autohinter)
 }
 
 /*
 Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting. Used by dynamic fonts only.
 */
-func (self Instance) FontIsForceAutohinter(font_rid gd.RID) bool {
+func (self Instance) FontIsForceAutohinter(font_rid Resource.ID) bool {
 	return bool(class(self).FontIsForceAutohinter(font_rid))
 }
 
 /*
 Sets font hinting mode. Used by dynamic fonts only.
 */
-func (self Instance) FontSetHinting(font_rid gd.RID, hinting classdb.TextServerHinting) {
+func (self Instance) FontSetHinting(font_rid Resource.ID, hinting classdb.TextServerHinting) {
 	class(self).FontSetHinting(font_rid, hinting)
 }
 
 /*
 Returns the font hinting mode. Used by dynamic fonts only.
 */
-func (self Instance) FontGetHinting(font_rid gd.RID) classdb.TextServerHinting {
+func (self Instance) FontGetHinting(font_rid Resource.ID) classdb.TextServerHinting {
 	return classdb.TextServerHinting(class(self).FontGetHinting(font_rid))
 }
 
 /*
 Sets font subpixel glyph positioning mode.
 */
-func (self Instance) FontSetSubpixelPositioning(font_rid gd.RID, subpixel_positioning classdb.TextServerSubpixelPositioning) {
+func (self Instance) FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning classdb.TextServerSubpixelPositioning) {
 	class(self).FontSetSubpixelPositioning(font_rid, subpixel_positioning)
 }
 
 /*
 Returns font subpixel glyph positioning mode.
 */
-func (self Instance) FontGetSubpixelPositioning(font_rid gd.RID) classdb.TextServerSubpixelPositioning {
+func (self Instance) FontGetSubpixelPositioning(font_rid Resource.ID) classdb.TextServerSubpixelPositioning {
 	return classdb.TextServerSubpixelPositioning(class(self).FontGetSubpixelPositioning(font_rid))
 }
 
 /*
 Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (self Instance) FontSetEmbolden(font_rid gd.RID, strength float64) {
+func (self Instance) FontSetEmbolden(font_rid Resource.ID, strength Float.X) {
 	class(self).FontSetEmbolden(font_rid, gd.Float(strength))
 }
 
 /*
 Returns font embolden strength.
 */
-func (self Instance) FontGetEmbolden(font_rid gd.RID) float64 {
-	return float64(float64(class(self).FontGetEmbolden(font_rid)))
+func (self Instance) FontGetEmbolden(font_rid Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).FontGetEmbolden(font_rid)))
 }
 
 /*
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (self Instance) FontSetSpacing(font_rid gd.RID, spacing classdb.TextServerSpacingType, value int) {
+func (self Instance) FontSetSpacing(font_rid Resource.ID, spacing classdb.TextServerSpacingType, value int) {
 	class(self).FontSetSpacing(font_rid, spacing, gd.Int(value))
 }
 
 /*
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (self Instance) FontGetSpacing(font_rid gd.RID, spacing classdb.TextServerSpacingType) int {
+func (self Instance) FontGetSpacing(font_rid Resource.ID, spacing classdb.TextServerSpacingType) int {
 	return int(int(class(self).FontGetSpacing(font_rid, spacing)))
 }
 
 /*
 Sets extra baseline offset (as a fraction of font height).
 */
-func (self Instance) FontSetBaselineOffset(font_rid gd.RID, baseline_offset float64) {
+func (self Instance) FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X) {
 	class(self).FontSetBaselineOffset(font_rid, gd.Float(baseline_offset))
 }
 
 /*
 Returns extra baseline offset (as a fraction of font height).
 */
-func (self Instance) FontGetBaselineOffset(font_rid gd.RID) float64 {
-	return float64(float64(class(self).FontGetBaselineOffset(font_rid)))
+func (self Instance) FontGetBaselineOffset(font_rid Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).FontGetBaselineOffset(font_rid)))
 }
 
 /*
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 For example, to simulate italic typeface by slanting, apply the following transform [code]Transform2D(1.0, slant, 0.0, 1.0, 0.0, 0.0)[/code].
 */
-func (self Instance) FontSetTransform(font_rid gd.RID, transform gd.Transform2D) {
-	class(self).FontSetTransform(font_rid, transform)
+func (self Instance) FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY) {
+	class(self).FontSetTransform(font_rid, gd.Transform2D(transform))
 }
 
 /*
 Returns 2D transform applied to the font outlines.
 */
-func (self Instance) FontGetTransform(font_rid gd.RID) gd.Transform2D {
-	return gd.Transform2D(class(self).FontGetTransform(font_rid))
+func (self Instance) FontGetTransform(font_rid Resource.ID) Transform2D.OriginXY {
+	return Transform2D.OriginXY(class(self).FontGetTransform(font_rid))
 }
 
 /*
 Sets variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates gd.Dictionary) {
+func (self Instance) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any) {
 	class(self).FontSetVariationCoordinates(font_rid, variation_coordinates)
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontGetVariationCoordinates(font_rid gd.RID) gd.Dictionary {
-	return gd.Dictionary(class(self).FontGetVariationCoordinates(font_rid))
+func (self Instance) FontGetVariationCoordinates(font_rid Resource.ID) Dictionary.Any {
+	return Dictionary.Any(class(self).FontGetVariationCoordinates(font_rid))
 }
 
 /*
 Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (self Instance) FontSetOversampling(font_rid gd.RID, oversampling float64) {
+func (self Instance) FontSetOversampling(font_rid Resource.ID, oversampling Float.X) {
 	class(self).FontSetOversampling(font_rid, gd.Float(oversampling))
 }
 
 /*
 Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (self Instance) FontGetOversampling(font_rid gd.RID) float64 {
-	return float64(float64(class(self).FontGetOversampling(font_rid)))
+func (self Instance) FontGetOversampling(font_rid Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).FontGetOversampling(font_rid)))
 }
 
 /*
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (self Instance) FontGetSizeCacheList(font_rid gd.RID) gd.Array {
+func (self Instance) FontGetSizeCacheList(font_rid Resource.ID) gd.Array {
 	return gd.Array(class(self).FontGetSizeCacheList(font_rid))
 }
 
 /*
 Removes all font sizes from the cache entry.
 */
-func (self Instance) FontClearSizeCache(font_rid gd.RID) {
+func (self Instance) FontClearSizeCache(font_rid Resource.ID) {
 	class(self).FontClearSizeCache(font_rid)
 }
 
 /*
 Removes specified font size from the cache entry.
 */
-func (self Instance) FontRemoveSizeCache(font_rid gd.RID, size gd.Vector2i) {
-	class(self).FontRemoveSizeCache(font_rid, size)
+func (self Instance) FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY) {
+	class(self).FontRemoveSizeCache(font_rid, gd.Vector2i(size))
 }
 
 /*
 Sets the font ascent (number of pixels above the baseline).
 */
-func (self Instance) FontSetAscent(font_rid gd.RID, size int, ascent float64) {
+func (self Instance) FontSetAscent(font_rid Resource.ID, size int, ascent Float.X) {
 	class(self).FontSetAscent(font_rid, gd.Int(size), gd.Float(ascent))
 }
 
 /*
 Returns the font ascent (number of pixels above the baseline).
 */
-func (self Instance) FontGetAscent(font_rid gd.RID, size int) float64 {
-	return float64(float64(class(self).FontGetAscent(font_rid, gd.Int(size))))
+func (self Instance) FontGetAscent(font_rid Resource.ID, size int) Float.X {
+	return Float.X(Float.X(class(self).FontGetAscent(font_rid, gd.Int(size))))
 }
 
 /*
 Sets the font descent (number of pixels below the baseline).
 */
-func (self Instance) FontSetDescent(font_rid gd.RID, size int, descent float64) {
+func (self Instance) FontSetDescent(font_rid Resource.ID, size int, descent Float.X) {
 	class(self).FontSetDescent(font_rid, gd.Int(size), gd.Float(descent))
 }
 
 /*
 Returns the font descent (number of pixels below the baseline).
 */
-func (self Instance) FontGetDescent(font_rid gd.RID, size int) float64 {
-	return float64(float64(class(self).FontGetDescent(font_rid, gd.Int(size))))
+func (self Instance) FontGetDescent(font_rid Resource.ID, size int) Float.X {
+	return Float.X(Float.X(class(self).FontGetDescent(font_rid, gd.Int(size))))
 }
 
 /*
 Sets pixel offset of the underline below the baseline.
 */
-func (self Instance) FontSetUnderlinePosition(font_rid gd.RID, size int, underline_position float64) {
+func (self Instance) FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X) {
 	class(self).FontSetUnderlinePosition(font_rid, gd.Int(size), gd.Float(underline_position))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) FontGetUnderlinePosition(font_rid gd.RID, size int) float64 {
-	return float64(float64(class(self).FontGetUnderlinePosition(font_rid, gd.Int(size))))
+func (self Instance) FontGetUnderlinePosition(font_rid Resource.ID, size int) Float.X {
+	return Float.X(Float.X(class(self).FontGetUnderlinePosition(font_rid, gd.Int(size))))
 }
 
 /*
 Sets thickness of the underline in pixels.
 */
-func (self Instance) FontSetUnderlineThickness(font_rid gd.RID, size int, underline_thickness float64) {
+func (self Instance) FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X) {
 	class(self).FontSetUnderlineThickness(font_rid, gd.Int(size), gd.Float(underline_thickness))
 }
 
 /*
 Returns thickness of the underline in pixels.
 */
-func (self Instance) FontGetUnderlineThickness(font_rid gd.RID, size int) float64 {
-	return float64(float64(class(self).FontGetUnderlineThickness(font_rid, gd.Int(size))))
+func (self Instance) FontGetUnderlineThickness(font_rid Resource.ID, size int) Float.X {
+	return Float.X(Float.X(class(self).FontGetUnderlineThickness(font_rid, gd.Int(size))))
 }
 
 /*
 Sets scaling factor of the color bitmap font.
 */
-func (self Instance) FontSetScale(font_rid gd.RID, size int, scale float64) {
+func (self Instance) FontSetScale(font_rid Resource.ID, size int, scale Float.X) {
 	class(self).FontSetScale(font_rid, gd.Int(size), gd.Float(scale))
 }
 
 /*
 Returns scaling factor of the color bitmap font.
 */
-func (self Instance) FontGetScale(font_rid gd.RID, size int) float64 {
-	return float64(float64(class(self).FontGetScale(font_rid, gd.Int(size))))
+func (self Instance) FontGetScale(font_rid Resource.ID, size int) Float.X {
+	return Float.X(Float.X(class(self).FontGetScale(font_rid, gd.Int(size))))
 }
 
 /*
 Returns number of textures used by font cache entry.
 */
-func (self Instance) FontGetTextureCount(font_rid gd.RID, size gd.Vector2i) int {
-	return int(int(class(self).FontGetTextureCount(font_rid, size)))
+func (self Instance) FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) int {
+	return int(int(class(self).FontGetTextureCount(font_rid, gd.Vector2i(size))))
 }
 
 /*
 Removes all textures from font cache entry.
 [b]Note:[/b] This function will not remove glyphs associated with the texture, use [method font_remove_glyph] to remove them manually.
 */
-func (self Instance) FontClearTextures(font_rid gd.RID, size gd.Vector2i) {
-	class(self).FontClearTextures(font_rid, size)
+func (self Instance) FontClearTextures(font_rid Resource.ID, size Vector2i.XY) {
+	class(self).FontClearTextures(font_rid, gd.Vector2i(size))
 }
 
 /*
 Removes specified texture from the cache entry.
 [b]Note:[/b] This function will not remove glyphs associated with the texture, remove them manually, using [method font_remove_glyph].
 */
-func (self Instance) FontRemoveTexture(font_rid gd.RID, size gd.Vector2i, texture_index int) {
-	class(self).FontRemoveTexture(font_rid, size, gd.Int(texture_index))
+func (self Instance) FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int) {
+	class(self).FontRemoveTexture(font_rid, gd.Vector2i(size), gd.Int(texture_index))
 }
 
 /*
 Sets font cache texture image data.
 */
-func (self Instance) FontSetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index int, image objects.Image) {
-	class(self).FontSetTextureImage(font_rid, size, gd.Int(texture_index), image)
+func (self Instance) FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image objects.Image) {
+	class(self).FontSetTextureImage(font_rid, gd.Vector2i(size), gd.Int(texture_index), image)
 }
 
 /*
 Returns font cache texture image data.
 */
-func (self Instance) FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture_index int) objects.Image {
-	return objects.Image(class(self).FontGetTextureImage(font_rid, size, gd.Int(texture_index)))
+func (self Instance) FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) objects.Image {
+	return objects.Image(class(self).FontGetTextureImage(font_rid, gd.Vector2i(size), gd.Int(texture_index)))
 }
 
 /*
 Sets array containing glyph packing data.
 */
-func (self Instance) FontSetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index int, offset []int32) {
-	class(self).FontSetTextureOffsets(font_rid, size, gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
+func (self Instance) FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32) {
+	class(self).FontSetTextureOffsets(font_rid, gd.Vector2i(size), gd.Int(texture_index), gd.NewPackedInt32Slice(offset))
 }
 
 /*
 Returns array containing glyph packing data.
 */
-func (self Instance) FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, texture_index int) []int32 {
-	return []int32(class(self).FontGetTextureOffsets(font_rid, size, gd.Int(texture_index)).AsSlice())
+func (self Instance) FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) []int32 {
+	return []int32(class(self).FontGetTextureOffsets(font_rid, gd.Vector2i(size), gd.Int(texture_index)).AsSlice())
 }
 
 /*
 Returns list of rendered glyphs in the cache entry.
 */
-func (self Instance) FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) []int32 {
-	return []int32(class(self).FontGetGlyphList(font_rid, size).AsSlice())
+func (self Instance) FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) []int32 {
+	return []int32(class(self).FontGetGlyphList(font_rid, gd.Vector2i(size)).AsSlice())
 }
 
 /*
 Removes all rendered glyph information from the cache entry.
 [b]Note:[/b] This function will not remove textures associated with the glyphs, use [method font_remove_texture] to remove them manually.
 */
-func (self Instance) FontClearGlyphs(font_rid gd.RID, size gd.Vector2i) {
-	class(self).FontClearGlyphs(font_rid, size)
+func (self Instance) FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY) {
+	class(self).FontClearGlyphs(font_rid, gd.Vector2i(size))
 }
 
 /*
 Removes specified rendered glyph information from the cache entry.
 [b]Note:[/b] This function will not remove textures associated with the glyphs, use [method font_remove_texture] to remove them manually.
 */
-func (self Instance) FontRemoveGlyph(font_rid gd.RID, size gd.Vector2i, glyph int) {
-	class(self).FontRemoveGlyph(font_rid, size, gd.Int(glyph))
+func (self Instance) FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int) {
+	class(self).FontRemoveGlyph(font_rid, gd.Vector2i(size), gd.Int(glyph))
 }
 
 /*
 Returns glyph advance (offset of the next glyph).
 [b]Note:[/b] Advance for glyphs outlines is the same as the base glyph advance and is not saved.
 */
-func (self Instance) FontGetGlyphAdvance(font_rid gd.RID, size int, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).FontGetGlyphAdvance(font_rid, gd.Int(size), gd.Int(glyph)))
+func (self Instance) FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).FontGetGlyphAdvance(font_rid, gd.Int(size), gd.Int(glyph)))
 }
 
 /*
 Sets glyph advance (offset of the next glyph).
 [b]Note:[/b] Advance for glyphs outlines is the same as the base glyph advance and is not saved.
 */
-func (self Instance) FontSetGlyphAdvance(font_rid gd.RID, size int, glyph int, advance gd.Vector2) {
-	class(self).FontSetGlyphAdvance(font_rid, gd.Int(size), gd.Int(glyph), advance)
+func (self Instance) FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY) {
+	class(self).FontSetGlyphAdvance(font_rid, gd.Int(size), gd.Int(glyph), gd.Vector2(advance))
 }
 
 /*
 Returns glyph offset from the baseline.
 */
-func (self Instance) FontGetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).FontGetGlyphOffset(font_rid, size, gd.Int(glyph)))
+func (self Instance) FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).FontGetGlyphOffset(font_rid, gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets glyph offset from the baseline.
 */
-func (self Instance) FontSetGlyphOffset(font_rid gd.RID, size gd.Vector2i, glyph int, offset gd.Vector2) {
-	class(self).FontSetGlyphOffset(font_rid, size, gd.Int(glyph), offset)
+func (self Instance) FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY) {
+	class(self).FontSetGlyphOffset(font_rid, gd.Vector2i(size), gd.Int(glyph), gd.Vector2(offset))
 }
 
 /*
 Returns size of the glyph.
 */
-func (self Instance) FontGetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).FontGetGlyphSize(font_rid, size, gd.Int(glyph)))
+func (self Instance) FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).FontGetGlyphSize(font_rid, gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets size of the glyph.
 */
-func (self Instance) FontSetGlyphSize(font_rid gd.RID, size gd.Vector2i, glyph int, gl_size gd.Vector2) {
-	class(self).FontSetGlyphSize(font_rid, size, gd.Int(glyph), gl_size)
+func (self Instance) FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY) {
+	class(self).FontSetGlyphSize(font_rid, gd.Vector2i(size), gd.Int(glyph), gd.Vector2(gl_size))
 }
 
 /*
 Returns rectangle in the cache texture containing the glyph.
 */
-func (self Instance) FontGetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Rect2 {
-	return gd.Rect2(class(self).FontGetGlyphUvRect(font_rid, size, gd.Int(glyph)))
+func (self Instance) FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).FontGetGlyphUvRect(font_rid, gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Sets rectangle in the cache texture containing the glyph.
 */
-func (self Instance) FontSetGlyphUvRect(font_rid gd.RID, size gd.Vector2i, glyph int, uv_rect gd.Rect2) {
-	class(self).FontSetGlyphUvRect(font_rid, size, gd.Int(glyph), uv_rect)
+func (self Instance) FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) {
+	class(self).FontSetGlyphUvRect(font_rid, gd.Vector2i(size), gd.Int(glyph), gd.Rect2(uv_rect))
 }
 
 /*
 Returns index of the cache texture containing the glyph.
 */
-func (self Instance) FontGetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph int) int {
-	return int(int(class(self).FontGetGlyphTextureIdx(font_rid, size, gd.Int(glyph))))
+func (self Instance) FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) int {
+	return int(int(class(self).FontGetGlyphTextureIdx(font_rid, gd.Vector2i(size), gd.Int(glyph))))
 }
 
 /*
 Sets index of the cache texture containing the glyph.
 */
-func (self Instance) FontSetGlyphTextureIdx(font_rid gd.RID, size gd.Vector2i, glyph int, texture_idx int) {
-	class(self).FontSetGlyphTextureIdx(font_rid, size, gd.Int(glyph), gd.Int(texture_idx))
+func (self Instance) FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int) {
+	class(self).FontSetGlyphTextureIdx(font_rid, gd.Vector2i(size), gd.Int(glyph), gd.Int(texture_idx))
 }
 
 /*
 Returns resource ID of the cache texture containing the glyph.
 [b]Note:[/b] If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Instance) FontGetGlyphTextureRid(font_rid gd.RID, size gd.Vector2i, glyph int) gd.RID {
-	return gd.RID(class(self).FontGetGlyphTextureRid(font_rid, size, gd.Int(glyph)))
+func (self Instance) FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) Resource.ID {
+	return Resource.ID(class(self).FontGetGlyphTextureRid(font_rid, gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
 Returns size of the cache texture containing the glyph.
 [b]Note:[/b] If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Instance) FontGetGlyphTextureSize(font_rid gd.RID, size gd.Vector2i, glyph int) gd.Vector2 {
-	return gd.Vector2(class(self).FontGetGlyphTextureSize(font_rid, size, gd.Int(glyph)))
+func (self Instance) FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY {
+	return Vector2.XY(class(self).FontGetGlyphTextureSize(font_rid, gd.Vector2i(size), gd.Int(glyph)))
 }
 
 /*
@@ -750,85 +759,85 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]contours[/code]       - [PackedInt32Array], containing indices the end points of each contour.
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
 */
-func (self Instance) FontGetGlyphContours(font gd.RID, size int, index int) gd.Dictionary {
-	return gd.Dictionary(class(self).FontGetGlyphContours(font, gd.Int(size), gd.Int(index)))
+func (self Instance) FontGetGlyphContours(font Resource.ID, size int, index int) Dictionary.Any {
+	return Dictionary.Any(class(self).FontGetGlyphContours(font, gd.Int(size), gd.Int(index)))
 }
 
 /*
 Returns list of the kerning overrides.
 */
-func (self Instance) FontGetKerningList(font_rid gd.RID, size int) gd.Array {
+func (self Instance) FontGetKerningList(font_rid Resource.ID, size int) gd.Array {
 	return gd.Array(class(self).FontGetKerningList(font_rid, gd.Int(size)))
 }
 
 /*
 Removes all kerning overrides.
 */
-func (self Instance) FontClearKerningMap(font_rid gd.RID, size int) {
+func (self Instance) FontClearKerningMap(font_rid Resource.ID, size int) {
 	class(self).FontClearKerningMap(font_rid, gd.Int(size))
 }
 
 /*
 Removes kerning override for the pair of glyphs.
 */
-func (self Instance) FontRemoveKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i) {
-	class(self).FontRemoveKerning(font_rid, gd.Int(size), glyph_pair)
+func (self Instance) FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) {
+	class(self).FontRemoveKerning(font_rid, gd.Int(size), gd.Vector2i(glyph_pair))
 }
 
 /*
 Sets kerning for the pair of glyphs.
 */
-func (self Instance) FontSetKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i, kerning gd.Vector2) {
-	class(self).FontSetKerning(font_rid, gd.Int(size), glyph_pair, kerning)
+func (self Instance) FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) {
+	class(self).FontSetKerning(font_rid, gd.Int(size), gd.Vector2i(glyph_pair), gd.Vector2(kerning))
 }
 
 /*
 Returns kerning for the pair of glyphs.
 */
-func (self Instance) FontGetKerning(font_rid gd.RID, size int, glyph_pair gd.Vector2i) gd.Vector2 {
-	return gd.Vector2(class(self).FontGetKerning(font_rid, gd.Int(size), glyph_pair))
+func (self Instance) FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) Vector2.XY {
+	return Vector2.XY(class(self).FontGetKerning(font_rid, gd.Int(size), gd.Vector2i(glyph_pair)))
 }
 
 /*
 Returns the glyph index of a [param char], optionally modified by the [param variation_selector]. See [method font_get_char_from_glyph_index].
 */
-func (self Instance) FontGetGlyphIndex(font_rid gd.RID, size int, char int, variation_selector int) int {
+func (self Instance) FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) int {
 	return int(int(class(self).FontGetGlyphIndex(font_rid, gd.Int(size), gd.Int(char), gd.Int(variation_selector))))
 }
 
 /*
 Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid. See [method font_get_glyph_index].
 */
-func (self Instance) FontGetCharFromGlyphIndex(font_rid gd.RID, size int, glyph_index int) int {
+func (self Instance) FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) int {
 	return int(int(class(self).FontGetCharFromGlyphIndex(font_rid, gd.Int(size), gd.Int(glyph_index))))
 }
 
 /*
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
-func (self Instance) FontHasChar(font_rid gd.RID, char int) bool {
+func (self Instance) FontHasChar(font_rid Resource.ID, char int) bool {
 	return bool(class(self).FontHasChar(font_rid, gd.Int(char)))
 }
 
 /*
 Returns a string containing all the characters available in the font.
 */
-func (self Instance) FontGetSupportedChars(font_rid gd.RID) string {
+func (self Instance) FontGetSupportedChars(font_rid Resource.ID) string {
 	return string(class(self).FontGetSupportedChars(font_rid).String())
 }
 
 /*
 Renders the range of characters to the font cache texture.
 */
-func (self Instance) FontRenderRange(font_rid gd.RID, size gd.Vector2i, start int, end int) {
-	class(self).FontRenderRange(font_rid, size, gd.Int(start), gd.Int(end))
+func (self Instance) FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int) {
+	class(self).FontRenderRange(font_rid, gd.Vector2i(size), gd.Int(start), gd.Int(end))
 }
 
 /*
 Renders specified glyph to the font cache texture.
 */
-func (self Instance) FontRenderGlyph(font_rid gd.RID, size gd.Vector2i, index int) {
-	class(self).FontRenderGlyph(font_rid, size, gd.Int(index))
+func (self Instance) FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int) {
+	class(self).FontRenderGlyph(font_rid, gd.Vector2i(size), gd.Int(index))
 }
 
 /*
@@ -836,8 +845,8 @@ Draws single glyph into a canvas item at the position, using [param font_rid] at
 [b]Note:[/b] Glyph index is specific to the font, use glyphs indices returned by [method shaped_text_get_glyphs] or [method font_get_glyph_index].
 [b]Note:[/b] If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Instance) FontDrawGlyph(font_rid gd.RID, canvas gd.RID, size int, pos gd.Vector2, index int) {
-	class(self).FontDrawGlyph(font_rid, canvas, gd.Int(size), pos, gd.Int(index), gd.Color{1, 1, 1, 1})
+func (self Instance) FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int) {
+	class(self).FontDrawGlyph(font_rid, canvas, gd.Int(size), gd.Vector2(pos), gd.Int(index), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
@@ -845,135 +854,135 @@ Draws single glyph outline of size [param outline_size] into a canvas item at th
 [b]Note:[/b] Glyph index is specific to the font, use glyphs indices returned by [method shaped_text_get_glyphs] or [method font_get_glyph_index].
 [b]Note:[/b] If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Instance) FontDrawGlyphOutline(font_rid gd.RID, canvas gd.RID, size int, outline_size int, pos gd.Vector2, index int) {
-	class(self).FontDrawGlyphOutline(font_rid, canvas, gd.Int(size), gd.Int(outline_size), pos, gd.Int(index), gd.Color{1, 1, 1, 1})
+func (self Instance) FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int) {
+	class(self).FontDrawGlyphOutline(font_rid, canvas, gd.Int(size), gd.Int(outline_size), gd.Vector2(pos), gd.Int(index), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
-func (self Instance) FontIsLanguageSupported(font_rid gd.RID, language string) bool {
+func (self Instance) FontIsLanguageSupported(font_rid Resource.ID, language string) bool {
 	return bool(class(self).FontIsLanguageSupported(font_rid, gd.NewString(language)))
 }
 
 /*
 Adds override for [method font_is_language_supported].
 */
-func (self Instance) FontSetLanguageSupportOverride(font_rid gd.RID, language string, supported bool) {
+func (self Instance) FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool) {
 	class(self).FontSetLanguageSupportOverride(font_rid, gd.NewString(language), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
-func (self Instance) FontGetLanguageSupportOverride(font_rid gd.RID, language string) bool {
+func (self Instance) FontGetLanguageSupportOverride(font_rid Resource.ID, language string) bool {
 	return bool(class(self).FontGetLanguageSupportOverride(font_rid, gd.NewString(language)))
 }
 
 /*
 Remove language support override.
 */
-func (self Instance) FontRemoveLanguageSupportOverride(font_rid gd.RID, language string) {
+func (self Instance) FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string) {
 	class(self).FontRemoveLanguageSupportOverride(font_rid, gd.NewString(language))
 }
 
 /*
 Returns list of language support overrides.
 */
-func (self Instance) FontGetLanguageSupportOverrides(font_rid gd.RID) []string {
+func (self Instance) FontGetLanguageSupportOverrides(font_rid Resource.ID) []string {
 	return []string(class(self).FontGetLanguageSupportOverrides(font_rid).Strings())
 }
 
 /*
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
-func (self Instance) FontIsScriptSupported(font_rid gd.RID, script string) bool {
+func (self Instance) FontIsScriptSupported(font_rid Resource.ID, script string) bool {
 	return bool(class(self).FontIsScriptSupported(font_rid, gd.NewString(script)))
 }
 
 /*
 Adds override for [method font_is_script_supported].
 */
-func (self Instance) FontSetScriptSupportOverride(font_rid gd.RID, script string, supported bool) {
+func (self Instance) FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool) {
 	class(self).FontSetScriptSupportOverride(font_rid, gd.NewString(script), supported)
 }
 
 /*
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
-func (self Instance) FontGetScriptSupportOverride(font_rid gd.RID, script string) bool {
+func (self Instance) FontGetScriptSupportOverride(font_rid Resource.ID, script string) bool {
 	return bool(class(self).FontGetScriptSupportOverride(font_rid, gd.NewString(script)))
 }
 
 /*
 Removes script support override.
 */
-func (self Instance) FontRemoveScriptSupportOverride(font_rid gd.RID, script string) {
+func (self Instance) FontRemoveScriptSupportOverride(font_rid Resource.ID, script string) {
 	class(self).FontRemoveScriptSupportOverride(font_rid, gd.NewString(script))
 }
 
 /*
 Returns list of script support overrides.
 */
-func (self Instance) FontGetScriptSupportOverrides(font_rid gd.RID) []string {
+func (self Instance) FontGetScriptSupportOverrides(font_rid Resource.ID) []string {
 	return []string(class(self).FontGetScriptSupportOverrides(font_rid).Strings())
 }
 
 /*
 Sets font OpenType feature set override.
 */
-func (self Instance) FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides gd.Dictionary) {
+func (self Instance) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any) {
 	class(self).FontSetOpentypeFeatureOverrides(font_rid, overrides)
 }
 
 /*
 Returns font OpenType feature set override.
 */
-func (self Instance) FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary {
-	return gd.Dictionary(class(self).FontGetOpentypeFeatureOverrides(font_rid))
+func (self Instance) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) Dictionary.Any {
+	return Dictionary.Any(class(self).FontGetOpentypeFeatureOverrides(font_rid))
 }
 
 /*
 Returns the dictionary of the supported OpenType features.
 */
-func (self Instance) FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary {
-	return gd.Dictionary(class(self).FontSupportedFeatureList(font_rid))
+func (self Instance) FontSupportedFeatureList(font_rid Resource.ID) Dictionary.Any {
+	return Dictionary.Any(class(self).FontSupportedFeatureList(font_rid))
 }
 
 /*
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (self Instance) FontSupportedVariationList(font_rid gd.RID) gd.Dictionary {
-	return gd.Dictionary(class(self).FontSupportedVariationList(font_rid))
+func (self Instance) FontSupportedVariationList(font_rid Resource.ID) Dictionary.Any {
+	return Dictionary.Any(class(self).FontSupportedVariationList(font_rid))
 }
 
 /*
 Returns the font oversampling factor, shared by all fonts in the TextServer.
 */
-func (self Instance) FontGetGlobalOversampling() float64 {
-	return float64(float64(class(self).FontGetGlobalOversampling()))
+func (self Instance) FontGetGlobalOversampling() Float.X {
+	return Float.X(Float.X(class(self).FontGetGlobalOversampling()))
 }
 
 /*
 Sets oversampling factor, shared by all font in the TextServer.
 [b]Note:[/b] This value can be automatically changed by display server.
 */
-func (self Instance) FontSetGlobalOversampling(oversampling float64) {
+func (self Instance) FontSetGlobalOversampling(oversampling Float.X) {
 	class(self).FontSetGlobalOversampling(gd.Float(oversampling))
 }
 
 /*
 Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 */
-func (self Instance) GetHexCodeBoxSize(size int, index int) gd.Vector2 {
-	return gd.Vector2(class(self).GetHexCodeBoxSize(gd.Int(size), gd.Int(index)))
+func (self Instance) GetHexCodeBoxSize(size int, index int) Vector2.XY {
+	return Vector2.XY(class(self).GetHexCodeBoxSize(gd.Int(size), gd.Int(index)))
 }
 
 /*
 Draws box displaying character hexadecimal code. Used for replacing missing characters.
 */
-func (self Instance) DrawHexCodeBox(canvas gd.RID, size int, pos gd.Vector2, index int, color gd.Color) {
-	class(self).DrawHexCodeBox(canvas, gd.Int(size), pos, gd.Int(index), color)
+func (self Instance) DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
+	class(self).DrawHexCodeBox(canvas, gd.Int(size), gd.Vector2(pos), gd.Int(index), gd.Color(color))
 }
 
 /*
@@ -981,14 +990,14 @@ Creates a new buffer for complex text layout, with the given [param direction] a
 [b]Note:[/b] Direction is ignored if server does not support [constant FEATURE_BIDI_LAYOUT] feature (supported by [TextServerAdvanced]).
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Instance) CreateShapedText() gd.RID {
-	return gd.RID(class(self).CreateShapedText(0, 0))
+func (self Instance) CreateShapedText() Resource.ID {
+	return Resource.ID(class(self).CreateShapedText(0, 0))
 }
 
 /*
 Clears text buffer (removes text and inline objects).
 */
-func (self Instance) ShapedTextClear(rid gd.RID) {
+func (self Instance) ShapedTextClear(rid Resource.ID) {
 	class(self).ShapedTextClear(rid)
 }
 
@@ -996,21 +1005,21 @@ func (self Instance) ShapedTextClear(rid gd.RID) {
 Sets desired text direction. If set to [constant DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 [b]Note:[/b] Direction is ignored if server does not support [constant FEATURE_BIDI_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Instance) ShapedTextSetDirection(shaped gd.RID) {
+func (self Instance) ShapedTextSetDirection(shaped Resource.ID) {
 	class(self).ShapedTextSetDirection(shaped, 0)
 }
 
 /*
 Returns direction of the text.
 */
-func (self Instance) ShapedTextGetDirection(shaped gd.RID) classdb.TextServerDirection {
+func (self Instance) ShapedTextGetDirection(shaped Resource.ID) classdb.TextServerDirection {
 	return classdb.TextServerDirection(class(self).ShapedTextGetDirection(shaped))
 }
 
 /*
 Returns direction of the text, inferred by the BiDi algorithm.
 */
-func (self Instance) ShapedTextGetInferredDirection(shaped gd.RID) classdb.TextServerDirection {
+func (self Instance) ShapedTextGetInferredDirection(shaped Resource.ID) classdb.TextServerDirection {
 	return classdb.TextServerDirection(class(self).ShapedTextGetInferredDirection(shaped))
 }
 
@@ -1018,35 +1027,35 @@ func (self Instance) ShapedTextGetInferredDirection(shaped gd.RID) classdb.TextS
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) ShapedTextSetBidiOverride(shaped gd.RID, override gd.Array) {
+func (self Instance) ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any) {
 	class(self).ShapedTextSetBidiOverride(shaped, override)
 }
 
 /*
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (self Instance) ShapedTextSetCustomPunctuation(shaped gd.RID, punct string) {
+func (self Instance) ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string) {
 	class(self).ShapedTextSetCustomPunctuation(shaped, gd.NewString(punct))
 }
 
 /*
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (self Instance) ShapedTextGetCustomPunctuation(shaped gd.RID) string {
+func (self Instance) ShapedTextGetCustomPunctuation(shaped Resource.ID) string {
 	return string(class(self).ShapedTextGetCustomPunctuation(shaped).String())
 }
 
 /*
 Sets ellipsis character used for text clipping.
 */
-func (self Instance) ShapedTextSetCustomEllipsis(shaped gd.RID, char int) {
+func (self Instance) ShapedTextSetCustomEllipsis(shaped Resource.ID, char int) {
 	class(self).ShapedTextSetCustomEllipsis(shaped, gd.Int(char))
 }
 
 /*
 Returns ellipsis character used for text clipping.
 */
-func (self Instance) ShapedTextGetCustomEllipsis(shaped gd.RID) int {
+func (self Instance) ShapedTextGetCustomEllipsis(shaped Resource.ID) int {
 	return int(int(class(self).ShapedTextGetCustomEllipsis(shaped)))
 }
 
@@ -1054,21 +1063,21 @@ func (self Instance) ShapedTextGetCustomEllipsis(shaped gd.RID) int {
 Sets desired text orientation.
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Instance) ShapedTextSetOrientation(shaped gd.RID) {
+func (self Instance) ShapedTextSetOrientation(shaped Resource.ID) {
 	class(self).ShapedTextSetOrientation(shaped, 0)
 }
 
 /*
 Returns text orientation.
 */
-func (self Instance) ShapedTextGetOrientation(shaped gd.RID) classdb.TextServerOrientation {
+func (self Instance) ShapedTextGetOrientation(shaped Resource.ID) classdb.TextServerOrientation {
 	return classdb.TextServerOrientation(class(self).ShapedTextGetOrientation(shaped))
 }
 
 /*
 If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
 */
-func (self Instance) ShapedTextSetPreserveInvalid(shaped gd.RID, enabled bool) {
+func (self Instance) ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool) {
 	class(self).ShapedTextSetPreserveInvalid(shaped, enabled)
 }
 
@@ -1076,381 +1085,381 @@ func (self Instance) ShapedTextSetPreserveInvalid(shaped gd.RID, enabled bool) {
 Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
 [b]Note:[/b] If set to [code]false[/code], nothing is displayed in place of invalid characters.
 */
-func (self Instance) ShapedTextGetPreserveInvalid(shaped gd.RID) bool {
+func (self Instance) ShapedTextGetPreserveInvalid(shaped Resource.ID) bool {
 	return bool(class(self).ShapedTextGetPreserveInvalid(shaped))
 }
 
 /*
 If set to [code]true[/code] text buffer will display control characters.
 */
-func (self Instance) ShapedTextSetPreserveControl(shaped gd.RID, enabled bool) {
+func (self Instance) ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool) {
 	class(self).ShapedTextSetPreserveControl(shaped, enabled)
 }
 
 /*
 Returns [code]true[/code] if text buffer is configured to display control characters.
 */
-func (self Instance) ShapedTextGetPreserveControl(shaped gd.RID) bool {
+func (self Instance) ShapedTextGetPreserveControl(shaped Resource.ID) bool {
 	return bool(class(self).ShapedTextGetPreserveControl(shaped))
 }
 
 /*
 Sets extra spacing added between glyphs or lines in pixels.
 */
-func (self Instance) ShapedTextSetSpacing(shaped gd.RID, spacing classdb.TextServerSpacingType, value int) {
+func (self Instance) ShapedTextSetSpacing(shaped Resource.ID, spacing classdb.TextServerSpacingType, value int) {
 	class(self).ShapedTextSetSpacing(shaped, spacing, gd.Int(value))
 }
 
 /*
 Returns extra spacing added between glyphs or lines in pixels.
 */
-func (self Instance) ShapedTextGetSpacing(shaped gd.RID, spacing classdb.TextServerSpacingType) int {
+func (self Instance) ShapedTextGetSpacing(shaped Resource.ID, spacing classdb.TextServerSpacingType) int {
 	return int(int(class(self).ShapedTextGetSpacing(shaped, spacing)))
 }
 
 /*
 Adds text span and font to draw it to the text buffer.
 */
-func (self Instance) ShapedTextAddString(shaped gd.RID, text string, fonts gd.Array, size int) bool {
-	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), fonts, gd.Int(size), ([1]gd.Dictionary{}[0]), gd.NewString(""), gd.NewVariant(([1]gd.Variant{}[0]))))
+func (self Instance) ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int) bool {
+	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), fonts, gd.Int(size), [1]Dictionary.Any{}[0], gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Instance) ShapedTextAddObject(shaped gd.RID, key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).ShapedTextAddObject(shaped, key, size, 5, gd.Int(1), gd.Float(0.0)))
+func (self Instance) ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY) bool {
+	return bool(class(self).ShapedTextAddObject(shaped, gd.NewVariant(key), gd.Vector2(size), 5, gd.Int(1), gd.Float(0.0)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Instance) ShapedTextResizeObject(shaped gd.RID, key gd.Variant, size gd.Vector2) bool {
-	return bool(class(self).ShapedTextResizeObject(shaped, key, size, 5, gd.Float(0.0)))
+func (self Instance) ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY) bool {
+	return bool(class(self).ShapedTextResizeObject(shaped, gd.NewVariant(key), gd.Vector2(size), 5, gd.Float(0.0)))
 }
 
 /*
 Returns number of text spans added using [method shaped_text_add_string] or [method shaped_text_add_object].
 */
-func (self Instance) ShapedGetSpanCount(shaped gd.RID) int {
+func (self Instance) ShapedGetSpanCount(shaped Resource.ID) int {
 	return int(int(class(self).ShapedGetSpanCount(shaped)))
 }
 
 /*
 Returns text span metadata.
 */
-func (self Instance) ShapedGetSpanMeta(shaped gd.RID, index int) gd.Variant {
-	return gd.Variant(class(self).ShapedGetSpanMeta(shaped, gd.Int(index)))
+func (self Instance) ShapedGetSpanMeta(shaped Resource.ID, index int) any {
+	return any(class(self).ShapedGetSpanMeta(shaped, gd.Int(index)).Interface())
 }
 
 /*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (self Instance) ShapedSetSpanUpdateFont(shaped gd.RID, index int, fonts gd.Array, size int) {
-	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), fonts, gd.Int(size), ([1]gd.Dictionary{}[0]))
+func (self Instance) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int) {
+	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), fonts, gd.Int(size), [1]Dictionary.Any{}[0])
 }
 
 /*
 Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
 */
-func (self Instance) ShapedTextSubstr(shaped gd.RID, start int, length int) gd.RID {
-	return gd.RID(class(self).ShapedTextSubstr(shaped, gd.Int(start), gd.Int(length)))
+func (self Instance) ShapedTextSubstr(shaped Resource.ID, start int, length int) Resource.ID {
+	return Resource.ID(class(self).ShapedTextSubstr(shaped, gd.Int(start), gd.Int(length)))
 }
 
 /*
 Returns the parent buffer from which the substring originates.
 */
-func (self Instance) ShapedTextGetParent(shaped gd.RID) gd.RID {
-	return gd.RID(class(self).ShapedTextGetParent(shaped))
+func (self Instance) ShapedTextGetParent(shaped Resource.ID) Resource.ID {
+	return Resource.ID(class(self).ShapedTextGetParent(shaped))
 }
 
 /*
 Adjusts text width to fit to specified width, returns new text width.
 */
-func (self Instance) ShapedTextFitToWidth(shaped gd.RID, width float64) float64 {
-	return float64(float64(class(self).ShapedTextFitToWidth(shaped, gd.Float(width), 3)))
+func (self Instance) ShapedTextFitToWidth(shaped Resource.ID, width Float.X) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextFitToWidth(shaped, gd.Float(width), 3)))
 }
 
 /*
 Aligns shaped text to the given tab-stops.
 */
-func (self Instance) ShapedTextTabAlign(shaped gd.RID, tab_stops []float32) float64 {
-	return float64(float64(class(self).ShapedTextTabAlign(shaped, gd.NewPackedFloat32Slice(tab_stops))))
+func (self Instance) ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextTabAlign(shaped, gd.NewPackedFloat32Slice(tab_stops))))
 }
 
 /*
 Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
 [b]Note:[/b] It is not necessary to call this function manually, buffer will be shaped automatically as soon as any of its output data is requested.
 */
-func (self Instance) ShapedTextShape(shaped gd.RID) bool {
+func (self Instance) ShapedTextShape(shaped Resource.ID) bool {
 	return bool(class(self).ShapedTextShape(shaped))
 }
 
 /*
 Returns [code]true[/code] if buffer is successfully shaped.
 */
-func (self Instance) ShapedTextIsReady(shaped gd.RID) bool {
+func (self Instance) ShapedTextIsReady(shaped Resource.ID) bool {
 	return bool(class(self).ShapedTextIsReady(shaped))
 }
 
 /*
 Returns [code]true[/code] if text buffer contains any visible characters.
 */
-func (self Instance) ShapedTextHasVisibleChars(shaped gd.RID) bool {
+func (self Instance) ShapedTextHasVisibleChars(shaped Resource.ID) bool {
 	return bool(class(self).ShapedTextHasVisibleChars(shaped))
 }
 
 /*
 Returns an array of glyphs in the visual order.
 */
-func (self Instance) ShapedTextGetGlyphs(shaped gd.RID) gd.Array {
+func (self Instance) ShapedTextGetGlyphs(shaped Resource.ID) gd.Array {
 	return gd.Array(class(self).ShapedTextGetGlyphs(shaped))
 }
 
 /*
 Returns text glyphs in the logical order.
 */
-func (self Instance) ShapedTextSortLogical(shaped gd.RID) gd.Array {
+func (self Instance) ShapedTextSortLogical(shaped Resource.ID) gd.Array {
 	return gd.Array(class(self).ShapedTextSortLogical(shaped))
 }
 
 /*
 Returns number of glyphs in the buffer.
 */
-func (self Instance) ShapedTextGetGlyphCount(shaped gd.RID) int {
+func (self Instance) ShapedTextGetGlyphCount(shaped Resource.ID) int {
 	return int(int(class(self).ShapedTextGetGlyphCount(shaped)))
 }
 
 /*
 Returns substring buffer character range in the parent buffer.
 */
-func (self Instance) ShapedTextGetRange(shaped gd.RID) gd.Vector2i {
-	return gd.Vector2i(class(self).ShapedTextGetRange(shaped))
+func (self Instance) ShapedTextGetRange(shaped Resource.ID) Vector2i.XY {
+	return Vector2i.XY(class(self).ShapedTextGetRange(shaped))
 }
 
 /*
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (self Instance) ShapedTextGetLineBreaksAdv(shaped gd.RID, width []float32) []int32 {
+func (self Instance) ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32) []int32 {
 	return []int32(class(self).ShapedTextGetLineBreaksAdv(shaped, gd.NewPackedFloat32Slice(width), gd.Int(0), true, 3).AsSlice())
 }
 
 /*
 Breaks text to the lines and returns character ranges for each line.
 */
-func (self Instance) ShapedTextGetLineBreaks(shaped gd.RID, width float64) []int32 {
+func (self Instance) ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X) []int32 {
 	return []int32(class(self).ShapedTextGetLineBreaks(shaped, gd.Float(width), gd.Int(0), 3).AsSlice())
 }
 
 /*
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum GraphemeFlag]).
 */
-func (self Instance) ShapedTextGetWordBreaks(shaped gd.RID) []int32 {
+func (self Instance) ShapedTextGetWordBreaks(shaped Resource.ID) []int32 {
 	return []int32(class(self).ShapedTextGetWordBreaks(shaped, 264, 4).AsSlice())
 }
 
 /*
 Returns the position of the overrun trim.
 */
-func (self Instance) ShapedTextGetTrimPos(shaped gd.RID) int {
+func (self Instance) ShapedTextGetTrimPos(shaped Resource.ID) int {
 	return int(int(class(self).ShapedTextGetTrimPos(shaped)))
 }
 
 /*
 Returns position of the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisPos(shaped gd.RID) int {
+func (self Instance) ShapedTextGetEllipsisPos(shaped Resource.ID) int {
 	return int(int(class(self).ShapedTextGetEllipsisPos(shaped)))
 }
 
 /*
 Returns array of the glyphs in the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisGlyphs(shaped gd.RID) gd.Array {
+func (self Instance) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) gd.Array {
 	return gd.Array(class(self).ShapedTextGetEllipsisGlyphs(shaped))
 }
 
 /*
 Returns number of glyphs in the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisGlyphCount(shaped gd.RID) int {
+func (self Instance) ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) int {
 	return int(int(class(self).ShapedTextGetEllipsisGlyphCount(shaped)))
 }
 
 /*
 Trims text if it exceeds the given width.
 */
-func (self Instance) ShapedTextOverrunTrimToWidth(shaped gd.RID) {
+func (self Instance) ShapedTextOverrunTrimToWidth(shaped Resource.ID) {
 	class(self).ShapedTextOverrunTrimToWidth(shaped, gd.Float(0), 0)
 }
 
 /*
 Returns array of inline objects.
 */
-func (self Instance) ShapedTextGetObjects(shaped gd.RID) gd.Array {
-	return gd.Array(class(self).ShapedTextGetObjects(shaped))
+func (self Instance) ShapedTextGetObjects(shaped Resource.ID) Array.Any {
+	return Array.Any(class(self).ShapedTextGetObjects(shaped))
 }
 
 /*
 Returns bounding rectangle of the inline object.
 */
-func (self Instance) ShapedTextGetObjectRect(shaped gd.RID, key gd.Variant) gd.Rect2 {
-	return gd.Rect2(class(self).ShapedTextGetObjectRect(shaped, key))
+func (self Instance) ShapedTextGetObjectRect(shaped Resource.ID, key any) Rect2.PositionSize {
+	return Rect2.PositionSize(class(self).ShapedTextGetObjectRect(shaped, gd.NewVariant(key)))
 }
 
 /*
 Returns the character range of the inline object.
 */
-func (self Instance) ShapedTextGetObjectRange(shaped gd.RID, key gd.Variant) gd.Vector2i {
-	return gd.Vector2i(class(self).ShapedTextGetObjectRange(shaped, key))
+func (self Instance) ShapedTextGetObjectRange(shaped Resource.ID, key any) Vector2i.XY {
+	return Vector2i.XY(class(self).ShapedTextGetObjectRange(shaped, gd.NewVariant(key)))
 }
 
 /*
 Returns the glyph index of the inline object.
 */
-func (self Instance) ShapedTextGetObjectGlyph(shaped gd.RID, key gd.Variant) int {
-	return int(int(class(self).ShapedTextGetObjectGlyph(shaped, key)))
+func (self Instance) ShapedTextGetObjectGlyph(shaped Resource.ID, key any) int {
+	return int(int(class(self).ShapedTextGetObjectGlyph(shaped, gd.NewVariant(key))))
 }
 
 /*
 Returns size of the text.
 */
-func (self Instance) ShapedTextGetSize(shaped gd.RID) gd.Vector2 {
-	return gd.Vector2(class(self).ShapedTextGetSize(shaped))
+func (self Instance) ShapedTextGetSize(shaped Resource.ID) Vector2.XY {
+	return Vector2.XY(class(self).ShapedTextGetSize(shaped))
 }
 
 /*
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 [b]Note:[/b] Overall ascent can be higher than font ascent, if some glyphs are displaced from the baseline.
 */
-func (self Instance) ShapedTextGetAscent(shaped gd.RID) float64 {
-	return float64(float64(class(self).ShapedTextGetAscent(shaped)))
+func (self Instance) ShapedTextGetAscent(shaped Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextGetAscent(shaped)))
 }
 
 /*
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 [b]Note:[/b] Overall descent can be higher than font descent, if some glyphs are displaced from the baseline.
 */
-func (self Instance) ShapedTextGetDescent(shaped gd.RID) float64 {
-	return float64(float64(class(self).ShapedTextGetDescent(shaped)))
+func (self Instance) ShapedTextGetDescent(shaped Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextGetDescent(shaped)))
 }
 
 /*
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
-func (self Instance) ShapedTextGetWidth(shaped gd.RID) float64 {
-	return float64(float64(class(self).ShapedTextGetWidth(shaped)))
+func (self Instance) ShapedTextGetWidth(shaped Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextGetWidth(shaped)))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) ShapedTextGetUnderlinePosition(shaped gd.RID) float64 {
-	return float64(float64(class(self).ShapedTextGetUnderlinePosition(shaped)))
+func (self Instance) ShapedTextGetUnderlinePosition(shaped Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextGetUnderlinePosition(shaped)))
 }
 
 /*
 Returns thickness of the underline.
 */
-func (self Instance) ShapedTextGetUnderlineThickness(shaped gd.RID) float64 {
-	return float64(float64(class(self).ShapedTextGetUnderlineThickness(shaped)))
+func (self Instance) ShapedTextGetUnderlineThickness(shaped Resource.ID) Float.X {
+	return Float.X(Float.X(class(self).ShapedTextGetUnderlineThickness(shaped)))
 }
 
 /*
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (self Instance) ShapedTextGetCarets(shaped gd.RID, position int) gd.Dictionary {
-	return gd.Dictionary(class(self).ShapedTextGetCarets(shaped, gd.Int(position)))
+func (self Instance) ShapedTextGetCarets(shaped Resource.ID, position int) Dictionary.Any {
+	return Dictionary.Any(class(self).ShapedTextGetCarets(shaped, gd.Int(position)))
 }
 
 /*
 Returns selection rectangles for the specified character range.
 */
-func (self Instance) ShapedTextGetSelection(shaped gd.RID, start int, end int) []gd.Vector2 {
-	return []gd.Vector2(class(self).ShapedTextGetSelection(shaped, gd.Int(start), gd.Int(end)).AsSlice())
+func (self Instance) ShapedTextGetSelection(shaped Resource.ID, start int, end int) []Vector2.XY {
+	return []Vector2.XY(class(self).ShapedTextGetSelection(shaped, gd.Int(start), gd.Int(end)).AsSlice())
 }
 
 /*
 Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
 */
-func (self Instance) ShapedTextHitTestGrapheme(shaped gd.RID, coords float64) int {
+func (self Instance) ShapedTextHitTestGrapheme(shaped Resource.ID, coords Float.X) int {
 	return int(int(class(self).ShapedTextHitTestGrapheme(shaped, gd.Float(coords))))
 }
 
 /*
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
-func (self Instance) ShapedTextHitTestPosition(shaped gd.RID, coords float64) int {
+func (self Instance) ShapedTextHitTestPosition(shaped Resource.ID, coords Float.X) int {
 	return int(int(class(self).ShapedTextHitTestPosition(shaped, gd.Float(coords))))
 }
 
 /*
 Returns composite character's bounds as offsets from the start of the line.
 */
-func (self Instance) ShapedTextGetGraphemeBounds(shaped gd.RID, pos int) gd.Vector2 {
-	return gd.Vector2(class(self).ShapedTextGetGraphemeBounds(shaped, gd.Int(pos)))
+func (self Instance) ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) Vector2.XY {
+	return Vector2.XY(class(self).ShapedTextGetGraphemeBounds(shaped, gd.Int(pos)))
 }
 
 /*
 Returns grapheme end position closest to the [param pos].
 */
-func (self Instance) ShapedTextNextGraphemePos(shaped gd.RID, pos int) int {
+func (self Instance) ShapedTextNextGraphemePos(shaped Resource.ID, pos int) int {
 	return int(int(class(self).ShapedTextNextGraphemePos(shaped, gd.Int(pos))))
 }
 
 /*
 Returns grapheme start position closest to the [param pos].
 */
-func (self Instance) ShapedTextPrevGraphemePos(shaped gd.RID, pos int) int {
+func (self Instance) ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) int {
 	return int(int(class(self).ShapedTextPrevGraphemePos(shaped, gd.Int(pos))))
 }
 
 /*
 Returns array of the composite character boundaries.
 */
-func (self Instance) ShapedTextGetCharacterBreaks(shaped gd.RID) []int32 {
+func (self Instance) ShapedTextGetCharacterBreaks(shaped Resource.ID) []int32 {
 	return []int32(class(self).ShapedTextGetCharacterBreaks(shaped).AsSlice())
 }
 
 /*
 Returns composite character end position closest to the [param pos].
 */
-func (self Instance) ShapedTextNextCharacterPos(shaped gd.RID, pos int) int {
+func (self Instance) ShapedTextNextCharacterPos(shaped Resource.ID, pos int) int {
 	return int(int(class(self).ShapedTextNextCharacterPos(shaped, gd.Int(pos))))
 }
 
 /*
 Returns composite character start position closest to the [param pos].
 */
-func (self Instance) ShapedTextPrevCharacterPos(shaped gd.RID, pos int) int {
+func (self Instance) ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) int {
 	return int(int(class(self).ShapedTextPrevCharacterPos(shaped, gd.Int(pos))))
 }
 
 /*
 Returns composite character position closest to the [param pos].
 */
-func (self Instance) ShapedTextClosestCharacterPos(shaped gd.RID, pos int) int {
+func (self Instance) ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) int {
 	return int(int(class(self).ShapedTextClosestCharacterPos(shaped, gd.Int(pos))))
 }
 
 /*
 Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (self Instance) ShapedTextDraw(shaped gd.RID, canvas gd.RID, pos gd.Vector2) {
-	class(self).ShapedTextDraw(shaped, canvas, pos, gd.Float(-1), gd.Float(-1), gd.Color{1, 1, 1, 1})
+func (self Instance) ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY) {
+	class(self).ShapedTextDraw(shaped, canvas, gd.Vector2(pos), gd.Float(-1), gd.Float(-1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (self Instance) ShapedTextDrawOutline(shaped gd.RID, canvas gd.RID, pos gd.Vector2) {
-	class(self).ShapedTextDrawOutline(shaped, canvas, pos, gd.Float(-1), gd.Float(-1), gd.Int(1), gd.Color{1, 1, 1, 1})
+func (self Instance) ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY) {
+	class(self).ShapedTextDrawOutline(shaped, canvas, gd.Vector2(pos), gd.Float(-1), gd.Float(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns dominant direction of in the range of text.
 */
-func (self Instance) ShapedTextGetDominantDirectionInRange(shaped gd.RID, start int, end int) classdb.TextServerDirection {
+func (self Instance) ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) classdb.TextServerDirection {
 	return classdb.TextServerDirection(class(self).ShapedTextGetDominantDirectionInRange(shaped, gd.Int(start), gd.Int(end)))
 }
 
@@ -1578,7 +1587,7 @@ func (self Instance) StringToTitle(s string) string {
 /*
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
-func (self Instance) ParseStructuredText(parser_type classdb.TextServerStructuredTextParser, args gd.Array, text string) gd.Array {
+func (self Instance) ParseStructuredText(parser_type classdb.TextServerStructuredTextParser, args Array.Any, text string) gd.Array {
 	return gd.Array(class(self).ParseStructuredText(parser_type, args, gd.NewString(text)))
 }
 

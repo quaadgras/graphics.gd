@@ -8,6 +8,8 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Color"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,28 +41,28 @@ func (self Instance) SetDiffuseImg(value objects.Image) {
 	class(self).SetDiffuseImg(value)
 }
 
-func (self Instance) DiffuseFactor() gd.Color {
-	return gd.Color(class(self).GetDiffuseFactor())
+func (self Instance) DiffuseFactor() Color.RGBA {
+	return Color.RGBA(class(self).GetDiffuseFactor())
 }
 
-func (self Instance) SetDiffuseFactor(value gd.Color) {
-	class(self).SetDiffuseFactor(value)
+func (self Instance) SetDiffuseFactor(value Color.RGBA) {
+	class(self).SetDiffuseFactor(gd.Color(value))
 }
 
-func (self Instance) GlossFactor() float64 {
-	return float64(float64(class(self).GetGlossFactor()))
+func (self Instance) GlossFactor() Float.X {
+	return Float.X(Float.X(class(self).GetGlossFactor()))
 }
 
-func (self Instance) SetGlossFactor(value float64) {
+func (self Instance) SetGlossFactor(value Float.X) {
 	class(self).SetGlossFactor(gd.Float(value))
 }
 
-func (self Instance) SpecularFactor() gd.Color {
-	return gd.Color(class(self).GetSpecularFactor())
+func (self Instance) SpecularFactor() Color.RGBA {
+	return Color.RGBA(class(self).GetSpecularFactor())
 }
 
-func (self Instance) SetSpecularFactor(value gd.Color) {
-	class(self).SetSpecularFactor(value)
+func (self Instance) SetSpecularFactor(value Color.RGBA) {
+	class(self).SetSpecularFactor(gd.Color(value))
 }
 
 func (self Instance) SpecGlossImg() objects.Image {

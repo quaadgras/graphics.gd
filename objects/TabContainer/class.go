@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Container"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -162,15 +163,15 @@ func (self Instance) IsTabHidden(tab_idx int) bool {
 /*
 Sets the metadata value for the tab at index [param tab_idx], which can be retrieved later using [method get_tab_metadata].
 */
-func (self Instance) SetTabMetadata(tab_idx int, metadata gd.Variant) {
-	class(self).SetTabMetadata(gd.Int(tab_idx), metadata)
+func (self Instance) SetTabMetadata(tab_idx int, metadata any) {
+	class(self).SetTabMetadata(gd.Int(tab_idx), gd.NewVariant(metadata))
 }
 
 /*
 Returns the metadata value set to the tab at index [param tab_idx] using [method set_tab_metadata]. If no metadata was previously set, returns [code]null[/code] by default.
 */
-func (self Instance) GetTabMetadata(tab_idx int) gd.Variant {
-	return gd.Variant(class(self).GetTabMetadata(gd.Int(tab_idx)))
+func (self Instance) GetTabMetadata(tab_idx int) any {
+	return any(class(self).GetTabMetadata(gd.Int(tab_idx)).Interface())
 }
 
 /*
@@ -190,8 +191,8 @@ func (self Instance) GetTabButtonIcon(tab_idx int) objects.Texture2D {
 /*
 Returns the index of the tab at local coordinates [param point]. Returns [code]-1[/code] if the point is outside the control boundaries or if there's no tab at the queried position.
 */
-func (self Instance) GetTabIdxAtPoint(point gd.Vector2) int {
-	return int(int(class(self).GetTabIdxAtPoint(point)))
+func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int {
+	return int(int(class(self).GetTabIdxAtPoint(gd.Vector2(point))))
 }
 
 /*

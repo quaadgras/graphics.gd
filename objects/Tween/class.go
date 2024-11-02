@@ -7,6 +7,8 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -144,8 +146,8 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenProperty(obj gd.Object, property string, final_val gd.Variant, duration float64) objects.PropertyTweener {
-	return objects.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(property).NodePath(), final_val, gd.Float(duration)))
+func (self Instance) TweenProperty(obj gd.Object, property Path.String, final_val any, duration Float.X) objects.PropertyTweener {
+	return objects.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(string(property)).NodePath(), gd.NewVariant(final_val), gd.Float(duration)))
 }
 
 /*
@@ -185,7 +187,7 @@ tween.TweenInterval(2.0f);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenInterval(time float64) objects.IntervalTweener {
+func (self Instance) TweenInterval(time Float.X) objects.IntervalTweener {
 	return objects.IntervalTweener(class(self).TweenInterval(gd.Float(time)))
 }
 
@@ -266,15 +268,15 @@ private void SetLabelText(int value)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenMethod(method gd.Callable, from gd.Variant, to gd.Variant, duration float64) objects.MethodTweener {
-	return objects.MethodTweener(class(self).TweenMethod(method, from, to, gd.Float(duration)))
+func (self Instance) TweenMethod(method gd.Callable, from any, to any, duration Float.X) objects.MethodTweener {
+	return objects.MethodTweener(class(self).TweenMethod(method, gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
 }
 
 /*
 Processes the [Tween] by the given [param delta] value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting [param delta] longer than the whole duration of the [Tween] animation.
 Returns [code]true[/code] if the [Tween] still has [Tweener]s that haven't finished.
 */
-func (self Instance) CustomStep(delta float64) bool {
+func (self Instance) CustomStep(delta Float.X) bool {
 	return bool(class(self).CustomStep(gd.Float(delta)))
 }
 
@@ -312,8 +314,8 @@ func (self Instance) Kill() {
 Returns the total time in seconds the [Tween] has been animating (i.e. the time since it started, not counting pauses etc.). The time is affected by [method set_speed_scale], and [method stop] will reset it to [code]0[/code].
 [b]Note:[/b] As it results from accumulating frame deltas, the time returned after the [Tween] has finished animating will be slightly greater than the actual [Tween] duration.
 */
-func (self Instance) GetTotalElapsedTime() float64 {
-	return float64(float64(class(self).GetTotalElapsedTime()))
+func (self Instance) GetTotalElapsedTime() Float.X {
+	return Float.X(Float.X(class(self).GetTotalElapsedTime()))
 }
 
 /*
@@ -386,7 +388,7 @@ func (self Instance) GetLoopsLeft() int {
 /*
 Scales the speed of tweening. This affects all [Tweener]s and their delays.
 */
-func (self Instance) SetSpeedScale(speed float64) objects.Tween {
+func (self Instance) SetSpeedScale(speed Float.X) objects.Tween {
 	return objects.Tween(class(self).SetSpeedScale(gd.Float(speed)))
 }
 
@@ -459,8 +461,8 @@ This method can be used for manual interpolation of a value, when you don't want
 [param duration] is the total time of the interpolation.
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
-func (self Instance) InterpolateValue(initial_value gd.Variant, delta_value gd.Variant, elapsed_time float64, duration float64, trans_type classdb.TweenTransitionType, ease_type classdb.TweenEaseType) gd.Variant {
-	return gd.Variant(class(self).InterpolateValue(initial_value, delta_value, gd.Float(elapsed_time), gd.Float(duration), trans_type, ease_type))
+func (self Instance) InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type classdb.TweenTransitionType, ease_type classdb.TweenEaseType) any {
+	return any(class(self).InterpolateValue(gd.NewVariant(initial_value), gd.NewVariant(delta_value), gd.Float(elapsed_time), gd.Float(duration), trans_type, ease_type).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node2D"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,11 +34,11 @@ func New() Instance {
 	return Instance{classdb.Marker2D(object)}
 }
 
-func (self Instance) GizmoExtents() float64 {
-	return float64(float64(class(self).GetGizmoExtents()))
+func (self Instance) GizmoExtents() Float.X {
+	return Float.X(Float.X(class(self).GetGizmoExtents()))
 }
 
-func (self Instance) SetGizmoExtents(value float64) {
+func (self Instance) SetGizmoExtents(value Float.X) {
 	class(self).SetGizmoExtents(gd.Float(value))
 }
 

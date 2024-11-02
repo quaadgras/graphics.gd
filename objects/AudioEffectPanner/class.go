@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/AudioEffect"
 import "grow.graphics/gd/objects/Resource"
+import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,11 +33,11 @@ func New() Instance {
 	return Instance{classdb.AudioEffectPanner(object)}
 }
 
-func (self Instance) Pan() float64 {
-	return float64(float64(class(self).GetPan()))
+func (self Instance) Pan() Float.X {
+	return Float.X(Float.X(class(self).GetPan()))
 }
 
-func (self Instance) SetPan(value float64) {
+func (self Instance) SetPan(value Float.X) {
 	class(self).SetPan(gd.Float(value))
 }
 
