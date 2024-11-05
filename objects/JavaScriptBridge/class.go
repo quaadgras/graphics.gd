@@ -8,6 +8,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,6 +28,70 @@ func singleton() {
 	self = *(*objects.JavaScriptBridge)(unsafe.Pointer(&obj))
 }
 
+/*
+Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
+If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
+*/
+func Eval(code string) any {
+	once.Do(singleton)
+	return any(class(self).Eval(gd.NewString(code), false).Interface())
+}
+
+/*
+Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
+*/
+func GetInterface(intf string) objects.JavaScriptObject {
+	once.Do(singleton)
+	return objects.JavaScriptObject(class(self).GetInterface(gd.NewString(intf)))
+}
+
+/*
+Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
+*/
+func CreateCallback(callable Callable.Any) objects.JavaScriptObject {
+	once.Do(singleton)
+	return objects.JavaScriptObject(class(self).CreateCallback(gd.NewCallable(callable)))
+}
+
+/*
+Prompts the user to download a file containing the specified [param buffer]. The file will have the given [param name] and [param mime] type.
+[b]Note:[/b] The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file [param name]'s extension.
+[b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
+[b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
+*/
+func DownloadBuffer(buffer []byte, name string) {
+	once.Do(singleton)
+	class(self).DownloadBuffer(gd.NewPackedByteSlice(buffer), gd.NewString(name), gd.NewString("application/octet-stream"))
+}
+
+/*
+Returns [code]true[/code] if a new version of the progressive web app is waiting to be activated.
+[b]Note:[/b] Only relevant when exported as a Progressive Web App.
+*/
+func PwaNeedsUpdate() bool {
+	once.Do(singleton)
+	return bool(class(self).PwaNeedsUpdate())
+}
+
+/*
+Performs the live update of the progressive web app. Forcing the new version to be installed and the page to be reloaded.
+[b]Note:[/b] Your application will be [b]reloaded in all browser tabs[/b].
+[b]Note:[/b] Only relevant when exported as a Progressive Web App and [method pwa_needs_update] returns [code]true[/code].
+*/
+func PwaUpdate() error {
+	once.Do(singleton)
+	return error(class(self).PwaUpdate())
+}
+
+/*
+Force synchronization of the persistent file system (when enabled).
+[b]Note:[/b] This is only useful for modules or extensions that can't use [FileAccess] to write files.
+*/
+func ForceFsSync() {
+	once.Do(singleton)
+	class(self).ForceFsSync()
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -38,14 +103,45 @@ func (self class) AsObject() gd.Object { return self[0].AsObject() }
 Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
+//go:nosplit
+func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Variant {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(code))
+	callframe.Arg(frame, use_global_execution_context)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_eval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = pointers.New[gd.Variant](r_ret.Get())
+	frame.Free()
+	return ret
+}
 
 /*
 Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
 */
+//go:nosplit
+func (self class) GetInterface(intf gd.String) objects.JavaScriptObject {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(intf))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = objects.JavaScriptObject{classdb.JavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	frame.Free()
+	return ret
+}
 
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 */
+//go:nosplit
+func (self class) CreateCallback(callable gd.Callable) objects.JavaScriptObject {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(callable))
+	var r_ret = callframe.Ret[[1]uintptr](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = objects.JavaScriptObject{classdb.JavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	frame.Free()
+	return ret
+}
 
 /*
 Prompts the user to download a file containing the specified [param buffer]. The file will have the given [param name] and [param mime] type.
@@ -53,23 +149,57 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
+//go:nosplit
+func (self class) DownloadBuffer(buffer gd.PackedByteArray, name gd.String, mime gd.String) {
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(buffer))
+	callframe.Arg(frame, pointers.Get(name))
+	callframe.Arg(frame, pointers.Get(mime))
+	var r_ret callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_download_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	frame.Free()
+}
 
 /*
 Returns [code]true[/code] if a new version of the progressive web app is waiting to be activated.
 [b]Note:[/b] Only relevant when exported as a Progressive Web App.
 */
+//go:nosplit
+func (self class) PwaNeedsUpdate() bool {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_needs_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 
 /*
 Performs the live update of the progressive web app. Forcing the new version to be installed and the page to be reloaded.
 [b]Note:[/b] Your application will be [b]reloaded in all browser tabs[/b].
 [b]Note:[/b] Only relevant when exported as a Progressive Web App and [method pwa_needs_update] returns [code]true[/code].
 */
+//go:nosplit
+func (self class) PwaUpdate() error {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[error](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
 
 /*
 Force synchronization of the persistent file system (when enabled).
 [b]Note:[/b] This is only useful for modules or extensions that can't use [FileAccess] to write files.
 */
-
+//go:nosplit
+func (self class) ForceFsSync() {
+	var frame = callframe.New()
+	var r_ret callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_force_fs_sync, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	frame.Free()
+}
 func OnPwaUpdateAvailable(cb func()) {
 	self[0].AsObject().Connect(gd.NewStringName("pwa_update_available"), gd.NewCallable(cb), 0)
 }

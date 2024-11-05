@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/MultiplayerAPI"
 import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Callable"
 import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
@@ -88,12 +89,12 @@ func (self Instance) SetRootPath(value Path.String) {
 	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) AuthCallback() gd.Callable {
-	return gd.Callable(class(self).GetAuthCallback())
+func (self Instance) AuthCallback() Callable.Any {
+	return Callable.Any(class(self).GetAuthCallback())
 }
 
-func (self Instance) SetAuthCallback(value gd.Callable) {
-	class(self).SetAuthCallback(value)
+func (self Instance) SetAuthCallback(value Callable.Any) {
+	class(self).SetAuthCallback(gd.NewCallable(value))
 }
 
 func (self Instance) AuthTimeout() Float.X {

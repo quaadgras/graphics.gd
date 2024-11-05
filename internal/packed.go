@@ -1,6 +1,7 @@
 package gd
 
 import (
+	"fmt"
 	"strings"
 	"unsafe"
 
@@ -373,6 +374,7 @@ func NewPackedVector2Array() PackedVector2Array {
 func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
 	var array = NewPackedVector2Array()
 	array.Resize(Int(len(data)))
+	fmt.Println(array)
 	copy(unsafe.Slice((*Vector2)(array.UnsafePointer()), len(data)), data)
 	return array
 }

@@ -27,7 +27,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		if i > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, ")) {\n\t")
 	fmt.Fprintf(w, `self[0].AsObject().Connect(gd.NewStringName("%s"), gd.NewCallable(cb), 0)`, signal.Name)
@@ -36,9 +36,6 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 
 func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton bool) {
 	if method.IsVararg {
-		return
-	}
-	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
 		return
 	}
 	switch class.Name {
@@ -56,7 +53,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		classDB.simpleVirtualCall(w, class, method)
 		return
 	}
-	resultSimple := classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))
@@ -68,7 +65,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			if i > 0 {
 				fmt.Fprint(w, ", ")
 			}
-			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 		}
 	}
 	fmt.Fprint(w, ") ")
@@ -93,7 +90,11 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			val = *arg.DefaultValue
 			val = strings.TrimPrefix(val, "&")
 			if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
-				val = "([1]" + classDB.convertTypeSimple(class, arg.Meta, arg.Type) + "{}[0])"
+				if arg.Type == "Callable" {
+					val = "nil"
+				} else {
+					val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
+				}
 			} else {
 				if strings.Contains(val, "(") {
 					switch {
@@ -127,7 +128,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 }
 
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
-	resultSimple := classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := classDB.isPointer(resultExpert)
 	if method.IsStatic {
@@ -136,7 +137,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr unsafe.Pointer", method.Name)
 	for _, arg := range method.Arguments {
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
 	fmt.Fprintf(w, "\treturn func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
@@ -203,7 +204,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if ctype == callDefault && method.IsVararg {
 		return
 	}
-
 	switch class.Name {
 	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
 		"Transform2D", "Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D",
@@ -291,9 +291,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		}
 		fmt.Fprintf(w, "\t}\n")
 		fmt.Fprintf(w, "}\n")
-		return
-	}
-	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
 		return
 	}
 	if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {

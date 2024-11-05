@@ -11,6 +11,7 @@ import "grow.graphics/gd/objects/Resource"
 import "grow.graphics/gd/variant/Float"
 import "grow.graphics/gd/variant/Vector3"
 import "grow.graphics/gd/variant/Transform3D"
+import "grow.graphics/gd/variant/Callable"
 import "grow.graphics/gd/variant/AABB"
 
 var _ unsafe.Pointer
@@ -75,8 +76,8 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		AreaGetCollisionMask(area Resource.ID) int
 		AreaSetMonitorable(area Resource.ID, monitorable bool)
 		AreaSetRayPickable(area Resource.ID, enable bool)
-		AreaSetMonitorCallback(area Resource.ID, callback gd.Callable)
-		AreaSetAreaMonitorCallback(area Resource.ID, callback gd.Callable)
+		AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
+		AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
 		BodyCreate() Resource.ID
 		BodySetSpace(body Resource.ID, space Resource.ID)
 		BodyGetSpace(body Resource.ID) Resource.ID
@@ -133,8 +134,8 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		BodyGetContactsReportedDepthThreshold(body Resource.ID) Float.X
 		BodySetOmitForceIntegration(body Resource.ID, enable bool)
 		BodyIsOmittingForceIntegration(body Resource.ID) bool
-		BodySetStateSyncCallback(body Resource.ID, callable gd.Callable)
-		BodySetForceIntegrationCallback(body Resource.ID, callable gd.Callable, userdata any)
+		BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
+		BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
 		BodySetRayPickable(body Resource.ID, enable bool)
 		BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *classdb.PhysicsServer3DExtensionMotionResult) bool
 		BodyGetDirectState(body Resource.ID) objects.PhysicsDirectBodyState3D
@@ -633,7 +634,7 @@ func (Instance) _area_set_ray_pickable(impl func(ptr unsafe.Pointer, area Resour
 		impl(self, area, enable)
 	}
 }
-func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -642,7 +643,7 @@ func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Re
 		impl(self, area, callback)
 	}
 }
-func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -1126,7 +1127,7 @@ func (Instance) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uintptr](p_args, 1))
@@ -1135,7 +1136,7 @@ func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body
 		impl(self, body, callable)
 	}
 }
-func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable gd.Callable, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uintptr](p_args, 1))

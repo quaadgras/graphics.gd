@@ -117,7 +117,7 @@ func isBuiltin(s string) bool {
 	}
 }
 
-func importsVariant(class gdjson.Class, s string) string {
+func importsVariant(class gdjson.Class, identifier, s string) string {
 	switch s {
 	case "Float", "float":
 		return "grow.graphics/gd/variant/Float"
@@ -141,6 +141,19 @@ func importsVariant(class gdjson.Class, s string) string {
 		return "grow.graphics/gd/variant/Vector4"
 	case "PackedColorArray":
 		return "grow.graphics/gd/variant/Color"
+	case "Callable":
+		details := gdjson.Callables[identifier]
+		if len(details) == 0 {
+			return "grow.graphics/gd/variant/Callable"
+		}
+		for _, detail := range details {
+			if detail == "void" {
+				continue
+			}
+			detail, _, _ = strings.Cut(detail, " ")
+			return importsVariant(class, "", detail)
+		}
+		return ""
 	default:
 		return ""
 	}
@@ -244,7 +257,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 }
 
-func (classDB ClassDB) convertTypeSimple(class gdjson.Class, meta string, gdType string) string {
+func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
 		return "gd.Array" // Of[+ classDB.convertType("", meta, gdType) + "]"
@@ -319,6 +332,8 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, meta string, gdType
 			return "ID"
 		}
 		return "Resource.ID"
+	case "ObjectID":
+		return "objects.ID"
 	case "Signal":
 		return "Signal.Any"
 	case "Dictionary":
@@ -327,6 +342,28 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, meta string, gdType
 		return "Array.Any"
 	case "Variant":
 		return "any"
+	case "Callable":
+		details, ok := gdjson.Callables[lookup]
+		if !ok || len(details) == 0 {
+			return "Callable.Any"
+		}
+		var ftype string = "func("
+		for i, arg := range details[1:] {
+			if i > 0 {
+				ftype += ", "
+			}
+			atype, name, ok := strings.Cut(arg, " ")
+			if ok {
+				ftype += name + " " + classDB.convertTypeSimple(class, "", "", atype)
+			} else {
+				ftype += classDB.convertTypeSimple(class, "", "", arg)
+			}
+		}
+		ftype += ")"
+		if details[0] != "void" {
+			ftype += " " + classDB.convertTypeSimple(class, "", "", details[0])
+		}
+		return ftype
 	default:
 		return classDB.convertType("", meta, gdType)
 	}

@@ -135,6 +135,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "grow.graphics/gd/objects"`)
 	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
 	var imported = make(map[string]bool)
+	if class.Name == "TextEdit" {
+		imported["grow.graphics/gd/variant/Rect2"] = true
+		fmt.Fprintln(file, `import "grow.graphics/gd/variant/Rect2"`)
+	}
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
@@ -152,25 +156,25 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		for _, arg := range method.Arguments {
 			switch arg.Type {
-			case "Array", "Dictionary", "Signal", "Callable":
+			case "Array", "Dictionary", "Signal":
 			default:
 				if arg.DefaultValue != nil {
 					continue
 				}
 			}
-			if need := importsVariant(class, arg.Type); need != "" && !imported[need] {
+			if need := importsVariant(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type); need != "" && !imported[need] {
 				imported[need] = true
 				fmt.Fprintf(file, "import %q\n", need)
 			}
 		}
-		if need := importsVariant(class, method.ReturnValue.Type); need != "" && !imported[need] {
+		if need := importsVariant(class, "", method.ReturnValue.Type); need != "" && !imported[need] {
 			imported[need] = true
 			fmt.Fprintf(file, "import %q\n", need)
 		}
 	}
 	for _, signal := range class.Signals {
 		for _, arg := range signal.Arguments {
-			if need := importsVariant(class, arg.Type); need != "" && !imported[need] {
+			if need := importsVariant(class, "", arg.Type); need != "" && !imported[need] {
 				imported[need] = true
 				fmt.Fprintf(file, "import %q\n", need)
 			}
@@ -211,9 +215,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 						if i > 0 {
 							fmt.Fprint(file, ", ")
 						}
-						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, arg.Meta, arg.Type))
+						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 					}
-					fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, method.ReturnValue.Meta, method.ReturnValue.Type))
+					fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
 					fmt.Fprintln(file)
 				}
 			}
@@ -317,7 +321,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintf(file, `func init() {`)
 	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return classdb.%[1]s(ptr) })`, class.Name)
 	fmt.Fprintf(file, "}\n")
-
+	if class.Name == "DisplayServer" {
+		local_enums["MouseButton"] = true
+	}
 	for _, method := range class.Methods {
 		for _, argument := range method.Arguments {
 			name := strings.TrimPrefix(argument.Type, "enum::")

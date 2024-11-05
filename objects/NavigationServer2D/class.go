@@ -771,9 +771,9 @@ func AgentIsMapChanged(agent Resource.ID) bool {
 Sets the callback [Callable] that gets called after each avoidance processing step for the [param agent]. The calculated [code]safe_velocity[/code] will be dispatched with a signal to the object just before the physics calculations.
 [b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_avoidance_callback] again with an empty [Callable].
 */
-func AgentSetAvoidanceCallback(agent Resource.ID, callback gd.Callable) {
+func AgentSetAvoidanceCallback(agent Resource.ID, callback func(velocity Vector2.XY)) {
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceCallback(agent, callback)
+	class(self).AgentSetAvoidanceCallback(agent, gd.NewCallable(callback))
 }
 
 /*
@@ -976,7 +976,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 func ParseSourceGeometryData(navigation_polygon objects.NavigationPolygon, source_geometry_data objects.NavigationMeshSourceGeometryData2D, root_node objects.Node) {
 	once.Do(singleton)
-	class(self).ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, [1]gd.Callable{}[0])
+	class(self).ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, gd.NewCallable(nil))
 }
 
 /*
@@ -984,7 +984,7 @@ Bakes the provided [param navigation_polygon] with the data from the provided [p
 */
 func BakeFromSourceGeometryData(navigation_polygon objects.NavigationPolygon, source_geometry_data objects.NavigationMeshSourceGeometryData2D) {
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, [1]gd.Callable{}[0])
+	class(self).BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, gd.NewCallable(nil))
 }
 
 /*
@@ -992,7 +992,7 @@ Bakes the provided [param navigation_polygon] with the data from the provided [p
 */
 func BakeFromSourceGeometryDataAsync(navigation_polygon objects.NavigationPolygon, source_geometry_data objects.NavigationMeshSourceGeometryData2D) {
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, [1]gd.Callable{}[0])
+	class(self).BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, gd.NewCallable(nil))
 }
 
 /*
@@ -1017,9 +1017,9 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 - [code]source_geometry_data[/code] - The [NavigationMeshSourceGeometryData2D] reference. Add custom source geometry for navigation mesh baking to this object.
 - [code]node[/code] - The [Node] that is parsed.
 */
-func SourceGeometryParserSetCallback(parser Resource.ID, callback gd.Callable) {
+func SourceGeometryParserSetCallback(parser Resource.ID, callback func(navigation_mesh objects.NavigationPolygon, source_geometry_data objects.NavigationMeshSourceGeometryData2D, node objects.Node)) {
 	once.Do(singleton)
-	class(self).SourceGeometryParserSetCallback(parser, callback)
+	class(self).SourceGeometryParserSetCallback(parser, gd.NewCallable(callback))
 }
 
 /*

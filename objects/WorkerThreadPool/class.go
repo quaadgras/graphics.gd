@@ -73,9 +73,9 @@ Adds [param action] as a task to be executed by a worker thread. [param high_pri
 Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTask(action gd.Callable) int {
+func AddTask(action func()) int {
 	once.Do(singleton)
-	return int(int(class(self).AddTask(action, false, gd.NewString(""))))
+	return int(int(class(self).AddTask(gd.NewCallable(action), false, gd.NewString(""))))
 }
 
 /*
@@ -104,9 +104,9 @@ The number of threads the task is distributed to is defined by [param tasks_need
 Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTask(action gd.Callable, elements int) int {
+func AddGroupTask(action func(), elements int) int {
 	once.Do(singleton)
-	return int(int(class(self).AddGroupTask(action, gd.Int(elements), gd.Int(-1), false, gd.NewString(""))))
+	return int(int(class(self).AddGroupTask(gd.NewCallable(action), gd.Int(elements), gd.Int(-1), false, gd.NewString(""))))
 }
 
 /*

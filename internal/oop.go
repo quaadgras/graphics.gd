@@ -5,10 +5,13 @@ package gd
 import (
 	"reflect"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"grow.graphics/gd/internal/pointers"
 )
+
+var ExtensionInstances sync.Map
 
 type NotificationType int32
 

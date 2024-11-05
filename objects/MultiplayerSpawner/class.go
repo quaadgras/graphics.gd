@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
 import "grow.graphics/gd/variant/Path"
+import "grow.graphics/gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -86,12 +87,12 @@ func (self Instance) SetSpawnLimit(value int) {
 	class(self).SetSpawnLimit(gd.Int(value))
 }
 
-func (self Instance) SpawnFunction() gd.Callable {
-	return gd.Callable(class(self).GetSpawnFunction())
+func (self Instance) SpawnFunction() Callable.Any {
+	return Callable.Any(class(self).GetSpawnFunction())
 }
 
-func (self Instance) SetSpawnFunction(value gd.Callable) {
-	class(self).SetSpawnFunction(value)
+func (self Instance) SetSpawnFunction(value Callable.Any) {
+	class(self).SetSpawnFunction(gd.NewCallable(value))
 }
 
 /*

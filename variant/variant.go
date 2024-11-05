@@ -33,6 +33,19 @@ func New(val any) gd.Variant {
 	}
 }
 
+// Get attempts to convert the given variant value to the given type.
+func Get[T any](val gd.Variant) T {
+	var result T
+	var value = reflect.ValueOf(&result).Elem()
+	switch val.Type() {
+	case gd.TypeFloat:
+		value.SetFloat(float64(val.Float()))
+	default:
+		return val.Interface().(T)
+	}
+	return result
+}
+
 // Call attempts to call the given method on the given variant value with the given arguments.
 func Call(val any, name string, args ...any) any {
 	arguments := make([]gd.Variant, len(args))

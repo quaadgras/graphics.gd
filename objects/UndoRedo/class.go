@@ -137,15 +137,15 @@ func (self Instance) IsCommittingAction() bool {
 /*
 Register a [Callable] that will be called when the action is committed.
 */
-func (self Instance) AddDoMethod(callable gd.Callable) {
-	class(self).AddDoMethod(callable)
+func (self Instance) AddDoMethod(callable func()) {
+	class(self).AddDoMethod(gd.NewCallable(callable))
 }
 
 /*
 Register a [Callable] that will be called when the action is undone.
 */
-func (self Instance) AddUndoMethod(callable gd.Callable) {
-	class(self).AddUndoMethod(callable)
+func (self Instance) AddUndoMethod(callable func()) {
+	class(self).AddUndoMethod(gd.NewCallable(callable))
 }
 
 /*

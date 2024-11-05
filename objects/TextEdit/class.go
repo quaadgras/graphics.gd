@@ -7,6 +7,7 @@ import "grow.graphics/gd/internal/callframe"
 import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
+import "grow.graphics/gd/variant/Rect2"
 import "grow.graphics/gd/objects/Control"
 import "grow.graphics/gd/objects/CanvasItem"
 import "grow.graphics/gd/objects/Node"
@@ -455,8 +456,8 @@ func (self Instance) Search(text string, flags int, from_line int, from_column i
 /*
 Provide custom tooltip text. The callback method must take the following args: [code]hovered_word: String[/code].
 */
-func (self Instance) SetTooltipRequestFunc(callback gd.Callable) {
-	class(self).SetTooltipRequestFunc(callback)
+func (self Instance) SetTooltipRequestFunc(callback func(hovered_word string) string) {
+	class(self).SetTooltipRequestFunc(gd.NewCallable(callback))
 }
 
 /*
@@ -1093,8 +1094,8 @@ func (self Instance) MergeGutters(from_line int, to_line int) {
 /*
 Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
-func (self Instance) SetGutterCustomDraw(column int, draw_callback gd.Callable) {
-	class(self).SetGutterCustomDraw(gd.Int(column), draw_callback)
+func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) {
+	class(self).SetGutterCustomDraw(gd.Int(column), gd.NewCallable(draw_callback))
 }
 
 /*

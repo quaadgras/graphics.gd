@@ -350,9 +350,9 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the body entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetMonitorCallback(area Resource.ID, callback gd.Callable) {
+func AreaSetMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id objects.ID, body_shape_idx int, self_shape_idx int)) {
 	once.Do(singleton)
-	class(self).AreaSetMonitorCallback(area, callback)
+	class(self).AreaSetMonitorCallback(area, gd.NewCallable(callback))
 }
 
 /*
@@ -364,9 +364,9 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the other area entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetAreaMonitorCallback(area Resource.ID, callback gd.Callable) {
+func AreaSetAreaMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id objects.ID, body_shape_idx int, self_shape_idx int)) {
 	once.Do(singleton)
-	class(self).AreaSetAreaMonitorCallback(area, callback)
+	class(self).AreaSetAreaMonitorCallback(area, gd.NewCallable(callback))
 }
 func AreaSetMonitorable(area Resource.ID, monitorable bool) {
 	once.Do(singleton)
@@ -800,9 +800,9 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body Resource.ID, callable gd.Callable) {
+func BodySetStateSyncCallback(body Resource.ID, callable func(state objects.PhysicsDirectBodyState3D)) {
 	once.Do(singleton)
-	class(self).BodySetStateSyncCallback(body, callable)
+	class(self).BodySetStateSyncCallback(body, gd.NewCallable(callable))
 }
 
 /*
@@ -813,9 +813,9 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body Resource.ID, callable gd.Callable) {
+func BodySetForceIntegrationCallback(body Resource.ID, callable func(state objects.PhysicsDirectBodyState3D, userdata any)) {
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(body, callable, gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
+	class(self).BodySetForceIntegrationCallback(body, gd.NewCallable(callable), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*

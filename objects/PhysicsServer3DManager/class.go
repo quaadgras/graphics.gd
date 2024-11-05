@@ -30,9 +30,9 @@ func singleton() {
 /*
 Register a [PhysicsServer3D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer3D] object.
 */
-func RegisterServer(name string, create_callback gd.Callable) {
+func RegisterServer(name string, create_callback func() objects.PhysicsServer3D) {
 	once.Do(singleton)
-	class(self).RegisterServer(gd.NewString(name), create_callback)
+	class(self).RegisterServer(gd.NewString(name), gd.NewCallable(create_callback))
 }
 
 /*

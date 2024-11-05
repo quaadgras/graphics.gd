@@ -1716,9 +1716,9 @@ func VisibilityNotifierSetAabb(notifier Resource.ID, aabb AABB.PositionSize) {
 	once.Do(singleton)
 	class(self).VisibilityNotifierSetAabb(notifier, gd.AABB(aabb))
 }
-func VisibilityNotifierSetCallbacks(notifier Resource.ID, enter_callable gd.Callable, exit_callable gd.Callable) {
+func VisibilityNotifierSetCallbacks(notifier Resource.ID, enter_callable func(), exit_callable func()) {
 	once.Do(singleton)
-	class(self).VisibilityNotifierSetCallbacks(notifier, enter_callable, exit_callable)
+	class(self).VisibilityNotifierSetCallbacks(notifier, gd.NewCallable(enter_callable), gd.NewCallable(exit_callable))
 }
 
 /*
@@ -2339,9 +2339,9 @@ func CompositorEffectSetEnabled(effect Resource.ID, enabled bool) {
 /*
 Sets the callback type ([param callback_type]) and callback method([param callback]) for this rendering effect.
 */
-func CompositorEffectSetCallback(effect Resource.ID, callback_type classdb.RenderingServerCompositorEffectCallbackType, callback gd.Callable) {
+func CompositorEffectSetCallback(effect Resource.ID, callback_type classdb.RenderingServerCompositorEffectCallbackType, callback func()) {
 	once.Do(singleton)
-	class(self).CompositorEffectSetCallback(effect, callback_type, callback)
+	class(self).CompositorEffectSetCallback(effect, callback_type, gd.NewCallable(callback))
 }
 
 /*
@@ -3424,9 +3424,9 @@ func CanvasItemSetUseParentMaterial(item Resource.ID, enabled bool) {
 Sets the given [CanvasItem] as visibility notifier. [param area] defines the area of detecting visibility. [param enter_callable] is called when the [CanvasItem] enters the screen, [param exit_callable] is called when the [CanvasItem] exits the screen. If [param enable] is [code]false[/code], the item will no longer function as notifier.
 This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
-func CanvasItemSetVisibilityNotifier(item Resource.ID, enable bool, area Rect2.PositionSize, enter_callable gd.Callable, exit_callable gd.Callable) {
+func CanvasItemSetVisibilityNotifier(item Resource.ID, enable bool, area Rect2.PositionSize, enter_callable func(), exit_callable func()) {
 	once.Do(singleton)
-	class(self).CanvasItemSetVisibilityNotifier(item, enable, gd.Rect2(area), enter_callable, exit_callable)
+	class(self).CanvasItemSetVisibilityNotifier(item, enable, gd.Rect2(area), gd.NewCallable(enter_callable), gd.NewCallable(exit_callable))
 }
 
 /*
@@ -3820,9 +3820,9 @@ func FreeRid(rid Resource.ID) {
 /*
 Schedules a callback to the given callable after a frame has been drawn.
 */
-func RequestFrameDrawnCallback(callable gd.Callable) {
+func RequestFrameDrawnCallback(callable func()) {
 	once.Do(singleton)
-	class(self).RequestFrameDrawnCallback(callable)
+	class(self).RequestFrameDrawnCallback(gd.NewCallable(callable))
 }
 
 /*
@@ -4026,9 +4026,9 @@ func IsOnRenderThread() bool {
 /*
 As the RenderingServer actual logic may run on an separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
 */
-func CallOnRenderThread(callable gd.Callable) {
+func CallOnRenderThread(callable func()) {
 	once.Do(singleton)
-	class(self).CallOnRenderThread(callable)
+	class(self).CallOnRenderThread(gd.NewCallable(callable))
 }
 
 /*

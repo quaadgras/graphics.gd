@@ -54,8 +54,12 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 
 func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 	switch rtype.Kind() {
+	case reflect.Bool:
+		return gd.TypeBool
 	case reflect.Int32, reflect.Int64, reflect.Int:
 		return gd.TypeInt
+	case reflect.Float32, reflect.Float64:
+		return gd.TypeFloat
 	case reflect.Pointer:
 		if rtype.Elem().Kind() == reflect.Struct {
 			return gd.TypeObject

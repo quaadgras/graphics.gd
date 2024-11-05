@@ -97,6 +97,8 @@ func (name Name) ConvertToSimple(val string) string {
 		return fmt.Sprintf("gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&%v)))", val)
 	case "gd.Variant":
 		return fmt.Sprintf("gd.NewVariant(%v)", val)
+	case "gd.Callable":
+		return fmt.Sprintf("gd.NewCallable(%v)", val)
 	default:
 		return val
 	}

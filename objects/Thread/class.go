@@ -30,8 +30,8 @@ If the method takes some arguments, you can pass them using [method Callable.bin
 The [param priority] of the [Thread] can be changed by passing a value from the [enum Priority] enum.
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
-func (self Instance) Start(callable gd.Callable) error {
-	return error(class(self).Start(callable, 1))
+func (self Instance) Start(callable func()) error {
+	return error(class(self).Start(gd.NewCallable(callable), 1))
 }
 
 /*

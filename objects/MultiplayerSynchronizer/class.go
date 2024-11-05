@@ -10,6 +10,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
 import "grow.graphics/gd/variant/Path"
 import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,15 +38,15 @@ func (self Instance) UpdateVisibility() {
 Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
-func (self Instance) AddVisibilityFilter(filter gd.Callable) {
-	class(self).AddVisibilityFilter(filter)
+func (self Instance) AddVisibilityFilter(filter func(peer_id int) bool) {
+	class(self).AddVisibilityFilter(gd.NewCallable(filter))
 }
 
 /*
 Removes a peer visibility filter from this synchronizer.
 */
-func (self Instance) RemoveVisibilityFilter(filter gd.Callable) {
-	class(self).RemoveVisibilityFilter(filter)
+func (self Instance) RemoveVisibilityFilter(filter Callable.Any) {
+	class(self).RemoveVisibilityFilter(gd.NewCallable(filter))
 }
 
 /*

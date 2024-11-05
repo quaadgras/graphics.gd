@@ -9,6 +9,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Callable"
 import "grow.graphics/gd/variant/Array"
 
 var _ unsafe.Pointer
@@ -107,9 +108,9 @@ public int GetMonitorValue()
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 Callables are called with arguments supplied in argument array.
 */
-func AddCustomMonitor(id string, callable gd.Callable) {
+func AddCustomMonitor(id string, callable Callable.Any) {
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), callable, [1]Array.Any{}[0])
+	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), [1]Array.Any{}[0])
 }
 
 /*

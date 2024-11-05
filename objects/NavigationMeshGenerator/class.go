@@ -53,7 +53,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 func ParseSourceGeometryData(navigation_mesh objects.NavigationMesh, source_geometry_data objects.NavigationMeshSourceGeometryData3D, root_node objects.Node) {
 	once.Do(singleton)
-	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, [1]gd.Callable{}[0])
+	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, gd.NewCallable(nil))
 }
 
 /*
@@ -61,7 +61,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 func BakeFromSourceGeometryData(navigation_mesh objects.NavigationMesh, source_geometry_data objects.NavigationMeshSourceGeometryData3D) {
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, [1]gd.Callable{}[0])
+	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, gd.NewCallable(nil))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

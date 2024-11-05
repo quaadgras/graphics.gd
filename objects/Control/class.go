@@ -1067,8 +1067,8 @@ Forwards the handling of this control's [method _get_drag_data],  [method _can_d
 For each argument, if not empty, the delegate callable is used, otherwise the local (virtual) function is used.
 The function format for each callable should be exactly the same as the virtual functions described above.
 */
-func (self Instance) SetDragForwarding(drag_func gd.Callable, can_drop_func gd.Callable, drop_func gd.Callable) {
-	class(self).SetDragForwarding(drag_func, can_drop_func, drop_func)
+func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) {
+	class(self).SetDragForwarding(gd.NewCallable(drag_func), gd.NewCallable(can_drop_func), gd.NewCallable(drop_func))
 }
 
 /*

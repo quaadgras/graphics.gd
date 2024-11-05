@@ -87,9 +87,9 @@ func ProfilerEnable(name string, enable bool) {
 Registers a message capture with given [param name]. If [param name] is "my_message" then messages starting with "my_message:" will be called with the given callable.
 Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
 */
-func RegisterMessageCapture(name string, callable gd.Callable) {
+func RegisterMessageCapture(name string, callable func(message string, data Array.Any)) {
 	once.Do(singleton)
-	class(self).RegisterMessageCapture(gd.NewStringName(name), callable)
+	class(self).RegisterMessageCapture(gd.NewStringName(name), gd.NewCallable(callable))
 }
 
 /*

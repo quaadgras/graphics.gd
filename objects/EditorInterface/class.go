@@ -9,6 +9,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/variant/Float"
+import "grow.graphics/gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -273,9 +274,9 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelector(callback gd.Callable) {
+func PopupNodeSelector(callback func(selected Path.String)) {
 	once.Do(singleton)
-	class(self).PopupNodeSelector(callback, [1]gd.Array{}[0])
+	class(self).PopupNodeSelector(gd.NewCallable(callback), [1]gd.Array{}[0])
 }
 
 /*
@@ -296,9 +297,9 @@ func _on_property_selected(property_path):
 
 [/codeblock]
 */
-func PopupPropertySelector(obj gd.Object, callback gd.Callable) {
+func PopupPropertySelector(obj gd.Object, callback func(selected Path.String)) {
 	once.Do(singleton)
-	class(self).PopupPropertySelector(obj, callback, gd.NewPackedInt32Slice([1][]int32{}[0]))
+	class(self).PopupPropertySelector(obj, gd.NewCallable(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
 }
 
 /*

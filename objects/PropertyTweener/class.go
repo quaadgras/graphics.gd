@@ -89,8 +89,8 @@ func tween_curve(v):
 
 [/codeblock]
 */
-func (self Instance) SetCustomInterpolator(interpolator_method gd.Callable) objects.PropertyTweener {
-	return objects.PropertyTweener(class(self).SetCustomInterpolator(interpolator_method))
+func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) objects.PropertyTweener {
+	return objects.PropertyTweener(class(self).SetCustomInterpolator(gd.NewCallable(interpolator_method)))
 }
 
 /*

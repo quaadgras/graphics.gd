@@ -128,7 +128,8 @@ func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
 	if fn == nil {
 		return 0
 	}
-	return BoundArguments(fn).Size()
+	bound := BoundArguments(fn)
+	return bound.Size()
 }
 
 // Method returns the name of the function represented by this Callable or

@@ -219,8 +219,8 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenCallback(callback gd.Callable) objects.CallbackTweener {
-	return objects.CallbackTweener(class(self).TweenCallback(callback))
+func (self Instance) TweenCallback(callback func()) objects.CallbackTweener {
+	return objects.CallbackTweener(class(self).TweenCallback(gd.NewCallable(callback)))
 }
 
 /*
@@ -268,8 +268,8 @@ private void SetLabelText(int value)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenMethod(method gd.Callable, from any, to any, duration Float.X) objects.MethodTweener {
-	return objects.MethodTweener(class(self).TweenMethod(method, gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
+func (self Instance) TweenMethod(method func(value any), from any, to any, duration Float.X) objects.MethodTweener {
+	return objects.MethodTweener(class(self).TweenMethod(gd.NewCallable(method), gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
 }
 
 /*

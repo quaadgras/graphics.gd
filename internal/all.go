@@ -9824,7 +9824,8 @@ func (selfPtr *PackedVector2Array) Resize(new_size Int) Int {
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
-	pointers.Set(selfPtr, p_self.Get())
+	//pointers.Set(selfPtr, p_self.Get())
+	//*selfPtr = pointers.New[PackedVector2Array](p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

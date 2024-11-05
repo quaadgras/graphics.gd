@@ -92,6 +92,8 @@ func (Godot *API) linkMethods(editor bool) {
 		switch class.Name {
 		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase":
 			isEditorMethod = true
+		case "JavaClassWrapper", "JavaScriptBridge":
+			continue
 		}
 		if editor != isEditorMethod {
 			continue

@@ -8268,6 +8268,19 @@ type methods struct {
 	}
 	JavaClass struct {
 	}
+	JavaClassWrapper struct {
+		Bind_wrap MethodBind `hash:"1124367868"`
+	}
+	JavaScriptBridge struct {
+		Bind_eval             MethodBind `hash:"218087648"`
+		Bind_get_interface    MethodBind `hash:"1355533281"`
+		Bind_create_callback  MethodBind `hash:"422818440"`
+		Bind_create_object    MethodBind `hash:"3093893586"`
+		Bind_download_buffer  MethodBind `hash:"3352272093"`
+		Bind_pwa_needs_update MethodBind `hash:"36873697"`
+		Bind_pwa_update       MethodBind `hash:"166280745"`
+		Bind_force_fs_sync    MethodBind `hash:"3218959716"`
+	}
 	JavaScriptObject struct {
 	}
 	Joint2D struct {

@@ -11,6 +11,7 @@ import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Resource"
 import "grow.graphics/gd/variant/Vector2"
 import "grow.graphics/gd/variant/Vector2i"
+import "grow.graphics/gd/variant/Callable"
 import "grow.graphics/gd/variant/Float"
 
 var _ unsafe.Pointer
@@ -158,18 +159,18 @@ func SetInterfaceDirection(rid Resource.ID, is_rtl bool) {
 Registers callable to emit after the menu is closed.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupOpenCallback(rid Resource.ID, callback gd.Callable) {
+func SetPopupOpenCallback(rid Resource.ID, callback func()) {
 	once.Do(singleton)
-	class(self).SetPopupOpenCallback(rid, callback)
+	class(self).SetPopupOpenCallback(rid, gd.NewCallable(callback))
 }
 
 /*
 Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupOpenCallback(rid Resource.ID) gd.Callable {
+func GetPopupOpenCallback(rid Resource.ID) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GetPopupOpenCallback(rid))
+	return Callable.Any(class(self).GetPopupOpenCallback(rid))
 }
 
 /*
@@ -177,18 +178,18 @@ Registers callable to emit when the menu is about to show.
 [b]Note:[/b] The OS can simulate menu opening to track menu item changes and global shortcuts, in which case the corresponding close callback is not triggered. Use [method is_opened] to check if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupCloseCallback(rid Resource.ID, callback gd.Callable) {
+func SetPopupCloseCallback(rid Resource.ID, callback func()) {
 	once.Do(singleton)
-	class(self).SetPopupCloseCallback(rid, callback)
+	class(self).SetPopupCloseCallback(rid, gd.NewCallable(callback))
 }
 
 /*
 Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupCloseCallback(rid Resource.ID) gd.Callable {
+func GetPopupCloseCallback(rid Resource.ID) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GetPopupCloseCallback(rid))
+	return Callable.Any(class(self).GetPopupCloseCallback(rid))
 }
 
 /*
@@ -238,7 +239,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -251,7 +252,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -264,7 +265,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -277,7 +278,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconCheckItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -291,7 +292,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddRadioCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -305,7 +306,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconRadioCheckItem(rid Resource.ID, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -320,7 +321,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddMultistateItem(rid Resource.ID, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -392,18 +393,18 @@ func IsItemRadioCheckable(rid Resource.ID, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCallback(rid Resource.ID, idx int) gd.Callable {
+func GetItemCallback(rid Resource.ID, idx int) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GetItemCallback(rid, gd.Int(idx)))
+	return Callable.Any(class(self).GetItemCallback(rid, gd.Int(idx)))
 }
 
 /*
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemKeyCallback(rid Resource.ID, idx int) gd.Callable {
+func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
+	return Callable.Any(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
 }
 
 /*
@@ -540,9 +541,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemCallback(rid Resource.ID, idx int, callback gd.Callable) {
+func SetItemCallback(rid Resource.ID, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemCallback(rid, gd.Int(idx), callback)
+	class(self).SetItemCallback(rid, gd.Int(idx), gd.NewCallable(callback))
 }
 
 /*
@@ -550,9 +551,9 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemHoverCallbacks(rid Resource.ID, idx int, callback gd.Callable) {
+func SetItemHoverCallbacks(rid Resource.ID, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), callback)
+	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), gd.NewCallable(callback))
 }
 
 /*
@@ -560,9 +561,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] The [param key_callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemKeyCallback(rid Resource.ID, idx int, key_callback gd.Callable) {
+func SetItemKeyCallback(rid Resource.ID, idx int, key_callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemKeyCallback(rid, gd.Int(idx), key_callback)
+	class(self).SetItemKeyCallback(rid, gd.Int(idx), gd.NewCallable(key_callback))
 }
 
 /*

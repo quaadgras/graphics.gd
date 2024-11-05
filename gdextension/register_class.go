@@ -60,7 +60,6 @@ func (class *Class[T, S]) AsObject() gd.Object {
 	return obj
 }
 
-var instances sync.Map
 var registered sync.Map
 
 /*
@@ -221,7 +220,7 @@ func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterf
 	extensionClass := value.Interface().(isClass)
 	extensionClass.setObject(super)
 
-	instances.Store(pointers.Get(super)[0], extensionClass)
+	gd.ExtensionInstances.Store(pointers.Get(super)[0], extensionClass)
 
 	value = value.Elem()
 
@@ -540,7 +539,7 @@ func (instance *instanceImplementation) Free() {
 	for _, signal := range instance.signals {
 		signal.rvalue.Close()
 	}
-	instances.Delete(instance.object)
+	gd.ExtensionInstances.Delete(instance.object)
 	defer instance.setupForCall()()
 	switch onfree := instance.Value.(type) {
 	case interface{ OnFree() }:
@@ -610,7 +609,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	path := gd.NewString(name).NodePath()
 	if !Node.Advanced(parent).HasNode(path) {
 		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(classNameOf(field.Type)))
-		native, ok := instances.Load(pointers.Get(child)[0])
+		native, ok := gd.ExtensionInstances.Load(pointers.Get(child)[0])
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
@@ -629,7 +628,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if name := node[0].AsObject().GetClass().String(); name != classNameOf(field.Type) {
 		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 	}
-	ref, native := instances.Load(pointers.Get(node[0])[0])
+	ref, native := gd.ExtensionInstances.Load(pointers.Get(node[0])[0])
 	if native {
 		rvalue.Elem().Set(reflect.ValueOf(ref))
 		pointers.End(node[0])

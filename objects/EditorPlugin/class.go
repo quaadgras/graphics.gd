@@ -9,6 +9,7 @@ import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/objects/Node"
 import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -936,8 +937,8 @@ func (self Instance) SetDockTabIcon(control objects.Control, icon objects.Textur
 /*
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
-func (self Instance) AddToolMenuItem(name string, callable gd.Callable) {
-	class(self).AddToolMenuItem(gd.NewString(name), callable)
+func (self Instance) AddToolMenuItem(name string, callable func()) {
+	class(self).AddToolMenuItem(gd.NewString(name), gd.NewCallable(callable))
 }
 
 /*
@@ -1026,15 +1027,15 @@ func (self Instance) GetUndoRedo() objects.EditorUndoRedoManager {
 Hooks a callback into the undo/redo action creation when a property is modified in the inspector. This allows, for example, to save other properties that may be lost when a given property is modified.
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
-func (self Instance) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
-	class(self).AddUndoRedoInspectorHookCallback(callable)
+func (self Instance) AddUndoRedoInspectorHookCallback(callable func(undo_redo gd.Object, modified_object gd.Object, property string, new_value any)) {
+	class(self).AddUndoRedoInspectorHookCallback(gd.NewCallable(callable))
 }
 
 /*
 Removes a callback previously added by [method add_undo_redo_inspector_hook_callback].
 */
-func (self Instance) RemoveUndoRedoInspectorHookCallback(callable gd.Callable) {
-	class(self).RemoveUndoRedoInspectorHookCallback(callable)
+func (self Instance) RemoveUndoRedoInspectorHookCallback(callable Callable.Any) {
+	class(self).RemoveUndoRedoInspectorHookCallback(gd.NewCallable(callable))
 }
 
 /*

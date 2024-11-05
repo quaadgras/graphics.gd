@@ -12,6 +12,7 @@ import "grow.graphics/gd/variant/Rect2"
 import "grow.graphics/gd/variant/Color"
 import "grow.graphics/gd/variant/Float"
 import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -314,15 +315,15 @@ func (self Instance) SetCustomDraw(column int, obj gd.Object, callback string) {
 Sets the given column's custom draw callback. Use an empty [Callable] ([code skip-lint]Callable()[/code]) to clear the custom callback. The cell has to be in [constant CELL_MODE_CUSTOM] to use this feature.
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
-func (self Instance) SetCustomDrawCallback(column int, callback gd.Callable) {
-	class(self).SetCustomDrawCallback(gd.Int(column), callback)
+func (self Instance) SetCustomDrawCallback(column int, callback func(item objects.TreeItem, rect Rect2.PositionSize)) {
+	class(self).SetCustomDrawCallback(gd.Int(column), gd.NewCallable(callback))
 }
 
 /*
 Returns the custom callback of column [param column].
 */
-func (self Instance) GetCustomDrawCallback(column int) gd.Callable {
-	return gd.Callable(class(self).GetCustomDrawCallback(gd.Int(column)))
+func (self Instance) GetCustomDrawCallback(column int) Callable.Any {
+	return Callable.Any(class(self).GetCustomDrawCallback(gd.Int(column)))
 }
 
 /*

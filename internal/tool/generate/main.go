@@ -631,9 +631,6 @@ func generate() error {
 
 	fmt.Fprintf(out, "type methods struct{\n")
 	for _, class := range spec.Classes {
-		if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
-			continue
-		}
 		fmt.Fprintf(out, "\t%v struct{\n", class.Name)
 		for _, method := range class.Methods {
 			if method.Name == "select" {

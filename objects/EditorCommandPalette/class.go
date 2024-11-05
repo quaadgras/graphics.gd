@@ -47,8 +47,8 @@ Adds a custom command to EditorCommandPalette.
 - [param binded_callable]: [Callable] (Callable of the [b]Command[/b]. This will be executed when the [b]Command[/b] is selected.)
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
-func (self Instance) AddCommand(command_name string, key_name string, binded_callable gd.Callable) {
-	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), binded_callable, gd.NewString("None"))
+func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) {
+	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), gd.NewCallable(binded_callable), gd.NewString("None"))
 }
 
 /*

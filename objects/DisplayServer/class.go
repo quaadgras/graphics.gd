@@ -9,6 +9,7 @@ import gd "grow.graphics/gd/internal"
 import "grow.graphics/gd/objects"
 import classdb "grow.graphics/gd/internal/classdb"
 import "grow.graphics/gd/variant/Dictionary"
+import "grow.graphics/gd/variant/Callable"
 import "grow.graphics/gd/variant/Color"
 import "grow.graphics/gd/variant/Vector2i"
 import "grow.graphics/gd/variant/Rect2i"
@@ -59,17 +60,17 @@ Sets native help system search callbacks.
 [param action_callback] has the following arguments: [code]String key[/code]. Called when the user selects a search result in the [code]Help[/code] menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func HelpSetSearchCallbacks(search_callback gd.Callable, action_callback gd.Callable) {
+func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) Dictionary.Any, action_callback func(key string)) {
 	once.Do(singleton)
-	class(self).HelpSetSearchCallbacks(search_callback, action_callback)
+	class(self).HelpSetSearchCallbacks(gd.NewCallable(search_callback), gd.NewCallable(action_callback))
 }
 
 /*
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
-func GlobalMenuSetPopupCallbacks(menu_root string, open_callback gd.Callable, close_callback gd.Callable) {
+func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), open_callback, close_callback)
+	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), gd.NewCallable(open_callback), gd.NewCallable(close_callback))
 }
 
 /*
@@ -107,7 +108,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -127,7 +128,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -147,7 +148,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -167,7 +168,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconCheckItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -188,7 +189,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddRadioCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -209,7 +210,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconRadioCheckItem(menu_root string, icon objects.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -231,7 +232,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), [1]gd.Callable{}[0], [1]gd.Callable{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -302,18 +303,18 @@ func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemCallback(menu_root string, idx int) gd.Callable {
+func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Any(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
 
 /*
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemKeyCallback(menu_root string, idx int) gd.Callable {
+func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Any {
 	once.Do(singleton)
-	return gd.Callable(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Any(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -450,9 +451,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemCallback(menu_root string, idx int, callback gd.Callable) {
+func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), callback)
+	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(callback))
 }
 
 /*
@@ -460,9 +461,9 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback gd.Callable) {
+func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), callback)
+	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(callback))
 }
 
 /*
@@ -470,9 +471,9 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] The [param key_callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback gd.Callable) {
+func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), key_callback)
+	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(key_callback))
 }
 
 /*
@@ -720,9 +721,9 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsSetUtteranceCallback(event classdb.DisplayServerTTSUtteranceEvent, callable gd.Callable) {
+func TtsSetUtteranceCallback(event classdb.DisplayServerTTSUtteranceEvent, callable func(int, int)) {
 	once.Do(singleton)
-	class(self).TtsSetUtteranceCallback(event, callable)
+	class(self).TtsSetUtteranceCallback(event, gd.NewCallable(callable))
 }
 
 /*
@@ -765,9 +766,9 @@ func GetBaseColor() Color.RGBA {
 Sets the [param callable] that should be called when system theme settings are changed. Callback method should have zero arguments.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
-func SetSystemThemeChangeCallback(callable gd.Callable) {
+func SetSystemThemeChangeCallback(callable func()) {
 	once.Do(singleton)
-	class(self).SetSystemThemeChangeCallback(callable)
+	class(self).SetSystemThemeChangeCallback(gd.NewCallable(callable))
 }
 
 /*
@@ -1259,36 +1260,36 @@ func WindowSetSize(size Vector2i.XY) {
 Sets the [param callback] that will be called when the window specified by [param window_id] is moved or resized.
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetRectChangedCallback(callback gd.Callable) {
+func WindowSetRectChangedCallback(callback func(rect Rect2.PositionSize)) {
 	once.Do(singleton)
-	class(self).WindowSetRectChangedCallback(callback, gd.Int(0))
+	class(self).WindowSetRectChangedCallback(gd.NewCallable(callback), gd.Int(0))
 }
 
 /*
 Sets the [param callback] that will be called when an event occurs in the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetWindowEventCallback(callback gd.Callable) {
+func WindowSetWindowEventCallback(callback func(event classdb.DisplayServerWindowEvent)) {
 	once.Do(singleton)
-	class(self).WindowSetWindowEventCallback(callback, gd.Int(0))
+	class(self).WindowSetWindowEventCallback(gd.NewCallable(callback), gd.Int(0))
 }
 
 /*
 Sets the [param callback] that should be called when any [InputEvent] is sent to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputEventCallback(callback gd.Callable) {
+func WindowSetInputEventCallback(callback func(event objects.InputEvent)) {
 	once.Do(singleton)
-	class(self).WindowSetInputEventCallback(callback, gd.Int(0))
+	class(self).WindowSetInputEventCallback(gd.NewCallable(callback), gd.Int(0))
 }
 
 /*
 Sets the [param callback] that should be called when text is entered using the virtual keyboard to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputTextCallback(callback gd.Callable) {
+func WindowSetInputTextCallback(callback func(text string)) {
 	once.Do(singleton)
-	class(self).WindowSetInputTextCallback(callback, gd.Int(0))
+	class(self).WindowSetInputTextCallback(gd.NewCallable(callback), gd.Int(0))
 }
 
 /*
@@ -1296,9 +1297,9 @@ Sets the [param callback] that should be called when files are dropped from the 
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 [b]Note:[/b] This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
 */
-func WindowSetDropFilesCallback(callback gd.Callable) {
+func WindowSetDropFilesCallback(callback func(tag any)) {
 	once.Do(singleton)
-	class(self).WindowSetDropFilesCallback(callback, gd.Int(0))
+	class(self).WindowSetDropFilesCallback(gd.NewCallable(callback), gd.Int(0))
 }
 
 /*
@@ -1613,18 +1614,18 @@ func EnableForStealingFocus(process_id int) {
 Shows a text dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [int] parameter which corresponds to the index of the pressed button.
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
-func DialogShow(title string, description string, buttons []string, callback gd.Callable) error {
+func DialogShow(title string, description string, buttons []string, callback func(button int)) error {
 	once.Do(singleton)
-	return error(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), callback))
+	return error(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), gd.NewCallable(callback)))
 }
 
 /*
 Shows a text input dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [String] parameter which contains the text field's contents.
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
-func DialogInputText(title string, description string, existing_text string, callback gd.Callable) error {
+func DialogInputText(title string, description string, existing_text string, callback func(text string)) error {
 	once.Do(singleton)
-	return error(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), callback))
+	return error(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), gd.NewCallable(callback)))
 }
 
 /*
@@ -1637,9 +1638,9 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode classdb.DisplayServerFileDialogMode, filters []string, callback gd.Callable) error {
+func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode classdb.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error {
 	once.Do(singleton)
-	return error(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), callback))
+	return error(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.NewCallable(callback)))
 }
 
 /*
@@ -1656,9 +1657,9 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode classdb.DisplayServerFileDialogMode, filters []string, options gd.Array, callback gd.Callable) error {
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode classdb.DisplayServerFileDialogMode, filters []string, options gd.Array, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option Dictionary.Any)) error {
 	once.Do(singleton)
-	return error(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), options, callback))
+	return error(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), options, gd.NewCallable(callback)))
 }
 
 /*
@@ -1763,9 +1764,9 @@ func SetIcon(image objects.Image) {
 Creates a new application status indicator with the specified icon, tooltip, and activation callback.
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
-func CreateStatusIndicator(icon objects.Texture2D, tooltip string, callback gd.Callable) int {
+func CreateStatusIndicator(icon objects.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int {
 	once.Do(singleton)
-	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), callback)))
+	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), gd.NewCallable(callback))))
 }
 
 /*
@@ -1801,9 +1802,9 @@ func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) {
 Sets the application status indicator activation callback. [param callback] should take two arguments: [int] mouse button index (one of [enum MouseButton] values) and [Vector2i] click position in screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetCallback(id int, callback gd.Callable) {
+func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_position Vector2i.XY)) {
 	once.Do(singleton)
-	class(self).StatusIndicatorSetCallback(gd.Int(id), callback)
+	class(self).StatusIndicatorSetCallback(gd.Int(id), gd.NewCallable(callback))
 }
 
 /*
@@ -5651,6 +5652,31 @@ const (
 	KeyYen Key = 165
 	/*§ key.*/
 	KeySection Key = 167
+)
+
+type MouseButton int
+
+const (
+	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
+	MouseButtonNone MouseButton = 0
+	/*Primary mouse button, usually assigned to the left button.*/
+	MouseButtonLeft MouseButton = 1
+	/*Secondary mouse button, usually assigned to the right button.*/
+	MouseButtonRight MouseButton = 2
+	/*Middle mouse button.*/
+	MouseButtonMiddle MouseButton = 3
+	/*Mouse wheel scrolling up.*/
+	MouseButtonWheelUp MouseButton = 4
+	/*Mouse wheel scrolling down.*/
+	MouseButtonWheelDown MouseButton = 5
+	/*Mouse wheel left button (only present on some mice).*/
+	MouseButtonWheelLeft MouseButton = 6
+	/*Mouse wheel right button (only present on some mice).*/
+	MouseButtonWheelRight MouseButton = 7
+	/*Extra mouse button 1. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton1 MouseButton = 8
+	/*Extra mouse button 2. This is sometimes present, usually to the sides of the mouse.*/
+	MouseButtonXbutton2 MouseButton = 9
 )
 
 type MouseButtonMask int

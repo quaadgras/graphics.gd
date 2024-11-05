@@ -54,7 +54,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 				for i := 0; i < len(v); i++ {
 					if method.Type.In(i + 1 + offset).Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
 						var obj = reflect.New(method.Type.In(i + 1 + offset))
-						obj.Interface().(gd.PointerToClass).SetPointer(gd.LetVariantAsPointerType[gd.Object](v[i], gd.TypeObject))
+						*(*gd.Object)(obj.UnsafePointer()) = gd.LetVariantAsPointerType[gd.Object](v[i], gd.TypeObject)
 						args[i+offset] = obj.Elem()
 					} else {
 						args[i+offset] = reflect.ValueOf(v[i].Interface())
@@ -278,7 +278,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			gd.UnsafeSet[gd.RID](p_ret, val)
 		case gd.Object:
 			gd.UnsafeSet[uintptr](p_ret, pointers.Get(val)[0])
-			_, ok := instances.Load(pointers.Get(val)[0])
+			_, ok := gd.ExtensionInstances.Load(pointers.Get(val)[0])
 			if !ok {
 				pointers.End(val)
 			}
