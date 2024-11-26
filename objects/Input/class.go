@@ -478,6 +478,9 @@ type class [1]classdb.Input
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 func MouseMode() classdb.InputMouseMode {
 	return classdb.InputMouseMode(class(self).GetMouseMode())
 }

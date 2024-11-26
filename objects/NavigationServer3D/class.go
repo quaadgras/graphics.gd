@@ -1216,6 +1216,9 @@ type class [1]classdb.NavigationServer3D
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns all created navigation map [RID]s on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
 */

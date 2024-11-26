@@ -103,6 +103,9 @@ type class [1]classdb.ResourceUID
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Converts the given UID to a [code]uid://[/code] string value.
 */

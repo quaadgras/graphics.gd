@@ -390,8 +390,14 @@ func (self Instance) GetMaterial(name string) objects.StandardMaterial3D {
 type Advanced = class
 type class [1]classdb.EditorNode3DGizmoPlugin
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorNode3DGizmoPlugin"))
 	return Instance{classdb.EditorNode3DGizmoPlugin(object)}

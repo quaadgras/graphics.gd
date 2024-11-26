@@ -368,6 +368,9 @@ type class [1]classdb.AudioServer
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 func BusCount() int {
 	return int(int(class(self).GetBusCount()))
 }

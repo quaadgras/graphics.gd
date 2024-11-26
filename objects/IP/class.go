@@ -125,6 +125,9 @@ type class [1]classdb.IP
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [enum Type] constant given as [param ip_type].
 */

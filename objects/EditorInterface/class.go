@@ -503,6 +503,9 @@ type class [1]classdb.EditorInterface
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 func DistractionFreeMode() bool {
 	return bool(class(self).IsDistractionFreeModeEnabled())
 }

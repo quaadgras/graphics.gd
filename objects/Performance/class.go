@@ -160,6 +160,9 @@ type class [1]classdb.Performance
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns the value of one of the available built-in monitors. You should provide one of the [enum Monitor] constants as the argument, like this:
 [codeblocks]

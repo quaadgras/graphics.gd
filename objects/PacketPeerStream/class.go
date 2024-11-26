@@ -25,8 +25,14 @@ type Instance [1]classdb.PacketPeerStream
 type Advanced = class
 type class [1]classdb.PacketPeerStream
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeerStream"))
 	return Instance{classdb.PacketPeerStream(object)}

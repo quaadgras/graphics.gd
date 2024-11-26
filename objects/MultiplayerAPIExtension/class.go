@@ -250,8 +250,14 @@ func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj g
 type Advanced = class
 type class [1]classdb.MultiplayerAPIExtension
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPIExtension"))
 	return Instance{classdb.MultiplayerAPIExtension(object)}

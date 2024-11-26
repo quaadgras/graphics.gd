@@ -157,6 +157,9 @@ type class [1]classdb.Geometry3D
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Calculates and returns all the vertex points of a convex shape defined by an array of [param planes].
 */

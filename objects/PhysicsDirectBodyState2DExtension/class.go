@@ -627,8 +627,14 @@ func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) objects.PhysicsDi
 type Advanced = class
 type class [1]classdb.PhysicsDirectBodyState2DExtension
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState2DExtension"))
 	return Instance{classdb.PhysicsDirectBodyState2DExtension(object)}

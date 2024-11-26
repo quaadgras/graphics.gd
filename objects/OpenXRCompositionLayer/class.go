@@ -44,8 +44,14 @@ func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Ve
 type Advanced = class
 type class [1]classdb.OpenXRCompositionLayer
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRCompositionLayer"))
 	return Instance{classdb.OpenXRCompositionLayer(object)}

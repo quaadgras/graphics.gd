@@ -258,8 +258,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	}
 	fmt.Fprintf(file, "type class [1]classdb.%s\n", class.Name)
 	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
+	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	if !singleton {
 		fmt.Fprintln(file, "func (self Instance) AsObject() gd.Object { return self[0].AsObject() }")
+		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	}
 	if !singleton {
 		classDB.new(file, class)

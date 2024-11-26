@@ -412,6 +412,9 @@ type class [1]classdb.Engine
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 func PrintErrorMessages() bool {
 	return bool(class(self).IsPrintingErrorMessages())
 }

@@ -84,6 +84,9 @@ type class [1]classdb.Marshalls
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.

@@ -27,9 +27,9 @@ func New() gd.Object {
 	return gd.Global.ClassDB.ConstructObject(gd.NewStringName("Object"))
 }
 
-// Is attempts to cast the given class to T, returning true
+// As attempts to cast the given class to T, returning true
 // if the cast was successful.
-func Is[T gd.IsClass](value gd.IsClass) (T, bool) {
+func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 	ext, ok := gd.ExtensionInstances.Load(pointers.Get(value.AsObject())[0])
 	if ok {
 		if ref, ok := ext.(T); ok {

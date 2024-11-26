@@ -71,6 +71,9 @@ type class [1]classdb.NavigationMeshGenerator
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */

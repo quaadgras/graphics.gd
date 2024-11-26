@@ -108,8 +108,14 @@ func (self Instance) GetHistoryUndoRedo(id int) objects.UndoRedo {
 type Advanced = class
 type class [1]classdb.EditorUndoRedoManager
 
-func (self class) AsObject() gd.Object    { return self[0].AsObject() }
-func (self Instance) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() gd.Object { return self[0].AsObject() }
+
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+
+//go:nosplit
+func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorUndoRedoManager"))
 	return Instance{classdb.EditorUndoRedoManager(object)}

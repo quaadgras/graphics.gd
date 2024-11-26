@@ -43,6 +43,9 @@ type class [1]classdb.JavaClassWrapper
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].

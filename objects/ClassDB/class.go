@@ -243,6 +243,9 @@ type class [1]classdb.ClassDB
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns the names of all the classes available.
 */

@@ -4046,6 +4046,9 @@ type class [1]classdb.RenderingServer
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 func RenderLoopEnabled() bool {
 	return bool(class(self).IsRenderLoopEnabled())
 }

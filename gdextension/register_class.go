@@ -574,8 +574,8 @@ func (instance *instanceImplementation) ready() {
 
 func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner objects.Node) {
 	type isNode interface {
-		gd.PointerToClass
-
+		UnsafePointer() unsafe.Pointer
+		AsObject() gd.Object
 		AsNode() Node.Instance
 	}
 	nodeType := reflect.TypeOf([0]isNode{}).Elem()
@@ -633,6 +633,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		rvalue.Elem().Set(reflect.ValueOf(ref))
 		pointers.End(node[0])
 	} else {
-		//class.SetPointer(mmm.Let[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, tmp.API, mmm.End(node[0].AsPointer())))
+		*(*gd.Object)(class.UnsafePointer()) = pointers.New[gd.Object](pointers.Get(node[0]))
+		pointers.End(node[0])
 	}
 }

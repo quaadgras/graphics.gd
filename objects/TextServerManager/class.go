@@ -98,6 +98,9 @@ type class [1]classdb.TextServerManager
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Registers a [TextServer] interface.
 */

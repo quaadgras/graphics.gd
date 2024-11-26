@@ -70,6 +70,9 @@ type class [1]classdb.ResourceSaver
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If [param path] is empty, [ResourceSaver] will try to use [member Resource.resource_path].
 The [param flags] bitmask can be specified to customize the save behavior using [enum SaverFlags] flags.

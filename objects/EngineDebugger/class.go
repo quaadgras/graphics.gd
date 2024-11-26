@@ -219,6 +219,9 @@ type class [1]classdb.EngineDebugger
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns [code]true[/code] if the debugger is active otherwise [code]false[/code].
 */

@@ -274,6 +274,9 @@ type class [1]classdb.ProjectSettings
 
 func (self class) AsObject() gd.Object { return self[0].AsObject() }
 
+//go:nosplit
+func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+
 /*
 Returns [code]true[/code] if a configuration value is present.
 */
