@@ -19,4 +19,14 @@ func TestArrays(t *testing.T) {
 	if packed.Index(0) != (gd.Vector3{1, 2, 3}) {
 		t.Error("expected 1, 2, 3")
 	}
+	var float32s Packed.Float32Array
+	float32s.Resize(2)
+	float32s.Set(0, 1)
+	float32s.Set(1, 2)
+	if float32s.Index(0) != 1 {
+		t.Error("expected 1")
+	}
+	if float32s.Index(1) != 2 {
+		t.Error("expected 2")
+	}
 }
