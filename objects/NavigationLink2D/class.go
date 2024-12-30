@@ -2,17 +2,17 @@ package NavigationLink2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node2D"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node2D"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ var _ = pointers.Root
 A link between two positions on [NavigationRegion2D]s that agents can be routed through. These positions can be on the same [NavigationRegion2D] or on two different ones. Links are useful to express navigation methods other than traveling along the surface of the navigation polygon, such as ziplines, teleporters, or gaps that can be jumped across.
 */
 type Instance [1]classdb.NavigationLink2D
+type Any interface {
+	gd.IsClass
+	AsNavigationLink2D() Instance
+}
 
 /*
 Returns the [RID] of this link on the [NavigationServer2D].

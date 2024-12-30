@@ -2,14 +2,14 @@ package BaseButton
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,6 +29,10 @@ var _ = pointers.Root
 	}
 */
 type Instance [1]classdb.BaseButton
+type Any interface {
+	gd.IsClass
+	AsBaseButton() Instance
+}
 
 /*
 Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.

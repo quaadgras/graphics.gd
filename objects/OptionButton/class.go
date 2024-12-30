@@ -2,16 +2,16 @@ package OptionButton
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Button"
-import "grow.graphics/gd/objects/BaseButton"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Button"
+import "graphics.gd/objects/BaseButton"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ See also [BaseButton] which contains common properties and methods associated wi
 [b]Note:[/b] The [member Button.text] and [member Button.icon] properties are set automatically based on the selected item. They shouldn't be changed manually.
 */
 type Instance [1]classdb.OptionButton
+type Any interface {
+	gd.IsClass
+	AsOptionButton() Instance
+}
 
 /*
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.

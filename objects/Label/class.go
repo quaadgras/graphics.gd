@@ -2,17 +2,17 @@ package Label
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Rect2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ var _ = pointers.Root
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
 */
 type Instance [1]classdb.Label
+type Any interface {
+	gd.IsClass
+	AsLabel() Instance
+}
 
 /*
 Returns the height of the line [param line].

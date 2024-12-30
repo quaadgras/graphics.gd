@@ -2,14 +2,14 @@ package MultiplayerSpawner
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Callable"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ Also supports custom node spawns through [method spawn], calling [member spawn_f
 Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuration_add] to notify spawns passing the spawned node as the [code]object[/code] and itself as the [code]configuration[/code], and [method MultiplayerAPI.object_configuration_remove] to notify despawns in a similar way.
 */
 type Instance [1]classdb.MultiplayerSpawner
+type Any interface {
+	gd.IsClass
+	AsMultiplayerSpawner() Instance
+}
 
 /*
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].

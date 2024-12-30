@@ -2,17 +2,17 @@ package EditorResourcePicker
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/HBoxContainer"
-import "grow.graphics/gd/objects/BoxContainer"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/HBoxContainer"
+import "graphics.gd/objects/BoxContainer"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -34,6 +34,10 @@ This [Control] node is used in the editor's Inspector dock to allow editing of [
 	}
 */
 type Instance [1]classdb.EditorResourcePicker
+type Any interface {
+	gd.IsClass
+	AsEditorResourcePicker() Instance
+}
 
 /*
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.

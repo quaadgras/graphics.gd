@@ -2,13 +2,13 @@ package OpenXRActionSet
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ Action sets in OpenXR define a collection of actions that can be activated in un
 Action sets can contain the same action with the same name, if such action sets are active at the same time the action set with the highest priority defines which binding is active.
 */
 type Instance [1]classdb.OpenXRActionSet
+type Any interface {
+	gd.IsClass
+	AsOpenXRActionSet() Instance
+}
 
 /*
 Retrieve the number of actions in our action set.

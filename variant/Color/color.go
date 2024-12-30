@@ -4,8 +4,8 @@ package Color
 import (
 	"math"
 
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
 )
 
 // A color represented in RGBA format by a red (r), green (g), blue (b), and

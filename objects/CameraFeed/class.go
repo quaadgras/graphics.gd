@@ -2,12 +2,12 @@ package CameraFeed
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Transform2D"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ A camera feed gives you access to a single physical camera attached to your devi
 [b]Note:[/b] Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
 */
 type Instance [1]classdb.CameraFeed
+type Any interface {
+	gd.IsClass
+	AsCameraFeed() Instance
+}
 
 /*
 Returns the unique ID for this feed.

@@ -2,18 +2,18 @@ package Animation
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Quaternion"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -49,6 +49,10 @@ Animations are just data containers, and must be added to nodes such as an [Anim
 [b]Note:[/b] For 3D position/rotation/scale, using the dedicated [constant TYPE_POSITION_3D], [constant TYPE_ROTATION_3D] and [constant TYPE_SCALE_3D] track types instead of [constant TYPE_VALUE] is recommended for performance reasons.
 */
 type Instance [1]classdb.Animation
+type Any interface {
+	gd.IsClass
+	AsAnimation() Instance
+}
 
 /*
 Adds a track to the Animation.

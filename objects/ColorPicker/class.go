@@ -2,18 +2,18 @@ package ColorPicker
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VBoxContainer"
-import "grow.graphics/gd/objects/BoxContainer"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VBoxContainer"
+import "graphics.gd/objects/BoxContainer"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ A widget that provides an interface for selecting or modifying a color. It can o
 [b]Note:[/b] This control is the color picker widget itself. You can use a [ColorPickerButton] instead if you need a button that brings up a [ColorPicker] in a popup.
 */
 type Instance [1]classdb.ColorPicker
+type Any interface {
+	gd.IsClass
+	AsColorPicker() Instance
+}
 
 /*
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.

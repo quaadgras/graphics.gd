@@ -2,15 +2,15 @@ package GLTFLight
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,11 +22,16 @@ var _ = pointers.Root
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
 */
 type Instance [1]classdb.GLTFLight
+type Any interface {
+	gd.IsClass
+	AsGLTFLight() Instance
+}
 
 /*
 Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
-func (self Instance) FromNode(light_node objects.Light3D) objects.GLTFLight {
+func FromNode(light_node objects.Light3D) objects.GLTFLight {
+	self := GLTFLight{}
 	return objects.GLTFLight(class(self).FromNode(light_node))
 }
 
@@ -40,7 +45,8 @@ func (self Instance) ToNode() objects.Light3D {
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFLight {
+func FromDictionary(dictionary Dictionary.Any) objects.GLTFLight {
+	self := GLTFLight{}
 	return objects.GLTFLight(class(self).FromDictionary(dictionary))
 }
 

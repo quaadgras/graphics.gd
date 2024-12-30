@@ -4,10 +4,10 @@ package Vector3
 import (
 	"math"
 
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
-	"grow.graphics/gd/variant/Vector2"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
+	"graphics.gd/variant/Vector2"
 )
 
 // XYZ is a 3-element structure that can be used to represent 3D coordinates

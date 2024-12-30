@@ -2,15 +2,15 @@ package AnimationNodeBlendSpace1D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationRootNode"
-import "grow.graphics/gd/objects/AnimationNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationRootNode"
+import "graphics.gd/objects/AnimationNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ A resource used by [AnimationNodeBlendTree].
 You can set the extents of the axis with [member min_space] and [member max_space].
 */
 type Instance [1]classdb.AnimationNodeBlendSpace1D
+type Any interface {
+	gd.IsClass
+	AsAnimationNodeBlendSpace1D() Instance
+}
 
 /*
 Adds a new point that represents a [param node] on the virtual axis at a given position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.

@@ -2,15 +2,15 @@ package AnimationNodeStateMachine
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationRootNode"
-import "grow.graphics/gd/objects/AnimationNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationRootNode"
+import "graphics.gd/objects/AnimationNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -33,6 +33,10 @@ stateMachine.Travel("some_state");
 [/codeblocks]
 */
 type Instance [1]classdb.AnimationNodeStateMachine
+type Any interface {
+	gd.IsClass
+	AsAnimationNodeStateMachine() Instance
+}
 
 /*
 Adds a new animation node to the graph. The [param position] is used for display in the editor.

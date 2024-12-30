@@ -2,14 +2,14 @@ package AudioEffectChorus
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioEffect"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioEffect"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 Adds a chorus audio effect. The effect applies a filter with voices to duplicate the audio source and manipulate it through the filter.
 */
 type Instance [1]classdb.AudioEffectChorus
+type Any interface {
+	gd.IsClass
+	AsAudioEffectChorus() Instance
+}
 
 func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) {
 	class(self).SetVoiceDelayMs(gd.Int(voice_idx), gd.Float(delay_ms))

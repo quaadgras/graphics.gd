@@ -2,12 +2,12 @@ package RDShaderFile
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ Compiled shader file in SPIR-V form.
 See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
 */
 type Instance [1]classdb.RDShaderFile
+type Any interface {
+	gd.IsClass
+	AsRDShaderFile() Instance
+}
 
 /*
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].

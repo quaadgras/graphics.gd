@@ -7,10 +7,10 @@ import (
 	"math"
 	"unsafe"
 
-	"grow.graphics/gd"
+	gd "graphics.gd"
 
-	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/variant"
+	internal "graphics.gd/internal"
+	"graphics.gd/variant"
 )
 
 // ByteArray is an array specifically designed to hold bytes. Packs data tightly, so it saves memory for

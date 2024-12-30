@@ -2,15 +2,15 @@ package Cubemap
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ImageTextureLayered"
-import "grow.graphics/gd/objects/TextureLayered"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ImageTextureLayered"
+import "graphics.gd/objects/TextureLayered"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ To create such a texture file yourself, reimport your image files using the Godo
 [b]Note:[/b] Godot doesn't support using cubemaps in a [PanoramaSkyMaterial]. You can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cubemap_to_panorama.html]this tool[/url] to convert a cubemap to an equirectangular sky map.
 */
 type Instance [1]classdb.Cubemap
+type Any interface {
+	gd.IsClass
+	AsCubemap() Instance
+}
 
 /*
 Creates a placeholder version of this resource ([PlaceholderCubemap]).

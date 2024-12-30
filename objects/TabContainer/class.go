@@ -2,16 +2,16 @@ package TabContainer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ Arranges child controls into a tabbed view, creating a tab for each one. The act
 [b]Note:[/b] The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
 */
 type Instance [1]classdb.TabContainer
+type Any interface {
+	gd.IsClass
+	AsTabContainer() Instance
+}
 
 /*
 Returns the number of tabs.

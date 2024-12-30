@@ -2,17 +2,17 @@ package PhysicsDirectBodyState3DExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/PhysicsDirectBodyState3D"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Basis"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/PhysicsDirectBodyState3D"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Basis"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -75,6 +75,10 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 	}
 */
 type Instance [1]classdb.PhysicsDirectBodyState3DExtension
+type Any interface {
+	gd.IsClass
+	AsPhysicsDirectBodyState3DExtension() Instance
+}
 
 func (Instance) _get_total_gravity(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {

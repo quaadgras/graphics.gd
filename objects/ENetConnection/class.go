@@ -2,13 +2,13 @@ package ENetConnection
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ var _ = pointers.Root
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
 */
 type Instance [1]classdb.ENetConnection
+type Any interface {
+	gd.IsClass
+	AsENetConnection() Instance
+}
 
 /*
 Creates an ENetHost bound to the given [param bind_address] and [param bind_port] that allows up to [param max_peers] connected peers, each allocating up to [param max_channels] channels, optionally limiting bandwidth to [param in_bandwidth] and [param out_bandwidth] (if greater than zero).

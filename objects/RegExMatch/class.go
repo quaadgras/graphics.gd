@@ -2,12 +2,12 @@ package RegExMatch
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,6 +19,10 @@ var _ = pointers.Root
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
 */
 type Instance [1]classdb.RegExMatch
+type Any interface {
+	gd.IsClass
+	AsRegExMatch() Instance
+}
 
 /*
 Returns the number of capturing groups.

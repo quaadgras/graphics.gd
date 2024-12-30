@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"time"
 
-	gd "grow.graphics/gd/internal"
+	gd "graphics.gd/internal"
 )
 
 type (

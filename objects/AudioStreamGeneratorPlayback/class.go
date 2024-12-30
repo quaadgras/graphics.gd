@@ -2,14 +2,14 @@ package AudioStreamGeneratorPlayback
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioStreamPlaybackResampled"
-import "grow.graphics/gd/objects/AudioStreamPlayback"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioStreamPlaybackResampled"
+import "graphics.gd/objects/AudioStreamPlayback"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 This class is meant to be used with [AudioStreamGenerator] to play back the generated audio in real-time.
 */
 type Instance [1]classdb.AudioStreamGeneratorPlayback
+type Any interface {
+	gd.IsClass
+	AsAudioStreamGeneratorPlayback() Instance
+}
 
 /*
 Pushes a single audio data frame to the buffer. This is usually less efficient than [method push_buffer] in C# and compiled languages via GDExtension, but [method push_frame] may be [i]more[/i] efficient in GDScript.

@@ -1,7 +1,7 @@
 package gd
 
 import (
-	gd "grow.graphics/gd/internal"
+	gd "graphics.gd/internal"
 )
 
 type Object = gd.Object

@@ -2,13 +2,13 @@ package VisualShaderNode
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ var _ = pointers.Root
 Visual shader graphs consist of various nodes. Each node in the graph is a separate object and they are represented as a rectangular boxes with title and a set of properties. Each node also has connection ports that allow to connect it to another nodes and control the flow of the shader.
 */
 type Instance [1]classdb.VisualShaderNode
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNode() Instance
+}
 
 /*
 Returns the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.

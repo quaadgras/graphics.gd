@@ -2,15 +2,15 @@ package GLTFNode
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Quaternion"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Quaternion"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ Represents a GLTF node. GLTF nodes may have names, transforms, children (other G
 GLTF nodes generally exist inside of [GLTFState] which represents all data of a GLTF file. Most of GLTFNode's properties are indices of other data in the GLTF file. You can extend a GLTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
 */
 type Instance [1]classdb.GLTFNode
+type Any interface {
+	gd.IsClass
+	AsGLTFNode() Instance
+}
 
 /*
 Gets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.

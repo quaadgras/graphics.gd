@@ -2,13 +2,13 @@ package OpenXRAPIExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 It also provides methods for querying the status of OpenXR initialization, and helper methods for ease of use of the API with GDExtension.
 */
 type Instance [1]classdb.OpenXRAPIExtension
+type Any interface {
+	gd.IsClass
+	AsOpenXRAPIExtension() Instance
+}
 
 /*
 Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html]XrInstance[/url] created during the initialization of the OpenXR API.
@@ -60,7 +64,8 @@ func (self Instance) XrResult(result int, format string, args Array.Any) bool {
 /*
 Returns [code]true[/code] if OpenXR is enabled.
 */
-func (self Instance) OpenxrIsEnabled(check_run_in_editor bool) bool {
+func OpenxrIsEnabled(check_run_in_editor bool) bool {
+	self := OpenXRAPIExtension{}
 	return bool(class(self).OpenxrIsEnabled(check_run_in_editor))
 }
 

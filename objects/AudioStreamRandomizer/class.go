@@ -2,14 +2,14 @@ package AudioStreamRandomizer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioStream"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioStream"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 Picks a random AudioStream from the pool, depending on the playback mode, and applies random pitch shifting and volume shifting during playback.
 */
 type Instance [1]classdb.AudioStreamRandomizer
+type Any interface {
+	gd.IsClass
+	AsAudioStreamRandomizer() Instance
+}
 
 /*
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.

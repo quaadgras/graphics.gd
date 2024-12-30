@@ -2,15 +2,15 @@ package MultiplayerSynchronizer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Callable"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configu
 [b]Note:[/b] Synchronization is not supported for [Object] type properties, like [Resource]. Properties that are unique to each peer, like the instance IDs of [Object]s (see [method Object.get_instance_id]) or [RID]s, will also not work in synchronization.
 */
 type Instance [1]classdb.MultiplayerSynchronizer
+type Any interface {
+	gd.IsClass
+	AsMultiplayerSynchronizer() Instance
+}
 
 /*
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.

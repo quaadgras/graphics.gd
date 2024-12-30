@@ -2,15 +2,15 @@ package InputEventKey
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/InputEventWithModifiers"
-import "grow.graphics/gd/objects/InputEventFromWindow"
-import "grow.graphics/gd/objects/InputEvent"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/InputEventWithModifiers"
+import "graphics.gd/objects/InputEventFromWindow"
+import "graphics.gd/objects/InputEvent"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ An input event for keys on a keyboard. Supports key presses, key releases and [m
 When events are compared, properties are checked in the following priority - [member keycode], [member physical_keycode] and [member unicode]. Events with the first matching value will be considered equal.
 */
 type Instance [1]classdb.InputEventKey
+type Any interface {
+	gd.IsClass
+	AsInputEventKey() Instance
+}
 
 /*
 Returns the Latin keycode combined with modifier keys such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See also [InputEventWithModifiers].

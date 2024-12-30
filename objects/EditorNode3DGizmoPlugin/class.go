@@ -2,15 +2,15 @@ package EditorNode3DGizmoPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -71,6 +71,10 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 	}
 */
 type Instance [1]classdb.EditorNode3DGizmoPlugin
+type Any interface {
+	gd.IsClass
+	AsEditorNode3DGizmoPlugin() Instance
+}
 
 /*
 Override this method to define which Node3D nodes have a gizmo from this plugin. Whenever a [Node3D] node is added to a scene this method is called, if it returns [code]true[/code] the node gets a generic [EditorNode3DGizmo] assigned and is added to this plugin's list of active gizmos.

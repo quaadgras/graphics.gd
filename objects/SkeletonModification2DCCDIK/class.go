@@ -2,15 +2,15 @@ package SkeletonModification2DCCDIK
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SkeletonModification2D"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SkeletonModification2D"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ CCDIK works by rotating a set of bones, typically called a "bone chain", on a si
 CCDIK also fully supports angle constraints, allowing for more control over how a solution is met.
 */
 type Instance [1]classdb.SkeletonModification2DCCDIK
+type Any interface {
+	gd.IsClass
+	AsSkeletonModification2DCCDIK() Instance
+}
 
 /*
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].

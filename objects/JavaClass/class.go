@@ -2,11 +2,11 @@ package JavaClass
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ Represents an object from the Java Native Interface. It is returned from [method
 [b]Note:[/b] This class is not to be confused with [JavaScriptObject].
 */
 type Instance [1]classdb.JavaClass
+type Any interface {
+	gd.IsClass
+	AsJavaClass() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

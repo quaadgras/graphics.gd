@@ -2,14 +2,14 @@ package SubViewport
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Viewport"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Vector2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Viewport"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ var _ = pointers.Root
 [b]Note:[/b] [SubViewport] is a [Viewport] that isn't a [Window], i.e. it doesn't draw anything by itself. To display anything, [SubViewport] must have a non-zero size and be either put inside a [SubViewportContainer] or assigned to a [ViewportTexture].
 */
 type Instance [1]classdb.SubViewport
+type Any interface {
+	gd.IsClass
+	AsSubViewport() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

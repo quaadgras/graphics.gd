@@ -2,20 +2,20 @@ package SoftBody3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/MeshInstance3D"
-import "grow.graphics/gd/objects/GeometryInstance3D"
-import "grow.graphics/gd/objects/VisualInstance3D"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/MeshInstance3D"
+import "graphics.gd/objects/GeometryInstance3D"
+import "graphics.gd/objects/VisualInstance3D"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,6 +29,10 @@ Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [m
 [b]Note:[/b] There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
 */
 type Instance [1]classdb.SoftBody3D
+type Any interface {
+	gd.IsClass
+	AsSoftBody3D() Instance
+}
 
 /*
 Returns the internal [RID] used by the [PhysicsServer3D] for this body.

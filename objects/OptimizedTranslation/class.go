@@ -2,13 +2,13 @@ package OptimizedTranslation
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Translation"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Translation"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ var _ = pointers.Root
 An optimized translation, used by default for CSV Translations. Uses real-time compressed translations, which results in very small dictionaries.
 */
 type Instance [1]classdb.OptimizedTranslation
+type Any interface {
+	gd.IsClass
+	AsOptimizedTranslation() Instance
+}
 
 /*
 Generates and sets an optimized translation from the given [Translation] resource.

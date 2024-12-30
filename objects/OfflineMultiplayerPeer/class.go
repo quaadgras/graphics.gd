@@ -2,13 +2,13 @@ package OfflineMultiplayerPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/MultiplayerPeer"
-import "grow.graphics/gd/objects/PacketPeer"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/MultiplayerPeer"
+import "graphics.gd/objects/PacketPeer"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ This is the default [member MultiplayerAPI.multiplayer_peer] for the [member Nod
 This means that the [SceneTree] will act as the multiplayer authority by default. Calls to [method MultiplayerAPI.is_server] will return [code]true[/code], and calls to [method MultiplayerAPI.get_unique_id] will return [constant MultiplayerPeer.TARGET_PEER_SERVER].
 */
 type Instance [1]classdb.OfflineMultiplayerPeer
+type Any interface {
+	gd.IsClass
+	AsOfflineMultiplayerPeer() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

@@ -2,14 +2,14 @@ package VisualShaderNodeGroupBase
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualShaderNodeResizableBase"
-import "grow.graphics/gd/objects/VisualShaderNode"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualShaderNodeResizableBase"
+import "graphics.gd/objects/VisualShaderNode"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 Currently, has no direct usage, use the derived classes instead.
 */
 type Instance [1]classdb.VisualShaderNodeGroupBase
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNodeGroupBase() Instance
+}
 
 /*
 Defines all input ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_input_port]).

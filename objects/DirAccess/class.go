@@ -2,11 +2,11 @@ package DirAccess
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -77,19 +77,25 @@ public void DirContents(string path)
 [/codeblocks]
 */
 type Instance [1]classdb.DirAccess
+type Any interface {
+	gd.IsClass
+	AsDirAccess() Instance
+}
 
 /*
 Creates a new [DirAccess] object and opens an existing directory of the filesystem. The [param path] argument can be within the project tree ([code]res://folder[/code]), the user directory ([code]user://folder[/code]) or an absolute path of the user filesystem (e.g. [code]/tmp/folder[/code] or [code]C:\tmp\folder[/code]).
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) Open(path string) objects.DirAccess {
+func Open(path string) objects.DirAccess {
+	self := DirAccess{}
 	return objects.DirAccess(class(self).Open(gd.NewString(path)))
 }
 
 /*
 Returns the result of the last [method open] call in the current thread.
 */
-func (self Instance) GetOpenError() error {
+func GetOpenError() error {
+	self := DirAccess{}
 	return error(class(self).GetOpenError())
 }
 
@@ -137,7 +143,8 @@ func (self Instance) GetFiles() []string {
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given [param path]. The array is sorted alphabetically.
 Use [method get_files] if you want more control of what gets included.
 */
-func (self Instance) GetFilesAt(path string) []string {
+func GetFilesAt(path string) []string {
+	self := DirAccess{}
 	return []string(class(self).GetFilesAt(gd.NewString(path)).Strings())
 }
 
@@ -153,7 +160,8 @@ func (self Instance) GetDirectories() []string {
 Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given [param path]. The array is sorted alphabetically.
 Use [method get_directories] if you want more control of what gets included.
 */
-func (self Instance) GetDirectoriesAt(path string) []string {
+func GetDirectoriesAt(path string) []string {
+	self := DirAccess{}
 	return []string(class(self).GetDirectoriesAt(gd.NewString(path)).Strings())
 }
 
@@ -163,7 +171,8 @@ On macOS, returns the number of mounted volumes.
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
 On other platforms, the method returns 0.
 */
-func (self Instance) GetDriveCount() int {
+func GetDriveCount() int {
+	self := DirAccess{}
 	return int(int(class(self).GetDriveCount()))
 }
 
@@ -173,7 +182,8 @@ On macOS, returns the path to the mounted volume passed as an argument.
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
-func (self Instance) GetDriveName(idx int) string {
+func GetDriveName(idx int) string {
+	self := DirAccess{}
 	return string(class(self).GetDriveName(gd.Int(idx)).String())
 }
 
@@ -211,7 +221,8 @@ func (self Instance) MakeDir(path string) error {
 /*
 Static version of [method make_dir]. Supports only absolute paths.
 */
-func (self Instance) MakeDirAbsolute(path string) error {
+func MakeDirAbsolute(path string) error {
+	self := DirAccess{}
 	return error(class(self).MakeDirAbsolute(gd.NewString(path)))
 }
 
@@ -226,7 +237,8 @@ func (self Instance) MakeDirRecursive(path string) error {
 /*
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
-func (self Instance) MakeDirRecursiveAbsolute(path string) error {
+func MakeDirRecursiveAbsolute(path string) error {
+	self := DirAccess{}
 	return error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
 }
 
@@ -248,7 +260,8 @@ func (self Instance) DirExists(path string) bool {
 /*
 Static version of [method dir_exists]. Supports only absolute paths.
 */
-func (self Instance) DirExistsAbsolute(path string) bool {
+func DirExistsAbsolute(path string) bool {
+	self := DirAccess{}
 	return bool(class(self).DirExistsAbsolute(gd.NewString(path)))
 }
 
@@ -271,7 +284,8 @@ func (self Instance) Copy(from string, to string) error {
 /*
 Static version of [method copy]. Supports only absolute paths.
 */
-func (self Instance) CopyAbsolute(from string, to string) error {
+func CopyAbsolute(from string, to string) error {
+	self := DirAccess{}
 	return error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
@@ -286,7 +300,8 @@ func (self Instance) Rename(from string, to string) error {
 /*
 Static version of [method rename]. Supports only absolute paths.
 */
-func (self Instance) RenameAbsolute(from string, to string) error {
+func RenameAbsolute(from string, to string) error {
+	self := DirAccess{}
 	return error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
 }
 
@@ -302,7 +317,8 @@ func (self Instance) Remove(path string) error {
 /*
 Static version of [method remove]. Supports only absolute paths.
 */
-func (self Instance) RemoveAbsolute(path string) error {
+func RemoveAbsolute(path string) error {
+	self := DirAccess{}
 	return error(class(self).RemoveAbsolute(gd.NewString(path)))
 }
 

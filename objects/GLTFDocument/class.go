@@ -2,13 +2,13 @@ package GLTFDocument
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ All of the data in a GLTF scene is stored in the [GLTFState] class. GLTFDocument
 GLTFDocument can be extended with arbitrary functionality by extending the [GLTFDocumentExtension] class and registering it with GLTFDocument via [method register_gltf_document_extension]. This allows for custom data to be imported and exported.
 */
 type Instance [1]classdb.GLTFDocument
+type Any interface {
+	gd.IsClass
+	AsGLTFDocument() Instance
+}
 
 /*
 Takes a path to a GLTF file and imports the data at that file path to the given [GLTFState] object through the [param state] parameter.
@@ -73,14 +77,16 @@ func (self Instance) WriteToFilesystem(state objects.GLTFState, path string) err
 Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If [param first_priority] is true, this extension will be run first. Otherwise, it will be run last.
 [b]Note:[/b] Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the [code]set_additional_data[/code] and [code]get_additional_data[/code] methods in [GLTFState] or [GLTFNode].
 */
-func (self Instance) RegisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
+func RegisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
+	self := GLTFDocument{}
 	class(self).RegisterGltfDocumentExtension(extension, false)
 }
 
 /*
 Unregisters the given [GLTFDocumentExtension] instance.
 */
-func (self Instance) UnregisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
+func UnregisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
+	self := GLTFDocument{}
 	class(self).UnregisterGltfDocumentExtension(extension)
 }
 

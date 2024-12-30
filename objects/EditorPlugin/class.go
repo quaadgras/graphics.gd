@@ -2,14 +2,14 @@ package EditorPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Callable"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -302,6 +302,10 @@ Plugins are used by the editor to extend functionality. The most common types of
 	}
 */
 type Instance [1]classdb.EditorPlugin
+type Any interface {
+	gd.IsClass
+	AsEditorPlugin() Instance
+}
 
 /*
 Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.

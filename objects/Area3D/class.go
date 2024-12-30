@@ -2,18 +2,18 @@ package Area3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/CollisionObject3D"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/CollisionObject3D"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Path"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ This node can also locally alter or override physics parameters (gravity, dampin
 [b]Warning:[/b] Using a [ConcavePolygonShape3D] inside a [CollisionShape3D] child of this node (created e.g. by using the [b]Create Trimesh Collision Sibling[/b] option in the [b]Mesh[/b] menu that appears when selecting a [MeshInstance3D] node) may give unexpected results, since this collision shape is hollow. If this is not desired, it has to be split into multiple [ConvexPolygonShape3D]s or primitive shapes like [BoxShape3D], or in some cases it may be replaceable by a [CollisionPolygon3D].
 */
 type Instance [1]classdb.Area3D
+type Any interface {
+	gd.IsClass
+	AsArea3D() Instance
+}
 
 /*
 Returns a list of intersecting [PhysicsBody3D]s and [GridMap]s. The overlapping body's [member CollisionObject3D.collision_layer] must be part of this area's [member CollisionObject3D.collision_mask] in order to be detected.

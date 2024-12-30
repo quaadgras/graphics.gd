@@ -2,12 +2,12 @@ package EditorExportPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -110,6 +110,10 @@ To use [EditorExportPlugin], register it using the [method EditorPlugin.add_expo
 	}
 */
 type Instance [1]classdb.EditorExportPlugin
+type Any interface {
+	gd.IsClass
+	AsEditorExportPlugin() Instance
+}
 
 /*
 Virtual method to be overridden by the user. Called for each exported file before [method _customize_resource] and [method _customize_scene]. The arguments can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]), and [param features] is the list of features for the export.

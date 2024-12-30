@@ -2,12 +2,12 @@ package PhysicsRayQueryParameters2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,6 +19,10 @@ var _ = pointers.Root
 By changing various properties of this object, such as the ray position, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_ray].
 */
 type Instance [1]classdb.PhysicsRayQueryParameters2D
+type Any interface {
+	gd.IsClass
+	AsPhysicsRayQueryParameters2D() Instance
+}
 
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
@@ -27,7 +31,8 @@ var query = PhysicsRayQueryParameters2D.create(global_position, global_position 
 var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func (self Instance) Create(from Vector2.XY, to Vector2.XY) objects.PhysicsRayQueryParameters2D {
+func Create(from Vector2.XY, to Vector2.XY) objects.PhysicsRayQueryParameters2D {
+	self := PhysicsRayQueryParameters2D{}
 	return objects.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), [1]gd.Array{}[0]))
 }
 

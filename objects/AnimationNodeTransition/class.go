@@ -2,15 +2,15 @@ package AnimationNodeTransition
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationNodeSync"
-import "grow.graphics/gd/objects/AnimationNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationNodeSync"
+import "graphics.gd/objects/AnimationNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -52,6 +52,10 @@ animationTree.Get("parameters/Transition/current_index");
 [/codeblocks]
 */
 type Instance [1]classdb.AnimationNodeTransition
+type Any interface {
+	gd.IsClass
+	AsAnimationNodeTransition() Instance
+}
 
 /*
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.

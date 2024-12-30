@@ -2,15 +2,15 @@ package AnimationNodeBlendTree
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationRootNode"
-import "grow.graphics/gd/objects/AnimationNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationRootNode"
+import "graphics.gd/objects/AnimationNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ This animation node may contain a sub-tree of any other type animation nodes, su
 An [AnimationNodeOutput] node named [code]output[/code] is created by default.
 */
 type Instance [1]classdb.AnimationNodeBlendTree
+type Any interface {
+	gd.IsClass
+	AsAnimationNodeBlendTree() Instance
+}
 
 /*
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.

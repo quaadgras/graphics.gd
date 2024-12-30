@@ -2,9 +2,9 @@
 package Plane
 
 import (
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
-	"grow.graphics/gd/variant/Vector3"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
+	"graphics.gd/variant/Vector3"
 )
 
 // NormalD represents a normalized plane equation. normal is the normal

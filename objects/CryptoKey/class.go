@@ -2,12 +2,12 @@ package CryptoKey
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ The CryptoKey class represents a cryptographic key. Keys can be loaded and saved
 They can be used to generate a self-signed [X509Certificate] via [method Crypto.generate_self_signed_certificate] and as private key in [method StreamPeerTLS.accept_stream] along with the appropriate certificate.
 */
 type Instance [1]classdb.CryptoKey
+type Any interface {
+	gd.IsClass
+	AsCryptoKey() Instance
+}
 
 /*
 Saves a key to the given [param path]. If [param public_only] is [code]true[/code], only the public key will be saved.

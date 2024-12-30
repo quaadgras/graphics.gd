@@ -2,15 +2,15 @@ package OccluderInstance3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualInstance3D"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualInstance3D"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,6 +27,10 @@ The occlusion culling system works by rendering the occluders on the CPU in para
 [b]Note:[/b] Due to memory constraints, occlusion culling is not supported by default in Web export templates. It can be enabled by compiling custom Web export templates with [code]module_raycast_enabled=yes[/code].
 */
 type Instance [1]classdb.OccluderInstance3D
+type Any interface {
+	gd.IsClass
+	AsOccluderInstance3D() Instance
+}
 
 /*
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.

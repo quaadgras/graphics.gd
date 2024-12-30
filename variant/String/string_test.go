@@ -3,9 +3,9 @@ package String_test
 import (
 	"testing"
 
-	"grow.graphics/gd/internal/gdtests"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/String"
+	"graphics.gd/internal/gdtests"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/String"
 )
 
 func TestBigrams(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strings"
 
-	"grow.graphics/gd/internal/gdjson"
+	"graphics.gd/internal/gdjson"
 	"runtime.link/api/xray"
 )
 
@@ -71,7 +71,7 @@ func generate() error {
 	defer file.Close()
 	fmt.Fprintln(file, `package objects`)
 	fmt.Fprintln(file)
-	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
+	fmt.Fprintln(file, `import classdb "graphics.gd/internal/classdb"`)
 	fmt.Fprintln(file)
 	for _, class := range spec.Classes {
 		if inCore(class.Name) {
@@ -129,20 +129,20 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, `import "sync"`)
 	}
 	fmt.Fprintln(file, `import "reflect"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/internal/pointers"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/internal/callframe"`)
-	fmt.Fprintln(file, `import gd "grow.graphics/gd/internal"`)
-	fmt.Fprintln(file, `import "grow.graphics/gd/objects"`)
-	fmt.Fprintln(file, `import classdb "grow.graphics/gd/internal/classdb"`)
+	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
+	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
+	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
+	fmt.Fprintln(file, `import "graphics.gd/objects"`)
+	fmt.Fprintln(file, `import classdb "graphics.gd/internal/classdb"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
-		imported["grow.graphics/gd/variant/Rect2"] = true
-		fmt.Fprintln(file, `import "grow.graphics/gd/variant/Rect2"`)
+		imported["graphics.gd/variant/Rect2"] = true
+		fmt.Fprintln(file, `import "graphics.gd/variant/Rect2"`)
 	}
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
-			path := fmt.Sprintf("grow.graphics/gd/objects/%s", super.Name)
+			path := fmt.Sprintf("graphics.gd/objects/%s", super.Name)
 			if !imported[path] {
 				imported[path] = true
 				fmt.Fprintf(file, "import %q\n", path)
@@ -234,6 +234,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "}\n")
 	} else {
 		fmt.Fprintf(file, "type Instance [1]classdb.%s\n", class.Name)
+		fmt.Fprintf(file, "type Any interface {\n")
+		fmt.Fprintf(file, "\tgd.IsClass\n")
+		fmt.Fprintf(file, "\tAs%s() Instance\n", class.Name)
+		fmt.Fprintf(file, "}\n")
 	}
 	var getter_setters = make(map[string]bool)
 	for _, property := range class.Properties {

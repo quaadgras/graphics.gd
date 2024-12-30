@@ -2,17 +2,17 @@ package CSGMesh3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/CSGPrimitive3D"
-import "grow.graphics/gd/objects/CSGShape3D"
-import "grow.graphics/gd/objects/GeometryInstance3D"
-import "grow.graphics/gd/objects/VisualInstance3D"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/CSGPrimitive3D"
+import "graphics.gd/objects/CSGShape3D"
+import "graphics.gd/objects/GeometryInstance3D"
+import "graphics.gd/objects/VisualInstance3D"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ This CSG node allows you to use any mesh resource as a CSG shape, provided it is
 [b]Note:[/b] CSG nodes are intended to be used for level prototyping. Creating CSG nodes has a significant CPU cost compared to creating a [MeshInstance3D] with a [PrimitiveMesh]. Moving a CSG node within another CSG node also has a significant CPU cost, so it should be avoided during gameplay.
 */
 type Instance [1]classdb.CSGMesh3D
+type Any interface {
+	gd.IsClass
+	AsCSGMesh3D() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

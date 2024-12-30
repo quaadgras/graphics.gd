@@ -2,12 +2,12 @@ package FileAccess
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -56,12 +56,17 @@ In the example above, the file will be saved in the user data folder as specifie
 [b]Note:[/b] Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing [b]Alt + F4[/b]). If you stop the project execution by pressing [b]F8[/b] while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [method flush] at regular intervals.
 */
 type Instance [1]classdb.FileAccess
+type Any interface {
+	gd.IsClass
+	AsFileAccess() Instance
+}
 
 /*
 Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) Open(path string, flags classdb.FileAccessModeFlags) objects.FileAccess {
+func Open(path string, flags classdb.FileAccessModeFlags) objects.FileAccess {
+	self := FileAccess{}
 	return objects.FileAccess(class(self).Open(gd.NewString(path), flags))
 }
 
@@ -70,7 +75,8 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) OpenEncrypted(path string, mode_flags classdb.FileAccessModeFlags, key []byte) objects.FileAccess {
+func OpenEncrypted(path string, mode_flags classdb.FileAccessModeFlags, key []byte) objects.FileAccess {
+	self := FileAccess{}
 	return objects.FileAccess(class(self).OpenEncrypted(gd.NewString(path), mode_flags, gd.NewPackedByteSlice(key)))
 }
 
@@ -78,7 +84,8 @@ func (self Instance) OpenEncrypted(path string, mode_flags classdb.FileAccessMod
 Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) OpenEncryptedWithPass(path string, mode_flags classdb.FileAccessModeFlags, pass string) objects.FileAccess {
+func OpenEncryptedWithPass(path string, mode_flags classdb.FileAccessModeFlags, pass string) objects.FileAccess {
+	self := FileAccess{}
 	return objects.FileAccess(class(self).OpenEncryptedWithPass(gd.NewString(path), mode_flags, gd.NewString(pass)))
 }
 
@@ -87,14 +94,16 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) OpenCompressed(path string, mode_flags classdb.FileAccessModeFlags) objects.FileAccess {
+func OpenCompressed(path string, mode_flags classdb.FileAccessModeFlags) objects.FileAccess {
+	self := FileAccess{}
 	return objects.FileAccess(class(self).OpenCompressed(gd.NewString(path), mode_flags, 0))
 }
 
 /*
 Returns the result of the last [method open] call in the current thread.
 */
-func (self Instance) GetOpenError() error {
+func GetOpenError() error {
+	self := FileAccess{}
 	return error(class(self).GetOpenError())
 }
 
@@ -102,7 +111,8 @@ func (self Instance) GetOpenError() error {
 Returns the whole [param path] file contents as a [PackedByteArray] without any decoding.
 Returns an empty [PackedByteArray] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) GetFileAsBytes(path string) []byte {
+func GetFileAsBytes(path string) []byte {
+	self := FileAccess{}
 	return []byte(class(self).GetFileAsBytes(gd.NewString(path)).Bytes())
 }
 
@@ -110,7 +120,8 @@ func (self Instance) GetFileAsBytes(path string) []byte {
 Returns the whole [param path] file contents as a [String]. Text is interpreted as being UTF-8 encoded.
 Returns an empty [String] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
-func (self Instance) GetFileAsString(path string) string {
+func GetFileAsString(path string) string {
+	self := FileAccess{}
 	return string(class(self).GetFileAsString(gd.NewString(path)).String())
 }
 
@@ -293,14 +304,16 @@ func (self Instance) GetAsText() string {
 /*
 Returns an MD5 String representing the file at the given path or an empty [String] on failure.
 */
-func (self Instance) GetMd5(path string) string {
+func GetMd5(path string) string {
+	self := FileAccess{}
 	return string(class(self).GetMd5(gd.NewString(path)).String())
 }
 
 /*
 Returns an SHA-256 [String] representing the file at the given path or an empty [String] on failure.
 */
-func (self Instance) GetSha256(path string) string {
+func GetSha256(path string) string {
+	self := FileAccess{}
 	return string(class(self).GetSha256(gd.NewString(path)).String())
 }
 
@@ -481,14 +494,16 @@ Returns [code]true[/code] if the file exists in the given path.
 [b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [method ResourceLoader.exists] for an alternative approach that takes resource remapping into account.
 For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
-func (self Instance) FileExists(path string) bool {
+func FileExists(path string) bool {
+	self := FileAccess{}
 	return bool(class(self).FileExists(gd.NewString(path)))
 }
 
 /*
 Returns the last time the [param file] was modified in Unix timestamp format, or [code]0[/code] on error. This Unix timestamp can be converted to another format using the [Time] singleton.
 */
-func (self Instance) GetModifiedTime(file string) int {
+func GetModifiedTime(file string) int {
+	self := FileAccess{}
 	return int(int(class(self).GetModifiedTime(gd.NewString(file))))
 }
 
@@ -496,7 +511,8 @@ func (self Instance) GetModifiedTime(file string) int {
 Returns file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
-func (self Instance) GetUnixPermissions(file string) classdb.FileAccessUnixPermissionFlags {
+func GetUnixPermissions(file string) classdb.FileAccessUnixPermissionFlags {
+	self := FileAccess{}
 	return classdb.FileAccessUnixPermissionFlags(class(self).GetUnixPermissions(gd.NewString(file)))
 }
 
@@ -504,7 +520,8 @@ func (self Instance) GetUnixPermissions(file string) classdb.FileAccessUnixPermi
 Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
-func (self Instance) SetUnixPermissions(file string, permissions classdb.FileAccessUnixPermissionFlags) error {
+func SetUnixPermissions(file string, permissions classdb.FileAccessUnixPermissionFlags) error {
+	self := FileAccess{}
 	return error(class(self).SetUnixPermissions(gd.NewString(file), permissions))
 }
 
@@ -512,7 +529,8 @@ func (self Instance) SetUnixPermissions(file string, permissions classdb.FileAcc
 Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
-func (self Instance) GetHiddenAttribute(file string) bool {
+func GetHiddenAttribute(file string) bool {
+	self := FileAccess{}
 	return bool(class(self).GetHiddenAttribute(gd.NewString(file)))
 }
 
@@ -520,7 +538,8 @@ func (self Instance) GetHiddenAttribute(file string) bool {
 Sets file [b]hidden[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
-func (self Instance) SetHiddenAttribute(file string, hidden bool) error {
+func SetHiddenAttribute(file string, hidden bool) error {
+	self := FileAccess{}
 	return error(class(self).SetHiddenAttribute(gd.NewString(file), hidden))
 }
 
@@ -528,7 +547,8 @@ func (self Instance) SetHiddenAttribute(file string, hidden bool) error {
 Sets file [b]read only[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
-func (self Instance) SetReadOnlyAttribute(file string, ro bool) error {
+func SetReadOnlyAttribute(file string, ro bool) error {
+	self := FileAccess{}
 	return error(class(self).SetReadOnlyAttribute(gd.NewString(file), ro))
 }
 
@@ -536,7 +556,8 @@ func (self Instance) SetReadOnlyAttribute(file string, ro bool) error {
 Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
-func (self Instance) GetReadOnlyAttribute(file string) bool {
+func GetReadOnlyAttribute(file string) bool {
+	self := FileAccess{}
 	return bool(class(self).GetReadOnlyAttribute(gd.NewString(file)))
 }
 

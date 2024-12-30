@@ -2,16 +2,16 @@ package PhysicsDirectBodyState2DExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/PhysicsDirectBodyState2D"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Transform2D"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/PhysicsDirectBodyState2D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -116,6 +116,10 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 	}
 */
 type Instance [1]classdb.PhysicsDirectBodyState2DExtension
+type Any interface {
+	gd.IsClass
+	AsPhysicsDirectBodyState2DExtension() Instance
+}
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.

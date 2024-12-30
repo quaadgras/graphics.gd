@@ -2,16 +2,16 @@ package RenderSceneDataExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/RenderSceneData"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Projection"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/RenderSceneData"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -39,6 +39,10 @@ This class allows for a RenderSceneData implementation to be made in GDExtension
 	}
 */
 type Instance [1]classdb.RenderSceneDataExtension
+type Any interface {
+	gd.IsClass
+	AsRenderSceneDataExtension() Instance
+}
 
 /*
 Implement this in GDExtension to return the camera [Transform3D].

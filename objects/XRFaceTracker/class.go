@@ -2,13 +2,13 @@ package XRFaceTracker
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/XRTracker"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/XRTracker"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ An instance of this object represents a tracked face and its corresponding blend
 As face trackers are turned on they are registered with the [XRServer].
 */
 type Instance [1]classdb.XRFaceTracker
+type Any interface {
+	gd.IsClass
+	AsXRFaceTracker() Instance
+}
 
 /*
 Returns the requested face blend shape weight.

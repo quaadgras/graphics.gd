@@ -2,14 +2,14 @@ package SkeletonModification2DPhysicalBones
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SkeletonModification2D"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SkeletonModification2D"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ var _ = pointers.Root
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
 */
 type Instance [1]classdb.SkeletonModification2DPhysicalBones
+type Any interface {
+	gd.IsClass
+	AsSkeletonModification2DPhysicalBones() Instance
+}
 
 /*
 Sets the [PhysicalBone2D] node at [param joint_idx].

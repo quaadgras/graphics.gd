@@ -2,15 +2,15 @@ package RenderSceneData
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Projection"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ Abstract scene data object, exists for the duration of rendering a single viewpo
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]classdb.RenderSceneData
+type Any interface {
+	gd.IsClass
+	AsRenderSceneData() Instance
+}
 
 /*
 Returns the camera transform used to render this frame.

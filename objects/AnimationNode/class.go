@@ -2,16 +2,16 @@ package AnimationNode
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Path"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -53,6 +53,10 @@ var current_delta = $AnimationTree[parameters/AnimationNodeName/current_delta]
 	}
 */
 type Instance [1]classdb.AnimationNode
+type Any interface {
+	gd.IsClass
+	AsAnimationNode() Instance
+}
 
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.

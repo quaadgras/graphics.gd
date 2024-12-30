@@ -2,16 +2,16 @@ package SkeletonModification2DJiggle
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SkeletonModification2D"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SkeletonModification2D"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ This modification is useful for adding additional motion to things like hair, th
 [b]Note:[/b] The Jiggle modifier has [code]jiggle_joints[/code], which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [Bone2D] nodes! Jiggle joints hold the data needed for each [Bone2D] in the bone chain used by the Jiggle modification.
 */
 type Instance [1]classdb.SkeletonModification2DJiggle
+type Any interface {
+	gd.IsClass
+	AsSkeletonModification2DJiggle() Instance
+}
 
 /*
 If [code]true[/code], the Jiggle modifier will take colliders into account, keeping them from entering into these collision objects.

@@ -2,17 +2,17 @@ package TextMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/PrimitiveMesh"
-import "grow.graphics/gd/objects/Mesh"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/PrimitiveMesh"
+import "graphics.gd/objects/Mesh"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ TextMesh can be generated only when using dynamic fonts with vector glyph contou
 The UV layout is arranged in 4 horizontal strips, top to bottom: 40% of the height for the front face, 40% for the back face, 10% for the outer edges and 10% for the inner edges.
 */
 type Instance [1]classdb.TextMesh
+type Any interface {
+	gd.IsClass
+	AsTextMesh() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

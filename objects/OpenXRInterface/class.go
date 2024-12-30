@@ -2,16 +2,16 @@ package OpenXRInterface
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/XRInterface"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Quaternion"
-import "grow.graphics/gd/variant/Vector3"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/XRInterface"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ The OpenXR interface allows Godot to interact with OpenXR runtimes and make it p
 Due to the needs of OpenXR this interface works slightly different than other plugin based XR interfaces. It needs to be initialized when Godot starts. You need to enable OpenXR, settings for this can be found in your games project settings under the XR heading. You do need to mark a viewport for use with XR in order for Godot to know which render result should be output to the headset.
 */
 type Instance [1]classdb.OpenXRInterface
+type Any interface {
+	gd.IsClass
+	AsOpenXRInterface() Instance
+}
 
 /*
 Returns [code]true[/code] if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.

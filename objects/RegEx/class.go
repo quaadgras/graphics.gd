@@ -2,11 +2,11 @@ package RegEx
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -66,11 +66,16 @@ for result in regex.search_all("One  Two \n\tThree"):
 [b]Tip:[/b] You can use [url=https://regexr.com/]Regexr[/url] to test regular expressions online.
 */
 type Instance [1]classdb.RegEx
+type Any interface {
+	gd.IsClass
+	AsRegEx() Instance
+}
 
 /*
 Creates and compiles a new [RegEx] object.
 */
-func (self Instance) CreateFromString(pattern string) objects.RegEx {
+func CreateFromString(pattern string) objects.RegEx {
+	self := RegEx{}
 	return objects.RegEx(class(self).CreateFromString(gd.NewString(pattern)))
 }
 

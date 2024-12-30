@@ -8,7 +8,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/pointers"
 )
 
 var ExtensionInstances sync.Map

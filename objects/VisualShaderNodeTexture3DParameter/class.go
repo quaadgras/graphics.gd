@@ -2,15 +2,15 @@ package VisualShaderNodeTexture3DParameter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualShaderNodeTextureParameter"
-import "grow.graphics/gd/objects/VisualShaderNodeParameter"
-import "grow.graphics/gd/objects/VisualShaderNode"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualShaderNodeTextureParameter"
+import "graphics.gd/objects/VisualShaderNodeParameter"
+import "graphics.gd/objects/VisualShaderNode"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ var _ = pointers.Root
 Translated to [code]uniform sampler3D[/code] in the shader language.
 */
 type Instance [1]classdb.VisualShaderNodeTexture3DParameter
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNodeTexture3DParameter() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

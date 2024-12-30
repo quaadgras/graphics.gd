@@ -2,11 +2,11 @@
 package Transform3D
 
 import (
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Basis"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Quaternion"
-	"grow.graphics/gd/variant/Vector3"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Quaternion"
+	"graphics.gd/variant/Vector3"
 )
 
 // The BasisOrigin built-in Variant type is a 3×4 matrix representing a

@@ -2,16 +2,16 @@ package Texture2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Rect2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -47,6 +47,10 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 	}
 */
 type Instance [1]classdb.Texture2D
+type Any interface {
+	gd.IsClass
+	AsTexture2D() Instance
+}
 
 /*
 Called when the [Texture2D]'s width is queried.

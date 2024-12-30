@@ -2,12 +2,12 @@ package JSON
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -52,6 +52,10 @@ var data = JSON.parse_string(json_string) # Returns null if parsing failed.
 - Certain errors, such as invalid Unicode sequences, do not cause a parser error. Instead, the string is cleansed and an error is logged to the console.
 */
 type Instance [1]classdb.JSON
+type Any interface {
+	gd.IsClass
+	AsJSON() Instance
+}
 
 /*
 Converts a [Variant] var to JSON text and returns the result. Useful for serializing data to store or send over the network.
@@ -97,14 +101,16 @@ The [param indent] parameter controls if and how something is indented; its cont
 }
 [/codeblock]
 */
-func (self Instance) Stringify(data any) string {
+func Stringify(data any) string {
+	self := JSON{}
 	return string(class(self).Stringify(gd.NewVariant(data), gd.NewString(""), true, false).String())
 }
 
 /*
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
-func (self Instance) ParseString(json_string string) any {
+func ParseString(json_string string) any {
+	self := JSON{}
 	return any(class(self).ParseString(gd.NewString(json_string)).Interface())
 }
 

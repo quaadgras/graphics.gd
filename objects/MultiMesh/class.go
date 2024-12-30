@@ -2,16 +2,16 @@ package MultiMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Transform2D"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/AABB"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/AABB"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ Since instances may have any behavior, the AABB used for visibility must be prov
 [b]Note:[/b] Blend Shapes will be ignored if used in a MultiMesh.
 */
 type Instance [1]classdb.MultiMesh
+type Any interface {
+	gd.IsClass
+	AsMultiMesh() Instance
+}
 
 /*
 Sets the [Transform3D] for a specific instance.

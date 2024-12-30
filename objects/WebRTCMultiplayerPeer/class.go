@@ -2,15 +2,15 @@ package WebRTCMultiplayerPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/MultiplayerPeer"
-import "grow.graphics/gd/objects/PacketPeer"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/MultiplayerPeer"
+import "graphics.gd/objects/PacketPeer"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ When creating the peer via [method create_client] or [method create_server] the 
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]classdb.WebRTCMultiplayerPeer
+type Any interface {
+	gd.IsClass
+	AsWebRTCMultiplayerPeer() Instance
+}
 
 /*
 Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). This mode enables [method MultiplayerPeer.is_server_relay_supported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.

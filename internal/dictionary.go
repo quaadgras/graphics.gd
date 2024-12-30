@@ -1,8 +1,8 @@
 package gd
 
 import (
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 func (d Dictionary) Index(key Variant) Variant {

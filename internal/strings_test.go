@@ -5,7 +5,7 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd/variant/String"
+	"graphics.gd/variant/String"
 )
 
 func TestStrings(t *testing.T) {

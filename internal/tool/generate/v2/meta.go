@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"grow.graphics/gd/internal/gdjson"
+	"graphics.gd/internal/gdjson"
 )
 
 type ClassDB map[string]gdjson.Class
@@ -120,31 +120,31 @@ func isBuiltin(s string) bool {
 func importsVariant(class gdjson.Class, identifier, s string) string {
 	switch s {
 	case "Float", "float":
-		return "grow.graphics/gd/variant/Float"
+		return "graphics.gd/variant/Float"
 	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":
-		return "grow.graphics/gd/variant/" + s
+		return "graphics.gd/variant/" + s
 	case "NodePath":
-		return "grow.graphics/gd/variant/Path"
+		return "graphics.gd/variant/Path"
 	case "RID":
 		if class.Name == "Resource" {
 			return ""
 		}
-		return "grow.graphics/gd/objects/Resource"
+		return "graphics.gd/objects/Resource"
 	case "Array", "Dictionary", "Signal":
-		return "grow.graphics/gd/variant/" + s
+		return "graphics.gd/variant/" + s
 	case "PackedVector2Array":
-		return "grow.graphics/gd/variant/Vector2"
+		return "graphics.gd/variant/Vector2"
 	case "PackedVector3Array":
-		return "grow.graphics/gd/variant/Vector3"
+		return "graphics.gd/variant/Vector3"
 	case "PackedVector4Array":
-		return "grow.graphics/gd/variant/Vector4"
+		return "graphics.gd/variant/Vector4"
 	case "PackedColorArray":
-		return "grow.graphics/gd/variant/Color"
+		return "graphics.gd/variant/Color"
 	case "Callable":
 		details := gdjson.Callables[identifier]
 		if len(details) == 0 {
-			return "grow.graphics/gd/variant/Callable"
+			return "graphics.gd/variant/Callable"
 		}
 		for _, detail := range details {
 			if detail == "void" {

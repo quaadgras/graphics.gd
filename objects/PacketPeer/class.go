@@ -2,11 +2,11 @@ package PacketPeer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,6 +19,10 @@ PacketPeer is an abstraction and base class for packet-based protocols (such as 
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]classdb.PacketPeer
+type Any interface {
+	gd.IsClass
+	AsPacketPeer() Instance
+}
 
 /*
 Gets a Variant. If [param allow_objects] is [code]true[/code], decoding objects is allowed.

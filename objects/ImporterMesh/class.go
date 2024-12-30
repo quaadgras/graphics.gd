@@ -2,16 +2,16 @@ package ImporterMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains verte
 Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [method clear], followed by [method add_surface] for each surface.
 */
 type Instance [1]classdb.ImporterMesh
+type Any interface {
+	gd.IsClass
+	AsImporterMesh() Instance
+}
 
 /*
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.

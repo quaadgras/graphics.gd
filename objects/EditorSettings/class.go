@@ -2,13 +2,13 @@ package EditorSettings
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,6 +41,10 @@ Godot.Collections.Array<Godot.Collections.Dictionary> listOfSettings = settings.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_editor_settings].
 */
 type Instance [1]classdb.EditorSettings
+type Any interface {
+	gd.IsClass
+	AsEditorSettings() Instance
+}
 
 /*
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.

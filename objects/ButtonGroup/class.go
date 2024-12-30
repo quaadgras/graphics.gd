@@ -2,12 +2,12 @@ package ButtonGroup
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are trea
 Every member of a [ButtonGroup] should have [member BaseButton.toggle_mode] set to [code]true[/code].
 */
 type Instance [1]classdb.ButtonGroup
+type Any interface {
+	gd.IsClass
+	AsButtonGroup() Instance
+}
 
 /*
 Returns the current pressed button.

@@ -2,14 +2,14 @@ package AudioEffectSpectrumAnalyzerInstance
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioEffectInstance"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioEffectInstance"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ The runtime part of an [AudioEffectSpectrumAnalyzer], which can be used to query
 An instance of this class can be acquired with [method AudioServer.get_bus_effect_instance].
 */
 type Instance [1]classdb.AudioEffectSpectrumAnalyzerInstance
+type Any interface {
+	gd.IsClass
+	AsAudioEffectSpectrumAnalyzerInstance() Instance
+}
 
 /*
 Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] in linear energy as a Vector2. The [code]x[/code] component of the return value represents the left stereo channel, and [code]y[/code] represents the right channel.

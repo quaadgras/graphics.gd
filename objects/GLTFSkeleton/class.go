@@ -2,13 +2,13 @@ package GLTFSkeleton
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -17,6 +17,10 @@ var _ callframe.Frame
 var _ = pointers.Root
 
 type Instance [1]classdb.GLTFSkeleton
+type Any interface {
+	gd.IsClass
+	AsGLTFSkeleton() Instance
+}
 
 func (self Instance) GetGodotSkeleton() objects.Skeleton3D {
 	return objects.Skeleton3D(class(self).GetGodotSkeleton())

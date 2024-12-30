@@ -2,12 +2,12 @@ package MovieWriter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -48,6 +48,10 @@ If you need to encode to a different format or pipe a stream through third-party
 	}
 */
 type Instance [1]classdb.MovieWriter
+type Any interface {
+	gd.IsClass
+	AsMovieWriter() Instance
+}
 
 /*
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
@@ -136,7 +140,8 @@ func (Instance) _write_end(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 Adds a writer to be usable by the engine. The supported file extensions can be set by overriding [method _handles_file].
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
-func (self Instance) AddWriter(writer objects.MovieWriter) {
+func AddWriter(writer objects.MovieWriter) {
+	self := MovieWriter{}
 	class(self).AddWriter(writer)
 }
 

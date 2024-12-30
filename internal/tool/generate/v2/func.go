@@ -5,8 +5,8 @@ import (
 	"io"
 	"strings"
 
-	"grow.graphics/gd/internal/gdjson"
-	"grow.graphics/gd/internal/gdtype"
+	"graphics.gd/internal/gdjson"
+	"graphics.gd/internal/gdtype"
 )
 
 type callType int
@@ -55,7 +55,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	}
 	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
-	if singleton {
+	if singleton || method.IsStatic {
 		fmt.Fprintf(w, "func %v(", convertName(method.Name))
 	} else {
 		fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
@@ -75,6 +75,9 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	fmt.Fprint(w, "{\n\t")
 	if singleton {
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
+	if method.IsStatic {
+		fmt.Fprintf(w, "self := %s{}\n", class.Name)
 	}
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "return %s(", resultSimple)

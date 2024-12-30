@@ -2,13 +2,13 @@ package Shortcut
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ Shortcuts are commonly used for interacting with a [Control] element from an [In
 One shortcut can contain multiple [InputEvent]'s, allowing the possibility of triggering one action with multiple different inputs.
 */
 type Instance [1]classdb.Shortcut
+type Any interface {
+	gd.IsClass
+	AsShortcut() Instance
+}
 
 /*
 Returns whether [member events] contains an [InputEvent] which is valid.

@@ -2,17 +2,17 @@ package TreeItem
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Rect2"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Callable"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create
 [b]Note:[/b] The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from [code]-2147483648[/code] to [code]2147483647[/code].
 */
 type Instance [1]classdb.TreeItem
+type Any interface {
+	gd.IsClass
+	AsTreeItem() Instance
+}
 
 /*
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.

@@ -1,12 +1,12 @@
-package gdextension
+package defined
 
 import (
 	"fmt"
 	"reflect"
 
-	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/internal/pointers"
-	"grow.graphics/gd/variant/String"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/String"
 )
 
 func registerMethods(class gd.StringName, rtype reflect.Type) {

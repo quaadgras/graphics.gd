@@ -2,17 +2,17 @@ package ParticleProcessMaterial
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Material"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Material"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ var _ = pointers.Root
 [ParticleProcessMaterial] defines particle properties and behavior. It is used in the [code]process_material[/code] of the [GPUParticles2D] and [GPUParticles3D] nodes. Some of this material's properties are applied to each particle when emitted, while others can have a [CurveTexture] or a [GradientTexture1D] applied to vary numerical or color values over the lifetime of the particle.
 */
 type Instance [1]classdb.ParticleProcessMaterial
+type Any interface {
+	gd.IsClass
+	AsParticleProcessMaterial() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

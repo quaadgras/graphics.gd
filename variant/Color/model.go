@@ -1,7 +1,7 @@
 package Color
 
 import (
-	"grow.graphics/gd/variant/Float"
+	"graphics.gd/variant/Float"
 )
 
 // RGBE9995 decodes a Color from a RGBE9995 format integer where the three color components have

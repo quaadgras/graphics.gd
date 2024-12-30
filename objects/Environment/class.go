@@ -2,15 +2,15 @@ package Environment
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ Resource for environment nodes (like [WorldEnvironment]) that define multiple en
 - Adjustments
 */
 type Instance [1]classdb.Environment
+type Any interface {
+	gd.IsClass
+	AsEnvironment() Instance
+}
 
 /*
 Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code] enables the level. Each level relies on the previous level. This means that enabling higher glow levels will slow down the glow effect rendering, even if previous levels aren't enabled.

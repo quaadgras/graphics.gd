@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"unsafe"
 
-	"grow.graphics/gd/variant/AABB"
-	"grow.graphics/gd/variant/Basis"
-	"grow.graphics/gd/variant/Color"
-	"grow.graphics/gd/variant/Path"
-	"grow.graphics/gd/variant/Plane"
-	"grow.graphics/gd/variant/Quaternion"
-	"grow.graphics/gd/variant/Rect2"
-	"grow.graphics/gd/variant/Transform2D"
-	"grow.graphics/gd/variant/Transform3D"
-	"grow.graphics/gd/variant/Vector2"
-	"grow.graphics/gd/variant/Vector3"
+	"graphics.gd/variant/AABB"
+	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Path"
+	"graphics.gd/variant/Plane"
+	"graphics.gd/variant/Quaternion"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Transform2D"
+	"graphics.gd/variant/Transform3D"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
 )
 
 type decodable interface {

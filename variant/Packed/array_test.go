@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"grow.graphics/gd/variant/Color"
-	"grow.graphics/gd/variant/Packed"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Packed"
 )
 
 func BenchmarkPacked(b *testing.B) {

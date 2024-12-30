@@ -2,12 +2,12 @@ package PackedDataContainer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,6 +38,10 @@ for key in container:
 Nested containers will be packed recursively. While iterating, they will be returned as [PackedDataContainerRef].
 */
 type Instance [1]classdb.PackedDataContainer
+type Any interface {
+	gd.IsClass
+	AsPackedDataContainer() Instance
+}
 
 /*
 Packs the given container into a binary representation. The [param value] must be either [Array] or [Dictionary], any other type will result in invalid data error.

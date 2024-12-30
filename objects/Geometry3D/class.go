@@ -3,14 +3,14 @@ package Geometry3D
 import "unsafe"
 import "sync"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Plane"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Plane"
 
 var _ unsafe.Pointer
 var _ objects.Engine

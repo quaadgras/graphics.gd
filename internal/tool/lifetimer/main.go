@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"grow.graphics/gd/internal/gdjson"
+	"graphics.gd/internal/gdjson"
 )
 
 // LoadSpecification, either from a local file or by downloading

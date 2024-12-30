@@ -2,11 +2,11 @@ package OpenXRInteractionProfileMetadata
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -18,6 +18,10 @@ var _ = pointers.Root
 This class allows OpenXR core and extensions to register metadata relating to supported interaction devices such as controllers, trackers, haptic devices, etc. It is primarily used by the action map editor and to sanitize any action map by removing extension-dependent entries when applicable.
 */
 type Instance [1]classdb.OpenXRInteractionProfileMetadata
+type Any interface {
+	gd.IsClass
+	AsOpenXRInteractionProfileMetadata() Instance
+}
 
 /*
 Allows for renaming old interaction profile paths to new paths to maintain backwards compatibility with older action maps.

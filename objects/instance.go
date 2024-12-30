@@ -4,9 +4,12 @@ import (
 	"reflect"
 	"unsafe"
 
-	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/internal/pointers"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 )
+
+// Instance of an object.
+type Instance = gd.Object
 
 // ID that uniquely identifies an object.
 type ID gd.ObjectID

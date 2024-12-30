@@ -4,8 +4,8 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 func (p *PackedFloat32Array) Pointer() *PackedFloat32Array { return p }

@@ -2,15 +2,15 @@ package EditorNode3DGizmo
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node3DGizmo"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Vector3"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node3DGizmo"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -56,6 +56,10 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 	}
 */
 type Instance [1]classdb.EditorNode3DGizmo
+type Any interface {
+	gd.IsClass
+	AsEditorNode3DGizmo() Instance
+}
 
 /*
 Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.

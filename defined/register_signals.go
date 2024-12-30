@@ -1,10 +1,10 @@
-package gdextension
+package defined
 
 import (
 	"fmt"
 	"reflect"
 
-	gd "grow.graphics/gd/internal"
+	gd "graphics.gd/internal"
 )
 
 // registerSignals registers [Signal[T]] fields as signals emittable by the class,

@@ -4,9 +4,9 @@ package Basis
 import (
 	"unsafe"
 
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Vector3"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Vector3"
 )
 
 // The XYZ type is a 3×3 matrix used to represent 3D rotation, scale, and

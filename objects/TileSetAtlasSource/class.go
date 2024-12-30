@@ -2,17 +2,17 @@ package TileSetAtlasSource
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/TileSetSource"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Rect2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/TileSetSource"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Rect2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ Each tile alternate has a set of properties that is defined by the source's [Til
 As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using [code]TileSetAtlasSource.set("<coords_x>:<coords_y>/<alternative_id>/<tile_data_property>")[/code].
 */
 type Instance [1]classdb.TileSetAtlasSource
+type Any interface {
+	gd.IsClass
+	AsTileSetAtlasSource() Instance
+}
 
 /*
 Creates a new tile at coordinates [param atlas_coords] with the given [param size].

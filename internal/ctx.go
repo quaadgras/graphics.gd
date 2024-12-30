@@ -55,7 +55,7 @@ func recovery(err any) {
 			}
 			fn := runtime.FuncForPC(pc)
 			name = fn.Name()
-			if strings.HasPrefix(name, "runtime.") || strings.HasPrefix(name, "grow.graphics/gd") {
+			if strings.HasPrefix(name, "runtime.") || strings.HasPrefix(name, "graphics.gd") {
 				continue
 			}
 			file, line = fn.FileLine(pc)

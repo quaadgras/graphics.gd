@@ -2,18 +2,18 @@ package ScriptEditorBase
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VBoxContainer"
-import "grow.graphics/gd/objects/BoxContainer"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VBoxContainer"
+import "graphics.gd/objects/BoxContainer"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ var _ = pointers.Root
 Base editor for editing scripts in the [ScriptEditor]. This does not include documentation items.
 */
 type Instance [1]classdb.ScriptEditorBase
+type Any interface {
+	gd.IsClass
+	AsScriptEditorBase() Instance
+}
 
 /*
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].

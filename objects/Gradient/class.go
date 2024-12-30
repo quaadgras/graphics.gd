@@ -2,14 +2,14 @@ package Gradient
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ This resource describes a color transition by defining a set of colored points a
 See also [Curve] which supports more complex easing methods, but does not support colors.
 */
 type Instance [1]classdb.Gradient
+type Any interface {
+	gd.IsClass
+	AsGradient() Instance
+}
 
 /*
 Adds the specified color to the gradient, with the specified offset.

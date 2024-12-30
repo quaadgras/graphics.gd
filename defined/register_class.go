@@ -1,4 +1,4 @@
-package gdextension
+package defined
 
 import (
 	"fmt"
@@ -10,44 +10,71 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"grow.graphics/gd/objects"
-	"grow.graphics/gd/objects/EditorPlugin"
-	"grow.graphics/gd/objects/Engine"
-	"grow.graphics/gd/objects/MainLoop"
-	"grow.graphics/gd/objects/Node"
-	"grow.graphics/gd/objects/ProjectSettings"
-	"grow.graphics/gd/objects/Script"
-	"grow.graphics/gd/objects/ScriptLanguage"
-	"grow.graphics/gd/variant/StringName"
+	"graphics.gd/objects"
+	"graphics.gd/objects/EditorPlugin"
+	"graphics.gd/objects/Engine"
+	"graphics.gd/objects/MainLoop"
+	"graphics.gd/objects/Node"
+	"graphics.gd/objects/ProjectSettings"
+	"graphics.gd/objects/Script"
+	"graphics.gd/objects/ScriptLanguage"
+	"graphics.gd/variant/StringName"
 
-	gd "grow.graphics/gd/internal"
-	classdb "grow.graphics/gd/internal/classdb"
-	"grow.graphics/gd/internal/pointers"
+	gd "graphics.gd/internal"
+	classdb "graphics.gd/internal/classdb"
+	"graphics.gd/internal/pointers"
 )
 
 // Tool can be embedded inside a struct to make it run in the editor.
 type Tool interface{ tool() }
 
-// Class can be embedded inside of a struct to represent a new Class type.
-// The extended class will be available by calling the [Class.Super] method.
-type Class[T any, S gd.IsClass] struct {
+// Object can be embedded inside of a struct to represent a new Object type.
+// The extended class will be available by calling the [Object.Super] method.
+type Object[T any, S gd.IsClass] struct {
 	gd.Class[T, S]
 }
 
-func (class *Class[T, S]) getObject() gd.Object {
+// NameOf returns the defined name for the given [Object]-embedding type.
+func NameOf(T Class) string {
+	return classNameOf(reflect.TypeOf(T))
+}
+
+func NameFor[T Class]() string {
+	return classNameOf(reflect.TypeFor[T]())
+}
+
+func (class Object[T, S]) super() S {
+	return *class.Super()
+}
+
+func (class Object[T, S]) getObject() gd.Object {
 	return *(*gd.Object)(unsafe.Pointer(class.Super()))
 }
 
-func (class *Class[T, S]) setObject(obj gd.Object) {
+func (class *Object[T, S]) setObject(obj gd.Object) {
 	*(*gd.Object)(unsafe.Pointer(class.Super())) = obj
 }
 
-type isClass interface {
-	getObject() gd.Object
-	setObject(gd.Object)
+func (class Object[T, S]) superType() reflect.Type {
+	return reflect.TypeFor[S]()
 }
 
-func (class *Class[T, S]) AsObject() gd.Object {
+type isClass interface {
+	gd.IsClass
+
+	getObject() gd.Object
+	setObject(gd.Object)
+
+	superType() reflect.Type
+}
+
+type Class interface {
+	superType() reflect.Type
+	getObject() gd.Object
+	Virtual(string) reflect.Value
+}
+
+func (class *Object[T, S]) AsObject() gd.Object {
 	obj := class.getObject()
 	if obj == (gd.Object{}) {
 		impl, ok := registered.Load(reflect.TypeFor[T]())
@@ -63,9 +90,9 @@ func (class *Class[T, S]) AsObject() gd.Object {
 var registered sync.Map
 
 /*
-RegisterClass registers a struct available for use inside Godot
+InEditor registers a struct available for use inside Godot
 extending the given 'Parent' Godot class. The 'Struct' type must
-be a named struct that embeds a [Class] field specifying the
+be a named struct that embeds a [Object] field specifying the
 parent class to extend.
 
 	type MyClass struct {
@@ -92,16 +119,16 @@ used as the main loop for the application.
 If the Struct implements an OnRegister(Lifetime) method, it will
 be called on a temporary instance when the class is registered.
 */
-func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
-	var classType = reflect.TypeFor[Struct]()
-	var superType = reflect.TypeFor[Parent]()
+func InEditor[T Class]() {
+	var classType = reflect.TypeFor[T]()
+	var superType = ([1]T{})[0].superType()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
 	var rename = classNameOf(classType) // support 'gd' tag for renaming the class within Godot.
 	var tool = false
-	var super Parent
-	switch any(super).(type) {
+	var super = reflect.New(superType).Elem().Interface()
+	switch super.(type) {
 	case interface{ AsScript() Script.Instance },
 		interface{ AsEditorPlugin() EditorPlugin.Instance },
 		interface {
@@ -109,7 +136,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass]() {
 		}:
 		tool = true
 	}
-	var reference Struct
+	var reference T
 	var className = pointers.Pin(StringName.New(rename))
 	var superName = pointers.Pin(StringName.New(classNameOf(superType)))
 

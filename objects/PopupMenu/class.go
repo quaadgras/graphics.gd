@@ -2,17 +2,17 @@ package PopupMenu
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Popup"
-import "grow.graphics/gd/objects/Window"
-import "grow.graphics/gd/objects/Viewport"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Popup"
+import "graphics.gd/objects/Window"
+import "graphics.gd/objects/Viewport"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code]
 [b]Note:[/b] The ID values used for items are limited to 32 bits, not full 64 bits of [int]. This has a range of [code]-2^32[/code] to [code]2^32 - 1[/code], i.e. [code]-2147483648[/code] to [code]2147483647[/code].
 */
 type Instance [1]classdb.PopupMenu
+type Any interface {
+	gd.IsClass
+	AsPopupMenu() Instance
+}
 
 /*
 Checks the provided [param event] against the [PopupMenu]'s shortcuts and accelerators, and activates the first item with matching events. If [param for_global_only] is [code]true[/code], only shortcuts and accelerators with [code]global[/code] set to [code]true[/code] will be called.

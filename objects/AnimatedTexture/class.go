@@ -2,15 +2,15 @@ package AnimatedTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture2D"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture2D"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ The playback of the animation is controlled by the [member speed_scale] property
 [b]Warning:[/b] The current implementation is not efficient for the modern renderers.
 */
 type Instance [1]classdb.AnimatedTexture
+type Any interface {
+	gd.IsClass
+	AsAnimatedTexture() Instance
+}
 
 /*
 Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first frame has ID 0, and the last frame of the animation has ID [member frames] - 1.

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"grow.graphics/gd/internal/gdtests"
-	"grow.graphics/gd/variant/Basis"
+	"graphics.gd/internal/gdtests"
+	"graphics.gd/variant/Basis"
 )
 
 func TestIdentity(t *testing.T) {

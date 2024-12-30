@@ -2,12 +2,12 @@ package ResourceFormatLoader
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -50,6 +50,10 @@ Extending this class allows you to define your own loader. Be sure to respect th
 	}
 */
 type Instance [1]classdb.ResourceFormatLoader
+type Any interface {
+	gd.IsClass
+	AsResourceFormatLoader() Instance
+}
 
 /*
 Gets the list of extensions for files this loader is able to read.

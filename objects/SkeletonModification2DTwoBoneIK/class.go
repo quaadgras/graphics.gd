@@ -2,15 +2,15 @@ package SkeletonModification2DTwoBoneIK
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SkeletonModification2D"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SkeletonModification2D"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ This [SkeletonModification2D] uses an algorithm typically called TwoBoneIK. This
 TwoBoneIK is great for arms, legs, and really any joints that can be represented by just two bones that bend to reach a target. This solver is more lightweight than [SkeletonModification2DFABRIK], but gives similar, natural looking results.
 */
 type Instance [1]classdb.SkeletonModification2DTwoBoneIK
+type Any interface {
+	gd.IsClass
+	AsSkeletonModification2DTwoBoneIK() Instance
+}
 
 /*
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.

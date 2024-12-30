@@ -1,4 +1,4 @@
-module grow.graphics/gd
+module graphics.gd
 
 go 1.23.2
 

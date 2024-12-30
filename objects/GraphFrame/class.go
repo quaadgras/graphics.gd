@@ -2,17 +2,17 @@ package GraphFrame
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/GraphElement"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/GraphElement"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ GraphFrame is a special [GraphElement] to which other [GraphElement]s can be att
 A GraphFrame is always kept behind the connection layer and other [GraphElement]s inside a [GraphEdit].
 */
 type Instance [1]classdb.GraphFrame
+type Any interface {
+	gd.IsClass
+	AsGraphFrame() Instance
+}
 
 /*
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default.

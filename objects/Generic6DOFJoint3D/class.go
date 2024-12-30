@@ -2,15 +2,15 @@ package Generic6DOFJoint3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Joint3D"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Joint3D"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ The [Generic6DOFJoint3D] (6 Degrees Of Freedom) joint allows for implementing cu
 The first 3 DOF represent the linear motion of the physics bodies and the last 3 DOF represent the angular motion of the physics bodies. Each axis can be either locked, or limited.
 */
 type Instance [1]classdb.Generic6DOFJoint3D
+type Any interface {
+	gd.IsClass
+	AsGeneric6DOFJoint3D() Instance
+}
 
 func (self Instance) SetParamX(param classdb.Generic6DOFJoint3DParam, value Float.X) {
 	class(self).SetParamX(param, gd.Float(value))

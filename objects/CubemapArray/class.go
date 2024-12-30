@@ -2,15 +2,15 @@ package CubemapArray
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ImageTextureLayered"
-import "grow.graphics/gd/objects/TextureLayered"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ImageTextureLayered"
+import "graphics.gd/objects/TextureLayered"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ The primary benefit of [CubemapArray]s is that they can be accessed in shader co
 [b]Note:[/b] [CubemapArray] is not supported in the OpenGL 3 rendering backend.
 */
 type Instance [1]classdb.CubemapArray
+type Any interface {
+	gd.IsClass
+	AsCubemapArray() Instance
+}
 
 /*
 Creates a placeholder version of this resource ([PlaceholderCubemapArray]).

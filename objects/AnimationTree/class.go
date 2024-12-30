@@ -2,14 +2,14 @@ package AnimationTree
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationMixer"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Path"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationMixer"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ A node used for advanced animation transitions in an [AnimationPlayer].
 [b]Note:[/b] When linked with an [AnimationPlayer], several properties and methods of the corresponding [AnimationPlayer] will not function as expected. Playback and transitions should be handled using only the [AnimationTree] and its constituent [AnimationNode](s). The [AnimationPlayer] node should be used solely for adding, deleting, and editing animations.
 */
 type Instance [1]classdb.AnimationTree
+type Any interface {
+	gd.IsClass
+	AsAnimationTree() Instance
+}
 
 /*
 Sets the process notification in which to update animations.

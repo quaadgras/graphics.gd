@@ -2,9 +2,9 @@
 package Rect2
 
 import (
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
-	"grow.graphics/gd/variant/Vector2"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
+	"graphics.gd/variant/Vector2"
 )
 
 type Side int

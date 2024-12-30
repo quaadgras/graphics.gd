@@ -2,11 +2,11 @@ package DTLSServer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -168,6 +168,10 @@ public partial class ClientNode : Node
 [/codeblocks]
 */
 type Instance [1]classdb.DTLSServer
+type Any interface {
+	gd.IsClass
+	AsDTLSServer() Instance
+}
 
 /*
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].

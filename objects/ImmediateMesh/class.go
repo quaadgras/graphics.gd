@@ -2,17 +2,17 @@ package ImmediateMesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Mesh"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Plane"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Mesh"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,6 +44,10 @@ mesh.SurfaceEnd();
 [b]Note:[/b] Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 type Instance [1]classdb.ImmediateMesh
+type Any interface {
+	gd.IsClass
+	AsImmediateMesh() Instance
+}
 
 /*
 Begin a new surface.

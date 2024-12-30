@@ -2,14 +2,14 @@ package GLTFCamera
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,11 +21,16 @@ var _ = pointers.Root
 Represents a camera as defined by the base GLTF spec.
 */
 type Instance [1]classdb.GLTFCamera
+type Any interface {
+	gd.IsClass
+	AsGLTFCamera() Instance
+}
 
 /*
 Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
-func (self Instance) FromNode(camera_node objects.Camera3D) objects.GLTFCamera {
+func FromNode(camera_node objects.Camera3D) objects.GLTFCamera {
+	self := GLTFCamera{}
 	return objects.GLTFCamera(class(self).FromNode(camera_node))
 }
 
@@ -39,7 +44,8 @@ func (self Instance) ToNode() objects.Camera3D {
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFCamera {
+func FromDictionary(dictionary Dictionary.Any) objects.GLTFCamera {
+	self := GLTFCamera{}
 	return objects.GLTFCamera(class(self).FromDictionary(dictionary))
 }
 

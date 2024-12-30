@@ -2,13 +2,13 @@ package ImageFormatLoaderExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ImageFormatLoader"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ImageFormatLoader"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,6 +29,10 @@ Be sure to respect the documented return types and values. You should create an 
 	}
 */
 type Instance [1]classdb.ImageFormatLoaderExtension
+type Any interface {
+	gd.IsClass
+	AsImageFormatLoaderExtension() Instance
+}
 
 /*
 Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.

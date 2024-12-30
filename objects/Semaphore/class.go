@@ -2,11 +2,11 @@ package Semaphore
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ A synchronization semaphore that can be used to synchronize multiple [Thread]s. 
 - When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not be waiting on any semaphore.
 */
 type Instance [1]classdb.Semaphore
+type Any interface {
+	gd.IsClass
+	AsSemaphore() Instance
+}
 
 /*
 Waits for the [Semaphore], if its value is zero, blocks until non-zero.

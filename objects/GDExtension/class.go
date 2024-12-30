@@ -2,12 +2,12 @@ package GDExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ The [GDExtension] resource type represents a [url=https://en.wikipedia.org/wiki/
 [b]Note:[/b] GDExtension itself is not a scripting language and has no relation to [GDScript] resources.
 */
 type Instance [1]classdb.GDExtension
+type Any interface {
+	gd.IsClass
+	AsGDExtension() Instance
+}
 
 /*
 Returns [code]true[/code] if this extension's library has been opened.

@@ -5,8 +5,8 @@ package gd
 import (
 	"unsafe"
 
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 func (s String) StringName() StringName {

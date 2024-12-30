@@ -2,12 +2,12 @@ package ResourceImporterOggVorbis
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ResourceImporter"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ResourceImporter"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,18 +21,24 @@ In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're u
 Ogg Vorbis requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
 */
 type Instance [1]classdb.ResourceImporterOggVorbis
+type Any interface {
+	gd.IsClass
+	AsResourceImporterOggVorbis() Instance
+}
 
 /*
 This method loads audio data from a PackedByteArray buffer into an AudioStreamOggVorbis object.
 */
-func (self Instance) LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
+func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
+	self := ResourceImporterOggVorbis{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
 This method loads audio data from a file into an AudioStreamOggVorbis object. The file path is provided as a string.
 */
-func (self Instance) LoadFromFile(path string) objects.AudioStreamOggVorbis {
+func LoadFromFile(path string) objects.AudioStreamOggVorbis {
+	self := ResourceImporterOggVorbis{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
 

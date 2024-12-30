@@ -1,6 +1,6 @@
 package objects
 
-import classdb "grow.graphics/gd/internal/classdb"
+import classdb "graphics.gd/internal/classdb"
 
 type AESContext = [1]classdb.AESContext
 type AStar2D = [1]classdb.AStar2D

@@ -2,12 +2,12 @@ package AudioStreamPlayback
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -44,6 +44,10 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 	}
 */
 type Instance [1]classdb.AudioStreamPlayback
+type Any interface {
+	gd.IsClass
+	AsAudioStreamPlayback() Instance
+}
 
 /*
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].

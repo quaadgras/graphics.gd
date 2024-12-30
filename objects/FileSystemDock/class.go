@@ -2,17 +2,17 @@ package FileSystemDock
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VBoxContainer"
-import "grow.graphics/gd/objects/BoxContainer"
-import "grow.graphics/gd/objects/Container"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VBoxContainer"
+import "graphics.gd/objects/BoxContainer"
+import "graphics.gd/objects/Container"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ This class is available only in [EditorPlugin]s and can't be instantiated. You c
 While [FileSystemDock] doesn't expose any methods for file manipulation, it can listen for various file-related signals.
 */
 type Instance [1]classdb.FileSystemDock
+type Any interface {
+	gd.IsClass
+	AsFileSystemDock() Instance
+}
 
 /*
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.

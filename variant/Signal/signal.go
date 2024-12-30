@@ -4,9 +4,9 @@ package Signal
 import (
 	"sync"
 
-	errors "grow.graphics/gd"
-	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/variant/Callable"
+	errors "graphics.gd"
+	gd "graphics.gd/internal"
+	"graphics.gd/variant/Callable"
 )
 
 // Chan is a multi-producer, multi-consumer channel, when T is a value, it denotes the

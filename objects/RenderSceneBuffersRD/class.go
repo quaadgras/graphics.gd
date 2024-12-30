@@ -2,15 +2,15 @@ package RenderSceneBuffersRD
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/RenderSceneBuffers"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/RenderSceneBuffers"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ Buffers are only guaranteed to exist during rendering of the viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]classdb.RenderSceneBuffersRD
+type Any interface {
+	gd.IsClass
+	AsRenderSceneBuffersRD() Instance
+}
 
 /*
 Returns [code]true[/code] if a cached texture exists for this name.

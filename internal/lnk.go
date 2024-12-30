@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"grow.graphics/gd/internal/callframe"
+	"graphics.gd/internal/callframe"
 )
 
 // Link needs to be called once for the API to load in all of the

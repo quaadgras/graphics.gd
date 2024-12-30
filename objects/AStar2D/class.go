@@ -2,13 +2,13 @@ package AStar2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,6 +31,10 @@ See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D
 	}
 */
 type Instance [1]classdb.AStar2D
+type Any interface {
+	gd.IsClass
+	AsAStar2D() Instance
+}
 
 /*
 Called when estimating the cost between a point and the path's ending point.

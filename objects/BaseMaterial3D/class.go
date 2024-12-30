@@ -2,16 +2,16 @@ package BaseMaterial3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Material"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Material"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ var _ = pointers.Root
 This class serves as a default material with a wide variety of rendering features and properties without the need to write shader code. See the tutorial below for details.
 */
 type Instance [1]classdb.BaseMaterial3D
+type Any interface {
+	gd.IsClass
+	AsBaseMaterial3D() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

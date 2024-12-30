@@ -3,7 +3,7 @@ package mmm_test
 import (
 	"testing"
 
-	"grow.graphics/gd/internal/mmm"
+	"graphics.gd/internal/mmm"
 )
 
 type API struct {

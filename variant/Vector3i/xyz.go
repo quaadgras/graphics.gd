@@ -4,8 +4,8 @@ package Vector3i
 import (
 	"math"
 
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
 )
 
 // XYZ is a 3-element structure that can be used to represent 3D grid

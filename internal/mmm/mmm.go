@@ -130,7 +130,7 @@ func (obj *freeable) free() {
 		pin: unsafe.Pointer(obj),
 	})
 	if obj.end != nil {
-		crash(obj, "grow.graphics/gd/internal/mmm error: pointer escaped from free")
+		crash(obj, "graphics.gd/internal/mmm error: pointer escaped from free")
 	}
 }
 
@@ -218,7 +218,7 @@ func (ptr pointer[API, Size]) readPointer() Size {
 		return zero
 	}
 	if !ptr.ref.rev.matches(ptr.rev) {
-		crash(&ptr.ref.freeable, "grow.graphics/gd/internal/mmm error: use after free")
+		crash(&ptr.ref.freeable, "graphics.gd/internal/mmm error: use after free")
 	}
 	return ptr.ref.ptr
 }
@@ -234,10 +234,10 @@ func Move[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T, lif
 	}
 	val := access[API, T, Size](ptr)
 	if val.ref.rev.isPinned() {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: move after pin")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: move after pin")
 	}
 	if val.ref.rev.isRefCounted() {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: move after copy")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: move after copy")
 	}
 	val.ref.record("move")
 	internalNew[T](lifetime, getAPI(ptr), End(ptr))
@@ -251,7 +251,7 @@ func Life[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) Lif
 
 	val := access[API, T, Size](ptr).ref
 	if !val.rev.isPinned() {
-		crash(&val.freeable, "grow.graphics/gd/internal/mmm error: unpinned pointer used as a lifetime")
+		crash(&val.freeable, "graphics.gd/internal/mmm error: unpinned pointer used as a lifetime")
 	}
 	return Lifetime{
 		rev:  val.rev,
@@ -270,7 +270,7 @@ func Copy[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T, lif
 
 	val := access[API, T, Size](ptr)
 	if val.ref.rev.isPinned() {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: copy after pin")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: copy after pin")
 	}
 	val.ref.record("copy")
 	if !val.ref.rev.isRefCounted() {
@@ -299,7 +299,7 @@ func Set[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr *T, val
 
 	val := access[API, T, Size](*ptr)
 	if !val.ref.rev.matches(val.rev) {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: use after free")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: use after free")
 	}
 	val.ref.record("set")
 	val.ref.ptr = value
@@ -316,7 +316,7 @@ func End[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) Size
 	}
 	val := access[API, T, Size](ptr)
 	if !val.ref.rev.matches(val.rev) {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: use after free")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: use after free")
 	}
 	val.ref.record("end")
 	tmp := val.ref.ptr
@@ -343,7 +343,7 @@ func API[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) *API
 	}
 	val := access[API, T, Size](ptr)
 	if !val.ref.rev.matches(val.rev) {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: use after free")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: use after free")
 	}
 	if val.rev.isRefCounted() {
 		return (*API)((*rc)(val.ref.api).api)
@@ -354,7 +354,7 @@ func API[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) *API
 func getAPI[API any, T PointerWithFree[API, T, Size], Size PointerSize](ptr T) *API {
 	val := access[API, T, Size](ptr)
 	if !val.ref.rev.matches(val.rev) {
-		crash(&val.ref.freeable, "grow.graphics/gd/internal/mmm error: use after free")
+		crash(&val.ref.freeable, "graphics.gd/internal/mmm error: use after free")
 	}
 	if val.rev.isRefCounted() {
 		return (*API)((*rc)(val.ref.api).api)

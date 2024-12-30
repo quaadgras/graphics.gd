@@ -1,7 +1,7 @@
 package gd
 
 import (
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/pointers"
 )
 
 // All pointer types from the engine need to be defined here.

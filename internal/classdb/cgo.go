@@ -1,6 +1,6 @@
 package gd
 
-import gd "grow.graphics/gd/internal"
+import gd "graphics.gd/internal"
 
 type AudioFrame = gd.AudioFrame
 

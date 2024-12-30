@@ -2,15 +2,15 @@ package InputEventScreenTouch
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/InputEventFromWindow"
-import "grow.graphics/gd/objects/InputEvent"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/InputEventFromWindow"
+import "graphics.gd/objects/InputEvent"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ var _ = pointers.Root
 Stores information about multi-touch press/release input events. Supports touch press, touch release and [member index] for multi-touch count and order.
 */
 type Instance [1]classdb.InputEventScreenTouch
+type Any interface {
+	gd.IsClass
+	AsInputEventScreenTouch() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

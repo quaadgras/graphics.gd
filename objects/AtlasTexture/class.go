@@ -2,15 +2,15 @@ package AtlasTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture2D"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Rect2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture2D"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ Multiple [AtlasTexture] resources can be cropped from the same [member atlas]. P
 [b]Note:[/b] [AtlasTexture] cannot be used in an [AnimatedTexture], and may not tile properly in nodes such as [TextureRect], when inside other [AtlasTexture] resources.
 */
 type Instance [1]classdb.AtlasTexture
+type Any interface {
+	gd.IsClass
+	AsAtlasTexture() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

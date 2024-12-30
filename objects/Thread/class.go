@@ -2,11 +2,11 @@ package Thread
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s referen
 - [method wait_to_finish] should have been called on it.
 */
 type Instance [1]classdb.Thread
+type Any interface {
+	gd.IsClass
+	AsThread() Instance
+}
 
 /*
 Starts a new [Thread] that calls [param callable].
@@ -74,7 +78,8 @@ Because of that, there may be cases where the user may want to disable them ([pa
 [b]Note:[/b] This is useful for scripts running on either arbitrary [Thread] objects or tasks submitted to the [WorkerThreadPool]. It doesn't apply to code running during [Node] group processing, where the checks will be always performed.
 [b]Note:[/b] Even in the case of having disabled the checks in a [WorkerThreadPool] task, there's no need to re-enable them at the end. The engine will do so.
 */
-func (self Instance) SetThreadSafetyChecksEnabled(enabled bool) {
+func SetThreadSafetyChecksEnabled(enabled bool) {
+	self := Thread{}
 	class(self).SetThreadSafetyChecksEnabled(enabled)
 }
 

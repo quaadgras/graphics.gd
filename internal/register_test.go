@@ -6,39 +6,40 @@ import (
 	"fmt"
 	"testing"
 
-	"grow.graphics/gd/gdextension"
-	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/objects/Engine"
-	"grow.graphics/gd/objects/Node"
-	"grow.graphics/gd/objects/Node2D"
-	"grow.graphics/gd/variant/String"
+	"graphics.gd/defined"
+	internal "graphics.gd/internal"
+	"graphics.gd/objects/Engine"
+	"graphics.gd/objects/Node"
+	"graphics.gd/objects/Node2D"
+	"graphics.gd/variant/String"
+	"graphics.gd/variant/StringName"
 )
 
 func TestRegister(t *testing.T) {
-	type SimpleClass struct {
-		gdextension.Class[SimpleClass, Node2D.Advanced]
+	type TestingSimpleClass struct {
+		defined.Object[TestingSimpleClass, Node2D.Advanced]
 	}
-	gdextension.Register[SimpleClass]()
+	defined.InEditor[TestingSimpleClass]()
 
-	if tag := internal.Global.ClassDB.GetClassTag(internal.NewStringName("Node2D")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(StringName.New("Node2D")); tag == 0 {
 		t.Fail()
 	}
-	if tag := internal.Global.ClassDB.GetClassTag(internal.NewStringName("SimpleClass")); tag == 0 {
+	if tag := internal.Global.ClassDB.GetClassTag(StringName.New("TestingSimpleClass")); tag == 0 {
 		t.Fail()
 	}
 
-	class := new(SimpleClass)
-	if class.AsObject().GetClass().String() != "SimpleClass" {
-		t.Fail()
+	class := new(TestingSimpleClass)
+	if name := class.AsObject().GetClass().String(); name != "TestingSimpleClass" {
+		t.Fatal(name)
 	}
 	class.Super().AsNode().SetName(String.New("SimpleClass"))
 }
 
-type MyClassWithConstants struct {
-	gdextension.Class[MyClassWithConstants, Node2D.Advanced]
+type TestingMyClassWithConstants struct {
+	defined.Object[TestingMyClassWithConstants, Node2D.Advanced]
 }
 
-func (*MyClassWithConstants) OnRegister() {
+func (*TestingMyClassWithConstants) OnRegister() {
 	/*godot.Register(gd.Enum[MyClassWithConstants, int]{
 	Name: "MyEnum",
 	Values: map[string]int{
@@ -49,18 +50,18 @@ func (*MyClassWithConstants) OnRegister() {
 }
 
 func TestRegisterConstants(t *testing.T) {
-	gdextension.Register[MyClassWithConstants]()
+	defined.InEditor[TestingMyClassWithConstants]()
 }
 
-type Singleton struct {
-	gdextension.Class[Singleton, Node.Advanced]
+type TestingSingleton struct {
+	defined.Object[TestingSingleton, Node.Advanced]
 }
 
-func (Singleton) Ready() {
+func (TestingSingleton) Ready() {
 	fmt.Println("Singleton Ready!")
 }
 
 func TestSingleton(t *testing.T) {
-	gdextension.Register[Singleton]()
-	Engine.Advanced().RegisterSingleton(internal.NewStringName("HelloWorld"), new(Singleton).AsObject())
+	defined.InEditor[TestingSingleton]()
+	Engine.Advanced().RegisterSingleton(StringName.New("HelloWorld"), new(TestingSingleton).AsObject())
 }

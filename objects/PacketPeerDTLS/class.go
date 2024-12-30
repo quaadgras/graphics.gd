@@ -2,12 +2,12 @@ package PacketPeerDTLS
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/PacketPeer"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/PacketPeer"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ This class represents a DTLS peer connection. It can be used to connect to a DTL
 [b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 */
 type Instance [1]classdb.PacketPeerDTLS
+type Any interface {
+	gd.IsClass
+	AsPacketPeerDTLS() Instance
+}
 
 /*
 Poll the connection to check for incoming packets. Call this frequently to update the status and keep the connection working.

@@ -2,15 +2,15 @@ package StatusIndicator
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Rect2"
-import "grow.graphics/gd/variant/Vector2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,6 +19,10 @@ var _ callframe.Frame
 var _ = pointers.Root
 
 type Instance [1]classdb.StatusIndicator
+type Any interface {
+	gd.IsClass
+	AsStatusIndicator() Instance
+}
 
 /*
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2].

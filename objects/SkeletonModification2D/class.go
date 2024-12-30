@@ -2,13 +2,13 @@ package SkeletonModification2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,6 +32,10 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 	}
 */
 type Instance [1]classdb.SkeletonModification2D
+type Any interface {
+	gd.IsClass
+	AsSkeletonModification2D() Instance
+}
 
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.

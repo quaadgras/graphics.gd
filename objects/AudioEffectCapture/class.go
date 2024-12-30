@@ -2,15 +2,15 @@ package AudioEffectCapture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioEffect"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioEffect"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ Application code should consume these audio frames from this ring buffer using [
 Unlike [AudioEffectRecord], this effect only returns the raw audio samples instead of encoding them into an [AudioStream].
 */
 type Instance [1]classdb.AudioEffectCapture
+type Any interface {
+	gd.IsClass
+	AsAudioEffectCapture() Instance
+}
 
 /*
 Returns [code]true[/code] if at least [param frames] audio frames are available to read in the internal ring buffer.

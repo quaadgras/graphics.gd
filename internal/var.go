@@ -5,11 +5,11 @@ package gd
 import (
 	"reflect"
 
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 
-	float "grow.graphics/gd/variant/Float"
-	gdVector3 "grow.graphics/gd/variant/Vector3"
+	float "graphics.gd/variant/Float"
+	gdVector3 "graphics.gd/variant/Vector3"
 )
 
 type (

@@ -22,9 +22,9 @@ import (
 	"unsafe"
 
 	"golang.org/x/text/encoding/unicode/utf32"
-	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
+	gd "graphics.gd/internal"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
 )
 
 type Any interface {

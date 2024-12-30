@@ -2,15 +2,15 @@ package VisualShaderNodeExpression
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualShaderNodeGroupBase"
-import "grow.graphics/gd/objects/VisualShaderNodeResizableBase"
-import "grow.graphics/gd/objects/VisualShaderNode"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualShaderNodeGroupBase"
+import "graphics.gd/objects/VisualShaderNodeResizableBase"
+import "graphics.gd/objects/VisualShaderNode"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ Custom Godot Shading Language expression, with a custom number of input and outp
 The provided code is directly injected into the graph's matching shader function ([code]vertex[/code], [code]fragment[/code], or [code]light[/code]), so it cannot be used to declare functions, varyings, uniforms, or global constants. See [VisualShaderNodeGlobalExpression] for such global definitions.
 */
 type Instance [1]classdb.VisualShaderNodeExpression
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNodeExpression() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

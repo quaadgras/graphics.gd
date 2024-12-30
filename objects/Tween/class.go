@@ -2,13 +2,13 @@ package Tween
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -114,6 +114,10 @@ Some [Tweener]s use transitions and eases. The first accepts a [enum TransitionT
 [b]Note:[/b] The tween is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the tween (or [method Node._physics_process] depending on the value passed to [method set_process_mode]).
 */
 type Instance [1]classdb.Tween
+type Any interface {
+	gd.IsClass
+	AsTween() Instance
+}
 
 /*
 Creates and appends a [PropertyTweener]. This method tweens a [param property] of an [param object] between an initial value and [param final_val] in a span of time equal to [param duration], in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
@@ -461,7 +465,8 @@ This method can be used for manual interpolation of a value, when you don't want
 [param duration] is the total time of the interpolation.
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
-func (self Instance) InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type classdb.TweenTransitionType, ease_type classdb.TweenEaseType) any {
+func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type classdb.TweenTransitionType, ease_type classdb.TweenEaseType) any {
+	self := Tween{}
 	return any(class(self).InterpolateValue(gd.NewVariant(initial_value), gd.NewVariant(delta_value), gd.Float(elapsed_time), gd.Float(duration), trans_type, ease_type).Interface())
 }
 

@@ -2,17 +2,17 @@ package Image
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Rect2i"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ An [Image] cannot be assigned to a texture property of an object directly (such 
 [b]Note:[/b] The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
 */
 type Instance [1]classdb.Image
+type Any interface {
+	gd.IsClass
+	AsImage() Instance
+}
 
 /*
 Returns the image's width.
@@ -157,21 +161,24 @@ func (self Instance) ClearMipmaps() {
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func (self Instance) Create(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
+func Create(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
+	self := Image{}
 	return objects.Image(class(self).Create(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func (self Instance) CreateEmpty(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
+func CreateEmpty(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
+	self := Image{}
 	return objects.Image(class(self).CreateEmpty(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
 /*
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
-func (self Instance) CreateFromData(width int, height int, use_mipmaps bool, format classdb.ImageFormat, data []byte) objects.Image {
+func CreateFromData(width int, height int, use_mipmaps bool, format classdb.ImageFormat, data []byte) objects.Image {
+	self := Image{}
 	return objects.Image(class(self).CreateFromData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data)))
 }
 
@@ -201,7 +208,8 @@ func (self Instance) Load(path string) error {
 /*
 Creates a new [Image] and loads data from the specified file.
 */
-func (self Instance) LoadFromFile(path string) objects.Image {
+func LoadFromFile(path string) objects.Image {
+	self := Image{}
 	return objects.Image(class(self).LoadFromFile(gd.NewString(path)))
 }
 

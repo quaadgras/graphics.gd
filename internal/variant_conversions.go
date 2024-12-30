@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 // Variant returns a variant from the given value, which must be one of the

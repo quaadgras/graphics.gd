@@ -2,14 +2,14 @@ package AudioStreamOggVorbis
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AudioStream"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AudioStream"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,18 +21,24 @@ var _ = pointers.Root
 The AudioStreamOggVorbis class is a specialized [AudioStream] for handling Ogg Vorbis file formats. It offers functionality for loading and playing back Ogg Vorbis files, as well as managing looping and other playback properties. This class is part of the audio stream system, which also supports WAV files through the [AudioStreamWAV] class.
 */
 type Instance [1]classdb.AudioStreamOggVorbis
+type Any interface {
+	gd.IsClass
+	AsAudioStreamOggVorbis() Instance
+}
 
 /*
 Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
-func (self Instance) LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
+func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
+	self := AudioStreamOggVorbis{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
 /*
 Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
 */
-func (self Instance) LoadFromFile(path string) objects.AudioStreamOggVorbis {
+func LoadFromFile(path string) objects.AudioStreamOggVorbis {
+	self := AudioStreamOggVorbis{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
 

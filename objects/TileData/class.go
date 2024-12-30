@@ -2,15 +2,15 @@ package TileData
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ var _ = pointers.Root
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
 */
 type Instance [1]classdb.TileData
+type Any interface {
+	gd.IsClass
+	AsTileData() Instance
+}
 
 /*
 Sets the occluder for the TileSet occlusion layer with index [param layer_id].

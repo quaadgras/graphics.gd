@@ -2,13 +2,13 @@ package EditorResourcePreviewGenerator
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -42,6 +42,10 @@ Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[
 	}
 */
 type Instance [1]classdb.EditorResourcePreviewGenerator
+type Any interface {
+	gd.IsClass
+	AsEditorResourcePreviewGenerator() Instance
+}
 
 /*
 Returns [code]true[/code] if your generator supports the resource of type [param type].

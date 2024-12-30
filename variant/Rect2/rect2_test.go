@@ -3,9 +3,9 @@ package Rect2_test
 import (
 	"testing"
 
-	"grow.graphics/gd/internal/gdtests"
-	"grow.graphics/gd/variant/Rect2"
-	"grow.graphics/gd/variant/Vector2"
+	"graphics.gd/internal/gdtests"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Vector2"
 )
 
 func TestAbs(t *testing.T) {

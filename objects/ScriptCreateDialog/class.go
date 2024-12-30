@@ -2,16 +2,16 @@ package ScriptCreateDialog
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ConfirmationDialog"
-import "grow.graphics/gd/objects/AcceptDialog"
-import "grow.graphics/gd/objects/Window"
-import "grow.graphics/gd/objects/Viewport"
-import "grow.graphics/gd/objects/Node"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ConfirmationDialog"
+import "graphics.gd/objects/AcceptDialog"
+import "graphics.gd/objects/Window"
+import "graphics.gd/objects/Viewport"
+import "graphics.gd/objects/Node"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -45,6 +45,10 @@ public override void _Ready()
 [/codeblocks]
 */
 type Instance [1]classdb.ScriptCreateDialog
+type Any interface {
+	gd.IsClass
+	AsScriptCreateDialog() Instance
+}
 
 /*
 Prefills required fields to configure the ScriptCreateDialog for use.

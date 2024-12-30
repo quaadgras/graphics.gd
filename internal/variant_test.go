@@ -3,7 +3,7 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd/variant"
+	"graphics.gd/variant"
 )
 
 func TestVariants(t *testing.T) {

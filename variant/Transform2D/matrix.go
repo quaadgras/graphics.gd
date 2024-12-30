@@ -2,9 +2,9 @@
 package Transform2D
 
 import (
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Vector2"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Vector2"
 )
 
 // Transform2D is a 2×3 matrix representing a transformation in 2D space.

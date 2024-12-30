@@ -2,14 +2,14 @@ package WebXRInterface
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/XRInterface"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/XRInterface"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -115,6 +115,10 @@ There are a couple ways to handle "controller" input:
 You can use both methods to allow your game or app to support a wider or narrower set of devices and input methods, or to allow more advanced interactions with more advanced devices.
 */
 type Instance [1]classdb.WebXRInterface
+type Any interface {
+	gd.IsClass
+	AsWebXRInterface() Instance
+}
 
 /*
 Checks if the given [param session_mode] is supported by the user's browser.

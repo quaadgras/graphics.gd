@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"runtime"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/variant/Array"
+	gd "graphics.gd"
+	"graphics.gd/variant/Array"
 )
 
 // Func representation.

@@ -1,4 +1,4 @@
-package gdextension
+package startup
 
 /*
 #include <stdlib.h>
@@ -433,10 +433,10 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	gd "grow.graphics/gd/internal"
-	internal "grow.graphics/gd/internal"
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	gd "graphics.gd/internal"
+	internal "graphics.gd/internal"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 func btoi(b bool) int {

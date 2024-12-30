@@ -2,15 +2,15 @@ package AnimationPlayer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/AnimationMixer"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Path"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/AnimationMixer"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ Some methods and properties use a single key to reference an animation directly.
 Updating the target properties of animations occurs at the process frame.
 */
 type Instance [1]classdb.AnimationPlayer
+type Any interface {
+	gd.IsClass
+	AsAnimationPlayer() Instance
+}
 
 /*
 Triggers the [param animation_to] animation when the [param animation_from] animation completes.

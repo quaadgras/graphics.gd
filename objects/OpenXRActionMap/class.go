@@ -2,13 +2,13 @@ package OpenXRActionMap
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ Another important distinction is that OpenXR offers no control over these bindin
 The action map therefore needs to be loaded at startup and can't be changed afterwards. This resource is a container for the entire action map.
 */
 type Instance [1]classdb.OpenXRActionMap
+type Any interface {
+	gd.IsClass
+	AsOpenXRActionMap() Instance
+}
 
 /*
 Retrieve the number of actions sets in our action map.

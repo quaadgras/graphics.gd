@@ -4,12 +4,12 @@ import (
 	"iter"
 	"sort"
 
-	gd "grow.graphics/gd/internal"
-	"grow.graphics/gd/variant"
-	"grow.graphics/gd/variant/Color"
-	"grow.graphics/gd/variant/Vector2"
-	"grow.graphics/gd/variant/Vector3"
-	"grow.graphics/gd/variant/Vector4"
+	gd "graphics.gd/internal"
+	"graphics.gd/variant"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 type packable interface {

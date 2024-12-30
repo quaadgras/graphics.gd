@@ -2,14 +2,14 @@ package Node
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -98,6 +98,10 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 	}
 */
 type Instance [1]classdb.Node
+type Any interface {
+	gd.IsClass
+	AsNode() Instance
+}
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
@@ -263,7 +267,8 @@ func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event objects
 Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
-func (self Instance) PrintOrphanNodes() {
+func PrintOrphanNodes() {
+	self := Node{}
 	class(self).PrintOrphanNodes()
 }
 

@@ -8,9 +8,9 @@ import (
 	"reflect"
 	"sort"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/variant"
-	"grow.graphics/gd/variant/Int"
+	gd "graphics.gd"
+	"graphics.gd/variant"
+	"graphics.gd/variant/Int"
 )
 
 // Of is an array data structure that can contain a sequence of elements of T. Elements

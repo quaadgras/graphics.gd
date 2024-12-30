@@ -2,18 +2,18 @@ package Window
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Viewport"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Rect2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Viewport"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Rect2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -32,6 +32,10 @@ At runtime, [Window]s will not close automatically when requested. You need to h
 	}
 */
 type Instance [1]classdb.Window
+type Any interface {
+	gd.IsClass
+	AsWindow() Instance
+}
 
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].

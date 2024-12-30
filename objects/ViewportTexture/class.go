@@ -2,15 +2,15 @@ package ViewportTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture2D"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Path"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture2D"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Path"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -25,6 +25,10 @@ To get a [ViewportTexture] in code, use the [method Viewport.get_texture] method
 [b]Note:[/b] Instantiating scenes containing a high-resolution [ViewportTexture] may cause noticeable stutter.
 */
 type Instance [1]classdb.ViewportTexture
+type Any interface {
+	gd.IsClass
+	AsViewportTexture() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

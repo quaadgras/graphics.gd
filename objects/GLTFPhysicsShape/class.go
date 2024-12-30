@@ -2,15 +2,15 @@ package GLTFPhysicsShape
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,11 +22,16 @@ var _ = pointers.Root
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
 type Instance [1]classdb.GLTFPhysicsShape
+type Any interface {
+	gd.IsClass
+	AsGLTFPhysicsShape() Instance
+}
 
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
 */
-func (self Instance) FromNode(shape_node objects.CollisionShape3D) objects.GLTFPhysicsShape {
+func FromNode(shape_node objects.CollisionShape3D) objects.GLTFPhysicsShape {
+	self := GLTFPhysicsShape{}
 	return objects.GLTFPhysicsShape(class(self).FromNode(shape_node))
 }
 
@@ -40,7 +45,8 @@ func (self Instance) ToNode() objects.CollisionShape3D {
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
-func (self Instance) FromResource(shape_resource objects.Shape3D) objects.GLTFPhysicsShape {
+func FromResource(shape_resource objects.Shape3D) objects.GLTFPhysicsShape {
+	self := GLTFPhysicsShape{}
 	return objects.GLTFPhysicsShape(class(self).FromResource(shape_resource))
 }
 
@@ -54,7 +60,8 @@ func (self Instance) ToResource() objects.Shape3D {
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsShape {
+func FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsShape {
+	self := GLTFPhysicsShape{}
 	return objects.GLTFPhysicsShape(class(self).FromDictionary(dictionary))
 }
 

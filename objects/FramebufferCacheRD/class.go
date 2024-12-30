@@ -2,12 +2,12 @@ package FramebufferCacheRD
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,11 +19,16 @@ var _ = pointers.Root
 Framebuffer cache manager for Rendering Device based renderers. Provides a way to create a framebuffer and reuse it in subsequent calls for as long as the used textures exists. Framebuffers will automatically be cleaned up when dependent objects are freed.
 */
 type Instance [1]classdb.FramebufferCacheRD
+type Any interface {
+	gd.IsClass
+	AsFramebufferCacheRD() Instance
+}
 
 /*
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
-func (self Instance) GetCacheMultipass(textures gd.Array, passes gd.Array, views int) Resource.ID {
+func GetCacheMultipass(textures gd.Array, passes gd.Array, views int) Resource.ID {
+	self := FramebufferCacheRD{}
 	return Resource.ID(class(self).GetCacheMultipass(textures, passes, gd.Int(views)))
 }
 

@@ -2,15 +2,15 @@ package NavigationPolygon
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Rect2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Rect2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -58,6 +58,10 @@ GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigat
 [/codeblocks]
 */
 type Instance [1]classdb.NavigationPolygon
+type Any interface {
+	gd.IsClass
+	AsNavigationPolygon() Instance
+}
 
 /*
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].

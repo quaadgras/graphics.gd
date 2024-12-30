@@ -5,12 +5,12 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd/gdextension"
-	"grow.graphics/gd/objects/Node2D"
+	"graphics.gd/defined"
+	"graphics.gd/objects/Node2D"
 )
 
 type CustomSignal struct {
-	gdextension.Class[CustomSignal, Node2D.Instance]
+	defined.Object[CustomSignal, Node2D.Instance]
 
 	HealthChanged chan<- func() (old, new int)
 
@@ -30,7 +30,7 @@ func (c *CustomSignal) TakeDamage(amount int) {
 }
 
 func TestSignals(t *testing.T) {
-	gdextension.Register[CustomSignal]()
+	defined.InEditor[CustomSignal]()
 
 	custom := new(CustomSignal)
 	custom.HealthChanged = make(chan func() (int, int), 1)

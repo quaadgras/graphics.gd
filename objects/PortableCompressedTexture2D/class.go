@@ -2,15 +2,15 @@ package PortableCompressedTexture2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture2D"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture2D"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -26,6 +26,10 @@ For portable, self contained 3D textures that work on both desktop and mobile, B
 This resource is intended to be created from code.
 */
 type Instance [1]classdb.PortableCompressedTexture2D
+type Any interface {
+	gd.IsClass
+	AsPortableCompressedTexture2D() Instance
+}
 
 /*
 Initializes the compressed texture from a base image. The compression mode must be provided.
@@ -53,14 +57,16 @@ func (self Instance) GetCompressionMode() classdb.PortableCompressedTexture2DCom
 /*
 Overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
-func (self Instance) SetKeepAllCompressedBuffers(keep bool) {
+func SetKeepAllCompressedBuffers(keep bool) {
+	self := PortableCompressedTexture2D{}
 	class(self).SetKeepAllCompressedBuffers(keep)
 }
 
 /*
 Return whether the flag is overridden for all textures of this type.
 */
-func (self Instance) IsKeepingAllCompressedBuffers() bool {
+func IsKeepingAllCompressedBuffers() bool {
+	self := PortableCompressedTexture2D{}
 	return bool(class(self).IsKeepingAllCompressedBuffers())
 }
 

@@ -2,17 +2,17 @@ package CollisionObject2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node2D"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Transform2D"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node2D"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Transform2D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -40,6 +40,10 @@ Abstract base class for 2D physics objects. [CollisionObject2D] can hold any num
 	}
 */
 type Instance [1]classdb.CollisionObject2D
+type Any interface {
+	gd.IsClass
+	AsCollisionObject2D() Instance
+}
 
 /*
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.

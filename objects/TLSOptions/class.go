@@ -2,11 +2,11 @@ package TLSOptions
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -31,13 +31,18 @@ var server_tls_options = TLSOptions.server(server_key, server_certs)
 [/codeblocks]
 */
 type Instance [1]classdb.TLSOptions
+type Any interface {
+	gd.IsClass
+	AsTLSOptions() Instance
+}
 
 /*
 Creates a TLS client configuration which validates certificates and their common names (fully qualified domain names).
 You can specify a custom [param trusted_chain] of certification authorities (the default CA list will be used if [code]null[/code]), and optionally provide a [param common_name_override] if you expect the certificate to have a common name other than the server FQDN.
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func (self Instance) Client() objects.TLSOptions {
+func Client() objects.TLSOptions {
+	self := TLSOptions{}
 	return objects.TLSOptions(class(self).Client([1]objects.X509Certificate{}[0], gd.NewString("")))
 }
 
@@ -45,7 +50,8 @@ func (self Instance) Client() objects.TLSOptions {
 Creates an [b]unsafe[/b] TLS client configuration where certificate validation is optional. You can optionally provide a valid [param trusted_chain], but the common name of the certificates will never be checked. Using this configuration for purposes other than testing [b]is not recommended[/b].
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func (self Instance) ClientUnsafe() objects.TLSOptions {
+func ClientUnsafe() objects.TLSOptions {
+	self := TLSOptions{}
 	return objects.TLSOptions(class(self).ClientUnsafe([1]objects.X509Certificate{}[0]))
 }
 
@@ -53,7 +59,8 @@ func (self Instance) ClientUnsafe() objects.TLSOptions {
 Creates a TLS server configuration using the provided [param key] and [param certificate].
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
-func (self Instance) Server(key objects.CryptoKey, certificate objects.X509Certificate) objects.TLSOptions {
+func Server(key objects.CryptoKey, certificate objects.X509Certificate) objects.TLSOptions {
+	self := TLSOptions{}
 	return objects.TLSOptions(class(self).Server(key, certificate))
 }
 

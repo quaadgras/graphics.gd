@@ -2,15 +2,15 @@ package Texture2DArray
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ImageTextureLayered"
-import "grow.graphics/gd/objects/TextureLayered"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ImageTextureLayered"
+import "graphics.gd/objects/TextureLayered"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ A Texture2DArray is also different from an [AtlasTexture]: In a Texture2DArray, 
 To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
 */
 type Instance [1]classdb.Texture2DArray
+type Any interface {
+	gd.IsClass
+	AsTexture2DArray() Instance
+}
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2DArray]).

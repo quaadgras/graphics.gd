@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"unsafe"
 
-	"grow.graphics/gd/variant/Float"
+	"graphics.gd/variant/Float"
 )
 
 // Any integer.

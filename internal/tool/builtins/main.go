@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"grow.graphics/gd/internal/gdjson"
+	"graphics.gd/internal/gdjson"
 	"runtime.link/api/xray"
 )
 

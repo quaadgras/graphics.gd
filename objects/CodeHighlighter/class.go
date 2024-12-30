@@ -2,15 +2,15 @@ package CodeHighlighter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SyntaxHighlighter"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SyntaxHighlighter"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ var _ = pointers.Root
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
 */
 type Instance [1]classdb.CodeHighlighter
+type Any interface {
+	gd.IsClass
+	AsCodeHighlighter() Instance
+}
 
 /*
 Sets the color for a keyword.

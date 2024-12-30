@@ -2,12 +2,12 @@ package NavigationPathQueryResult2D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector2"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector2"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,6 +19,10 @@ var _ = pointers.Root
 This class stores the result of a 2D navigation path query from the [NavigationServer2D].
 */
 type Instance [1]classdb.NavigationPathQueryResult2D
+type Any interface {
+	gd.IsClass
+	AsNavigationPathQueryResult2D() Instance
+}
 
 /*
 Reset the result object to its initial state. This is useful to reuse the object across multiple queries.

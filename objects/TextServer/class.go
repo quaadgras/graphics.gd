@@ -2,20 +2,20 @@ package TextServer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Transform2D"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Rect2"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -37,6 +37,10 @@ var ts = TextServerManager.GetPrimaryInterface();
 [/codeblocks]
 */
 type Instance [1]classdb.TextServer
+type Any interface {
+	gd.IsClass
+	AsTextServer() Instance
+}
 
 /*
 Returns [code]true[/code] if the server supports a feature.

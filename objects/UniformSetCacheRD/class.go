@@ -2,12 +2,12 @@ package UniformSetCacheRD
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -19,11 +19,16 @@ var _ = pointers.Root
 Uniform set cache manager for Rendering Device based renderers. Provides a way to create a uniform set and reuse it in subsequent calls for as long as the uniform set exists. Uniform set will automatically be cleaned up when dependent objects are freed.
 */
 type Instance [1]classdb.UniformSetCacheRD
+type Any interface {
+	gd.IsClass
+	AsUniformSetCacheRD() Instance
+}
 
 /*
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
-func (self Instance) GetCache(shader Resource.ID, set int, uniforms gd.Array) Resource.ID {
+func GetCache(shader Resource.ID, set int, uniforms gd.Array) Resource.ID {
+	self := UniformSetCacheRD{}
 	return Resource.ID(class(self).GetCache(shader, gd.Int(set), uniforms))
 }
 

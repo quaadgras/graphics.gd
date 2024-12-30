@@ -2,17 +2,17 @@ package GLTFPhysicsBody
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Quaternion"
-import "grow.graphics/gd/variant/Basis"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/Basis"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,11 +24,16 @@ var _ = pointers.Root
 Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
 type Instance [1]classdb.GLTFPhysicsBody
+type Any interface {
+	gd.IsClass
+	AsGLTFPhysicsBody() Instance
+}
 
 /*
 Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
 */
-func (self Instance) FromNode(body_node objects.CollisionObject3D) objects.GLTFPhysicsBody {
+func FromNode(body_node objects.CollisionObject3D) objects.GLTFPhysicsBody {
+	self := GLTFPhysicsBody{}
 	return objects.GLTFPhysicsBody(class(self).FromNode(body_node))
 }
 
@@ -42,7 +47,8 @@ func (self Instance) ToNode() objects.CollisionObject3D {
 /*
 Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] GLTF extension format.
 */
-func (self Instance) FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsBody {
+func FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsBody {
+	self := GLTFPhysicsBody{}
 	return objects.GLTFPhysicsBody(class(self).FromDictionary(dictionary))
 }
 

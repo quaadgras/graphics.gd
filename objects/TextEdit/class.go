@@ -2,21 +2,21 @@ package TextEdit
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Rect2"
-import "grow.graphics/gd/objects/Control"
-import "grow.graphics/gd/objects/CanvasItem"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Rect2i"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/objects/Control"
+import "graphics.gd/objects/CanvasItem"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -47,6 +47,10 @@ A multiline text editor. It also has limited facilities for editing code, such a
 	}
 */
 type Instance [1]classdb.TextEdit
+type Any interface {
+	gd.IsClass
+	AsTextEdit() Instance
+}
 
 /*
 Override this method to define what happens when the user types in the provided key [param unicode_char].

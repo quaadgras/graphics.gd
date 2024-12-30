@@ -2,15 +2,15 @@ package ImageTexture
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Texture2D"
-import "grow.graphics/gd/objects/Texture"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2i"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Texture2D"
+import "graphics.gd/objects/Texture"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2i"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -41,11 +41,16 @@ An [ImageTexture] is not meant to be operated from within the editor interface d
 [b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations.
 */
 type Instance [1]classdb.ImageTexture
+type Any interface {
+	gd.IsClass
+	AsImageTexture() Instance
+}
 
 /*
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
-func (self Instance) CreateFromImage(image objects.Image) objects.ImageTexture {
+func CreateFromImage(image objects.Image) objects.ImageTexture {
+	self := ImageTexture{}
 	return objects.ImageTexture(class(self).CreateFromImage(image))
 }
 

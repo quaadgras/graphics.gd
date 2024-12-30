@@ -2,18 +2,18 @@ package Node3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Quaternion"
-import "grow.graphics/gd/variant/Basis"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Quaternion"
+import "graphics.gd/variant/Basis"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ Affine operations (rotate, scale, translate) happen in parent's local coordinate
 [b]Note:[/b] Be aware that "Spatial" nodes are now called "Node3D" starting with Godot 4. Any Godot 3.x references to "Spatial" nodes refer to "Node3D" in Godot 4.
 */
 type Instance [1]classdb.Node3D
+type Any interface {
+	gd.IsClass
+	AsNode3D() Instance
+}
 
 /*
 Returns the parent [Node3D], or [code]null[/code] if no parent exists, the parent is not of type [Node3D], or [member top_level] is [code]true[/code].

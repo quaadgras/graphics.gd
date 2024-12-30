@@ -4,8 +4,8 @@ package Vector4i
 import (
 	"math"
 
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
 )
 
 // XYZW is a 4-element structure that can be used to represent 4D grid

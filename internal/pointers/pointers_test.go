@@ -3,8 +3,8 @@ package pointers_test
 import (
 	"testing"
 
-	"grow.graphics/gd/internal/mmm"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/mmm"
+	"graphics.gd/internal/pointers"
 )
 
 type MyPointer pointers.PointerNamed[MyPointer, [1]uintptr, [1]pointers.Type]

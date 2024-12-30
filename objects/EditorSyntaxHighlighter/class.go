@@ -2,13 +2,13 @@ package EditorSyntaxHighlighter
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/SyntaxHighlighter"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/SyntaxHighlighter"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -29,6 +29,10 @@ Add a syntax highlighter to an individual script by calling [method ScriptEditor
 	}
 */
 type Instance [1]classdb.EditorSyntaxHighlighter
+type Any interface {
+	gd.IsClass
+	AsEditorSyntaxHighlighter() Instance
+}
 
 /*
 Virtual method which can be overridden to return the syntax highlighter name.

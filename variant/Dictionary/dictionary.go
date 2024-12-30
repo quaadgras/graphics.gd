@@ -6,8 +6,8 @@ import (
 	"maps"
 	"reflect"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/variant"
+	gd "graphics.gd"
+	"graphics.gd/variant"
 )
 
 // Map is an associative container that contain values referenced by unique keys.

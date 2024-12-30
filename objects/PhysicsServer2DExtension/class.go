@@ -2,16 +2,16 @@ package PhysicsServer2DExtension
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Transform2D"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Callable"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Callable"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -324,6 +324,10 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 	}
 */
 type Instance [1]classdb.PhysicsServer2DExtension
+type Any interface {
+	gd.IsClass
+	AsPhysicsServer2DExtension() Instance
+}
 
 /*
 Overridable version of [method PhysicsServer2D.world_boundary_shape_create].

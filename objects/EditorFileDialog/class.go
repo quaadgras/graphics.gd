@@ -2,17 +2,17 @@ package EditorFileDialog
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/ConfirmationDialog"
-import "grow.graphics/gd/objects/AcceptDialog"
-import "grow.graphics/gd/objects/Window"
-import "grow.graphics/gd/objects/Viewport"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/ConfirmationDialog"
+import "graphics.gd/objects/AcceptDialog"
+import "graphics.gd/objects/Window"
+import "graphics.gd/objects/Viewport"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ var _ = pointers.Root
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
 */
 type Instance [1]classdb.EditorFileDialog
+type Any interface {
+	gd.IsClass
+	AsEditorFileDialog() Instance
+}
 
 /*
 Removes all filters except for "All Files (*)".

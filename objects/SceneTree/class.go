@@ -2,13 +2,13 @@ package SceneTree
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/MainLoop"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/MainLoop"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: ever
 [SceneTree] is the default [MainLoop] implementation used by the engine, and is thus in charge of the game loop.
 */
 type Instance [1]classdb.SceneTree
+type Any interface {
+	gd.IsClass
+	AsSceneTree() Instance
+}
 
 /*
 Returns [code]true[/code] if a node added to the given group [param name] exists in the tree.

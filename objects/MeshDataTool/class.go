@@ -2,15 +2,15 @@ package MeshDataTool
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Plane"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Plane"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -68,6 +68,10 @@ See also [ArrayMesh], [ImmediateMesh] and [SurfaceTool] for procedural geometry 
 [b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
 */
 type Instance [1]classdb.MeshDataTool
+type Any interface {
+	gd.IsClass
+	AsMeshDataTool() Instance
+}
 
 /*
 Clears all data currently in MeshDataTool.

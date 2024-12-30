@@ -4,8 +4,8 @@
 package gd
 
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import gd "grow.graphics/gd/internal"
+import "graphics.gd/internal/pointers"
+import gd "graphics.gd/internal"
 
 type AESContextMode int64
 type AESContext pointers.PointerNamed[AESContext, [3]uintptr, [1]pointers.Type]

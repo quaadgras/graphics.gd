@@ -2,16 +2,16 @@ package PhysicsDirectBodyState3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Basis"
-import "grow.graphics/gd/variant/Transform3D"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Basis"
+import "graphics.gd/variant/Transform3D"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ var _ = pointers.Root
 Provides direct access to a physics body in the [PhysicsServer3D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody3D], and is intended for changing the direct state of that body. See [method RigidBody3D._integrate_forces].
 */
 type Instance [1]classdb.PhysicsDirectBodyState3D
+type Any interface {
+	gd.IsClass
+	AsPhysicsDirectBodyState3D() Instance
+}
 
 /*
 Returns the body's velocity at the given relative position, including both translation and rotation.

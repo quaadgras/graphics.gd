@@ -2,15 +2,15 @@ package VisualShaderNodeFrame
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualShaderNodeResizableBase"
-import "grow.graphics/gd/objects/VisualShaderNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualShaderNodeResizableBase"
+import "graphics.gd/objects/VisualShaderNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,6 +24,10 @@ Nodes attached to the frame will move with it when it is dragged and it can auto
 Its title, description and color can be customized.
 */
 type Instance [1]classdb.VisualShaderNodeFrame
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNodeFrame() Instance
+}
 
 /*
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.

@@ -2,12 +2,12 @@ package MultiplayerAPI
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ It is possible to override the MultiplayerAPI instance used by specific tree bra
 It is also possible to extend or replace the default implementation via scripting or native extensions. See [MultiplayerAPIExtension] for details about extensions, [SceneMultiplayer] for the details about the default implementation.
 */
 type Instance [1]classdb.MultiplayerAPI
+type Any interface {
+	gd.IsClass
+	AsMultiplayerAPI() Instance
+}
 
 /*
 Returns [code]true[/code] if there is a [member multiplayer_peer] set.
@@ -94,21 +98,24 @@ func (self Instance) GetPeers() []int32 {
 /*
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
-func (self Instance) SetDefaultInterface(interface_name string) {
+func SetDefaultInterface(interface_name string) {
+	self := MultiplayerAPI{}
 	class(self).SetDefaultInterface(gd.NewStringName(interface_name))
 }
 
 /*
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
-func (self Instance) GetDefaultInterface() string {
+func GetDefaultInterface() string {
+	self := MultiplayerAPI{}
 	return string(class(self).GetDefaultInterface().String())
 }
 
 /*
 Returns a new instance of the default MultiplayerAPI.
 */
-func (self Instance) CreateDefaultInterface() objects.MultiplayerAPI {
+func CreateDefaultInterface() objects.MultiplayerAPI {
+	self := MultiplayerAPI{}
 	return objects.MultiplayerAPI(class(self).CreateDefaultInterface())
 }
 

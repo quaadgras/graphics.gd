@@ -2,14 +2,14 @@ package XRBodyTracker
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/XRPositionalTracker"
-import "grow.graphics/gd/objects/XRTracker"
-import "grow.graphics/gd/variant/Transform3D"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/XRPositionalTracker"
+import "graphics.gd/objects/XRTracker"
+import "graphics.gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -22,6 +22,10 @@ A body tracking system will create an instance of this object and add it to the 
 Use [XRBodyModifier3D] to animate a body mesh using body tracking data.
 */
 type Instance [1]classdb.XRBodyTracker
+type Any interface {
+	gd.IsClass
+	AsXRBodyTracker() Instance
+}
 
 /*
 Sets flags about the validity of the tracking data for the given body joint.

@@ -3,9 +3,9 @@ package gd_test
 import (
 	"testing"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/variant/Array"
-	"grow.graphics/gd/variant/Packed"
+	"graphics.gd"
+	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Packed"
 )
 
 func TestArrays(t *testing.T) {

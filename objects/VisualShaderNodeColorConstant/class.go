@@ -2,15 +2,15 @@ package VisualShaderNodeColorConstant
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/VisualShaderNodeConstant"
-import "grow.graphics/gd/objects/VisualShaderNode"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Color"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/VisualShaderNodeConstant"
+import "graphics.gd/objects/VisualShaderNode"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Color"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,6 +23,10 @@ Has two output ports representing RGB and alpha channels of [Color].
 Translated to [code]vec3 rgb[/code] and [code]float alpha[/code] in the shader language.
 */
 type Instance [1]classdb.VisualShaderNodeColorConstant
+type Any interface {
+	gd.IsClass
+	AsVisualShaderNodeColorConstant() Instance
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class

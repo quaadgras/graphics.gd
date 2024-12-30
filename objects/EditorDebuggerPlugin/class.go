@@ -2,12 +2,12 @@ package EditorDebuggerPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -76,6 +76,10 @@ func _exit_tree():
 	}
 */
 type Instance [1]classdb.EditorDebuggerPlugin
+type Any interface {
+	gd.IsClass
+	AsEditorDebuggerPlugin() Instance
+}
 
 /*
 Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).

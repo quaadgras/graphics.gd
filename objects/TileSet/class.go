@@ -2,15 +2,15 @@ package TileSet
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Color"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Color"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -27,6 +27,10 @@ For example, adding a physics layer allows giving collision shapes to your tiles
 See the functions to add new layers for more information.
 */
 type Instance [1]classdb.TileSet
+type Any interface {
+	gd.IsClass
+	AsTileSet() Instance
+}
 
 /*
 Returns a new unused source ID. This generated ID is the same that a call to [method add_source] would return.

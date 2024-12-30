@@ -4,9 +4,9 @@ package Vector2
 import (
 	"math"
 
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
 )
 
 // XY is a 2-element structure that can be used to represent 2D coordinates or any

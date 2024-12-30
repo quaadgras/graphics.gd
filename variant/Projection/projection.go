@@ -4,15 +4,15 @@ package Projection
 import (
 	"unsafe"
 
-	"grow.graphics/gd/variant/AABB"
-	"grow.graphics/gd/variant/Angle"
-	"grow.graphics/gd/variant/Float"
-	"grow.graphics/gd/variant/Int"
-	"grow.graphics/gd/variant/Plane"
-	"grow.graphics/gd/variant/Rect2"
-	"grow.graphics/gd/variant/Vector2"
-	"grow.graphics/gd/variant/Vector3"
-	"grow.graphics/gd/variant/Vector4"
+	"graphics.gd/variant/AABB"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Int"
+	"graphics.gd/variant/Plane"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 // ʕ is a little ternary operator for porting C code.

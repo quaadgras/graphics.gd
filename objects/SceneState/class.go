@@ -2,13 +2,13 @@ package SceneState
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Path"
-import "grow.graphics/gd/variant/Array"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/Array"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -21,6 +21,10 @@ Maintains a list of resources, nodes, exported and overridden properties, and bu
 This class cannot be instantiated directly, it is retrieved for a given scene as the result of [method PackedScene.get_state].
 */
 type Instance [1]classdb.SceneState
+type Any interface {
+	gd.IsClass
+	AsSceneState() Instance
+}
 
 /*
 Returns the number of nodes in the scene.

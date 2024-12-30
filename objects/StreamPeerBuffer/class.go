@@ -2,12 +2,12 @@ package StreamPeerBuffer
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/StreamPeer"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/StreamPeer"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -20,6 +20,10 @@ A data buffer stream peer that uses a byte array as the stream. This object can 
 A [StreamPeerBuffer] object keeps an internal cursor which is the offset in bytes to the start of the buffer. Get and put operations are performed at the cursor position and will move the cursor accordingly.
 */
 type Instance [1]classdb.StreamPeerBuffer
+type Any interface {
+	gd.IsClass
+	AsStreamPeerBuffer() Instance
+}
 
 /*
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].

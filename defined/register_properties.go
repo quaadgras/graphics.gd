@@ -1,4 +1,4 @@
-package gdextension
+package defined
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 	"strings"
 	"unsafe"
 
-	gd "grow.graphics/gd/internal"
-	classdb "grow.graphics/gd/internal/classdb"
-	"grow.graphics/gd/objects"
-	"grow.graphics/gd/objects/Resource"
+	gd "graphics.gd/internal"
+	classdb "graphics.gd/internal/classdb"
+	"graphics.gd/objects"
+	"graphics.gd/objects/Resource"
 )
 
 func propertyOf(field reflect.StructField) gd.PropertyInfo {

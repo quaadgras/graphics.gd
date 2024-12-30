@@ -1,12 +1,12 @@
-package gdextension
+package startup
 
 import (
 	"errors"
 	"os"
 	"unsafe"
 
-	gd "grow.graphics/gd/internal"
-	internal "grow.graphics/gd/internal"
+	gd "graphics.gd/internal"
+	internal "graphics.gd/internal"
 
 	"runtime.link/api"
 	"runtime.link/api/stub"

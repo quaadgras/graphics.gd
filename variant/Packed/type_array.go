@@ -1,14 +1,14 @@
 package Packed
 
 import (
-	"grow.graphics/gd"
-	"grow.graphics/gd/variant/Color"
-	"grow.graphics/gd/variant/String"
-	"grow.graphics/gd/variant/Vector2"
-	"grow.graphics/gd/variant/Vector3"
-	"grow.graphics/gd/variant/Vector4"
+	gd "graphics.gd"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/String"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 
-	internal "grow.graphics/gd/internal"
+	internal "graphics.gd/internal"
 )
 
 // ColorArray is an array specifically designed to hold Color. Packs data tightly, so it saves

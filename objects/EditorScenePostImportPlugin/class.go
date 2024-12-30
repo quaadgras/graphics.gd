@@ -2,11 +2,11 @@ package EditorScenePostImportPlugin
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -38,6 +38,10 @@ This plugin type exists to modify the process of importing scenes, allowing to c
 	}
 */
 type Instance [1]classdb.EditorScenePostImportPlugin
+type Any interface {
+	gd.IsClass
+	AsEditorScenePostImportPlugin() Instance
+}
 
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].

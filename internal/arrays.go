@@ -3,8 +3,8 @@ package gd
 import (
 	"iter"
 
-	"grow.graphics/gd/internal/callframe"
-	"grow.graphics/gd/internal/pointers"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 func (a Array) Index(index Int) Variant {

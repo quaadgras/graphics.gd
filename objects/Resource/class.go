@@ -2,11 +2,11 @@ package Resource
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -36,6 +36,10 @@ The engine keeps a global cache of all loaded resources, referenced by paths (se
 	}
 */
 type Instance [1]classdb.Resource
+type Any interface {
+	gd.IsClass
+	AsResource() Instance
+}
 
 /*
 Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
@@ -89,7 +93,8 @@ func (self Instance) SetupLocalToScene() {
 /*
 Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters ([code]a[/code] to [code]y[/code]) and numbers ([code]0[/code] to [code]8[/code]). See also [member resource_scene_unique_id].
 */
-func (self Instance) GenerateSceneUniqueId() string {
+func GenerateSceneUniqueId() string {
+	self := Resource{}
 	return string(class(self).GenerateSceneUniqueId().String())
 }
 

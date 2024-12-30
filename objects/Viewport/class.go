@@ -2,17 +2,17 @@ package Viewport
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Transform2D"
-import "grow.graphics/gd/variant/Rect2"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Vector2"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -28,6 +28,10 @@ Also, viewports can be assigned to different screens in case the devices have mu
 Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
 */
 type Instance [1]classdb.Viewport
+type Any interface {
+	gd.IsClass
+	AsViewport() Instance
+}
 
 /*
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.

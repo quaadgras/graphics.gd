@@ -2,18 +2,18 @@ package Mesh
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Resource"
-import "grow.graphics/gd/variant/Array"
-import "grow.graphics/gd/variant/Dictionary"
-import "grow.graphics/gd/variant/AABB"
-import "grow.graphics/gd/variant/Vector2i"
-import "grow.graphics/gd/variant/Vector3"
-import "grow.graphics/gd/variant/Float"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Resource"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/AABB"
+import "graphics.gd/variant/Vector2i"
+import "graphics.gd/variant/Vector3"
+import "graphics.gd/variant/Float"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -57,6 +57,10 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 	}
 */
 type Instance [1]classdb.Mesh
+type Any interface {
+	gd.IsClass
+	AsMesh() Instance
+}
 
 /*
 Virtual method to override the surface count for a custom class extending [Mesh].

@@ -4,8 +4,8 @@
 package gd
 
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
 
 func Sin(angle_rad Float) Float {
 	var frame = callframe.New()

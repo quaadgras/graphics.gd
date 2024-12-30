@@ -2,15 +2,15 @@ package PathFollow3D
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/Node3D"
-import "grow.graphics/gd/objects/Node"
-import "grow.graphics/gd/variant/Float"
-import "grow.graphics/gd/variant/Transform3D"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/Node3D"
+import "graphics.gd/objects/Node"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Transform3D"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -23,11 +23,16 @@ This node takes its parent [Path3D], and returns the coordinates of a point with
 It is useful for making other nodes follow a path, without coding the movement pattern. For that, the nodes must be children of this node. The descendant nodes will then move accordingly when setting the [member progress] in this node.
 */
 type Instance [1]classdb.PathFollow3D
+type Any interface {
+	gd.IsClass
+	AsPathFollow3D() Instance
+}
 
 /*
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
-func (self Instance) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode classdb.PathFollow3DRotationMode) Transform3D.BasisOrigin {
+func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode classdb.PathFollow3DRotationMode) Transform3D.BasisOrigin {
+	self := PathFollow3D{}
 	return Transform3D.BasisOrigin(class(self).CorrectPosture(gd.Transform3D(transform), rotation_mode))
 }
 

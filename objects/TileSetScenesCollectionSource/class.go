@@ -2,13 +2,13 @@ package TileSetScenesCollectionSource
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/objects/TileSetSource"
-import "grow.graphics/gd/objects/Resource"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/objects/TileSetSource"
+import "graphics.gd/objects/Resource"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -51,6 +51,10 @@ if (sourceId > -1)
 [/codeblocks]
 */
 type Instance [1]classdb.TileSetScenesCollectionSource
+type Any interface {
+	gd.IsClass
+	AsTileSetScenesCollectionSource() Instance
+}
 
 /*
 Returns the number or scene tiles this TileSet source has.

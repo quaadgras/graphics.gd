@@ -2,12 +2,12 @@ package WebRTCPeerConnection
 
 import "unsafe"
 import "reflect"
-import "grow.graphics/gd/internal/pointers"
-import "grow.graphics/gd/internal/callframe"
-import gd "grow.graphics/gd/internal"
-import "grow.graphics/gd/objects"
-import classdb "grow.graphics/gd/internal/classdb"
-import "grow.graphics/gd/variant/Dictionary"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import gd "graphics.gd/internal"
+import "graphics.gd/objects"
+import classdb "graphics.gd/internal/classdb"
+import "graphics.gd/variant/Dictionary"
 
 var _ unsafe.Pointer
 var _ objects.Engine
@@ -24,11 +24,16 @@ Setting up a WebRTC connection between two peers may not seem a trivial task, bu
 After these steps, the connection should become connected. Keep on reading or look into the tutorial for more information.
 */
 type Instance [1]classdb.WebRTCPeerConnection
+type Any interface {
+	gd.IsClass
+	AsWebRTCPeerConnection() Instance
+}
 
 /*
 Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
 */
-func (self Instance) SetDefaultExtension(extension_class string) {
+func SetDefaultExtension(extension_class string) {
+	self := WebRTCPeerConnection{}
 	class(self).SetDefaultExtension(gd.NewStringName(extension_class))
 }
 

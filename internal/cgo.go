@@ -6,7 +6,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"grow.graphics/gd/internal/callframe"
+	"graphics.gd/internal/callframe"
 )
 
 // cache is responsible for keeping a local copy for the various
