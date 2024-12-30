@@ -94,7 +94,7 @@ func (self Instance) SetupLocalToScene() {
 Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters ([code]a[/code] to [code]y[/code]) and numbers ([code]0[/code] to [code]8[/code]). See also [member resource_scene_unique_id].
 */
 func GenerateSceneUniqueId() string {
-	self := Resource{}
+	self := Instance{}
 	return string(class(self).GenerateSceneUniqueId().String())
 }
 

@@ -77,7 +77,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
 	}
 	if method.IsStatic {
-		fmt.Fprintf(w, "self := %s{}\n", class.Name)
+		fmt.Fprintf(w, "self := Instance{}\n")
 	}
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "return %s(", resultSimple)

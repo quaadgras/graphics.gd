@@ -19,13 +19,13 @@ func Sprint(value any) string {
 		return "nil"
 	}
 	rvalue := reflect.ValueOf(value)
-	if collection, ok := value.(interface{ Length() int }); ok {
+	if collection, ok := value.(interface{ Size() int }); ok {
 		printed := "["
-		for i := 0; i < collection.Length(); i++ {
+		for i := 0; i < collection.Size(); i++ {
 			if i > 0 {
 				printed += ", "
 			}
-			printed += Sprint(rvalue.MethodByName("Lookup").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface())
+			printed += Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface())
 		}
 		printed += "]"
 		return printed

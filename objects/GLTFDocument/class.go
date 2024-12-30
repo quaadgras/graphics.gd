@@ -78,7 +78,7 @@ Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If [para
 [b]Note:[/b] Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the [code]set_additional_data[/code] and [code]get_additional_data[/code] methods in [GLTFState] or [GLTFNode].
 */
 func RegisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
-	self := GLTFDocument{}
+	self := Instance{}
 	class(self).RegisterGltfDocumentExtension(extension, false)
 }
 
@@ -86,7 +86,7 @@ func RegisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
 Unregisters the given [GLTFDocumentExtension] instance.
 */
 func UnregisterGltfDocumentExtension(extension objects.GLTFDocumentExtension) {
-	self := GLTFDocument{}
+	self := Instance{}
 	class(self).UnregisterGltfDocumentExtension(extension)
 }
 

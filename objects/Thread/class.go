@@ -79,7 +79,7 @@ Because of that, there may be cases where the user may want to disable them ([pa
 [b]Note:[/b] Even in the case of having disabled the checks in a [WorkerThreadPool] task, there's no need to re-enable them at the end. The engine will do so.
 */
 func SetThreadSafetyChecksEnabled(enabled bool) {
-	self := Thread{}
+	self := Instance{}
 	class(self).SetThreadSafetyChecksEnabled(enabled)
 }
 

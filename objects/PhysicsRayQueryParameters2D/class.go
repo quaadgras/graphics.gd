@@ -32,7 +32,7 @@ var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
 func Create(from Vector2.XY, to Vector2.XY) objects.PhysicsRayQueryParameters2D {
-	self := PhysicsRayQueryParameters2D{}
+	self := Instance{}
 	return objects.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), [1]gd.Array{}[0]))
 }
 

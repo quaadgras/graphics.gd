@@ -33,7 +33,7 @@ type Any interface {
 Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
 */
 func SetDefaultExtension(extension_class string) {
-	self := WebRTCPeerConnection{}
+	self := Instance{}
 	class(self).SetDefaultExtension(gd.NewStringName(extension_class))
 }
 

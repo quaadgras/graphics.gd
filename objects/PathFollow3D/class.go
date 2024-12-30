@@ -32,7 +32,7 @@ type Any interface {
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
 func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode classdb.PathFollow3DRotationMode) Transform3D.BasisOrigin {
-	self := PathFollow3D{}
+	self := Instance{}
 	return Transform3D.BasisOrigin(class(self).CorrectPosture(gd.Transform3D(transform), rotation_mode))
 }
 

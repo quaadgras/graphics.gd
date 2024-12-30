@@ -87,7 +87,7 @@ Creates a new [DirAccess] object and opens an existing directory of the filesyst
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
 func Open(path string) objects.DirAccess {
-	self := DirAccess{}
+	self := Instance{}
 	return objects.DirAccess(class(self).Open(gd.NewString(path)))
 }
 
@@ -95,7 +95,7 @@ func Open(path string) objects.DirAccess {
 Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).GetOpenError())
 }
 
@@ -144,7 +144,7 @@ Returns a [PackedStringArray] containing filenames of the directory contents, ex
 Use [method get_files] if you want more control of what gets included.
 */
 func GetFilesAt(path string) []string {
-	self := DirAccess{}
+	self := Instance{}
 	return []string(class(self).GetFilesAt(gd.NewString(path)).Strings())
 }
 
@@ -161,7 +161,7 @@ Returns a [PackedStringArray] containing filenames of the directory contents, ex
 Use [method get_directories] if you want more control of what gets included.
 */
 func GetDirectoriesAt(path string) []string {
-	self := DirAccess{}
+	self := Instance{}
 	return []string(class(self).GetDirectoriesAt(gd.NewString(path)).Strings())
 }
 
@@ -172,7 +172,7 @@ On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
 On other platforms, the method returns 0.
 */
 func GetDriveCount() int {
-	self := DirAccess{}
+	self := Instance{}
 	return int(int(class(self).GetDriveCount()))
 }
 
@@ -183,7 +183,7 @@ On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an 
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
 func GetDriveName(idx int) string {
-	self := DirAccess{}
+	self := Instance{}
 	return string(class(self).GetDriveName(gd.Int(idx)).String())
 }
 
@@ -222,7 +222,7 @@ func (self Instance) MakeDir(path string) error {
 Static version of [method make_dir]. Supports only absolute paths.
 */
 func MakeDirAbsolute(path string) error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).MakeDirAbsolute(gd.NewString(path)))
 }
 
@@ -238,7 +238,7 @@ func (self Instance) MakeDirRecursive(path string) error {
 Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 func MakeDirRecursiveAbsolute(path string) error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
 }
 
@@ -261,7 +261,7 @@ func (self Instance) DirExists(path string) bool {
 Static version of [method dir_exists]. Supports only absolute paths.
 */
 func DirExistsAbsolute(path string) bool {
-	self := DirAccess{}
+	self := Instance{}
 	return bool(class(self).DirExistsAbsolute(gd.NewString(path)))
 }
 
@@ -285,7 +285,7 @@ func (self Instance) Copy(from string, to string) error {
 Static version of [method copy]. Supports only absolute paths.
 */
 func CopyAbsolute(from string, to string) error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
 }
 
@@ -301,7 +301,7 @@ func (self Instance) Rename(from string, to string) error {
 Static version of [method rename]. Supports only absolute paths.
 */
 func RenameAbsolute(from string, to string) error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
 }
 
@@ -318,7 +318,7 @@ func (self Instance) Remove(path string) error {
 Static version of [method remove]. Supports only absolute paths.
 */
 func RemoveAbsolute(path string) error {
-	self := DirAccess{}
+	self := Instance{}
 	return error(class(self).RemoveAbsolute(gd.NewString(path)))
 }
 

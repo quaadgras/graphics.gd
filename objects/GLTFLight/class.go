@@ -31,7 +31,7 @@ type Any interface {
 Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
 func FromNode(light_node objects.Light3D) objects.GLTFLight {
-	self := GLTFLight{}
+	self := Instance{}
 	return objects.GLTFLight(class(self).FromNode(light_node))
 }
 
@@ -46,7 +46,7 @@ func (self Instance) ToNode() objects.Light3D {
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary Dictionary.Any) objects.GLTFLight {
-	self := GLTFLight{}
+	self := Instance{}
 	return objects.GLTFLight(class(self).FromDictionary(dictionary))
 }
 

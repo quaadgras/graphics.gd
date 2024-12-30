@@ -58,7 +58,7 @@ func (self Instance) GetCompressionMode() classdb.PortableCompressedTexture2DCom
 Overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
 func SetKeepAllCompressedBuffers(keep bool) {
-	self := PortableCompressedTexture2D{}
+	self := Instance{}
 	class(self).SetKeepAllCompressedBuffers(keep)
 }
 
@@ -66,7 +66,7 @@ func SetKeepAllCompressedBuffers(keep bool) {
 Return whether the flag is overridden for all textures of this type.
 */
 func IsKeepingAllCompressedBuffers() bool {
-	self := PortableCompressedTexture2D{}
+	self := Instance{}
 	return bool(class(self).IsKeepingAllCompressedBuffers())
 }
 

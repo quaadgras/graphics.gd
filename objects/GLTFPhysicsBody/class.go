@@ -33,7 +33,7 @@ type Any interface {
 Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
 */
 func FromNode(body_node objects.CollisionObject3D) objects.GLTFPhysicsBody {
-	self := GLTFPhysicsBody{}
+	self := Instance{}
 	return objects.GLTFPhysicsBody(class(self).FromNode(body_node))
 }
 
@@ -48,7 +48,7 @@ func (self Instance) ToNode() objects.CollisionObject3D {
 Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] GLTF extension format.
 */
 func FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsBody {
-	self := GLTFPhysicsBody{}
+	self := Instance{}
 	return objects.GLTFPhysicsBody(class(self).FromDictionary(dictionary))
 }
 

@@ -42,7 +42,7 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 func Client() objects.TLSOptions {
-	self := TLSOptions{}
+	self := Instance{}
 	return objects.TLSOptions(class(self).Client([1]objects.X509Certificate{}[0], gd.NewString("")))
 }
 
@@ -51,7 +51,7 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 func ClientUnsafe() objects.TLSOptions {
-	self := TLSOptions{}
+	self := Instance{}
 	return objects.TLSOptions(class(self).ClientUnsafe([1]objects.X509Certificate{}[0]))
 }
 
@@ -60,7 +60,7 @@ Creates a TLS server configuration using the provided [param key] and [param cer
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
 func Server(key objects.CryptoKey, certificate objects.X509Certificate) objects.TLSOptions {
-	self := TLSOptions{}
+	self := Instance{}
 	return objects.TLSOptions(class(self).Server(key, certificate))
 }
 

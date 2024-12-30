@@ -31,7 +31,7 @@ type Any interface {
 Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
 */
 func FromNode(shape_node objects.CollisionShape3D) objects.GLTFPhysicsShape {
-	self := GLTFPhysicsShape{}
+	self := Instance{}
 	return objects.GLTFPhysicsShape(class(self).FromNode(shape_node))
 }
 
@@ -46,7 +46,7 @@ func (self Instance) ToNode() objects.CollisionShape3D {
 Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 func FromResource(shape_resource objects.Shape3D) objects.GLTFPhysicsShape {
-	self := GLTFPhysicsShape{}
+	self := Instance{}
 	return objects.GLTFPhysicsShape(class(self).FromResource(shape_resource))
 }
 
@@ -61,7 +61,7 @@ func (self Instance) ToResource() objects.Shape3D {
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary Dictionary.Any) objects.GLTFPhysicsShape {
-	self := GLTFPhysicsShape{}
+	self := Instance{}
 	return objects.GLTFPhysicsShape(class(self).FromDictionary(dictionary))
 }
 

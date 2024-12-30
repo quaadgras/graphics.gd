@@ -50,7 +50,7 @@ type Any interface {
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
 func CreateFromImage(image objects.Image) objects.ImageTexture {
-	self := ImageTexture{}
+	self := Instance{}
 	return objects.ImageTexture(class(self).CreateFromImage(image))
 }
 

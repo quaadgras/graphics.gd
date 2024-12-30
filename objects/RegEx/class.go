@@ -75,7 +75,7 @@ type Any interface {
 Creates and compiles a new [RegEx] object.
 */
 func CreateFromString(pattern string) objects.RegEx {
-	self := RegEx{}
+	self := Instance{}
 	return objects.RegEx(class(self).CreateFromString(gd.NewString(pattern)))
 }
 

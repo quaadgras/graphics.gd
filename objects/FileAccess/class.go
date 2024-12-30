@@ -66,7 +66,7 @@ Creates a new [FileAccess] object and opens the file for writing or reading, dep
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 func Open(path string, flags classdb.FileAccessModeFlags) objects.FileAccess {
-	self := FileAccess{}
+	self := Instance{}
 	return objects.FileAccess(class(self).Open(gd.NewString(path), flags))
 }
 
@@ -76,7 +76,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 func OpenEncrypted(path string, mode_flags classdb.FileAccessModeFlags, key []byte) objects.FileAccess {
-	self := FileAccess{}
+	self := Instance{}
 	return objects.FileAccess(class(self).OpenEncrypted(gd.NewString(path), mode_flags, gd.NewPackedByteSlice(key)))
 }
 
@@ -85,7 +85,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 func OpenEncryptedWithPass(path string, mode_flags classdb.FileAccessModeFlags, pass string) objects.FileAccess {
-	self := FileAccess{}
+	self := Instance{}
 	return objects.FileAccess(class(self).OpenEncryptedWithPass(gd.NewString(path), mode_flags, gd.NewString(pass)))
 }
 
@@ -95,7 +95,7 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 func OpenCompressed(path string, mode_flags classdb.FileAccessModeFlags) objects.FileAccess {
-	self := FileAccess{}
+	self := Instance{}
 	return objects.FileAccess(class(self).OpenCompressed(gd.NewString(path), mode_flags, 0))
 }
 
@@ -103,7 +103,7 @@ func OpenCompressed(path string, mode_flags classdb.FileAccessModeFlags) objects
 Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error {
-	self := FileAccess{}
+	self := Instance{}
 	return error(class(self).GetOpenError())
 }
 
@@ -112,7 +112,7 @@ Returns the whole [param path] file contents as a [PackedByteArray] without any 
 Returns an empty [PackedByteArray] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
 func GetFileAsBytes(path string) []byte {
-	self := FileAccess{}
+	self := Instance{}
 	return []byte(class(self).GetFileAsBytes(gd.NewString(path)).Bytes())
 }
 
@@ -121,7 +121,7 @@ Returns the whole [param path] file contents as a [String]. Text is interpreted 
 Returns an empty [String] if an error occurred while opening the file. You can use [method get_open_error] to check the error that occurred.
 */
 func GetFileAsString(path string) string {
-	self := FileAccess{}
+	self := Instance{}
 	return string(class(self).GetFileAsString(gd.NewString(path)).String())
 }
 
@@ -305,7 +305,7 @@ func (self Instance) GetAsText() string {
 Returns an MD5 String representing the file at the given path or an empty [String] on failure.
 */
 func GetMd5(path string) string {
-	self := FileAccess{}
+	self := Instance{}
 	return string(class(self).GetMd5(gd.NewString(path)).String())
 }
 
@@ -313,7 +313,7 @@ func GetMd5(path string) string {
 Returns an SHA-256 [String] representing the file at the given path or an empty [String] on failure.
 */
 func GetSha256(path string) string {
-	self := FileAccess{}
+	self := Instance{}
 	return string(class(self).GetSha256(gd.NewString(path)).String())
 }
 
@@ -495,7 +495,7 @@ Returns [code]true[/code] if the file exists in the given path.
 For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
 func FileExists(path string) bool {
-	self := FileAccess{}
+	self := Instance{}
 	return bool(class(self).FileExists(gd.NewString(path)))
 }
 
@@ -503,7 +503,7 @@ func FileExists(path string) bool {
 Returns the last time the [param file] was modified in Unix timestamp format, or [code]0[/code] on error. This Unix timestamp can be converted to another format using the [Time] singleton.
 */
 func GetModifiedTime(file string) int {
-	self := FileAccess{}
+	self := Instance{}
 	return int(int(class(self).GetModifiedTime(gd.NewString(file))))
 }
 
@@ -512,7 +512,7 @@ Returns file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func GetUnixPermissions(file string) classdb.FileAccessUnixPermissionFlags {
-	self := FileAccess{}
+	self := Instance{}
 	return classdb.FileAccessUnixPermissionFlags(class(self).GetUnixPermissions(gd.NewString(file)))
 }
 
@@ -521,7 +521,7 @@ Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func SetUnixPermissions(file string, permissions classdb.FileAccessUnixPermissionFlags) error {
-	self := FileAccess{}
+	self := Instance{}
 	return error(class(self).SetUnixPermissions(gd.NewString(file), permissions))
 }
 
@@ -530,7 +530,7 @@ Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetHiddenAttribute(file string) bool {
-	self := FileAccess{}
+	self := Instance{}
 	return bool(class(self).GetHiddenAttribute(gd.NewString(file)))
 }
 
@@ -539,7 +539,7 @@ Sets file [b]hidden[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetHiddenAttribute(file string, hidden bool) error {
-	self := FileAccess{}
+	self := Instance{}
 	return error(class(self).SetHiddenAttribute(gd.NewString(file), hidden))
 }
 
@@ -548,7 +548,7 @@ Sets file [b]read only[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetReadOnlyAttribute(file string, ro bool) error {
-	self := FileAccess{}
+	self := Instance{}
 	return error(class(self).SetReadOnlyAttribute(gd.NewString(file), ro))
 }
 
@@ -557,7 +557,7 @@ Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetReadOnlyAttribute(file string) bool {
-	self := FileAccess{}
+	self := Instance{}
 	return bool(class(self).GetReadOnlyAttribute(gd.NewString(file)))
 }
 

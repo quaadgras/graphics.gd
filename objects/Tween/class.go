@@ -466,7 +466,7 @@ This method can be used for manual interpolation of a value, when you don't want
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
 func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type classdb.TweenTransitionType, ease_type classdb.TweenEaseType) any {
-	self := Tween{}
+	self := Instance{}
 	return any(class(self).InterpolateValue(gd.NewVariant(initial_value), gd.NewVariant(delta_value), gd.Float(elapsed_time), gd.Float(duration), trans_type, ease_type).Interface())
 }
 

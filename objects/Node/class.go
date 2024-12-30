@@ -268,7 +268,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 func PrintOrphanNodes() {
-	self := Node{}
+	self := Instance{}
 	class(self).PrintOrphanNodes()
 }
 

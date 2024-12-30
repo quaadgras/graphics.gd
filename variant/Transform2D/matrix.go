@@ -49,7 +49,7 @@ var (
 	//
 	Identity = OriginXY{
 		X: Vector2.Right,
-		Y: Vector2.Up,
+		Y: Vector2.XY{0, 1},
 	}
 
 	// When any transform is multiplied by FlipX, it negates all components of the x axis (the X column).

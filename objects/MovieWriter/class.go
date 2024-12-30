@@ -141,7 +141,7 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
 func AddWriter(writer objects.MovieWriter) {
-	self := MovieWriter{}
+	self := Instance{}
 	class(self).AddWriter(writer)
 }
 

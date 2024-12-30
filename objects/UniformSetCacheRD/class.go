@@ -28,7 +28,7 @@ type Any interface {
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
 func GetCache(shader Resource.ID, set int, uniforms gd.Array) Resource.ID {
-	self := UniformSetCacheRD{}
+	self := Instance{}
 	return Resource.ID(class(self).GetCache(shader, gd.Int(set), uniforms))
 }
 

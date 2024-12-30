@@ -30,7 +30,7 @@ type Any interface {
 Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
 func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
-	self := AudioStreamOggVorbis{}
+	self := Instance{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
@@ -38,7 +38,7 @@ func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
 Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
 */
 func LoadFromFile(path string) objects.AudioStreamOggVorbis {
-	self := AudioStreamOggVorbis{}
+	self := Instance{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
 

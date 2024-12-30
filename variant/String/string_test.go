@@ -56,12 +56,6 @@ func TestBaseDir(t *testing.T) {
 	gdtests.That(t, dir_path, "/path/to")
 }
 
-func TestPathWithoutExtensionn(t *testing.T) {
-	var base = String.PathWithoutExtension("/path/to/file.txt") // base is "/path/to/file"
-
-	gdtests.That(t, base, "/path/to/file")
-}
-
 func TestFileExtension(t *testing.T) {
 	var a = String.FileExtension("/path/to/file.txt") // a is "txt"
 	var b = String.FileExtension("cool.txt")          // b is "txt"

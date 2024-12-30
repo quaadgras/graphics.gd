@@ -162,7 +162,7 @@ func (self Instance) ClearMipmaps() {
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 func Create(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
-	self := Image{}
+	self := Instance{}
 	return objects.Image(class(self).Create(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
@@ -170,7 +170,7 @@ func Create(width int, height int, use_mipmaps bool, format classdb.ImageFormat)
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 func CreateEmpty(width int, height int, use_mipmaps bool, format classdb.ImageFormat) objects.Image {
-	self := Image{}
+	self := Instance{}
 	return objects.Image(class(self).CreateEmpty(gd.Int(width), gd.Int(height), use_mipmaps, format))
 }
 
@@ -178,7 +178,7 @@ func CreateEmpty(width int, height int, use_mipmaps bool, format classdb.ImageFo
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
 func CreateFromData(width int, height int, use_mipmaps bool, format classdb.ImageFormat, data []byte) objects.Image {
-	self := Image{}
+	self := Instance{}
 	return objects.Image(class(self).CreateFromData(gd.Int(width), gd.Int(height), use_mipmaps, format, gd.NewPackedByteSlice(data)))
 }
 
@@ -209,7 +209,7 @@ func (self Instance) Load(path string) error {
 Creates a new [Image] and loads data from the specified file.
 */
 func LoadFromFile(path string) objects.Image {
-	self := Image{}
+	self := Instance{}
 	return objects.Image(class(self).LoadFromFile(gd.NewString(path)))
 }
 

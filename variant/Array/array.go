@@ -25,14 +25,14 @@ type Of[T any] struct {
 type Any = gd.Array
 
 // New creates a new array with the given elements.
-func New[T any](elements ...T) Of[T] {
-	return Of[T]{
+func New[T any](elements ...T) *Of[T] {
+	return &Of[T]{
 		slice: elements,
 	}
 }
 
 // Size returns the number of elements in the array.
-func (a *Of[T]) Size() int { //gd:Array.size
+func (a Of[T]) Size() int { //gd:Array.size
 	if a.array != (gd.Array{}) {
 		return int(a.array.Size())
 	}
@@ -41,7 +41,7 @@ func (a *Of[T]) Size() int { //gd:Array.size
 
 // Index returns the value at the given index. If the index is negative,
 // it counts from the end of the array.
-func (a *Of[T]) Index(i int) T { //gd:Array[]
+func (a Of[T]) Index(i int) T { //gd:Array[]
 	if a.array != (gd.Array{}) {
 		return a.array.Index(gd.Int(i)).Interface().(T)
 	}
@@ -197,7 +197,7 @@ func Count[T comparable](array Of[T], value T) int { //gd:Array.count
 func Duplicate[T any](array Of[T]) Of[T] { //gd:Array.duplicate
 	var copy = New[T]()
 	copy.Assign(array)
-	return copy
+	return *copy
 }
 
 // Erase finds and removes the first occurrence of value from the array. If value does not
@@ -245,7 +245,7 @@ func Filter[T any](fn func(T) bool, array Of[T]) Of[T] { //gd:Array.filter
 			array.Append(array.Index(i))
 		}
 	}
-	return result
+	return *result
 }
 
 // Find returns the index of the first occurrence of what in this array, or -1 if there are none.
@@ -317,7 +317,7 @@ func Map[T, U any](fn func(T) U, array Of[T]) Of[U] { //gd:Array.map
 	for i, v := range array.Iter() {
 		result.SetIndex(i, fn(v))
 	}
-	return result
+	return *result
 }
 
 // Max returns the maximum value contained in the array, if all elements can be compared.
@@ -504,7 +504,7 @@ func Slice[T any](array Of[T], from, upto int) Of[T] { //gd:Array.slice
 	for i := begin; i < end; i++ {
 		result.SetIndex(i-begin, array.Index(i))
 	}
-	return result
+	return *result
 }
 
 type sorter[T any] struct {

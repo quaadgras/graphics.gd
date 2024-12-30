@@ -28,7 +28,7 @@ type Any interface {
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
 func GetCacheMultipass(textures gd.Array, passes gd.Array, views int) Resource.ID {
-	self := FramebufferCacheRD{}
+	self := Instance{}
 	return Resource.ID(class(self).GetCacheMultipass(textures, passes, gd.Int(views)))
 }
 

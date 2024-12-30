@@ -30,7 +30,7 @@ type Any interface {
 This method loads audio data from a PackedByteArray buffer into an AudioStreamOggVorbis object.
 */
 func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
-	self := ResourceImporterOggVorbis{}
+	self := Instance{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
 
@@ -38,7 +38,7 @@ func LoadFromBuffer(buffer []byte) objects.AudioStreamOggVorbis {
 This method loads audio data from a file into an AudioStreamOggVorbis object. The file path is provided as a string.
 */
 func LoadFromFile(path string) objects.AudioStreamOggVorbis {
-	self := ResourceImporterOggVorbis{}
+	self := Instance{}
 	return objects.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
 

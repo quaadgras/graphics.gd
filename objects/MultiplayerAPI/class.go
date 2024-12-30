@@ -99,7 +99,7 @@ func (self Instance) GetPeers() []int32 {
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
 func SetDefaultInterface(interface_name string) {
-	self := MultiplayerAPI{}
+	self := Instance{}
 	class(self).SetDefaultInterface(gd.NewStringName(interface_name))
 }
 
@@ -107,7 +107,7 @@ func SetDefaultInterface(interface_name string) {
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
 func GetDefaultInterface() string {
-	self := MultiplayerAPI{}
+	self := Instance{}
 	return string(class(self).GetDefaultInterface().String())
 }
 
@@ -115,7 +115,7 @@ func GetDefaultInterface() string {
 Returns a new instance of the default MultiplayerAPI.
 */
 func CreateDefaultInterface() objects.MultiplayerAPI {
-	self := MultiplayerAPI{}
+	self := Instance{}
 	return objects.MultiplayerAPI(class(self).CreateDefaultInterface())
 }
 

@@ -30,7 +30,7 @@ type Any interface {
 Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
 func FromNode(camera_node objects.Camera3D) objects.GLTFCamera {
-	self := GLTFCamera{}
+	self := Instance{}
 	return objects.GLTFCamera(class(self).FromNode(camera_node))
 }
 
@@ -45,7 +45,7 @@ func (self Instance) ToNode() objects.Camera3D {
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary Dictionary.Any) objects.GLTFCamera {
-	self := GLTFCamera{}
+	self := Instance{}
 	return objects.GLTFCamera(class(self).FromDictionary(dictionary))
 }
 

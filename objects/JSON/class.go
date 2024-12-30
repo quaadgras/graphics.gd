@@ -102,7 +102,7 @@ The [param indent] parameter controls if and how something is indented; its cont
 [/codeblock]
 */
 func Stringify(data any) string {
-	self := JSON{}
+	self := Instance{}
 	return string(class(self).Stringify(gd.NewVariant(data), gd.NewString(""), true, false).String())
 }
 
@@ -110,7 +110,7 @@ func Stringify(data any) string {
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
 func ParseString(json_string string) any {
-	self := JSON{}
+	self := Instance{}
 	return any(class(self).ParseString(gd.NewString(json_string)).Interface())
 }
 

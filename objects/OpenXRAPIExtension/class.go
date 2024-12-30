@@ -65,7 +65,7 @@ func (self Instance) XrResult(result int, format string, args Array.Any) bool {
 Returns [code]true[/code] if OpenXR is enabled.
 */
 func OpenxrIsEnabled(check_run_in_editor bool) bool {
-	self := OpenXRAPIExtension{}
+	self := Instance{}
 	return bool(class(self).OpenxrIsEnabled(check_run_in_editor))
 }
 
