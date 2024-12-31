@@ -31,9 +31,7 @@ func PointerMustAssertInstanceID(ptr [1]uintptr) Object {
 	if ptr == ([1]uintptr{}) {
 		return Object{}
 	}
-	initial := pointers.New[Object]([3]uintptr{ptr[0]})
-	pointers.Set(&initial, [3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(initial))})
-	return initial
+	return pointers.New[Object]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{ptr[0]})))})
 }
 
 func PointerLifetimeBoundTo(obj Object, ptr [1]uintptr) Object {

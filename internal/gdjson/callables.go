@@ -29,7 +29,7 @@ var Callables = map[string][]string{
 	"DisplayServer.global_menu_set_item_key_callback.key_callback":       {"void", "Variant tag"},
 	"DisplayServer.tts_set_utterance_callback.callable":                  {"void", "int", "int"},
 	"DisplayServer.set_system_theme_change_callback.callable":            {"void"},
-	"DisplayServer.window_set_rect_changed_callback.callback":            {"void", "Rect2 rect"},
+	"DisplayServer.window_set_rect_changed_callback.callback":            {"void", "Rect2i rect"},
 	"DisplayServer.window_set_window_event_callback.callback":            {"void", "enum::DisplayServer.WindowEvent event"},
 	"DisplayServer.window_set_input_event_callback.callback":             {"void", "InputEvent event"},
 	"DisplayServer.window_set_input_text_callback.callback":              {"void", "String text"},

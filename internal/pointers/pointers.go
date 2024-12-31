@@ -16,14 +16,16 @@
 //
 //	New(ptr) // panics-on-use after two garbage collection cycles.
 //	Let(ptr) // like [New], but [End] operations on this pointer always return false.
-//	Bad(ptr) // unsafe.Pointer equivalent, zero overhead, but provides no protection.
+//	Raw(ptr) // unsafe.Pointer equivalent, zero overhead, but provides no protection.
+//	Add(ptr) // allocates and returns a static pointer that can be mutated with Set.
 //
 // The following methods are available:
 //
+//	Set(X, ptr) // sets and returns the mutable pointer at slot N.
 //	End(X) (ptr, bool) // returns true on the first call to [End], false on all subsequent calls, GC-related metadata is marked for reuse.
-//	Set(&X, ptr) // sets the underlying pointer to a new value, applies to all copies of the pointer.
 //	Use(ptr) // refreshes a [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
 //	Pin(ptr) // pin a [New] pointer, so that it will be available for use until the next call to [Free]
+//	Bad(ptr) // returns true if the pointer is nil, or freed.
 //
 // [Cycle] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
 // will eventually have their [Free] method called as long as the program continues to construct new pointers of the same types.
@@ -54,6 +56,9 @@ const uniqueMax = 16
 //		ptr [unsafe.Sizeof([1]T{})/unsafe.Sizeof(uintptr(0))]uintptr
 //	 }
 var tables [uniqueMax][shapesMax]atomicSlice[[pageSize]atomic.Uintptr]
+
+var static [shapesMax][][pageSize]uintptr
+var counts [shapesMax]atomic.Uintptr // static counts
 
 const (
 	offRev = iota
@@ -163,10 +168,18 @@ type Shape interface {
 }
 
 // PointerNamed that is invisible to the Go runtime. The pointers package manages it instead.
-// Supports pointer shapes up to [3]uintptr's in size. The first type paramter should be the
+// Supports pointer shapes up to [3]uintptr's in size. The first type parameter should be the
 // named type being defined as a pointers pointer type.
 type PointerNamed[T Pointer[T, S, N], S Shape, N PointerType] struct {
 	_ [0]N // prevents converting between different pointer types.
+
+	// if both the address and the revision are zero, then this is an
+	// unsafe pointer and the ptr value is exposed directly, in this
+	// case, no protections are provided.
+	//
+	// if the address is non-zero and the revision is zero, then this
+	// is a static pointer, it cannot be freed and will the ptr field
+	// is ignored.
 
 	address[S, N]
 
@@ -305,8 +318,11 @@ func Get[T Pointer[T, P, N], P Shape, N PointerType](ptr T) P {
 		rev uintptr
 		ptr P
 	})(ptr)
-	if p.rev == 0 {
+	if p.rev == 0 && p.address == 0 {
 		return p.ptr
+	}
+	if p.rev == 0 {
+		return *(*P)(unsafe.Pointer(&static[len(p.ptr)][p.address/pageSize][p.address%pageSize]))
 	}
 	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
 	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
@@ -322,8 +338,29 @@ func Get[T Pointer[T, P, N], P Shape, N PointerType](ptr T) P {
 	return p.ptr
 }
 
-// Set overwrites the underlying pointer value.
-func Set[T Pointer[T, P, N], P Shape, N PointerType](ptr *T, val P) {
+// Add allocates a new pointer that can be mutated with [Set].
+func Add[T Pointer[T, P, N], P Shape, N PointerType](val P) T {
+	addr := counts[len(val)].Add(uintptr(len(val)))
+	var result struct {
+		_ [0]N
+
+		address[P, N]
+
+		rev uintptr
+		ptr P
+	}
+	if len(static[len(val)]) <= int(addr/pageSize) {
+		static[len(val)] = append(static[len(val)], [pageSize]uintptr{})
+	}
+	for i := 0; i < len(val); i++ {
+		static[len(val)][addr/pageSize][addr%pageSize+uintptr(i)] = uintptr(val[i])
+	}
+	result.address = address[P, N](addr)
+	return T(result)
+}
+
+// Set overwrites the underlying added pointer value.
+func Set[T Pointer[T, P, N], P Shape, N PointerType](ptr T, val P) {
 	p := (struct {
 		_ [0]N
 
@@ -331,26 +368,10 @@ func Set[T Pointer[T, P, N], P Shape, N PointerType](ptr *T, val P) {
 
 		rev uintptr
 		ptr P
-	})(*ptr)
-	if p.ptr == [1]P{}[0] {
-		return
+	})(ptr)
+	for i := 0; i < len(val); i++ {
+		static[len(val)][p.address/pageSize][uintptr(p.address)%pageSize+uintptr(i)] = uintptr(val[i])
 	}
-	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
-	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
-	rev := arr[addr+offRev].Load()
-	if rev != uintptr(p.rev) {
-		panic("expired pointer")
-	}
-	for i := range uintptr(len(p.ptr)) {
-		if arr[addr+offPtr+i].Load() != p.ptr[i] {
-			panic("expired pointer")
-		}
-	}
-	for i := range uintptr(len(p.ptr)) {
-		arr[addr+offPtr+i].Store(uintptr(val[i]))
-	}
-	p.ptr = val
-	*ptr = T(p)
 }
 
 // PointerType restricts the unique pointer types that can be used with the pointers package.
@@ -394,8 +415,8 @@ func (s *atomicSlice[T]) Index(i uintptr) *T {
 	return old[i]
 }
 
-// Bad returns an [unsafe.Pointer] equivalent to [Pointer], zero overhead, but it provides no protections on use.
-func Bad[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
+// Raw returns an [unsafe.Pointer] equivalent to [Pointer], zero overhead, but it provides no protections on use.
+func Raw[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
 	var result struct {
 		_ [0]N
 

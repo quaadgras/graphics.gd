@@ -457,6 +457,9 @@ func doInitialization(init *initialization) {
 func initialize(_ unsafe.Pointer, level initializationLevel) {
 	internal.Global.Init(gd.GDExtensionInitializationLevel(level))
 	if level == 2 {
+		for _, fn := range internal.StartupFunctions {
+			fn()
+		}
 		main()
 	}
 }

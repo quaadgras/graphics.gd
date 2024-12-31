@@ -23,6 +23,7 @@ import (
 
 	"golang.org/x/text/encoding/unicode/utf32"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Int"
 )
@@ -31,8 +32,28 @@ type Any interface {
 	~string | ~[]byte
 }
 
+var static = make(map[string]gd.String)
+
+func init() {
+	gd.StartupFunctions = append(gd.StartupFunctions, func() {
+		for s, v := range static {
+			str := gd.Global.Strings.New(s)
+			raw, ok := pointers.End(str)
+			if ok {
+				pointers.Set(v, raw)
+			}
+		}
+	})
+}
+
 // New returns an engine-optimised String for use with Advanced functions.
+// Can be initialised ahead of time as a global variable.
 func New(vals ...any) gd.String { //gd:String() str
+	if !gd.Linked {
+		str := pointers.Add[gd.String]([1]uintptr{})
+		static[fmt.Sprint(vals...)] = str
+		return str
+	}
 	return gd.Global.Strings.New(fmt.Sprint(vals...))
 }
 

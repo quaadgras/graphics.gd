@@ -3,10 +3,8 @@ package startup
 
 import (
 	"graphics.gd/defined"
-	gd "graphics.gd/internal"
 	MainLoopClass "graphics.gd/objects/MainLoop"
 	"graphics.gd/objects/ProjectSettings"
-	"graphics.gd/variant/String"
 )
 
 // MainLoop designates the given struct embedding defined.Object[T, MainLoop.Instance]
@@ -14,8 +12,7 @@ import (
 // the given struct to execute as the main loop.
 func MainLoop[T defined.ExtensionTo[M], M MainLoopClass.Any]() {
 	defined.InEditor[T]()
-	className := gd.NewVariant(String.New(defined.NameFor[T]()))
-	main_loop_type := String.New("application/run/main_loop_type")
-	ProjectSettings.Advanced().SetInitialValue(main_loop_type, className)
-	ProjectSettings.Advanced().SetSetting(main_loop_type, className)
+	className := defined.NameFor[T]()
+	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
+	ProjectSettings.SetSetting("application/run/main_loop_type", className)
 }

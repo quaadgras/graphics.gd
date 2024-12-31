@@ -18,3 +18,11 @@ func TestStrings(t *testing.T) {
 		t.Fail()
 	}
 }
+
+var HelloWorld = String.New("Hello, World!")
+
+func TestStaticStrings(t *testing.T) {
+	if HelloWorld.String() != "Hello, World!" {
+		t.Fail()
+	}
+}

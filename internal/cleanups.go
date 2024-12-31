@@ -18,3 +18,5 @@ func Cleanups() []func() {
 	defer mutex.Unlock()
 	return cleanups
 }
+
+var StartupFunctions []func()

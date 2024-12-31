@@ -1260,7 +1260,7 @@ func WindowSetSize(size Vector2i.XY) {
 Sets the [param callback] that will be called when the window specified by [param window_id] is moved or resized.
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetRectChangedCallback(callback func(rect Rect2.PositionSize)) {
+func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize)) {
 	once.Do(singleton)
 	class(self).WindowSetRectChangedCallback(gd.NewCallable(callback), gd.Int(0))
 }

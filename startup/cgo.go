@@ -39,6 +39,7 @@ func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) ui
 	classDB = internal.ExtensionToken(classes)
 	internal.Global.ExtensionToken = classDB
 	linkCGO(&internal.Global)
+	internal.Linked = true
 	init := (*initialization)(configuration)
 	*init = initialization{}
 	init.minimum_initialization_level = initializationLevel(internal.GDExtensionInitializationLevelScene)
