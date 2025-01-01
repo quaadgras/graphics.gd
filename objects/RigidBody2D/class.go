@@ -1024,7 +1024,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RigidBody2D", func(ptr gd.Object) any { return classdb.RigidBody2D(ptr) })
+	classdb.Register("RigidBody2D", func(ptr gd.Object) any { return [1]classdb.RigidBody2D{classdb.RigidBody2D(ptr)} })
 }
 
 type FreezeMode = classdb.RigidBody2DFreezeMode

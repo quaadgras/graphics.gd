@@ -239,7 +239,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any { return classdb.RibbonTrailMesh(ptr) })
+	classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any { return [1]classdb.RibbonTrailMesh{classdb.RibbonTrailMesh(ptr)} })
 }
 
 type Shape = classdb.RibbonTrailMeshShape

@@ -350,7 +350,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureButton", func(ptr gd.Object) any { return classdb.TextureButton(ptr) })
+	classdb.Register("TextureButton", func(ptr gd.Object) any { return [1]classdb.TextureButton{classdb.TextureButton(ptr)} })
 }
 
 type StretchMode = classdb.TextureButtonStretchMode

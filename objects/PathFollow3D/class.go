@@ -331,7 +331,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PathFollow3D", func(ptr gd.Object) any { return classdb.PathFollow3D(ptr) })
+	classdb.Register("PathFollow3D", func(ptr gd.Object) any { return [1]classdb.PathFollow3D{classdb.PathFollow3D(ptr)} })
 }
 
 type RotationMode = classdb.PathFollow3DRotationMode

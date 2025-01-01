@@ -4667,7 +4667,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("TextEdit", func(ptr gd.Object) any { return classdb.TextEdit(ptr) }) }
+func init() {
+	classdb.Register("TextEdit", func(ptr gd.Object) any { return [1]classdb.TextEdit{classdb.TextEdit(ptr)} })
+}
 
 type MenuItems = classdb.TextEditMenuItems
 

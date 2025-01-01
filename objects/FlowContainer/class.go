@@ -206,7 +206,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FlowContainer", func(ptr gd.Object) any { return classdb.FlowContainer(ptr) })
+	classdb.Register("FlowContainer", func(ptr gd.Object) any { return [1]classdb.FlowContainer{classdb.FlowContainer(ptr)} })
 }
 
 type AlignmentMode = classdb.FlowContainerAlignmentMode

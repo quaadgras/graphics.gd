@@ -1813,7 +1813,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NativeMenu", func(ptr gd.Object) any { return classdb.NativeMenu(ptr) })
+	classdb.Register("NativeMenu", func(ptr gd.Object) any { return [1]classdb.NativeMenu{classdb.NativeMenu(ptr)} })
 }
 
 type Feature = classdb.NativeMenuFeature

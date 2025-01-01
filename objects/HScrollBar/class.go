@@ -82,5 +82,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HScrollBar", func(ptr gd.Object) any { return classdb.HScrollBar(ptr) })
+	classdb.Register("HScrollBar", func(ptr gd.Object) any { return [1]classdb.HScrollBar{classdb.HScrollBar(ptr)} })
 }

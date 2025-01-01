@@ -127,5 +127,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorScriptPicker", func(ptr gd.Object) any { return classdb.EditorScriptPicker(ptr) })
+	classdb.Register("EditorScriptPicker", func(ptr gd.Object) any { return [1]classdb.EditorScriptPicker{classdb.EditorScriptPicker(ptr)} })
 }

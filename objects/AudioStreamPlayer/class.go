@@ -441,7 +441,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlayer", func(ptr gd.Object) any { return classdb.AudioStreamPlayer(ptr) })
+	classdb.Register("AudioStreamPlayer", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlayer{classdb.AudioStreamPlayer(ptr)} })
 }
 
 type MixTarget = classdb.AudioStreamPlayerMixTarget

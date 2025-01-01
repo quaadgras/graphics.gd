@@ -204,7 +204,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationLibrary", func(ptr gd.Object) any { return classdb.AnimationLibrary(ptr) })
+	classdb.Register("AnimationLibrary", func(ptr gd.Object) any { return [1]classdb.AnimationLibrary{classdb.AnimationLibrary(ptr)} })
 }
 
 type Error int

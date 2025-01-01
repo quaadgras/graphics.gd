@@ -410,5 +410,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationObstacle3D", func(ptr gd.Object) any { return classdb.NavigationObstacle3D(ptr) })
+	classdb.Register("NavigationObstacle3D", func(ptr gd.Object) any { return [1]classdb.NavigationObstacle3D{classdb.NavigationObstacle3D(ptr)} })
 }

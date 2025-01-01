@@ -83,5 +83,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CheckButton", func(ptr gd.Object) any { return classdb.CheckButton(ptr) })
+	classdb.Register("CheckButton", func(ptr gd.Object) any { return [1]classdb.CheckButton{classdb.CheckButton(ptr)} })
 }

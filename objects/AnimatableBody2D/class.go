@@ -118,5 +118,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimatableBody2D", func(ptr gd.Object) any { return classdb.AnimatableBody2D(ptr) })
+	classdb.Register("AnimatableBody2D", func(ptr gd.Object) any { return [1]classdb.AnimatableBody2D{classdb.AnimatableBody2D(ptr)} })
 }

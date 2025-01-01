@@ -363,5 +363,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationMeshSourceGeometryData3D", func(ptr gd.Object) any { return classdb.NavigationMeshSourceGeometryData3D(ptr) })
+	classdb.Register("NavigationMeshSourceGeometryData3D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationMeshSourceGeometryData3D{classdb.NavigationMeshSourceGeometryData3D(ptr)}
+	})
 }

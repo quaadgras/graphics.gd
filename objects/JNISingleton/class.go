@@ -57,5 +57,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JNISingleton", func(ptr gd.Object) any { return classdb.JNISingleton(ptr) })
+	classdb.Register("JNISingleton", func(ptr gd.Object) any { return [1]classdb.JNISingleton{classdb.JNISingleton(ptr)} })
 }

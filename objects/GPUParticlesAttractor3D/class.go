@@ -183,5 +183,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GPUParticlesAttractor3D", func(ptr gd.Object) any { return classdb.GPUParticlesAttractor3D(ptr) })
+	classdb.Register("GPUParticlesAttractor3D", func(ptr gd.Object) any {
+		return [1]classdb.GPUParticlesAttractor3D{classdb.GPUParticlesAttractor3D(ptr)}
+	})
 }

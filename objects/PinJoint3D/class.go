@@ -109,7 +109,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PinJoint3D", func(ptr gd.Object) any { return classdb.PinJoint3D(ptr) })
+	classdb.Register("PinJoint3D", func(ptr gd.Object) any { return [1]classdb.PinJoint3D{classdb.PinJoint3D(ptr)} })
 }
 
 type Param = classdb.PinJoint3DParam

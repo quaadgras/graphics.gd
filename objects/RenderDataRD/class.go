@@ -65,5 +65,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderDataRD", func(ptr gd.Object) any { return classdb.RenderDataRD(ptr) })
+	classdb.Register("RenderDataRD", func(ptr gd.Object) any { return [1]classdb.RenderDataRD{classdb.RenderDataRD(ptr)} })
 }

@@ -201,4 +201,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("World3D", func(ptr gd.Object) any { return classdb.World3D(ptr) }) }
+func init() {
+	classdb.Register("World3D", func(ptr gd.Object) any { return [1]classdb.World3D{classdb.World3D(ptr)} })
+}

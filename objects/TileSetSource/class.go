@@ -201,5 +201,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileSetSource", func(ptr gd.Object) any { return classdb.TileSetSource(ptr) })
+	classdb.Register("TileSetSource", func(ptr gd.Object) any { return [1]classdb.TileSetSource{classdb.TileSetSource(ptr)} })
 }

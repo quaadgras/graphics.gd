@@ -161,5 +161,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFAnimation", func(ptr gd.Object) any { return classdb.GLTFAnimation(ptr) })
+	classdb.Register("GLTFAnimation", func(ptr gd.Object) any { return [1]classdb.GLTFAnimation{classdb.GLTFAnimation(ptr)} })
 }

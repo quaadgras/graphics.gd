@@ -181,7 +181,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectFilter", func(ptr gd.Object) any { return classdb.AudioEffectFilter(ptr) })
+	classdb.Register("AudioEffectFilter", func(ptr gd.Object) any { return [1]classdb.AudioEffectFilter{classdb.AudioEffectFilter(ptr)} })
 }
 
 type FilterDB = classdb.AudioEffectFilterFilterDB

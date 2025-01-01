@@ -3219,7 +3219,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationServer3D", func(ptr gd.Object) any { return classdb.NavigationServer3D(ptr) })
+	classdb.Register("NavigationServer3D", func(ptr gd.Object) any { return [1]classdb.NavigationServer3D{classdb.NavigationServer3D(ptr)} })
 }
 
 type ProcessInfo = classdb.NavigationServer3DProcessInfo

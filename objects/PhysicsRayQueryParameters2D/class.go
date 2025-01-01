@@ -285,5 +285,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsRayQueryParameters2D", func(ptr gd.Object) any { return classdb.PhysicsRayQueryParameters2D(ptr) })
+	classdb.Register("PhysicsRayQueryParameters2D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsRayQueryParameters2D{classdb.PhysicsRayQueryParameters2D(ptr)}
+	})
 }

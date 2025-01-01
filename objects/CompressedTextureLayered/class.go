@@ -111,7 +111,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompressedTextureLayered", func(ptr gd.Object) any { return classdb.CompressedTextureLayered(ptr) })
+	classdb.Register("CompressedTextureLayered", func(ptr gd.Object) any {
+		return [1]classdb.CompressedTextureLayered{classdb.CompressedTextureLayered(ptr)}
+	})
 }
 
 type Error int

@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeLinearSceneDepth", func(ptr gd.Object) any { return classdb.VisualShaderNodeLinearSceneDepth(ptr) })
+	classdb.Register("VisualShaderNodeLinearSceneDepth", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeLinearSceneDepth{classdb.VisualShaderNodeLinearSceneDepth(ptr)}
+	})
 }

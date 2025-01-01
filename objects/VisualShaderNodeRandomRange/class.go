@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeRandomRange", func(ptr gd.Object) any { return classdb.VisualShaderNodeRandomRange(ptr) })
+	classdb.Register("VisualShaderNodeRandomRange", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeRandomRange{classdb.VisualShaderNodeRandomRange(ptr)}
+	})
 }

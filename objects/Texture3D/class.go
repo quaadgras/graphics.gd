@@ -391,4 +391,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsTexture(), name)
 	}
 }
-func init() { classdb.Register("Texture3D", func(ptr gd.Object) any { return classdb.Texture3D(ptr) }) }
+func init() {
+	classdb.Register("Texture3D", func(ptr gd.Object) any { return [1]classdb.Texture3D{classdb.Texture3D(ptr)} })
+}

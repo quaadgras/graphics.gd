@@ -206,5 +206,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRActionSet", func(ptr gd.Object) any { return classdb.OpenXRActionSet(ptr) })
+	classdb.Register("OpenXRActionSet", func(ptr gd.Object) any { return [1]classdb.OpenXRActionSet{classdb.OpenXRActionSet(ptr)} })
 }

@@ -346,5 +346,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MobileVRInterface", func(ptr gd.Object) any { return classdb.MobileVRInterface(ptr) })
+	classdb.Register("MobileVRInterface", func(ptr gd.Object) any { return [1]classdb.MobileVRInterface{classdb.MobileVRInterface(ptr)} })
 }

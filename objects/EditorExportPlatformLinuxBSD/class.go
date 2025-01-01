@@ -74,5 +74,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlatformLinuxBSD", func(ptr gd.Object) any { return classdb.EditorExportPlatformLinuxBSD(ptr) })
+	classdb.Register("EditorExportPlatformLinuxBSD", func(ptr gd.Object) any {
+		return [1]classdb.EditorExportPlatformLinuxBSD{classdb.EditorExportPlatformLinuxBSD(ptr)}
+	})
 }

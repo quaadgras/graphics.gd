@@ -460,7 +460,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() { classdb.Register("Decal", func(ptr gd.Object) any { return classdb.Decal(ptr) }) }
+func init() {
+	classdb.Register("Decal", func(ptr gd.Object) any { return [1]classdb.Decal{classdb.Decal(ptr)} })
+}
 
 type DecalTexture = classdb.DecalDecalTexture
 

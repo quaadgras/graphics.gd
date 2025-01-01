@@ -97,5 +97,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasModulate", func(ptr gd.Object) any { return classdb.CanvasModulate(ptr) })
+	classdb.Register("CanvasModulate", func(ptr gd.Object) any { return [1]classdb.CanvasModulate{classdb.CanvasModulate(ptr)} })
 }

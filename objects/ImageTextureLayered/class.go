@@ -126,7 +126,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageTextureLayered", func(ptr gd.Object) any { return classdb.ImageTextureLayered(ptr) })
+	classdb.Register("ImageTextureLayered", func(ptr gd.Object) any { return [1]classdb.ImageTextureLayered{classdb.ImageTextureLayered(ptr)} })
 }
 
 type Error int

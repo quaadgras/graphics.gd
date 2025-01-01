@@ -1878,7 +1878,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsPopup(), name)
 	}
 }
-func init() { classdb.Register("PopupMenu", func(ptr gd.Object) any { return classdb.PopupMenu(ptr) }) }
+func init() {
+	classdb.Register("PopupMenu", func(ptr gd.Object) any { return [1]classdb.PopupMenu{classdb.PopupMenu(ptr)} })
+}
 
 type Key int
 

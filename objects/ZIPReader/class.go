@@ -180,7 +180,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("ZIPReader", func(ptr gd.Object) any { return classdb.ZIPReader(ptr) }) }
+func init() {
+	classdb.Register("ZIPReader", func(ptr gd.Object) any { return [1]classdb.ZIPReader{classdb.ZIPReader(ptr)} })
+}
 
 type Error int
 

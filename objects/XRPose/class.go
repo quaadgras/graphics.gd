@@ -242,7 +242,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("XRPose", func(ptr gd.Object) any { return classdb.XRPose(ptr) }) }
+func init() {
+	classdb.Register("XRPose", func(ptr gd.Object) any { return [1]classdb.XRPose{classdb.XRPose(ptr)} })
+}
 
 type TrackingConfidence = classdb.XRPoseTrackingConfidence
 

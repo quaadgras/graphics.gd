@@ -203,7 +203,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SubViewport", func(ptr gd.Object) any { return classdb.SubViewport(ptr) })
+	classdb.Register("SubViewport", func(ptr gd.Object) any { return [1]classdb.SubViewport{classdb.SubViewport(ptr)} })
 }
 
 type ClearMode = classdb.SubViewportClearMode

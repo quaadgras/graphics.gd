@@ -451,7 +451,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("XRServer", func(ptr gd.Object) any { return classdb.XRServer(ptr) }) }
+func init() {
+	classdb.Register("XRServer", func(ptr gd.Object) any { return [1]classdb.XRServer{classdb.XRServer(ptr)} })
+}
 
 type TrackerType = classdb.XRServerTrackerType
 

@@ -129,7 +129,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventJoypadMotion", func(ptr gd.Object) any { return classdb.InputEventJoypadMotion(ptr) })
+	classdb.Register("InputEventJoypadMotion", func(ptr gd.Object) any { return [1]classdb.InputEventJoypadMotion{classdb.InputEventJoypadMotion(ptr)} })
 }
 
 type JoyAxis int

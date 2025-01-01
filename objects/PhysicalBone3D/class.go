@@ -610,7 +610,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicalBone3D", func(ptr gd.Object) any { return classdb.PhysicalBone3D(ptr) })
+	classdb.Register("PhysicalBone3D", func(ptr gd.Object) any { return [1]classdb.PhysicalBone3D{classdb.PhysicalBone3D(ptr)} })
 }
 
 type DampMode = classdb.PhysicalBone3DDampMode

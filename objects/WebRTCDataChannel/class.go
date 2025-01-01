@@ -333,7 +333,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCDataChannel", func(ptr gd.Object) any { return classdb.WebRTCDataChannel(ptr) })
+	classdb.Register("WebRTCDataChannel", func(ptr gd.Object) any { return [1]classdb.WebRTCDataChannel{classdb.WebRTCDataChannel(ptr)} })
 }
 
 type WriteMode = classdb.WebRTCDataChannelWriteMode

@@ -322,12 +322,16 @@ func Get[T Pointer[T, P, N], P Shape, N PointerType](ptr T) P {
 		return p.ptr
 	}
 	if p.rev == 0 {
-		return *(*P)(unsafe.Pointer(&static[len(p.ptr)][p.address/pageSize][p.address%pageSize]))
+		var result P
+		for i := 0; i < len(p.ptr); i++ {
+			result[i] = static[len(p.ptr)][p.address/pageSize][uintptr(p.address)%pageSize+uintptr(i)]
+		}
+		return result
 	}
 	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
 	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
 	rev := arr[addr+offRev].Load()
-	if rev != uintptr(p.rev) {
+	if rev != 2 && rev != uintptr(p.rev) {
 		panic("expired pointer")
 	}
 	for i := range uintptr(len(p.ptr)) {

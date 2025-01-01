@@ -460,7 +460,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureProgressBar", func(ptr gd.Object) any { return classdb.TextureProgressBar(ptr) })
+	classdb.Register("TextureProgressBar", func(ptr gd.Object) any { return [1]classdb.TextureProgressBar{classdb.TextureProgressBar(ptr)} })
 }
 
 type FillMode = classdb.TextureProgressBarFillMode

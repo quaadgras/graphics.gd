@@ -103,7 +103,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeTransformVecMult", func(ptr gd.Object) any { return classdb.VisualShaderNodeTransformVecMult(ptr) })
+	classdb.Register("VisualShaderNodeTransformVecMult", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeTransformVecMult{classdb.VisualShaderNodeTransformVecMult(ptr)}
+	})
 }
 
 type Operator = classdb.VisualShaderNodeTransformVecMultOperator

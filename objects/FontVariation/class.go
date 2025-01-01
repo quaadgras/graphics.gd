@@ -299,5 +299,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FontVariation", func(ptr gd.Object) any { return classdb.FontVariation(ptr) })
+	classdb.Register("FontVariation", func(ptr gd.Object) any { return [1]classdb.FontVariation{classdb.FontVariation(ptr)} })
 }

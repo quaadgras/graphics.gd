@@ -86,5 +86,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EncodedObjectAsID", func(ptr gd.Object) any { return classdb.EncodedObjectAsID(ptr) })
+	classdb.Register("EncodedObjectAsID", func(ptr gd.Object) any { return [1]classdb.EncodedObjectAsID{classdb.EncodedObjectAsID(ptr)} })
 }

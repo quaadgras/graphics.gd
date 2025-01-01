@@ -1658,7 +1658,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Image", func(ptr gd.Object) any { return classdb.Image(ptr) }) }
+func init() {
+	classdb.Register("Image", func(ptr gd.Object) any { return [1]classdb.Image{classdb.Image(ptr)} })
+}
 
 type Format = classdb.ImageFormat
 

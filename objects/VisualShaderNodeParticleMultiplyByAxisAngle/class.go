@@ -103,5 +103,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeParticleMultiplyByAxisAngle", func(ptr gd.Object) any { return classdb.VisualShaderNodeParticleMultiplyByAxisAngle(ptr) })
+	classdb.Register("VisualShaderNodeParticleMultiplyByAxisAngle", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeParticleMultiplyByAxisAngle{classdb.VisualShaderNodeParticleMultiplyByAxisAngle(ptr)}
+	})
 }

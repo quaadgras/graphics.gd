@@ -125,7 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BackBufferCopy", func(ptr gd.Object) any { return classdb.BackBufferCopy(ptr) })
+	classdb.Register("BackBufferCopy", func(ptr gd.Object) any { return [1]classdb.BackBufferCopy{classdb.BackBufferCopy(ptr)} })
 }
 
 type CopyMode = classdb.BackBufferCopyCopyMode

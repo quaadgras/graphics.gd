@@ -115,5 +115,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterOggVorbis", func(ptr gd.Object) any { return classdb.ResourceImporterOggVorbis(ptr) })
+	classdb.Register("ResourceImporterOggVorbis", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterOggVorbis{classdb.ResourceImporterOggVorbis(ptr)}
+	})
 }

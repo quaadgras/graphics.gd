@@ -99,5 +99,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CircleShape2D", func(ptr gd.Object) any { return classdb.CircleShape2D(ptr) })
+	classdb.Register("CircleShape2D", func(ptr gd.Object) any { return [1]classdb.CircleShape2D{classdb.CircleShape2D(ptr)} })
 }

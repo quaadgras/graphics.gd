@@ -610,7 +610,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HTTPRequest", func(ptr gd.Object) any { return classdb.HTTPRequest(ptr) })
+	classdb.Register("HTTPRequest", func(ptr gd.Object) any { return [1]classdb.HTTPRequest{classdb.HTTPRequest(ptr)} })
 }
 
 type Result = classdb.HTTPRequestResult

@@ -197,5 +197,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorResourceConversionPlugin", func(ptr gd.Object) any { return classdb.EditorResourceConversionPlugin(ptr) })
+	classdb.Register("EditorResourceConversionPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorResourceConversionPlugin{classdb.EditorResourceConversionPlugin(ptr)}
+	})
 }

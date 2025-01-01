@@ -281,4 +281,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsSpriteBase3D(), name)
 	}
 }
-func init() { classdb.Register("Sprite3D", func(ptr gd.Object) any { return classdb.Sprite3D(ptr) }) }
+func init() {
+	classdb.Register("Sprite3D", func(ptr gd.Object) any { return [1]classdb.Sprite3D{classdb.Sprite3D(ptr)} })
+}

@@ -96,4 +96,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Path2D", func(ptr gd.Object) any { return classdb.Path2D(ptr) }) }
+func init() {
+	classdb.Register("Path2D", func(ptr gd.Object) any { return [1]classdb.Path2D{classdb.Path2D(ptr)} })
+}

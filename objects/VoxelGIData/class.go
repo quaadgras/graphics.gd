@@ -365,5 +365,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VoxelGIData", func(ptr gd.Object) any { return classdb.VoxelGIData(ptr) })
+	classdb.Register("VoxelGIData", func(ptr gd.Object) any { return [1]classdb.VoxelGIData{classdb.VoxelGIData(ptr)} })
 }

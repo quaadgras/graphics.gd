@@ -301,5 +301,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimatedTexture", func(ptr gd.Object) any { return classdb.AnimatedTexture(ptr) })
+	classdb.Register("AnimatedTexture", func(ptr gd.Object) any { return [1]classdb.AnimatedTexture{classdb.AnimatedTexture(ptr)} })
 }

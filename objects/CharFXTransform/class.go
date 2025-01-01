@@ -416,5 +416,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CharFXTransform", func(ptr gd.Object) any { return classdb.CharFXTransform(ptr) })
+	classdb.Register("CharFXTransform", func(ptr gd.Object) any { return [1]classdb.CharFXTransform{classdb.CharFXTransform(ptr)} })
 }

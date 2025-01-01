@@ -436,7 +436,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsBaseButton(), name)
 	}
 }
-func init() { classdb.Register("Button", func(ptr gd.Object) any { return classdb.Button(ptr) }) }
+func init() {
+	classdb.Register("Button", func(ptr gd.Object) any { return [1]classdb.Button{classdb.Button(ptr)} })
+}
 
 type HorizontalAlignment int
 

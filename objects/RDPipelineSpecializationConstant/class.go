@@ -117,5 +117,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDPipelineSpecializationConstant", func(ptr gd.Object) any { return classdb.RDPipelineSpecializationConstant(ptr) })
+	classdb.Register("RDPipelineSpecializationConstant", func(ptr gd.Object) any {
+		return [1]classdb.RDPipelineSpecializationConstant{classdb.RDPipelineSpecializationConstant(ptr)}
+	})
 }

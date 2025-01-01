@@ -517,7 +517,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConfigFile", func(ptr gd.Object) any { return classdb.ConfigFile(ptr) })
+	classdb.Register("ConfigFile", func(ptr gd.Object) any { return [1]classdb.ConfigFile{classdb.ConfigFile(ptr)} })
 }
 
 type Error int

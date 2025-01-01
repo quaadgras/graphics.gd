@@ -75,5 +75,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRControllerTracker", func(ptr gd.Object) any { return classdb.XRControllerTracker(ptr) })
+	classdb.Register("XRControllerTracker", func(ptr gd.Object) any { return [1]classdb.XRControllerTracker{classdb.XRControllerTracker(ptr)} })
 }

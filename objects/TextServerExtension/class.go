@@ -7847,7 +7847,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerExtension", func(ptr gd.Object) any { return classdb.TextServerExtension(ptr) })
+	classdb.Register("TextServerExtension", func(ptr gd.Object) any { return [1]classdb.TextServerExtension{classdb.TextServerExtension(ptr)} })
 }
 
 type InlineAlignment int

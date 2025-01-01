@@ -150,7 +150,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HingeJoint3D", func(ptr gd.Object) any { return classdb.HingeJoint3D(ptr) })
+	classdb.Register("HingeJoint3D", func(ptr gd.Object) any { return [1]classdb.HingeJoint3D{classdb.HingeJoint3D(ptr)} })
 }
 
 type Param = classdb.HingeJoint3DParam

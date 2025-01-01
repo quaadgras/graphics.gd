@@ -875,7 +875,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFDocumentExtension", func(ptr gd.Object) any { return classdb.GLTFDocumentExtension(ptr) })
+	classdb.Register("GLTFDocumentExtension", func(ptr gd.Object) any { return [1]classdb.GLTFDocumentExtension{classdb.GLTFDocumentExtension(ptr)} })
 }
 
 type Error int

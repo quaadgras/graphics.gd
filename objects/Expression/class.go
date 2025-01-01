@@ -197,7 +197,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Expression", func(ptr gd.Object) any { return classdb.Expression(ptr) })
+	classdb.Register("Expression", func(ptr gd.Object) any { return [1]classdb.Expression{classdb.Expression(ptr)} })
 }
 
 type Error int

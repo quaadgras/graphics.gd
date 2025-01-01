@@ -71,4 +71,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Panel", func(ptr gd.Object) any { return classdb.Panel(ptr) }) }
+func init() {
+	classdb.Register("Panel", func(ptr gd.Object) any { return [1]classdb.Panel{classdb.Panel(ptr)} })
+}

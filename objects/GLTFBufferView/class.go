@@ -249,5 +249,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFBufferView", func(ptr gd.Object) any { return classdb.GLTFBufferView(ptr) })
+	classdb.Register("GLTFBufferView", func(ptr gd.Object) any { return [1]classdb.GLTFBufferView{classdb.GLTFBufferView(ptr)} })
 }

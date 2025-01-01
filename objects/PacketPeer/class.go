@@ -216,7 +216,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeer", func(ptr gd.Object) any { return classdb.PacketPeer(ptr) })
+	classdb.Register("PacketPeer", func(ptr gd.Object) any { return [1]classdb.PacketPeer{classdb.PacketPeer(ptr)} })
 }
 
 type Error int

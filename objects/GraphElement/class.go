@@ -246,5 +246,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GraphElement", func(ptr gd.Object) any { return classdb.GraphElement(ptr) })
+	classdb.Register("GraphElement", func(ptr gd.Object) any { return [1]classdb.GraphElement{classdb.GraphElement(ptr)} })
 }

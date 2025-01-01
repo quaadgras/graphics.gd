@@ -750,7 +750,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CollisionObject3D", func(ptr gd.Object) any { return classdb.CollisionObject3D(ptr) })
+	classdb.Register("CollisionObject3D", func(ptr gd.Object) any { return [1]classdb.CollisionObject3D{classdb.CollisionObject3D(ptr)} })
 }
 
 type DisableMode = classdb.CollisionObject3DDisableMode

@@ -400,7 +400,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCPeerConnection", func(ptr gd.Object) any { return classdb.WebRTCPeerConnection(ptr) })
+	classdb.Register("WebRTCPeerConnection", func(ptr gd.Object) any { return [1]classdb.WebRTCPeerConnection{classdb.WebRTCPeerConnection(ptr)} })
 }
 
 type ConnectionState = classdb.WebRTCPeerConnectionConnectionState

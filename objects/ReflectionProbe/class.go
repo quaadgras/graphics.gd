@@ -454,7 +454,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ReflectionProbe", func(ptr gd.Object) any { return classdb.ReflectionProbe(ptr) })
+	classdb.Register("ReflectionProbe", func(ptr gd.Object) any { return [1]classdb.ReflectionProbe{classdb.ReflectionProbe(ptr)} })
 }
 
 type UpdateMode = classdb.ReflectionProbeUpdateMode

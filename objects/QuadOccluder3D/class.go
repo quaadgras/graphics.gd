@@ -101,5 +101,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("QuadOccluder3D", func(ptr gd.Object) any { return classdb.QuadOccluder3D(ptr) })
+	classdb.Register("QuadOccluder3D", func(ptr gd.Object) any { return [1]classdb.QuadOccluder3D{classdb.QuadOccluder3D(ptr)} })
 }

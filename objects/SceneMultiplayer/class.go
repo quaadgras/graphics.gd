@@ -426,7 +426,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneMultiplayer", func(ptr gd.Object) any { return classdb.SceneMultiplayer(ptr) })
+	classdb.Register("SceneMultiplayer", func(ptr gd.Object) any { return [1]classdb.SceneMultiplayer{classdb.SceneMultiplayer(ptr)} })
 }
 
 type Error int

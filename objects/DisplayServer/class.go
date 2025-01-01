@@ -4849,7 +4849,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DisplayServer", func(ptr gd.Object) any { return classdb.DisplayServer(ptr) })
+	classdb.Register("DisplayServer", func(ptr gd.Object) any { return [1]classdb.DisplayServer{classdb.DisplayServer(ptr)} })
 }
 
 type Feature = classdb.DisplayServerFeature

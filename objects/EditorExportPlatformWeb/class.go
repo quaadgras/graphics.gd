@@ -69,5 +69,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlatformWeb", func(ptr gd.Object) any { return classdb.EditorExportPlatformWeb(ptr) })
+	classdb.Register("EditorExportPlatformWeb", func(ptr gd.Object) any {
+		return [1]classdb.EditorExportPlatformWeb{classdb.EditorExportPlatformWeb(ptr)}
+	})
 }

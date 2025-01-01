@@ -127,7 +127,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PackedDataContainer", func(ptr gd.Object) any { return classdb.PackedDataContainer(ptr) })
+	classdb.Register("PackedDataContainer", func(ptr gd.Object) any { return [1]classdb.PackedDataContainer{classdb.PackedDataContainer(ptr)} })
 }
 
 type Error int

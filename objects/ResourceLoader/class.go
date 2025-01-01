@@ -355,7 +355,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceLoader", func(ptr gd.Object) any { return classdb.ResourceLoader(ptr) })
+	classdb.Register("ResourceLoader", func(ptr gd.Object) any { return [1]classdb.ResourceLoader{classdb.ResourceLoader(ptr)} })
 }
 
 type ThreadLoadStatus = classdb.ResourceLoaderThreadLoadStatus

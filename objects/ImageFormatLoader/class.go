@@ -59,7 +59,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageFormatLoader", func(ptr gd.Object) any { return classdb.ImageFormatLoader(ptr) })
+	classdb.Register("ImageFormatLoader", func(ptr gd.Object) any { return [1]classdb.ImageFormatLoader{classdb.ImageFormatLoader(ptr)} })
 }
 
 type LoaderFlags = classdb.ImageFormatLoaderLoaderFlags

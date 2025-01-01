@@ -120,4 +120,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("World2D", func(ptr gd.Object) any { return classdb.World2D(ptr) }) }
+func init() {
+	classdb.Register("World2D", func(ptr gd.Object) any { return [1]classdb.World2D{classdb.World2D(ptr)} })
+}

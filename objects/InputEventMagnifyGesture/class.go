@@ -124,5 +124,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventMagnifyGesture", func(ptr gd.Object) any { return classdb.InputEventMagnifyGesture(ptr) })
+	classdb.Register("InputEventMagnifyGesture", func(ptr gd.Object) any {
+		return [1]classdb.InputEventMagnifyGesture{classdb.InputEventMagnifyGesture(ptr)}
+	})
 }

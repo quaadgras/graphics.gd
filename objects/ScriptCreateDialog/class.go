@@ -131,5 +131,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptCreateDialog", func(ptr gd.Object) any { return classdb.ScriptCreateDialog(ptr) })
+	classdb.Register("ScriptCreateDialog", func(ptr gd.Object) any { return [1]classdb.ScriptCreateDialog{classdb.ScriptCreateDialog(ptr)} })
 }

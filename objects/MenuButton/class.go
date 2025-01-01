@@ -199,5 +199,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MenuButton", func(ptr gd.Object) any { return classdb.MenuButton(ptr) })
+	classdb.Register("MenuButton", func(ptr gd.Object) any { return [1]classdb.MenuButton{classdb.MenuButton(ptr)} })
 }

@@ -416,7 +416,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeerUDP", func(ptr gd.Object) any { return classdb.PacketPeerUDP(ptr) })
+	classdb.Register("PacketPeerUDP", func(ptr gd.Object) any { return [1]classdb.PacketPeerUDP{classdb.PacketPeerUDP(ptr)} })
 }
 
 type Error int

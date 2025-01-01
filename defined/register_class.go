@@ -36,11 +36,11 @@ type Object[T any, S gd.IsClass] struct {
 
 // NameOf returns the defined name for the given [Object]-embedding type.
 func NameOf(T Class) string {
-	return classNameOf(reflect.TypeOf(T))
+	return objects.NameOf(reflect.TypeOf(T))
 }
 
 func NameFor[T Class]() string {
-	return classNameOf(reflect.TypeFor[T]())
+	return objects.NameOf(reflect.TypeFor[T]())
 }
 
 func (class Object[T, S]) super() S {
@@ -125,7 +125,7 @@ func InEditor[T Class]() {
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
-	var rename = classNameOf(classType) // support 'gd' tag for renaming the class within Godot.
+	var rename = objects.NameOf(classType) // support 'gd' tag for renaming the class within Godot.
 	var tool = false
 	var super = reflect.New(superType).Elem().Interface()
 	switch super.(type) {
@@ -138,7 +138,7 @@ func InEditor[T Class]() {
 	}
 	var reference T
 	var className = pointers.Pin(StringName.New(rename))
-	var superName = pointers.Pin(StringName.New(classNameOf(superType)))
+	var superName = pointers.Pin(StringName.New(objects.NameOf(superType)))
 
 	var impl = &classImplementation{
 		Name:           className,
@@ -168,24 +168,6 @@ func InEditor[T Class]() {
 	if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 		registrator.OnRegister()
 	}
-}
-
-func classNameOf(rtype reflect.Type) string {
-	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
-		return classNameOf(rtype.Elem())
-	}
-	if rtype.Kind() == reflect.Struct && rtype.NumField() > 0 {
-		if rtype.Field(0).Anonymous {
-			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
-				return rename
-			}
-			if rtype.Name() == "" {
-				return classNameOf(rtype.Field(0).Type)
-			}
-		}
-		return strings.TrimPrefix(rtype.Name(), "class")
-	}
-	return ""
 }
 
 func convertName(fnName string) string {
@@ -394,15 +376,20 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		}
 		return false
 	}
-	if obj, ok := val.(gd.IsClass); ok {
+	if converted.Kind() == reflect.Array {
+		if !field.IsZero() {
+			field.Interface().(interface{ Free() }).Free()
+		}
+		obj := converted.Interface().(interface {
+			AsObject() gd.Object
+		})
 		ref, ok := gd.As[gd.RefCounted](obj.AsObject())
 		if ok {
 			ref.Reference()
 		}
-		//	field.Addr().Interface().(gd.PointerToClass).SetPointer(mmm.Pin[gd.Pointer](instance.Value.GetKeepAlive().Lifetime, instance.Value.GetKeepAlive().API, mmm.End(obj.AsObject().AsPointer())))
-	} else {
-		field.Set(converted)
+		pointers.Pin(obj.AsObject())
 	}
+	field.Set(converted)
 	if impl, ok := instance.Value.(interface {
 		OnSet(gd.StringName, gd.Variant)
 	}); ok {
@@ -451,7 +438,7 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 		if !field.IsExported() || field.Anonymous {
 			continue
 		}
-		if _, ok := field.Type.MethodByName("AsNode"); ok {
+		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
 			continue
 		}
 		list = append(list, propertyOf(field))
@@ -601,8 +588,6 @@ func (instance *instanceImplementation) ready() {
 
 func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner objects.Node) {
 	type isNode interface {
-		UnsafePointer() unsafe.Pointer
-		AsObject() gd.Object
 		AsNode() Node.Instance
 	}
 	nodeType := reflect.TypeOf([0]isNode{}).Elem()
@@ -635,7 +620,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	path := gd.NewString(name).NodePath()
 	if !Node.Advanced(parent).HasNode(path) {
-		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(classNameOf(field.Type)))
+		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(objects.NameOf(field.Type)))
 		native, ok := gd.ExtensionInstances.Load(pointers.Get(child)[0])
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
@@ -646,13 +631,13 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 			mode = Node.InternalModeFront
 		}
 		Node.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
-		var adding objects.Node = objects.Node{classdb.Node(class.AsObject())}
+		var adding objects.Node = objects.Node{classdb.Node(class.AsNode().AsObject())}
 		Node.Advanced(parent).AddChild(adding, true, mode)
 		Node.Advanced(class.AsNode()).SetOwner(owner)
 		return
 	}
 	var node = Node.Advanced(parent).GetNode(path)
-	if name := node[0].AsObject().GetClass().String(); name != classNameOf(field.Type) {
+	if name := node[0].AsObject().GetClass().String(); name != objects.NameOf(field.Type) {
 		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 	}
 	ref, native := gd.ExtensionInstances.Load(pointers.Get(node[0])[0])
@@ -660,7 +645,10 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		rvalue.Elem().Set(reflect.ValueOf(ref))
 		pointers.End(node[0])
 	} else {
-		*(*gd.Object)(class.UnsafePointer()) = pointers.New[gd.Object](pointers.Get(node[0]))
+		type isUnsafe interface {
+			UnsafePointer() unsafe.Pointer
+		}
+		*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.New[gd.Object](pointers.Get(node[0]))
 		pointers.End(node[0])
 	}
 }

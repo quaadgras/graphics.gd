@@ -1078,7 +1078,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Skeleton3D", func(ptr gd.Object) any { return classdb.Skeleton3D(ptr) })
+	classdb.Register("Skeleton3D", func(ptr gd.Object) any { return [1]classdb.Skeleton3D{classdb.Skeleton3D(ptr)} })
 }
 
 type ModifierCallbackModeProcess = classdb.Skeleton3DModifierCallbackModeProcess

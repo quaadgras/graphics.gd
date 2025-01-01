@@ -341,5 +341,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Parallax2D", func(ptr gd.Object) any { return classdb.Parallax2D(ptr) })
+	classdb.Register("Parallax2D", func(ptr gd.Object) any { return [1]classdb.Parallax2D{classdb.Parallax2D(ptr)} })
 }

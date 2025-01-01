@@ -84,5 +84,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeVectorCompose", func(ptr gd.Object) any { return classdb.VisualShaderNodeVectorCompose(ptr) })
+	classdb.Register("VisualShaderNodeVectorCompose", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeVectorCompose{classdb.VisualShaderNodeVectorCompose(ptr)}
+	})
 }

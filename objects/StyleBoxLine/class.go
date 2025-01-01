@@ -209,5 +209,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxLine", func(ptr gd.Object) any { return classdb.StyleBoxLine(ptr) })
+	classdb.Register("StyleBoxLine", func(ptr gd.Object) any { return [1]classdb.StyleBoxLine{classdb.StyleBoxLine(ptr)} })
 }

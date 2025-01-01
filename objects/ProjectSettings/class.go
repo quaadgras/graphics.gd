@@ -618,7 +618,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ProjectSettings", func(ptr gd.Object) any { return classdb.ProjectSettings(ptr) })
+	classdb.Register("ProjectSettings", func(ptr gd.Object) any { return [1]classdb.ProjectSettings{classdb.ProjectSettings(ptr)} })
 }
 
 type Error int

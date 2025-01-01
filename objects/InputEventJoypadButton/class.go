@@ -142,7 +142,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventJoypadButton", func(ptr gd.Object) any { return classdb.InputEventJoypadButton(ptr) })
+	classdb.Register("InputEventJoypadButton", func(ptr gd.Object) any { return [1]classdb.InputEventJoypadButton{classdb.InputEventJoypadButton(ptr)} })
 }
 
 type JoyButton int

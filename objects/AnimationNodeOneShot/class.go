@@ -368,7 +368,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeOneShot", func(ptr gd.Object) any { return classdb.AnimationNodeOneShot(ptr) })
+	classdb.Register("AnimationNodeOneShot", func(ptr gd.Object) any { return [1]classdb.AnimationNodeOneShot{classdb.AnimationNodeOneShot(ptr)} })
 }
 
 type OneShotRequest = classdb.AnimationNodeOneShotOneShotRequest

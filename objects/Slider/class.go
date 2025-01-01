@@ -189,4 +189,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRange(), name)
 	}
 }
-func init() { classdb.Register("Slider", func(ptr gd.Object) any { return classdb.Slider(ptr) }) }
+func init() {
+	classdb.Register("Slider", func(ptr gd.Object) any { return [1]classdb.Slider{classdb.Slider(ptr)} })
+}

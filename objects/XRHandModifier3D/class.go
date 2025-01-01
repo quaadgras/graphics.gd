@@ -125,7 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRHandModifier3D", func(ptr gd.Object) any { return classdb.XRHandModifier3D(ptr) })
+	classdb.Register("XRHandModifier3D", func(ptr gd.Object) any { return [1]classdb.XRHandModifier3D{classdb.XRHandModifier3D(ptr)} })
 }
 
 type BoneUpdate = classdb.XRHandModifier3DBoneUpdate

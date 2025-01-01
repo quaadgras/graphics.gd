@@ -116,5 +116,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkeletonModification2DStackHolder", func(ptr gd.Object) any { return classdb.SkeletonModification2DStackHolder(ptr) })
+	classdb.Register("SkeletonModification2DStackHolder", func(ptr gd.Object) any {
+		return [1]classdb.SkeletonModification2DStackHolder{classdb.SkeletonModification2DStackHolder(ptr)}
+	})
 }

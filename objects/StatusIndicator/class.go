@@ -191,5 +191,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StatusIndicator", func(ptr gd.Object) any { return classdb.StatusIndicator(ptr) })
+	classdb.Register("StatusIndicator", func(ptr gd.Object) any { return [1]classdb.StatusIndicator{classdb.StatusIndicator(ptr)} })
 }

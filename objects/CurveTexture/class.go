@@ -145,7 +145,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CurveTexture", func(ptr gd.Object) any { return classdb.CurveTexture(ptr) })
+	classdb.Register("CurveTexture", func(ptr gd.Object) any { return [1]classdb.CurveTexture{classdb.CurveTexture(ptr)} })
 }
 
 type TextureMode = classdb.CurveTextureTextureMode

@@ -91,5 +91,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeReroute", func(ptr gd.Object) any { return classdb.VisualShaderNodeReroute(ptr) })
+	classdb.Register("VisualShaderNodeReroute", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeReroute{classdb.VisualShaderNodeReroute(ptr)}
+	})
 }

@@ -1047,7 +1047,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioServer", func(ptr gd.Object) any { return classdb.AudioServer(ptr) })
+	classdb.Register("AudioServer", func(ptr gd.Object) any { return [1]classdb.AudioServer{classdb.AudioServer(ptr)} })
 }
 
 type SpeakerMode = classdb.AudioServerSpeakerMode

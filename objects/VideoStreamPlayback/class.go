@@ -461,5 +461,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VideoStreamPlayback", func(ptr gd.Object) any { return classdb.VideoStreamPlayback(ptr) })
+	classdb.Register("VideoStreamPlayback", func(ptr gd.Object) any { return [1]classdb.VideoStreamPlayback{classdb.VideoStreamPlayback(ptr)} })
 }

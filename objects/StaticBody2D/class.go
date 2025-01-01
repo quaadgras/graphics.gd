@@ -168,5 +168,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StaticBody2D", func(ptr gd.Object) any { return classdb.StaticBody2D(ptr) })
+	classdb.Register("StaticBody2D", func(ptr gd.Object) any { return [1]classdb.StaticBody2D{classdb.StaticBody2D(ptr)} })
 }

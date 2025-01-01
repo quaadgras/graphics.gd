@@ -93,5 +93,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompressedCubemap", func(ptr gd.Object) any { return classdb.CompressedCubemap(ptr) })
+	classdb.Register("CompressedCubemap", func(ptr gd.Object) any { return [1]classdb.CompressedCubemap{classdb.CompressedCubemap(ptr)} })
 }

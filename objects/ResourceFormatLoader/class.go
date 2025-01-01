@@ -461,7 +461,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceFormatLoader", func(ptr gd.Object) any { return classdb.ResourceFormatLoader(ptr) })
+	classdb.Register("ResourceFormatLoader", func(ptr gd.Object) any { return [1]classdb.ResourceFormatLoader{classdb.ResourceFormatLoader(ptr)} })
 }
 
 type CacheMode = classdb.ResourceFormatLoaderCacheMode

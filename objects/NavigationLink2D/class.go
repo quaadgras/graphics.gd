@@ -400,5 +400,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationLink2D", func(ptr gd.Object) any { return classdb.NavigationLink2D(ptr) })
+	classdb.Register("NavigationLink2D", func(ptr gd.Object) any { return [1]classdb.NavigationLink2D{classdb.NavigationLink2D(ptr)} })
 }

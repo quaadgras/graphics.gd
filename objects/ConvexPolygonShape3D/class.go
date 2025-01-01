@@ -101,5 +101,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConvexPolygonShape3D", func(ptr gd.Object) any { return classdb.ConvexPolygonShape3D(ptr) })
+	classdb.Register("ConvexPolygonShape3D", func(ptr gd.Object) any { return [1]classdb.ConvexPolygonShape3D{classdb.ConvexPolygonShape3D(ptr)} })
 }

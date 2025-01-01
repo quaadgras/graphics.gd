@@ -181,5 +181,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourcePreloader", func(ptr gd.Object) any { return classdb.ResourcePreloader(ptr) })
+	classdb.Register("ResourcePreloader", func(ptr gd.Object) any { return [1]classdb.ResourcePreloader{classdb.ResourcePreloader(ptr)} })
 }

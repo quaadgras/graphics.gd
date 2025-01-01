@@ -105,5 +105,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CenterContainer", func(ptr gd.Object) any { return classdb.CenterContainer(ptr) })
+	classdb.Register("CenterContainer", func(ptr gd.Object) any { return [1]classdb.CenterContainer{classdb.CenterContainer(ptr)} })
 }

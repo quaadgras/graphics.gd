@@ -198,5 +198,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRIPBinding", func(ptr gd.Object) any { return classdb.OpenXRIPBinding(ptr) })
+	classdb.Register("OpenXRIPBinding", func(ptr gd.Object) any { return [1]classdb.OpenXRIPBinding{classdb.OpenXRIPBinding(ptr)} })
 }

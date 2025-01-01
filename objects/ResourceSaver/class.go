@@ -138,7 +138,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceSaver", func(ptr gd.Object) any { return classdb.ResourceSaver(ptr) })
+	classdb.Register("ResourceSaver", func(ptr gd.Object) any { return [1]classdb.ResourceSaver{classdb.ResourceSaver(ptr)} })
 }
 
 type SaverFlags = classdb.ResourceSaverSaverFlags

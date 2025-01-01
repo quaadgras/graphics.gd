@@ -182,5 +182,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectLimiter", func(ptr gd.Object) any { return classdb.AudioEffectLimiter(ptr) })
+	classdb.Register("AudioEffectLimiter", func(ptr gd.Object) any { return [1]classdb.AudioEffectLimiter{classdb.AudioEffectLimiter(ptr)} })
 }

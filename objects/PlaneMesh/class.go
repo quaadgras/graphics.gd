@@ -212,7 +212,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() { classdb.Register("PlaneMesh", func(ptr gd.Object) any { return classdb.PlaneMesh(ptr) }) }
+func init() {
+	classdb.Register("PlaneMesh", func(ptr gd.Object) any { return [1]classdb.PlaneMesh{classdb.PlaneMesh(ptr)} })
+}
 
 type Orientation = classdb.PlaneMeshOrientation
 

@@ -149,7 +149,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("X509Certificate", func(ptr gd.Object) any { return classdb.X509Certificate(ptr) })
+	classdb.Register("X509Certificate", func(ptr gd.Object) any { return [1]classdb.X509Certificate{classdb.X509Certificate(ptr)} })
 }
 
 type Error int

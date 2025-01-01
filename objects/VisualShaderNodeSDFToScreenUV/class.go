@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeSDFToScreenUV", func(ptr gd.Object) any { return classdb.VisualShaderNodeSDFToScreenUV(ptr) })
+	classdb.Register("VisualShaderNodeSDFToScreenUV", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeSDFToScreenUV{classdb.VisualShaderNodeSDFToScreenUV(ptr)}
+	})
 }

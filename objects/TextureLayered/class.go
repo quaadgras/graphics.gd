@@ -425,7 +425,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureLayered", func(ptr gd.Object) any { return classdb.TextureLayered(ptr) })
+	classdb.Register("TextureLayered", func(ptr gd.Object) any { return [1]classdb.TextureLayered{classdb.TextureLayered(ptr)} })
 }
 
 type LayeredType = classdb.TextureLayeredLayeredType

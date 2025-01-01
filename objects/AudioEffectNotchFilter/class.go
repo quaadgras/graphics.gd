@@ -82,5 +82,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectNotchFilter", func(ptr gd.Object) any { return classdb.AudioEffectNotchFilter(ptr) })
+	classdb.Register("AudioEffectNotchFilter", func(ptr gd.Object) any { return [1]classdb.AudioEffectNotchFilter{classdb.AudioEffectNotchFilter(ptr)} })
 }

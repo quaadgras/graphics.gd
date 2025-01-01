@@ -77,5 +77,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpotLight3D", func(ptr gd.Object) any { return classdb.SpotLight3D(ptr) })
+	classdb.Register("SpotLight3D", func(ptr gd.Object) any { return [1]classdb.SpotLight3D{classdb.SpotLight3D(ptr)} })
 }

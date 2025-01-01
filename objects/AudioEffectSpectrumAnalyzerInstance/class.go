@@ -97,7 +97,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any { return classdb.AudioEffectSpectrumAnalyzerInstance(ptr) })
+	classdb.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectSpectrumAnalyzerInstance{classdb.AudioEffectSpectrumAnalyzerInstance(ptr)}
+	})
 }
 
 type MagnitudeMode = classdb.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode

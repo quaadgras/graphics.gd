@@ -101,7 +101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeUVFunc", func(ptr gd.Object) any { return classdb.VisualShaderNodeUVFunc(ptr) })
+	classdb.Register("VisualShaderNodeUVFunc", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeUVFunc{classdb.VisualShaderNodeUVFunc(ptr)} })
 }
 
 type Function = classdb.VisualShaderNodeUVFuncFunction

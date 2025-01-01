@@ -194,5 +194,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ColorPickerButton", func(ptr gd.Object) any { return classdb.ColorPickerButton(ptr) })
+	classdb.Register("ColorPickerButton", func(ptr gd.Object) any { return [1]classdb.ColorPickerButton{classdb.ColorPickerButton(ptr)} })
 }

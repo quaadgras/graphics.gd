@@ -751,7 +751,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorImportPlugin", func(ptr gd.Object) any { return classdb.EditorImportPlugin(ptr) })
+	classdb.Register("EditorImportPlugin", func(ptr gd.Object) any { return [1]classdb.EditorImportPlugin{classdb.EditorImportPlugin(ptr)} })
 }
 
 type Error int

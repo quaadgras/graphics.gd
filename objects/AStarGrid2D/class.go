@@ -703,7 +703,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AStarGrid2D", func(ptr gd.Object) any { return classdb.AStarGrid2D(ptr) })
+	classdb.Register("AStarGrid2D", func(ptr gd.Object) any { return [1]classdb.AStarGrid2D{classdb.AStarGrid2D(ptr)} })
 }
 
 type Heuristic = classdb.AStarGrid2DHeuristic

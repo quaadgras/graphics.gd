@@ -3478,7 +3478,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsCanvasItem(), name)
 	}
 }
-func init() { classdb.Register("Control", func(ptr gd.Object) any { return classdb.Control(ptr) }) }
+func init() {
+	classdb.Register("Control", func(ptr gd.Object) any { return [1]classdb.Control{classdb.Control(ptr)} })
+}
 
 type FocusMode = classdb.ControlFocusMode
 

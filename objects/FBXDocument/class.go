@@ -74,5 +74,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FBXDocument", func(ptr gd.Object) any { return classdb.FBXDocument(ptr) })
+	classdb.Register("FBXDocument", func(ptr gd.Object) any { return [1]classdb.FBXDocument{classdb.FBXDocument(ptr)} })
 }

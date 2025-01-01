@@ -1405,7 +1405,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("ItemList", func(ptr gd.Object) any { return classdb.ItemList(ptr) }) }
+func init() {
+	classdb.Register("ItemList", func(ptr gd.Object) any { return [1]classdb.ItemList{classdb.ItemList(ptr)} })
+}
 
 type IconMode = classdb.ItemListIconMode
 

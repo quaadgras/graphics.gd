@@ -637,4 +637,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Polygon2D", func(ptr gd.Object) any { return classdb.Polygon2D(ptr) }) }
+func init() {
+	classdb.Register("Polygon2D", func(ptr gd.Object) any { return [1]classdb.Polygon2D{classdb.Polygon2D(ptr)} })
+}

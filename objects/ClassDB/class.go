@@ -641,7 +641,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("ClassDB", func(ptr gd.Object) any { return classdb.ClassDB(ptr) }) }
+func init() {
+	classdb.Register("ClassDB", func(ptr gd.Object) any { return [1]classdb.ClassDB{classdb.ClassDB(ptr)} })
+}
 
 type Error int
 

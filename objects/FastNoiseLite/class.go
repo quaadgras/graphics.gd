@@ -638,7 +638,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FastNoiseLite", func(ptr gd.Object) any { return classdb.FastNoiseLite(ptr) })
+	classdb.Register("FastNoiseLite", func(ptr gd.Object) any { return [1]classdb.FastNoiseLite{classdb.FastNoiseLite(ptr)} })
 }
 
 type NoiseType = classdb.FastNoiseLiteNoiseType

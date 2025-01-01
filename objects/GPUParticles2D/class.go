@@ -815,7 +815,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GPUParticles2D", func(ptr gd.Object) any { return classdb.GPUParticles2D(ptr) })
+	classdb.Register("GPUParticles2D", func(ptr gd.Object) any { return [1]classdb.GPUParticles2D{classdb.GPUParticles2D(ptr)} })
 }
 
 type DrawOrder = classdb.GPUParticles2DDrawOrder

@@ -157,7 +157,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any { return classdb.VisualShaderNodeDerivativeFunc(ptr) })
+	classdb.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeDerivativeFunc{classdb.VisualShaderNodeDerivativeFunc(ptr)}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeDerivativeFuncOpType

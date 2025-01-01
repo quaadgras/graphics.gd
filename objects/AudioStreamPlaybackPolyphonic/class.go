@@ -182,5 +182,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlaybackPolyphonic", func(ptr gd.Object) any { return classdb.AudioStreamPlaybackPolyphonic(ptr) })
+	classdb.Register("AudioStreamPlaybackPolyphonic", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPlaybackPolyphonic{classdb.AudioStreamPlaybackPolyphonic(ptr)}
+	})
 }

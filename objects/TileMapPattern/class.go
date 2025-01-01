@@ -272,5 +272,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileMapPattern", func(ptr gd.Object) any { return classdb.TileMapPattern(ptr) })
+	classdb.Register("TileMapPattern", func(ptr gd.Object) any { return [1]classdb.TileMapPattern{classdb.TileMapPattern(ptr)} })
 }

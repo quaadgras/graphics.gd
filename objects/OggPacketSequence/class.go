@@ -167,5 +167,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OggPacketSequence", func(ptr gd.Object) any { return classdb.OggPacketSequence(ptr) })
+	classdb.Register("OggPacketSequence", func(ptr gd.Object) any { return [1]classdb.OggPacketSequence{classdb.OggPacketSequence(ptr)} })
 }

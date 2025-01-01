@@ -73,5 +73,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeRemap", func(ptr gd.Object) any { return classdb.VisualShaderNodeRemap(ptr) })
+	classdb.Register("VisualShaderNodeRemap", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeRemap{classdb.VisualShaderNodeRemap(ptr)} })
 }

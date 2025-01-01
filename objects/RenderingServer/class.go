@@ -10910,7 +10910,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderingServer", func(ptr gd.Object) any { return classdb.RenderingServer(ptr) })
+	classdb.Register("RenderingServer", func(ptr gd.Object) any { return [1]classdb.RenderingServer{classdb.RenderingServer(ptr)} })
 }
 
 type TextureLayeredType = classdb.RenderingServerTextureLayeredType

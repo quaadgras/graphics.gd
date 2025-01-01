@@ -76,5 +76,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OfflineMultiplayerPeer", func(ptr gd.Object) any { return classdb.OfflineMultiplayerPeer(ptr) })
+	classdb.Register("OfflineMultiplayerPeer", func(ptr gd.Object) any { return [1]classdb.OfflineMultiplayerPeer{classdb.OfflineMultiplayerPeer(ptr)} })
 }

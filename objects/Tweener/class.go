@@ -62,4 +62,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("Tweener", func(ptr gd.Object) any { return classdb.Tweener(ptr) }) }
+func init() {
+	classdb.Register("Tweener", func(ptr gd.Object) any { return [1]classdb.Tweener{classdb.Tweener(ptr)} })
+}

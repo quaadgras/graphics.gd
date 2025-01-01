@@ -78,5 +78,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderSceneBuffers", func(ptr gd.Object) any { return classdb.RenderSceneBuffers(ptr) })
+	classdb.Register("RenderSceneBuffers", func(ptr gd.Object) any { return [1]classdb.RenderSceneBuffers{classdb.RenderSceneBuffers(ptr)} })
 }

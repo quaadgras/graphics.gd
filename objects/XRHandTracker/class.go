@@ -335,7 +335,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRHandTracker", func(ptr gd.Object) any { return classdb.XRHandTracker(ptr) })
+	classdb.Register("XRHandTracker", func(ptr gd.Object) any { return [1]classdb.XRHandTracker{classdb.XRHandTracker(ptr)} })
 }
 
 type HandTrackingSource = classdb.XRHandTrackerHandTrackingSource

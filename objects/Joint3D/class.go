@@ -191,4 +191,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("Joint3D", func(ptr gd.Object) any { return classdb.Joint3D(ptr) }) }
+func init() {
+	classdb.Register("Joint3D", func(ptr gd.Object) any { return [1]classdb.Joint3D{classdb.Joint3D(ptr)} })
+}

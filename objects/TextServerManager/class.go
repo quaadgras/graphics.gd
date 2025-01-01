@@ -218,5 +218,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerManager", func(ptr gd.Object) any { return classdb.TextServerManager(ptr) })
+	classdb.Register("TextServerManager", func(ptr gd.Object) any { return [1]classdb.TextServerManager{classdb.TextServerManager(ptr)} })
 }

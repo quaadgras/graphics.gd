@@ -66,5 +66,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterWAV", func(ptr gd.Object) any { return classdb.ResourceImporterWAV(ptr) })
+	classdb.Register("ResourceImporterWAV", func(ptr gd.Object) any { return [1]classdb.ResourceImporterWAV{classdb.ResourceImporterWAV(ptr)} })
 }

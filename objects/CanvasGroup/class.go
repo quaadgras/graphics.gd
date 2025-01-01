@@ -170,5 +170,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasGroup", func(ptr gd.Object) any { return classdb.CanvasGroup(ptr) })
+	classdb.Register("CanvasGroup", func(ptr gd.Object) any { return [1]classdb.CanvasGroup{classdb.CanvasGroup(ptr)} })
 }

@@ -386,5 +386,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEvent", func(ptr gd.Object) any { return classdb.InputEvent(ptr) })
+	classdb.Register("InputEvent", func(ptr gd.Object) any { return [1]classdb.InputEvent{classdb.InputEvent(ptr)} })
 }

@@ -101,7 +101,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeSample3D", func(ptr gd.Object) any { return classdb.VisualShaderNodeSample3D(ptr) })
+	classdb.Register("VisualShaderNodeSample3D", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeSample3D{classdb.VisualShaderNodeSample3D(ptr)}
+	})
 }
 
 type Source = classdb.VisualShaderNodeSample3DSource

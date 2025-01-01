@@ -251,7 +251,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerTCP", func(ptr gd.Object) any { return classdb.StreamPeerTCP(ptr) })
+	classdb.Register("StreamPeerTCP", func(ptr gd.Object) any { return [1]classdb.StreamPeerTCP{classdb.StreamPeerTCP(ptr)} })
 }
 
 type Status = classdb.StreamPeerTCPStatus

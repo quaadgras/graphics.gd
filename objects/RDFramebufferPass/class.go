@@ -195,5 +195,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDFramebufferPass", func(ptr gd.Object) any { return classdb.RDFramebufferPass(ptr) })
+	classdb.Register("RDFramebufferPass", func(ptr gd.Object) any { return [1]classdb.RDFramebufferPass{classdb.RDFramebufferPass(ptr)} })
 }

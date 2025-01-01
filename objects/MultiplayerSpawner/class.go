@@ -253,5 +253,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerSpawner", func(ptr gd.Object) any { return classdb.MultiplayerSpawner(ptr) })
+	classdb.Register("MultiplayerSpawner", func(ptr gd.Object) any { return [1]classdb.MultiplayerSpawner{classdb.MultiplayerSpawner(ptr)} })
 }

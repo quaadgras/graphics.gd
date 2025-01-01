@@ -287,4 +287,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Noise", func(ptr gd.Object) any { return classdb.Noise(ptr) }) }
+func init() {
+	classdb.Register("Noise", func(ptr gd.Object) any { return [1]classdb.Noise{classdb.Noise(ptr)} })
+}

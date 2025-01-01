@@ -81,5 +81,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FramebufferCacheRD", func(ptr gd.Object) any { return classdb.FramebufferCacheRD(ptr) })
+	classdb.Register("FramebufferCacheRD", func(ptr gd.Object) any { return [1]classdb.FramebufferCacheRD{classdb.FramebufferCacheRD(ptr)} })
 }

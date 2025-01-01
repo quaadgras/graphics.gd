@@ -575,7 +575,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsMesh(), name)
 	}
 }
-func init() { classdb.Register("ArrayMesh", func(ptr gd.Object) any { return classdb.ArrayMesh(ptr) }) }
+func init() {
+	classdb.Register("ArrayMesh", func(ptr gd.Object) any { return [1]classdb.ArrayMesh{classdb.ArrayMesh(ptr)} })
+}
 
 type Error int
 

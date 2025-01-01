@@ -564,7 +564,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeStateMachine", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachine(ptr) })
+	classdb.Register("AnimationNodeStateMachine", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeStateMachine{classdb.AnimationNodeStateMachine(ptr)}
+	})
 }
 
 type StateMachineType = classdb.AnimationNodeStateMachineStateMachineType

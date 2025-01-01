@@ -553,4 +553,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Curve2D", func(ptr gd.Object) any { return classdb.Curve2D(ptr) }) }
+func init() {
+	classdb.Register("Curve2D", func(ptr gd.Object) any { return [1]classdb.Curve2D{classdb.Curve2D(ptr)} })
+}

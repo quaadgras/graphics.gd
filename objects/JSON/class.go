@@ -340,7 +340,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("JSON", func(ptr gd.Object) any { return classdb.JSON(ptr) }) }
+func init() {
+	classdb.Register("JSON", func(ptr gd.Object) any { return [1]classdb.JSON{classdb.JSON(ptr)} })
+}
 
 type Error int
 

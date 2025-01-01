@@ -630,5 +630,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDPipelineDepthStencilState", func(ptr gd.Object) any { return classdb.RDPipelineDepthStencilState(ptr) })
+	classdb.Register("RDPipelineDepthStencilState", func(ptr gd.Object) any {
+		return [1]classdb.RDPipelineDepthStencilState{classdb.RDPipelineDepthStencilState(ptr)}
+	})
 }

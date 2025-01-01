@@ -222,5 +222,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorPaths", func(ptr gd.Object) any { return classdb.EditorPaths(ptr) })
+	classdb.Register("EditorPaths", func(ptr gd.Object) any { return [1]classdb.EditorPaths{classdb.EditorPaths(ptr)} })
 }

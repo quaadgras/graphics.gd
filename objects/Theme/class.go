@@ -1535,7 +1535,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Theme", func(ptr gd.Object) any { return classdb.Theme(ptr) }) }
+func init() {
+	classdb.Register("Theme", func(ptr gd.Object) any { return [1]classdb.Theme{classdb.Theme(ptr)} })
+}
 
 type DataType = classdb.ThemeDataType
 

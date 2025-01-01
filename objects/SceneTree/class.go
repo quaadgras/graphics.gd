@@ -890,7 +890,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsMainLoop(), name)
 	}
 }
-func init() { classdb.Register("SceneTree", func(ptr gd.Object) any { return classdb.SceneTree(ptr) }) }
+func init() {
+	classdb.Register("SceneTree", func(ptr gd.Object) any { return [1]classdb.SceneTree{classdb.SceneTree(ptr)} })
+}
 
 type GroupCallFlags = classdb.SceneTreeGroupCallFlags
 

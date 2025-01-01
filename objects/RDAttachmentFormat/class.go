@@ -139,5 +139,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDAttachmentFormat", func(ptr gd.Object) any { return classdb.RDAttachmentFormat(ptr) })
+	classdb.Register("RDAttachmentFormat", func(ptr gd.Object) any { return [1]classdb.RDAttachmentFormat{classdb.RDAttachmentFormat(ptr)} })
 }

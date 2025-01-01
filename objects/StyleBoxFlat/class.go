@@ -638,7 +638,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxFlat", func(ptr gd.Object) any { return classdb.StyleBoxFlat(ptr) })
+	classdb.Register("StyleBoxFlat", func(ptr gd.Object) any { return [1]classdb.StyleBoxFlat{classdb.StyleBoxFlat(ptr)} })
 }
 
 type Corner int

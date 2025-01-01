@@ -209,5 +209,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRCompositionLayerEquirect", func(ptr gd.Object) any { return classdb.OpenXRCompositionLayerEquirect(ptr) })
+	classdb.Register("OpenXRCompositionLayerEquirect", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRCompositionLayerEquirect{classdb.OpenXRCompositionLayerEquirect(ptr)}
+	})
 }

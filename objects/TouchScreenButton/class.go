@@ -342,7 +342,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TouchScreenButton", func(ptr gd.Object) any { return classdb.TouchScreenButton(ptr) })
+	classdb.Register("TouchScreenButton", func(ptr gd.Object) any { return [1]classdb.TouchScreenButton{classdb.TouchScreenButton(ptr)} })
 }
 
 type VisibilityMode = classdb.TouchScreenButtonVisibilityMode

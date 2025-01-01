@@ -2395,7 +2395,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderingDevice", func(ptr gd.Object) any { return classdb.RenderingDevice(ptr) })
+	classdb.Register("RenderingDevice", func(ptr gd.Object) any { return [1]classdb.RenderingDevice{classdb.RenderingDevice(ptr)} })
 }
 
 type DeviceType = classdb.RenderingDeviceDeviceType

@@ -207,7 +207,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CollisionPolygon2D", func(ptr gd.Object) any { return classdb.CollisionPolygon2D(ptr) })
+	classdb.Register("CollisionPolygon2D", func(ptr gd.Object) any { return [1]classdb.CollisionPolygon2D{classdb.CollisionPolygon2D(ptr)} })
 }
 
 type BuildMode = classdb.CollisionPolygon2DBuildMode

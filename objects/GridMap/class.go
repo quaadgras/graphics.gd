@@ -875,4 +875,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("GridMap", func(ptr gd.Object) any { return classdb.GridMap(ptr) }) }
+func init() {
+	classdb.Register("GridMap", func(ptr gd.Object) any { return [1]classdb.GridMap{classdb.GridMap(ptr)} })
+}

@@ -697,7 +697,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNode", func(ptr gd.Object) any { return classdb.AnimationNode(ptr) })
+	classdb.Register("AnimationNode", func(ptr gd.Object) any { return [1]classdb.AnimationNode{classdb.AnimationNode(ptr)} })
 }
 
 type FilterAction = classdb.AnimationNodeFilterAction

@@ -236,5 +236,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorDebuggerSession", func(ptr gd.Object) any { return classdb.EditorDebuggerSession(ptr) })
+	classdb.Register("EditorDebuggerSession", func(ptr gd.Object) any { return [1]classdb.EditorDebuggerSession{classdb.EditorDebuggerSession(ptr)} })
 }

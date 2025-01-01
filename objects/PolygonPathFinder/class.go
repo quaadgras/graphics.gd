@@ -177,5 +177,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PolygonPathFinder", func(ptr gd.Object) any { return classdb.PolygonPathFinder(ptr) })
+	classdb.Register("PolygonPathFinder", func(ptr gd.Object) any { return [1]classdb.PolygonPathFinder{classdb.PolygonPathFinder(ptr)} })
 }

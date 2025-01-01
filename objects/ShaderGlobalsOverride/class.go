@@ -62,5 +62,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShaderGlobalsOverride", func(ptr gd.Object) any { return classdb.ShaderGlobalsOverride(ptr) })
+	classdb.Register("ShaderGlobalsOverride", func(ptr gd.Object) any { return [1]classdb.ShaderGlobalsOverride{classdb.ShaderGlobalsOverride(ptr)} })
 }

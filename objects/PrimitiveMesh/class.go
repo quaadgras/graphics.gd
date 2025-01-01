@@ -308,5 +308,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PrimitiveMesh", func(ptr gd.Object) any { return classdb.PrimitiveMesh(ptr) })
+	classdb.Register("PrimitiveMesh", func(ptr gd.Object) any { return [1]classdb.PrimitiveMesh{classdb.PrimitiveMesh(ptr)} })
 }

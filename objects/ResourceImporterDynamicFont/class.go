@@ -72,5 +72,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterDynamicFont", func(ptr gd.Object) any { return classdb.ResourceImporterDynamicFont(ptr) })
+	classdb.Register("ResourceImporterDynamicFont", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterDynamicFont{classdb.ResourceImporterDynamicFont(ptr)}
+	})
 }

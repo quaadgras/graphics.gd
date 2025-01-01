@@ -270,7 +270,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NinePatchRect", func(ptr gd.Object) any { return classdb.NinePatchRect(ptr) })
+	classdb.Register("NinePatchRect", func(ptr gd.Object) any { return [1]classdb.NinePatchRect{classdb.NinePatchRect(ptr)} })
 }
 
 type AxisStretchMode = classdb.NinePatchRectAxisStretchMode

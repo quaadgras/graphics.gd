@@ -136,4 +136,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("XRVRS", func(ptr gd.Object) any { return classdb.XRVRS(ptr) }) }
+func init() {
+	classdb.Register("XRVRS", func(ptr gd.Object) any { return [1]classdb.XRVRS{classdb.XRVRS(ptr)} })
+}

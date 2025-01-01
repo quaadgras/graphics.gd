@@ -166,5 +166,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorInspector", func(ptr gd.Object) any { return classdb.EditorInspector(ptr) })
+	classdb.Register("EditorInspector", func(ptr gd.Object) any { return [1]classdb.EditorInspector{classdb.EditorInspector(ptr)} })
 }

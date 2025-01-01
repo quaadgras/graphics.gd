@@ -1867,7 +1867,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() { classdb.Register("Viewport", func(ptr gd.Object) any { return classdb.Viewport(ptr) }) }
+func init() {
+	classdb.Register("Viewport", func(ptr gd.Object) any { return [1]classdb.Viewport{classdb.Viewport(ptr)} })
+}
 
 type PositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv
 

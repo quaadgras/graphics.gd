@@ -505,4 +505,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsTexture(), name)
 	}
 }
-func init() { classdb.Register("Texture2D", func(ptr gd.Object) any { return classdb.Texture2D(ptr) }) }
+func init() {
+	classdb.Register("Texture2D", func(ptr gd.Object) any { return [1]classdb.Texture2D{classdb.Texture2D(ptr)} })
+}

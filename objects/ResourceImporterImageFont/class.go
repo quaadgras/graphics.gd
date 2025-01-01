@@ -71,5 +71,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterImageFont", func(ptr gd.Object) any { return classdb.ResourceImporterImageFont(ptr) })
+	classdb.Register("ResourceImporterImageFont", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterImageFont{classdb.ResourceImporterImageFont(ptr)}
+	})
 }

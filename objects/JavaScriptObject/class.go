@@ -89,5 +89,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JavaScriptObject", func(ptr gd.Object) any { return classdb.JavaScriptObject(ptr) })
+	classdb.Register("JavaScriptObject", func(ptr gd.Object) any { return [1]classdb.JavaScriptObject{classdb.JavaScriptObject(ptr)} })
 }

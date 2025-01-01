@@ -253,7 +253,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNode", func(ptr gd.Object) any { return classdb.VisualShaderNode(ptr) })
+	classdb.Register("VisualShaderNode", func(ptr gd.Object) any { return [1]classdb.VisualShaderNode{classdb.VisualShaderNode(ptr)} })
 }
 
 type PortType = classdb.VisualShaderNodePortType

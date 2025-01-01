@@ -4750,7 +4750,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServer", func(ptr gd.Object) any { return classdb.TextServer(ptr) })
+	classdb.Register("TextServer", func(ptr gd.Object) any { return [1]classdb.TextServer{classdb.TextServer(ptr)} })
 }
 
 type FontAntialiasing = classdb.TextServerFontAntialiasing

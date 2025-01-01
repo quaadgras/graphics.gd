@@ -128,5 +128,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InstancePlaceholder", func(ptr gd.Object) any { return classdb.InstancePlaceholder(ptr) })
+	classdb.Register("InstancePlaceholder", func(ptr gd.Object) any { return [1]classdb.InstancePlaceholder{classdb.InstancePlaceholder(ptr)} })
 }

@@ -173,5 +173,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CollisionPolygon3D", func(ptr gd.Object) any { return classdb.CollisionPolygon3D(ptr) })
+	classdb.Register("CollisionPolygon3D", func(ptr gd.Object) any { return [1]classdb.CollisionPolygon3D{classdb.CollisionPolygon3D(ptr)} })
 }

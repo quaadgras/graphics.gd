@@ -231,5 +231,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HeightMapShape3D", func(ptr gd.Object) any { return classdb.HeightMapShape3D(ptr) })
+	classdb.Register("HeightMapShape3D", func(ptr gd.Object) any { return [1]classdb.HeightMapShape3D{classdb.HeightMapShape3D(ptr)} })
 }

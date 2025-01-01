@@ -437,4 +437,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Range", func(ptr gd.Object) any { return classdb.Range(ptr) }) }
+func init() {
+	classdb.Register("Range", func(ptr gd.Object) any { return [1]classdb.Range{classdb.Range(ptr)} })
+}

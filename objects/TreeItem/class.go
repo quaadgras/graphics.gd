@@ -2293,7 +2293,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("TreeItem", func(ptr gd.Object) any { return classdb.TreeItem(ptr) }) }
+func init() {
+	classdb.Register("TreeItem", func(ptr gd.Object) any { return [1]classdb.TreeItem{classdb.TreeItem(ptr)} })
+}
 
 type TreeCellMode = classdb.TreeItemTreeCellMode
 

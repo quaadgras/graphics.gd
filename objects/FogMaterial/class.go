@@ -237,5 +237,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FogMaterial", func(ptr gd.Object) any { return classdb.FogMaterial(ptr) })
+	classdb.Register("FogMaterial", func(ptr gd.Object) any { return [1]classdb.FogMaterial{classdb.FogMaterial(ptr)} })
 }

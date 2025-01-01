@@ -160,5 +160,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EngineProfiler", func(ptr gd.Object) any { return classdb.EngineProfiler(ptr) })
+	classdb.Register("EngineProfiler", func(ptr gd.Object) any { return [1]classdb.EngineProfiler{classdb.EngineProfiler(ptr)} })
 }

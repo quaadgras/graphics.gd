@@ -113,5 +113,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneTreeTimer", func(ptr gd.Object) any { return classdb.SceneTreeTimer(ptr) })
+	classdb.Register("SceneTreeTimer", func(ptr gd.Object) any { return [1]classdb.SceneTreeTimer{classdb.SceneTreeTimer(ptr)} })
 }

@@ -2570,7 +2570,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Environment", func(ptr gd.Object) any { return classdb.Environment(ptr) })
+	classdb.Register("Environment", func(ptr gd.Object) any { return [1]classdb.Environment{classdb.Environment(ptr)} })
 }
 
 type BGMode = classdb.EnvironmentBGMode

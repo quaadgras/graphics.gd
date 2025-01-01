@@ -70,5 +70,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterLayeredTexture", func(ptr gd.Object) any { return classdb.ResourceImporterLayeredTexture(ptr) })
+	classdb.Register("ResourceImporterLayeredTexture", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterLayeredTexture{classdb.ResourceImporterLayeredTexture(ptr)}
+	})
 }

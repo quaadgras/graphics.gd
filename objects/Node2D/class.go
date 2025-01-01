@@ -587,4 +587,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsCanvasItem(), name)
 	}
 }
-func init() { classdb.Register("Node2D", func(ptr gd.Object) any { return classdb.Node2D(ptr) }) }
+func init() {
+	classdb.Register("Node2D", func(ptr gd.Object) any { return [1]classdb.Node2D{classdb.Node2D(ptr)} })
+}

@@ -208,7 +208,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SplitContainer", func(ptr gd.Object) any { return classdb.SplitContainer(ptr) })
+	classdb.Register("SplitContainer", func(ptr gd.Object) any { return [1]classdb.SplitContainer{classdb.SplitContainer(ptr)} })
 }
 
 type DraggerVisibility = classdb.SplitContainerDraggerVisibility

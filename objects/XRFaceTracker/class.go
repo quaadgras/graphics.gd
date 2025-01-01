@@ -135,7 +135,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRFaceTracker", func(ptr gd.Object) any { return classdb.XRFaceTracker(ptr) })
+	classdb.Register("XRFaceTracker", func(ptr gd.Object) any { return [1]classdb.XRFaceTracker{classdb.XRFaceTracker(ptr)} })
 }
 
 type BlendShapeEntry = classdb.XRFaceTrackerBlendShapeEntry

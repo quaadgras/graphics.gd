@@ -183,5 +183,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DampedSpringJoint2D", func(ptr gd.Object) any { return classdb.DampedSpringJoint2D(ptr) })
+	classdb.Register("DampedSpringJoint2D", func(ptr gd.Object) any { return [1]classdb.DampedSpringJoint2D{classdb.DampedSpringJoint2D(ptr)} })
 }

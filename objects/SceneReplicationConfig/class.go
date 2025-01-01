@@ -332,7 +332,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneReplicationConfig", func(ptr gd.Object) any { return classdb.SceneReplicationConfig(ptr) })
+	classdb.Register("SceneReplicationConfig", func(ptr gd.Object) any { return [1]classdb.SceneReplicationConfig{classdb.SceneReplicationConfig(ptr)} })
 }
 
 type ReplicationMode = classdb.SceneReplicationConfigReplicationMode

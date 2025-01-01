@@ -1052,7 +1052,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("Engine", func(ptr gd.Object) any { return classdb.Engine(ptr) }) }
+func init() {
+	classdb.Register("Engine", func(ptr gd.Object) any { return [1]classdb.Engine{classdb.Engine(ptr)} })
+}
 
 type Error int
 

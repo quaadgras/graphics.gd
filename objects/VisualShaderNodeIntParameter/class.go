@@ -245,7 +245,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeIntParameter", func(ptr gd.Object) any { return classdb.VisualShaderNodeIntParameter(ptr) })
+	classdb.Register("VisualShaderNodeIntParameter", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeIntParameter{classdb.VisualShaderNodeIntParameter(ptr)}
+	})
 }
 
 type Hint = classdb.VisualShaderNodeIntParameterHint

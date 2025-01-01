@@ -348,7 +348,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebSocketMultiplayerPeer", func(ptr gd.Object) any { return classdb.WebSocketMultiplayerPeer(ptr) })
+	classdb.Register("WebSocketMultiplayerPeer", func(ptr gd.Object) any {
+		return [1]classdb.WebSocketMultiplayerPeer{classdb.WebSocketMultiplayerPeer(ptr)}
+	})
 }
 
 type Error int

@@ -135,7 +135,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any { return classdb.VisibleOnScreenEnabler3D(ptr) })
+	classdb.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any {
+		return [1]classdb.VisibleOnScreenEnabler3D{classdb.VisibleOnScreenEnabler3D(ptr)}
+	})
 }
 
 type EnableMode = classdb.VisibleOnScreenEnabler3DEnableMode

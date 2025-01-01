@@ -907,7 +907,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationMesh", func(ptr gd.Object) any { return classdb.NavigationMesh(ptr) })
+	classdb.Register("NavigationMesh", func(ptr gd.Object) any { return [1]classdb.NavigationMesh{classdb.NavigationMesh(ptr)} })
 }
 
 type SamplePartitionType = classdb.NavigationMeshSamplePartitionType

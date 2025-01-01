@@ -129,5 +129,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MethodTweener", func(ptr gd.Object) any { return classdb.MethodTweener(ptr) })
+	classdb.Register("MethodTweener", func(ptr gd.Object) any { return [1]classdb.MethodTweener{classdb.MethodTweener(ptr)} })
 }

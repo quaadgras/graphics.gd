@@ -193,7 +193,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GPUParticlesCollisionHeightField3D", func(ptr gd.Object) any { return classdb.GPUParticlesCollisionHeightField3D(ptr) })
+	classdb.Register("GPUParticlesCollisionHeightField3D", func(ptr gd.Object) any {
+		return [1]classdb.GPUParticlesCollisionHeightField3D{classdb.GPUParticlesCollisionHeightField3D(ptr)}
+	})
 }
 
 type Resolution = classdb.GPUParticlesCollisionHeightField3DResolution

@@ -296,7 +296,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MovieWriter", func(ptr gd.Object) any { return classdb.MovieWriter(ptr) })
+	classdb.Register("MovieWriter", func(ptr gd.Object) any { return [1]classdb.MovieWriter{classdb.MovieWriter(ptr)} })
 }
 
 type Error int

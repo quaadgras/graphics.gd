@@ -211,5 +211,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SphereMesh", func(ptr gd.Object) any { return classdb.SphereMesh(ptr) })
+	classdb.Register("SphereMesh", func(ptr gd.Object) any { return [1]classdb.SphereMesh{classdb.SphereMesh(ptr)} })
 }

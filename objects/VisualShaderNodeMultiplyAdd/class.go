@@ -103,7 +103,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeMultiplyAdd", func(ptr gd.Object) any { return classdb.VisualShaderNodeMultiplyAdd(ptr) })
+	classdb.Register("VisualShaderNodeMultiplyAdd", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeMultiplyAdd{classdb.VisualShaderNodeMultiplyAdd(ptr)}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeMultiplyAddOpType

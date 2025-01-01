@@ -168,7 +168,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HMACContext", func(ptr gd.Object) any { return classdb.HMACContext(ptr) })
+	classdb.Register("HMACContext", func(ptr gd.Object) any { return [1]classdb.HMACContext{classdb.HMACContext(ptr)} })
 }
 
 type Error int

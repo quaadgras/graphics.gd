@@ -206,4 +206,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Skin", func(ptr gd.Object) any { return classdb.Skin(ptr) }) }
+func init() {
+	classdb.Register("Skin", func(ptr gd.Object) any { return [1]classdb.Skin{classdb.Skin(ptr)} })
+}

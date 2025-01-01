@@ -285,7 +285,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamWAV", func(ptr gd.Object) any { return classdb.AudioStreamWAV(ptr) })
+	classdb.Register("AudioStreamWAV", func(ptr gd.Object) any { return [1]classdb.AudioStreamWAV{classdb.AudioStreamWAV(ptr)} })
 }
 
 type Format = classdb.AudioStreamWAVFormat

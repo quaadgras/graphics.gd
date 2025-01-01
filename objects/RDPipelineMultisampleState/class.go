@@ -225,5 +225,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDPipelineMultisampleState", func(ptr gd.Object) any { return classdb.RDPipelineMultisampleState(ptr) })
+	classdb.Register("RDPipelineMultisampleState", func(ptr gd.Object) any {
+		return [1]classdb.RDPipelineMultisampleState{classdb.RDPipelineMultisampleState(ptr)}
+	})
 }

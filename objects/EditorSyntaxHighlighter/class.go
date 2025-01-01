@@ -152,5 +152,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorSyntaxHighlighter", func(ptr gd.Object) any { return classdb.EditorSyntaxHighlighter(ptr) })
+	classdb.Register("EditorSyntaxHighlighter", func(ptr gd.Object) any {
+		return [1]classdb.EditorSyntaxHighlighter{classdb.EditorSyntaxHighlighter(ptr)}
+	})
 }

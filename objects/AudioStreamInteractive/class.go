@@ -551,7 +551,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamInteractive", func(ptr gd.Object) any { return classdb.AudioStreamInteractive(ptr) })
+	classdb.Register("AudioStreamInteractive", func(ptr gd.Object) any { return [1]classdb.AudioStreamInteractive{classdb.AudioStreamInteractive(ptr)} })
 }
 
 type TransitionFromTime = classdb.AudioStreamInteractiveTransitionFromTime

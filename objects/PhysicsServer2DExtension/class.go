@@ -4455,5 +4455,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer2DExtension", func(ptr gd.Object) any { return classdb.PhysicsServer2DExtension(ptr) })
+	classdb.Register("PhysicsServer2DExtension", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsServer2DExtension{classdb.PhysicsServer2DExtension(ptr)}
+	})
 }

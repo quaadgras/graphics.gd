@@ -483,7 +483,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("MultiMesh", func(ptr gd.Object) any { return classdb.MultiMesh(ptr) }) }
+func init() {
+	classdb.Register("MultiMesh", func(ptr gd.Object) any { return [1]classdb.MultiMesh{classdb.MultiMesh(ptr)} })
+}
 
 type TransformFormat = classdb.MultiMeshTransformFormat
 

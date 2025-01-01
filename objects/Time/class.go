@@ -557,7 +557,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("Time", func(ptr gd.Object) any { return classdb.Time(ptr) }) }
+func init() {
+	classdb.Register("Time", func(ptr gd.Object) any { return [1]classdb.Time{classdb.Time(ptr)} })
+}
 
 type Month = classdb.TimeMonth
 

@@ -218,7 +218,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AESContext", func(ptr gd.Object) any { return classdb.AESContext(ptr) })
+	classdb.Register("AESContext", func(ptr gd.Object) any { return [1]classdb.AESContext{classdb.AESContext(ptr)} })
 }
 
 type Mode = classdb.AESContextMode

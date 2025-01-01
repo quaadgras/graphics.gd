@@ -146,7 +146,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeerDTLS", func(ptr gd.Object) any { return classdb.PacketPeerDTLS(ptr) })
+	classdb.Register("PacketPeerDTLS", func(ptr gd.Object) any { return [1]classdb.PacketPeerDTLS{classdb.PacketPeerDTLS(ptr)} })
 }
 
 type Status = classdb.PacketPeerDTLSStatus

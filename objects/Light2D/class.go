@@ -514,7 +514,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Light2D", func(ptr gd.Object) any { return classdb.Light2D(ptr) }) }
+func init() {
+	classdb.Register("Light2D", func(ptr gd.Object) any { return [1]classdb.Light2D{classdb.Light2D(ptr)} })
+}
 
 type ShadowFilter = classdb.Light2DShadowFilter
 

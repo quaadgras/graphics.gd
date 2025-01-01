@@ -324,5 +324,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventScreenDrag", func(ptr gd.Object) any { return classdb.InputEventScreenDrag(ptr) })
+	classdb.Register("InputEventScreenDrag", func(ptr gd.Object) any { return [1]classdb.InputEventScreenDrag{classdb.InputEventScreenDrag(ptr)} })
 }

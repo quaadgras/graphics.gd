@@ -449,7 +449,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerAPIExtension", func(ptr gd.Object) any { return classdb.MultiplayerAPIExtension(ptr) })
+	classdb.Register("MultiplayerAPIExtension", func(ptr gd.Object) any {
+		return [1]classdb.MultiplayerAPIExtension{classdb.MultiplayerAPIExtension(ptr)}
+	})
 }
 
 type Error int

@@ -86,5 +86,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VFlowContainer", func(ptr gd.Object) any { return classdb.VFlowContainer(ptr) })
+	classdb.Register("VFlowContainer", func(ptr gd.Object) any { return [1]classdb.VFlowContainer{classdb.VFlowContainer(ptr)} })
 }

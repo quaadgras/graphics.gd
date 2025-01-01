@@ -99,7 +99,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeMix", func(ptr gd.Object) any { return classdb.VisualShaderNodeMix(ptr) })
+	classdb.Register("VisualShaderNodeMix", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeMix{classdb.VisualShaderNodeMix(ptr)} })
 }
 
 type OpType = classdb.VisualShaderNodeMixOpType

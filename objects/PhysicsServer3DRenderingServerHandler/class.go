@@ -204,5 +204,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer3DRenderingServerHandler", func(ptr gd.Object) any { return classdb.PhysicsServer3DRenderingServerHandler(ptr) })
+	classdb.Register("PhysicsServer3DRenderingServerHandler", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsServer3DRenderingServerHandler{classdb.PhysicsServer3DRenderingServerHandler(ptr)}
+	})
 }

@@ -154,7 +154,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectPitchShift", func(ptr gd.Object) any { return classdb.AudioEffectPitchShift(ptr) })
+	classdb.Register("AudioEffectPitchShift", func(ptr gd.Object) any { return [1]classdb.AudioEffectPitchShift{classdb.AudioEffectPitchShift(ptr)} })
 }
 
 type FFTSize = classdb.AudioEffectPitchShiftFFTSize

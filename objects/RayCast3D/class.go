@@ -666,4 +666,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("RayCast3D", func(ptr gd.Object) any { return classdb.RayCast3D(ptr) }) }
+func init() {
+	classdb.Register("RayCast3D", func(ptr gd.Object) any { return [1]classdb.RayCast3D{classdb.RayCast3D(ptr)} })
+}

@@ -221,5 +221,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return classdb.OpenXRCompositionLayer(ptr) })
+	classdb.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return [1]classdb.OpenXRCompositionLayer{classdb.OpenXRCompositionLayer(ptr)} })
 }

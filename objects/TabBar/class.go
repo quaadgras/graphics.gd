@@ -1078,7 +1078,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("TabBar", func(ptr gd.Object) any { return classdb.TabBar(ptr) }) }
+func init() {
+	classdb.Register("TabBar", func(ptr gd.Object) any { return [1]classdb.TabBar{classdb.TabBar(ptr)} })
+}
 
 type AlignmentMode = classdb.TabBarAlignmentMode
 

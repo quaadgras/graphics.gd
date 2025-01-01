@@ -147,5 +147,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeerStream", func(ptr gd.Object) any { return classdb.PacketPeerStream(ptr) })
+	classdb.Register("PacketPeerStream", func(ptr gd.Object) any { return [1]classdb.PacketPeerStream{classdb.PacketPeerStream(ptr)} })
 }

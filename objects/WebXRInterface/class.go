@@ -526,7 +526,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebXRInterface", func(ptr gd.Object) any { return classdb.WebXRInterface(ptr) })
+	classdb.Register("WebXRInterface", func(ptr gd.Object) any { return [1]classdb.WebXRInterface{classdb.WebXRInterface(ptr)} })
 }
 
 type TargetRayMode = classdb.WebXRInterfaceTargetRayMode

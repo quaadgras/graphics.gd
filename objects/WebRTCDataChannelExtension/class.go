@@ -439,7 +439,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCDataChannelExtension", func(ptr gd.Object) any { return classdb.WebRTCDataChannelExtension(ptr) })
+	classdb.Register("WebRTCDataChannelExtension", func(ptr gd.Object) any {
+		return [1]classdb.WebRTCDataChannelExtension{classdb.WebRTCDataChannelExtension(ptr)}
+	})
 }
 
 type Error int

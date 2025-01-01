@@ -682,7 +682,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("TextLine", func(ptr gd.Object) any { return classdb.TextLine(ptr) }) }
+func init() {
+	classdb.Register("TextLine", func(ptr gd.Object) any { return [1]classdb.TextLine{classdb.TextLine(ptr)} })
+}
 
 type HorizontalAlignment int
 

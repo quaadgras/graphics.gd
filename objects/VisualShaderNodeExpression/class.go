@@ -118,5 +118,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeExpression", func(ptr gd.Object) any { return classdb.VisualShaderNodeExpression(ptr) })
+	classdb.Register("VisualShaderNodeExpression", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeExpression{classdb.VisualShaderNodeExpression(ptr)}
+	})
 }

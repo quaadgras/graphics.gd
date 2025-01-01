@@ -321,5 +321,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CameraAttributesPractical", func(ptr gd.Object) any { return classdb.CameraAttributesPractical(ptr) })
+	classdb.Register("CameraAttributesPractical", func(ptr gd.Object) any {
+		return [1]classdb.CameraAttributesPractical{classdb.CameraAttributesPractical(ptr)}
+	})
 }

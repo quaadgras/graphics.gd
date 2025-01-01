@@ -2134,7 +2134,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsTextEdit(), name)
 	}
 }
-func init() { classdb.Register("CodeEdit", func(ptr gd.Object) any { return classdb.CodeEdit(ptr) }) }
+func init() {
+	classdb.Register("CodeEdit", func(ptr gd.Object) any { return [1]classdb.CodeEdit{classdb.CodeEdit(ptr)} })
+}
 
 type CodeCompletionKind = classdb.CodeEditCodeCompletionKind
 

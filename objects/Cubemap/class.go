@@ -106,4 +106,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsImageTextureLayered(), name)
 	}
 }
-func init() { classdb.Register("Cubemap", func(ptr gd.Object) any { return classdb.Cubemap(ptr) }) }
+func init() {
+	classdb.Register("Cubemap", func(ptr gd.Object) any { return [1]classdb.Cubemap{classdb.Cubemap(ptr)} })
+}

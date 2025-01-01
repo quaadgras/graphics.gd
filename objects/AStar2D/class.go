@@ -816,4 +816,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("AStar2D", func(ptr gd.Object) any { return classdb.AStar2D(ptr) }) }
+func init() {
+	classdb.Register("AStar2D", func(ptr gd.Object) any { return [1]classdb.AStar2D{classdb.AStar2D(ptr)} })
+}

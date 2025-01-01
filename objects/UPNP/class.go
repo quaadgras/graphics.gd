@@ -433,7 +433,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("UPNP", func(ptr gd.Object) any { return classdb.UPNP(ptr) }) }
+func init() {
+	classdb.Register("UPNP", func(ptr gd.Object) any { return [1]classdb.UPNP{classdb.UPNP(ptr)} })
+}
 
 type UPNPResult = classdb.UPNPUPNPResult
 

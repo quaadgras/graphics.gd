@@ -86,5 +86,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HSplitContainer", func(ptr gd.Object) any { return classdb.HSplitContainer(ptr) })
+	classdb.Register("HSplitContainer", func(ptr gd.Object) any { return [1]classdb.HSplitContainer{classdb.HSplitContainer(ptr)} })
 }

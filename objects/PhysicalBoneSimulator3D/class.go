@@ -173,5 +173,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicalBoneSimulator3D", func(ptr gd.Object) any { return classdb.PhysicalBoneSimulator3D(ptr) })
+	classdb.Register("PhysicalBoneSimulator3D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicalBoneSimulator3D{classdb.PhysicalBoneSimulator3D(ptr)}
+	})
 }

@@ -110,5 +110,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeUIntConstant", func(ptr gd.Object) any { return classdb.VisualShaderNodeUIntConstant(ptr) })
+	classdb.Register("VisualShaderNodeUIntConstant", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeUIntConstant{classdb.VisualShaderNodeUIntConstant(ptr)}
+	})
 }

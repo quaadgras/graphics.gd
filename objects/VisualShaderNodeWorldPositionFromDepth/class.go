@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeWorldPositionFromDepth", func(ptr gd.Object) any { return classdb.VisualShaderNodeWorldPositionFromDepth(ptr) })
+	classdb.Register("VisualShaderNodeWorldPositionFromDepth", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeWorldPositionFromDepth{classdb.VisualShaderNodeWorldPositionFromDepth(ptr)}
+	})
 }

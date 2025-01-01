@@ -315,5 +315,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorResourcePicker", func(ptr gd.Object) any { return classdb.EditorResourcePicker(ptr) })
+	classdb.Register("EditorResourcePicker", func(ptr gd.Object) any { return [1]classdb.EditorResourcePicker{classdb.EditorResourcePicker(ptr)} })
 }

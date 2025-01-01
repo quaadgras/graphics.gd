@@ -154,5 +154,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDShaderFile", func(ptr gd.Object) any { return classdb.RDShaderFile(ptr) })
+	classdb.Register("RDShaderFile", func(ptr gd.Object) any { return [1]classdb.RDShaderFile{classdb.RDShaderFile(ptr)} })
 }

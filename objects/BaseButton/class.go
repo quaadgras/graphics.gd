@@ -476,7 +476,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BaseButton", func(ptr gd.Object) any { return classdb.BaseButton(ptr) })
+	classdb.Register("BaseButton", func(ptr gd.Object) any { return [1]classdb.BaseButton{classdb.BaseButton(ptr)} })
 }
 
 type DrawMode = classdb.BaseButtonDrawMode

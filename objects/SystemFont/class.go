@@ -450,5 +450,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SystemFont", func(ptr gd.Object) any { return classdb.SystemFont(ptr) })
+	classdb.Register("SystemFont", func(ptr gd.Object) any { return [1]classdb.SystemFont{classdb.SystemFont(ptr)} })
 }

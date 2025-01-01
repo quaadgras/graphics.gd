@@ -267,5 +267,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TLSOptions", func(ptr gd.Object) any { return classdb.TLSOptions(ptr) })
+	classdb.Register("TLSOptions", func(ptr gd.Object) any { return [1]classdb.TLSOptions{classdb.TLSOptions(ptr)} })
 }

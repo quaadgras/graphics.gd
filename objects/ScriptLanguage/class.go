@@ -54,7 +54,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptLanguage", func(ptr gd.Object) any { return classdb.ScriptLanguage(ptr) })
+	classdb.Register("ScriptLanguage", func(ptr gd.Object) any { return [1]classdb.ScriptLanguage{classdb.ScriptLanguage(ptr)} })
 }
 
 type ScriptNameCasing = classdb.ScriptLanguageScriptNameCasing

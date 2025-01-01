@@ -19,7 +19,7 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 		name = tag
 	}
 	var hint objects.PropertyHint
-	var hintString = classNameOf(field.Type)
+	var hintString = objects.NameOf(field.Type)
 	vtype := variantTypeOf(field.Type)
 	if vtype == gd.TypeArray {
 		_, generic, ok := strings.Cut(field.Type.String(), "[")
@@ -45,7 +45,7 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 	return gd.PropertyInfo{
 		Type:       vtype,
 		Name:       gd.NewStringName(name),
-		ClassName:  gd.NewStringName(classNameOf(field.Type)),
+		ClassName:  gd.NewStringName(objects.NameOf(field.Type)),
 		Hint:       int64(hint),
 		HintString: gd.NewString(hintString),
 		Usage:      int64(usage),

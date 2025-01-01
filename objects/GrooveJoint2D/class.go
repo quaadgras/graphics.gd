@@ -129,5 +129,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GrooveJoint2D", func(ptr gd.Object) any { return classdb.GrooveJoint2D(ptr) })
+	classdb.Register("GrooveJoint2D", func(ptr gd.Object) any { return [1]classdb.GrooveJoint2D{classdb.GrooveJoint2D(ptr)} })
 }

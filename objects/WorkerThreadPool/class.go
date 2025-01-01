@@ -264,7 +264,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorkerThreadPool", func(ptr gd.Object) any { return classdb.WorkerThreadPool(ptr) })
+	classdb.Register("WorkerThreadPool", func(ptr gd.Object) any { return [1]classdb.WorkerThreadPool{classdb.WorkerThreadPool(ptr)} })
 }
 
 type Error int

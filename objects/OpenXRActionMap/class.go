@@ -340,5 +340,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRActionMap", func(ptr gd.Object) any { return classdb.OpenXRActionMap(ptr) })
+	classdb.Register("OpenXRActionMap", func(ptr gd.Object) any { return [1]classdb.OpenXRActionMap{classdb.OpenXRActionMap(ptr)} })
 }

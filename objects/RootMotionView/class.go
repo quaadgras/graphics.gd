@@ -208,5 +208,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RootMotionView", func(ptr gd.Object) any { return classdb.RootMotionView(ptr) })
+	classdb.Register("RootMotionView", func(ptr gd.Object) any { return [1]classdb.RootMotionView{classdb.RootMotionView(ptr)} })
 }

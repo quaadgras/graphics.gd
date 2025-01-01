@@ -246,5 +246,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderSceneDataExtension", func(ptr gd.Object) any { return classdb.RenderSceneDataExtension(ptr) })
+	classdb.Register("RenderSceneDataExtension", func(ptr gd.Object) any {
+		return [1]classdb.RenderSceneDataExtension{classdb.RenderSceneDataExtension(ptr)}
+	})
 }

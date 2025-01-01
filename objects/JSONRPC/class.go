@@ -220,7 +220,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("JSONRPC", func(ptr gd.Object) any { return classdb.JSONRPC(ptr) }) }
+func init() {
+	classdb.Register("JSONRPC", func(ptr gd.Object) any { return [1]classdb.JSONRPC{classdb.JSONRPC(ptr)} })
+}
 
 type ErrorCode = classdb.JSONRPCErrorCode
 

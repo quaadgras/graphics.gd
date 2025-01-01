@@ -103,7 +103,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeParticleRandomness", func(ptr gd.Object) any { return classdb.VisualShaderNodeParticleRandomness(ptr) })
+	classdb.Register("VisualShaderNodeParticleRandomness", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeParticleRandomness{classdb.VisualShaderNodeParticleRandomness(ptr)}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeParticleRandomnessOpType

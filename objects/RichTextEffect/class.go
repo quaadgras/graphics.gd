@@ -114,5 +114,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RichTextEffect", func(ptr gd.Object) any { return classdb.RichTextEffect(ptr) })
+	classdb.Register("RichTextEffect", func(ptr gd.Object) any { return [1]classdb.RichTextEffect{classdb.RichTextEffect(ptr)} })
 }

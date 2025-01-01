@@ -527,5 +527,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EngineDebugger", func(ptr gd.Object) any { return classdb.EngineDebugger(ptr) })
+	classdb.Register("EngineDebugger", func(ptr gd.Object) any { return [1]classdb.EngineDebugger{classdb.EngineDebugger(ptr)} })
 }

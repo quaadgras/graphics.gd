@@ -103,7 +103,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeParticleEmit", func(ptr gd.Object) any { return classdb.VisualShaderNodeParticleEmit(ptr) })
+	classdb.Register("VisualShaderNodeParticleEmit", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeParticleEmit{classdb.VisualShaderNodeParticleEmit(ptr)}
+	})
 }
 
 type EmitFlags = classdb.VisualShaderNodeParticleEmitEmitFlags

@@ -318,7 +318,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeStateMachineTransition", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachineTransition(ptr) })
+	classdb.Register("AnimationNodeStateMachineTransition", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeStateMachineTransition{classdb.AnimationNodeStateMachineTransition(ptr)}
+	})
 }
 
 type SwitchMode = classdb.AnimationNodeStateMachineTransitionSwitchMode

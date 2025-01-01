@@ -745,7 +745,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeer", func(ptr gd.Object) any { return classdb.StreamPeer(ptr) })
+	classdb.Register("StreamPeer", func(ptr gd.Object) any { return [1]classdb.StreamPeer{classdb.StreamPeer(ptr)} })
 }
 
 type Error int

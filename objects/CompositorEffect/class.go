@@ -290,7 +290,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompositorEffect", func(ptr gd.Object) any { return classdb.CompositorEffect(ptr) })
+	classdb.Register("CompositorEffect", func(ptr gd.Object) any { return [1]classdb.CompositorEffect{classdb.CompositorEffect(ptr)} })
 }
 
 type EffectCallbackType = classdb.CompositorEffectEffectCallbackType

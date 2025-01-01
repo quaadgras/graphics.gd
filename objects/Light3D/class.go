@@ -572,7 +572,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() { classdb.Register("Light3D", func(ptr gd.Object) any { return classdb.Light3D(ptr) }) }
+func init() {
+	classdb.Register("Light3D", func(ptr gd.Object) any { return [1]classdb.Light3D{classdb.Light3D(ptr)} })
+}
 
 type Param = classdb.Light3DParam
 

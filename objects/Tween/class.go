@@ -1021,7 +1021,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("Tween", func(ptr gd.Object) any { return classdb.Tween(ptr) }) }
+func init() {
+	classdb.Register("Tween", func(ptr gd.Object) any { return [1]classdb.Tween{classdb.Tween(ptr)} })
+}
 
 type TweenProcessMode = classdb.TweenTweenProcessMode
 

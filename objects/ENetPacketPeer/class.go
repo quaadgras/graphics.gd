@@ -376,7 +376,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ENetPacketPeer", func(ptr gd.Object) any { return classdb.ENetPacketPeer(ptr) })
+	classdb.Register("ENetPacketPeer", func(ptr gd.Object) any { return [1]classdb.ENetPacketPeer{classdb.ENetPacketPeer(ptr)} })
 }
 
 type PeerState = classdb.ENetPacketPeerPeerState

@@ -112,5 +112,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeColorConstant", func(ptr gd.Object) any { return classdb.VisualShaderNodeColorConstant(ptr) })
+	classdb.Register("VisualShaderNodeColorConstant", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeColorConstant{classdb.VisualShaderNodeColorConstant(ptr)}
+	})
 }

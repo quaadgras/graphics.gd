@@ -279,7 +279,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("IP", func(ptr gd.Object) any { return classdb.IP(ptr) }) }
+func init() {
+	classdb.Register("IP", func(ptr gd.Object) any { return [1]classdb.IP{classdb.IP(ptr)} })
+}
 
 type ResolverStatus = classdb.IPResolverStatus
 

@@ -260,5 +260,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PathFollow2D", func(ptr gd.Object) any { return classdb.PathFollow2D(ptr) })
+	classdb.Register("PathFollow2D", func(ptr gd.Object) any { return [1]classdb.PathFollow2D{classdb.PathFollow2D(ptr)} })
 }

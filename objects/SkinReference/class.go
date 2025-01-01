@@ -105,5 +105,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkinReference", func(ptr gd.Object) any { return classdb.SkinReference(ptr) })
+	classdb.Register("SkinReference", func(ptr gd.Object) any { return [1]classdb.SkinReference{classdb.SkinReference(ptr)} })
 }

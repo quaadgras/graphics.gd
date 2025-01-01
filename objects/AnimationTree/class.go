@@ -192,7 +192,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationTree", func(ptr gd.Object) any { return classdb.AnimationTree(ptr) })
+	classdb.Register("AnimationTree", func(ptr gd.Object) any { return [1]classdb.AnimationTree{classdb.AnimationTree(ptr)} })
 }
 
 type AnimationProcessCallback = classdb.AnimationTreeAnimationProcessCallback

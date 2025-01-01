@@ -117,4 +117,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("Semaphore", func(ptr gd.Object) any { return classdb.Semaphore(ptr) }) }
+func init() {
+	classdb.Register("Semaphore", func(ptr gd.Object) any { return [1]classdb.Semaphore{classdb.Semaphore(ptr)} })
+}

@@ -237,5 +237,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PinJoint2D", func(ptr gd.Object) any { return classdb.PinJoint2D(ptr) })
+	classdb.Register("PinJoint2D", func(ptr gd.Object) any { return [1]classdb.PinJoint2D{classdb.PinJoint2D(ptr)} })
 }

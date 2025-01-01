@@ -254,5 +254,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGCylinder3D", func(ptr gd.Object) any { return classdb.CSGCylinder3D(ptr) })
+	classdb.Register("CSGCylinder3D", func(ptr gd.Object) any { return [1]classdb.CSGCylinder3D{classdb.CSGCylinder3D(ptr)} })
 }

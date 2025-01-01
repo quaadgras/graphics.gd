@@ -104,5 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeResizableBase", func(ptr gd.Object) any { return classdb.VisualShaderNodeResizableBase(ptr) })
+	classdb.Register("VisualShaderNodeResizableBase", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeResizableBase{classdb.VisualShaderNodeResizableBase(ptr)}
+	})
 }

@@ -189,7 +189,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationPathQueryResult2D", func(ptr gd.Object) any { return classdb.NavigationPathQueryResult2D(ptr) })
+	classdb.Register("NavigationPathQueryResult2D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationPathQueryResult2D{classdb.NavigationPathQueryResult2D(ptr)}
+	})
 }
 
 type PathSegmentType = classdb.NavigationPathQueryResult2DPathSegmentType

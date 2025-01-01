@@ -1795,7 +1795,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("TileSet", func(ptr gd.Object) any { return classdb.TileSet(ptr) }) }
+func init() {
+	classdb.Register("TileSet", func(ptr gd.Object) any { return [1]classdb.TileSet{classdb.TileSet(ptr)} })
+}
 
 type TileShape = classdb.TileSetTileShape
 

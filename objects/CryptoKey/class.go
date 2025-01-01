@@ -176,7 +176,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("CryptoKey", func(ptr gd.Object) any { return classdb.CryptoKey(ptr) }) }
+func init() {
+	classdb.Register("CryptoKey", func(ptr gd.Object) any { return [1]classdb.CryptoKey{classdb.CryptoKey(ptr)} })
+}
 
 type Error int
 

@@ -199,4 +199,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Container", func(ptr gd.Object) any { return classdb.Container(ptr) }) }
+func init() {
+	classdb.Register("Container", func(ptr gd.Object) any { return [1]classdb.Container{classdb.Container(ptr)} })
+}

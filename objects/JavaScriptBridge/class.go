@@ -214,7 +214,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JavaScriptBridge", func(ptr gd.Object) any { return classdb.JavaScriptBridge(ptr) })
+	classdb.Register("JavaScriptBridge", func(ptr gd.Object) any { return [1]classdb.JavaScriptBridge{classdb.JavaScriptBridge(ptr)} })
 }
 
 type Error int

@@ -224,5 +224,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceUID", func(ptr gd.Object) any { return classdb.ResourceUID(ptr) })
+	classdb.Register("ResourceUID", func(ptr gd.Object) any { return [1]classdb.ResourceUID{classdb.ResourceUID(ptr)} })
 }

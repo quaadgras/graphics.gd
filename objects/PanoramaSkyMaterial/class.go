@@ -156,5 +156,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PanoramaSkyMaterial", func(ptr gd.Object) any { return classdb.PanoramaSkyMaterial(ptr) })
+	classdb.Register("PanoramaSkyMaterial", func(ptr gd.Object) any { return [1]classdb.PanoramaSkyMaterial{classdb.PanoramaSkyMaterial(ptr)} })
 }

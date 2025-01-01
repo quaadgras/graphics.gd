@@ -1175,5 +1175,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationAgent2D", func(ptr gd.Object) any { return classdb.NavigationAgent2D(ptr) })
+	classdb.Register("NavigationAgent2D", func(ptr gd.Object) any { return [1]classdb.NavigationAgent2D{classdb.NavigationAgent2D(ptr)} })
 }

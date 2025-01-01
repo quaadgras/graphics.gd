@@ -105,4 +105,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRange(), name)
 	}
 }
-func init() { classdb.Register("ScrollBar", func(ptr gd.Object) any { return classdb.ScrollBar(ptr) }) }
+func init() {
+	classdb.Register("ScrollBar", func(ptr gd.Object) any { return [1]classdb.ScrollBar{classdb.ScrollBar(ptr)} })
+}

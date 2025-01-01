@@ -1285,5 +1285,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlugin", func(ptr gd.Object) any { return classdb.EditorExportPlugin(ptr) })
+	classdb.Register("EditorExportPlugin", func(ptr gd.Object) any { return [1]classdb.EditorExportPlugin{classdb.EditorExportPlugin(ptr)} })
 }

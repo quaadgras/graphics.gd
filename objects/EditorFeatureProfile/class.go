@@ -292,7 +292,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFeatureProfile", func(ptr gd.Object) any { return classdb.EditorFeatureProfile(ptr) })
+	classdb.Register("EditorFeatureProfile", func(ptr gd.Object) any { return [1]classdb.EditorFeatureProfile{classdb.EditorFeatureProfile(ptr)} })
 }
 
 type Feature = classdb.EditorFeatureProfileFeature

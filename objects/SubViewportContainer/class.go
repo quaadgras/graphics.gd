@@ -170,5 +170,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SubViewportContainer", func(ptr gd.Object) any { return classdb.SubViewportContainer(ptr) })
+	classdb.Register("SubViewportContainer", func(ptr gd.Object) any { return [1]classdb.SubViewportContainer{classdb.SubViewportContainer(ptr)} })
 }

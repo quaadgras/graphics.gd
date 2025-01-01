@@ -390,7 +390,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGShape3D", func(ptr gd.Object) any { return classdb.CSGShape3D(ptr) })
+	classdb.Register("CSGShape3D", func(ptr gd.Object) any { return [1]classdb.CSGShape3D{classdb.CSGShape3D(ptr)} })
 }
 
 type Operation = classdb.CSGShape3DOperation

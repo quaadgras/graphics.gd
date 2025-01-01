@@ -348,5 +348,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AcceptDialog", func(ptr gd.Object) any { return classdb.AcceptDialog(ptr) })
+	classdb.Register("AcceptDialog", func(ptr gd.Object) any { return [1]classdb.AcceptDialog{classdb.AcceptDialog(ptr)} })
 }

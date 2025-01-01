@@ -878,7 +878,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("Camera3D", func(ptr gd.Object) any { return classdb.Camera3D(ptr) }) }
+func init() {
+	classdb.Register("Camera3D", func(ptr gd.Object) any { return [1]classdb.Camera3D{classdb.Camera3D(ptr)} })
+}
 
 type ProjectionType = classdb.Camera3DProjectionType
 

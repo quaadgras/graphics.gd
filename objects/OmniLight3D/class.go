@@ -103,7 +103,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OmniLight3D", func(ptr gd.Object) any { return classdb.OmniLight3D(ptr) })
+	classdb.Register("OmniLight3D", func(ptr gd.Object) any { return [1]classdb.OmniLight3D{classdb.OmniLight3D(ptr)} })
 }
 
 type ShadowMode = classdb.OmniLight3DShadowMode

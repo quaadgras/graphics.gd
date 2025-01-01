@@ -1859,7 +1859,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasItem", func(ptr gd.Object) any { return classdb.CanvasItem(ptr) })
+	classdb.Register("CanvasItem", func(ptr gd.Object) any { return [1]classdb.CanvasItem{classdb.CanvasItem(ptr)} })
 }
 
 type TextureFilter = classdb.CanvasItemTextureFilter

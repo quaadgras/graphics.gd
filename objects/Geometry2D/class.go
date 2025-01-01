@@ -636,7 +636,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Geometry2D", func(ptr gd.Object) any { return classdb.Geometry2D(ptr) })
+	classdb.Register("Geometry2D", func(ptr gd.Object) any { return [1]classdb.Geometry2D{classdb.Geometry2D(ptr)} })
 }
 
 type PolyBooleanOperation = classdb.Geometry2DPolyBooleanOperation

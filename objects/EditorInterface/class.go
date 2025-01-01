@@ -1263,7 +1263,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorInterface", func(ptr gd.Object) any { return classdb.EditorInterface(ptr) })
+	classdb.Register("EditorInterface", func(ptr gd.Object) any { return [1]classdb.EditorInterface{classdb.EditorInterface(ptr)} })
 }
 
 type Error int

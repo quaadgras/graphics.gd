@@ -2799,5 +2799,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationServer2D", func(ptr gd.Object) any { return classdb.NavigationServer2D(ptr) })
+	classdb.Register("NavigationServer2D", func(ptr gd.Object) any { return [1]classdb.NavigationServer2D{classdb.NavigationServer2D(ptr)} })
 }

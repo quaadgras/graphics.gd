@@ -549,5 +549,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CodeHighlighter", func(ptr gd.Object) any { return classdb.CodeHighlighter(ptr) })
+	classdb.Register("CodeHighlighter", func(ptr gd.Object) any { return [1]classdb.CodeHighlighter{classdb.CodeHighlighter(ptr)} })
 }

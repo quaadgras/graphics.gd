@@ -589,7 +589,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapGI", func(ptr gd.Object) any { return classdb.LightmapGI(ptr) })
+	classdb.Register("LightmapGI", func(ptr gd.Object) any { return [1]classdb.LightmapGI{classdb.LightmapGI(ptr)} })
 }
 
 type BakeQuality = classdb.LightmapGIBakeQuality

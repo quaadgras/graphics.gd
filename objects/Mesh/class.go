@@ -816,7 +816,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Mesh", func(ptr gd.Object) any { return classdb.Mesh(ptr) }) }
+func init() {
+	classdb.Register("Mesh", func(ptr gd.Object) any { return [1]classdb.Mesh{classdb.Mesh(ptr)} })
+}
 
 type PrimitiveType = classdb.MeshPrimitiveType
 

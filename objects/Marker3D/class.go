@@ -89,4 +89,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("Marker3D", func(ptr gd.Object) any { return classdb.Marker3D(ptr) }) }
+func init() {
+	classdb.Register("Marker3D", func(ptr gd.Object) any { return [1]classdb.Marker3D{classdb.Marker3D(ptr)} })
+}

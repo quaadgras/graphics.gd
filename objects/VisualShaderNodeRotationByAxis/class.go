@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeRotationByAxis", func(ptr gd.Object) any { return classdb.VisualShaderNodeRotationByAxis(ptr) })
+	classdb.Register("VisualShaderNodeRotationByAxis", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeRotationByAxis{classdb.VisualShaderNodeRotationByAxis(ptr)}
+	})
 }

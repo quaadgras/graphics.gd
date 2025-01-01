@@ -226,5 +226,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorSpinSlider", func(ptr gd.Object) any { return classdb.EditorSpinSlider(ptr) })
+	classdb.Register("EditorSpinSlider", func(ptr gd.Object) any { return [1]classdb.EditorSpinSlider{classdb.EditorSpinSlider(ptr)} })
 }

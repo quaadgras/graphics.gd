@@ -571,7 +571,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Line2D", func(ptr gd.Object) any { return classdb.Line2D(ptr) }) }
+func init() {
+	classdb.Register("Line2D", func(ptr gd.Object) any { return [1]classdb.Line2D{classdb.Line2D(ptr)} })
+}
 
 type LineJointMode = classdb.Line2DLineJointMode
 

@@ -197,5 +197,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OccluderInstance3D", func(ptr gd.Object) any { return classdb.OccluderInstance3D(ptr) })
+	classdb.Register("OccluderInstance3D", func(ptr gd.Object) any { return [1]classdb.OccluderInstance3D{classdb.OccluderInstance3D(ptr)} })
 }

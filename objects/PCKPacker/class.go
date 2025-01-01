@@ -140,7 +140,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("PCKPacker", func(ptr gd.Object) any { return classdb.PCKPacker(ptr) }) }
+func init() {
+	classdb.Register("PCKPacker", func(ptr gd.Object) any { return [1]classdb.PCKPacker{classdb.PCKPacker(ptr)} })
+}
 
 type Error int
 

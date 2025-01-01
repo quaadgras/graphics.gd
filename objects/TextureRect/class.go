@@ -206,7 +206,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureRect", func(ptr gd.Object) any { return classdb.TextureRect(ptr) })
+	classdb.Register("TextureRect", func(ptr gd.Object) any { return [1]classdb.TextureRect{classdb.TextureRect(ptr)} })
 }
 
 type ExpandMode = classdb.TextureRectExpandMode

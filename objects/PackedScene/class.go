@@ -217,7 +217,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PackedScene", func(ptr gd.Object) any { return classdb.PackedScene(ptr) })
+	classdb.Register("PackedScene", func(ptr gd.Object) any { return [1]classdb.PackedScene{classdb.PackedScene(ptr)} })
 }
 
 type GenEditState = classdb.PackedSceneGenEditState

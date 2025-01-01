@@ -639,7 +639,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRInterface", func(ptr gd.Object) any { return classdb.XRInterface(ptr) })
+	classdb.Register("XRInterface", func(ptr gd.Object) any { return [1]classdb.XRInterface{classdb.XRInterface(ptr)} })
 }
 
 type Capabilities = classdb.XRInterfaceCapabilities

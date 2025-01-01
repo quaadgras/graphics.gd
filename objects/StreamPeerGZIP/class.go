@@ -148,7 +148,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerGZIP", func(ptr gd.Object) any { return classdb.StreamPeerGZIP(ptr) })
+	classdb.Register("StreamPeerGZIP", func(ptr gd.Object) any { return [1]classdb.StreamPeerGZIP{classdb.StreamPeerGZIP(ptr)} })
 }
 
 type Error int

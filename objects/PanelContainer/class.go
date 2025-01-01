@@ -79,5 +79,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PanelContainer", func(ptr gd.Object) any { return classdb.PanelContainer(ptr) })
+	classdb.Register("PanelContainer", func(ptr gd.Object) any { return [1]classdb.PanelContainer{classdb.PanelContainer(ptr)} })
 }

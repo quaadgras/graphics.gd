@@ -187,7 +187,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageFormatLoaderExtension", func(ptr gd.Object) any { return classdb.ImageFormatLoaderExtension(ptr) })
+	classdb.Register("ImageFormatLoaderExtension", func(ptr gd.Object) any {
+		return [1]classdb.ImageFormatLoaderExtension{classdb.ImageFormatLoaderExtension(ptr)}
+	})
 }
 
 type Error int

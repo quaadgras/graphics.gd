@@ -68,5 +68,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterBitMap", func(ptr gd.Object) any { return classdb.ResourceImporterBitMap(ptr) })
+	classdb.Register("ResourceImporterBitMap", func(ptr gd.Object) any { return [1]classdb.ResourceImporterBitMap{classdb.ResourceImporterBitMap(ptr)} })
 }

@@ -98,5 +98,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorldBoundaryShape3D", func(ptr gd.Object) any { return classdb.WorldBoundaryShape3D(ptr) })
+	classdb.Register("WorldBoundaryShape3D", func(ptr gd.Object) any { return [1]classdb.WorldBoundaryShape3D{classdb.WorldBoundaryShape3D(ptr)} })
 }

@@ -79,5 +79,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HSeparator", func(ptr gd.Object) any { return classdb.HSeparator(ptr) })
+	classdb.Register("HSeparator", func(ptr gd.Object) any { return [1]classdb.HSeparator{classdb.HSeparator(ptr)} })
 }

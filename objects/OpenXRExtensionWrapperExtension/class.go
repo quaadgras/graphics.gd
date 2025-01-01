@@ -1053,5 +1053,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRExtensionWrapperExtension", func(ptr gd.Object) any { return classdb.OpenXRExtensionWrapperExtension(ptr) })
+	classdb.Register("OpenXRExtensionWrapperExtension", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRExtensionWrapperExtension{classdb.OpenXRExtensionWrapperExtension(ptr)}
+	})
 }

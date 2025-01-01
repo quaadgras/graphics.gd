@@ -674,7 +674,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFileDialog", func(ptr gd.Object) any { return classdb.EditorFileDialog(ptr) })
+	classdb.Register("EditorFileDialog", func(ptr gd.Object) any { return [1]classdb.EditorFileDialog{classdb.EditorFileDialog(ptr)} })
 }
 
 type FileMode = classdb.EditorFileDialogFileMode

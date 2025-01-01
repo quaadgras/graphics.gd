@@ -842,7 +842,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Camera2D", func(ptr gd.Object) any { return classdb.Camera2D(ptr) }) }
+func init() {
+	classdb.Register("Camera2D", func(ptr gd.Object) any { return [1]classdb.Camera2D{classdb.Camera2D(ptr)} })
+}
 
 type AnchorMode = classdb.Camera2DAnchorMode
 

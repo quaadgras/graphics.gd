@@ -1312,7 +1312,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Tree", func(ptr gd.Object) any { return classdb.Tree(ptr) }) }
+func init() {
+	classdb.Register("Tree", func(ptr gd.Object) any { return [1]classdb.Tree{classdb.Tree(ptr)} })
+}
 
 type SelectMode = classdb.TreeSelectMode
 

@@ -123,7 +123,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageTexture3D", func(ptr gd.Object) any { return classdb.ImageTexture3D(ptr) })
+	classdb.Register("ImageTexture3D", func(ptr gd.Object) any { return [1]classdb.ImageTexture3D{classdb.ImageTexture3D(ptr)} })
 }
 
 type Error int

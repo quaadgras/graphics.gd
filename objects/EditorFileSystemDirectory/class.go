@@ -349,5 +349,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFileSystemDirectory", func(ptr gd.Object) any { return classdb.EditorFileSystemDirectory(ptr) })
+	classdb.Register("EditorFileSystemDirectory", func(ptr gd.Object) any {
+		return [1]classdb.EditorFileSystemDirectory{classdb.EditorFileSystemDirectory(ptr)}
+	})
 }

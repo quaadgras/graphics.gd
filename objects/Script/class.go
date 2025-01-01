@@ -430,7 +430,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Script", func(ptr gd.Object) any { return classdb.Script(ptr) }) }
+func init() {
+	classdb.Register("Script", func(ptr gd.Object) any { return [1]classdb.Script{classdb.Script(ptr)} })
+}
 
 type Error int
 

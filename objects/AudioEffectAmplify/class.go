@@ -100,5 +100,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectAmplify", func(ptr gd.Object) any { return classdb.AudioEffectAmplify(ptr) })
+	classdb.Register("AudioEffectAmplify", func(ptr gd.Object) any { return [1]classdb.AudioEffectAmplify{classdb.AudioEffectAmplify(ptr)} })
 }

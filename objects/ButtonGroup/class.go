@@ -137,5 +137,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ButtonGroup", func(ptr gd.Object) any { return classdb.ButtonGroup(ptr) })
+	classdb.Register("ButtonGroup", func(ptr gd.Object) any { return [1]classdb.ButtonGroup{classdb.ButtonGroup(ptr)} })
 }

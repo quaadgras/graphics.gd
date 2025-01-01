@@ -232,7 +232,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Generic6DOFJoint3D", func(ptr gd.Object) any { return classdb.Generic6DOFJoint3D(ptr) })
+	classdb.Register("Generic6DOFJoint3D", func(ptr gd.Object) any { return [1]classdb.Generic6DOFJoint3D{classdb.Generic6DOFJoint3D(ptr)} })
 }
 
 type Param = classdb.Generic6DOFJoint3DParam

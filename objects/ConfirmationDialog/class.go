@@ -134,5 +134,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConfirmationDialog", func(ptr gd.Object) any { return classdb.ConfirmationDialog(ptr) })
+	classdb.Register("ConfirmationDialog", func(ptr gd.Object) any { return [1]classdb.ConfirmationDialog{classdb.ConfirmationDialog(ptr)} })
 }

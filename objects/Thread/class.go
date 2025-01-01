@@ -208,7 +208,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("Thread", func(ptr gd.Object) any { return classdb.Thread(ptr) }) }
+func init() {
+	classdb.Register("Thread", func(ptr gd.Object) any { return [1]classdb.Thread{classdb.Thread(ptr)} })
+}
 
 type Priority = classdb.ThreadPriority
 

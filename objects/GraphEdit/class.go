@@ -1556,7 +1556,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("GraphEdit", func(ptr gd.Object) any { return classdb.GraphEdit(ptr) }) }
+func init() {
+	classdb.Register("GraphEdit", func(ptr gd.Object) any { return [1]classdb.GraphEdit{classdb.GraphEdit(ptr)} })
+}
 
 type PanningScheme = classdb.GraphEditPanningScheme
 

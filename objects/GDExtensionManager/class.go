@@ -180,7 +180,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GDExtensionManager", func(ptr gd.Object) any { return classdb.GDExtensionManager(ptr) })
+	classdb.Register("GDExtensionManager", func(ptr gd.Object) any { return [1]classdb.GDExtensionManager{classdb.GDExtensionManager(ptr)} })
 }
 
 type LoadStatus = classdb.GDExtensionManagerLoadStatus

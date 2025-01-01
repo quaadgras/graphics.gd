@@ -81,5 +81,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UniformSetCacheRD", func(ptr gd.Object) any { return classdb.UniformSetCacheRD(ptr) })
+	classdb.Register("UniformSetCacheRD", func(ptr gd.Object) any { return [1]classdb.UniformSetCacheRD{classdb.UniformSetCacheRD(ptr)} })
 }

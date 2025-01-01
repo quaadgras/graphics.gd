@@ -193,5 +193,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDVertexAttribute", func(ptr gd.Object) any { return classdb.RDVertexAttribute(ptr) })
+	classdb.Register("RDVertexAttribute", func(ptr gd.Object) any { return [1]classdb.RDVertexAttribute{classdb.RDVertexAttribute(ptr)} })
 }

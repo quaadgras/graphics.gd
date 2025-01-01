@@ -369,7 +369,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerAPI", func(ptr gd.Object) any { return classdb.MultiplayerAPI(ptr) })
+	classdb.Register("MultiplayerAPI", func(ptr gd.Object) any { return [1]classdb.MultiplayerAPI{classdb.MultiplayerAPI(ptr)} })
 }
 
 type RPCMode = classdb.MultiplayerAPIRPCMode

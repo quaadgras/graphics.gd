@@ -416,7 +416,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorScenePostImportPlugin", func(ptr gd.Object) any { return classdb.EditorScenePostImportPlugin(ptr) })
+	classdb.Register("EditorScenePostImportPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorScenePostImportPlugin{classdb.EditorScenePostImportPlugin(ptr)}
+	})
 }
 
 type InternalImportCategory = classdb.EditorScenePostImportPluginInternalImportCategory

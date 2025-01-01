@@ -287,5 +287,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeStateMachinePlayback", func(ptr gd.Object) any { return classdb.AnimationNodeStateMachinePlayback(ptr) })
+	classdb.Register("AnimationNodeStateMachinePlayback", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeStateMachinePlayback{classdb.AnimationNodeStateMachinePlayback(ptr)}
+	})
 }

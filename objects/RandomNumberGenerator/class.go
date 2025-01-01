@@ -293,5 +293,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RandomNumberGenerator", func(ptr gd.Object) any { return classdb.RandomNumberGenerator(ptr) })
+	classdb.Register("RandomNumberGenerator", func(ptr gd.Object) any { return [1]classdb.RandomNumberGenerator{classdb.RandomNumberGenerator(ptr)} })
 }

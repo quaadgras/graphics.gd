@@ -102,5 +102,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PackedDataContainerRef", func(ptr gd.Object) any { return classdb.PackedDataContainerRef(ptr) })
+	classdb.Register("PackedDataContainerRef", func(ptr gd.Object) any { return [1]classdb.PackedDataContainerRef{classdb.PackedDataContainerRef(ptr)} })
 }

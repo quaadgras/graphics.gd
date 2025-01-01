@@ -141,5 +141,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MissingNode", func(ptr gd.Object) any { return classdb.MissingNode(ptr) })
+	classdb.Register("MissingNode", func(ptr gd.Object) any { return [1]classdb.MissingNode{classdb.MissingNode(ptr)} })
 }

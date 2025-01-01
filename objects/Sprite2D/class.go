@@ -498,4 +498,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("Sprite2D", func(ptr gd.Object) any { return classdb.Sprite2D(ptr) }) }
+func init() {
+	classdb.Register("Sprite2D", func(ptr gd.Object) any { return [1]classdb.Sprite2D{classdb.Sprite2D(ptr)} })
+}

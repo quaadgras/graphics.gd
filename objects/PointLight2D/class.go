@@ -157,5 +157,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PointLight2D", func(ptr gd.Object) any { return classdb.PointLight2D(ptr) })
+	classdb.Register("PointLight2D", func(ptr gd.Object) any { return [1]classdb.PointLight2D{classdb.PointLight2D(ptr)} })
 }

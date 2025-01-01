@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeUVPolarCoord", func(ptr gd.Object) any { return classdb.VisualShaderNodeUVPolarCoord(ptr) })
+	classdb.Register("VisualShaderNodeUVPolarCoord", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeUVPolarCoord{classdb.VisualShaderNodeUVPolarCoord(ptr)}
+	})
 }

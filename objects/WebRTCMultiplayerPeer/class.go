@@ -252,7 +252,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any { return classdb.WebRTCMultiplayerPeer(ptr) })
+	classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any { return [1]classdb.WebRTCMultiplayerPeer{classdb.WebRTCMultiplayerPeer(ptr)} })
 }
 
 type Error int

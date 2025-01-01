@@ -623,7 +623,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkeletonProfile", func(ptr gd.Object) any { return classdb.SkeletonProfile(ptr) })
+	classdb.Register("SkeletonProfile", func(ptr gd.Object) any { return [1]classdb.SkeletonProfile{classdb.SkeletonProfile(ptr)} })
 }
 
 type TailDirection = classdb.SkeletonProfileTailDirection

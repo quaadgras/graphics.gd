@@ -1506,7 +1506,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CPUParticles3D", func(ptr gd.Object) any { return classdb.CPUParticles3D(ptr) })
+	classdb.Register("CPUParticles3D", func(ptr gd.Object) any { return [1]classdb.CPUParticles3D{classdb.CPUParticles3D(ptr)} })
 }
 
 type DrawOrder = classdb.CPUParticles3DDrawOrder

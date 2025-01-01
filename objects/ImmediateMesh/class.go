@@ -281,5 +281,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImmediateMesh", func(ptr gd.Object) any { return classdb.ImmediateMesh(ptr) })
+	classdb.Register("ImmediateMesh", func(ptr gd.Object) any { return [1]classdb.ImmediateMesh{classdb.ImmediateMesh(ptr)} })
 }

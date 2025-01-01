@@ -77,5 +77,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeProximityFade", func(ptr gd.Object) any { return classdb.VisualShaderNodeProximityFade(ptr) })
+	classdb.Register("VisualShaderNodeProximityFade", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeProximityFade{classdb.VisualShaderNodeProximityFade(ptr)}
+	})
 }

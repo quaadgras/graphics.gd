@@ -342,7 +342,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return classdb.MultiplayerSynchronizer(ptr) })
+	classdb.Register("MultiplayerSynchronizer", func(ptr gd.Object) any {
+		return [1]classdb.MultiplayerSynchronizer{classdb.MultiplayerSynchronizer(ptr)}
+	})
 }
 
 type VisibilityUpdateMode = classdb.MultiplayerSynchronizerVisibilityUpdateMode

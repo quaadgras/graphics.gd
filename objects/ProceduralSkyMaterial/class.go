@@ -454,5 +454,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ProceduralSkyMaterial", func(ptr gd.Object) any { return classdb.ProceduralSkyMaterial(ptr) })
+	classdb.Register("ProceduralSkyMaterial", func(ptr gd.Object) any { return [1]classdb.ProceduralSkyMaterial{classdb.ProceduralSkyMaterial(ptr)} })
 }

@@ -67,5 +67,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JavaClassWrapper", func(ptr gd.Object) any { return classdb.JavaClassWrapper(ptr) })
+	classdb.Register("JavaClassWrapper", func(ptr gd.Object) any { return [1]classdb.JavaClassWrapper{classdb.JavaClassWrapper(ptr)} })
 }

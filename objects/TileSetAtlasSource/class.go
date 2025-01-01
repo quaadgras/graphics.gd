@@ -876,7 +876,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileSetAtlasSource", func(ptr gd.Object) any { return classdb.TileSetAtlasSource(ptr) })
+	classdb.Register("TileSetAtlasSource", func(ptr gd.Object) any { return [1]classdb.TileSetAtlasSource{classdb.TileSetAtlasSource(ptr)} })
 }
 
 type TileAnimationMode = classdb.TileSetAtlasSourceTileAnimationMode

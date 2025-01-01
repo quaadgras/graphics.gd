@@ -234,7 +234,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasItemMaterial", func(ptr gd.Object) any { return classdb.CanvasItemMaterial(ptr) })
+	classdb.Register("CanvasItemMaterial", func(ptr gd.Object) any { return [1]classdb.CanvasItemMaterial{classdb.CanvasItemMaterial(ptr)} })
 }
 
 type BlendMode = classdb.CanvasItemMaterialBlendMode

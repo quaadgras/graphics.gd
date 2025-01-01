@@ -71,5 +71,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRCamera3D", func(ptr gd.Object) any { return classdb.XRCamera3D(ptr) })
+	classdb.Register("XRCamera3D", func(ptr gd.Object) any { return [1]classdb.XRCamera3D{classdb.XRCamera3D(ptr)} })
 }

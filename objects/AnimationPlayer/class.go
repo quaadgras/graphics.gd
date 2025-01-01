@@ -838,7 +838,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationPlayer", func(ptr gd.Object) any { return classdb.AnimationPlayer(ptr) })
+	classdb.Register("AnimationPlayer", func(ptr gd.Object) any { return [1]classdb.AnimationPlayer{classdb.AnimationPlayer(ptr)} })
 }
 
 type AnimationProcessCallback = classdb.AnimationPlayerAnimationProcessCallback

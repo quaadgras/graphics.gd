@@ -70,4 +70,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsScript(), name)
 	}
 }
-func init() { classdb.Register("GDScript", func(ptr gd.Object) any { return classdb.GDScript(ptr) }) }
+func init() {
+	classdb.Register("GDScript", func(ptr gd.Object) any { return [1]classdb.GDScript{classdb.GDScript(ptr)} })
+}

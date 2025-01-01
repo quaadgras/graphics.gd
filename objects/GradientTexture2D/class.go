@@ -266,7 +266,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GradientTexture2D", func(ptr gd.Object) any { return classdb.GradientTexture2D(ptr) })
+	classdb.Register("GradientTexture2D", func(ptr gd.Object) any { return [1]classdb.GradientTexture2D{classdb.GradientTexture2D(ptr)} })
 }
 
 type Fill = classdb.GradientTexture2DFill

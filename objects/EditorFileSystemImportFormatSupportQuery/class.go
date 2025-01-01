@@ -159,5 +159,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFileSystemImportFormatSupportQuery", func(ptr gd.Object) any { return classdb.EditorFileSystemImportFormatSupportQuery(ptr) })
+	classdb.Register("EditorFileSystemImportFormatSupportQuery", func(ptr gd.Object) any {
+		return [1]classdb.EditorFileSystemImportFormatSupportQuery{classdb.EditorFileSystemImportFormatSupportQuery(ptr)}
+	})
 }

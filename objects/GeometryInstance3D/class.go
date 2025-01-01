@@ -523,7 +523,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GeometryInstance3D", func(ptr gd.Object) any { return classdb.GeometryInstance3D(ptr) })
+	classdb.Register("GeometryInstance3D", func(ptr gd.Object) any { return [1]classdb.GeometryInstance3D{classdb.GeometryInstance3D(ptr)} })
 }
 
 type ShadowCastingSetting = classdb.GeometryInstance3DShadowCastingSetting

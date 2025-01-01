@@ -269,7 +269,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LinkButton", func(ptr gd.Object) any { return classdb.LinkButton(ptr) })
+	classdb.Register("LinkButton", func(ptr gd.Object) any { return [1]classdb.LinkButton{classdb.LinkButton(ptr)} })
 }
 
 type UnderlineMode = classdb.LinkButtonUnderlineMode

@@ -73,5 +73,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PopupPanel", func(ptr gd.Object) any { return classdb.PopupPanel(ptr) })
+	classdb.Register("PopupPanel", func(ptr gd.Object) any { return [1]classdb.PopupPanel{classdb.PopupPanel(ptr)} })
 }

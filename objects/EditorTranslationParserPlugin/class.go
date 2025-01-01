@@ -240,5 +240,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorTranslationParserPlugin", func(ptr gd.Object) any { return classdb.EditorTranslationParserPlugin(ptr) })
+	classdb.Register("EditorTranslationParserPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorTranslationParserPlugin{classdb.EditorTranslationParserPlugin(ptr)}
+	})
 }

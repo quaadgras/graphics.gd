@@ -75,5 +75,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PlaceholderMaterial", func(ptr gd.Object) any { return classdb.PlaceholderMaterial(ptr) })
+	classdb.Register("PlaceholderMaterial", func(ptr gd.Object) any { return [1]classdb.PlaceholderMaterial{classdb.PlaceholderMaterial(ptr)} })
 }

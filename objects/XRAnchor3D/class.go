@@ -113,5 +113,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRAnchor3D", func(ptr gd.Object) any { return classdb.XRAnchor3D(ptr) })
+	classdb.Register("XRAnchor3D", func(ptr gd.Object) any { return [1]classdb.XRAnchor3D{classdb.XRAnchor3D(ptr)} })
 }

@@ -1043,7 +1043,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileMapLayer", func(ptr gd.Object) any { return classdb.TileMapLayer(ptr) })
+	classdb.Register("TileMapLayer", func(ptr gd.Object) any { return [1]classdb.TileMapLayer{classdb.TileMapLayer(ptr)} })
 }
 
 type DebugVisibilityMode = classdb.TileMapLayerDebugVisibilityMode

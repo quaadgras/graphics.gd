@@ -2560,7 +2560,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorPlugin", func(ptr gd.Object) any { return classdb.EditorPlugin(ptr) })
+	classdb.Register("EditorPlugin", func(ptr gd.Object) any { return [1]classdb.EditorPlugin{classdb.EditorPlugin(ptr)} })
 }
 
 type CustomControlContainer = classdb.EditorPluginCustomControlContainer

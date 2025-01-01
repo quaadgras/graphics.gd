@@ -529,7 +529,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShader", func(ptr gd.Object) any { return classdb.VisualShader(ptr) })
+	classdb.Register("VisualShader", func(ptr gd.Object) any { return [1]classdb.VisualShader{classdb.VisualShader(ptr)} })
 }
 
 type Type = classdb.VisualShaderType

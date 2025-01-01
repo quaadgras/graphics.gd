@@ -930,7 +930,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("DirAccess", func(ptr gd.Object) any { return classdb.DirAccess(ptr) }) }
+func init() {
+	classdb.Register("DirAccess", func(ptr gd.Object) any { return [1]classdb.DirAccess{classdb.DirAccess(ptr)} })
+}
 
 type Error int
 

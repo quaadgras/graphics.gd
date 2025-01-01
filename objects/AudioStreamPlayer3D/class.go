@@ -740,7 +740,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlayer3D", func(ptr gd.Object) any { return classdb.AudioStreamPlayer3D(ptr) })
+	classdb.Register("AudioStreamPlayer3D", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlayer3D{classdb.AudioStreamPlayer3D(ptr)} })
 }
 
 type AttenuationModel = classdb.AudioStreamPlayer3DAttenuationModel

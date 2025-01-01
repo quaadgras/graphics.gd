@@ -414,7 +414,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MeshConvexDecompositionSettings", func(ptr gd.Object) any { return classdb.MeshConvexDecompositionSettings(ptr) })
+	classdb.Register("MeshConvexDecompositionSettings", func(ptr gd.Object) any {
+		return [1]classdb.MeshConvexDecompositionSettings{classdb.MeshConvexDecompositionSettings(ptr)}
+	})
 }
 
 type Mode = classdb.MeshConvexDecompositionSettingsMode

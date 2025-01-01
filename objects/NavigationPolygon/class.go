@@ -692,7 +692,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationPolygon", func(ptr gd.Object) any { return classdb.NavigationPolygon(ptr) })
+	classdb.Register("NavigationPolygon", func(ptr gd.Object) any { return [1]classdb.NavigationPolygon{classdb.NavigationPolygon(ptr)} })
 }
 
 type ParsedGeometryType = classdb.NavigationPolygonParsedGeometryType

@@ -924,7 +924,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MeshDataTool", func(ptr gd.Object) any { return classdb.MeshDataTool(ptr) })
+	classdb.Register("MeshDataTool", func(ptr gd.Object) any { return [1]classdb.MeshDataTool{classdb.MeshDataTool(ptr)} })
 }
 
 type Error int

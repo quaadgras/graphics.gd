@@ -370,5 +370,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFPhysicsBody", func(ptr gd.Object) any { return classdb.GLTFPhysicsBody(ptr) })
+	classdb.Register("GLTFPhysicsBody", func(ptr gd.Object) any { return [1]classdb.GLTFPhysicsBody{classdb.GLTFPhysicsBody(ptr)} })
 }

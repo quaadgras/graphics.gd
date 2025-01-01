@@ -123,5 +123,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeInput", func(ptr gd.Object) any { return classdb.VisualShaderNodeInput(ptr) })
+	classdb.Register("VisualShaderNodeInput", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeInput{classdb.VisualShaderNodeInput(ptr)} })
 }

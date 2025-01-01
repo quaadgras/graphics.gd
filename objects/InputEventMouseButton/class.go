@@ -202,7 +202,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventMouseButton", func(ptr gd.Object) any { return classdb.InputEventMouseButton(ptr) })
+	classdb.Register("InputEventMouseButton", func(ptr gd.Object) any { return [1]classdb.InputEventMouseButton{classdb.InputEventMouseButton(ptr)} })
 }
 
 type MouseButton int

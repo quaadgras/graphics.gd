@@ -210,7 +210,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRBodyTracker", func(ptr gd.Object) any { return classdb.XRBodyTracker(ptr) })
+	classdb.Register("XRBodyTracker", func(ptr gd.Object) any { return [1]classdb.XRBodyTracker{classdb.XRBodyTracker(ptr)} })
 }
 
 type BodyFlags = classdb.XRBodyTrackerBodyFlags

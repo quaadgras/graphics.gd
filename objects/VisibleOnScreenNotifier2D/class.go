@@ -133,5 +133,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisibleOnScreenNotifier2D", func(ptr gd.Object) any { return classdb.VisibleOnScreenNotifier2D(ptr) })
+	classdb.Register("VisibleOnScreenNotifier2D", func(ptr gd.Object) any {
+		return [1]classdb.VisibleOnScreenNotifier2D{classdb.VisibleOnScreenNotifier2D(ptr)}
+	})
 }

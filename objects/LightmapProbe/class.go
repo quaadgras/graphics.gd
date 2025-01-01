@@ -65,5 +65,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapProbe", func(ptr gd.Object) any { return classdb.LightmapProbe(ptr) })
+	classdb.Register("LightmapProbe", func(ptr gd.Object) any { return [1]classdb.LightmapProbe{classdb.LightmapProbe(ptr)} })
 }

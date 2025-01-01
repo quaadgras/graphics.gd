@@ -308,7 +308,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationPathQueryParameters2D", func(ptr gd.Object) any { return classdb.NavigationPathQueryParameters2D(ptr) })
+	classdb.Register("NavigationPathQueryParameters2D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationPathQueryParameters2D{classdb.NavigationPathQueryParameters2D(ptr)}
+	})
 }
 
 type PathfindingAlgorithm = classdb.NavigationPathQueryParameters2DPathfindingAlgorithm

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/objects"
 )
 
 // registerSignals registers [Signal[T]] fields as signals emittable by the class,
@@ -35,7 +36,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				args = append(args, gd.PropertyInfo{
 					Type:      variantTypeOf(ftype.In(i)),
 					Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
-					ClassName: gd.NewStringName(classNameOf(ftype.In(i))),
+					ClassName: gd.NewStringName(objects.NameOf(ftype.In(i))),
 				})
 			}
 			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
@@ -50,14 +51,14 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					args = append(args, gd.PropertyInfo{
 						Type:      variantTypeOf(arg),
 						Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
-						ClassName: gd.NewStringName(classNameOf(arg)),
+						ClassName: gd.NewStringName(objects.NameOf(arg)),
 					})
 				}
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				args = append(args, gd.PropertyInfo{
 					Type:      variantTypeOf(etype),
 					Name:      gd.NewStringName("event"),
-					ClassName: gd.NewStringName(classNameOf(etype)),
+					ClassName: gd.NewStringName(objects.NameOf(etype)),
 				})
 			}
 			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
@@ -88,7 +89,6 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 			}
 		}
 		signal := signals[chosen]
-		fmt.Println("received signal!")
 		gd.NewCallable(func() {
 			if gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance)) == (gd.Object{}) {
 				panic("manageSignals: object freed")

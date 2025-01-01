@@ -3069,7 +3069,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("Node", func(ptr gd.Object) any { return classdb.Node(ptr) }) }
+func init() {
+	classdb.Register("Node", func(ptr gd.Object) any { return [1]classdb.Node{classdb.Node(ptr)} })
+}
 
 type ProcessMode = classdb.NodeProcessMode
 

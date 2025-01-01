@@ -171,5 +171,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDPipelineColorBlendState", func(ptr gd.Object) any { return classdb.RDPipelineColorBlendState(ptr) })
+	classdb.Register("RDPipelineColorBlendState", func(ptr gd.Object) any {
+		return [1]classdb.RDPipelineColorBlendState{classdb.RDPipelineColorBlendState(ptr)}
+	})
 }

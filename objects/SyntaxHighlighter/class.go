@@ -273,5 +273,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SyntaxHighlighter", func(ptr gd.Object) any { return classdb.SyntaxHighlighter(ptr) })
+	classdb.Register("SyntaxHighlighter", func(ptr gd.Object) any { return [1]classdb.SyntaxHighlighter{classdb.SyntaxHighlighter(ptr)} })
 }

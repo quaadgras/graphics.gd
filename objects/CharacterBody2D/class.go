@@ -897,7 +897,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CharacterBody2D", func(ptr gd.Object) any { return classdb.CharacterBody2D(ptr) })
+	classdb.Register("CharacterBody2D", func(ptr gd.Object) any { return [1]classdb.CharacterBody2D{classdb.CharacterBody2D(ptr)} })
 }
 
 type MotionMode = classdb.CharacterBody2DMotionMode

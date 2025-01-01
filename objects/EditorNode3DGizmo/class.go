@@ -762,5 +762,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorNode3DGizmo", func(ptr gd.Object) any { return classdb.EditorNode3DGizmo(ptr) })
+	classdb.Register("EditorNode3DGizmo", func(ptr gd.Object) any { return [1]classdb.EditorNode3DGizmo{classdb.EditorNode3DGizmo(ptr)} })
 }

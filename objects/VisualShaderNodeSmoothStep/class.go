@@ -104,7 +104,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeSmoothStep", func(ptr gd.Object) any { return classdb.VisualShaderNodeSmoothStep(ptr) })
+	classdb.Register("VisualShaderNodeSmoothStep", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeSmoothStep{classdb.VisualShaderNodeSmoothStep(ptr)}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeSmoothStepOpType

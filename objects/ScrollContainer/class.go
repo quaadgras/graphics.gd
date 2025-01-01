@@ -378,7 +378,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScrollContainer", func(ptr gd.Object) any { return classdb.ScrollContainer(ptr) })
+	classdb.Register("ScrollContainer", func(ptr gd.Object) any { return [1]classdb.ScrollContainer{classdb.ScrollContainer(ptr)} })
 }
 
 type ScrollMode = classdb.ScrollContainerScrollMode

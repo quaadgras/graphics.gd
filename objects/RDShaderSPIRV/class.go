@@ -200,5 +200,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDShaderSPIRV", func(ptr gd.Object) any { return classdb.RDShaderSPIRV(ptr) })
+	classdb.Register("RDShaderSPIRV", func(ptr gd.Object) any { return [1]classdb.RDShaderSPIRV{classdb.RDShaderSPIRV(ptr)} })
 }

@@ -87,5 +87,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerDummy", func(ptr gd.Object) any { return classdb.TextServerDummy(ptr) })
+	classdb.Register("TextServerDummy", func(ptr gd.Object) any { return [1]classdb.TextServerDummy{classdb.TextServerDummy(ptr)} })
 }

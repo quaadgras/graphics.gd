@@ -142,5 +142,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorldEnvironment", func(ptr gd.Object) any { return classdb.WorldEnvironment(ptr) })
+	classdb.Register("WorldEnvironment", func(ptr gd.Object) any { return [1]classdb.WorldEnvironment{classdb.WorldEnvironment(ptr)} })
 }

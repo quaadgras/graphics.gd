@@ -152,4 +152,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() { classdb.Register("FogVolume", func(ptr gd.Object) any { return classdb.FogVolume(ptr) }) }
+func init() {
+	classdb.Register("FogVolume", func(ptr gd.Object) any { return [1]classdb.FogVolume{classdb.FogVolume(ptr)} })
+}

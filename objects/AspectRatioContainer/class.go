@@ -187,7 +187,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AspectRatioContainer", func(ptr gd.Object) any { return classdb.AspectRatioContainer(ptr) })
+	classdb.Register("AspectRatioContainer", func(ptr gd.Object) any { return [1]classdb.AspectRatioContainer{classdb.AspectRatioContainer(ptr)} })
 }
 
 type StretchMode = classdb.AspectRatioContainerStretchMode

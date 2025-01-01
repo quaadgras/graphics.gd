@@ -130,7 +130,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any { return classdb.VisualShaderNodeBillboard(ptr) })
+	classdb.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeBillboard{classdb.VisualShaderNodeBillboard(ptr)}
+	})
 }
 
 type BillboardType = classdb.VisualShaderNodeBillboardBillboardType

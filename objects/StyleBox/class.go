@@ -374,7 +374,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("StyleBox", func(ptr gd.Object) any { return classdb.StyleBox(ptr) }) }
+func init() {
+	classdb.Register("StyleBox", func(ptr gd.Object) any { return [1]classdb.StyleBox{classdb.StyleBox(ptr)} })
+}
 
 type Side int
 

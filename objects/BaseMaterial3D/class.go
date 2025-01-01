@@ -2327,7 +2327,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BaseMaterial3D", func(ptr gd.Object) any { return classdb.BaseMaterial3D(ptr) })
+	classdb.Register("BaseMaterial3D", func(ptr gd.Object) any { return [1]classdb.BaseMaterial3D{classdb.BaseMaterial3D(ptr)} })
 }
 
 type TextureParam = classdb.BaseMaterial3DTextureParam

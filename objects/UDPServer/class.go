@@ -350,7 +350,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("UDPServer", func(ptr gd.Object) any { return classdb.UDPServer(ptr) }) }
+func init() {
+	classdb.Register("UDPServer", func(ptr gd.Object) any { return [1]classdb.UDPServer{classdb.UDPServer(ptr)} })
+}
 
 type Error int
 

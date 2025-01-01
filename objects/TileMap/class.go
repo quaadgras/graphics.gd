@@ -1422,7 +1422,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode2D(), name)
 	}
 }
-func init() { classdb.Register("TileMap", func(ptr gd.Object) any { return classdb.TileMap(ptr) }) }
+func init() {
+	classdb.Register("TileMap", func(ptr gd.Object) any { return [1]classdb.TileMap{classdb.TileMap(ptr)} })
+}
 
 type VisibilityMode = classdb.TileMapVisibilityMode
 

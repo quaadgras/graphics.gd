@@ -1646,7 +1646,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Animation", func(ptr gd.Object) any { return classdb.Animation(ptr) }) }
+func init() {
+	classdb.Register("Animation", func(ptr gd.Object) any { return [1]classdb.Animation{classdb.Animation(ptr)} })
+}
 
 type TrackType = classdb.AnimationTrackType
 

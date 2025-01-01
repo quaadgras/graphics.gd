@@ -325,7 +325,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRange(), name)
 	}
 }
-func init() { classdb.Register("SpinBox", func(ptr gd.Object) any { return classdb.SpinBox(ptr) }) }
+func init() {
+	classdb.Register("SpinBox", func(ptr gd.Object) any { return [1]classdb.SpinBox{classdb.SpinBox(ptr)} })
+}
 
 type HorizontalAlignment int
 

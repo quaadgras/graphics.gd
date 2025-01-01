@@ -2204,7 +2204,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("OS", func(ptr gd.Object) any { return classdb.OS(ptr) }) }
+func init() {
+	classdb.Register("OS", func(ptr gd.Object) any { return [1]classdb.OS{classdb.OS(ptr)} })
+}
 
 type RenderingDriver = classdb.OSRenderingDriver
 

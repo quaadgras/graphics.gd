@@ -155,7 +155,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeCompare", func(ptr gd.Object) any { return classdb.VisualShaderNodeCompare(ptr) })
+	classdb.Register("VisualShaderNodeCompare", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeCompare{classdb.VisualShaderNodeCompare(ptr)}
+	})
 }
 
 type ComparisonType = classdb.VisualShaderNodeCompareComparisonType

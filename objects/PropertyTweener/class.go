@@ -265,5 +265,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PropertyTweener", func(ptr gd.Object) any { return classdb.PropertyTweener(ptr) })
+	classdb.Register("PropertyTweener", func(ptr gd.Object) any { return [1]classdb.PropertyTweener{classdb.PropertyTweener(ptr)} })
 }

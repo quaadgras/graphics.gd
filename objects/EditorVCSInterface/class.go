@@ -998,7 +998,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorVCSInterface", func(ptr gd.Object) any { return classdb.EditorVCSInterface(ptr) })
+	classdb.Register("EditorVCSInterface", func(ptr gd.Object) any { return [1]classdb.EditorVCSInterface{classdb.EditorVCSInterface(ptr)} })
 }
 
 type ChangeType = classdb.EditorVCSInterfaceChangeType

@@ -84,5 +84,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeVaryingGetter", func(ptr gd.Object) any { return classdb.VisualShaderNodeVaryingGetter(ptr) })
+	classdb.Register("VisualShaderNodeVaryingGetter", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeVaryingGetter{classdb.VisualShaderNodeVaryingGetter(ptr)}
+	})
 }

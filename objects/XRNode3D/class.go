@@ -240,4 +240,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode3D(), name)
 	}
 }
-func init() { classdb.Register("XRNode3D", func(ptr gd.Object) any { return classdb.XRNode3D(ptr) }) }
+func init() {
+	classdb.Register("XRNode3D", func(ptr gd.Object) any { return [1]classdb.XRNode3D{classdb.XRNode3D(ptr)} })
+}

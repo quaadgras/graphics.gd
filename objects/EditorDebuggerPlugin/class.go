@@ -334,5 +334,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorDebuggerPlugin", func(ptr gd.Object) any { return classdb.EditorDebuggerPlugin(ptr) })
+	classdb.Register("EditorDebuggerPlugin", func(ptr gd.Object) any { return [1]classdb.EditorDebuggerPlugin{classdb.EditorDebuggerPlugin(ptr)} })
 }

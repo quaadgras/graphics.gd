@@ -223,7 +223,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsVisualInstance3D(), name)
 	}
 }
-func init() { classdb.Register("VoxelGI", func(ptr gd.Object) any { return classdb.VoxelGI(ptr) }) }
+func init() {
+	classdb.Register("VoxelGI", func(ptr gd.Object) any { return [1]classdb.VoxelGI{classdb.VoxelGI(ptr)} })
+}
 
 type Subdiv = classdb.VoxelGISubdiv
 

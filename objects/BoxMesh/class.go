@@ -185,4 +185,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() { classdb.Register("BoxMesh", func(ptr gd.Object) any { return classdb.BoxMesh(ptr) }) }
+func init() {
+	classdb.Register("BoxMesh", func(ptr gd.Object) any { return [1]classdb.BoxMesh{classdb.BoxMesh(ptr)} })
+}

@@ -108,7 +108,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeVectorOp", func(ptr gd.Object) any { return classdb.VisualShaderNodeVectorOp(ptr) })
+	classdb.Register("VisualShaderNodeVectorOp", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeVectorOp{classdb.VisualShaderNodeVectorOp(ptr)}
+	})
 }
 
 type Operator = classdb.VisualShaderNodeVectorOpOperator

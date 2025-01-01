@@ -719,7 +719,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Label", func(ptr gd.Object) any { return classdb.Label(ptr) }) }
+func init() {
+	classdb.Register("Label", func(ptr gd.Object) any { return [1]classdb.Label{classdb.Label(ptr)} })
+}
 
 type HorizontalAlignment int
 

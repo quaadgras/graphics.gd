@@ -567,5 +567,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImporterMesh", func(ptr gd.Object) any { return classdb.ImporterMesh(ptr) })
+	classdb.Register("ImporterMesh", func(ptr gd.Object) any { return [1]classdb.ImporterMesh{classdb.ImporterMesh(ptr)} })
 }

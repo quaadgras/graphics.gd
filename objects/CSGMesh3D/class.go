@@ -144,4 +144,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsCSGPrimitive3D(), name)
 	}
 }
-func init() { classdb.Register("CSGMesh3D", func(ptr gd.Object) any { return classdb.CSGMesh3D(ptr) }) }
+func init() {
+	classdb.Register("CSGMesh3D", func(ptr gd.Object) any { return [1]classdb.CSGMesh3D{classdb.CSGMesh3D(ptr)} })
+}

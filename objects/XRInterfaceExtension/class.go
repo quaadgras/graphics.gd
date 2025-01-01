@@ -1101,5 +1101,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRInterfaceExtension", func(ptr gd.Object) any { return classdb.XRInterfaceExtension(ptr) })
+	classdb.Register("XRInterfaceExtension", func(ptr gd.Object) any { return [1]classdb.XRInterfaceExtension{classdb.XRInterfaceExtension(ptr)} })
 }

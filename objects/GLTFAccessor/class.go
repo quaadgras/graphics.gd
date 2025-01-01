@@ -471,7 +471,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFAccessor", func(ptr gd.Object) any { return classdb.GLTFAccessor(ptr) })
+	classdb.Register("GLTFAccessor", func(ptr gd.Object) any { return [1]classdb.GLTFAccessor{classdb.GLTFAccessor(ptr)} })
 }
 
 type GLTFAccessorType = classdb.GLTFAccessorGLTFAccessorType

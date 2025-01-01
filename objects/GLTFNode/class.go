@@ -464,4 +464,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("GLTFNode", func(ptr gd.Object) any { return classdb.GLTFNode(ptr) }) }
+func init() {
+	classdb.Register("GLTFNode", func(ptr gd.Object) any { return [1]classdb.GLTFNode{classdb.GLTFNode(ptr)} })
+}

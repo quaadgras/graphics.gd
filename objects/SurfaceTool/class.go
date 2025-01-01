@@ -758,7 +758,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SurfaceTool", func(ptr gd.Object) any { return classdb.SurfaceTool(ptr) })
+	classdb.Register("SurfaceTool", func(ptr gd.Object) any { return [1]classdb.SurfaceTool{classdb.SurfaceTool(ptr)} })
 }
 
 type CustomFormat = classdb.SurfaceToolCustomFormat

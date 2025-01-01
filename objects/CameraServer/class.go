@@ -156,7 +156,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CameraServer", func(ptr gd.Object) any { return classdb.CameraServer(ptr) })
+	classdb.Register("CameraServer", func(ptr gd.Object) any { return [1]classdb.CameraServer{classdb.CameraServer(ptr)} })
 }
 
 type FeedImage = classdb.CameraServerFeedImage

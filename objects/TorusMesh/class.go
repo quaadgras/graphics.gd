@@ -183,4 +183,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsPrimitiveMesh(), name)
 	}
 }
-func init() { classdb.Register("TorusMesh", func(ptr gd.Object) any { return classdb.TorusMesh(ptr) }) }
+func init() {
+	classdb.Register("TorusMesh", func(ptr gd.Object) any { return [1]classdb.TorusMesh{classdb.TorusMesh(ptr)} })
+}

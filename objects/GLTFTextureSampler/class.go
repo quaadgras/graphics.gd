@@ -173,5 +173,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFTextureSampler", func(ptr gd.Object) any { return classdb.GLTFTextureSampler(ptr) })
+	classdb.Register("GLTFTextureSampler", func(ptr gd.Object) any { return [1]classdb.GLTFTextureSampler{classdb.GLTFTextureSampler(ptr)} })
 }

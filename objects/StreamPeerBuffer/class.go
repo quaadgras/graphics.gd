@@ -209,5 +209,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerBuffer", func(ptr gd.Object) any { return classdb.StreamPeerBuffer(ptr) })
+	classdb.Register("StreamPeerBuffer", func(ptr gd.Object) any { return [1]classdb.StreamPeerBuffer{classdb.StreamPeerBuffer(ptr)} })
 }

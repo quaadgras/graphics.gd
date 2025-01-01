@@ -2291,7 +2291,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RichTextLabel", func(ptr gd.Object) any { return classdb.RichTextLabel(ptr) })
+	classdb.Register("RichTextLabel", func(ptr gd.Object) any { return [1]classdb.RichTextLabel{classdb.RichTextLabel(ptr)} })
 }
 
 type ListType = classdb.RichTextLabelListType

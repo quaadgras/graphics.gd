@@ -240,4 +240,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("MainLoop", func(ptr gd.Object) any { return classdb.MainLoop(ptr) }) }
+func init() {
+	classdb.Register("MainLoop", func(ptr gd.Object) any { return [1]classdb.MainLoop{classdb.MainLoop(ptr)} })
+}

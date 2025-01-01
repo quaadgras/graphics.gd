@@ -285,5 +285,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventMouseMotion", func(ptr gd.Object) any { return classdb.InputEventMouseMotion(ptr) })
+	classdb.Register("InputEventMouseMotion", func(ptr gd.Object) any { return [1]classdb.InputEventMouseMotion{classdb.InputEventMouseMotion(ptr)} })
 }

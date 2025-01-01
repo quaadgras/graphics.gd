@@ -126,4 +126,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("Mutex", func(ptr gd.Object) any { return classdb.Mutex(ptr) }) }
+func init() {
+	classdb.Register("Mutex", func(ptr gd.Object) any { return [1]classdb.Mutex{classdb.Mutex(ptr)} })
+}

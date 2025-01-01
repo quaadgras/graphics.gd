@@ -323,7 +323,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamRandomizer", func(ptr gd.Object) any { return classdb.AudioStreamRandomizer(ptr) })
+	classdb.Register("AudioStreamRandomizer", func(ptr gd.Object) any { return [1]classdb.AudioStreamRandomizer{classdb.AudioStreamRandomizer(ptr)} })
 }
 
 type PlaybackMode = classdb.AudioStreamRandomizerPlaybackMode

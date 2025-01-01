@@ -98,4 +98,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("ColorRect", func(ptr gd.Object) any { return classdb.ColorRect(ptr) }) }
+func init() {
+	classdb.Register("ColorRect", func(ptr gd.Object) any { return [1]classdb.ColorRect{classdb.ColorRect(ptr)} })
+}

@@ -226,4 +226,6 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("ThemeDB", func(ptr gd.Object) any { return classdb.ThemeDB(ptr) }) }
+func init() {
+	classdb.Register("ThemeDB", func(ptr gd.Object) any { return [1]classdb.ThemeDB{classdb.ThemeDB(ptr)} })
+}

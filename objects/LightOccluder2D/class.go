@@ -150,5 +150,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightOccluder2D", func(ptr gd.Object) any { return classdb.LightOccluder2D(ptr) })
+	classdb.Register("LightOccluder2D", func(ptr gd.Object) any { return [1]classdb.LightOccluder2D{classdb.LightOccluder2D(ptr)} })
 }

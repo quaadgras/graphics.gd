@@ -2736,7 +2736,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer2D", func(ptr gd.Object) any { return classdb.PhysicsServer2D(ptr) })
+	classdb.Register("PhysicsServer2D", func(ptr gd.Object) any { return [1]classdb.PhysicsServer2D{classdb.PhysicsServer2D(ptr)} })
 }
 
 type SpaceParameter = classdb.PhysicsServer2DSpaceParameter

@@ -464,5 +464,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDSamplerState", func(ptr gd.Object) any { return classdb.RDSamplerState(ptr) })
+	classdb.Register("RDSamplerState", func(ptr gd.Object) any { return [1]classdb.RDSamplerState{classdb.RDSamplerState(ptr)} })
 }

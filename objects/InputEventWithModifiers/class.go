@@ -258,7 +258,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventWithModifiers", func(ptr gd.Object) any { return classdb.InputEventWithModifiers(ptr) })
+	classdb.Register("InputEventWithModifiers", func(ptr gd.Object) any {
+		return [1]classdb.InputEventWithModifiers{classdb.InputEventWithModifiers(ptr)}
+	})
 }
 
 type KeyModifierMask int

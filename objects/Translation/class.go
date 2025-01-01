@@ -359,5 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Translation", func(ptr gd.Object) any { return classdb.Translation(ptr) })
+	classdb.Register("Translation", func(ptr gd.Object) any { return [1]classdb.Translation{classdb.Translation(ptr)} })
 }

@@ -1292,7 +1292,9 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("Input", func(ptr gd.Object) any { return classdb.Input(ptr) }) }
+func init() {
+	classdb.Register("Input", func(ptr gd.Object) any { return [1]classdb.Input{classdb.Input(ptr)} })
+}
 
 type MouseModeValue = classdb.InputMouseMode
 

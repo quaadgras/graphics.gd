@@ -184,7 +184,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("ZIPPacker", func(ptr gd.Object) any { return classdb.ZIPPacker(ptr) }) }
+func init() {
+	classdb.Register("ZIPPacker", func(ptr gd.Object) any { return [1]classdb.ZIPPacker{classdb.ZIPPacker(ptr)} })
+}
 
 type ZipAppend = classdb.ZIPPackerZipAppend
 

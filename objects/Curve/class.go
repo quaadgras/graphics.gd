@@ -546,7 +546,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Curve", func(ptr gd.Object) any { return classdb.Curve(ptr) }) }
+func init() {
+	classdb.Register("Curve", func(ptr gd.Object) any { return [1]classdb.Curve{classdb.Curve(ptr)} })
+}
 
 type TangentMode = classdb.CurveTangentMode
 

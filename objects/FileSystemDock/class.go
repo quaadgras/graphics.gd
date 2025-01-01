@@ -186,5 +186,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FileSystemDock", func(ptr gd.Object) any { return classdb.FileSystemDock(ptr) })
+	classdb.Register("FileSystemDock", func(ptr gd.Object) any { return [1]classdb.FileSystemDock{classdb.FileSystemDock(ptr)} })
 }

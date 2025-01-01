@@ -71,5 +71,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterTextureAtlas", func(ptr gd.Object) any { return classdb.ResourceImporterTextureAtlas(ptr) })
+	classdb.Register("ResourceImporterTextureAtlas", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterTextureAtlas{classdb.ResourceImporterTextureAtlas(ptr)}
+	})
 }

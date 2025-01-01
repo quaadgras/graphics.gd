@@ -126,5 +126,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CapsuleShape2D", func(ptr gd.Object) any { return classdb.CapsuleShape2D(ptr) })
+	classdb.Register("CapsuleShape2D", func(ptr gd.Object) any { return [1]classdb.CapsuleShape2D{classdb.CapsuleShape2D(ptr)} })
 }

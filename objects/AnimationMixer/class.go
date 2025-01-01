@@ -1036,7 +1036,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationMixer", func(ptr gd.Object) any { return classdb.AnimationMixer(ptr) })
+	classdb.Register("AnimationMixer", func(ptr gd.Object) any { return [1]classdb.AnimationMixer{classdb.AnimationMixer(ptr)} })
 }
 
 type AnimationCallbackModeProcess = classdb.AnimationMixerAnimationCallbackModeProcess

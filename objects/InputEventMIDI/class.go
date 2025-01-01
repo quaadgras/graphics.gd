@@ -349,7 +349,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventMIDI", func(ptr gd.Object) any { return classdb.InputEventMIDI(ptr) })
+	classdb.Register("InputEventMIDI", func(ptr gd.Object) any { return [1]classdb.InputEventMIDI{classdb.InputEventMIDI(ptr)} })
 }
 
 type MIDIMessage int

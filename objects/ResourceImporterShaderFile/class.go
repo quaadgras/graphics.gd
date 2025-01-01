@@ -70,5 +70,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterShaderFile", func(ptr gd.Object) any { return classdb.ResourceImporterShaderFile(ptr) })
+	classdb.Register("ResourceImporterShaderFile", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterShaderFile{classdb.ResourceImporterShaderFile(ptr)}
+	})
 }

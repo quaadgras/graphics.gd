@@ -114,5 +114,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventGesture", func(ptr gd.Object) any { return classdb.InputEventGesture(ptr) })
+	classdb.Register("InputEventGesture", func(ptr gd.Object) any { return [1]classdb.InputEventGesture{classdb.InputEventGesture(ptr)} })
 }

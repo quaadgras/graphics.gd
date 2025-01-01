@@ -281,7 +281,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsNode(), name)
 	}
 }
-func init() { classdb.Register("Timer", func(ptr gd.Object) any { return classdb.Timer(ptr) }) }
+func init() {
+	classdb.Register("Timer", func(ptr gd.Object) any { return [1]classdb.Timer{classdb.Timer(ptr)} })
+}
 
 type TimerProcessCallback = classdb.TimerTimerProcessCallback
 

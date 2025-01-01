@@ -71,4 +71,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsControl(), name)
 	}
 }
-func init() { classdb.Register("Separator", func(ptr gd.Object) any { return classdb.Separator(ptr) }) }
+func init() {
+	classdb.Register("Separator", func(ptr gd.Object) any { return [1]classdb.Separator{classdb.Separator(ptr)} })
+}

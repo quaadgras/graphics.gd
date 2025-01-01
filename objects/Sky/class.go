@@ -145,7 +145,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("Sky", func(ptr gd.Object) any { return classdb.Sky(ptr) }) }
+func init() {
+	classdb.Register("Sky", func(ptr gd.Object) any { return [1]classdb.Sky{classdb.Sky(ptr)} })
+}
 
 type RadianceSize = classdb.SkyRadianceSize
 

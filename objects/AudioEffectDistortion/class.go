@@ -209,7 +209,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectDistortion", func(ptr gd.Object) any { return classdb.AudioEffectDistortion(ptr) })
+	classdb.Register("AudioEffectDistortion", func(ptr gd.Object) any { return [1]classdb.AudioEffectDistortion{classdb.AudioEffectDistortion(ptr)} })
 }
 
 type Mode = classdb.AudioEffectDistortionMode

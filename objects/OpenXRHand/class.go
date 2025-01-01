@@ -201,7 +201,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRHand", func(ptr gd.Object) any { return classdb.OpenXRHand(ptr) })
+	classdb.Register("OpenXRHand", func(ptr gd.Object) any { return [1]classdb.OpenXRHand{classdb.OpenXRHand(ptr)} })
 }
 
 type Hands = classdb.OpenXRHandHands

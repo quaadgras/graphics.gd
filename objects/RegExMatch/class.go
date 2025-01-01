@@ -190,5 +190,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RegExMatch", func(ptr gd.Object) any { return classdb.RegExMatch(ptr) })
+	classdb.Register("RegExMatch", func(ptr gd.Object) any { return [1]classdb.RegExMatch{classdb.RegExMatch(ptr)} })
 }

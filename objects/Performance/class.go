@@ -321,7 +321,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Performance", func(ptr gd.Object) any { return classdb.Performance(ptr) })
+	classdb.Register("Performance", func(ptr gd.Object) any { return [1]classdb.Performance{classdb.Performance(ptr)} })
 }
 
 type Monitor = classdb.PerformanceMonitor

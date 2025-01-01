@@ -183,7 +183,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerExtension", func(ptr gd.Object) any { return classdb.StreamPeerExtension(ptr) })
+	classdb.Register("StreamPeerExtension", func(ptr gd.Object) any { return [1]classdb.StreamPeerExtension{classdb.StreamPeerExtension(ptr)} })
 }
 
 type Error int

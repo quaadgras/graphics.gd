@@ -307,7 +307,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UPNPDevice", func(ptr gd.Object) any { return classdb.UPNPDevice(ptr) })
+	classdb.Register("UPNPDevice", func(ptr gd.Object) any { return [1]classdb.UPNPDevice{classdb.UPNPDevice(ptr)} })
 }
 
 type IGDStatus = classdb.UPNPDeviceIGDStatus

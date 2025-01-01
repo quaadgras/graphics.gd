@@ -360,5 +360,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDPipelineRasterizationState", func(ptr gd.Object) any { return classdb.RDPipelineRasterizationState(ptr) })
+	classdb.Register("RDPipelineRasterizationState", func(ptr gd.Object) any {
+		return [1]classdb.RDPipelineRasterizationState{classdb.RDPipelineRasterizationState(ptr)}
+	})
 }

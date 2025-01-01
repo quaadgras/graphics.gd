@@ -1441,7 +1441,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FileAccess", func(ptr gd.Object) any { return classdb.FileAccess(ptr) })
+	classdb.Register("FileAccess", func(ptr gd.Object) any { return [1]classdb.FileAccess{classdb.FileAccess(ptr)} })
 }
 
 type ModeFlags = classdb.FileAccessModeFlags

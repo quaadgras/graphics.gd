@@ -393,7 +393,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxTexture", func(ptr gd.Object) any { return classdb.StyleBoxTexture(ptr) })
+	classdb.Register("StyleBoxTexture", func(ptr gd.Object) any { return [1]classdb.StyleBoxTexture{classdb.StyleBoxTexture(ptr)} })
 }
 
 type AxisStretchMode = classdb.StyleBoxTextureAxisStretchMode

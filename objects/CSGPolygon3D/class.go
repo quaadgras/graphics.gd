@@ -526,7 +526,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGPolygon3D", func(ptr gd.Object) any { return classdb.CSGPolygon3D(ptr) })
+	classdb.Register("CSGPolygon3D", func(ptr gd.Object) any { return [1]classdb.CSGPolygon3D{classdb.CSGPolygon3D(ptr)} })
 }
 
 type Mode = classdb.CSGPolygon3DMode

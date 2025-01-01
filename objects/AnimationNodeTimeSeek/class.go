@@ -94,5 +94,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeTimeSeek", func(ptr gd.Object) any { return classdb.AnimationNodeTimeSeek(ptr) })
+	classdb.Register("AnimationNodeTimeSeek", func(ptr gd.Object) any { return [1]classdb.AnimationNodeTimeSeek{classdb.AnimationNodeTimeSeek(ptr)} })
 }

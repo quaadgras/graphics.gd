@@ -2,6 +2,7 @@ package objects
 
 import (
 	"reflect"
+	"strings"
 	"unsafe"
 
 	gd "graphics.gd/internal"
@@ -38,17 +39,34 @@ func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 		if ref, ok := ext.(T); ok {
 			return ref, true
 		}
-		return [1]T{}[0], false
 	}
 	var zero T
-	var rtype = reflect.TypeOf([0]T{}).Elem()
+	var rtype = reflect.TypeFor[T]()
 	if rtype.Kind() == reflect.Pointer {
 		return zero, false
 	}
-	var classtag = gd.Global.ClassDB.GetClassTag(gd.NewStringName(rtype.Name()))
+	var classtag = gd.Global.ClassDB.GetClassTag(gd.NewStringName(NameOf(rtype)))
 	casted := gd.Global.Object.CastTo(value.AsObject(), classtag)
 	if casted != (gd.Object{}) && pointers.Get(casted) != ([3]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	return zero, false
+}
+
+func NameOf(rtype reflect.Type) string {
+	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
+		return NameOf(rtype.Elem())
+	}
+	if rtype.Kind() == reflect.Struct && rtype.NumField() > 0 {
+		if rtype.Field(0).Anonymous {
+			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
+				return rename
+			}
+			if rtype.Name() == "" {
+				return NameOf(rtype.Field(0).Type)
+			}
+		}
+		return strings.TrimPrefix(rtype.Name(), "class")
+	}
+	return ""
 }

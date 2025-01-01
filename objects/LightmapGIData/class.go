@@ -236,5 +236,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapGIData", func(ptr gd.Object) any { return classdb.LightmapGIData(ptr) })
+	classdb.Register("LightmapGIData", func(ptr gd.Object) any { return [1]classdb.LightmapGIData{classdb.LightmapGIData(ptr)} })
 }

@@ -325,7 +325,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "}\n")
 	}
 	fmt.Fprintf(file, `func init() {`)
-	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return classdb.%[1]s(ptr) })`, class.Name)
+	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return [1]classdb.%[1]s{classdb.%[1]s(ptr)} })`, class.Name)
 	fmt.Fprintf(file, "}\n")
 	if class.Name == "DisplayServer" {
 		local_enums["MouseButton"] = true

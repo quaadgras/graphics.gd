@@ -67,5 +67,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorSceneFormatImporterGLTF", func(ptr gd.Object) any { return classdb.EditorSceneFormatImporterGLTF(ptr) })
+	classdb.Register("EditorSceneFormatImporterGLTF", func(ptr gd.Object) any {
+		return [1]classdb.EditorSceneFormatImporterGLTF{classdb.EditorSceneFormatImporterGLTF(ptr)}
+	})
 }

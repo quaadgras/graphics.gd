@@ -528,5 +528,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TranslationServer", func(ptr gd.Object) any { return classdb.TranslationServer(ptr) })
+	classdb.Register("TranslationServer", func(ptr gd.Object) any { return [1]classdb.TranslationServer{classdb.TranslationServer(ptr)} })
 }

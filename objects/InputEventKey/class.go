@@ -395,7 +395,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventKey", func(ptr gd.Object) any { return classdb.InputEventKey(ptr) })
+	classdb.Register("InputEventKey", func(ptr gd.Object) any { return [1]classdb.InputEventKey{classdb.InputEventKey(ptr)} })
 }
 
 type Key int

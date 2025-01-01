@@ -125,5 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PlaceholderTextureLayered", func(ptr gd.Object) any { return classdb.PlaceholderTextureLayered(ptr) })
+	classdb.Register("PlaceholderTextureLayered", func(ptr gd.Object) any {
+		return [1]classdb.PlaceholderTextureLayered{classdb.PlaceholderTextureLayered(ptr)}
+	})
 }

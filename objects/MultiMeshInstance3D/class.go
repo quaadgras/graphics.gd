@@ -104,5 +104,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiMeshInstance3D", func(ptr gd.Object) any { return classdb.MultiMeshInstance3D(ptr) })
+	classdb.Register("MultiMeshInstance3D", func(ptr gd.Object) any { return [1]classdb.MultiMeshInstance3D{classdb.MultiMeshInstance3D(ptr)} })
 }

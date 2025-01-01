@@ -78,5 +78,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterCSVTranslation", func(ptr gd.Object) any { return classdb.ResourceImporterCSVTranslation(ptr) })
+	classdb.Register("ResourceImporterCSVTranslation", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterCSVTranslation{classdb.ResourceImporterCSVTranslation(ptr)}
+	})
 }

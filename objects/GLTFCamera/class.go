@@ -286,5 +286,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFCamera", func(ptr gd.Object) any { return classdb.GLTFCamera(ptr) })
+	classdb.Register("GLTFCamera", func(ptr gd.Object) any { return [1]classdb.GLTFCamera{classdb.GLTFCamera(ptr)} })
 }

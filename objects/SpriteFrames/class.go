@@ -421,5 +421,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpriteFrames", func(ptr gd.Object) any { return classdb.SpriteFrames(ptr) })
+	classdb.Register("SpriteFrames", func(ptr gd.Object) any { return [1]classdb.SpriteFrames{classdb.SpriteFrames(ptr)} })
 }

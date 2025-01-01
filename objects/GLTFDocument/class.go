@@ -338,7 +338,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFDocument", func(ptr gd.Object) any { return classdb.GLTFDocument(ptr) })
+	classdb.Register("GLTFDocument", func(ptr gd.Object) any { return [1]classdb.GLTFDocument{classdb.GLTFDocument(ptr)} })
 }
 
 type RootNodeMode = classdb.GLTFDocumentRootNodeMode

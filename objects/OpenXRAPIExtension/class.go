@@ -470,7 +470,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return classdb.OpenXRAPIExtension(ptr) })
+	classdb.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return [1]classdb.OpenXRAPIExtension{classdb.OpenXRAPIExtension(ptr)} })
 }
 
 type OpenXRAlphaBlendModeSupport = classdb.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport

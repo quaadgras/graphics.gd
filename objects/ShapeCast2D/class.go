@@ -661,5 +661,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShapeCast2D", func(ptr gd.Object) any { return classdb.ShapeCast2D(ptr) })
+	classdb.Register("ShapeCast2D", func(ptr gd.Object) any { return [1]classdb.ShapeCast2D{classdb.ShapeCast2D(ptr)} })
 }

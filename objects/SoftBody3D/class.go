@@ -609,7 +609,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SoftBody3D", func(ptr gd.Object) any { return classdb.SoftBody3D(ptr) })
+	classdb.Register("SoftBody3D", func(ptr gd.Object) any { return [1]classdb.SoftBody3D{classdb.SoftBody3D(ptr)} })
 }
 
 type DisableMode = classdb.SoftBody3DDisableMode

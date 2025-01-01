@@ -153,5 +153,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ParallaxLayer", func(ptr gd.Object) any { return classdb.ParallaxLayer(ptr) })
+	classdb.Register("ParallaxLayer", func(ptr gd.Object) any { return [1]classdb.ParallaxLayer{classdb.ParallaxLayer(ptr)} })
 }

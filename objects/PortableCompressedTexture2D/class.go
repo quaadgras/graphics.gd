@@ -247,7 +247,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PortableCompressedTexture2D", func(ptr gd.Object) any { return classdb.PortableCompressedTexture2D(ptr) })
+	classdb.Register("PortableCompressedTexture2D", func(ptr gd.Object) any {
+		return [1]classdb.PortableCompressedTexture2D{classdb.PortableCompressedTexture2D(ptr)}
+	})
 }
 
 type CompressionMode = classdb.PortableCompressedTexture2DCompressionMode

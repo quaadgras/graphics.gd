@@ -411,5 +411,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Geometry3D", func(ptr gd.Object) any { return classdb.Geometry3D(ptr) })
+	classdb.Register("Geometry3D", func(ptr gd.Object) any { return [1]classdb.Geometry3D{classdb.Geometry3D(ptr)} })
 }

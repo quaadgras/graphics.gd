@@ -333,5 +333,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any { return classdb.ImporterMeshInstance3D(ptr) })
+	classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any { return [1]classdb.ImporterMeshInstance3D{classdb.ImporterMeshInstance3D(ptr)} })
 }

@@ -1118,4 +1118,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsResource(), name)
 	}
 }
-func init() { classdb.Register("GLTFState", func(ptr gd.Object) any { return classdb.GLTFState(ptr) }) }
+func init() {
+	classdb.Register("GLTFState", func(ptr gd.Object) any { return [1]classdb.GLTFState{classdb.GLTFState(ptr)} })
+}

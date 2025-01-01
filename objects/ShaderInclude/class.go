@@ -92,5 +92,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShaderInclude", func(ptr gd.Object) any { return classdb.ShaderInclude(ptr) })
+	classdb.Register("ShaderInclude", func(ptr gd.Object) any { return [1]classdb.ShaderInclude{classdb.ShaderInclude(ptr)} })
 }

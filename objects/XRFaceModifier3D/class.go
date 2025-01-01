@@ -119,5 +119,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRFaceModifier3D", func(ptr gd.Object) any { return classdb.XRFaceModifier3D(ptr) })
+	classdb.Register("XRFaceModifier3D", func(ptr gd.Object) any { return [1]classdb.XRFaceModifier3D{classdb.XRFaceModifier3D(ptr)} })
 }

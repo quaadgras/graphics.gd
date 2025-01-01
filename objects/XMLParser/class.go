@@ -443,7 +443,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("XMLParser", func(ptr gd.Object) any { return classdb.XMLParser(ptr) }) }
+func init() {
+	classdb.Register("XMLParser", func(ptr gd.Object) any { return [1]classdb.XMLParser{classdb.XMLParser(ptr)} })
+}
 
 type NodeType = classdb.XMLParserNodeType
 

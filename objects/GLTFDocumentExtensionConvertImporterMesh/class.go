@@ -74,5 +74,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFDocumentExtensionConvertImporterMesh", func(ptr gd.Object) any { return classdb.GLTFDocumentExtensionConvertImporterMesh(ptr) })
+	classdb.Register("GLTFDocumentExtensionConvertImporterMesh", func(ptr gd.Object) any {
+		return [1]classdb.GLTFDocumentExtensionConvertImporterMesh{classdb.GLTFDocumentExtensionConvertImporterMesh(ptr)}
+	})
 }

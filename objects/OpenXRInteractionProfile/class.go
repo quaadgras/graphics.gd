@@ -164,5 +164,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRInteractionProfile", func(ptr gd.Object) any { return classdb.OpenXRInteractionProfile(ptr) })
+	classdb.Register("OpenXRInteractionProfile", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRInteractionProfile{classdb.OpenXRInteractionProfile(ptr)}
+	})
 }

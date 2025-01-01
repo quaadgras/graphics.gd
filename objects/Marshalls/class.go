@@ -181,4 +181,6 @@ func (self class) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsObject(), name)
 	}
 }
-func init() { classdb.Register("Marshalls", func(ptr gd.Object) any { return classdb.Marshalls(ptr) }) }
+func init() {
+	classdb.Register("Marshalls", func(ptr gd.Object) any { return [1]classdb.Marshalls{classdb.Marshalls(ptr)} })
+}

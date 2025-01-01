@@ -914,7 +914,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsGeometryInstance3D(), name)
 	}
 }
-func init() { classdb.Register("Label3D", func(ptr gd.Object) any { return classdb.Label3D(ptr) }) }
+func init() {
+	classdb.Register("Label3D", func(ptr gd.Object) any { return [1]classdb.Label3D{classdb.Label3D(ptr)} })
+}
 
 type DrawFlags = classdb.Label3DDrawFlags
 

@@ -1882,7 +1882,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ParticleProcessMaterial", func(ptr gd.Object) any { return classdb.ParticleProcessMaterial(ptr) })
+	classdb.Register("ParticleProcessMaterial", func(ptr gd.Object) any {
+		return [1]classdb.ParticleProcessMaterial{classdb.ParticleProcessMaterial(ptr)}
+	})
 }
 
 type Parameter = classdb.ParticleProcessMaterialParameter

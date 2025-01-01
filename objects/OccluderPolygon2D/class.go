@@ -147,7 +147,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OccluderPolygon2D", func(ptr gd.Object) any { return classdb.OccluderPolygon2D(ptr) })
+	classdb.Register("OccluderPolygon2D", func(ptr gd.Object) any { return [1]classdb.OccluderPolygon2D{classdb.OccluderPolygon2D(ptr)} })
 }
 
 type CullMode = classdb.OccluderPolygon2DCullMode

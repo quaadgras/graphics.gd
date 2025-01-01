@@ -149,7 +149,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRAction", func(ptr gd.Object) any { return classdb.OpenXRAction(ptr) })
+	classdb.Register("OpenXRAction", func(ptr gd.Object) any { return [1]classdb.OpenXRAction{classdb.OpenXRAction(ptr)} })
 }
 
 type ActionType = classdb.OpenXRActionActionType

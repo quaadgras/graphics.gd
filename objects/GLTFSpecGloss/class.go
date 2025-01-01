@@ -202,5 +202,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFSpecGloss", func(ptr gd.Object) any { return classdb.GLTFSpecGloss(ptr) })
+	classdb.Register("GLTFSpecGloss", func(ptr gd.Object) any { return [1]classdb.GLTFSpecGloss{classdb.GLTFSpecGloss(ptr)} })
 }

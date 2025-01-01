@@ -484,5 +484,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorProperty", func(ptr gd.Object) any { return classdb.EditorProperty(ptr) })
+	classdb.Register("EditorProperty", func(ptr gd.Object) any { return [1]classdb.EditorProperty{classdb.EditorProperty(ptr)} })
 }

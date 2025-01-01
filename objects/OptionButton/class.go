@@ -737,5 +737,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OptionButton", func(ptr gd.Object) any { return classdb.OptionButton(ptr) })
+	classdb.Register("OptionButton", func(ptr gd.Object) any { return [1]classdb.OptionButton{classdb.OptionButton(ptr)} })
 }

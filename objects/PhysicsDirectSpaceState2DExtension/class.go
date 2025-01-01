@@ -311,5 +311,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsDirectSpaceState2DExtension", func(ptr gd.Object) any { return classdb.PhysicsDirectSpaceState2DExtension(ptr) })
+	classdb.Register("PhysicsDirectSpaceState2DExtension", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsDirectSpaceState2DExtension{classdb.PhysicsDirectSpaceState2DExtension(ptr)}
+	})
 }

@@ -110,5 +110,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeCurveXYZTexture", func(ptr gd.Object) any { return classdb.VisualShaderNodeCurveXYZTexture(ptr) })
+	classdb.Register("VisualShaderNodeCurveXYZTexture", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeCurveXYZTexture{classdb.VisualShaderNodeCurveXYZTexture(ptr)}
+	})
 }

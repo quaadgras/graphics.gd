@@ -837,7 +837,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsCollisionObject3D(), name)
 	}
 }
-func init() { classdb.Register("Area3D", func(ptr gd.Object) any { return classdb.Area3D(ptr) }) }
+func init() {
+	classdb.Register("Area3D", func(ptr gd.Object) any { return [1]classdb.Area3D{classdb.Area3D(ptr)} })
+}
 
 type SpaceOverride = classdb.Area3DSpaceOverride
 

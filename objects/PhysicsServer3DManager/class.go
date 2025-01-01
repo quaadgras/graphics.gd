@@ -85,5 +85,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer3DManager", func(ptr gd.Object) any { return classdb.PhysicsServer3DManager(ptr) })
+	classdb.Register("PhysicsServer3DManager", func(ptr gd.Object) any { return [1]classdb.PhysicsServer3DManager{classdb.PhysicsServer3DManager(ptr)} })
 }

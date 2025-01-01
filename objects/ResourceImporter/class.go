@@ -59,7 +59,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporter", func(ptr gd.Object) any { return classdb.ResourceImporter(ptr) })
+	classdb.Register("ResourceImporter", func(ptr gd.Object) any { return [1]classdb.ResourceImporter{classdb.ResourceImporter(ptr)} })
 }
 
 type ImportOrder = classdb.ResourceImporterImportOrder

@@ -160,7 +160,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectSpectrumAnalyzer", func(ptr gd.Object) any { return classdb.AudioEffectSpectrumAnalyzer(ptr) })
+	classdb.Register("AudioEffectSpectrumAnalyzer", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectSpectrumAnalyzer{classdb.AudioEffectSpectrumAnalyzer(ptr)}
+	})
 }
 
 type FFTSize = classdb.AudioEffectSpectrumAnalyzerFFTSize

@@ -2354,7 +2354,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsViewport(), name)
 	}
 }
-func init() { classdb.Register("Window", func(ptr gd.Object) any { return classdb.Window(ptr) }) }
+func init() {
+	classdb.Register("Window", func(ptr gd.Object) any { return [1]classdb.Window{classdb.Window(ptr)} })
+}
 
 type Mode = classdb.WindowMode
 

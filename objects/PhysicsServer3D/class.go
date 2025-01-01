@@ -3666,7 +3666,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer3D", func(ptr gd.Object) any { return classdb.PhysicsServer3D(ptr) })
+	classdb.Register("PhysicsServer3D", func(ptr gd.Object) any { return [1]classdb.PhysicsServer3D{classdb.PhysicsServer3D(ptr)} })
 }
 
 type JointType = classdb.PhysicsServer3DJointType

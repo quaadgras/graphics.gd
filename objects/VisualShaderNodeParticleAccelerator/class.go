@@ -103,7 +103,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Object) any { return classdb.VisualShaderNodeParticleAccelerator(ptr) })
+	classdb.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeParticleAccelerator{classdb.VisualShaderNodeParticleAccelerator(ptr)}
+	})
 }
 
 type Mode = classdb.VisualShaderNodeParticleAcceleratorMode

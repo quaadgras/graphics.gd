@@ -77,4 +77,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return gd.VirtualByName(self.AsRefCounted(), name)
 	}
 }
-func init() { classdb.Register("WeakRef", func(ptr gd.Object) any { return classdb.WeakRef(ptr) }) }
+func init() {
+	classdb.Register("WeakRef", func(ptr gd.Object) any { return [1]classdb.WeakRef{classdb.WeakRef(ptr)} })
+}

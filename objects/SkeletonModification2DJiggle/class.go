@@ -676,5 +676,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkeletonModification2DJiggle", func(ptr gd.Object) any { return classdb.SkeletonModification2DJiggle(ptr) })
+	classdb.Register("SkeletonModification2DJiggle", func(ptr gd.Object) any {
+		return [1]classdb.SkeletonModification2DJiggle{classdb.SkeletonModification2DJiggle(ptr)}
+	})
 }

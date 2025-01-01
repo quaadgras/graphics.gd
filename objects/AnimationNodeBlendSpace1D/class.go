@@ -390,7 +390,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeBlendSpace1D", func(ptr gd.Object) any { return classdb.AnimationNodeBlendSpace1D(ptr) })
+	classdb.Register("AnimationNodeBlendSpace1D", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeBlendSpace1D{classdb.AnimationNodeBlendSpace1D(ptr)}
+	})
 }
 
 type BlendMode = classdb.AnimationNodeBlendSpace1DBlendMode

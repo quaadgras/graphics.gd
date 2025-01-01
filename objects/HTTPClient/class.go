@@ -609,7 +609,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HTTPClient", func(ptr gd.Object) any { return classdb.HTTPClient(ptr) })
+	classdb.Register("HTTPClient", func(ptr gd.Object) any { return [1]classdb.HTTPClient{classdb.HTTPClient(ptr)} })
 }
 
 type Method = classdb.HTTPClientMethod

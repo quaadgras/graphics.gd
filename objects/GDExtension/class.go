@@ -106,7 +106,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GDExtension", func(ptr gd.Object) any { return classdb.GDExtension(ptr) })
+	classdb.Register("GDExtension", func(ptr gd.Object) any { return [1]classdb.GDExtension{classdb.GDExtension(ptr)} })
 }
 
 type InitializationLevel = classdb.GDExtensionInitializationLevel

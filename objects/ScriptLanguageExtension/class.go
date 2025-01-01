@@ -1561,7 +1561,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return classdb.ScriptLanguageExtension(ptr) })
+	classdb.Register("ScriptLanguageExtension", func(ptr gd.Object) any {
+		return [1]classdb.ScriptLanguageExtension{classdb.ScriptLanguageExtension(ptr)}
+	})
 }
 
 type LookupResultType = classdb.ScriptLanguageExtensionLookupResultType

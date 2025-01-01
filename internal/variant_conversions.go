@@ -22,7 +22,7 @@ func NewVariant(v any) Variant {
 	case Variant:
 		frame.Free()
 		return Global.Variants.NewCopy(val)
-	case Bool:
+	case Bool, bool:
 		var arg = callframe.Arg(frame, val)
 		Global.variant.FromType[TypeBool](ret, arg.Uintptr())
 	case Int:

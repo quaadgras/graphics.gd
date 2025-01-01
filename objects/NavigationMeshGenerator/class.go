@@ -136,5 +136,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationMeshGenerator", func(ptr gd.Object) any { return classdb.NavigationMeshGenerator(ptr) })
+	classdb.Register("NavigationMeshGenerator", func(ptr gd.Object) any {
+		return [1]classdb.NavigationMeshGenerator{classdb.NavigationMeshGenerator(ptr)}
+	})
 }

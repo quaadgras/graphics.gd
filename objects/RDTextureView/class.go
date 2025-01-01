@@ -193,5 +193,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDTextureView", func(ptr gd.Object) any { return classdb.RDTextureView(ptr) })
+	classdb.Register("RDTextureView", func(ptr gd.Object) any { return [1]classdb.RDTextureView{classdb.RDTextureView(ptr)} })
 }
