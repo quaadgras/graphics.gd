@@ -39,7 +39,7 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr [1]uintp
 }
 
 func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj Object, ptr [1]uintptr) T {
-	return pointers.New[T]([3]uintptr{ptr[0], 0})
+	return pointers.Let[T]([3]uintptr{ptr[0], 0})
 }
 
 func (self Object) AsObject() Object {

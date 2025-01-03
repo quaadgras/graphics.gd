@@ -228,8 +228,8 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 				checksum P
 			}
 			current.sentinal = idx
-			rev := uintptr(max(rev, 2) + 1)
-			arr[addr+offsetRevision].Store(rev)
+			rev := (max(rev, 2) + 1).active()
+			arr[addr+offsetRevision].Store(uintptr(rev))
 			//
 			// NOTE the below function extraction is somewhat unsafe and
 			// relies on specific assumptions on how static function pointers
@@ -245,7 +245,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			for i := range uintptr(len(ptr)) {
 				arr[addr+offsetPointers+i].Store(uintptr(ptr[i]))
 			}
-			current.revision = revision(rev)
+			current.revision = rev
 			current.checksum = ptr
 			return T(current)
 		}

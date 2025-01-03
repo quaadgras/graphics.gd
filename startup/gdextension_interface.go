@@ -453,6 +453,8 @@ func doInitialization(init *initialization) {
 	C.initialization(init)
 }
 
+var doneInit = make(chan struct{}, 1)
+
 //export initialize
 func initialize(_ unsafe.Pointer, level initializationLevel) {
 	internal.Global.Init(gd.GDExtensionInitializationLevel(level))
@@ -460,7 +462,11 @@ func initialize(_ unsafe.Pointer, level initializationLevel) {
 		for _, fn := range internal.StartupFunctions {
 			fn()
 		}
-		main()
+		go func() {
+			main()
+			doneInit <- struct{}{}
+		}()
+		<-doneInit
 	}
 }
 
@@ -472,6 +478,10 @@ func deinitialize(_ unsafe.Pointer, level initializationLevel) {
 		}
 		pointers.Cycle()
 		pointers.Cycle()
+		close(done)
+		if startupEngine {
+			<-doneInit
+		}
 	}
 }
 
