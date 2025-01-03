@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource defines an OpenXR action. Actions can be used both for inputs (buttons, joysticks, triggers, etc.) and outputs (haptics).
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAction"))
-	return Instance{classdb.OpenXRAction(object)}
+	return Instance{*(*classdb.OpenXRAction)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LocalizedName() string {
@@ -149,7 +149,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRAction", func(ptr gd.Object) any { return [1]classdb.OpenXRAction{classdb.OpenXRAction(ptr)} })
+	classdb.Register("OpenXRAction", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRAction{*(*classdb.OpenXRAction)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ActionType = classdb.OpenXRActionActionType

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is the default [member MultiplayerAPI.multiplayer_peer] for the [member Node.multiplayer]. It mimics the behavior of a server with no peers connected.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OfflineMultiplayerPeer"))
-	return Instance{classdb.OfflineMultiplayerPeer(object)}
+	return Instance{*(*classdb.OfflineMultiplayerPeer)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsOfflineMultiplayerPeer() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -76,5 +76,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OfflineMultiplayerPeer", func(ptr gd.Object) any { return [1]classdb.OfflineMultiplayerPeer{classdb.OfflineMultiplayerPeer(ptr)} })
+	classdb.Register("OfflineMultiplayerPeer", func(ptr gd.Object) any {
+		return [1]classdb.OfflineMultiplayerPeer{*(*classdb.OfflineMultiplayerPeer)(unsafe.Pointer(&ptr))}
+	})
 }

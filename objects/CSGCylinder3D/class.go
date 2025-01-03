@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node allows you to create a cylinder (or cone) for use with the CSG system.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGCylinder3D"))
-	return Instance{classdb.CSGCylinder3D(object)}
+	return Instance{*(*classdb.CSGCylinder3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Radius() Float.X {
@@ -186,7 +186,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -254,5 +254,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGCylinder3D", func(ptr gd.Object) any { return [1]classdb.CSGCylinder3D{classdb.CSGCylinder3D(ptr)} })
+	classdb.Register("CSGCylinder3D", func(ptr gd.Object) any {
+		return [1]classdb.CSGCylinder3D{*(*classdb.CSGCylinder3D)(unsafe.Pointer(&ptr))}
+	})
 }

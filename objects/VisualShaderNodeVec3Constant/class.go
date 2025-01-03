@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A constant [Vector3], which can be used as an input node.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVec3Constant"))
-	return Instance{classdb.VisualShaderNodeVec3Constant(object)}
+	return Instance{*(*classdb.VisualShaderNodeVec3Constant)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Constant() Vector3.XYZ {
@@ -112,6 +112,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVec3Constant", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVec3Constant{classdb.VisualShaderNodeVec3Constant(ptr)}
+		return [1]classdb.VisualShaderNodeVec3Constant{*(*classdb.VisualShaderNodeVec3Constant)(unsafe.Pointer(&ptr))}
 	})
 }

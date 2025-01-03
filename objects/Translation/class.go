@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
@@ -146,7 +146,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Translation"))
-	return Instance{classdb.Translation(object)}
+	return Instance{*(*classdb.Translation)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Locale() string {
@@ -359,5 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Translation", func(ptr gd.Object) any { return [1]classdb.Translation{classdb.Translation(ptr)} })
+	classdb.Register("Translation", func(ptr gd.Object) any { return [1]classdb.Translation{*(*classdb.Translation)(unsafe.Pointer(&ptr))} })
 }

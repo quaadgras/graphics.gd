@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending [ImageFormatLoaderExtension].
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageFormatLoader"))
-	return Instance{classdb.ImageFormatLoader(object)}
+	return Instance{*(*classdb.ImageFormatLoader)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsImageFormatLoader() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -59,7 +59,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageFormatLoader", func(ptr gd.Object) any { return [1]classdb.ImageFormatLoader{classdb.ImageFormatLoader(ptr)} })
+	classdb.Register("ImageFormatLoader", func(ptr gd.Object) any {
+		return [1]classdb.ImageFormatLoader{*(*classdb.ImageFormatLoader)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type LoaderFlags = classdb.ImageFormatLoaderLoaderFlags

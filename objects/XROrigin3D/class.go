@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is a special node within the AR/VR system that maps the physical location of the center of our tracking space to the virtual location within our game world.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XROrigin3D"))
-	return Instance{classdb.XROrigin3D(object)}
+	return Instance{*(*classdb.XROrigin3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) WorldScale() Float.X {
@@ -120,5 +120,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XROrigin3D", func(ptr gd.Object) any { return [1]classdb.XROrigin3D{classdb.XROrigin3D(ptr)} })
+	classdb.Register("XROrigin3D", func(ptr gd.Object) any { return [1]classdb.XROrigin3D{*(*classdb.XROrigin3D)(unsafe.Pointer(&ptr))} })
 }

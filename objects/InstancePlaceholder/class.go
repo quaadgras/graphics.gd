@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Turning on the option [b]Load As Placeholder[/b] for an instantiated scene in the editor causes it to be replaced by an [InstancePlaceholder] when running the game, this will not replace the node in the editor. This makes it possible to delay actually loading the scene until calling [method create_instance]. This is useful to avoid loading large scenes all at once by loading parts of it selectively.
@@ -63,7 +63,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InstancePlaceholder"))
-	return Instance{classdb.InstancePlaceholder(object)}
+	return Instance{*(*classdb.InstancePlaceholder)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -92,7 +92,7 @@ func (self class) CreateInstance(replace bool, custom_scene objects.PackedScene)
 	callframe.Arg(frame, pointers.Get(custom_scene[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InstancePlaceholder.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerWithOwnershipTransferredToGo[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -128,5 +128,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InstancePlaceholder", func(ptr gd.Object) any { return [1]classdb.InstancePlaceholder{classdb.InstancePlaceholder(ptr)} })
+	classdb.Register("InstancePlaceholder", func(ptr gd.Object) any {
+		return [1]classdb.InstancePlaceholder{*(*classdb.InstancePlaceholder)(unsafe.Pointer(&ptr))}
+	})
 }

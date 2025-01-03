@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The BMFont format is a format created by the [url=https://www.angelcode.com/products/bmfont/]BMFont[/url] program. Many BMFont-compatible programs also exist, like [url=https://www.bmglyph.com/]BMGlyph[/url].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterBMFont"))
-	return Instance{classdb.ResourceImporterBMFont(object)}
+	return Instance{*(*classdb.ResourceImporterBMFont)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterBMFont() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -70,5 +70,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterBMFont", func(ptr gd.Object) any { return [1]classdb.ResourceImporterBMFont{classdb.ResourceImporterBMFont(ptr)} })
+	classdb.Register("ResourceImporterBMFont", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterBMFont{*(*classdb.ResourceImporterBMFont)(unsafe.Pointer(&ptr))}
+	})
 }

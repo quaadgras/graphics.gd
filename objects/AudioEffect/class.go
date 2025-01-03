@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The base [Resource] for every audio effect. In the editor, an audio effect can be added to the current bus layout through the Audio panel. At run-time, it is also possible to manipulate audio effects through [method AudioServer.add_bus_effect], [method AudioServer.remove_bus_effect], and [method AudioServer.get_bus_effect].
@@ -86,7 +86,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffect"))
-	return Instance{classdb.AudioEffect(object)}
+	return Instance{*(*classdb.AudioEffect)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -147,5 +147,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffect", func(ptr gd.Object) any { return [1]classdb.AudioEffect{classdb.AudioEffect(ptr)} })
+	classdb.Register("AudioEffect", func(ptr gd.Object) any { return [1]classdb.AudioEffect{*(*classdb.AudioEffect)(unsafe.Pointer(&ptr))} })
 }

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [OpenXRAPIExtension] makes OpenXR available for GDExtension. It provides the OpenXR API to GDExtension through the [method get_instance_proc_addr] method, and the OpenXR instance through [method get_instance].
@@ -182,7 +182,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAPIExtension"))
-	return Instance{classdb.OpenXRAPIExtension(object)}
+	return Instance{*(*classdb.OpenXRAPIExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -470,7 +470,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return [1]classdb.OpenXRAPIExtension{classdb.OpenXRAPIExtension(ptr)} })
+	classdb.Register("OpenXRAPIExtension", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRAPIExtension{*(*classdb.OpenXRAPIExtension)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type OpenXRAlphaBlendModeSupport = classdb.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport

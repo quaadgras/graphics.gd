@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about mouse, keyboard, and touch gesture input events. This includes information about which modifier keys are pressed, such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See [method Node._input].
@@ -55,7 +55,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventWithModifiers"))
-	return Instance{classdb.InputEventWithModifiers(object)}
+	return Instance{*(*classdb.InputEventWithModifiers)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CommandOrControlAutoremap() bool {
@@ -259,7 +259,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("InputEventWithModifiers", func(ptr gd.Object) any {
-		return [1]classdb.InputEventWithModifiers{classdb.InputEventWithModifiers(ptr)}
+		return [1]classdb.InputEventWithModifiers{*(*classdb.InputEventWithModifiers)(unsafe.Pointer(&ptr))}
 	})
 }
 

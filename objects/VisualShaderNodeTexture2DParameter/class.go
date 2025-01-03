@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translated to [code]uniform sampler2D[/code] in the shader language.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTexture2DParameter"))
-	return Instance{classdb.VisualShaderNodeTexture2DParameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeTexture2DParameter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeTexture2DParameter() Advanced {
@@ -92,6 +92,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTexture2DParameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTexture2DParameter{classdb.VisualShaderNodeTexture2DParameter(ptr)}
+		return [1]classdb.VisualShaderNodeTexture2DParameter{*(*classdb.VisualShaderNodeTexture2DParameter)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Material] is a base resource used for coloring and shading geometry. All materials inherit from it and almost all [VisualInstance3D] derived nodes carry a [Material]. A few flags and parameters are shared between all material types and are configured here.
@@ -109,7 +109,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Material"))
-	return Instance{classdb.Material(object)}
+	return Instance{*(*classdb.Material)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RenderPriority() int {
@@ -186,7 +186,7 @@ func (self class) GetNextPass() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_next_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -229,7 +229,7 @@ func (self class) CreatePlaceholder() objects.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -274,5 +274,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Material", func(ptr gd.Object) any { return [1]classdb.Material{classdb.Material(ptr)} })
+	classdb.Register("Material", func(ptr gd.Object) any { return [1]classdb.Material{*(*classdb.Material)(unsafe.Pointer(&ptr))} })
 }

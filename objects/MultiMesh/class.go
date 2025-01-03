@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 MultiMesh provides low-level mesh instancing. Drawing thousands of [MeshInstance3D] nodes can be slow, since each object is submitted to the GPU then drawn individually.
@@ -115,7 +115,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiMesh"))
-	return Instance{classdb.MultiMesh(object)}
+	return Instance{*(*classdb.MultiMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TransformFormat() classdb.MultiMeshTransformFormat {
@@ -196,7 +196,7 @@ func (self class) GetMesh() objects.Mesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -484,7 +484,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiMesh", func(ptr gd.Object) any { return [1]classdb.MultiMesh{classdb.MultiMesh(ptr)} })
+	classdb.Register("MultiMesh", func(ptr gd.Object) any { return [1]classdb.MultiMesh{*(*classdb.MultiMesh)(unsafe.Pointer(&ptr))} })
 }
 
 type TransformFormat = classdb.MultiMeshTransformFormat

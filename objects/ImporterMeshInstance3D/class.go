@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.ImporterMeshInstance3D
 type Any interface {
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMeshInstance3D"))
-	return Instance{classdb.ImporterMeshInstance3D(object)}
+	return Instance{*(*classdb.ImporterMeshInstance3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mesh() objects.ImporterMesh {
@@ -135,7 +135,7 @@ func (self class) GetMesh() objects.ImporterMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ImporterMesh{classdb.ImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ImporterMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -154,7 +154,7 @@ func (self class) GetSkin() objects.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Skin{gd.PointerWithOwnershipTransferredToGo[classdb.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -333,5 +333,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any { return [1]classdb.ImporterMeshInstance3D{classdb.ImporterMeshInstance3D(ptr)} })
+	classdb.Register("ImporterMeshInstance3D", func(ptr gd.Object) any {
+		return [1]classdb.ImporterMeshInstance3D{*(*classdb.ImporterMeshInstance3D)(unsafe.Pointer(&ptr))}
+	})
 }

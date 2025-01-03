@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [GDExtension] resource type represents a [url=https://en.wikipedia.org/wiki/Shared_library]shared library[/url] which can expand the functionality of the engine. The [GDExtensionManager] singleton is responsible for loading, reloading, and unloading [GDExtension] resources.
@@ -53,7 +53,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GDExtension"))
-	return Instance{classdb.GDExtension(object)}
+	return Instance{*(*classdb.GDExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -106,7 +106,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GDExtension", func(ptr gd.Object) any { return [1]classdb.GDExtension{classdb.GDExtension(ptr)} })
+	classdb.Register("GDExtension", func(ptr gd.Object) any { return [1]classdb.GDExtension{*(*classdb.GDExtension)(unsafe.Pointer(&ptr))} })
 }
 
 type InitializationLevel = classdb.GDExtensionInitializationLevel

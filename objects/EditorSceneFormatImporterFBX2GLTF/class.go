@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Imports Autodesk FBX 3D scenes by way of converting them to glTF 2.0 using the FBX2glTF command line tool.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterFBX2GLTF"))
-	return Instance{classdb.EditorSceneFormatImporterFBX2GLTF(object)}
+	return Instance{*(*classdb.EditorSceneFormatImporterFBX2GLTF)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorSceneFormatImporterFBX2GLTF() Advanced {
@@ -73,6 +73,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorSceneFormatImporterFBX2GLTF", func(ptr gd.Object) any {
-		return [1]classdb.EditorSceneFormatImporterFBX2GLTF{classdb.EditorSceneFormatImporterFBX2GLTF(ptr)}
+		return [1]classdb.EditorSceneFormatImporterFBX2GLTF{*(*classdb.EditorSceneFormatImporterFBX2GLTF)(unsafe.Pointer(&ptr))}
 	})
 }

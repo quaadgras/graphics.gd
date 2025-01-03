@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 PhysicsServer2D is the server responsible for all 2D physics. It can directly create and manipulate all physics objects:
@@ -1282,7 +1282,7 @@ func (self class) SpaceGetDirectState(space gd.RID) objects.PhysicsDirectSpaceSt
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsDirectSpaceState2D{classdb.PhysicsDirectSpaceState2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[classdb.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2457,7 +2457,7 @@ func (self class) BodyGetDirectState(body gd.RID) objects.PhysicsDirectBodyState
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsDirectBodyState2D{classdb.PhysicsDirectBodyState2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[classdb.PhysicsDirectBodyState2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2736,7 +2736,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer2D", func(ptr gd.Object) any { return [1]classdb.PhysicsServer2D{classdb.PhysicsServer2D(ptr)} })
+	classdb.Register("PhysicsServer2D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsServer2D{*(*classdb.PhysicsServer2D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type SpaceParameter = classdb.PhysicsServer2DSpaceParameter

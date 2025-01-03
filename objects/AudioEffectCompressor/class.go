@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Dynamic range compressor reduces the level of the sound when the amplitude goes over a certain threshold in Decibels. One of the main uses of a compressor is to increase the dynamic range by clipping as little as possible (when sound goes over 0dB).
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectCompressor"))
-	return Instance{classdb.AudioEffectCompressor(object)}
+	return Instance{*(*classdb.AudioEffectCompressor)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Threshold() Float.X {
@@ -267,5 +267,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectCompressor", func(ptr gd.Object) any { return [1]classdb.AudioEffectCompressor{classdb.AudioEffectCompressor(ptr)} })
+	classdb.Register("AudioEffectCompressor", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectCompressor{*(*classdb.AudioEffectCompressor)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -180,7 +180,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShader"))
-	return Instance{classdb.VisualShader(object)}
+	return Instance{*(*classdb.VisualShader)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) GraphOffset() Vector2.XY {
@@ -228,7 +228,7 @@ func (self class) GetNode(atype classdb.VisualShaderType, id gd.Int) objects.Vis
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VisualShaderNode{classdb.VisualShaderNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.VisualShaderNode{gd.PointerWithOwnershipTransferredToGo[classdb.VisualShaderNode](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -529,7 +529,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShader", func(ptr gd.Object) any { return [1]classdb.VisualShader{classdb.VisualShader(ptr)} })
+	classdb.Register("VisualShader", func(ptr gd.Object) any {
+		return [1]classdb.VisualShader{*(*classdb.VisualShader)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Type = classdb.VisualShaderType

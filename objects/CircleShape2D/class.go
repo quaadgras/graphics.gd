@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D circle shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CircleShape2D"))
-	return Instance{classdb.CircleShape2D(object)}
+	return Instance{*(*classdb.CircleShape2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Radius() Float.X {
@@ -99,5 +99,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CircleShape2D", func(ptr gd.Object) any { return [1]classdb.CircleShape2D{classdb.CircleShape2D(ptr)} })
+	classdb.Register("CircleShape2D", func(ptr gd.Object) any {
+		return [1]classdb.CircleShape2D{*(*classdb.CircleShape2D)(unsafe.Pointer(&ptr))}
+	})
 }

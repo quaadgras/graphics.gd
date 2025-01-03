@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class generates noise using the FastNoiseLite library, which is a collection of several noise algorithms including Cellular, Perlin, Value, and more.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FastNoiseLite"))
-	return Instance{classdb.FastNoiseLite(object)}
+	return Instance{*(*classdb.FastNoiseLite)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) NoiseType() classdb.FastNoiseLiteNoiseType {
@@ -638,7 +638,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FastNoiseLite", func(ptr gd.Object) any { return [1]classdb.FastNoiseLite{classdb.FastNoiseLite(ptr)} })
+	classdb.Register("FastNoiseLite", func(ptr gd.Object) any {
+		return [1]classdb.FastNoiseLite{*(*classdb.FastNoiseLite)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type NoiseType = classdb.FastNoiseLiteNoiseType

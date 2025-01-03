@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
@@ -179,7 +179,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationAgent2D"))
-	return Instance{classdb.NavigationAgent2D(object)}
+	return Instance{*(*classdb.NavigationAgent2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TargetPosition() Vector2.XY {
@@ -843,7 +843,7 @@ func (self class) GetCurrentNavigationResult() objects.NavigationPathQueryResult
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_current_navigation_result, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.NavigationPathQueryResult2D{classdb.NavigationPathQueryResult2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.NavigationPathQueryResult2D{gd.PointerWithOwnershipTransferredToGo[classdb.NavigationPathQueryResult2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1175,5 +1175,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationAgent2D", func(ptr gd.Object) any { return [1]classdb.NavigationAgent2D{classdb.NavigationAgent2D(ptr)} })
+	classdb.Register("NavigationAgent2D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationAgent2D{*(*classdb.NavigationAgent2D)(unsafe.Pointer(&ptr))}
+	})
 }

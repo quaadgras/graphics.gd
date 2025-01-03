@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A singleton for saving resource types to the filesystem.
@@ -138,7 +138,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceSaver", func(ptr gd.Object) any { return [1]classdb.ResourceSaver{classdb.ResourceSaver(ptr)} })
+	classdb.Register("ResourceSaver", func(ptr gd.Object) any {
+		return [1]classdb.ResourceSaver{*(*classdb.ResourceSaver)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type SaverFlags = classdb.ResourceSaverSaverFlags

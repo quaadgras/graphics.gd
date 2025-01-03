@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Has only one output port and no inputs.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeBooleanConstant"))
-	return Instance{classdb.VisualShaderNodeBooleanConstant(object)}
+	return Instance{*(*classdb.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Constant() bool {
@@ -112,6 +112,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeBooleanConstant", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeBooleanConstant{classdb.VisualShaderNodeBooleanConstant(ptr)}
+		return [1]classdb.VisualShaderNodeBooleanConstant{*(*classdb.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&ptr))}
 	})
 }

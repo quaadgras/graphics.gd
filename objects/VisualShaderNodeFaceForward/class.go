@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translates to [code]faceforward(N, I, Nref)[/code] in the shader language. The function has three vector parameters: [code]N[/code], the vector to orient, [code]I[/code], the incident vector, and [code]Nref[/code], the reference vector. If the dot product of [code]I[/code] and [code]Nref[/code] is smaller than zero the return value is [code]N[/code]. Otherwise, [code]-N[/code] is returned.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFaceForward"))
-	return Instance{classdb.VisualShaderNodeFaceForward(object)}
+	return Instance{*(*classdb.VisualShaderNodeFaceForward)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeFaceForward() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeFaceForward", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeFaceForward{classdb.VisualShaderNodeFaceForward(ptr)}
+		return [1]classdb.VisualShaderNodeFaceForward{*(*classdb.VisualShaderNodeFaceForward)(unsafe.Pointer(&ptr))}
 	})
 }

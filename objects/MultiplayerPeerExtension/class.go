@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
@@ -351,7 +351,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerPeerExtension"))
-	return Instance{classdb.MultiplayerPeerExtension(object)}
+	return Instance{*(*classdb.MultiplayerPeerExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -741,7 +741,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("MultiplayerPeerExtension", func(ptr gd.Object) any {
-		return [1]classdb.MultiplayerPeerExtension{classdb.MultiplayerPeerExtension(ptr)}
+		return [1]classdb.MultiplayerPeerExtension{*(*classdb.MultiplayerPeerExtension)(unsafe.Pointer(&ptr))}
 	})
 }
 

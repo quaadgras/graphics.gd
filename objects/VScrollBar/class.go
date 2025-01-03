@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A vertical scrollbar, typically used to navigate through content that extends beyond the visible height of a control. It is a [Range]-based control and goes from top (min) to bottom (max). Note that this direction is the opposite of [VSlider]'s.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VScrollBar"))
-	return Instance{classdb.VScrollBar(object)}
+	return Instance{*(*classdb.VScrollBar)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVScrollBar() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -82,5 +82,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VScrollBar", func(ptr gd.Object) any { return [1]classdb.VScrollBar{classdb.VScrollBar(ptr)} })
+	classdb.Register("VScrollBar", func(ptr gd.Object) any { return [1]classdb.VScrollBar{*(*classdb.VScrollBar)(unsafe.Pointer(&ptr))} })
 }

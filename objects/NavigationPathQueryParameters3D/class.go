@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer3D].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationPathQueryParameters3D"))
-	return Instance{classdb.NavigationPathQueryParameters3D(object)}
+	return Instance{*(*classdb.NavigationPathQueryParameters3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Map() Resource.ID {
@@ -309,7 +309,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("NavigationPathQueryParameters3D", func(ptr gd.Object) any {
-		return [1]classdb.NavigationPathQueryParameters3D{classdb.NavigationPathQueryParameters3D(ptr)}
+		return [1]classdb.NavigationPathQueryParameters3D{*(*classdb.NavigationPathQueryParameters3D)(unsafe.Pointer(&ptr))}
 	})
 }
 

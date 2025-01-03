@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Contains multiple [AnimationRootNode]s representing animation states, connected in a graph. State transitions can be configured to happen automatically or via code, using a shortest-path algorithm. Retrieve the [AnimationNodeStateMachinePlayback] object from the [AnimationTree] node to control it programmatically.
@@ -185,7 +185,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeStateMachine"))
-	return Instance{classdb.AnimationNodeStateMachine(object)}
+	return Instance{*(*classdb.AnimationNodeStateMachine)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) StateMachineType() classdb.AnimationNodeStateMachineStateMachineType {
@@ -248,7 +248,7 @@ func (self class) GetNode(name gd.StringName) objects.AnimationNode {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationNode{classdb.AnimationNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AnimationNode{gd.PointerWithOwnershipTransferredToGo[classdb.AnimationNode](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -371,7 +371,7 @@ func (self class) GetTransition(idx gd.Int) objects.AnimationNodeStateMachineTra
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationNodeStateMachineTransition{classdb.AnimationNodeStateMachineTransition(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AnimationNodeStateMachineTransition{gd.PointerWithOwnershipTransferredToGo[classdb.AnimationNodeStateMachineTransition](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -565,7 +565,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AnimationNodeStateMachine", func(ptr gd.Object) any {
-		return [1]classdb.AnimationNodeStateMachine{classdb.AnimationNodeStateMachine(ptr)}
+		return [1]classdb.AnimationNodeStateMachine{*(*classdb.AnimationNodeStateMachine)(unsafe.Pointer(&ptr))}
 	})
 }
 

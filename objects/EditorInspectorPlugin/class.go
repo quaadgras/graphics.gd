@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
@@ -168,7 +168,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorInspectorPlugin"))
-	return Instance{classdb.EditorInspectorPlugin(object)}
+	return Instance{*(*classdb.EditorInspectorPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -259,7 +259,7 @@ Adds a custom control, which is not necessarily a property editor.
 //go:nosplit
 func (self class) AddCustomControl(control objects.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -274,7 +274,7 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 func (self class) AddPropertyEditor(property gd.String, editor objects.Control, add_to_end bool, label gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(editor[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()))
 	callframe.Arg(frame, add_to_end)
 	callframe.Arg(frame, pointers.Get(label))
 	var r_ret callframe.Nil
@@ -290,7 +290,7 @@ func (self class) AddPropertyEditorForMultipleProperties(label gd.String, proper
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, pointers.Get(properties))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(editor[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -338,7 +338,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorInspectorPlugin", func(ptr gd.Object) any { return [1]classdb.EditorInspectorPlugin{classdb.EditorInspectorPlugin(ptr)} })
+	classdb.Register("EditorInspectorPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorInspectorPlugin{*(*classdb.EditorInspectorPlugin)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type PropertyHint int

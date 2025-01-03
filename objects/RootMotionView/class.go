@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [i]Root motion[/i] refers to an animation technique where a mesh's skeleton is used to give impulse to a character. When working with 3D animations, a popular technique is for animators to use the root skeleton bone to give motion to the rest of the skeleton. This allows animating characters in a way where steps actually match the floor below. It also allows precise interaction with objects during cinematics. See also [AnimationMixer].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RootMotionView"))
-	return Instance{classdb.RootMotionView(object)}
+	return Instance{*(*classdb.RootMotionView)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) AnimationPath() Path.String {
@@ -208,5 +208,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RootMotionView", func(ptr gd.Object) any { return [1]classdb.RootMotionView{classdb.RootMotionView(ptr)} })
+	classdb.Register("RootMotionView", func(ptr gd.Object) any {
+		return [1]classdb.RootMotionView{*(*classdb.RootMotionView)(unsafe.Pointer(&ptr))}
+	})
 }

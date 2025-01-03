@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Random range node will output a pseudo-random scalar value in the specified range, based on the seed. The value is always the same for the given seed and range, so you should provide a changing input, e.g. by using time.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeRandomRange"))
-	return Instance{classdb.VisualShaderNodeRandomRange(object)}
+	return Instance{*(*classdb.VisualShaderNodeRandomRange)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeRandomRange() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeRandomRange", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeRandomRange{classdb.VisualShaderNodeRandomRange(ptr)}
+		return [1]classdb.VisualShaderNodeRandomRange{*(*classdb.VisualShaderNodeRandomRange)(unsafe.Pointer(&ptr))}
 	})
 }

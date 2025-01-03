@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translates to [code]determinant(x)[/code] in the shader language.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeDeterminant"))
-	return Instance{classdb.VisualShaderNodeDeterminant(object)}
+	return Instance{*(*classdb.VisualShaderNodeDeterminant)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeDeterminant() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeDeterminant", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeDeterminant{classdb.VisualShaderNodeDeterminant(ptr)}
+		return [1]classdb.VisualShaderNodeDeterminant{*(*classdb.VisualShaderNodeDeterminant)(unsafe.Pointer(&ptr))}
 	})
 }

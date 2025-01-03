@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An input event for keys on a keyboard. Supports key presses, key releases and [member echo] events. It can also be received in [method Node._unhandled_key_input].
@@ -95,7 +95,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventKey"))
-	return Instance{classdb.InputEventKey(object)}
+	return Instance{*(*classdb.InputEventKey)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SetPressed(value bool) {
@@ -395,7 +395,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventKey", func(ptr gd.Object) any { return [1]classdb.InputEventKey{classdb.InputEventKey(ptr)} })
+	classdb.Register("InputEventKey", func(ptr gd.Object) any {
+		return [1]classdb.InputEventKey{*(*classdb.InputEventKey)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Key int

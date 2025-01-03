@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [BoxOccluder3D] stores a cuboid shape that can be used by the engine's occlusion culling system.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoxOccluder3D"))
-	return Instance{classdb.BoxOccluder3D(object)}
+	return Instance{*(*classdb.BoxOccluder3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector3.XYZ {
@@ -101,5 +101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BoxOccluder3D", func(ptr gd.Object) any { return [1]classdb.BoxOccluder3D{classdb.BoxOccluder3D(ptr)} })
+	classdb.Register("BoxOccluder3D", func(ptr gd.Object) any {
+		return [1]classdb.BoxOccluder3D{*(*classdb.BoxOccluder3D)(unsafe.Pointer(&ptr))}
+	})
 }

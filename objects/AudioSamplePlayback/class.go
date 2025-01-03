@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Meta class for playing back audio samples.
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioSamplePlayback"))
-	return Instance{classdb.AudioSamplePlayback(object)}
+	return Instance{*(*classdb.AudioSamplePlayback)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAudioSamplePlayback() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -59,5 +59,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioSamplePlayback", func(ptr gd.Object) any { return [1]classdb.AudioSamplePlayback{classdb.AudioSamplePlayback(ptr)} })
+	classdb.Register("AudioSamplePlayback", func(ptr gd.Object) any {
+		return [1]classdb.AudioSamplePlayback{*(*classdb.AudioSamplePlayback)(unsafe.Pointer(&ptr))}
+	})
 }

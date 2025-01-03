@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
@@ -112,7 +112,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DLookAt"))
-	return Instance{classdb.SkeletonModification2DLookAt(object)}
+	return Instance{*(*classdb.SkeletonModification2DLookAt)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BoneIndex() int {
@@ -357,6 +357,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModification2DLookAt", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModification2DLookAt{classdb.SkeletonModification2DLookAt(ptr)}
+		return [1]classdb.SkeletonModification2DLookAt{*(*classdb.SkeletonModification2DLookAt)(unsafe.Pointer(&ptr))}
 	})
 }

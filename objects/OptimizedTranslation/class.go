@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An optimized translation, used by default for CSV Translations. Uses real-time compressed translations, which results in very small dictionaries.
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OptimizedTranslation"))
-	return Instance{classdb.OptimizedTranslation(object)}
+	return Instance{*(*classdb.OptimizedTranslation)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -91,5 +91,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OptimizedTranslation", func(ptr gd.Object) any { return [1]classdb.OptimizedTranslation{classdb.OptimizedTranslation(ptr)} })
+	classdb.Register("OptimizedTranslation", func(ptr gd.Object) any {
+		return [1]classdb.OptimizedTranslation{*(*classdb.OptimizedTranslation)(unsafe.Pointer(&ptr))}
+	})
 }

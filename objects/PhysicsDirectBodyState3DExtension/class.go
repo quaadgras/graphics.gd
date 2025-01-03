@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class extends [PhysicsDirectBodyState3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -439,7 +439,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState3DExtension"))
-	return Instance{classdb.PhysicsDirectBodyState3DExtension(object)}
+	return Instance{*(*classdb.PhysicsDirectBodyState3DExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _get_total_gravity(impl func(ptr unsafe.Pointer) gd.Vector3) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1044,6 +1044,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsDirectBodyState3DExtension", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsDirectBodyState3DExtension{classdb.PhysicsDirectBodyState3DExtension(ptr)}
+		return [1]classdb.PhysicsDirectBodyState3DExtension{*(*classdb.PhysicsDirectBodyState3DExtension)(unsafe.Pointer(&ptr))}
 	})
 }

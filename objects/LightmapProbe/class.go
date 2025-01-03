@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [LightmapProbe] represents the position of a single manually placed probe for dynamic object lighting with [LightmapGI]. Lightmap probes affect the lighting of [GeometryInstance3D]-derived nodes that have their [member GeometryInstance3D.gi_mode] set to [constant GeometryInstance3D.GI_MODE_DYNAMIC].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapProbe"))
-	return Instance{classdb.LightmapProbe(object)}
+	return Instance{*(*classdb.LightmapProbe)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsLightmapProbe() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -65,5 +65,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapProbe", func(ptr gd.Object) any { return [1]classdb.LightmapProbe{classdb.LightmapProbe(ptr)} })
+	classdb.Register("LightmapProbe", func(ptr gd.Object) any {
+		return [1]classdb.LightmapProbe{*(*classdb.LightmapProbe)(unsafe.Pointer(&ptr))}
+	})
 }

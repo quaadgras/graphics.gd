@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Uses three operands to compute [code](a * b + c)[/code] expression.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeMultiplyAdd"))
-	return Instance{classdb.VisualShaderNodeMultiplyAdd(object)}
+	return Instance{*(*classdb.VisualShaderNodeMultiplyAdd)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OpType() classdb.VisualShaderNodeMultiplyAddOpType {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeMultiplyAdd", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeMultiplyAdd{classdb.VisualShaderNodeMultiplyAdd(ptr)}
+		return [1]classdb.VisualShaderNodeMultiplyAdd{*(*classdb.VisualShaderNodeMultiplyAdd)(unsafe.Pointer(&ptr))}
 	})
 }
 

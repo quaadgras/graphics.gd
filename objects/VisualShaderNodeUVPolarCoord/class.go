@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 UV polar coord node will transform UV values into polar coordinates, with specified scale, zoom strength and repeat parameters. It can be used to create various swirl distortions.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeUVPolarCoord"))
-	return Instance{classdb.VisualShaderNodeUVPolarCoord(object)}
+	return Instance{*(*classdb.VisualShaderNodeUVPolarCoord)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeUVPolarCoord() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeUVPolarCoord", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeUVPolarCoord{classdb.VisualShaderNodeUVPolarCoord(ptr)}
+		return [1]classdb.VisualShaderNodeUVPolarCoord{*(*classdb.VisualShaderNodeUVPolarCoord)(unsafe.Pointer(&ptr))}
 	})
 }

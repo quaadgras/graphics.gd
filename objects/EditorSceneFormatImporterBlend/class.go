@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Imports Blender scenes in the [code].blend[/code] file format through the glTF 2.0 3D import pipeline. This importer requires Blender to be installed by the user, so that it can be used to export the scene as glTF 2.0.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterBlend"))
-	return Instance{classdb.EditorSceneFormatImporterBlend(object)}
+	return Instance{*(*classdb.EditorSceneFormatImporterBlend)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorSceneFormatImporterBlend() Advanced {
@@ -75,6 +75,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorSceneFormatImporterBlend", func(ptr gd.Object) any {
-		return [1]classdb.EditorSceneFormatImporterBlend{classdb.EditorSceneFormatImporterBlend(ptr)}
+		return [1]classdb.EditorSceneFormatImporterBlend{*(*classdb.EditorSceneFormatImporterBlend)(unsafe.Pointer(&ptr))}
 	})
 }

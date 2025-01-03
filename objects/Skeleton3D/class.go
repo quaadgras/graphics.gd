@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Skeleton3D] provides an interface for managing a hierarchy of bones, including pose, rest and animation (see [Animation]). It can also use ragdoll physics.
@@ -357,7 +357,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Skeleton3D"))
-	return Instance{classdb.Skeleton3D(object)}
+	return Instance{*(*classdb.Skeleton3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MotionScale() Float.X {
@@ -604,7 +604,7 @@ func (self class) CreateSkinFromRestTransforms() objects.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Skin{gd.PointerWithOwnershipTransferredToGo[classdb.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -618,7 +618,7 @@ func (self class) RegisterSkin(skin objects.Skin) objects.SkinReference {
 	callframe.Arg(frame, pointers.Get(skin[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_register_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SkinReference{classdb.SkinReference(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SkinReference{gd.PointerWithOwnershipTransferredToGo[classdb.SkinReference](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1078,7 +1078,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Skeleton3D", func(ptr gd.Object) any { return [1]classdb.Skeleton3D{classdb.Skeleton3D(ptr)} })
+	classdb.Register("Skeleton3D", func(ptr gd.Object) any { return [1]classdb.Skeleton3D{*(*classdb.Skeleton3D)(unsafe.Pointer(&ptr))} })
 }
 
 type ModifierCallbackModeProcess = classdb.Skeleton3DModifierCallbackModeProcess

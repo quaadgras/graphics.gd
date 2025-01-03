@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This imports native GLSL shaders as [RDShaderFile] resources, for use with low-level [RenderingDevice] operations. This importer does [i]not[/i] handle [code].gdshader[/code] files.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterShaderFile"))
-	return Instance{classdb.ResourceImporterShaderFile(object)}
+	return Instance{*(*classdb.ResourceImporterShaderFile)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterShaderFile() Advanced {
@@ -71,6 +71,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ResourceImporterShaderFile", func(ptr gd.Object) any {
-		return [1]classdb.ResourceImporterShaderFile{classdb.ResourceImporterShaderFile(ptr)}
+		return [1]classdb.ResourceImporterShaderFile{*(*classdb.ResourceImporterShaderFile)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 NavigationServer2D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar2D] or [AStarGrid2D].
@@ -2799,5 +2799,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationServer2D", func(ptr gd.Object) any { return [1]classdb.NavigationServer2D{classdb.NavigationServer2D(ptr)} })
+	classdb.Register("NavigationServer2D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationServer2D{*(*classdb.NavigationServer2D)(unsafe.Pointer(&ptr))}
+	})
 }

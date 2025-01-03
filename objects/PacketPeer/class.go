@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.
@@ -83,7 +83,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeer"))
-	return Instance{classdb.PacketPeer(object)}
+	return Instance{*(*classdb.PacketPeer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) EncodeBufferMaxSize() int {
@@ -216,7 +216,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeer", func(ptr gd.Object) any { return [1]classdb.PacketPeer{classdb.PacketPeer(ptr)} })
+	classdb.Register("PacketPeer", func(ptr gd.Object) any { return [1]classdb.PacketPeer{*(*classdb.PacketPeer)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

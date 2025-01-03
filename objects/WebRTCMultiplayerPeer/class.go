@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class constructs a full mesh of [WebRTCPeerConnection] (one connection for each peer) that can be used as a [member MultiplayerAPI.multiplayer_peer].
@@ -103,7 +103,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCMultiplayerPeer"))
-	return Instance{classdb.WebRTCMultiplayerPeer(object)}
+	return Instance{*(*classdb.WebRTCMultiplayerPeer)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -252,7 +252,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any { return [1]classdb.WebRTCMultiplayerPeer{classdb.WebRTCMultiplayerPeer(ptr)} })
+	classdb.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any {
+		return [1]classdb.WebRTCMultiplayerPeer{*(*classdb.WebRTCMultiplayerPeer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

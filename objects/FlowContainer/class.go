@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A container that arranges its child controls horizontally or vertically and wraps them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FlowContainer"))
-	return Instance{classdb.FlowContainer(object)}
+	return Instance{*(*classdb.FlowContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Alignment() classdb.FlowContainerAlignmentMode {
@@ -206,7 +206,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FlowContainer", func(ptr gd.Object) any { return [1]classdb.FlowContainer{classdb.FlowContainer(ptr)} })
+	classdb.Register("FlowContainer", func(ptr gd.Object) any {
+		return [1]classdb.FlowContainer{*(*classdb.FlowContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AlignmentMode = classdb.FlowContainerAlignmentMode

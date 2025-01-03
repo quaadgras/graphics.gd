@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
@@ -235,7 +235,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TabContainer"))
-	return Instance{classdb.TabContainer(object)}
+	return Instance{*(*classdb.TabContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TabAlignment() classdb.TabBarAlignmentMode {
@@ -405,7 +405,7 @@ func (self class) GetCurrentTabControl() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_current_tab_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -419,7 +419,7 @@ func (self class) GetTabBar() objects.TabBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TabBar{classdb.TabBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.TabBar{gd.PointerLifetimeBoundTo[classdb.TabBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -433,7 +433,7 @@ func (self class) GetTabControl(tab_idx gd.Int) objects.Control {
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -610,7 +610,7 @@ func (self class) GetTabIcon(tab_idx gd.Int) objects.Texture2D {
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -745,7 +745,7 @@ func (self class) GetTabButtonIcon(tab_idx gd.Int) objects.Texture2D {
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_button_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -784,7 +784,7 @@ If set on a [Popup] node instance, a popup menu icon appears in the top-right co
 //go:nosplit
 func (self class) SetPopup(popup objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(popup[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(popup[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_set_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -799,7 +799,7 @@ func (self class) GetPopup() objects.Popup {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Popup{classdb.Popup(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Popup{gd.PointerMustAssertInstanceID[classdb.Popup](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -961,7 +961,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TabContainer", func(ptr gd.Object) any { return [1]classdb.TabContainer{classdb.TabContainer(ptr)} })
+	classdb.Register("TabContainer", func(ptr gd.Object) any {
+		return [1]classdb.TabContainer{*(*classdb.TabContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TabPosition = classdb.TabContainerTabPosition

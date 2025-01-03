@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The FBXState handles the state data imported from FBX files.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FBXState"))
-	return Instance{classdb.FBXState(object)}
+	return Instance{*(*classdb.FBXState)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) AllowGeometryHelperNodes() bool {
@@ -99,5 +99,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FBXState", func(ptr gd.Object) any { return [1]classdb.FBXState{classdb.FBXState(ptr)} })
+	classdb.Register("FBXState", func(ptr gd.Object) any { return [1]classdb.FBXState{*(*classdb.FBXState)(unsafe.Pointer(&ptr))} })
 }

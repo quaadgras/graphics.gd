@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This [SkeletonModification2D] holds a reference to a [SkeletonModificationStack2D], allowing you to use multiple modification stacks on a single [Skeleton2D].
@@ -54,7 +54,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DStackHolder"))
-	return Instance{classdb.SkeletonModification2DStackHolder(object)}
+	return Instance{*(*classdb.SkeletonModification2DStackHolder)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -77,7 +77,7 @@ func (self class) GetHeldModificationStack() objects.SkeletonModificationStack2D
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SkeletonModificationStack2D{classdb.SkeletonModificationStack2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[classdb.SkeletonModificationStack2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -117,6 +117,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModification2DStackHolder", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModification2DStackHolder{classdb.SkeletonModification2DStackHolder(ptr)}
+		return [1]classdb.SkeletonModification2DStackHolder{*(*classdb.SkeletonModification2DStackHolder)(unsafe.Pointer(&ptr))}
 	})
 }

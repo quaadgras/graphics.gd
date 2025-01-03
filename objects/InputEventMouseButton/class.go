@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about mouse click events. See [method Node._input].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventMouseButton"))
-	return Instance{classdb.InputEventMouseButton(object)}
+	return Instance{*(*classdb.InputEventMouseButton)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Factor() Float.X {
@@ -202,7 +202,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventMouseButton", func(ptr gd.Object) any { return [1]classdb.InputEventMouseButton{classdb.InputEventMouseButton(ptr)} })
+	classdb.Register("InputEventMouseButton", func(ptr gd.Object) any {
+		return [1]classdb.InputEventMouseButton{*(*classdb.InputEventMouseButton)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type MouseButton int

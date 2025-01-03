@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
@@ -700,7 +700,7 @@ func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) objects.AudioE
 	callframe.Arg(frame, effect_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioEffect{classdb.AudioEffect(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioEffect{gd.PointerWithOwnershipTransferredToGo[classdb.AudioEffect](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -716,7 +716,7 @@ func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channe
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioEffectInstance{classdb.AudioEffectInstance(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioEffectInstance{gd.PointerWithOwnershipTransferredToGo[classdb.AudioEffectInstance](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -987,7 +987,7 @@ func (self class) GenerateBusLayout() objects.AudioBusLayout {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_generate_bus_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioBusLayout{classdb.AudioBusLayout(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioBusLayout{gd.PointerWithOwnershipTransferredToGo[classdb.AudioBusLayout](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1047,7 +1047,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioServer", func(ptr gd.Object) any { return [1]classdb.AudioServer{classdb.AudioServer(ptr)} })
+	classdb.Register("AudioServer", func(ptr gd.Object) any { return [1]classdb.AudioServer{*(*classdb.AudioServer)(unsafe.Pointer(&ptr))} })
 }
 
 type SpeakerMode = classdb.AudioServerSpeakerMode

@@ -4,6 +4,7 @@
 package gd
 
 import "reflect"
+import "unsafe"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 
@@ -1185,7 +1186,7 @@ func InstanceFromId(instance_id Int) Object {
 	callframe.Arg(frame, instance_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	Global.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
-	var ret Object = PointerMustAssertInstanceID(r_ret.Get())
+	var ret Object = PointerMustAssertInstanceID[Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -5281,7 +5282,7 @@ func (self Callable) GetObject() Object {
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
-	var ret Object = PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -5526,7 +5527,7 @@ func (self Signal) GetObject() Object {
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
-	var ret Object = PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -12219,7 +12220,7 @@ func (self Object) CancelFree() {
 func (self Object) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 //go:nosplit
-func (self RefCounted) AsObject() Object { return Object(self) }
+func (self RefCounted) AsObject() Object { return (*(*Object)(unsafe.Pointer(&self))) }
 
 /*
 Initializes the internal reference counter. Use this only if you really know what you are doing.

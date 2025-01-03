@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A cubemap is made of 6 textures organized in layers. They are typically used for faking reflections in 3D rendering (see [ReflectionProbe]). It can be used to make an object look as if it's reflecting its surroundings. This usually delivers much better performance than other reflection methods.
@@ -51,7 +51,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Cubemap"))
-	return Instance{classdb.Cubemap(object)}
+	return Instance{*(*classdb.Cubemap)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -62,7 +62,7 @@ func (self class) CreatePlaceholder() objects.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Cubemap.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -107,5 +107,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Cubemap", func(ptr gd.Object) any { return [1]classdb.Cubemap{classdb.Cubemap(ptr)} })
+	classdb.Register("Cubemap", func(ptr gd.Object) any { return [1]classdb.Cubemap{*(*classdb.Cubemap)(unsafe.Pointer(&ptr))} })
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [BaseButton] is an abstract base class for GUI buttons. It doesn't display anything by itself.
@@ -91,7 +91,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BaseButton"))
-	return Instance{classdb.BaseButton(object)}
+	return Instance{*(*classdb.BaseButton)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Disabled() bool {
@@ -400,7 +400,7 @@ func (self class) GetShortcut() objects.Shortcut {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_shortcut, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shortcut{classdb.Shortcut(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shortcut{gd.PointerWithOwnershipTransferredToGo[classdb.Shortcut](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -419,7 +419,7 @@ func (self class) GetButtonGroup() objects.ButtonGroup {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_button_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ButtonGroup{classdb.ButtonGroup(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[classdb.ButtonGroup](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -476,7 +476,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BaseButton", func(ptr gd.Object) any { return [1]classdb.BaseButton{classdb.BaseButton(ptr)} })
+	classdb.Register("BaseButton", func(ptr gd.Object) any { return [1]classdb.BaseButton{*(*classdb.BaseButton)(unsafe.Pointer(&ptr))} })
 }
 
 type DrawMode = classdb.BaseButtonDrawMode

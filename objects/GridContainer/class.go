@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [GridContainer] arranges its child controls in a grid layout. The number of columns is specified by the [member columns] property, whereas the number of rows depends on how many are needed for the child controls. The number of rows and columns is preserved for every size of the container.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GridContainer"))
-	return Instance{classdb.GridContainer(object)}
+	return Instance{*(*classdb.GridContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Columns() int {
@@ -106,5 +106,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GridContainer", func(ptr gd.Object) any { return [1]classdb.GridContainer{classdb.GridContainer(ptr)} })
+	classdb.Register("GridContainer", func(ptr gd.Object) any {
+		return [1]classdb.GridContainer{*(*classdb.GridContainer)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
@@ -1115,7 +1115,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
-	return Instance{classdb.Node(object)}
+	return Instance{*(*classdb.Node)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Name() string {
@@ -1407,7 +1407,7 @@ Use [method add_child] instead of this method if you don't need the child node t
 //go:nosplit
 func (self class) AddSibling(sibling objects.Node, force_readable_name bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(sibling[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()))
 	callframe.Arg(frame, force_readable_name)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1460,7 +1460,7 @@ If you need the child node to be added below a specific node in the list of chil
 //go:nosplit
 func (self class) AddChild(node objects.Node, force_readable_name bool, internal_ classdb.NodeInternalMode) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
 	callframe.Arg(frame, force_readable_name)
 	callframe.Arg(frame, internal_)
 	var r_ret callframe.Nil
@@ -1546,7 +1546,7 @@ func (self class) GetChild(idx gd.Int, include_internal bool) objects.Node {
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1603,7 +1603,7 @@ func (self class) GetNode(path gd.NodePath) objects.Node {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1617,7 +1617,7 @@ func (self class) GetNodeOrNull(path gd.NodePath) objects.Node {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1630,7 +1630,7 @@ func (self class) GetParent() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1650,7 +1650,7 @@ func (self class) FindChild(pattern gd.String, recursive bool, owned bool) objec
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1687,7 +1687,7 @@ func (self class) FindParent(pattern gd.String) objects.Node {
 	callframe.Arg(frame, pointers.Get(pattern))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1945,7 +1945,7 @@ func (self class) GetOwner() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2577,7 +2577,7 @@ func (self class) GetWindow() objects.Window {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Window{classdb.Window(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Window{gd.PointerMustAssertInstanceID[classdb.Window](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2590,7 +2590,7 @@ func (self class) GetLastExclusiveWindow() objects.Window {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Window{classdb.Window(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Window{gd.PointerMustAssertInstanceID[classdb.Window](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2603,7 +2603,7 @@ func (self class) GetTree() objects.SceneTree {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SceneTree{classdb.SceneTree(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.SceneTree{gd.PointerMustAssertInstanceID[classdb.SceneTree](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2627,7 +2627,7 @@ func (self class) CreateTween() objects.Tween {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Tween{classdb.Tween(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Tween{gd.PointerWithOwnershipTransferredToGo[classdb.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2642,7 +2642,7 @@ func (self class) Duplicate(flags gd.Int) objects.Node {
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerWithOwnershipTransferredToGo[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2655,7 +2655,7 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 //go:nosplit
 func (self class) ReplaceBy(node objects.Node, keep_groups bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
 	callframe.Arg(frame, keep_groups)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -2722,7 +2722,7 @@ func (self class) GetViewport() objects.Viewport {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Viewport{classdb.Viewport(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Viewport{gd.PointerMustAssertInstanceID[classdb.Viewport](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2812,7 +2812,7 @@ func (self class) GetMultiplayer() objects.MultiplayerAPI {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MultiplayerAPI{classdb.MultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[classdb.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -3070,7 +3070,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Node", func(ptr gd.Object) any { return [1]classdb.Node{classdb.Node(ptr)} })
+	classdb.Register("Node", func(ptr gd.Object) any { return [1]classdb.Node{*(*classdb.Node)(unsafe.Pointer(&ptr))} })
 }
 
 type ProcessMode = classdb.NodeProcessMode

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
@@ -371,7 +371,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Tree"))
-	return Instance{classdb.Tree(object)}
+	return Instance{*(*classdb.Tree)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Columns() int {
@@ -493,7 +493,7 @@ func (self class) CreateItem(parent objects.TreeItem, index gd.Int) objects.Tree
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_create_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -506,7 +506,7 @@ func (self class) GetRoot() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -648,7 +648,7 @@ func (self class) GetNextSelected(from objects.TreeItem) objects.TreeItem {
 	callframe.Arg(frame, pointers.Get(from[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_next_selected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -663,7 +663,7 @@ func (self class) GetSelected() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_selected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -786,7 +786,7 @@ func (self class) GetEdited() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_edited, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -858,7 +858,7 @@ func (self class) GetItemAtPosition(position gd.Vector2) objects.TreeItem {
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_item_at_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1313,7 +1313,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Tree", func(ptr gd.Object) any { return [1]classdb.Tree{classdb.Tree(ptr)} })
+	classdb.Register("Tree", func(ptr gd.Object) any { return [1]classdb.Tree{*(*classdb.Tree)(unsafe.Pointer(&ptr))} })
 }
 
 type SelectMode = classdb.TreeSelectMode

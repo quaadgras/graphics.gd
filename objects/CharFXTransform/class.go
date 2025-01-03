@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By setting various properties on this object, you can control how individual characters will be displayed in a [RichTextEffect].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CharFXTransform"))
-	return Instance{classdb.CharFXTransform(object)}
+	return Instance{*(*classdb.CharFXTransform)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Transform() Transform2D.OriginXY {
@@ -416,5 +416,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CharFXTransform", func(ptr gd.Object) any { return [1]classdb.CharFXTransform{classdb.CharFXTransform(ptr)} })
+	classdb.Register("CharFXTransform", func(ptr gd.Object) any {
+		return [1]classdb.CharFXTransform{*(*classdb.CharFXTransform)(unsafe.Pointer(&ptr))}
+	})
 }

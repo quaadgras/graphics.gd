@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A constant [Transform3D], which can be used as an input node.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTransformConstant"))
-	return Instance{classdb.VisualShaderNodeTransformConstant(object)}
+	return Instance{*(*classdb.VisualShaderNodeTransformConstant)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Constant() Transform3D.BasisOrigin {
@@ -112,6 +112,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTransformConstant", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTransformConstant{classdb.VisualShaderNodeTransformConstant(ptr)}
+		return [1]classdb.VisualShaderNodeTransformConstant{*(*classdb.VisualShaderNodeTransformConstant)(unsafe.Pointer(&ptr))}
 	})
 }

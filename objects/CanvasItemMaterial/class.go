@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CanvasItemMaterial]s provide a means of modifying the textures associated with a CanvasItem. They specialize in describing blend and lighting behaviors for textures. Use a [ShaderMaterial] to more fully customize a material's interactions with a [CanvasItem].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasItemMaterial"))
-	return Instance{classdb.CanvasItemMaterial(object)}
+	return Instance{*(*classdb.CanvasItemMaterial)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BlendMode() classdb.CanvasItemMaterialBlendMode {
@@ -234,7 +234,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasItemMaterial", func(ptr gd.Object) any { return [1]classdb.CanvasItemMaterial{classdb.CanvasItemMaterial(ptr)} })
+	classdb.Register("CanvasItemMaterial", func(ptr gd.Object) any {
+		return [1]classdb.CanvasItemMaterial{*(*classdb.CanvasItemMaterial)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type BlendMode = classdb.CanvasItemMaterialBlendMode

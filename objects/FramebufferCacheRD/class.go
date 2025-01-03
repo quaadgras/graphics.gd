@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Framebuffer cache manager for Rendering Device based renderers. Provides a way to create a framebuffer and reuse it in subsequent calls for as long as the used textures exists. Framebuffers will automatically be cleaned up when dependent objects are freed.
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FramebufferCacheRD"))
-	return Instance{classdb.FramebufferCacheRD(object)}
+	return Instance{*(*classdb.FramebufferCacheRD)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -81,5 +81,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FramebufferCacheRD", func(ptr gd.Object) any { return [1]classdb.FramebufferCacheRD{classdb.FramebufferCacheRD(ptr)} })
+	classdb.Register("FramebufferCacheRD", func(ptr gd.Object) any {
+		return [1]classdb.FramebufferCacheRD{*(*classdb.FramebufferCacheRD)(unsafe.Pointer(&ptr))}
+	})
 }

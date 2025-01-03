@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This singleton provides access to static information about [Theme] resources used by the engine and by your projects. You can fetch the default engine theme, as well as your project configured theme.
@@ -103,7 +103,7 @@ func (self class) GetDefaultTheme() objects.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_default_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Theme{classdb.Theme(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Theme{gd.PointerWithOwnershipTransferredToGo[classdb.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -117,7 +117,7 @@ func (self class) GetProjectTheme() objects.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_project_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Theme{classdb.Theme(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Theme{gd.PointerWithOwnershipTransferredToGo[classdb.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -155,7 +155,7 @@ func (self class) GetFallbackFont() objects.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -193,7 +193,7 @@ func (self class) GetFallbackIcon() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -212,7 +212,7 @@ func (self class) GetFallbackStylebox() objects.StyleBox {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StyleBox{classdb.StyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StyleBox{gd.PointerWithOwnershipTransferredToGo[classdb.StyleBox](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -227,5 +227,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ThemeDB", func(ptr gd.Object) any { return [1]classdb.ThemeDB{classdb.ThemeDB(ptr)} })
+	classdb.Register("ThemeDB", func(ptr gd.Object) any { return [1]classdb.ThemeDB{*(*classdb.ThemeDB)(unsafe.Pointer(&ptr))} })
 }

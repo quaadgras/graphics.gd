@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translates to [code]mix(a, b, weight)[/code] in the shader language.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeMix"))
-	return Instance{classdb.VisualShaderNodeMix(object)}
+	return Instance{*(*classdb.VisualShaderNodeMix)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OpType() classdb.VisualShaderNodeMixOpType {
@@ -99,7 +99,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeMix", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeMix{classdb.VisualShaderNodeMix(ptr)} })
+	classdb.Register("VisualShaderNodeMix", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeMix{*(*classdb.VisualShaderNodeMix)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeMixOpType

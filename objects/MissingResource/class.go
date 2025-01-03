@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is an internal editor class intended for keeping data of resources of unknown type (most likely this type was supplied by an extension that is no longer loaded). It can't be manually instantiated or placed in a scene.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MissingResource"))
-	return Instance{classdb.MissingResource(object)}
+	return Instance{*(*classdb.MissingResource)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OriginalClass() string {
@@ -120,5 +120,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MissingResource", func(ptr gd.Object) any { return [1]classdb.MissingResource{classdb.MissingResource(ptr)} })
+	classdb.Register("MissingResource", func(ptr gd.Object) any {
+		return [1]classdb.MissingResource{*(*classdb.MissingResource)(unsafe.Pointer(&ptr))}
+	})
 }

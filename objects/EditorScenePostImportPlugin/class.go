@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
@@ -199,7 +199,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImportPlugin"))
-	return Instance{classdb.EditorScenePostImportPlugin(object)}
+	return Instance{*(*classdb.EditorScenePostImportPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -417,7 +417,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorScenePostImportPlugin", func(ptr gd.Object) any {
-		return [1]classdb.EditorScenePostImportPlugin{classdb.EditorScenePostImportPlugin(ptr)}
+		return [1]classdb.EditorScenePostImportPlugin{*(*classdb.EditorScenePostImportPlugin)(unsafe.Pointer(&ptr))}
 	})
 }
 

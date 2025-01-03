@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A dummy [TextServer] interface that doesn't do anything. Useful for freeing up memory when rendering text is not needed, as text servers are resource-intensive. It can also be used for performance comparisons in complex GUIs to check the impact of text rendering.
@@ -53,7 +53,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServerDummy"))
-	return Instance{classdb.TextServerDummy(object)}
+	return Instance{*(*classdb.TextServerDummy)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsTextServerDummy() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -87,5 +87,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerDummy", func(ptr gd.Object) any { return [1]classdb.TextServerDummy{classdb.TextServerDummy(ptr)} })
+	classdb.Register("TextServerDummy", func(ptr gd.Object) any {
+		return [1]classdb.TextServerDummy{*(*classdb.TextServerDummy)(unsafe.Pointer(&ptr))}
+	})
 }

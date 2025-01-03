@@ -21,7 +21,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -627,7 +627,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RichTextLabel"))
-	return Instance{classdb.RichTextLabel(object)}
+	return Instance{*(*classdb.RichTextLabel)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BbcodeEnabled() bool {
@@ -1550,7 +1550,7 @@ func (self class) GetVScrollBar() objects.VScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VScrollBar{classdb.VScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VScrollBar{gd.PointerLifetimeBoundTo[classdb.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2217,7 +2217,7 @@ func (self class) GetMenu() objects.PopupMenu {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PopupMenu{classdb.PopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.PopupMenu{gd.PointerLifetimeBoundTo[classdb.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2291,7 +2291,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RichTextLabel", func(ptr gd.Object) any { return [1]classdb.RichTextLabel{classdb.RichTextLabel(ptr)} })
+	classdb.Register("RichTextLabel", func(ptr gd.Object) any {
+		return [1]classdb.RichTextLabel{*(*classdb.RichTextLabel)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ListType = classdb.RichTextLabelListType

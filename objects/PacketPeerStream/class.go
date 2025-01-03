@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 PacketStreamPeer provides a wrapper for working using packets over a stream. This allows for using packet based code with StreamPeers. PacketPeerStream implements a custom protocol over the StreamPeer, so the user should not read or write to the wrapped StreamPeer directly.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeerStream"))
-	return Instance{classdb.PacketPeerStream(object)}
+	return Instance{*(*classdb.PacketPeerStream)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) InputBufferMaxSize() int {
@@ -80,7 +80,7 @@ func (self class) GetStreamPeer() objects.StreamPeer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StreamPeer{classdb.StreamPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StreamPeer{gd.PointerWithOwnershipTransferredToGo[classdb.StreamPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -147,5 +147,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PacketPeerStream", func(ptr gd.Object) any { return [1]classdb.PacketPeerStream{classdb.PacketPeerStream(ptr)} })
+	classdb.Register("PacketPeerStream", func(ptr gd.Object) any {
+		return [1]classdb.PacketPeerStream{*(*classdb.PacketPeerStream)(unsafe.Pointer(&ptr))}
+	})
 }

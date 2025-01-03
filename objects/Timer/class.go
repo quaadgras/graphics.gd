@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [Timer] node is a countdown timer and is the simplest way to handle time-based logic in the engine. When a timer reaches the end of its [member wait_time], it will emit the [signal timeout] signal.
@@ -71,7 +71,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Timer"))
-	return Instance{classdb.Timer(object)}
+	return Instance{*(*classdb.Timer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ProcessCallback() classdb.TimerTimerProcessCallback {
@@ -282,7 +282,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Timer", func(ptr gd.Object) any { return [1]classdb.Timer{classdb.Timer(ptr)} })
+	classdb.Register("Timer", func(ptr gd.Object) any { return [1]classdb.Timer{*(*classdb.Timer)(unsafe.Pointer(&ptr))} })
 }
 
 type TimerProcessCallback = classdb.TimerTimerProcessCallback

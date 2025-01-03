@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [LightmapGI] node is used to compute and store baked lightmaps. Lightmaps are used to provide high-quality indirect lighting with very little light leaking. [LightmapGI] can also provide rough reflections using spherical harmonics if [member directional] is enabled. Dynamic objects can receive indirect lighting thanks to [i]light probes[/i], which can be automatically placed by setting [member generate_probes_subdiv] to a value other than [constant GENERATE_PROBES_DISABLED]. Additional lightmap probes can also be added by creating [LightmapProbe] nodes. The downside is that lightmaps are fully static and cannot be baked in an exported project. Baking a [LightmapGI] node is also slower compared to [VoxelGI].
@@ -47,7 +47,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapGI"))
-	return Instance{classdb.LightmapGI(object)}
+	return Instance{*(*classdb.LightmapGI)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Quality() classdb.LightmapGIBakeQuality {
@@ -216,7 +216,7 @@ func (self class) GetLightData() objects.LightmapGIData {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_light_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.LightmapGIData{classdb.LightmapGIData(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.LightmapGIData{gd.PointerWithOwnershipTransferredToGo[classdb.LightmapGIData](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -349,7 +349,7 @@ func (self class) GetEnvironmentCustomSky() objects.Sky {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_custom_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Sky{classdb.Sky(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Sky{gd.PointerWithOwnershipTransferredToGo[classdb.Sky](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -558,7 +558,7 @@ func (self class) GetCameraAttributes() objects.CameraAttributes {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CameraAttributes{classdb.CameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[classdb.CameraAttributes](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -589,7 +589,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapGI", func(ptr gd.Object) any { return [1]classdb.LightmapGI{classdb.LightmapGI(ptr)} })
+	classdb.Register("LightmapGI", func(ptr gd.Object) any { return [1]classdb.LightmapGI{*(*classdb.LightmapGI)(unsafe.Pointer(&ptr))} })
 }
 
 type BakeQuality = classdb.LightmapGIBakeQuality

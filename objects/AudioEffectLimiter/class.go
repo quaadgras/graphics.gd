@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A limiter is similar to a compressor, but it's less flexible and designed to disallow sound going over a given dB threshold. Adding one in the Master bus is always recommended to reduce the effects of clipping.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectLimiter"))
-	return Instance{classdb.AudioEffectLimiter(object)}
+	return Instance{*(*classdb.AudioEffectLimiter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CeilingDb() Float.X {
@@ -182,5 +182,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectLimiter", func(ptr gd.Object) any { return [1]classdb.AudioEffectLimiter{classdb.AudioEffectLimiter(ptr)} })
+	classdb.Register("AudioEffectLimiter", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectLimiter{*(*classdb.AudioEffectLimiter)(unsafe.Pointer(&ptr))}
+	})
 }

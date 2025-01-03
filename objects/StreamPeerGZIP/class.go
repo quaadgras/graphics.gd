@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class allows to compress or decompress data using GZIP/deflate in a streaming fashion. This is particularly useful when compressing or decompressing files that have to be sent through the network without needing to allocate them all in memory.
@@ -67,7 +67,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerGZIP"))
-	return Instance{classdb.StreamPeerGZIP(object)}
+	return Instance{*(*classdb.StreamPeerGZIP)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -148,7 +148,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerGZIP", func(ptr gd.Object) any { return [1]classdb.StreamPeerGZIP{classdb.StreamPeerGZIP(ptr)} })
+	classdb.Register("StreamPeerGZIP", func(ptr gd.Object) any {
+		return [1]classdb.StreamPeerGZIP{*(*classdb.StreamPeerGZIP)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

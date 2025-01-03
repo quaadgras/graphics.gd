@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node enables OpenXR's hand tracking functionality. The node should be a child node of an [XROrigin3D] node, tracking will update its position to the player's tracked hand Palm joint location (the center of the middle finger's metacarpal bone). This node also updates the skeleton of a properly skinned hand or avatar model.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRHand"))
-	return Instance{classdb.OpenXRHand(object)}
+	return Instance{*(*classdb.OpenXRHand)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Hand() classdb.OpenXRHandHands {
@@ -201,7 +201,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRHand", func(ptr gd.Object) any { return [1]classdb.OpenXRHand{classdb.OpenXRHand(ptr)} })
+	classdb.Register("OpenXRHand", func(ptr gd.Object) any { return [1]classdb.OpenXRHand{*(*classdb.OpenXRHand)(unsafe.Pointer(&ptr))} })
 }
 
 type Hands = classdb.OpenXRHandHands

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The output port of this node needs to be connected to [code]Model View Matrix[/code] port of [VisualShaderNodeOutput].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeBillboard"))
-	return Instance{classdb.VisualShaderNodeBillboard(object)}
+	return Instance{*(*classdb.VisualShaderNodeBillboard)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BillboardType() classdb.VisualShaderNodeBillboardBillboardType {
@@ -131,7 +131,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeBillboard{classdb.VisualShaderNodeBillboard(ptr)}
+		return [1]classdb.VisualShaderNodeBillboard{*(*classdb.VisualShaderNodeBillboard)(unsafe.Pointer(&ptr))}
 	})
 }
 

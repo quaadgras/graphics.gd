@@ -22,7 +22,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 External [TextServer] implementations should inherit from this class.
@@ -3853,7 +3853,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServerExtension"))
-	return Instance{classdb.TextServerExtension(object)}
+	return Instance{*(*classdb.TextServerExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -7847,7 +7847,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerExtension", func(ptr gd.Object) any { return [1]classdb.TextServerExtension{classdb.TextServerExtension(ptr)} })
+	classdb.Register("TextServerExtension", func(ptr gd.Object) any {
+		return [1]classdb.TextServerExtension{*(*classdb.TextServerExtension)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type InlineAlignment int

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Composition layers allow 2D viewports to be displayed inside of the headset by the XR compositor through special projections that retain their quality. This allows for rendering clear text while keeping the layer at a native resolution.
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRCompositionLayer"))
-	return Instance{classdb.OpenXRCompositionLayer(object)}
+	return Instance{*(*classdb.OpenXRCompositionLayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LayerViewport() objects.SubViewport {
@@ -107,7 +107,7 @@ func (self class) GetLayerViewport() objects.SubViewport {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_layer_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SubViewport{classdb.SubViewport(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SubViewport{gd.PointerWithOwnershipTransferredToGo[classdb.SubViewport](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -221,5 +221,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return [1]classdb.OpenXRCompositionLayer{classdb.OpenXRCompositionLayer(ptr)} })
+	classdb.Register("OpenXRCompositionLayer", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRCompositionLayer{*(*classdb.OpenXRCompositionLayer)(unsafe.Pointer(&ptr))}
+	})
 }

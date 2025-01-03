@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A navigation mesh can be created either by baking it with the help of the [NavigationServer2D], or by adding vertices and convex polygon indices arrays manually.
@@ -189,7 +189,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationPolygon"))
-	return Instance{classdb.NavigationPolygon(object)}
+	return Instance{*(*classdb.NavigationPolygon)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Vertices() []Vector2.XY {
@@ -355,7 +355,7 @@ func (self class) GetNavigationMesh() objects.NavigationMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.NavigationMesh{classdb.NavigationMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[classdb.NavigationMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -692,7 +692,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationPolygon", func(ptr gd.Object) any { return [1]classdb.NavigationPolygon{classdb.NavigationPolygon(ptr)} })
+	classdb.Register("NavigationPolygon", func(ptr gd.Object) any {
+		return [1]classdb.NavigationPolygon{*(*classdb.NavigationPolygon)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ParsedGeometryType = classdb.NavigationPolygonParsedGeometryType

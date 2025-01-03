@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for store game save data or player configuration files.
@@ -575,7 +575,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FileAccess"))
-	return Instance{classdb.FileAccess(object)}
+	return Instance{*(*classdb.FileAccess)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BigEndian() bool {
@@ -597,7 +597,7 @@ func (self class) Open(path gd.String, flags classdb.FileAccessModeFlags) object
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.FileAccess{classdb.FileAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.FileAccess{gd.PointerWithOwnershipTransferredToGo[classdb.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -615,7 +615,7 @@ func (self class) OpenEncrypted(path gd.String, mode_flags classdb.FileAccessMod
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.FileAccess{classdb.FileAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.FileAccess{gd.PointerWithOwnershipTransferredToGo[classdb.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -632,7 +632,7 @@ func (self class) OpenEncryptedWithPass(path gd.String, mode_flags classdb.FileA
 	callframe.Arg(frame, pointers.Get(pass))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.FileAccess{classdb.FileAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.FileAccess{gd.PointerWithOwnershipTransferredToGo[classdb.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -650,7 +650,7 @@ func (self class) OpenCompressed(path gd.String, mode_flags classdb.FileAccessMo
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_compressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.FileAccess{classdb.FileAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.FileAccess{gd.PointerWithOwnershipTransferredToGo[classdb.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1441,7 +1441,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FileAccess", func(ptr gd.Object) any { return [1]classdb.FileAccess{classdb.FileAccess(ptr)} })
+	classdb.Register("FileAccess", func(ptr gd.Object) any { return [1]classdb.FileAccess{*(*classdb.FileAccess)(unsafe.Pointer(&ptr))} })
 }
 
 type ModeFlags = classdb.FileAccessModeFlags

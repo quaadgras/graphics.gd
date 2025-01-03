@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [VisualShaderNodeParameter] of type unsigned [int]. Offers additional customization for range of accepted values.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeUIntParameter"))
-	return Instance{classdb.VisualShaderNodeUIntParameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeUIntParameter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DefaultValueEnabled() bool {
@@ -138,6 +138,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeUIntParameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeUIntParameter{classdb.VisualShaderNodeUIntParameter(ptr)}
+		return [1]classdb.VisualShaderNodeUIntParameter{*(*classdb.VisualShaderNodeUIntParameter)(unsafe.Pointer(&ptr))}
 	})
 }

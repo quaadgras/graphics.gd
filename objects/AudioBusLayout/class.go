@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores position, muting, solo, bypass, effects, effect position, volume, and the connections between buses. See [AudioServer] for usage.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioBusLayout"))
-	return Instance{classdb.AudioBusLayout(object)}
+	return Instance{*(*classdb.AudioBusLayout)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAudioBusLayout() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -66,5 +66,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioBusLayout", func(ptr gd.Object) any { return [1]classdb.AudioBusLayout{classdb.AudioBusLayout(ptr)} })
+	classdb.Register("AudioBusLayout", func(ptr gd.Object) any {
+		return [1]classdb.AudioBusLayout{*(*classdb.AudioBusLayout)(unsafe.Pointer(&ptr))}
+	})
 }

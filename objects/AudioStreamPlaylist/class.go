@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.AudioStreamPlaylist
 type Any interface {
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaylist"))
-	return Instance{classdb.AudioStreamPlaylist(object)}
+	return Instance{*(*classdb.AudioStreamPlaylist)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Shuffle() bool {
@@ -645,7 +645,7 @@ func (self class) GetListStream(stream_index gd.Int) objects.AudioStream {
 	callframe.Arg(frame, stream_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_list_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -737,5 +737,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlaylist", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlaylist{classdb.AudioStreamPlaylist(ptr)} })
+	classdb.Register("AudioStreamPlaylist", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPlaylist{*(*classdb.AudioStreamPlaylist)(unsafe.Pointer(&ptr))}
+	})
 }

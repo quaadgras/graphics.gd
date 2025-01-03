@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A texture array that is loaded from a [code].ctexarray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2DArray] can use one of 4 compression methods:
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedTexture2DArray"))
-	return Instance{classdb.CompressedTexture2DArray(object)}
+	return Instance{*(*classdb.CompressedTexture2DArray)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsCompressedTexture2DArray() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -96,6 +96,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("CompressedTexture2DArray", func(ptr gd.Object) any {
-		return [1]classdb.CompressedTexture2DArray{classdb.CompressedTexture2DArray(ptr)}
+		return [1]classdb.CompressedTexture2DArray{*(*classdb.CompressedTexture2DArray)(unsafe.Pointer(&ptr))}
 	})
 }

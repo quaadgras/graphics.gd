@@ -23,7 +23,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -2520,7 +2520,7 @@ func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) objects
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -3183,7 +3183,7 @@ func (self class) ClipboardGetImage() objects.Image {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -3491,7 +3491,7 @@ func (self class) ScreenGetImage(screen gd.Int) objects.Image {
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -4849,7 +4849,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DisplayServer", func(ptr gd.Object) any { return [1]classdb.DisplayServer{classdb.DisplayServer(ptr)} })
+	classdb.Register("DisplayServer", func(ptr gd.Object) any {
+		return [1]classdb.DisplayServer{*(*classdb.DisplayServer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Feature = classdb.DisplayServerFeature

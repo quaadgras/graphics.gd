@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A box-shaped 3D particle collision shape affecting [GPUParticles3D] nodes.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesCollisionBox3D"))
-	return Instance{classdb.GPUParticlesCollisionBox3D(object)}
+	return Instance{*(*classdb.GPUParticlesCollisionBox3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector3.XYZ {
@@ -112,6 +112,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("GPUParticlesCollisionBox3D", func(ptr gd.Object) any {
-		return [1]classdb.GPUParticlesCollisionBox3D{classdb.GPUParticlesCollisionBox3D(ptr)}
+		return [1]classdb.GPUParticlesCollisionBox3D{*(*classdb.GPUParticlesCollisionBox3D)(unsafe.Pointer(&ptr))}
 	})
 }

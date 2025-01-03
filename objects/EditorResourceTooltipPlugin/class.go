@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
@@ -112,7 +112,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourceTooltipPlugin"))
-	return Instance{classdb.EditorResourceTooltipPlugin(object)}
+	return Instance{*(*classdb.EditorResourceTooltipPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -203,6 +203,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorResourceTooltipPlugin", func(ptr gd.Object) any {
-		return [1]classdb.EditorResourceTooltipPlugin{classdb.EditorResourceTooltipPlugin(ptr)}
+		return [1]classdb.EditorResourceTooltipPlugin{*(*classdb.EditorResourceTooltipPlugin)(unsafe.Pointer(&ptr))}
 	})
 }

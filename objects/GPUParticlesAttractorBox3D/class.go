@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A box-shaped attractor that influences particles from [GPUParticles3D] nodes. Can be used to attract particles towards its origin, or to push them away from its origin.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesAttractorBox3D"))
-	return Instance{classdb.GPUParticlesAttractorBox3D(object)}
+	return Instance{*(*classdb.GPUParticlesAttractorBox3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector3.XYZ {
@@ -111,6 +111,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("GPUParticlesAttractorBox3D", func(ptr gd.Object) any {
-		return [1]classdb.GPUParticlesAttractorBox3D{classdb.GPUParticlesAttractorBox3D(ptr)}
+		return [1]classdb.GPUParticlesAttractorBox3D{*(*classdb.GPUParticlesAttractorBox3D)(unsafe.Pointer(&ptr))}
 	})
 }

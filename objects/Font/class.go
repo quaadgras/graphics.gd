@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract base class for different font types. It has methods for drawing text and font character introspection.
@@ -305,7 +305,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Font"))
-	return Instance{classdb.Font(object)}
+	return Instance{*(*classdb.Font)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Fallbacks() gd.Array {
@@ -898,7 +898,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Font", func(ptr gd.Object) any { return [1]classdb.Font{classdb.Font(ptr)} })
+	classdb.Register("Font", func(ptr gd.Object) any { return [1]classdb.Font{*(*classdb.Font)(unsafe.Pointer(&ptr))} })
 }
 
 type HorizontalAlignment int

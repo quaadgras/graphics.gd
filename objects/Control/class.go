@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
@@ -1157,7 +1157,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Control"))
-	return Instance{classdb.Control(object)}
+	return Instance{*(*classdb.Control)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ClipContents() bool {
@@ -2230,7 +2230,7 @@ func (self class) FindPrevValidFocus() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_prev_valid_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2243,7 +2243,7 @@ func (self class) FindNextValidFocus() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_next_valid_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2258,7 +2258,7 @@ func (self class) FindValidFocusNeighbor(side Side) objects.Control {
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_valid_focus_neighbor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2334,7 +2334,7 @@ func (self class) GetTheme() objects.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Theme{classdb.Theme(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Theme{gd.PointerWithOwnershipTransferredToGo[classdb.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2591,7 +2591,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) obj
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2607,7 +2607,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StyleBox{classdb.StyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StyleBox{gd.PointerWithOwnershipTransferredToGo[classdb.StyleBox](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2623,7 +2623,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) obj
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2903,7 +2903,7 @@ func (self class) GetThemeDefaultFont() objects.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2930,7 +2930,7 @@ func (self class) GetParentControl() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_parent_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -3115,7 +3115,7 @@ The methods [method _can_drop_data] and [method _drop_data] must be implemented 
 func (self class) ForceDrag(data gd.Variant, preview objects.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(preview[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_force_drag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -3250,7 +3250,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 //go:nosplit
 func (self class) SetDragPreview(control objects.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_set_drag_preview, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -3297,7 +3297,7 @@ func (self class) GetShortcutContext() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_shortcut_context, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -3479,7 +3479,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Control", func(ptr gd.Object) any { return [1]classdb.Control{classdb.Control(ptr)} })
+	classdb.Register("Control", func(ptr gd.Object) any { return [1]classdb.Control{*(*classdb.Control)(unsafe.Pointer(&ptr))} })
 }
 
 type FocusMode = classdb.ControlFocusMode

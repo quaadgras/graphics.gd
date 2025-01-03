@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 When used directly in an [AudioStreamPlayer] node, [AudioStreamMicrophone] plays back microphone input in real-time. This can be used in conjunction with [AudioEffectCapture] to process the data or save it.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamMicrophone"))
-	return Instance{classdb.AudioStreamMicrophone(object)}
+	return Instance{*(*classdb.AudioStreamMicrophone)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAudioStreamMicrophone() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -74,5 +74,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamMicrophone", func(ptr gd.Object) any { return [1]classdb.AudioStreamMicrophone{classdb.AudioStreamMicrophone(ptr)} })
+	classdb.Register("AudioStreamMicrophone", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamMicrophone{*(*classdb.AudioStreamMicrophone)(unsafe.Pointer(&ptr))}
+	})
 }

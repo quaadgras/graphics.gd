@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A container used to provide a child control with scrollbars when needed. Scrollbars will automatically be drawn at the right (for vertical) or bottom (for horizontal) and will enable dragging to move the viewable Control (and its children) within the ScrollContainer. Scrollbars will also automatically resize the grabber based on the [member Control.custom_minimum_size] of the Control relative to the ScrollContainer.
@@ -71,7 +71,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScrollContainer"))
-	return Instance{classdb.ScrollContainer(object)}
+	return Instance{*(*classdb.ScrollContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FollowFocus() bool {
@@ -299,7 +299,7 @@ func (self class) GetHScrollBar() objects.HScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.HScrollBar{classdb.HScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.HScrollBar{gd.PointerLifetimeBoundTo[classdb.HScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -313,7 +313,7 @@ func (self class) GetVScrollBar() objects.VScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VScrollBar{classdb.VScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VScrollBar{gd.PointerLifetimeBoundTo[classdb.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -378,7 +378,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScrollContainer", func(ptr gd.Object) any { return [1]classdb.ScrollContainer{classdb.ScrollContainer(ptr)} })
+	classdb.Register("ScrollContainer", func(ptr gd.Object) any {
+		return [1]classdb.ScrollContainer{*(*classdb.ScrollContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ScrollMode = classdb.ScrollContainerScrollMode

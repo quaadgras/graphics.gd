@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Takes a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] and decomposes it into scalar values that can be used as separate outputs.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorDecompose"))
-	return Instance{classdb.VisualShaderNodeVectorDecompose(object)}
+	return Instance{*(*classdb.VisualShaderNodeVectorDecompose)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeVectorDecompose() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVectorDecompose", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVectorDecompose{classdb.VisualShaderNodeVectorDecompose(ptr)}
+		return [1]classdb.VisualShaderNodeVectorDecompose{*(*classdb.VisualShaderNodeVectorDecompose)(unsafe.Pointer(&ptr))}
 	})
 }

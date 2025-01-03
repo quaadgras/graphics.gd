@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Resource for environment nodes (like [WorldEnvironment]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
@@ -59,7 +59,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Environment"))
-	return Instance{classdb.Environment(object)}
+	return Instance{*(*classdb.Environment)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BackgroundMode() classdb.EnvironmentBGMode {
@@ -823,7 +823,7 @@ func (self class) GetSky() objects.Sky {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Sky{classdb.Sky(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Sky{gd.PointerWithOwnershipTransferredToGo[classdb.Sky](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1952,7 +1952,7 @@ func (self class) GetGlowMap() objects.Texture {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture{classdb.Texture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture{gd.PointerWithOwnershipTransferredToGo[classdb.Texture](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2541,7 +2541,7 @@ func (self class) GetAdjustmentColorCorrection() objects.Texture {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture{classdb.Texture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture{gd.PointerWithOwnershipTransferredToGo[classdb.Texture](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2570,7 +2570,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Environment", func(ptr gd.Object) any { return [1]classdb.Environment{classdb.Environment(ptr)} })
+	classdb.Register("Environment", func(ptr gd.Object) any { return [1]classdb.Environment{*(*classdb.Environment)(unsafe.Pointer(&ptr))} })
 }
 
 type BGMode = classdb.EnvironmentBGMode

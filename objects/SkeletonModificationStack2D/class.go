@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource is used by the Skeleton and holds a stack of [SkeletonModification2D]s.
@@ -105,7 +105,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModificationStack2D"))
-	return Instance{classdb.SkeletonModificationStack2D(object)}
+	return Instance{*(*classdb.SkeletonModificationStack2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -178,7 +178,7 @@ func (self class) GetModification(mod_idx gd.Int) objects.SkeletonModification2D
 	callframe.Arg(frame, mod_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SkeletonModification2D{classdb.SkeletonModification2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[classdb.SkeletonModification2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -298,7 +298,7 @@ func (self class) GetSkeleton() objects.Skeleton2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skeleton2D{classdb.Skeleton2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Skeleton2D{gd.PointerMustAssertInstanceID[classdb.Skeleton2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -332,6 +332,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModificationStack2D", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModificationStack2D{classdb.SkeletonModificationStack2D(ptr)}
+		return [1]classdb.SkeletonModificationStack2D{*(*classdb.SkeletonModificationStack2D)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Applies [member operator] to two unsigned integer inputs: [code]a[/code] and [code]b[/code].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeUIntOp"))
-	return Instance{classdb.VisualShaderNodeUIntOp(object)}
+	return Instance{*(*classdb.VisualShaderNodeUIntOp)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Operator() classdb.VisualShaderNodeUIntOpOperator {
@@ -101,7 +101,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeUIntOp", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeUIntOp{classdb.VisualShaderNodeUIntOp(ptr)} })
+	classdb.Register("VisualShaderNodeUIntOp", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeUIntOp{*(*classdb.VisualShaderNodeUIntOp)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Operator = classdb.VisualShaderNodeUIntOpOperator

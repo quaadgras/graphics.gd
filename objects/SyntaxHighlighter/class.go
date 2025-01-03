@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for syntax highlighters. Provides syntax highlighting data to a [TextEdit]. The associated [TextEdit] will call into the [SyntaxHighlighter] on an as-needed basis.
@@ -133,7 +133,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SyntaxHighlighter"))
-	return Instance{classdb.SyntaxHighlighter(object)}
+	return Instance{*(*classdb.SyntaxHighlighter)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -232,7 +232,7 @@ func (self class) GetTextEdit() objects.TextEdit {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TextEdit{classdb.TextEdit(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TextEdit{gd.PointerMustAssertInstanceID[classdb.TextEdit](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -273,5 +273,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SyntaxHighlighter", func(ptr gd.Object) any { return [1]classdb.SyntaxHighlighter{classdb.SyntaxHighlighter(ptr)} })
+	classdb.Register("SyntaxHighlighter", func(ptr gd.Object) any {
+		return [1]classdb.SyntaxHighlighter{*(*classdb.SyntaxHighlighter)(unsafe.Pointer(&ptr))}
+	})
 }

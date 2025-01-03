@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 MP3 is a lossy audio format, with worse audio quality compared to [ResourceImporterOggVorbis] at a given bitrate.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterMP3"))
-	return Instance{classdb.ResourceImporterMP3(object)}
+	return Instance{*(*classdb.ResourceImporterMP3)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterMP3() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -68,5 +68,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterMP3", func(ptr gd.Object) any { return [1]classdb.ResourceImporterMP3{classdb.ResourceImporterMP3(ptr)} })
+	classdb.Register("ResourceImporterMP3", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterMP3{*(*classdb.ResourceImporterMP3)(unsafe.Pointer(&ptr))}
+	})
 }

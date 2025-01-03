@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [PhysicalBone2D] node is a [RigidBody2D]-based node that can be used to make [Bone2D]s in a [Skeleton2D] react to physics.
@@ -60,7 +60,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicalBone2D"))
-	return Instance{classdb.PhysicalBone2D(object)}
+	return Instance{*(*classdb.PhysicalBone2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Bone2dNodepath() Path.String {
@@ -111,7 +111,7 @@ func (self class) GetJoint() objects.Joint2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_joint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Joint2D{classdb.Joint2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Joint2D{gd.PointerMustAssertInstanceID[classdb.Joint2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -268,5 +268,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicalBone2D", func(ptr gd.Object) any { return [1]classdb.PhysicalBone2D{classdb.PhysicalBone2D(ptr)} })
+	classdb.Register("PhysicalBone2D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicalBone2D{*(*classdb.PhysicalBone2D)(unsafe.Pointer(&ptr))}
+	})
 }

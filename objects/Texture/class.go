@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Texture] is the base class for all texture types. Common texture types are [Texture2D] and [ImageTexture]. See also [Image].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture"))
-	return Instance{classdb.Texture(object)}
+	return Instance{*(*classdb.Texture)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -66,5 +66,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Texture", func(ptr gd.Object) any { return [1]classdb.Texture{classdb.Texture(ptr)} })
+	classdb.Register("Texture", func(ptr gd.Object) any { return [1]classdb.Texture{*(*classdb.Texture)(unsafe.Pointer(&ptr))} })
 }

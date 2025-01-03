@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Varying values are shader variables that can be passed between shader functions, e.g. from Vertex shader to Fragment shader.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVarying"))
-	return Instance{classdb.VisualShaderNodeVarying(object)}
+	return Instance{*(*classdb.VisualShaderNodeVarying)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) VaryingName() string {
@@ -129,6 +129,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVarying", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVarying{classdb.VisualShaderNodeVarying(ptr)}
+		return [1]classdb.VisualShaderNodeVarying{*(*classdb.VisualShaderNodeVarying)(unsafe.Pointer(&ptr))}
 	})
 }

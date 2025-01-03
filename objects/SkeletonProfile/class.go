@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource is used in [EditorScenePostImport]. Some parameters are referring to bones in [Skeleton3D], [Skin], [Animation], and some other nodes are rewritten based on the parameters of [SkeletonProfile].
@@ -194,7 +194,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonProfile"))
-	return Instance{classdb.SkeletonProfile(object)}
+	return Instance{*(*classdb.SkeletonProfile)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RootBone() string {
@@ -322,7 +322,7 @@ func (self class) GetTexture(group_idx gd.Int) objects.Texture2D {
 	callframe.Arg(frame, group_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -623,7 +623,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkeletonProfile", func(ptr gd.Object) any { return [1]classdb.SkeletonProfile{classdb.SkeletonProfile(ptr)} })
+	classdb.Register("SkeletonProfile", func(ptr gd.Object) any {
+		return [1]classdb.SkeletonProfile{*(*classdb.SkeletonProfile)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TailDirection = classdb.SkeletonProfileTailDirection

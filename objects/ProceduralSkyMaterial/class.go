@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [ProceduralSkyMaterial] provides a way to create an effective background quickly by defining procedural parameters for the sun, the sky and the ground. The sky and ground are defined by a main color, a color at the horizon, and an easing curve to interpolate between them. Suns are described by a position in the sky, a color, and a max angle from the sun at which the easing curve ends. The max angle therefore defines the size of the sun in the sky.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ProceduralSkyMaterial"))
-	return Instance{classdb.ProceduralSkyMaterial(object)}
+	return Instance{*(*classdb.ProceduralSkyMaterial)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SkyTopColor() Color.RGBA {
@@ -248,7 +248,7 @@ func (self class) GetSkyCover() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProceduralSkyMaterial.Bind_get_sky_cover, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -454,5 +454,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ProceduralSkyMaterial", func(ptr gd.Object) any { return [1]classdb.ProceduralSkyMaterial{classdb.ProceduralSkyMaterial(ptr)} })
+	classdb.Register("ProceduralSkyMaterial", func(ptr gd.Object) any {
+		return [1]classdb.ProceduralSkyMaterial{*(*classdb.ProceduralSkyMaterial)(unsafe.Pointer(&ptr))}
+	})
 }

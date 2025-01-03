@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Holds collision data from the movement of a [PhysicsBody3D], usually from [method PhysicsBody3D.move_and_collide]. When a [PhysicsBody3D] is moved, it stops if it detects a collision with another body. If a collision is detected, a [KinematicCollision3D] object is returned.
@@ -139,7 +139,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("KinematicCollision3D"))
-	return Instance{classdb.KinematicCollision3D(object)}
+	return Instance{*(*classdb.KinematicCollision3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -246,7 +246,7 @@ func (self class) GetLocalShape(collision_index gd.Int) gd.Object {
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -260,7 +260,7 @@ func (self class) GetCollider(collision_index gd.Int) gd.Object {
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -302,7 +302,7 @@ func (self class) GetColliderShape(collision_index gd.Int) gd.Object {
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -353,5 +353,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("KinematicCollision3D", func(ptr gd.Object) any { return [1]classdb.KinematicCollision3D{classdb.KinematicCollision3D(ptr)} })
+	classdb.Register("KinematicCollision3D", func(ptr gd.Object) any {
+		return [1]classdb.KinematicCollision3D{*(*classdb.KinematicCollision3D)(unsafe.Pointer(&ptr))}
+	})
 }

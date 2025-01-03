@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Attenuates the frequencies inside of a range around the [member AudioEffectFilter.cutoff_hz] and cuts frequencies outside of this band.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectBandPassFilter"))
-	return Instance{classdb.AudioEffectBandPassFilter(object)}
+	return Instance{*(*classdb.AudioEffectBandPassFilter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAudioEffectBandPassFilter() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioEffectBandPassFilter", func(ptr gd.Object) any {
-		return [1]classdb.AudioEffectBandPassFilter{classdb.AudioEffectBandPassFilter(ptr)}
+		return [1]classdb.AudioEffectBandPassFilter{*(*classdb.AudioEffectBandPassFilter)(unsafe.Pointer(&ptr))}
 	})
 }

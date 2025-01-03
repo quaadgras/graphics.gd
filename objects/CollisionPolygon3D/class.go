@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node that provides a thickened polygon shape (a prism) to a [CollisionObject3D] parent and allows to edit it. The polygon can be concave or convex. This can give a detection shape to an [Area3D] or turn [PhysicsBody3D] into a solid object.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CollisionPolygon3D"))
-	return Instance{classdb.CollisionPolygon3D(object)}
+	return Instance{*(*classdb.CollisionPolygon3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Depth() Float.X {
@@ -173,5 +173,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CollisionPolygon3D", func(ptr gd.Object) any { return [1]classdb.CollisionPolygon3D{classdb.CollisionPolygon3D(ptr)} })
+	classdb.Register("CollisionPolygon3D", func(ptr gd.Object) any {
+		return [1]classdb.CollisionPolygon3D{*(*classdb.CollisionPolygon3D)(unsafe.Pointer(&ptr))}
+	})
 }

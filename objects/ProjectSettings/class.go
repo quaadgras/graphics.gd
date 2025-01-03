@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -618,7 +618,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ProjectSettings", func(ptr gd.Object) any { return [1]classdb.ProjectSettings{classdb.ProjectSettings(ptr)} })
+	classdb.Register("ProjectSettings", func(ptr gd.Object) any {
+		return [1]classdb.ProjectSettings{*(*classdb.ProjectSettings)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

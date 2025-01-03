@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -199,7 +199,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterface"))
-	return Instance{classdb.XRInterface(object)}
+	return Instance{*(*classdb.XRInterface)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) InterfaceIsPrimary() bool {
@@ -639,7 +639,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRInterface", func(ptr gd.Object) any { return [1]classdb.XRInterface{classdb.XRInterface(ptr)} })
+	classdb.Register("XRInterface", func(ptr gd.Object) any { return [1]classdb.XRInterface{*(*classdb.XRInterface)(unsafe.Pointer(&ptr))} })
 }
 
 type Capabilities = classdb.XRInterfaceCapabilities

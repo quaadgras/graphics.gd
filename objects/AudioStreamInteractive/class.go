@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and the transition rules via the [method add_transition]. Additionally, this stream export a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
@@ -181,7 +181,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamInteractive"))
-	return Instance{classdb.AudioStreamInteractive(object)}
+	return Instance{*(*classdb.AudioStreamInteractive)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) InitialClip() int {
@@ -287,7 +287,7 @@ func (self class) GetClipStream(clip_index gd.Int) objects.AudioStream {
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_clip_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -551,7 +551,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamInteractive", func(ptr gd.Object) any { return [1]classdb.AudioStreamInteractive{classdb.AudioStreamInteractive(ptr)} })
+	classdb.Register("AudioStreamInteractive", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamInteractive{*(*classdb.AudioStreamInteractive)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TransitionFromTime = classdb.AudioStreamInteractiveTransitionFromTime

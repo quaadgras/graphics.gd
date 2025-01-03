@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node created automatically in an [AnimationNodeBlendTree] that outputs the final animation.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeOutput"))
-	return Instance{classdb.AnimationNodeOutput(object)}
+	return Instance{*(*classdb.AnimationNodeOutput)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAnimationNodeOutput() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -73,5 +73,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeOutput", func(ptr gd.Object) any { return [1]classdb.AnimationNodeOutput{classdb.AnimationNodeOutput(ptr)} })
+	classdb.Register("AnimationNodeOutput", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeOutput{*(*classdb.AnimationNodeOutput)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
@@ -543,7 +543,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FontFile"))
-	return Instance{classdb.FontFile(object)}
+	return Instance{*(*classdb.FontFile)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Data() []byte {
@@ -1481,7 +1481,7 @@ func (self class) GetTextureImage(cache_index gd.Int, size gd.Vector2i, texture_
 	callframe.Arg(frame, texture_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2000,7 +2000,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FontFile", func(ptr gd.Object) any { return [1]classdb.FontFile{classdb.FontFile(ptr)} })
+	classdb.Register("FontFile", func(ptr gd.Object) any { return [1]classdb.FontFile{*(*classdb.FontFile)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

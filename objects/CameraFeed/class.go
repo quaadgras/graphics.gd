@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A camera feed gives you access to a single physical camera attached to your device. When enabled, Godot will start capturing frames from the camera which can then be used. See also [CameraServer].
@@ -67,7 +67,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraFeed"))
-	return Instance{classdb.CameraFeed(object)}
+	return Instance{*(*classdb.CameraFeed)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FeedIsActive() bool {
@@ -194,7 +194,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CameraFeed", func(ptr gd.Object) any { return [1]classdb.CameraFeed{classdb.CameraFeed(ptr)} })
+	classdb.Register("CameraFeed", func(ptr gd.Object) any { return [1]classdb.CameraFeed{*(*classdb.CameraFeed)(unsafe.Pointer(&ptr))} })
 }
 
 type FeedDataType = classdb.CameraFeedFeedDataType

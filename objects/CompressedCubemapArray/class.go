@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A cubemap array that is loaded from a [code].ccubearray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedCubemapArray] can use one of 4 compression methods:
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedCubemapArray"))
-	return Instance{classdb.CompressedCubemapArray(object)}
+	return Instance{*(*classdb.CompressedCubemapArray)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsCompressedCubemapArray() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -95,5 +95,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompressedCubemapArray", func(ptr gd.Object) any { return [1]classdb.CompressedCubemapArray{classdb.CompressedCubemapArray(ptr)} })
+	classdb.Register("CompressedCubemapArray", func(ptr gd.Object) any {
+		return [1]classdb.CompressedCubemapArray{*(*classdb.CompressedCubemapArray)(unsafe.Pointer(&ptr))}
+	})
 }

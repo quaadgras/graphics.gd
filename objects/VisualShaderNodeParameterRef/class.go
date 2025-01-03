@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Creating a reference to a [VisualShaderNodeParameter] allows you to reuse this parameter in different shaders or shader stages easily.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParameterRef"))
-	return Instance{classdb.VisualShaderNodeParameterRef(object)}
+	return Instance{*(*classdb.VisualShaderNodeParameterRef)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ParameterName() string {
@@ -104,6 +104,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParameterRef", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParameterRef{classdb.VisualShaderNodeParameterRef(ptr)}
+		return [1]classdb.VisualShaderNodeParameterRef{*(*classdb.VisualShaderNodeParameterRef)(unsafe.Pointer(&ptr))}
 	})
 }

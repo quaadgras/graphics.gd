@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorUndoRedoManager] is a manager for [UndoRedo] objects associated with edited scenes. Each scene has its own undo history and [EditorUndoRedoManager] ensures that each action performed in the editor gets associated with a proper scene. For actions not related to scenes ([ProjectSettings] edits, external resources, etc.), a separate global history is used.
@@ -122,7 +122,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorUndoRedoManager"))
-	return Instance{classdb.EditorUndoRedoManager(object)}
+	return Instance{*(*classdb.EditorUndoRedoManager)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -259,7 +259,7 @@ func (self class) GetHistoryUndoRedo(id gd.Int) objects.UndoRedo {
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.UndoRedo{classdb.UndoRedo(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.UndoRedo{gd.PointerLifetimeBoundTo[classdb.UndoRedo](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -288,7 +288,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return [1]classdb.EditorUndoRedoManager{classdb.EditorUndoRedoManager(ptr)} })
+	classdb.Register("EditorUndoRedoManager", func(ptr gd.Object) any {
+		return [1]classdb.EditorUndoRedoManager{*(*classdb.EditorUndoRedoManager)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type SpecialHistory = classdb.EditorUndoRedoManagerSpecialHistory

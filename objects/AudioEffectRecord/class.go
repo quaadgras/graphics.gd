@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Allows the user to record the sound from an audio bus into an [AudioStreamWAV]. When used on the "Master" audio bus, this includes all audio output by Godot.
@@ -63,7 +63,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectRecord"))
-	return Instance{classdb.AudioEffectRecord(object)}
+	return Instance{*(*classdb.AudioEffectRecord)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Format() classdb.AudioStreamWAVFormat {
@@ -126,7 +126,7 @@ func (self class) GetRecording() objects.AudioStreamWAV {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_get_recording, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamWAV{classdb.AudioStreamWAV(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamWAV](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -161,5 +161,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectRecord", func(ptr gd.Object) any { return [1]classdb.AudioEffectRecord{classdb.AudioEffectRecord(ptr)} })
+	classdb.Register("AudioEffectRecord", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectRecord{*(*classdb.AudioEffectRecord)(unsafe.Pointer(&ptr))}
+	})
 }

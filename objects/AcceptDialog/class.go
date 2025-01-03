@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [signal confirmed] and [signal canceled] signals allow to make the two actions different, and the [method add_button] method allows to add custom buttons and actions.
@@ -87,7 +87,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AcceptDialog"))
-	return Instance{classdb.AcceptDialog(object)}
+	return Instance{*(*classdb.AcceptDialog)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OkButtonText() string {
@@ -139,7 +139,7 @@ func (self class) GetOkButton() objects.Button {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Button{classdb.Button(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Button{gd.PointerLifetimeBoundTo[classdb.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -153,7 +153,7 @@ func (self class) GetLabel() objects.Label {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Label{classdb.Label(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Label{gd.PointerLifetimeBoundTo[classdb.Label](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -209,7 +209,7 @@ func (self class) AddButton(text gd.String, right bool, action gd.String) object
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Button{classdb.Button(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Button{gd.PointerLifetimeBoundTo[classdb.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -224,7 +224,7 @@ func (self class) AddCancelButton(name gd.String) objects.Button {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_cancel_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Button{classdb.Button(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Button{gd.PointerLifetimeBoundTo[classdb.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -348,5 +348,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AcceptDialog", func(ptr gd.Object) any { return [1]classdb.AcceptDialog{classdb.AcceptDialog(ptr)} })
+	classdb.Register("AcceptDialog", func(ptr gd.Object) any {
+		return [1]classdb.AcceptDialog{*(*classdb.AcceptDialog)(unsafe.Pointer(&ptr))}
+	})
 }

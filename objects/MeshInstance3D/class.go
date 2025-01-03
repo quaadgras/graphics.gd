@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 MeshInstance3D is a node that takes a [Mesh] resource and adds it to the current scenario by creating an instance of it. This is the class most often used render 3D geometry and can be used to instance a single [Mesh] in many places. This allows reusing geometry, which can save on resources. When a [Mesh] has to be instantiated more than thousands of times at close proximity, consider using a [MultiMesh] in a [MultiMeshInstance3D] instead.
@@ -147,7 +147,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MeshInstance3D"))
-	return Instance{classdb.MeshInstance3D(object)}
+	return Instance{*(*classdb.MeshInstance3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mesh() objects.Mesh {
@@ -188,7 +188,7 @@ func (self class) GetMesh() objects.Mesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -226,7 +226,7 @@ func (self class) GetSkin() objects.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Skin{gd.PointerWithOwnershipTransferredToGo[classdb.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -239,7 +239,7 @@ func (self class) GetSkinReference() objects.SkinReference {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SkinReference{classdb.SkinReference(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SkinReference{gd.PointerWithOwnershipTransferredToGo[classdb.SkinReference](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -281,7 +281,7 @@ func (self class) GetSurfaceOverrideMaterial(surface gd.Int) objects.Material {
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -296,7 +296,7 @@ func (self class) GetActiveMaterial(surface gd.Int) objects.Material {
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_active_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -414,7 +414,7 @@ func (self class) BakeMeshFromCurrentBlendShapeMix(existing objects.ArrayMesh) o
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_blend_shape_mix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ArrayMesh{classdb.ArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -451,5 +451,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MeshInstance3D", func(ptr gd.Object) any { return [1]classdb.MeshInstance3D{classdb.MeshInstance3D(ptr)} })
+	classdb.Register("MeshInstance3D", func(ptr gd.Object) any {
+		return [1]classdb.MeshInstance3D{*(*classdb.MeshInstance3D)(unsafe.Pointer(&ptr))}
+	})
 }

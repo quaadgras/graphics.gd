@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 3D trimesh shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConcavePolygonShape3D"))
-	return Instance{classdb.ConcavePolygonShape3D(object)}
+	return Instance{*(*classdb.ConcavePolygonShape3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Data() []Vector3.XYZ {
@@ -135,5 +135,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConcavePolygonShape3D", func(ptr gd.Object) any { return [1]classdb.ConcavePolygonShape3D{classdb.ConcavePolygonShape3D(ptr)} })
+	classdb.Register("ConcavePolygonShape3D", func(ptr gd.Object) any {
+		return [1]classdb.ConcavePolygonShape3D{*(*classdb.ConcavePolygonShape3D)(unsafe.Pointer(&ptr))}
+	})
 }

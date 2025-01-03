@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [AudioStreamPlayer] node plays an audio stream non-positionally. It is ideal for user interfaces, menus, or background music.
@@ -84,7 +84,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlayer"))
-	return Instance{classdb.AudioStreamPlayer(object)}
+	return Instance{*(*classdb.AudioStreamPlayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Stream() objects.AudioStream {
@@ -177,7 +177,7 @@ func (self class) GetStream() objects.AudioStream {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -395,7 +395,7 @@ func (self class) GetStreamPlayback() objects.AudioStreamPlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_stream_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamPlayback{classdb.AudioStreamPlayback(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -441,7 +441,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlayer", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlayer{classdb.AudioStreamPlayer(ptr)} })
+	classdb.Register("AudioStreamPlayer", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPlayer{*(*classdb.AudioStreamPlayer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type MixTarget = classdb.AudioStreamPlayerMixTarget

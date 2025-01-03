@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Represents a texture sampler as defined by the base GLTF spec. Texture samplers in GLTF specify how to sample data from the texture's base image, when rendering the texture on an object.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFTextureSampler"))
-	return Instance{classdb.GLTFTextureSampler(object)}
+	return Instance{*(*classdb.GLTFTextureSampler)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MagFilter() int {
@@ -173,5 +173,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFTextureSampler", func(ptr gd.Object) any { return [1]classdb.GLTFTextureSampler{classdb.GLTFTextureSampler(ptr)} })
+	classdb.Register("GLTFTextureSampler", func(ptr gd.Object) any {
+		return [1]classdb.GLTFTextureSampler{*(*classdb.GLTFTextureSampler)(unsafe.Pointer(&ptr))}
+	})
 }

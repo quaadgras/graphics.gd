@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Uniform set cache manager for Rendering Device based renderers. Provides a way to create a uniform set and reuse it in subsequent calls for as long as the uniform set exists. Uniform set will automatically be cleaned up when dependent objects are freed.
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UniformSetCacheRD"))
-	return Instance{classdb.UniformSetCacheRD(object)}
+	return Instance{*(*classdb.UniformSetCacheRD)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -81,5 +81,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UniformSetCacheRD", func(ptr gd.Object) any { return [1]classdb.UniformSetCacheRD{classdb.UniformSetCacheRD(ptr)} })
+	classdb.Register("UniformSetCacheRD", func(ptr gd.Object) any {
+		return [1]classdb.UniformSetCacheRD{*(*classdb.UniformSetCacheRD)(unsafe.Pointer(&ptr))}
+	})
 }

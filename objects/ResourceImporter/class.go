@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is the base class for Godot's resource importers. To implement your own resource importers using editor plugins, see [EditorImportPlugin].
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporter"))
-	return Instance{classdb.ResourceImporter(object)}
+	return Instance{*(*classdb.ResourceImporter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -59,7 +59,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporter", func(ptr gd.Object) any { return [1]classdb.ResourceImporter{classdb.ResourceImporter(ptr)} })
+	classdb.Register("ResourceImporter", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporter{*(*classdb.ResourceImporter)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ImportOrder = classdb.ResourceImporterImportOrder

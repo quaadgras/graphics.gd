@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [PhysicsServer2DManager] is the API for registering [PhysicsServer2D] implementations and for setting the default implementation.
@@ -85,5 +85,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsServer2DManager", func(ptr gd.Object) any { return [1]classdb.PhysicsServer2DManager{classdb.PhysicsServer2DManager(ptr)} })
+	classdb.Register("PhysicsServer2DManager", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsServer2DManager{*(*classdb.PhysicsServer2DManager)(unsafe.Pointer(&ptr))}
+	})
 }

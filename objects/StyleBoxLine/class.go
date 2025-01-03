@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [StyleBox] that displays a single line of a given color and thickness. The line can be either horizontal or vertical. Useful for separators.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBoxLine"))
-	return Instance{classdb.StyleBoxLine(object)}
+	return Instance{*(*classdb.StyleBoxLine)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -209,5 +209,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxLine", func(ptr gd.Object) any { return [1]classdb.StyleBoxLine{classdb.StyleBoxLine(ptr)} })
+	classdb.Register("StyleBoxLine", func(ptr gd.Object) any {
+		return [1]classdb.StyleBoxLine{*(*classdb.StyleBoxLine)(unsafe.Pointer(&ptr))}
+	})
 }

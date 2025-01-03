@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Similar to how a [WorldEnvironment] node can be used to override the environment while a specific scene is loaded, [ShaderGlobalsOverride] can be used to override global shader parameters temporarily. Once the node is removed, the project-wide values for the global shader parameters are restored. See the [RenderingServer] [code]global_shader_parameter_*[/code] methods for more information.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderGlobalsOverride"))
-	return Instance{classdb.ShaderGlobalsOverride(object)}
+	return Instance{*(*classdb.ShaderGlobalsOverride)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsShaderGlobalsOverride() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -62,5 +62,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShaderGlobalsOverride", func(ptr gd.Object) any { return [1]classdb.ShaderGlobalsOverride{classdb.ShaderGlobalsOverride(ptr)} })
+	classdb.Register("ShaderGlobalsOverride", func(ptr gd.Object) any {
+		return [1]classdb.ShaderGlobalsOverride{*(*classdb.ShaderGlobalsOverride)(unsafe.Pointer(&ptr))}
+	})
 }

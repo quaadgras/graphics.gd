@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -607,7 +607,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Image"))
-	return Instance{classdb.Image(object)}
+	return Instance{*(*classdb.Image)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -851,7 +851,7 @@ func (self class) Create(width gd.Int, height gd.Int, use_mipmaps bool, format c
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -868,7 +868,7 @@ func (self class) CreateEmpty(width gd.Int, height gd.Int, use_mipmaps bool, for
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -886,7 +886,7 @@ func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, 
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -945,7 +945,7 @@ func (self class) LoadFromFile(path gd.String) objects.Image {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1250,7 +1250,7 @@ func (self class) RgbeToSrgb() objects.Image {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rgbe_to_srgb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1388,7 +1388,7 @@ func (self class) GetRegion(region gd.Rect2i) objects.Image {
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1659,7 +1659,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Image", func(ptr gd.Object) any { return [1]classdb.Image{classdb.Image(ptr)} })
+	classdb.Register("Image", func(ptr gd.Object) any { return [1]classdb.Image{*(*classdb.Image)(unsafe.Pointer(&ptr))} })
 }
 
 type Format = classdb.ImageFormat

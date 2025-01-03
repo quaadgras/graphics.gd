@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [Parallax2D] is used to create a parallax effect. It can move at a different speed relative to the camera movement using [member scroll_scale]. This creates an illusion of depth in a 2D game. If manual scrolling is desired, the [Camera2D] position can be ignored with [member ignore_camera_scroll].
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Parallax2D"))
-	return Instance{classdb.Parallax2D(object)}
+	return Instance{*(*classdb.Parallax2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ScrollScale() Vector2.XY {
@@ -341,5 +341,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Parallax2D", func(ptr gd.Object) any { return [1]classdb.Parallax2D{classdb.Parallax2D(ptr)} })
+	classdb.Register("Parallax2D", func(ptr gd.Object) any { return [1]classdb.Parallax2D{*(*classdb.Parallax2D)(unsafe.Pointer(&ptr))} })
 }

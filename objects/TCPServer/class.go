@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] when it gets an incoming connection.
@@ -83,7 +83,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TCPServer"))
-	return Instance{classdb.TCPServer(object)}
+	return Instance{*(*classdb.TCPServer)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -151,7 +151,7 @@ func (self class) TakeConnection() objects.StreamPeerTCP {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StreamPeerTCP{classdb.StreamPeerTCP(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[classdb.StreamPeerTCP](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -185,7 +185,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TCPServer", func(ptr gd.Object) any { return [1]classdb.TCPServer{classdb.TCPServer(ptr)} })
+	classdb.Register("TCPServer", func(ptr gd.Object) any { return [1]classdb.TCPServer{*(*classdb.TCPServer)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

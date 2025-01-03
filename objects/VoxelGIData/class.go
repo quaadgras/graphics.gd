@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VoxelGIData] contains baked voxel global illumination for use in a [VoxelGI] node. [VoxelGIData] also offers several properties to adjust the final appearance of the global illumination. These properties can be adjusted at run-time without having to bake the [VoxelGI] node again.
@@ -70,7 +70,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VoxelGIData"))
-	return Instance{classdb.VoxelGIData(object)}
+	return Instance{*(*classdb.VoxelGIData)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DynamicRange() Float.X {
@@ -365,5 +365,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VoxelGIData", func(ptr gd.Object) any { return [1]classdb.VoxelGIData{classdb.VoxelGIData(ptr)} })
+	classdb.Register("VoxelGIData", func(ptr gd.Object) any { return [1]classdb.VoxelGIData{*(*classdb.VoxelGIData)(unsafe.Pointer(&ptr))} })
 }

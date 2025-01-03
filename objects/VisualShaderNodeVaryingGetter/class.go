@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Outputs a value of a varying defined in the shader. You need to first create a varying that can be used in the given function, e.g. varying getter in Fragment shader requires a varying with mode set to [constant VisualShader.VARYING_MODE_VERTEX_TO_FRAG_LIGHT].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVaryingGetter"))
-	return Instance{classdb.VisualShaderNodeVaryingGetter(object)}
+	return Instance{*(*classdb.VisualShaderNodeVaryingGetter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeVaryingGetter() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVaryingGetter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVaryingGetter{classdb.VisualShaderNodeVaryingGetter(ptr)}
+		return [1]classdb.VisualShaderNodeVaryingGetter{*(*classdb.VisualShaderNodeVaryingGetter)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Universal Plug and Play (UPnP) device. See [UPNP] for UPnP discovery and utility functions. Provides low-level access to UPNP control commands. Allows to manage port mappings (port forwarding) and to query network information of the device (like local and external IP address and status). Note that methods on this class are synchronous and block the calling thread.
@@ -65,7 +65,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UPNPDevice"))
-	return Instance{classdb.UPNPDevice(object)}
+	return Instance{*(*classdb.UPNPDevice)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DescriptionUrl() string {
@@ -307,7 +307,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UPNPDevice", func(ptr gd.Object) any { return [1]classdb.UPNPDevice{classdb.UPNPDevice(ptr)} })
+	classdb.Register("UPNPDevice", func(ptr gd.Object) any { return [1]classdb.UPNPDevice{*(*classdb.UPNPDevice)(unsafe.Pointer(&ptr))} })
 }
 
 type IGDStatus = classdb.UPNPDeviceIGDStatus

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This modification moves a series of bones, typically called a bone chain, towards a target. What makes this modification special is that it calculates the velocity and acceleration for each bone in the bone chain, and runs a very light physics-like calculation using the inputted values. This allows the bones to overshoot the target and "jiggle" around. It can be configured to act more like a spring, or sway around like cloth might.
@@ -184,7 +184,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DJiggle"))
-	return Instance{classdb.SkeletonModification2DJiggle(object)}
+	return Instance{*(*classdb.SkeletonModification2DJiggle)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TargetNodepath() Path.String {
@@ -677,6 +677,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModification2DJiggle", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModification2DJiggle{classdb.SkeletonModification2DJiggle(ptr)}
+		return [1]classdb.SkeletonModification2DJiggle{*(*classdb.SkeletonModification2DJiggle)(unsafe.Pointer(&ptr))}
 	})
 }

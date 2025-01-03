@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A PacketPeer implementation representing a peer of an [ENetConnection].
@@ -151,7 +151,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetPacketPeer"))
-	return Instance{classdb.ENetPacketPeer(object)}
+	return Instance{*(*classdb.ENetPacketPeer)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -376,7 +376,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ENetPacketPeer", func(ptr gd.Object) any { return [1]classdb.ENetPacketPeer{classdb.ENetPacketPeer(ptr)} })
+	classdb.Register("ENetPacketPeer", func(ptr gd.Object) any {
+		return [1]classdb.ENetPacketPeer{*(*classdb.ENetPacketPeer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type PeerState = classdb.ENetPacketPeerPeerState

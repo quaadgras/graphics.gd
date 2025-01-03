@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Particle accelerator can be used in "process" step of particle shader. It will accelerate the particles. Connect it to the Velocity output port.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleAccelerator"))
-	return Instance{classdb.VisualShaderNodeParticleAccelerator(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleAccelerator)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mode() classdb.VisualShaderNodeParticleAcceleratorMode {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleAccelerator", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleAccelerator{classdb.VisualShaderNodeParticleAccelerator(ptr)}
+		return [1]classdb.VisualShaderNodeParticleAccelerator{*(*classdb.VisualShaderNodeParticleAccelerator)(unsafe.Pointer(&ptr))}
 	})
 }
 

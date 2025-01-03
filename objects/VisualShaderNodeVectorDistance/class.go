@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Calculates distance from point represented by vector [code]p0[/code] to vector [code]p1[/code].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorDistance"))
-	return Instance{classdb.VisualShaderNodeVectorDistance(object)}
+	return Instance{*(*classdb.VisualShaderNodeVectorDistance)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeVectorDistance() Advanced {
@@ -86,6 +86,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVectorDistance", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVectorDistance{classdb.VisualShaderNodeVectorDistance(ptr)}
+		return [1]classdb.VisualShaderNodeVectorDistance{*(*classdb.VisualShaderNodeVectorDistance)(unsafe.Pointer(&ptr))}
 	})
 }

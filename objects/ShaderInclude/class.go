@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A shader include file, saved with the [code].gdshaderinc[/code] extension. This class allows you to define a custom shader snippet that can be included in a [Shader] by using the preprocessor directive [code]#include[/code], followed by the file path (e.g. [code]#include "res://shader_lib.gdshaderinc"[/code]). The snippet doesn't have to be a valid shader on its own.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderInclude"))
-	return Instance{classdb.ShaderInclude(object)}
+	return Instance{*(*classdb.ShaderInclude)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Code() string {
@@ -92,5 +92,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShaderInclude", func(ptr gd.Object) any { return [1]classdb.ShaderInclude{classdb.ShaderInclude(ptr)} })
+	classdb.Register("ShaderInclude", func(ptr gd.Object) any {
+		return [1]classdb.ShaderInclude{*(*classdb.ShaderInclude)(unsafe.Pointer(&ptr))}
+	})
 }

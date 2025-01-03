@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This CSG node allows you to use any mesh resource as a CSG shape, provided it is closed, does not self-intersect, does not contain internal faces and has no edges that connect to more than two faces. See also [CSGPolygon3D] for drawing 2D extruded polygons to be used as CSG nodes.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGMesh3D"))
-	return Instance{classdb.CSGMesh3D(object)}
+	return Instance{*(*classdb.CSGMesh3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mesh() objects.Mesh {
@@ -77,7 +77,7 @@ func (self class) GetMesh() objects.Mesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -96,7 +96,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -145,5 +145,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGMesh3D", func(ptr gd.Object) any { return [1]classdb.CSGMesh3D{classdb.CSGMesh3D(ptr)} })
+	classdb.Register("CSGMesh3D", func(ptr gd.Object) any { return [1]classdb.CSGMesh3D{*(*classdb.CSGMesh3D)(unsafe.Pointer(&ptr))} })
 }

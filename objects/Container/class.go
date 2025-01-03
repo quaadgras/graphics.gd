@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for all GUI containers. A [Container] automatically arranges its child controls in a certain way. This class can be inherited to make custom container types.
@@ -97,7 +97,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Container"))
-	return Instance{classdb.Container(object)}
+	return Instance{*(*classdb.Container)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -200,5 +200,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Container", func(ptr gd.Object) any { return [1]classdb.Container{classdb.Container(ptr)} })
+	classdb.Register("Container", func(ptr gd.Object) any { return [1]classdb.Container{*(*classdb.Container)(unsafe.Pointer(&ptr))} })
 }

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for audio streams. Audio streams are used for sound effects and music playback, and support WAV (via [AudioStreamWAV]) and Ogg (via [AudioStreamOggVorbis]) file formats.
@@ -192,7 +192,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStream"))
-	return Instance{classdb.AudioStream(object)}
+	return Instance{*(*classdb.AudioStream)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -320,7 +320,7 @@ func (self class) InstantiatePlayback() objects.AudioStreamPlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamPlayback{classdb.AudioStreamPlayback(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -346,7 +346,7 @@ func (self class) GenerateSample() objects.AudioSample {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioSample{classdb.AudioSample(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioSample{gd.PointerWithOwnershipTransferredToGo[classdb.AudioSample](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -420,5 +420,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStream", func(ptr gd.Object) any { return [1]classdb.AudioStream{classdb.AudioStream(ptr)} })
+	classdb.Register("AudioStream", func(ptr gd.Object) any { return [1]classdb.AudioStream{*(*classdb.AudioStream)(unsafe.Pointer(&ptr))} })
 }

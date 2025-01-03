@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 LightmapperRD ("RD" stands for [RenderingDevice]) is the built-in GPU-based lightmapper for use with [LightmapGI]. On most dedicated GPUs, it can bake lightmaps much faster than most CPU-based lightmappers. LightmapperRD uses compute shaders to bake lightmaps, so it does not require CUDA or OpenCL libraries to be installed to be usable.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapperRD"))
-	return Instance{classdb.LightmapperRD(object)}
+	return Instance{*(*classdb.LightmapperRD)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsLightmapperRD() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -67,5 +67,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapperRD", func(ptr gd.Object) any { return [1]classdb.LightmapperRD{classdb.LightmapperRD(ptr)} })
+	classdb.Register("LightmapperRD", func(ptr gd.Object) any {
+		return [1]classdb.LightmapperRD{*(*classdb.LightmapperRD)(unsafe.Pointer(&ptr))}
+	})
 }

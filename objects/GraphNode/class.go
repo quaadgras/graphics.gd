@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [GraphNode] allows to create nodes for a [GraphEdit] graph with customizable content based on its child controls. [GraphNode] is derived from [Container] and it is responsible for placing its children on screen. This works similar to [VBoxContainer]. Children, in turn, provide [GraphNode] with so-called slots, each of which can have a connection port on either side.
@@ -294,7 +294,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphNode"))
-	return Instance{classdb.GraphNode(object)}
+	return Instance{*(*classdb.GraphNode)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Title() string {
@@ -351,7 +351,7 @@ func (self class) GetTitlebarHbox() objects.HBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.HBoxContainer{classdb.HBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.HBoxContainer{gd.PointerLifetimeBoundTo[classdb.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -509,7 +509,7 @@ func (self class) GetSlotCustomIconLeft(slot_index gd.Int) objects.Texture2D {
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -617,7 +617,7 @@ func (self class) GetSlotCustomIconRight(slot_index gd.Int) objects.Texture2D {
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -854,5 +854,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GraphNode", func(ptr gd.Object) any { return [1]classdb.GraphNode{classdb.GraphNode(ptr)} })
+	classdb.Register("GraphNode", func(ptr gd.Object) any { return [1]classdb.GraphNode{*(*classdb.GraphNode)(unsafe.Pointer(&ptr))} })
 }

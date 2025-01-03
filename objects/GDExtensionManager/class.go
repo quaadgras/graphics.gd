@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The GDExtensionManager loads, initializes, and keeps track of all available [GDExtension] libraries in the project.
@@ -165,7 +165,7 @@ func (self class) GetExtension(path gd.String) objects.GDExtension {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtensionManager.Bind_get_extension, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GDExtension{classdb.GDExtension(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GDExtension{gd.PointerWithOwnershipTransferredToGo[classdb.GDExtension](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -180,7 +180,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GDExtensionManager", func(ptr gd.Object) any { return [1]classdb.GDExtensionManager{classdb.GDExtensionManager(ptr)} })
+	classdb.Register("GDExtensionManager", func(ptr gd.Object) any {
+		return [1]classdb.GDExtensionManager{*(*classdb.GDExtensionManager)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type LoadStatus = classdb.GDExtensionManagerLoadStatus

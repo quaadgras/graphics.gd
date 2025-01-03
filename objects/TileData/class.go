@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
@@ -218,7 +218,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileData"))
-	return Instance{classdb.TileData(object)}
+	return Instance{*(*classdb.TileData)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FlipH() bool {
@@ -380,7 +380,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -487,7 +487,7 @@ func (self class) GetOccluder(layer_id gd.Int, flip_h bool, flip_v bool, transpo
 	callframe.Arg(frame, transpose)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OccluderPolygon2D{classdb.OccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[classdb.OccluderPolygon2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -790,7 +790,7 @@ func (self class) GetNavigationPolygon(layer_id gd.Int, flip_h bool, flip_v bool
 	callframe.Arg(frame, transpose)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_navigation_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.NavigationPolygon{classdb.NavigationPolygon(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.NavigationPolygon{gd.PointerWithOwnershipTransferredToGo[classdb.NavigationPolygon](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -888,5 +888,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileData", func(ptr gd.Object) any { return [1]classdb.TileData{classdb.TileData(ptr)} })
+	classdb.Register("TileData", func(ptr gd.Object) any { return [1]classdb.TileData{*(*classdb.TileData)(unsafe.Pointer(&ptr))} })
 }

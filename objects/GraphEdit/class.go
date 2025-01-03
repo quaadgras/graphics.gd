@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -379,7 +379,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphEdit"))
-	return Instance{classdb.GraphEdit(object)}
+	return Instance{*(*classdb.GraphEdit)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ScrollOffset() Vector2.XY {
@@ -967,7 +967,7 @@ func (self class) GetElementFrame(element gd.StringName) objects.GraphFrame {
 	callframe.Arg(frame, pointers.Get(element))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_element_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GraphFrame{classdb.GraphFrame(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GraphFrame{gd.PointerWithOwnershipTransferredToGo[classdb.GraphFrame](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1413,7 +1413,7 @@ func (self class) GetMenuHbox() objects.HBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.HBoxContainer{classdb.HBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.HBoxContainer{gd.PointerLifetimeBoundTo[classdb.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1557,7 +1557,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GraphEdit", func(ptr gd.Object) any { return [1]classdb.GraphEdit{classdb.GraphEdit(ptr)} })
+	classdb.Register("GraphEdit", func(ptr gd.Object) any { return [1]classdb.GraphEdit{*(*classdb.GraphEdit)(unsafe.Pointer(&ptr))} })
 }
 
 type PanningScheme = classdb.GraphEditPanningScheme

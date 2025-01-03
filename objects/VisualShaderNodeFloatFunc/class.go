@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Accept a floating-point scalar ([code]x[/code]) to the input port and transform it according to [member function].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFloatFunc"))
-	return Instance{classdb.VisualShaderNodeFloatFunc(object)}
+	return Instance{*(*classdb.VisualShaderNodeFloatFunc)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Function() classdb.VisualShaderNodeFloatFuncFunction {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeFloatFunc", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeFloatFunc{classdb.VisualShaderNodeFloatFunc(ptr)}
+		return [1]classdb.VisualShaderNodeFloatFunc{*(*classdb.VisualShaderNodeFloatFunc)(unsafe.Pointer(&ptr))}
 	})
 }
 

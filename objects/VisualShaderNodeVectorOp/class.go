@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A visual shader node for use of vector operators. Operates on vector [code]a[/code] and vector [code]b[/code].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorOp"))
-	return Instance{classdb.VisualShaderNodeVectorOp(object)}
+	return Instance{*(*classdb.VisualShaderNodeVectorOp)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Operator() classdb.VisualShaderNodeVectorOpOperator {
@@ -109,7 +109,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVectorOp", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVectorOp{classdb.VisualShaderNodeVectorOp(ptr)}
+		return [1]classdb.VisualShaderNodeVectorOp{*(*classdb.VisualShaderNodeVectorOp)(unsafe.Pointer(&ptr))}
 	})
 }
 

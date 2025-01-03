@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the [ResourceLoader] singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
@@ -237,7 +237,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatLoader"))
-	return Instance{classdb.ResourceFormatLoader(object)}
+	return Instance{*(*classdb.ResourceFormatLoader)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -461,7 +461,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceFormatLoader", func(ptr gd.Object) any { return [1]classdb.ResourceFormatLoader{classdb.ResourceFormatLoader(ptr)} })
+	classdb.Register("ResourceFormatLoader", func(ptr gd.Object) any {
+		return [1]classdb.ResourceFormatLoader{*(*classdb.ResourceFormatLoader)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type CacheMode = classdb.ResourceFormatLoaderCacheMode

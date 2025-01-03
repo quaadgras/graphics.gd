@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class extends [PhysicsDirectSpaceState3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -161,7 +161,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState3DExtension"))
-	return Instance{classdb.PhysicsDirectSpaceState3DExtension(object)}
+	return Instance{*(*classdb.PhysicsDirectSpaceState3DExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _intersect_ray(impl func(ptr unsafe.Pointer, from gd.Vector3, to gd.Vector3, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *classdb.PhysicsServer3DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -340,6 +340,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsDirectSpaceState3DExtension", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsDirectSpaceState3DExtension{classdb.PhysicsDirectSpaceState3DExtension(ptr)}
+		return [1]classdb.PhysicsDirectSpaceState3DExtension{*(*classdb.PhysicsDirectSpaceState3DExtension)(unsafe.Pointer(&ptr))}
 	})
 }

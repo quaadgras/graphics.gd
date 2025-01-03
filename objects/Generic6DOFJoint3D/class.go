@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [Generic6DOFJoint3D] (6 Degrees Of Freedom) joint allows for implementing custom types of joints by locking the rotation and translation of certain axes.
@@ -79,7 +79,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Generic6DOFJoint3D"))
-	return Instance{classdb.Generic6DOFJoint3D(object)}
+	return Instance{*(*classdb.Generic6DOFJoint3D)(unsafe.Pointer(&object))}
 }
 
 //go:nosplit
@@ -232,7 +232,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Generic6DOFJoint3D", func(ptr gd.Object) any { return [1]classdb.Generic6DOFJoint3D{classdb.Generic6DOFJoint3D(ptr)} })
+	classdb.Register("Generic6DOFJoint3D", func(ptr gd.Object) any {
+		return [1]classdb.Generic6DOFJoint3D{*(*classdb.Generic6DOFJoint3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Param = classdb.Generic6DOFJoint3DParam

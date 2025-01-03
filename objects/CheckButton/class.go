@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CheckButton] is a toggle button displayed as a check field. It's similar to [CheckBox] in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use [CheckButton] when toggling it has an [b]immediate[/b] effect on something. For example, it can be used when pressing it shows or hides advanced settings, without asking the user to confirm this action.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CheckButton"))
-	return Instance{classdb.CheckButton(object)}
+	return Instance{*(*classdb.CheckButton)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsCheckButton() Advanced      { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -83,5 +83,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CheckButton", func(ptr gd.Object) any { return [1]classdb.CheckButton{classdb.CheckButton(ptr)} })
+	classdb.Register("CheckButton", func(ptr gd.Object) any { return [1]classdb.CheckButton{*(*classdb.CheckButton)(unsafe.Pointer(&ptr))} })
 }

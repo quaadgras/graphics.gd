@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Performs a lookup operation on the provided texture, with support for multiple texture sources to choose from.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTexture3D"))
-	return Instance{classdb.VisualShaderNodeTexture3D(object)}
+	return Instance{*(*classdb.VisualShaderNodeTexture3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Texture() objects.Texture3D {
@@ -65,7 +65,7 @@ func (self class) GetTexture() objects.Texture3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture3D{classdb.Texture3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture3D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -111,6 +111,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTexture3D", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTexture3D{classdb.VisualShaderNodeTexture3D(ptr)}
+		return [1]classdb.VisualShaderNodeTexture3D{*(*classdb.VisualShaderNodeTexture3D)(unsafe.Pointer(&ptr))}
 	})
 }

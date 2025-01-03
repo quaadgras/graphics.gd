@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [QuadOccluder3D] stores a flat plane shape that can be used by the engine's occlusion culling system. See also [PolygonOccluder3D] if you need to customize the quad's shape.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("QuadOccluder3D"))
-	return Instance{classdb.QuadOccluder3D(object)}
+	return Instance{*(*classdb.QuadOccluder3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector2.XY {
@@ -101,5 +101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("QuadOccluder3D", func(ptr gd.Object) any { return [1]classdb.QuadOccluder3D{classdb.QuadOccluder3D(ptr)} })
+	classdb.Register("QuadOccluder3D", func(ptr gd.Object) any {
+		return [1]classdb.QuadOccluder3D{*(*classdb.QuadOccluder3D)(unsafe.Pointer(&ptr))}
+	})
 }

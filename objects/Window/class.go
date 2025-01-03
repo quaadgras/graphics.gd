@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
@@ -587,7 +587,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Window"))
-	return Instance{classdb.Window(object)}
+	return Instance{*(*classdb.Window)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mode() classdb.WindowMode {
@@ -1554,7 +1554,7 @@ func (self class) GetTheme() objects.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Theme{classdb.Theme(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Theme{gd.PointerWithOwnershipTransferredToGo[classdb.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1767,7 +1767,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) obj
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1783,7 +1783,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StyleBox{classdb.StyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StyleBox{gd.PointerWithOwnershipTransferredToGo[classdb.StyleBox](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1799,7 +1799,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) obj
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2061,7 +2061,7 @@ func (self class) GetThemeDefaultFont() objects.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2355,7 +2355,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Window", func(ptr gd.Object) any { return [1]classdb.Window{classdb.Window(ptr)} })
+	classdb.Register("Window", func(ptr gd.Object) any { return [1]classdb.Window{*(*classdb.Window)(unsafe.Pointer(&ptr))} })
 }
 
 type Mode = classdb.WindowMode

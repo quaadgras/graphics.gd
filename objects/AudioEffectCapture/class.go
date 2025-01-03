@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
@@ -95,7 +95,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectCapture"))
-	return Instance{classdb.AudioEffectCapture(object)}
+	return Instance{*(*classdb.AudioEffectCapture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BufferLength() Float.X {
@@ -249,5 +249,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectCapture", func(ptr gd.Object) any { return [1]classdb.AudioEffectCapture{classdb.AudioEffectCapture(ptr)} })
+	classdb.Register("AudioEffectCapture", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectCapture{*(*classdb.AudioEffectCapture)(unsafe.Pointer(&ptr))}
+	})
 }

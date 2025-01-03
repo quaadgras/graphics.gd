@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node helps to multiply a position input vector by rotation using specific axis. Intended to work with emitters.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleMultiplyByAxisAngle"))
-	return Instance{classdb.VisualShaderNodeParticleMultiplyByAxisAngle(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleMultiplyByAxisAngle)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DegreesMode() bool {
@@ -104,6 +104,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleMultiplyByAxisAngle", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleMultiplyByAxisAngle{classdb.VisualShaderNodeParticleMultiplyByAxisAngle(ptr)}
+		return [1]classdb.VisualShaderNodeParticleMultiplyByAxisAngle{*(*classdb.VisualShaderNodeParticleMultiplyByAxisAngle)(unsafe.Pointer(&ptr))}
 	})
 }

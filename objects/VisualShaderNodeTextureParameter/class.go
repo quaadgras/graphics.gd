@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Performs a lookup operation on the texture provided as a uniform for the shader.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTextureParameter"))
-	return Instance{classdb.VisualShaderNodeTextureParameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeTextureParameter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TextureType() classdb.VisualShaderNodeTextureParameterTextureType {
@@ -219,7 +219,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTextureParameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTextureParameter{classdb.VisualShaderNodeTextureParameter(ptr)}
+		return [1]classdb.VisualShaderNodeTextureParameter{*(*classdb.VisualShaderNodeTextureParameter)(unsafe.Pointer(&ptr))}
 	})
 }
 

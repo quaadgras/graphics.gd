@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Casts a ray against the screen SDF (signed-distance field) and returns the distance travelled.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeSDFRaymarch"))
-	return Instance{classdb.VisualShaderNodeSDFRaymarch(object)}
+	return Instance{*(*classdb.VisualShaderNodeSDFRaymarch)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeSDFRaymarch() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeSDFRaymarch", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeSDFRaymarch{classdb.VisualShaderNodeSDFRaymarch(ptr)}
+		return [1]classdb.VisualShaderNodeSDFRaymarch{*(*classdb.VisualShaderNodeSDFRaymarch)(unsafe.Pointer(&ptr))}
 	})
 }

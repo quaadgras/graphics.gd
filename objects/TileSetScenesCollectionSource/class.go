@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 When placed on a [TileMap], tiles from [TileSetScenesCollectionSource] will automatically instantiate an associated scene at the cell's position in the TileMap.
@@ -148,7 +148,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSetScenesCollectionSource"))
-	return Instance{classdb.TileSetScenesCollectionSource(object)}
+	return Instance{*(*classdb.TileSetScenesCollectionSource)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -243,7 +243,7 @@ func (self class) GetSceneTileScene(id gd.Int) objects.PackedScene {
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PackedScene{classdb.PackedScene(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PackedScene{gd.PointerWithOwnershipTransferredToGo[classdb.PackedScene](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -335,6 +335,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("TileSetScenesCollectionSource", func(ptr gd.Object) any {
-		return [1]classdb.TileSetScenesCollectionSource{classdb.TileSetScenesCollectionSource(ptr)}
+		return [1]classdb.TileSetScenesCollectionSource{*(*classdb.TileSetScenesCollectionSource)(unsafe.Pointer(&ptr))}
 	})
 }

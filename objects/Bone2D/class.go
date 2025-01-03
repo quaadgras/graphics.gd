@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A hierarchy of [Bone2D]s can be bound to a [Skeleton2D] to control and animate other [Node2D] nodes.
@@ -110,7 +110,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Bone2D"))
-	return Instance{classdb.Bone2D(object)}
+	return Instance{*(*classdb.Bone2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Rest() Transform2D.OriginXY {
@@ -280,5 +280,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Bone2D", func(ptr gd.Object) any { return [1]classdb.Bone2D{classdb.Bone2D(ptr)} })
+	classdb.Register("Bone2D", func(ptr gd.Object) any { return [1]classdb.Bone2D{*(*classdb.Bone2D)(unsafe.Pointer(&ptr))} })
 }

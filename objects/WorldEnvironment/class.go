@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [WorldEnvironment] node is used to configure the default [Environment] for the scene.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WorldEnvironment"))
-	return Instance{classdb.WorldEnvironment(object)}
+	return Instance{*(*classdb.WorldEnvironment)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Environment() objects.Environment {
@@ -81,7 +81,7 @@ func (self class) GetEnvironment() objects.Environment {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Environment{classdb.Environment(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Environment{gd.PointerWithOwnershipTransferredToGo[classdb.Environment](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -100,7 +100,7 @@ func (self class) GetCameraAttributes() objects.CameraAttributes {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CameraAttributes{classdb.CameraAttributes(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[classdb.CameraAttributes](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -119,7 +119,7 @@ func (self class) GetCompositor() objects.Compositor {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Compositor{classdb.Compositor(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Compositor{gd.PointerWithOwnershipTransferredToGo[classdb.Compositor](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -142,5 +142,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorldEnvironment", func(ptr gd.Object) any { return [1]classdb.WorldEnvironment{classdb.WorldEnvironment(ptr)} })
+	classdb.Register("WorldEnvironment", func(ptr gd.Object) any {
+		return [1]classdb.WorldEnvironment{*(*classdb.WorldEnvironment)(unsafe.Pointer(&ptr))}
+	})
 }

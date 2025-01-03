@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LinkButton"))
-	return Instance{classdb.LinkButton(object)}
+	return Instance{*(*classdb.LinkButton)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Text() string {
@@ -269,7 +269,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LinkButton", func(ptr gd.Object) any { return [1]classdb.LinkButton{classdb.LinkButton(ptr)} })
+	classdb.Register("LinkButton", func(ptr gd.Object) any { return [1]classdb.LinkButton{*(*classdb.LinkButton)(unsafe.Pointer(&ptr))} })
 }
 
 type UnderlineMode = classdb.LinkButtonUnderlineMode

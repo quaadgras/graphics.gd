@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.SceneReplicationConfig
 type Any interface {
@@ -128,7 +128,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneReplicationConfig"))
-	return Instance{classdb.SceneReplicationConfig(object)}
+	return Instance{*(*classdb.SceneReplicationConfig)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -332,7 +332,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneReplicationConfig", func(ptr gd.Object) any { return [1]classdb.SceneReplicationConfig{classdb.SceneReplicationConfig(ptr)} })
+	classdb.Register("SceneReplicationConfig", func(ptr gd.Object) any {
+		return [1]classdb.SceneReplicationConfig{*(*classdb.SceneReplicationConfig)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ReplicationMode = classdb.SceneReplicationConfigReplicationMode

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This imports a collection of textures from a PNG image into an [AtlasTexture] or 2D [ArrayMesh]. This can be used to save memory when importing 2D animations from spritesheets. Texture atlases are only supported in 2D rendering, not 3D. See also [ResourceImporterTexture] and [ResourceImporterLayeredTexture].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterTextureAtlas"))
-	return Instance{classdb.ResourceImporterTextureAtlas(object)}
+	return Instance{*(*classdb.ResourceImporterTextureAtlas)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterTextureAtlas() Advanced {
@@ -72,6 +72,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ResourceImporterTextureAtlas", func(ptr gd.Object) any {
-		return [1]classdb.ResourceImporterTextureAtlas{classdb.ResourceImporterTextureAtlas(ptr)}
+		return [1]classdb.ResourceImporterTextureAtlas{*(*classdb.ResourceImporterTextureAtlas)(unsafe.Pointer(&ptr))}
 	})
 }

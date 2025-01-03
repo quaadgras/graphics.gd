@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CheckBox] allows the user to choose one of only two possible options. It's similar to [CheckButton] in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use [CheckBox] when toggling it has [b]no[/b] immediate effect on something. For example, it could be used when toggling it will only do something once a confirmation button is pressed.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CheckBox"))
-	return Instance{classdb.CheckBox(object)}
+	return Instance{*(*classdb.CheckBox)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsCheckBox() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -84,5 +84,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CheckBox", func(ptr gd.Object) any { return [1]classdb.CheckBox{classdb.CheckBox(ptr)} })
+	classdb.Register("CheckBox", func(ptr gd.Object) any { return [1]classdb.CheckBox{*(*classdb.CheckBox)(unsafe.Pointer(&ptr))} })
 }

@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base editor for editing scripts in the [ScriptEditor]. This does not include documentation items.
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptEditorBase"))
-	return Instance{classdb.ScriptEditorBase(object)}
+	return Instance{*(*classdb.ScriptEditorBase)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -69,7 +69,7 @@ func (self class) GetBaseEditor() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -172,5 +172,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptEditorBase", func(ptr gd.Object) any { return [1]classdb.ScriptEditorBase{classdb.ScriptEditorBase(ptr)} })
+	classdb.Register("ScriptEditorBase", func(ptr gd.Object) any {
+		return [1]classdb.ScriptEditorBase{*(*classdb.ScriptEditorBase)(unsafe.Pointer(&ptr))}
+	})
 }

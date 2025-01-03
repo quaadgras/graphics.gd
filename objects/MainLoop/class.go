@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
@@ -155,7 +155,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MainLoop"))
-	return Instance{classdb.MainLoop(object)}
+	return Instance{*(*classdb.MainLoop)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -241,5 +241,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MainLoop", func(ptr gd.Object) any { return [1]classdb.MainLoop{classdb.MainLoop(ptr)} })
+	classdb.Register("MainLoop", func(ptr gd.Object) any { return [1]classdb.MainLoop{*(*classdb.MainLoop)(unsafe.Pointer(&ptr))} })
 }

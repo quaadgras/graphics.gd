@@ -94,7 +94,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Float](p_args, i-offset))
 		case reflect.TypeOf(gd.String{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.String](ptr)
+			val := pointers.Let[gd.String](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Vector2{}):
@@ -131,84 +131,84 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Color](p_args, i-offset))
 		case reflect.TypeOf(gd.StringName{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.StringName](ptr)
+			val := pointers.Let[gd.StringName](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.NodePath{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.NodePath](ptr)
+			val := pointers.Let[gd.NodePath](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.RID(0)):
 			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.RID](p_args, i-offset))
 		case reflect.TypeOf(gd.Object{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.Object]([3]uintptr{ptr[0]})
+			val := pointers.Let[gd.Object]([3]uintptr{ptr[0]})
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Callable{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.Callable](ptr)
+			val := pointers.Let[gd.Callable](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Signal{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.Signal](ptr)
+			val := pointers.Let[gd.Signal](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Dictionary{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.Dictionary](ptr)
+			val := pointers.Let[gd.Dictionary](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.Array{}):
 			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.New[gd.Array](ptr)
+			val := pointers.Let[gd.Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedByteArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedByteArray](ptr)
+			val := pointers.Let[gd.PackedByteArray](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedInt32Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedInt32Array](ptr)
+			val := pointers.Let[gd.PackedInt32Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedInt64Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedInt64Array](ptr)
+			val := pointers.Let[gd.PackedInt64Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedFloat32Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedFloat32Array](ptr)
+			val := pointers.Let[gd.PackedFloat32Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedFloat64Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedFloat64Array](ptr)
+			val := pointers.Let[gd.PackedFloat64Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedStringArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedStringArray](ptr)
+			val := pointers.Let[gd.PackedStringArray](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedVector2Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedVector2Array](ptr)
+			val := pointers.Let[gd.PackedVector2Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedVector3Array{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedVector3Array](ptr)
+			val := pointers.Let[gd.PackedVector3Array](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		case reflect.TypeOf(gd.PackedColorArray{}):
 			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.New[gd.PackedColorArray](ptr)
+			val := pointers.Let[gd.PackedColorArray](ptr)
 			defer val.Free()
 			args[i] = reflect.ValueOf(val)
 		default:
@@ -216,7 +216,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			switch method.Type().In(i).Kind() {
 			case reflect.String:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-				val := pointers.New[gd.String](ptr)
+				val := pointers.Let[gd.String](ptr)
 				defer val.Free()
 				args[i].SetString(val.String())
 			default:

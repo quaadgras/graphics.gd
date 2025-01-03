@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
@@ -92,7 +92,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JSONRPC"))
-	return Instance{classdb.JSONRPC(object)}
+	return Instance{*(*classdb.JSONRPC)(unsafe.Pointer(&object))}
 }
 
 //go:nosplit
@@ -221,7 +221,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JSONRPC", func(ptr gd.Object) any { return [1]classdb.JSONRPC{classdb.JSONRPC(ptr)} })
+	classdb.Register("JSONRPC", func(ptr gd.Object) any { return [1]classdb.JSONRPC{*(*classdb.JSONRPC)(unsafe.Pointer(&ptr))} })
 }
 
 type ErrorCode = classdb.JSONRPCErrorCode

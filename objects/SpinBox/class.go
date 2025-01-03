@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
@@ -79,7 +79,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpinBox"))
-	return Instance{classdb.SpinBox(object)}
+	return Instance{*(*classdb.SpinBox)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Alignment() HorizontalAlignment {
@@ -291,7 +291,7 @@ func (self class) GetLineEdit() objects.LineEdit {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.LineEdit{classdb.LineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.LineEdit{gd.PointerLifetimeBoundTo[classdb.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -326,7 +326,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpinBox", func(ptr gd.Object) any { return [1]classdb.SpinBox{classdb.SpinBox(ptr)} })
+	classdb.Register("SpinBox", func(ptr gd.Object) any { return [1]classdb.SpinBox{*(*classdb.SpinBox)(unsafe.Pointer(&ptr))} })
 }
 
 type HorizontalAlignment int

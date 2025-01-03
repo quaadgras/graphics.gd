@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A parameter represents a variable in the shader which is set externally, i.e. from the [ShaderMaterial]. Parameters are exposed as properties in the [ShaderMaterial] and can be assigned from the Inspector or from a script.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParameter"))
-	return Instance{classdb.VisualShaderNodeParameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeParameter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ParameterName() string {
@@ -131,7 +131,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParameter{classdb.VisualShaderNodeParameter(ptr)}
+		return [1]classdb.VisualShaderNodeParameter{*(*classdb.VisualShaderNodeParameter)(unsafe.Pointer(&ptr))}
 	})
 }
 

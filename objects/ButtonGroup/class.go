@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.
@@ -53,7 +53,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ButtonGroup"))
-	return Instance{classdb.ButtonGroup(object)}
+	return Instance{*(*classdb.ButtonGroup)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) AllowUnpress() bool {
@@ -72,7 +72,7 @@ func (self class) GetPressedButton() objects.BaseButton {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ButtonGroup.Bind_get_pressed_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.BaseButton{classdb.BaseButton(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.BaseButton{gd.PointerMustAssertInstanceID[classdb.BaseButton](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -137,5 +137,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ButtonGroup", func(ptr gd.Object) any { return [1]classdb.ButtonGroup{classdb.ButtonGroup(ptr)} })
+	classdb.Register("ButtonGroup", func(ptr gd.Object) any { return [1]classdb.ButtonGroup{*(*classdb.ButtonGroup)(unsafe.Pointer(&ptr))} })
 }

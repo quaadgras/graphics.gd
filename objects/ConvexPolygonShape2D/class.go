@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D convex polygon shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SOLIDS] mode.
@@ -50,7 +50,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConvexPolygonShape2D"))
-	return Instance{classdb.ConvexPolygonShape2D(object)}
+	return Instance{*(*classdb.ConvexPolygonShape2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Points() []Vector2.XY {
@@ -120,5 +120,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConvexPolygonShape2D", func(ptr gd.Object) any { return [1]classdb.ConvexPolygonShape2D{classdb.ConvexPolygonShape2D(ptr)} })
+	classdb.Register("ConvexPolygonShape2D", func(ptr gd.Object) any {
+		return [1]classdb.ConvexPolygonShape2D{*(*classdb.ConvexPolygonShape2D)(unsafe.Pointer(&ptr))}
+	})
 }

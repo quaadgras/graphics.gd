@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Uses the [FastNoiseLite] library or other noise generators to fill the texture data of your desired size.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NoiseTexture3D"))
-	return Instance{classdb.NoiseTexture3D(object)}
+	return Instance{*(*classdb.NoiseTexture3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SetWidth(value int) {
@@ -228,7 +228,7 @@ func (self class) GetColorRamp() objects.Gradient {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_color_ramp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Gradient{classdb.Gradient(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Gradient{gd.PointerWithOwnershipTransferredToGo[classdb.Gradient](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -247,7 +247,7 @@ func (self class) GetNoise() objects.Noise {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_noise, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Noise{classdb.Noise(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Noise{gd.PointerWithOwnershipTransferredToGo[classdb.Noise](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -286,5 +286,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NoiseTexture3D", func(ptr gd.Object) any { return [1]classdb.NoiseTexture3D{classdb.NoiseTexture3D(ptr)} })
+	classdb.Register("NoiseTexture3D", func(ptr gd.Object) any {
+		return [1]classdb.NoiseTexture3D{*(*classdb.NoiseTexture3D)(unsafe.Pointer(&ptr))}
+	})
 }

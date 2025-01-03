@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Constrains a value to lie between [code]min[/code] and [code]max[/code] values.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeClamp"))
-	return Instance{classdb.VisualShaderNodeClamp(object)}
+	return Instance{*(*classdb.VisualShaderNodeClamp)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OpType() classdb.VisualShaderNodeClampOpType {
@@ -99,7 +99,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeClamp", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeClamp{classdb.VisualShaderNodeClamp(ptr)} })
+	classdb.Register("VisualShaderNodeClamp", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeClamp{*(*classdb.VisualShaderNodeClamp)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type OpType = classdb.VisualShaderNodeClampOpType

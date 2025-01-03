@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 See also [ResourceImporterOBJ], which is used for OBJ models that can be imported as an independent [Mesh] or a scene.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterScene"))
-	return Instance{classdb.ResourceImporterScene(object)}
+	return Instance{*(*classdb.ResourceImporterScene)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterScene() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -68,5 +68,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterScene", func(ptr gd.Object) any { return [1]classdb.ResourceImporterScene{classdb.ResourceImporterScene(ptr)} })
+	classdb.Register("ResourceImporterScene", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterScene{*(*classdb.ResourceImporterScene)(unsafe.Pointer(&ptr))}
+	})
 }

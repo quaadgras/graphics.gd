@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [RibbonTrailMesh] represents a straight ribbon-shaped mesh with variable width. The ribbon is composed of a number of flat or cross-shaped sections, each with the same [member section_length] and number of [member section_segments]. A [member curve] is sampled along the total length of the ribbon, meaning that the curve determines the size of the ribbon along its length.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RibbonTrailMesh"))
-	return Instance{classdb.RibbonTrailMesh(object)}
+	return Instance{*(*classdb.RibbonTrailMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Shape() classdb.RibbonTrailMeshShape {
@@ -183,7 +183,7 @@ func (self class) GetCurve() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -239,7 +239,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any { return [1]classdb.RibbonTrailMesh{classdb.RibbonTrailMesh(ptr)} })
+	classdb.Register("RibbonTrailMesh", func(ptr gd.Object) any {
+		return [1]classdb.RibbonTrailMesh{*(*classdb.RibbonTrailMesh)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Shape = classdb.RibbonTrailMeshShape

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is used to store the state of a DTLS server. Upon [method setup] it converts connected [PacketPeerUDP] to [PacketPeerDTLS] accepting them via [method take_connection] as DTLS clients. Under the hood, this class is used to store the DTLS state and cookies of the server. The reason of why the state and cookies are needed is outside of the scope of this documentation.
@@ -202,7 +202,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DTLSServer"))
-	return Instance{classdb.DTLSServer(object)}
+	return Instance{*(*classdb.DTLSServer)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -229,7 +229,7 @@ func (self class) TakeConnection(udp_peer objects.PacketPeerUDP) objects.PacketP
 	callframe.Arg(frame, pointers.Get(udp_peer[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PacketPeerDTLS{classdb.PacketPeerDTLS(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[classdb.PacketPeerDTLS](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -252,7 +252,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DTLSServer", func(ptr gd.Object) any { return [1]classdb.DTLSServer{classdb.DTLSServer(ptr)} })
+	classdb.Register("DTLSServer", func(ptr gd.Object) any { return [1]classdb.DTLSServer{*(*classdb.DTLSServer)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

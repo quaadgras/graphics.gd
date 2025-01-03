@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The Windows exporter customizes how a Windows build is handled. In the editor's "Export" window, it is created when adding a new "Windows" preset.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatformWindows"))
-	return Instance{classdb.EditorExportPlatformWindows(object)}
+	return Instance{*(*classdb.EditorExportPlatformWindows)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorExportPlatformWindows() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorExportPlatformWindows", func(ptr gd.Object) any {
-		return [1]classdb.EditorExportPlatformWindows{classdb.EditorExportPlatformWindows(ptr)}
+		return [1]classdb.EditorExportPlatformWindows{*(*classdb.EditorExportPlatformWindows)(unsafe.Pointer(&ptr))}
 	})
 }

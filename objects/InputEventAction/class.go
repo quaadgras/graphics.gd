@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Contains a generic action which can be targeted from several types of inputs. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventAction"))
-	return Instance{classdb.InputEventAction(object)}
+	return Instance{*(*classdb.InputEventAction)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Action() string {
@@ -168,5 +168,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventAction", func(ptr gd.Object) any { return [1]classdb.InputEventAction{classdb.InputEventAction(ptr)} })
+	classdb.Register("InputEventAction", func(ptr gd.Object) any {
+		return [1]classdb.InputEventAction{*(*classdb.InputEventAction)(unsafe.Pointer(&ptr))}
+	})
 }

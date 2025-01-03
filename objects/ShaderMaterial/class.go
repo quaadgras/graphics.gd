@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A material that uses a custom [Shader] program to render visual items (canvas items, meshes, skies, fog), or to process particles. Compared to other materials, [ShaderMaterial] gives deeper control over the generated shader code. For more information, see the shaders documentation index below.
@@ -57,7 +57,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderMaterial"))
-	return Instance{classdb.ShaderMaterial(object)}
+	return Instance{*(*classdb.ShaderMaterial)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Shader() objects.Shader {
@@ -82,7 +82,7 @@ func (self class) GetShader() objects.Shader {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_get_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shader{classdb.Shader(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shader{gd.PointerWithOwnershipTransferredToGo[classdb.Shader](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -146,5 +146,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShaderMaterial", func(ptr gd.Object) any { return [1]classdb.ShaderMaterial{classdb.ShaderMaterial(ptr)} })
+	classdb.Register("ShaderMaterial", func(ptr gd.Object) any {
+		return [1]classdb.ShaderMaterial{*(*classdb.ShaderMaterial)(unsafe.Pointer(&ptr))}
+	})
 }

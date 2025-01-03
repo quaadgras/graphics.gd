@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CompressedTexture3D] is the VRAM-compressed counterpart of [ImageTexture3D]. The file extension for [CompressedTexture3D] files is [code].ctex3d[/code]. This file format is internal to Godot; it is created by importing other image formats with the import system.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedTexture3D"))
-	return Instance{classdb.CompressedTexture3D(object)}
+	return Instance{*(*classdb.CompressedTexture3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LoadPath() string {
@@ -111,7 +111,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompressedTexture3D", func(ptr gd.Object) any { return [1]classdb.CompressedTexture3D{classdb.CompressedTexture3D(ptr)} })
+	classdb.Register("CompressedTexture3D", func(ptr gd.Object) any {
+		return [1]classdb.CompressedTexture3D{*(*classdb.CompressedTexture3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

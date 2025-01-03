@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
@@ -309,7 +309,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SurfaceTool"))
-	return Instance{classdb.SurfaceTool(object)}
+	return Instance{*(*classdb.SurfaceTool)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -722,7 +722,7 @@ func (self class) Commit(existing objects.ArrayMesh, flags gd.Int) objects.Array
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ArrayMesh{classdb.ArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -758,7 +758,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SurfaceTool", func(ptr gd.Object) any { return [1]classdb.SurfaceTool{classdb.SurfaceTool(ptr)} })
+	classdb.Register("SurfaceTool", func(ptr gd.Object) any { return [1]classdb.SurfaceTool{*(*classdb.SurfaceTool)(unsafe.Pointer(&ptr))} })
 }
 
 type CustomFormat = classdb.SurfaceToolCustomFormat

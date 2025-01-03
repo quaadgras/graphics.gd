@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An internal object containing a mapping from a [Skin] used within the context of a particular [MeshInstance3D] to refer to the skeleton's [RID] in the RenderingServer.
@@ -57,7 +57,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkinReference"))
-	return Instance{classdb.SkinReference(object)}
+	return Instance{*(*classdb.SkinReference)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -82,7 +82,7 @@ func (self class) GetSkin() objects.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Skin{gd.PointerWithOwnershipTransferredToGo[classdb.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -105,5 +105,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkinReference", func(ptr gd.Object) any { return [1]classdb.SkinReference{classdb.SkinReference(ptr)} })
+	classdb.Register("SkinReference", func(ptr gd.Object) any {
+		return [1]classdb.SkinReference{*(*classdb.SkinReference)(unsafe.Pointer(&ptr))}
+	})
 }

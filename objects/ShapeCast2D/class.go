@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Shape casting allows to detect collision objects by sweeping its [member shape] along the cast direction determined by [member target_position]. This is similar to [RayCast2D], but it allows for sweeping a region of space, rather than just a straight line. [ShapeCast2D] can detect multiple collision objects. It is useful for things like wide laser beams or snapping a simple shape to a floor.
@@ -167,7 +167,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShapeCast2D"))
-	return Instance{classdb.ShapeCast2D(object)}
+	return Instance{*(*classdb.ShapeCast2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -275,7 +275,7 @@ func (self class) GetShape() objects.Shape2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shape2D{classdb.Shape2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shape2D{gd.PointerWithOwnershipTransferredToGo[classdb.Shape2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -384,7 +384,7 @@ func (self class) GetCollider(index gd.Int) gd.Object {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -661,5 +661,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ShapeCast2D", func(ptr gd.Object) any { return [1]classdb.ShapeCast2D{classdb.ShapeCast2D(ptr)} })
+	classdb.Register("ShapeCast2D", func(ptr gd.Object) any { return [1]classdb.ShapeCast2D{*(*classdb.ShapeCast2D)(unsafe.Pointer(&ptr))} })
 }

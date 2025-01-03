@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A resource to add to an [AnimationNodeBlendTree]. Only has one output port using the [member animation] property. Used as an input for [AnimationNode]s that blend animations together.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeAnimation"))
-	return Instance{classdb.AnimationNodeAnimation(object)}
+	return Instance{*(*classdb.AnimationNodeAnimation)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Animation() string {
@@ -271,7 +271,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeAnimation", func(ptr gd.Object) any { return [1]classdb.AnimationNodeAnimation{classdb.AnimationNodeAnimation(ptr)} })
+	classdb.Register("AnimationNodeAnimation", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeAnimation{*(*classdb.AnimationNodeAnimation)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type PlayMode = classdb.AnimationNodeAnimationPlayMode

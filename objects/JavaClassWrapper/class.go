@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The JavaClassWrapper singleton provides a way for the Godot application to send and receive data through the [url=https://developer.android.com/training/articles/perf-jni]Java Native Interface[/url] (JNI).
@@ -56,7 +56,7 @@ func (self class) Wrap(name gd.String) objects.JavaClass {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaClassWrapper.Bind_wrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.JavaClass{classdb.JavaClass(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.JavaClass{gd.PointerWithOwnershipTransferredToGo[classdb.JavaClass](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -67,5 +67,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JavaClassWrapper", func(ptr gd.Object) any { return [1]classdb.JavaClassWrapper{classdb.JavaClassWrapper(ptr)} })
+	classdb.Register("JavaClassWrapper", func(ptr gd.Object) any {
+		return [1]classdb.JavaClassWrapper{*(*classdb.JavaClassWrapper)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Custom Godot Shader Language expression, which is placed on top of the generated shader. You can place various function definitions inside to call later in [VisualShaderNodeExpression]s (which are injected in the main shader functions). You can also declare varyings, uniforms and global constants.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeGlobalExpression"))
-	return Instance{classdb.VisualShaderNodeGlobalExpression(object)}
+	return Instance{*(*classdb.VisualShaderNodeGlobalExpression)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeGlobalExpression() Advanced {
@@ -99,6 +99,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeGlobalExpression", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeGlobalExpression{classdb.VisualShaderNodeGlobalExpression(ptr)}
+		return [1]classdb.VisualShaderNodeGlobalExpression{*(*classdb.VisualShaderNodeGlobalExpression)(unsafe.Pointer(&ptr))}
 	})
 }

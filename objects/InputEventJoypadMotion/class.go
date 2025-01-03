@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about joystick motions. One [InputEventJoypadMotion] represents one axis at a time. For gamepad buttons, see [InputEventJoypadButton].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventJoypadMotion"))
-	return Instance{classdb.InputEventJoypadMotion(object)}
+	return Instance{*(*classdb.InputEventJoypadMotion)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Axis() JoyAxis {
@@ -129,7 +129,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventJoypadMotion", func(ptr gd.Object) any { return [1]classdb.InputEventJoypadMotion{classdb.InputEventJoypadMotion(ptr)} })
+	classdb.Register("InputEventJoypadMotion", func(ptr gd.Object) any {
+		return [1]classdb.InputEventJoypadMotion{*(*classdb.InputEventJoypadMotion)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type JoyAxis int

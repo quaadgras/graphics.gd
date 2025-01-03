@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [PhysicalSkyMaterial] uses the Preetham analytic daylight model to draw a sky based on physical properties. This results in a substantially more realistic sky than the [ProceduralSkyMaterial], but it is slightly slower and less flexible.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicalSkyMaterial"))
-	return Instance{classdb.PhysicalSkyMaterial(object)}
+	return Instance{*(*classdb.PhysicalSkyMaterial)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RayleighCoefficient() Float.X {
@@ -337,7 +337,7 @@ func (self class) GetNightSky() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalSkyMaterial.Bind_get_night_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -372,5 +372,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicalSkyMaterial", func(ptr gd.Object) any { return [1]classdb.PhysicalSkyMaterial{classdb.PhysicalSkyMaterial(ptr)} })
+	classdb.Register("PhysicalSkyMaterial", func(ptr gd.Object) any {
+		return [1]classdb.PhysicalSkyMaterial{*(*classdb.PhysicalSkyMaterial)(unsafe.Pointer(&ptr))}
+	})
 }

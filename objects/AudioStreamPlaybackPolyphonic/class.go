@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Playback instance for [AudioStreamPolyphonic]. After setting the [code]stream[/code] property of [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D], the playback instance can be obtained by calling [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods.
@@ -77,7 +77,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackPolyphonic"))
-	return Instance{classdb.AudioStreamPlaybackPolyphonic(object)}
+	return Instance{*(*classdb.AudioStreamPlaybackPolyphonic)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -183,6 +183,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioStreamPlaybackPolyphonic", func(ptr gd.Object) any {
-		return [1]classdb.AudioStreamPlaybackPolyphonic{classdb.AudioStreamPlaybackPolyphonic(ptr)}
+		return [1]classdb.AudioStreamPlaybackPolyphonic{*(*classdb.AudioStreamPlaybackPolyphonic)(unsafe.Pointer(&ptr))}
 	})
 }

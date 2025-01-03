@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class implements a reader that can extract the content of individual files inside a zip archive.
@@ -87,7 +87,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ZIPReader"))
-	return Instance{classdb.ZIPReader(object)}
+	return Instance{*(*classdb.ZIPReader)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -181,7 +181,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ZIPReader", func(ptr gd.Object) any { return [1]classdb.ZIPReader{classdb.ZIPReader(ptr)} })
+	classdb.Register("ZIPReader", func(ptr gd.Object) any { return [1]classdb.ZIPReader{*(*classdb.ZIPReader)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

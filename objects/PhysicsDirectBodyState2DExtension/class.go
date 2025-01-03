@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class extends [PhysicsDirectBodyState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -641,7 +641,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState2DExtension"))
-	return Instance{classdb.PhysicsDirectBodyState2DExtension(object)}
+	return Instance{*(*classdb.PhysicsDirectBodyState2DExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -1354,6 +1354,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsDirectBodyState2DExtension", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsDirectBodyState2DExtension{classdb.PhysicsDirectBodyState2DExtension(ptr)}
+		return [1]classdb.PhysicsDirectBodyState2DExtension{*(*classdb.PhysicsDirectBodyState2DExtension)(unsafe.Pointer(&ptr))}
 	})
 }

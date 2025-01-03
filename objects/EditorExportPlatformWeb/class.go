@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The Web exporter customizes how a web build is handled. In the editor's "Export" window, it is created when adding a new "Web" preset.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatformWeb"))
-	return Instance{classdb.EditorExportPlatformWeb(object)}
+	return Instance{*(*classdb.EditorExportPlatformWeb)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorExportPlatformWeb() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -70,6 +70,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorExportPlatformWeb", func(ptr gd.Object) any {
-		return [1]classdb.EditorExportPlatformWeb{classdb.EditorExportPlatformWeb(ptr)}
+		return [1]classdb.EditorExportPlatformWeb{*(*classdb.EditorExportPlatformWeb)(unsafe.Pointer(&ptr))}
 	})
 }

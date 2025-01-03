@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class allows for a RenderSceneData implementation to be made in GDExtension.
@@ -126,7 +126,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneDataExtension"))
-	return Instance{classdb.RenderSceneDataExtension(object)}
+	return Instance{*(*classdb.RenderSceneDataExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -247,6 +247,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("RenderSceneDataExtension", func(ptr gd.Object) any {
-		return [1]classdb.RenderSceneDataExtension{classdb.RenderSceneDataExtension(ptr)}
+		return [1]classdb.RenderSceneDataExtension{*(*classdb.RenderSceneDataExtension)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -623,7 +623,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlugin"))
-	return Instance{classdb.EditorExportPlugin(object)}
+	return Instance{*(*classdb.EditorExportPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -1285,5 +1285,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlugin", func(ptr gd.Object) any { return [1]classdb.EditorExportPlugin{classdb.EditorExportPlugin(ptr)} })
+	classdb.Register("EditorExportPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorExportPlugin{*(*classdb.EditorExportPlugin)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [PopupMenu] is a modal window used to display a list of options. Useful for toolbars and context menus.
@@ -597,7 +597,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PopupMenu"))
-	return Instance{classdb.PopupMenu(object)}
+	return Instance{*(*classdb.PopupMenu)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) HideOnItemSelection() bool {
@@ -1338,7 +1338,7 @@ func (self class) GetItemIcon(index gd.Int) objects.Texture2D {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1479,7 +1479,7 @@ func (self class) GetItemSubmenuNode(index gd.Int) objects.PopupMenu {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_submenu_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PopupMenu{classdb.PopupMenu(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PopupMenu{gd.PointerWithOwnershipTransferredToGo[classdb.PopupMenu](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1565,7 +1565,7 @@ func (self class) GetItemShortcut(index gd.Int) objects.Shortcut {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_shortcut, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shortcut{classdb.Shortcut(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shortcut{gd.PointerWithOwnershipTransferredToGo[classdb.Shortcut](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1879,7 +1879,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PopupMenu", func(ptr gd.Object) any { return [1]classdb.PopupMenu{classdb.PopupMenu(ptr)} })
+	classdb.Register("PopupMenu", func(ptr gd.Object) any { return [1]classdb.PopupMenu{*(*classdb.PopupMenu)(unsafe.Pointer(&ptr))} })
 }
 
 type Key int

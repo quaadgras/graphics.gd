@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 SkeletonIK3D is used to rotate all bones of a [Skeleton3D] bone chain a way that places the end bone at a desired 3D position. A typical scenario for IK in games is to place a character's feet on the ground or a character's hands on a currently held object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the [Skeleton3D] [code]bones_global_pose_override[/code] property for all affected bones in the chain. If fully applied, this overwrites any bone transform from [Animation]s or bone custom poses set by users. The applied amount can be controlled with the [member SkeletonModifier3D.influence] property.
@@ -91,7 +91,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonIK3D"))
-	return Instance{classdb.SkeletonIK3D(object)}
+	return Instance{*(*classdb.SkeletonIK3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RootBone() string {
@@ -315,7 +315,7 @@ func (self class) GetParentSkeleton() objects.Skeleton3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_parent_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skeleton3D{classdb.Skeleton3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Skeleton3D{gd.PointerMustAssertInstanceID[classdb.Skeleton3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -439,5 +439,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SkeletonIK3D", func(ptr gd.Object) any { return [1]classdb.SkeletonIK3D{classdb.SkeletonIK3D(ptr)} })
+	classdb.Register("SkeletonIK3D", func(ptr gd.Object) any {
+		return [1]classdb.SkeletonIK3D{*(*classdb.SkeletonIK3D)(unsafe.Pointer(&ptr))}
+	})
 }

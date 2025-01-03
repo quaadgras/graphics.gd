@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for all primitive meshes. Handles applying a [Material] to a primitive mesh. Examples include [BoxMesh], [CapsuleMesh], [CylinderMesh], [PlaneMesh], [PrismMesh], and [SphereMesh].
@@ -89,7 +89,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PrimitiveMesh"))
-	return Instance{classdb.PrimitiveMesh(object)}
+	return Instance{*(*classdb.PrimitiveMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Material() objects.Material {
@@ -161,7 +161,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -308,5 +308,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PrimitiveMesh", func(ptr gd.Object) any { return [1]classdb.PrimitiveMesh{classdb.PrimitiveMesh(ptr)} })
+	classdb.Register("PrimitiveMesh", func(ptr gd.Object) any {
+		return [1]classdb.PrimitiveMesh{*(*classdb.PrimitiveMesh)(unsafe.Pointer(&ptr))}
+	})
 }

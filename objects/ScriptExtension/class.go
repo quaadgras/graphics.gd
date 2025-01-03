@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.ScriptExtension
 type Any interface {
@@ -387,7 +387,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptExtension"))
-	return Instance{classdb.ScriptExtension(object)}
+	return Instance{*(*classdb.ScriptExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -935,7 +935,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptExtension", func(ptr gd.Object) any { return [1]classdb.ScriptExtension{classdb.ScriptExtension(ptr)} })
+	classdb.Register("ScriptExtension", func(ptr gd.Object) any {
+		return [1]classdb.ScriptExtension{*(*classdb.ScriptExtension)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

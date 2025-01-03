@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Provides a low-level interface for creating parsers for [url=https://en.wikipedia.org/wiki/XML]XML[/url] files. This class can serve as base to make custom XML parsers.
@@ -194,7 +194,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XMLParser"))
-	return Instance{classdb.XMLParser(object)}
+	return Instance{*(*classdb.XMLParser)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -444,7 +444,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XMLParser", func(ptr gd.Object) any { return [1]classdb.XMLParser{classdb.XMLParser(ptr)} })
+	classdb.Register("XMLParser", func(ptr gd.Object) any { return [1]classdb.XMLParser{*(*classdb.XMLParser)(unsafe.Pointer(&ptr))} })
 }
 
 type NodeType = classdb.XMLParserNodeType

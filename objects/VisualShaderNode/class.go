@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Visual shader graphs consist of various nodes. Each node in the graph is a separate object and they are represented as a rectangular boxes with title and a set of properties. Each node also has connection ports that allow to connect it to another nodes and control the flow of the shader.
@@ -74,7 +74,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNode"))
-	return Instance{classdb.VisualShaderNode(object)}
+	return Instance{*(*classdb.VisualShaderNode)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OutputPortForPreview() int {
@@ -253,7 +253,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNode", func(ptr gd.Object) any { return [1]classdb.VisualShaderNode{classdb.VisualShaderNode(ptr)} })
+	classdb.Register("VisualShaderNode", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNode{*(*classdb.VisualShaderNode)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type PortType = classdb.VisualShaderNodePortType

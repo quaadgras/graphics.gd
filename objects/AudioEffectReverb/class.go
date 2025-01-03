@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Simulates the sound of acoustic environments such as rooms, concert halls, caverns, or an open spaces.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectReverb"))
-	return Instance{classdb.AudioEffectReverb(object)}
+	return Instance{*(*classdb.AudioEffectReverb)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PredelayMsec() Float.X {
@@ -289,5 +289,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectReverb", func(ptr gd.Object) any { return [1]classdb.AudioEffectReverb{classdb.AudioEffectReverb(ptr)} })
+	classdb.Register("AudioEffectReverb", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectReverb{*(*classdb.AudioEffectReverb)(unsafe.Pointer(&ptr))}
+	})
 }

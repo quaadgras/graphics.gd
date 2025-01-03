@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base node for geometry-based visual instances. Shares some common functionality like visibility and custom materials.
@@ -59,7 +59,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GeometryInstance3D"))
-	return Instance{classdb.GeometryInstance3D(object)}
+	return Instance{*(*classdb.GeometryInstance3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MaterialOverride() objects.Material {
@@ -196,7 +196,7 @@ func (self class) GetMaterialOverride() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -215,7 +215,7 @@ func (self class) GetMaterialOverlay() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_material_overlay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -523,7 +523,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GeometryInstance3D", func(ptr gd.Object) any { return [1]classdb.GeometryInstance3D{classdb.GeometryInstance3D(ptr)} })
+	classdb.Register("GeometryInstance3D", func(ptr gd.Object) any {
+		return [1]classdb.GeometryInstance3D{*(*classdb.GeometryInstance3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ShadowCastingSetting = classdb.GeometryInstance3DShadowCastingSetting

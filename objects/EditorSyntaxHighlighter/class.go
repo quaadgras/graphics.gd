@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class that all [SyntaxHighlighter]s used by the [ScriptEditor] extend from.
@@ -78,7 +78,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSyntaxHighlighter"))
-	return Instance{classdb.EditorSyntaxHighlighter(object)}
+	return Instance{*(*classdb.EditorSyntaxHighlighter)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -153,6 +153,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorSyntaxHighlighter", func(ptr gd.Object) any {
-		return [1]classdb.EditorSyntaxHighlighter{classdb.EditorSyntaxHighlighter(ptr)}
+		return [1]classdb.EditorSyntaxHighlighter{*(*classdb.EditorSyntaxHighlighter)(unsafe.Pointer(&ptr))}
 	})
 }

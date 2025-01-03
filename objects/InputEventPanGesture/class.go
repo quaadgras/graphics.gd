@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about pan gestures. A pan gesture is performed when the user swipes the touch screen with two fingers. It's typically used for panning/scrolling.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventPanGesture"))
-	return Instance{classdb.InputEventPanGesture(object)}
+	return Instance{*(*classdb.InputEventPanGesture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Delta() Vector2.XY {
@@ -122,5 +122,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventPanGesture", func(ptr gd.Object) any { return [1]classdb.InputEventPanGesture{classdb.InputEventPanGesture(ptr)} })
+	classdb.Register("InputEventPanGesture", func(ptr gd.Object) any {
+		return [1]classdb.InputEventPanGesture{*(*classdb.InputEventPanGesture)(unsafe.Pointer(&ptr))}
+	})
 }

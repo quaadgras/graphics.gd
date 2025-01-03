@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [SubViewport] Isolates a rectangular region of a scene to be displayed independently. This can be used, for example, to display UI in 3D space.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SubViewport"))
-	return Instance{classdb.SubViewport(object)}
+	return Instance{*(*classdb.SubViewport)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector2i.XY {
@@ -203,7 +203,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SubViewport", func(ptr gd.Object) any { return [1]classdb.SubViewport{classdb.SubViewport(ptr)} })
+	classdb.Register("SubViewport", func(ptr gd.Object) any { return [1]classdb.SubViewport{*(*classdb.SubViewport)(unsafe.Pointer(&ptr))} })
 }
 
 type ClearMode = classdb.SubViewportClearMode

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A limiter is an effect designed to disallow sound from going over a given dB threshold. Hard limiters predict volume peaks, and will smoothly apply gain reduction when a peak crosses the ceiling threshold to prevent clipping and distortion. It preserves the waveform and prevents it from crossing the ceiling threshold. Adding one in the Master bus is recommended as a safety measure to prevent sudden volume peaks from occurring, and to prevent distortion caused by clipping.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectHardLimiter"))
-	return Instance{classdb.AudioEffectHardLimiter(object)}
+	return Instance{*(*classdb.AudioEffectHardLimiter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PreGainDb() Float.X {
@@ -156,5 +156,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectHardLimiter", func(ptr gd.Object) any { return [1]classdb.AudioEffectHardLimiter{classdb.AudioEffectHardLimiter(ptr)} })
+	classdb.Register("AudioEffectHardLimiter", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectHardLimiter{*(*classdb.AudioEffectHardLimiter)(unsafe.Pointer(&ptr))}
+	})
 }

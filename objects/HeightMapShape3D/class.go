@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 3D heightmap shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. This is useful for terrain, but it is limited as overhangs (such as caves) cannot be stored. Holes in a [HeightMapShape3D] are created by assigning very low values to points in the desired area.
@@ -77,7 +77,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HeightMapShape3D"))
-	return Instance{classdb.HeightMapShape3D(object)}
+	return Instance{*(*classdb.HeightMapShape3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MapWidth() int {
@@ -231,5 +231,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HeightMapShape3D", func(ptr gd.Object) any { return [1]classdb.HeightMapShape3D{classdb.HeightMapShape3D(ptr)} })
+	classdb.Register("HeightMapShape3D", func(ptr gd.Object) any {
+		return [1]classdb.HeightMapShape3D{*(*classdb.HeightMapShape3D)(unsafe.Pointer(&ptr))}
+	})
 }

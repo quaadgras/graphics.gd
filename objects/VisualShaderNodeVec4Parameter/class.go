@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translated to [code]uniform vec4[/code] in the shader language.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVec4Parameter"))
-	return Instance{classdb.VisualShaderNodeVec4Parameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DefaultValueEnabled() bool {
@@ -139,6 +139,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVec4Parameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVec4Parameter{classdb.VisualShaderNodeVec4Parameter(ptr)}
+		return [1]classdb.VisualShaderNodeVec4Parameter{*(*classdb.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&ptr))}
 	})
 }

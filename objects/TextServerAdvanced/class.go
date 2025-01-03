@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An implementation of [TextServer] that uses HarfBuzz, ICU and SIL Graphite to support BiDi, complex text layouts and contextual OpenType features. This is Godot's default primary [TextServer] interface.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServerAdvanced"))
-	return Instance{classdb.TextServerAdvanced(object)}
+	return Instance{*(*classdb.TextServerAdvanced)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsTextServerAdvanced() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -73,5 +73,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextServerAdvanced", func(ptr gd.Object) any { return [1]classdb.TextServerAdvanced{classdb.TextServerAdvanced(ptr)} })
+	classdb.Register("TextServerAdvanced", func(ptr gd.Object) any {
+		return [1]classdb.TextServerAdvanced{*(*classdb.TextServerAdvanced)(unsafe.Pointer(&ptr))}
+	})
 }

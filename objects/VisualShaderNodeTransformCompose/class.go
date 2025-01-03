@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Creates a 4×4 transform matrix using four vectors of type [code]vec3[/code]. Each vector is one row in the matrix and the last column is a [code]vec4(0, 0, 0, 1)[/code].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTransformCompose"))
-	return Instance{classdb.VisualShaderNodeTransformCompose(object)}
+	return Instance{*(*classdb.VisualShaderNodeTransformCompose)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeTransformCompose() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTransformCompose", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTransformCompose{classdb.VisualShaderNodeTransformCompose(ptr)}
+		return [1]classdb.VisualShaderNodeTransformCompose{*(*classdb.VisualShaderNodeTransformCompose)(unsafe.Pointer(&ptr))}
 	})
 }

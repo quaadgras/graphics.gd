@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
@@ -118,7 +118,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRActionMap"))
-	return Instance{classdb.OpenXRActionMap(object)}
+	return Instance{*(*classdb.OpenXRActionMap)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ActionSets() Array.Any {
@@ -178,7 +178,7 @@ func (self class) FindActionSet(name gd.String) objects.OpenXRActionSet {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_action_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRActionSet{classdb.OpenXRActionSet(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRActionSet](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -192,7 +192,7 @@ func (self class) GetActionSet(idx gd.Int) objects.OpenXRActionSet {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRActionSet{classdb.OpenXRActionSet(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRActionSet](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -262,7 +262,7 @@ func (self class) FindInteractionProfile(name gd.String) objects.OpenXRInteracti
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRInteractionProfile{classdb.OpenXRInteractionProfile(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRInteractionProfile](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -276,7 +276,7 @@ func (self class) GetInteractionProfile(idx gd.Int) objects.OpenXRInteractionPro
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRInteractionProfile{classdb.OpenXRInteractionProfile(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRInteractionProfile](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -340,5 +340,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRActionMap", func(ptr gd.Object) any { return [1]classdb.OpenXRActionMap{classdb.OpenXRActionMap(ptr)} })
+	classdb.Register("OpenXRActionMap", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRActionMap{*(*classdb.OpenXRActionMap)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [MethodTweener] is similar to a combination of [CallbackTweener] and [PropertyTweener]. It calls a method providing an interpolated value as a parameter. See [method Tween.tween_method] for more usage information.
@@ -62,7 +62,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MethodTweener"))
-	return Instance{classdb.MethodTweener(object)}
+	return Instance{*(*classdb.MethodTweener)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -74,7 +74,7 @@ func (self class) SetDelay(delay gd.Float) objects.MethodTweener {
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MethodTweener{classdb.MethodTweener(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MethodTweener{gd.PointerWithOwnershipTransferredToGo[classdb.MethodTweener](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -88,7 +88,7 @@ func (self class) SetTrans(trans classdb.TweenTransitionType) objects.MethodTwee
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MethodTweener{classdb.MethodTweener(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MethodTweener{gd.PointerWithOwnershipTransferredToGo[classdb.MethodTweener](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -102,7 +102,7 @@ func (self class) SetEase(ease classdb.TweenEaseType) objects.MethodTweener {
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MethodTweener{classdb.MethodTweener(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MethodTweener{gd.PointerWithOwnershipTransferredToGo[classdb.MethodTweener](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -129,5 +129,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MethodTweener", func(ptr gd.Object) any { return [1]classdb.MethodTweener{classdb.MethodTweener(ptr)} })
+	classdb.Register("MethodTweener", func(ptr gd.Object) any {
+		return [1]classdb.MethodTweener{*(*classdb.MethodTweener)(unsafe.Pointer(&ptr))}
+	})
 }

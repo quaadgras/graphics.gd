@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Tweeners are objects that perform a specific animating task, e.g. interpolating a property or calling a method at a given time. A [Tweener] can't be created manually, you need to use a dedicated method from [Tween].
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Tweener"))
-	return Instance{classdb.Tweener(object)}
+	return Instance{*(*classdb.Tweener)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OnFinished(cb func()) {
@@ -63,5 +63,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Tweener", func(ptr gd.Object) any { return [1]classdb.Tweener{classdb.Tweener(ptr)} })
+	classdb.Register("Tweener", func(ptr gd.Object) any { return [1]classdb.Tweener{*(*classdb.Tweener)(unsafe.Pointer(&ptr))} })
 }

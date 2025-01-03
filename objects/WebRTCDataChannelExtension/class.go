@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.WebRTCDataChannelExtension
 type Any interface {
@@ -174,7 +174,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCDataChannelExtension"))
-	return Instance{classdb.WebRTCDataChannelExtension(object)}
+	return Instance{*(*classdb.WebRTCDataChannelExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -440,7 +440,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("WebRTCDataChannelExtension", func(ptr gd.Object) any {
-		return [1]classdb.WebRTCDataChannelExtension{classdb.WebRTCDataChannelExtension(ptr)}
+		return [1]classdb.WebRTCDataChannelExtension{*(*classdb.WebRTCDataChannelExtension)(unsafe.Pointer(&ptr))}
 	})
 }
 

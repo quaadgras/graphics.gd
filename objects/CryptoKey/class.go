@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The CryptoKey class represents a cryptographic key. Keys can be loaded and saved like any other [Resource].
@@ -76,7 +76,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CryptoKey"))
-	return Instance{classdb.CryptoKey(object)}
+	return Instance{*(*classdb.CryptoKey)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -177,7 +177,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CryptoKey", func(ptr gd.Object) any { return [1]classdb.CryptoKey{classdb.CryptoKey(ptr)} })
+	classdb.Register("CryptoKey", func(ptr gd.Object) any { return [1]classdb.CryptoKey{*(*classdb.CryptoKey)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

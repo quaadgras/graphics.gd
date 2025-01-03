@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A data buffer stream peer that uses a byte array as the stream. This object can be used to handle binary data from network sessions. To handle binary data stored in files, [FileAccess] can be used directly.
@@ -81,7 +81,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerBuffer"))
-	return Instance{classdb.StreamPeerBuffer(object)}
+	return Instance{*(*classdb.StreamPeerBuffer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DataArray() []byte {
@@ -180,7 +180,7 @@ func (self class) Duplicate() objects.StreamPeerBuffer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StreamPeerBuffer{classdb.StreamPeerBuffer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StreamPeerBuffer{gd.PointerWithOwnershipTransferredToGo[classdb.StreamPeerBuffer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -209,5 +209,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerBuffer", func(ptr gd.Object) any { return [1]classdb.StreamPeerBuffer{classdb.StreamPeerBuffer(ptr)} })
+	classdb.Register("StreamPeerBuffer", func(ptr gd.Object) any {
+		return [1]classdb.StreamPeerBuffer{*(*classdb.StreamPeerBuffer)(unsafe.Pointer(&ptr))}
+	})
 }

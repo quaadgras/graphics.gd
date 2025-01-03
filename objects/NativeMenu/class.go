@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [NativeMenu] handles low-level access to the OS native global menu bar and popup menus.
@@ -1468,7 +1468,7 @@ func (self class) GetItemIcon(rid gd.RID, idx gd.Int) objects.Texture2D {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1813,7 +1813,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NativeMenu", func(ptr gd.Object) any { return [1]classdb.NativeMenu{classdb.NativeMenu(ptr)} })
+	classdb.Register("NativeMenu", func(ptr gd.Object) any { return [1]classdb.NativeMenu{*(*classdb.NativeMenu)(unsafe.Pointer(&ptr))} })
 }
 
 type Feature = classdb.NativeMenuFeature

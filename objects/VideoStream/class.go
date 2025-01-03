@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base resource type for all video streams. Classes that derive from [VideoStream] can all be used as resource types to play back videos in [VideoStreamPlayer].
@@ -59,7 +59,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStream"))
-	return Instance{classdb.VideoStream(object)}
+	return Instance{*(*classdb.VideoStream)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) File() string {
@@ -132,5 +132,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VideoStream", func(ptr gd.Object) any { return [1]classdb.VideoStream{classdb.VideoStream(ptr)} })
+	classdb.Register("VideoStream", func(ptr gd.Object) any { return [1]classdb.VideoStream{*(*classdb.VideoStream)(unsafe.Pointer(&ptr))} })
 }

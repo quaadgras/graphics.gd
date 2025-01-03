@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
@@ -54,7 +54,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFMesh"))
-	return Instance{classdb.GLTFMesh(object)}
+	return Instance{*(*classdb.GLTFMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OriginalName() string {
@@ -113,7 +113,7 @@ func (self class) GetMesh() objects.ImporterMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ImporterMesh{classdb.ImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ImporterMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -218,5 +218,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFMesh", func(ptr gd.Object) any { return [1]classdb.GLTFMesh{classdb.GLTFMesh(ptr)} })
+	classdb.Register("GLTFMesh", func(ptr gd.Object) any { return [1]classdb.GLTFMesh{*(*classdb.GLTFMesh)(unsafe.Pointer(&ptr))} })
 }

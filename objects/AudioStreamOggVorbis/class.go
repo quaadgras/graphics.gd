@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The AudioStreamOggVorbis class is a specialized [AudioStream] for handling Ogg Vorbis file formats. It offers functionality for loading and playing back Ogg Vorbis files, as well as managing looping and other playback properties. This class is part of the audio stream system, which also supports WAV files through the [AudioStreamWAV] class.
@@ -56,7 +56,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamOggVorbis"))
-	return Instance{classdb.AudioStreamOggVorbis(object)}
+	return Instance{*(*classdb.AudioStreamOggVorbis)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PacketSequence() objects.OggPacketSequence {
@@ -116,7 +116,7 @@ func (self class) LoadFromBuffer(buffer gd.PackedByteArray) objects.AudioStreamO
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamOggVorbis{classdb.AudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamOggVorbis](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -130,7 +130,7 @@ func (self class) LoadFromFile(path gd.String) objects.AudioStreamOggVorbis {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamOggVorbis{classdb.AudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamOggVorbis](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -149,7 +149,7 @@ func (self class) GetPacketSequence() objects.OggPacketSequence {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_packet_sequence, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OggPacketSequence{classdb.OggPacketSequence(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OggPacketSequence{gd.PointerWithOwnershipTransferredToGo[classdb.OggPacketSequence](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -279,5 +279,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamOggVorbis", func(ptr gd.Object) any { return [1]classdb.AudioStreamOggVorbis{classdb.AudioStreamOggVorbis(ptr)} })
+	classdb.Register("AudioStreamOggVorbis", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamOggVorbis{*(*classdb.AudioStreamOggVorbis)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A rectangular frame that can be used to group visual shader nodes together to improve organization.
@@ -57,7 +57,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFrame"))
-	return Instance{classdb.VisualShaderNodeFrame(object)}
+	return Instance{*(*classdb.VisualShaderNodeFrame)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Title() string {
@@ -255,5 +255,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeFrame", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeFrame{classdb.VisualShaderNodeFrame(ptr)} })
+	classdb.Register("VisualShaderNodeFrame", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeFrame{*(*classdb.VisualShaderNodeFrame)(unsafe.Pointer(&ptr))}
+	})
 }

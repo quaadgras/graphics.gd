@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Child [CanvasItem] nodes of a [CanvasGroup] are drawn as a single object. It allows to e.g. draw overlapping translucent 2D nodes without blending (set [member CanvasItem.self_modulate] property of [CanvasGroup] to achieve this effect).
@@ -60,7 +60,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasGroup"))
-	return Instance{classdb.CanvasGroup(object)}
+	return Instance{*(*classdb.CanvasGroup)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FitMargin() Float.X {
@@ -170,5 +170,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasGroup", func(ptr gd.Object) any { return [1]classdb.CanvasGroup{classdb.CanvasGroup(ptr)} })
+	classdb.Register("CanvasGroup", func(ptr gd.Object) any { return [1]classdb.CanvasGroup{*(*classdb.CanvasGroup)(unsafe.Pointer(&ptr))} })
 }

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Generate an axis-aligned box [PrimitiveMesh].
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoxMesh"))
-	return Instance{classdb.BoxMesh(object)}
+	return Instance{*(*classdb.BoxMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector3.XYZ {
@@ -186,5 +186,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BoxMesh", func(ptr gd.Object) any { return [1]classdb.BoxMesh{classdb.BoxMesh(ptr)} })
+	classdb.Register("BoxMesh", func(ptr gd.Object) any { return [1]classdb.BoxMesh{*(*classdb.BoxMesh)(unsafe.Pointer(&ptr))} })
 }

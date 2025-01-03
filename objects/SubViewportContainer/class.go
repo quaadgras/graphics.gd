@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A container that displays the contents of underlying [SubViewport] child nodes. It uses the combined size of the [SubViewport]s as minimum size, unless [member stretch] is enabled.
@@ -62,7 +62,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SubViewportContainer"))
-	return Instance{classdb.SubViewportContainer(object)}
+	return Instance{*(*classdb.SubViewportContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Stretch() bool {
@@ -170,5 +170,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SubViewportContainer", func(ptr gd.Object) any { return [1]classdb.SubViewportContainer{classdb.SubViewportContainer(ptr)} })
+	classdb.Register("SubViewportContainer", func(ptr gd.Object) any {
+		return [1]classdb.SubViewportContainer{*(*classdb.SubViewportContainer)(unsafe.Pointer(&ptr))}
+	})
 }

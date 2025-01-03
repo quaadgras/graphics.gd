@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
@@ -298,7 +298,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UndoRedo"))
-	return Instance{classdb.UndoRedo(object)}
+	return Instance{*(*classdb.UndoRedo)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MaxSteps() int {
@@ -637,7 +637,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UndoRedo", func(ptr gd.Object) any { return [1]classdb.UndoRedo{classdb.UndoRedo(ptr)} })
+	classdb.Register("UndoRedo", func(ptr gd.Object) any { return [1]classdb.UndoRedo{*(*classdb.UndoRedo)(unsafe.Pointer(&ptr))} })
 }
 
 type MergeMode = classdb.UndoRedoMergeMode

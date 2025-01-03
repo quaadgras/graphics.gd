@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
@@ -159,7 +159,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MovieWriter"))
-	return Instance{classdb.MovieWriter(object)}
+	return Instance{*(*classdb.MovieWriter)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -250,7 +250,7 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 //go:nosplit
 func (self class) AddWriter(writer objects.MovieWriter) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(writer[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MovieWriter.Bind_add_writer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -296,7 +296,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MovieWriter", func(ptr gd.Object) any { return [1]classdb.MovieWriter{classdb.MovieWriter(ptr)} })
+	classdb.Register("MovieWriter", func(ptr gd.Object) any { return [1]classdb.MovieWriter{*(*classdb.MovieWriter)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

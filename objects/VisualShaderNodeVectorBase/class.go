@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is an abstract class. See the derived types for descriptions of the possible operations.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorBase"))
-	return Instance{classdb.VisualShaderNodeVectorBase(object)}
+	return Instance{*(*classdb.VisualShaderNodeVectorBase)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OpType() classdb.VisualShaderNodeVectorBaseOpType {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVectorBase", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVectorBase{classdb.VisualShaderNodeVectorBase(ptr)}
+		return [1]classdb.VisualShaderNodeVectorBase{*(*classdb.VisualShaderNodeVectorBase)(unsafe.Pointer(&ptr))}
 	})
 }
 

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract base class of all types of input events. See [method Node._input].
@@ -140,7 +140,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEvent"))
-	return Instance{classdb.InputEvent(object)}
+	return Instance{*(*classdb.InputEvent)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Device() int {
@@ -357,7 +357,7 @@ func (self class) XformedBy(xform gd.Transform2D, local_ofs gd.Vector2) objects.
 	callframe.Arg(frame, local_ofs)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_xformed_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.InputEvent{classdb.InputEvent(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.InputEvent{gd.PointerWithOwnershipTransferredToGo[classdb.InputEvent](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -386,5 +386,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEvent", func(ptr gd.Object) any { return [1]classdb.InputEvent{classdb.InputEvent(ptr)} })
+	classdb.Register("InputEvent", func(ptr gd.Object) any { return [1]classdb.InputEvent{*(*classdb.InputEvent)(unsafe.Pointer(&ptr))} })
 }

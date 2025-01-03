@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This configuration object is created and populated by the render engine on a viewport change and used to (re)configure a [RenderSceneBuffers] object.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffersConfiguration"))
-	return Instance{classdb.RenderSceneBuffersConfiguration(object)}
+	return Instance{*(*classdb.RenderSceneBuffersConfiguration)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RenderTarget() Resource.ID {
@@ -309,6 +309,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("RenderSceneBuffersConfiguration", func(ptr gd.Object) any {
-		return [1]classdb.RenderSceneBuffersConfiguration{classdb.RenderSceneBuffersConfiguration(ptr)}
+		return [1]classdb.RenderSceneBuffersConfiguration{*(*classdb.RenderSceneBuffersConfiguration)(unsafe.Pointer(&ptr))}
 	})
 }

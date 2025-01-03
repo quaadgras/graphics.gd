@@ -15,11 +15,15 @@ var ExtensionInstances sync.Map
 
 type NotificationType int32
 
-func PointerWithOwnershipTransferredToGo(ptr [1]uintptr) Object {
-	return pointers.New[Object]([3]uintptr{ptr[0]})
+func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
+	return pointers.New[T]([3]uintptr{ptr[0]})
 }
 
-func PointerWithOwnershipTransferredToGodot(ptr Object) uintptr {
+func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
+	return pointers.Let[T]([3]uintptr{ptr[0]})
+}
+
+func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](ptr T) uintptr {
 	raw, _ := pointers.End(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -27,15 +31,15 @@ func PointerWithOwnershipTransferredToGodot(ptr Object) uintptr {
 	return raw[0]
 }
 
-func PointerMustAssertInstanceID(ptr [1]uintptr) Object {
+func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
 	if ptr == ([1]uintptr{}) {
-		return Object{}
+		return T{}
 	}
-	return pointers.New[Object]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{ptr[0]})))})
+	return pointers.Let[T]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{ptr[0]})))})
 }
 
-func PointerLifetimeBoundTo(obj Object, ptr [1]uintptr) Object {
-	return pointers.New[Object]([3]uintptr{ptr[0], 0})
+func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj Object, ptr [1]uintptr) T {
+	return pointers.New[T]([3]uintptr{ptr[0], 0})
 }
 
 func (self Object) AsObject() Object {
@@ -43,22 +47,23 @@ func (self Object) AsObject() Object {
 }
 
 func (self RefCounted) Free() {
-	_, ok := pointers.End(self)
+	_, ok := pointers.End(Object(self))
 	if !ok {
 		return
 	}
 }
 
 func (self Object) Free() {
-	_, ok := pointers.End(self)
+	raw, ok := pointers.End(self)
 	if !ok {
 		return
 	}
+	self = Object(pointers.Raw[Object](raw))
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
 	ref := Global.Object.CastTo(self, Global.refCountedClassTag)
 	if ref != (Object{}) {
-		if RefCounted(ref).Unreference() {
+		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
 			Global.Object.Destroy(self)
 		}
 	} else {

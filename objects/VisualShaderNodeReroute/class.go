@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Automatically adapts its port type to the type of the incoming connection and ensures valid connections.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeReroute"))
-	return Instance{classdb.VisualShaderNodeReroute(object)}
+	return Instance{*(*classdb.VisualShaderNodeReroute)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PortType() classdb.VisualShaderNodePortType {
@@ -92,6 +92,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeReroute", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeReroute{classdb.VisualShaderNodeReroute(ptr)}
+		return [1]classdb.VisualShaderNodeReroute{*(*classdb.VisualShaderNodeReroute)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 GraphFrame is a special [GraphElement] to which other [GraphElement]s can be attached. It can be configured to automatically resize to enclose all attached [GraphElement]s. If the frame is moved, all the attached [GraphElement]s inside it will be moved as well.
@@ -52,7 +52,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphFrame"))
-	return Instance{classdb.GraphFrame(object)}
+	return Instance{*(*classdb.GraphFrame)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Title() string {
@@ -131,7 +131,7 @@ func (self class) GetTitlebarHbox() objects.HBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.HBoxContainer{classdb.HBoxContainer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.HBoxContainer{gd.PointerWithOwnershipTransferredToGo[classdb.HBoxContainer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -275,5 +275,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GraphFrame", func(ptr gd.Object) any { return [1]classdb.GraphFrame{classdb.GraphFrame(ptr)} })
+	classdb.Register("GraphFrame", func(ptr gd.Object) any { return [1]classdb.GraphFrame{*(*classdb.GraphFrame)(unsafe.Pointer(&ptr))} })
 }

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This binding resource binds an [OpenXRAction] to inputs or outputs. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger".
@@ -66,7 +66,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRIPBinding"))
-	return Instance{classdb.OpenXRIPBinding(object)}
+	return Instance{*(*classdb.OpenXRIPBinding)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Action() objects.OpenXRAction {
@@ -99,7 +99,7 @@ func (self class) GetAction() objects.OpenXRAction {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRAction{classdb.OpenXRAction(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRAction{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRAction](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -198,5 +198,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRIPBinding", func(ptr gd.Object) any { return [1]classdb.OpenXRIPBinding{classdb.OpenXRIPBinding(ptr)} })
+	classdb.Register("OpenXRIPBinding", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRIPBinding{*(*classdb.OpenXRIPBinding)(unsafe.Pointer(&ptr))}
+	})
 }

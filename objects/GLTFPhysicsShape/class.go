@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
@@ -86,7 +86,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFPhysicsShape"))
-	return Instance{classdb.GLTFPhysicsShape(object)}
+	return Instance{*(*classdb.GLTFPhysicsShape)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ShapeType() string {
@@ -154,7 +154,7 @@ func (self class) FromNode(shape_node objects.CollisionShape3D) objects.GLTFPhys
 	callframe.Arg(frame, pointers.Get(shape_node[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GLTFPhysicsShape{classdb.GLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[classdb.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -168,7 +168,7 @@ func (self class) ToNode(cache_shapes bool) objects.CollisionShape3D {
 	callframe.Arg(frame, cache_shapes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CollisionShape3D{classdb.CollisionShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CollisionShape3D{gd.PointerWithOwnershipTransferredToGo[classdb.CollisionShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -182,7 +182,7 @@ func (self class) FromResource(shape_resource objects.Shape3D) objects.GLTFPhysi
 	callframe.Arg(frame, pointers.Get(shape_resource[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GLTFPhysicsShape{classdb.GLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[classdb.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -196,7 +196,7 @@ func (self class) ToResource(cache_shapes bool) objects.Shape3D {
 	callframe.Arg(frame, cache_shapes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_to_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shape3D{classdb.Shape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shape3D{gd.PointerWithOwnershipTransferredToGo[classdb.Shape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -210,7 +210,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) objects.GLTFPhysicsSh
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GLTFPhysicsShape{classdb.GLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[classdb.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -347,7 +347,7 @@ func (self class) GetImporterMesh() objects.ImporterMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_importer_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ImporterMesh{classdb.ImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ImporterMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -385,5 +385,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFPhysicsShape", func(ptr gd.Object) any { return [1]classdb.GLTFPhysicsShape{classdb.GLTFPhysicsShape(ptr)} })
+	classdb.Register("GLTFPhysicsShape", func(ptr gd.Object) any {
+		return [1]classdb.GLTFPhysicsShape{*(*classdb.GLTFPhysicsShape)(unsafe.Pointer(&ptr))}
+	})
 }

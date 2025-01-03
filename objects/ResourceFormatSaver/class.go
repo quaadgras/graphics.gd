@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
@@ -131,7 +131,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatSaver"))
-	return Instance{classdb.ResourceFormatSaver(object)}
+	return Instance{*(*classdb.ResourceFormatSaver)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -247,7 +247,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceFormatSaver", func(ptr gd.Object) any { return [1]classdb.ResourceFormatSaver{classdb.ResourceFormatSaver(ptr)} })
+	classdb.Register("ResourceFormatSaver", func(ptr gd.Object) any {
+		return [1]classdb.ResourceFormatSaver{*(*classdb.ResourceFormatSaver)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

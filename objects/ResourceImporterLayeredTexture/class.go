@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This imports a 3-dimensional texture, which can then be used in custom shaders, as a [FogMaterial] density map or as a [GPUParticlesAttractorVectorField3D]. See also [ResourceImporterTexture] and [ResourceImporterTextureAtlas].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterLayeredTexture"))
-	return Instance{classdb.ResourceImporterLayeredTexture(object)}
+	return Instance{*(*classdb.ResourceImporterLayeredTexture)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterLayeredTexture() Advanced {
@@ -71,6 +71,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ResourceImporterLayeredTexture", func(ptr gd.Object) any {
-		return [1]classdb.ResourceImporterLayeredTexture{classdb.ResourceImporterLayeredTexture(ptr)}
+		return [1]classdb.ResourceImporterLayeredTexture{*(*classdb.ResourceImporterLayeredTexture)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
@@ -133,7 +133,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPI"))
-	return Instance{classdb.MultiplayerAPI(object)}
+	return Instance{*(*classdb.MultiplayerAPI)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MultiplayerPeer() objects.MultiplayerPeer {
@@ -162,7 +162,7 @@ func (self class) GetMultiplayerPeer() objects.MultiplayerPeer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MultiplayerPeer{classdb.MultiplayerPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MultiplayerPeer{gd.PointerWithOwnershipTransferredToGo[classdb.MultiplayerPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -326,7 +326,7 @@ func (self class) CreateDefaultInterface() objects.MultiplayerAPI {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MultiplayerAPI{classdb.MultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[classdb.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -369,7 +369,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerAPI", func(ptr gd.Object) any { return [1]classdb.MultiplayerAPI{classdb.MultiplayerAPI(ptr)} })
+	classdb.Register("MultiplayerAPI", func(ptr gd.Object) any {
+		return [1]classdb.MultiplayerAPI{*(*classdb.MultiplayerAPI)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type RPCMode = classdb.MultiplayerAPIRPCMode

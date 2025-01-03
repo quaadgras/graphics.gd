@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The distance fade effect fades out each pixel based on its distance to another object.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeDistanceFade"))
-	return Instance{classdb.VisualShaderNodeDistanceFade(object)}
+	return Instance{*(*classdb.VisualShaderNodeDistanceFade)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeDistanceFade() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeDistanceFade", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeDistanceFade{classdb.VisualShaderNodeDistanceFade(ptr)}
+		return [1]classdb.VisualShaderNodeDistanceFade{*(*classdb.VisualShaderNodeDistanceFade)(unsafe.Pointer(&ptr))}
 	})
 }

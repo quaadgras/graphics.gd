@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A container that accepts only two child controls, then arranges them horizontally or vertically and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SplitContainer"))
-	return Instance{classdb.SplitContainer(object)}
+	return Instance{*(*classdb.SplitContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SplitOffset() int {
@@ -208,7 +208,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SplitContainer", func(ptr gd.Object) any { return [1]classdb.SplitContainer{classdb.SplitContainer(ptr)} })
+	classdb.Register("SplitContainer", func(ptr gd.Object) any {
+		return [1]classdb.SplitContainer{*(*classdb.SplitContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DraggerVisibility = classdb.SplitContainerDraggerVisibility

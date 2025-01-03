@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A variant of [FlowContainer] that can only arrange its child controls vertically, wrapping them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line, except vertically.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VFlowContainer"))
-	return Instance{classdb.VFlowContainer(object)}
+	return Instance{*(*classdb.VFlowContainer)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVFlowContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -86,5 +86,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VFlowContainer", func(ptr gd.Object) any { return [1]classdb.VFlowContainer{classdb.VFlowContainer(ptr)} })
+	classdb.Register("VFlowContainer", func(ptr gd.Object) any {
+		return [1]classdb.VFlowContainer{*(*classdb.VFlowContainer)(unsafe.Pointer(&ptr))}
+	})
 }

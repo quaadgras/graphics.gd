@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VisualShaderNodeParticleEmitter] that makes the particles emitted in a shape of the assigned [member mesh]. It will emit from the mesh's surfaces, either all or only the specified one.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleMeshEmitter"))
-	return Instance{classdb.VisualShaderNodeParticleMeshEmitter(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mesh() objects.Mesh {
@@ -81,7 +81,7 @@ func (self class) GetMesh() objects.Mesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -165,6 +165,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleMeshEmitter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleMeshEmitter{classdb.VisualShaderNodeParticleMeshEmitter(ptr)}
+		return [1]classdb.VisualShaderNodeParticleMeshEmitter{*(*classdb.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&ptr))}
 	})
 }

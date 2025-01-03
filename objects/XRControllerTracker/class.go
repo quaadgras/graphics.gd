@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An instance of this object represents a controller that is tracked.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRControllerTracker"))
-	return Instance{classdb.XRControllerTracker(object)}
+	return Instance{*(*classdb.XRControllerTracker)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsXRControllerTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -75,5 +75,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRControllerTracker", func(ptr gd.Object) any { return [1]classdb.XRControllerTracker{classdb.XRControllerTracker(ptr)} })
+	classdb.Register("XRControllerTracker", func(ptr gd.Object) any {
+		return [1]classdb.XRControllerTracker{*(*classdb.XRControllerTracker)(unsafe.Pointer(&ptr))}
+	})
 }

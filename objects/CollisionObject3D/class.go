@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
@@ -233,7 +233,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CollisionObject3D"))
-	return Instance{classdb.CollisionObject3D(object)}
+	return Instance{*(*classdb.CollisionObject3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DisableMode() classdb.CollisionObject3DDisableMode {
@@ -578,7 +578,7 @@ func (self class) ShapeOwnerGetOwner(owner_id gd.Int) gd.Object {
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -647,7 +647,7 @@ func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) objects.S
 	callframe.Arg(frame, shape_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shape3D{classdb.Shape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shape3D{gd.PointerWithOwnershipTransferredToGo[classdb.Shape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -750,7 +750,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CollisionObject3D", func(ptr gd.Object) any { return [1]classdb.CollisionObject3D{classdb.CollisionObject3D(ptr)} })
+	classdb.Register("CollisionObject3D", func(ptr gd.Object) any {
+		return [1]classdb.CollisionObject3D{*(*classdb.CollisionObject3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DisableMode = classdb.CollisionObject3DDisableMode

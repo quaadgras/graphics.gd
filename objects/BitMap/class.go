@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A two-dimensional array of boolean values, can be used to efficiently store a binary matrix (every matrix element takes only one bit) and query the values using natural cartesian coordinates.
@@ -136,7 +136,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BitMap"))
-	return Instance{classdb.BitMap(object)}
+	return Instance{*(*classdb.BitMap)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -292,7 +292,7 @@ func (self class) ConvertToImage() objects.Image {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_convert_to_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -341,5 +341,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BitMap", func(ptr gd.Object) any { return [1]classdb.BitMap{classdb.BitMap(ptr)} })
+	classdb.Register("BitMap", func(ptr gd.Object) any { return [1]classdb.BitMap{*(*classdb.BitMap)(unsafe.Pointer(&ptr))} })
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [PolygonOccluder3D] stores a polygon shape that can be used by the engine's occlusion culling system. When an [OccluderInstance3D] with a [PolygonOccluder3D] is selected in the editor, an editor will appear at the top of the 3D viewport so you can add/remove points. All points must be placed on the same 2D plane, which means it is not possible to create arbitrary 3D shapes with a single [PolygonOccluder3D]. To use arbitrary 3D shapes as occluders, use [ArrayOccluder3D] or [OccluderInstance3D]'s baking feature instead.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PolygonOccluder3D"))
-	return Instance{classdb.PolygonOccluder3D(object)}
+	return Instance{*(*classdb.PolygonOccluder3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Polygon() []Vector2.XY {
@@ -101,5 +101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PolygonOccluder3D", func(ptr gd.Object) any { return [1]classdb.PolygonOccluder3D{classdb.PolygonOccluder3D(ptr)} })
+	classdb.Register("PolygonOccluder3D", func(ptr gd.Object) any {
+		return [1]classdb.PolygonOccluder3D{*(*classdb.PolygonOccluder3D)(unsafe.Pointer(&ptr))}
+	})
 }

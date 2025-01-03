@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Comma-separated values are a plain text table storage format. The format's simplicity makes it easy to edit in any text editor or spreadsheet software. This makes it a common choice for game localization.
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterCSVTranslation"))
-	return Instance{classdb.ResourceImporterCSVTranslation(object)}
+	return Instance{*(*classdb.ResourceImporterCSVTranslation)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterCSVTranslation() Advanced {
@@ -79,6 +79,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ResourceImporterCSVTranslation", func(ptr gd.Object) any {
-		return [1]classdb.ResourceImporterCSVTranslation{classdb.ResourceImporterCSVTranslation(ptr)}
+		return [1]classdb.ResourceImporterCSVTranslation{*(*classdb.ResourceImporterCSVTranslation)(unsafe.Pointer(&ptr))}
 	})
 }

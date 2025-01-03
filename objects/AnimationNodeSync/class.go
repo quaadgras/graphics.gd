@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An animation node used to combine, mix, or blend two or more animations together while keeping them synchronized within an [AnimationTree].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeSync"))
-	return Instance{classdb.AnimationNodeSync(object)}
+	return Instance{*(*classdb.AnimationNodeSync)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Sync() bool {
@@ -99,5 +99,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeSync", func(ptr gd.Object) any { return [1]classdb.AnimationNodeSync{classdb.AnimationNodeSync(ptr)} })
+	classdb.Register("AnimationNodeSync", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeSync{*(*classdb.AnimationNodeSync)(unsafe.Pointer(&ptr))}
+	})
 }

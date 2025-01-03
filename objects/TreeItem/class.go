@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -774,7 +774,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TreeItem"))
-	return Instance{classdb.TreeItem(object)}
+	return Instance{*(*classdb.TreeItem)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Collapsed() bool {
@@ -1170,7 +1170,7 @@ func (self class) GetIcon(column gd.Int) objects.Texture2D {
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1645,7 +1645,7 @@ func (self class) GetCustomFont(column gd.Int) objects.Font {
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1844,7 +1844,7 @@ func (self class) GetButton(column gd.Int, button_index gd.Int) objects.Texture2
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2043,7 +2043,7 @@ func (self class) CreateChild(index gd.Int) objects.TreeItem {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_create_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2054,7 +2054,7 @@ Adds a previously unparented [TreeItem] as a direct child of this one. The [para
 //go:nosplit
 func (self class) AddChild(child objects.TreeItem) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(child[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -2081,7 +2081,7 @@ func (self class) GetTree() objects.Tree {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Tree{classdb.Tree(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Tree{gd.PointerMustAssertInstanceID[classdb.Tree](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2094,7 +2094,7 @@ func (self class) GetNext() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2107,7 +2107,7 @@ func (self class) GetPrev() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2120,7 +2120,7 @@ func (self class) GetParent() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2133,7 +2133,7 @@ func (self class) GetFirstChild() objects.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_first_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2148,7 +2148,7 @@ func (self class) GetNextInTree(wrap bool) objects.TreeItem {
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2163,7 +2163,7 @@ func (self class) GetPrevInTree(wrap bool) objects.TreeItem {
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2178,7 +2178,7 @@ func (self class) GetNextVisible(wrap bool) objects.TreeItem {
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2193,7 +2193,7 @@ func (self class) GetPrevVisible(wrap bool) objects.TreeItem {
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2208,7 +2208,7 @@ func (self class) GetChild(index gd.Int) objects.TreeItem {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TreeItem{classdb.TreeItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.TreeItem{gd.PointerMustAssertInstanceID[classdb.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2294,7 +2294,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TreeItem", func(ptr gd.Object) any { return [1]classdb.TreeItem{classdb.TreeItem(ptr)} })
+	classdb.Register("TreeItem", func(ptr gd.Object) any { return [1]classdb.TreeItem{*(*classdb.TreeItem)(unsafe.Pointer(&ptr))} })
 }
 
 type TreeCellMode = classdb.TreeItemTreeCellMode

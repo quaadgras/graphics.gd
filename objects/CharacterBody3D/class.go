@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CharacterBody3D] is a specialized class for physics bodies that are meant to be user-controlled. They are not affected by physics at all, but they affect other physics bodies in their path. They are mainly used to provide high-level API to move objects with wall and slope detection ([method move_and_slide] method) in addition to the general collision detection provided by [method PhysicsBody3D.move_and_collide]. This makes it useful for highly configurable physics bodies that must move in specific ways and collide with the world, as is often the case with user-controlled characters.
@@ -182,7 +182,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CharacterBody3D"))
-	return Instance{classdb.CharacterBody3D(object)}
+	return Instance{*(*classdb.CharacterBody3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MotionMode() classdb.CharacterBody3DMotionMode {
@@ -824,7 +824,7 @@ func (self class) GetSlideCollision(slide_idx gd.Int) objects.KinematicCollision
 	callframe.Arg(frame, slide_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.KinematicCollision3D{classdb.KinematicCollision3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.KinematicCollision3D{gd.PointerWithOwnershipTransferredToGo[classdb.KinematicCollision3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -837,7 +837,7 @@ func (self class) GetLastSlideCollision() objects.KinematicCollision3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_last_slide_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.KinematicCollision3D{classdb.KinematicCollision3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.KinematicCollision3D{gd.PointerWithOwnershipTransferredToGo[classdb.KinematicCollision3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -874,7 +874,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CharacterBody3D", func(ptr gd.Object) any { return [1]classdb.CharacterBody3D{classdb.CharacterBody3D(ptr)} })
+	classdb.Register("CharacterBody3D", func(ptr gd.Object) any {
+		return [1]classdb.CharacterBody3D{*(*classdb.CharacterBody3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type MotionMode = classdb.CharacterBody3DMotionMode

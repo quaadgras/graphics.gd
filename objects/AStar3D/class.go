@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A* (A star) is a computer algorithm used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in 3D space and Euclidean distances by default.
@@ -373,7 +373,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStar3D"))
-	return Instance{classdb.AStar3D(object)}
+	return Instance{*(*classdb.AStar3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -846,5 +846,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AStar3D", func(ptr gd.Object) any { return [1]classdb.AStar3D{classdb.AStar3D(ptr)} })
+	classdb.Register("AStar3D", func(ptr gd.Object) any { return [1]classdb.AStar3D{*(*classdb.AStar3D)(unsafe.Pointer(&ptr))} })
 }

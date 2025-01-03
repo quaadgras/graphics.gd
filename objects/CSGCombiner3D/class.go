@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 For complex arrangements of shapes, it is sometimes needed to add structure to your CSG nodes. The CSGCombiner3D node allows you to create this structure. The node encapsulates the result of the CSG operations of its children. In this way, it is possible to do operations on one set of shapes that are children of one CSGCombiner3D node, and a set of separate operations on a second set of shapes that are children of a second CSGCombiner3D node, and then do an operation that takes the two end results as its input to create the final shape.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGCombiner3D"))
-	return Instance{classdb.CSGCombiner3D(object)}
+	return Instance{*(*classdb.CSGCombiner3D)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsCSGCombiner3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -85,5 +85,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGCombiner3D", func(ptr gd.Object) any { return [1]classdb.CSGCombiner3D{classdb.CSGCombiner3D(ptr)} })
+	classdb.Register("CSGCombiner3D", func(ptr gd.Object) any {
+		return [1]classdb.CSGCombiner3D{*(*classdb.CSGCombiner3D)(unsafe.Pointer(&ptr))}
+	})
 }

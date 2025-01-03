@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This object stores suggested bindings for an interaction profile. Interaction profiles define the metadata for a tracked XR device such as an XR controller.
@@ -54,7 +54,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRInteractionProfile"))
-	return Instance{classdb.OpenXRInteractionProfile(object)}
+	return Instance{*(*classdb.OpenXRInteractionProfile)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) InteractionProfilePath() string {
@@ -114,7 +114,7 @@ func (self class) GetBinding(index gd.Int) objects.OpenXRIPBinding {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.OpenXRIPBinding{classdb.OpenXRIPBinding(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.OpenXRIPBinding{gd.PointerWithOwnershipTransferredToGo[classdb.OpenXRIPBinding](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -165,6 +165,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("OpenXRInteractionProfile", func(ptr gd.Object) any {
-		return [1]classdb.OpenXRInteractionProfile{classdb.OpenXRInteractionProfile(ptr)}
+		return [1]classdb.OpenXRInteractionProfile{*(*classdb.OpenXRInteractionProfile)(unsafe.Pointer(&ptr))}
 	})
 }

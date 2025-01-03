@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A stream peer that handles TCP connections. This object can be used to connect to TCP servers, or also is returned by a TCP server.
@@ -104,7 +104,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerTCP"))
-	return Instance{classdb.StreamPeerTCP(object)}
+	return Instance{*(*classdb.StreamPeerTCP)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -251,7 +251,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerTCP", func(ptr gd.Object) any { return [1]classdb.StreamPeerTCP{classdb.StreamPeerTCP(ptr)} })
+	classdb.Register("StreamPeerTCP", func(ptr gd.Object) any {
+		return [1]classdb.StreamPeerTCP{*(*classdb.StreamPeerTCP)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Status = classdb.StreamPeerTCPStatus

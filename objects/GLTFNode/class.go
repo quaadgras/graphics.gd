@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Represents a GLTF node. GLTF nodes may have names, transforms, children (other GLTF nodes), and more specialized properties (represented by their own classes).
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFNode"))
-	return Instance{classdb.GLTFNode(object)}
+	return Instance{*(*classdb.GLTFNode)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OriginalName() string {
@@ -465,5 +465,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFNode", func(ptr gd.Object) any { return [1]classdb.GLTFNode{classdb.GLTFNode(ptr)} })
+	classdb.Register("GLTFNode", func(ptr gd.Object) any { return [1]classdb.GLTFNode{*(*classdb.GLTFNode)(unsafe.Pointer(&ptr))} })
 }

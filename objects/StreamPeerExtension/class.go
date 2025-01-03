@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.StreamPeerExtension
 type Any interface {
@@ -83,7 +83,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerExtension"))
-	return Instance{classdb.StreamPeerExtension(object)}
+	return Instance{*(*classdb.StreamPeerExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -183,7 +183,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeerExtension", func(ptr gd.Object) any { return [1]classdb.StreamPeerExtension{classdb.StreamPeerExtension(ptr)} })
+	classdb.Register("StreamPeerExtension", func(ptr gd.Object) any {
+		return [1]classdb.StreamPeerExtension{*(*classdb.StreamPeerExtension)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
@@ -113,7 +113,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorProperty"))
-	return Instance{classdb.EditorProperty(object)}
+	return Instance{*(*classdb.EditorProperty)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Label() string {
@@ -343,7 +343,7 @@ func (self class) GetEditedObject() gd.Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -365,7 +365,7 @@ If any of the controls added can gain keyboard focus, add it here. This ensures 
 //go:nosplit
 func (self class) AddFocusable(control objects.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_add_focusable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -377,7 +377,7 @@ Puts the [param editor] control below the property label. The control must be pr
 //go:nosplit
 func (self class) SetBottomEditor(editor objects.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(editor[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_bottom_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -484,5 +484,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorProperty", func(ptr gd.Object) any { return [1]classdb.EditorProperty{classdb.EditorProperty(ptr)} })
+	classdb.Register("EditorProperty", func(ptr gd.Object) any {
+		return [1]classdb.EditorProperty{*(*classdb.EditorProperty)(unsafe.Pointer(&ptr))}
+	})
 }

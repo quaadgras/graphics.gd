@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [WorkerThreadPool] singleton allocates a set of [Thread]s (called worker threads) on project startup and provides methods for offloading tasks to them. This can be used for simple multithreading without having to create [Thread]s.
@@ -264,7 +264,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorkerThreadPool", func(ptr gd.Object) any { return [1]classdb.WorkerThreadPool{classdb.WorkerThreadPool(ptr)} })
+	classdb.Register("WorkerThreadPool", func(ptr gd.Object) any {
+		return [1]classdb.WorkerThreadPool{*(*classdb.WorkerThreadPool)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

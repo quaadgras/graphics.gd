@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Plays audio that is attenuated with distance to the listener.
@@ -86,7 +86,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlayer2D"))
-	return Instance{classdb.AudioStreamPlayer2D(object)}
+	return Instance{*(*classdb.AudioStreamPlayer2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Stream() objects.AudioStream {
@@ -203,7 +203,7 @@ func (self class) GetStream() objects.AudioStream {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -477,7 +477,7 @@ func (self class) GetStreamPlayback() objects.AudioStreamPlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamPlayback{classdb.AudioStreamPlayback(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -531,5 +531,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlayer2D", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlayer2D{classdb.AudioStreamPlayer2D(ptr)} })
+	classdb.Register("AudioStreamPlayer2D", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPlayer2D{*(*classdb.AudioStreamPlayer2D)(unsafe.Pointer(&ptr))}
+	})
 }

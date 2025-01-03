@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
@@ -143,7 +143,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CodeHighlighter"))
-	return Instance{classdb.CodeHighlighter(object)}
+	return Instance{*(*classdb.CodeHighlighter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) NumberColor() Color.RGBA {
@@ -549,5 +549,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CodeHighlighter", func(ptr gd.Object) any { return [1]classdb.CodeHighlighter{classdb.CodeHighlighter(ptr)} })
+	classdb.Register("CodeHighlighter", func(ptr gd.Object) any {
+		return [1]classdb.CodeHighlighter{*(*classdb.CodeHighlighter)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Compares [code]a[/code] and [code]b[/code] of [member type] by [member function]. Returns a boolean scalar. Translates to [code]if[/code] instruction in shader code.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCompare"))
-	return Instance{classdb.VisualShaderNodeCompare(object)}
+	return Instance{*(*classdb.VisualShaderNodeCompare)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Type() classdb.VisualShaderNodeCompareComparisonType {
@@ -156,7 +156,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeCompare", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeCompare{classdb.VisualShaderNodeCompare(ptr)}
+		return [1]classdb.VisualShaderNodeCompare{*(*classdb.VisualShaderNodeCompare)(unsafe.Pointer(&ptr))}
 	})
 }
 

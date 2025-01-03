@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
@@ -78,7 +78,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSpawner"))
-	return Instance{classdb.MultiplayerSpawner(object)}
+	return Instance{*(*classdb.MultiplayerSpawner)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SpawnPath() Path.String {
@@ -165,7 +165,7 @@ func (self class) Spawn(data gd.Variant) objects.Node {
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_spawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerWithOwnershipTransferredToGo[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -253,5 +253,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MultiplayerSpawner", func(ptr gd.Object) any { return [1]classdb.MultiplayerSpawner{classdb.MultiplayerSpawner(ptr)} })
+	classdb.Register("MultiplayerSpawner", func(ptr gd.Object) any {
+		return [1]classdb.MultiplayerSpawner{*(*classdb.MultiplayerSpawner)(unsafe.Pointer(&ptr))}
+	})
 }

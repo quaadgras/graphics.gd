@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.AudioStreamPlaybackResampled
 type Any interface {
@@ -56,7 +56,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackResampled"))
-	return Instance{classdb.AudioStreamPlaybackResampled(object)}
+	return Instance{*(*classdb.AudioStreamPlaybackResampled)(unsafe.Pointer(&object))}
 }
 
 func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *classdb.AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -122,6 +122,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioStreamPlaybackResampled", func(ptr gd.Object) any {
-		return [1]classdb.AudioStreamPlaybackResampled{classdb.AudioStreamPlaybackResampled(ptr)}
+		return [1]classdb.AudioStreamPlaybackResampled{*(*classdb.AudioStreamPlaybackResampled)(unsafe.Pointer(&ptr))}
 	})
 }

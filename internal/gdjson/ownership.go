@@ -687,7 +687,7 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"RenderingServer": {
 		"get_rendering_device": {
-			"return value": MustAssertInstanceID,
+			"return value": IsTemporaryReference,
 		},
 		"create_local_rendering_device": {
 			"return value": OwnershipTransferred,

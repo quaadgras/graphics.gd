@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].
@@ -225,7 +225,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2D"))
-	return Instance{classdb.Texture2D(object)}
+	return Instance{*(*classdb.Texture2D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -432,7 +432,7 @@ func (self class) GetImage() objects.Image {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -445,7 +445,7 @@ func (self class) CreatePlaceholder() objects.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -506,5 +506,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Texture2D", func(ptr gd.Object) any { return [1]classdb.Texture2D{classdb.Texture2D(ptr)} })
+	classdb.Register("Texture2D", func(ptr gd.Object) any { return [1]classdb.Texture2D{*(*classdb.Texture2D)(unsafe.Pointer(&ptr))} })
 }

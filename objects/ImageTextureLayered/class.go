@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageTextureLayered"))
-	return Instance{classdb.ImageTextureLayered(object)}
+	return Instance{*(*classdb.ImageTextureLayered)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -126,7 +126,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImageTextureLayered", func(ptr gd.Object) any { return [1]classdb.ImageTextureLayered{classdb.ImageTextureLayered(ptr)} })
+	classdb.Register("ImageTextureLayered", func(ptr gd.Object) any {
+		return [1]classdb.ImageTextureLayered{*(*classdb.ImageTextureLayered)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Defines the API that the editor uses to extract information from the underlying VCS. The implementation of this API is included in VCS plugins, which are GDExtension plugins that inherit [EditorVCSInterface] and are attached (on demand) to the singleton instance of [EditorVCSInterface]. Instead of performing the task themselves, all the virtual functions listed below are calling the internally overridden functions in the VCS plugins to provide a plug-n-play experience. A custom VCS plugin is supposed to inherit from [EditorVCSInterface] and override each of these virtual functions.
@@ -464,7 +464,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorVCSInterface"))
-	return Instance{classdb.EditorVCSInterface(object)}
+	return Instance{*(*classdb.EditorVCSInterface)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -998,7 +998,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorVCSInterface", func(ptr gd.Object) any { return [1]classdb.EditorVCSInterface{classdb.EditorVCSInterface(ptr)} })
+	classdb.Register("EditorVCSInterface", func(ptr gd.Object) any {
+		return [1]classdb.EditorVCSInterface{*(*classdb.EditorVCSInterface)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ChangeType = classdb.EditorVCSInterfaceChangeType

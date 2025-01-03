@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI.multiplayer_peer] after being initialized as either a client, server, or mesh. Events can then be handled by connecting to [MultiplayerAPI] signals. See [ENetConnection] for more information on the ENet library wrapper.
@@ -83,7 +83,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetMultiplayerPeer"))
-	return Instance{classdb.ENetMultiplayerPeer(object)}
+	return Instance{*(*classdb.ENetMultiplayerPeer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Host() objects.ENetConnection {
@@ -174,7 +174,7 @@ func (self class) GetHost() objects.ENetConnection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ENetConnection{classdb.ENetConnection(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ENetConnection{gd.PointerWithOwnershipTransferredToGo[classdb.ENetConnection](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -188,7 +188,7 @@ func (self class) GetPeer(id gd.Int) objects.ENetPacketPeer {
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ENetPacketPeer{classdb.ENetPacketPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[classdb.ENetPacketPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -223,7 +223,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ENetMultiplayerPeer", func(ptr gd.Object) any { return [1]classdb.ENetMultiplayerPeer{classdb.ENetMultiplayerPeer(ptr)} })
+	classdb.Register("ENetMultiplayerPeer", func(ptr gd.Object) any {
+		return [1]classdb.ENetMultiplayerPeer{*(*classdb.ENetMultiplayerPeer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

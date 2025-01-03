@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
@@ -88,7 +88,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneMultiplayer"))
-	return Instance{classdb.SceneMultiplayer(object)}
+	return Instance{*(*classdb.SceneMultiplayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RootPath() Path.String {
@@ -426,7 +426,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneMultiplayer", func(ptr gd.Object) any { return [1]classdb.SceneMultiplayer{classdb.SceneMultiplayer(ptr)} })
+	classdb.Register("SceneMultiplayer", func(ptr gd.Object) any {
+		return [1]classdb.SceneMultiplayer{*(*classdb.SceneMultiplayer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AnimatedTexture] is a resource format for frame-based animations, where multiple textures can be chained automatically with a predefined delay for each frame. Unlike [AnimationPlayer] or [AnimatedSprite2D], it isn't a [Node], but has the advantage of being usable anywhere a [Texture2D] resource can be used, e.g. in a [TileSet].
@@ -74,7 +74,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimatedTexture"))
-	return Instance{classdb.AnimatedTexture(object)}
+	return Instance{*(*classdb.AnimatedTexture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Frames() int {
@@ -235,7 +235,7 @@ func (self class) GetFrameTexture(frame_ gd.Int) objects.Texture2D {
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedTexture.Bind_get_frame_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -301,5 +301,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimatedTexture", func(ptr gd.Object) any { return [1]classdb.AnimatedTexture{classdb.AnimatedTexture(ptr)} })
+	classdb.Register("AnimatedTexture", func(ptr gd.Object) any {
+		return [1]classdb.AnimatedTexture{*(*classdb.AnimatedTexture)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Allows frequencies other than the [member cutoff_hz] to pass.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectFilter"))
-	return Instance{classdb.AudioEffectFilter(object)}
+	return Instance{*(*classdb.AudioEffectFilter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CutoffHz() Float.X {
@@ -181,7 +181,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectFilter", func(ptr gd.Object) any { return [1]classdb.AudioEffectFilter{classdb.AudioEffectFilter(ptr)} })
+	classdb.Register("AudioEffectFilter", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectFilter{*(*classdb.AudioEffectFilter)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type FilterDB = classdb.AudioEffectFilterFilterDB

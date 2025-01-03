@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Remap will transform the input range into output range, e.g. you can change a [code]0..1[/code] value to [code]-2..2[/code] etc. See [method @GlobalScope.remap] for more details.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeRemap"))
-	return Instance{classdb.VisualShaderNodeRemap(object)}
+	return Instance{*(*classdb.VisualShaderNodeRemap)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeRemap() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -73,5 +73,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeRemap", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeRemap{classdb.VisualShaderNodeRemap(ptr)} })
+	classdb.Register("VisualShaderNodeRemap", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeRemap{*(*classdb.VisualShaderNodeRemap)(unsafe.Pointer(&ptr))}
+	})
 }

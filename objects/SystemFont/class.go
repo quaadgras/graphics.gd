@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [SystemFont] loads a font from a system font with the first matching name from [member font_names].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SystemFont"))
-	return Instance{classdb.SystemFont(object)}
+	return Instance{*(*classdb.SystemFont)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FontNames() []string {
@@ -450,5 +450,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SystemFont", func(ptr gd.Object) any { return [1]classdb.SystemFont{classdb.SystemFont(ptr)} })
+	classdb.Register("SystemFont", func(ptr gd.Object) any { return [1]classdb.SystemFont{*(*classdb.SystemFont)(unsafe.Pointer(&ptr))} })
 }

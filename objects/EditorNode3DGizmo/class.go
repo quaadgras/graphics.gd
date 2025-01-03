@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
@@ -342,7 +342,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorNode3DGizmo"))
-	return Instance{classdb.EditorNode3DGizmo(object)}
+	return Instance{*(*classdb.EditorNode3DGizmo)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -608,7 +608,7 @@ Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [
 //go:nosplit
 func (self class) SetNode3d(node objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_set_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -622,7 +622,7 @@ func (self class) GetNode3d() objects.Node3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node3D{classdb.Node3D(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Node3D{gd.PointerLifetimeBoundTo[classdb.Node3D](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -635,7 +635,7 @@ func (self class) GetPlugin() objects.EditorNode3DGizmoPlugin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorNode3DGizmoPlugin{classdb.EditorNode3DGizmoPlugin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.EditorNode3DGizmoPlugin{gd.PointerWithOwnershipTransferredToGo[classdb.EditorNode3DGizmoPlugin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -762,5 +762,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorNode3DGizmo", func(ptr gd.Object) any { return [1]classdb.EditorNode3DGizmo{classdb.EditorNode3DGizmo(ptr)} })
+	classdb.Register("EditorNode3DGizmo", func(ptr gd.Object) any {
+		return [1]classdb.EditorNode3DGizmo{*(*classdb.EditorNode3DGizmo)(unsafe.Pointer(&ptr))}
+	})
 }

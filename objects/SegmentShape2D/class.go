@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D line segment shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SegmentShape2D"))
-	return Instance{classdb.SegmentShape2D(object)}
+	return Instance{*(*classdb.SegmentShape2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) A() Vector2.XY {
@@ -125,5 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SegmentShape2D", func(ptr gd.Object) any { return [1]classdb.SegmentShape2D{classdb.SegmentShape2D(ptr)} })
+	classdb.Register("SegmentShape2D", func(ptr gd.Object) any {
+		return [1]classdb.SegmentShape2D{*(*classdb.SegmentShape2D)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This object is used by [RenderingDevice].
@@ -59,7 +59,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDUniform"))
-	return Instance{classdb.RDUniform(object)}
+	return Instance{*(*classdb.RDUniform)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) UniformType() classdb.RenderingDeviceUniformType {
@@ -170,5 +170,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RDUniform", func(ptr gd.Object) any { return [1]classdb.RDUniform{classdb.RDUniform(ptr)} })
+	classdb.Register("RDUniform", func(ptr gd.Object) any { return [1]classdb.RDUniform{*(*classdb.RDUniform)(unsafe.Pointer(&ptr))} })
 }

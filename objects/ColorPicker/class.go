@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A widget that provides an interface for selecting or modifying a color. It can optionally provide functionalities like a color sampler (eyedropper), color modes, and presets.
@@ -89,7 +89,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ColorPicker"))
-	return Instance{classdb.ColorPicker(object)}
+	return Instance{*(*classdb.ColorPicker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -523,7 +523,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ColorPicker", func(ptr gd.Object) any { return [1]classdb.ColorPicker{classdb.ColorPicker(ptr)} })
+	classdb.Register("ColorPicker", func(ptr gd.Object) any { return [1]classdb.ColorPicker{*(*classdb.ColorPicker)(unsafe.Pointer(&ptr))} })
 }
 
 type ColorModeType = classdb.ColorPickerColorModeType

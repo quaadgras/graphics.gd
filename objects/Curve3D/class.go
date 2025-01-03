@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class describes a Bézier curve in 3D space. It is mainly used to give a shape to a [Path3D], but can be manually sampled for other purposes.
@@ -222,7 +222,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Curve3D"))
-	return Instance{classdb.Curve3D(object)}
+	return Instance{*(*classdb.Curve3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BakeInterval() Float.X {
@@ -673,5 +673,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Curve3D", func(ptr gd.Object) any { return [1]classdb.Curve3D{classdb.Curve3D(ptr)} })
+	classdb.Register("Curve3D", func(ptr gd.Object) any { return [1]classdb.Curve3D{*(*classdb.Curve3D)(unsafe.Pointer(&ptr))} })
 }

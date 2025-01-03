@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [CameraServer] keeps track of different cameras accessible in Godot. These are external cameras such as webcams or the cameras on your phone.
@@ -87,7 +87,7 @@ func (self class) GetFeed(index gd.Int) objects.CameraFeed {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CameraFeed{classdb.CameraFeed(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CameraFeed{gd.PointerWithOwnershipTransferredToGo[classdb.CameraFeed](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -156,7 +156,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CameraServer", func(ptr gd.Object) any { return [1]classdb.CameraServer{classdb.CameraServer(ptr)} })
+	classdb.Register("CameraServer", func(ptr gd.Object) any {
+		return [1]classdb.CameraServer{*(*classdb.CameraServer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type FeedImage = classdb.CameraServerFeedImage

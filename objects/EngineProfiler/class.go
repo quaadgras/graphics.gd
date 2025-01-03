@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
@@ -89,7 +89,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EngineProfiler"))
-	return Instance{classdb.EngineProfiler(object)}
+	return Instance{*(*classdb.EngineProfiler)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -160,5 +160,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EngineProfiler", func(ptr gd.Object) any { return [1]classdb.EngineProfiler{classdb.EngineProfiler(ptr)} })
+	classdb.Register("EngineProfiler", func(ptr gd.Object) any {
+		return [1]classdb.EngineProfiler{*(*classdb.EngineProfiler)(unsafe.Pointer(&ptr))}
+	})
 }

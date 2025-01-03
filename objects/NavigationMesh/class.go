@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
@@ -98,7 +98,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationMesh"))
-	return Instance{classdb.NavigationMesh(object)}
+	return Instance{*(*classdb.NavigationMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Vertices() []Vector3.XYZ {
@@ -907,7 +907,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationMesh", func(ptr gd.Object) any { return [1]classdb.NavigationMesh{classdb.NavigationMesh(ptr)} })
+	classdb.Register("NavigationMesh", func(ptr gd.Object) any {
+		return [1]classdb.NavigationMesh{*(*classdb.NavigationMesh)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type SamplePartitionType = classdb.NavigationMeshSamplePartitionType

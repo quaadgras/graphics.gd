@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorImportPlugin]s provide a way to extend the editor's resource import functionality. Use them to import resources from custom files or to provide alternatives to the editor's existing importers.
@@ -444,7 +444,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorImportPlugin"))
-	return Instance{classdb.EditorImportPlugin(object)}
+	return Instance{*(*classdb.EditorImportPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -751,7 +751,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorImportPlugin", func(ptr gd.Object) any { return [1]classdb.EditorImportPlugin{classdb.EditorImportPlugin(ptr)} })
+	classdb.Register("EditorImportPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorImportPlugin{*(*classdb.EditorImportPlugin)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

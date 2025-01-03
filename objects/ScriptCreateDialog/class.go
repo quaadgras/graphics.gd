@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [ScriptCreateDialog] creates script files according to a given template for a given scripting language. The standard use is to configure its fields prior to calling one of the [method Window.popup] methods.
@@ -71,7 +71,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptCreateDialog"))
-	return Instance{classdb.ScriptCreateDialog(object)}
+	return Instance{*(*classdb.ScriptCreateDialog)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -131,5 +131,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptCreateDialog", func(ptr gd.Object) any { return [1]classdb.ScriptCreateDialog{classdb.ScriptCreateDialog(ptr)} })
+	classdb.Register("ScriptCreateDialog", func(ptr gd.Object) any {
+		return [1]classdb.ScriptCreateDialog{*(*classdb.ScriptCreateDialog)(unsafe.Pointer(&ptr))}
+	})
 }

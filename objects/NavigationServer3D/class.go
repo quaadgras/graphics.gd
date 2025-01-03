@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 NavigationServer3D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar3D].
@@ -3219,7 +3219,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationServer3D", func(ptr gd.Object) any { return [1]classdb.NavigationServer3D{classdb.NavigationServer3D(ptr)} })
+	classdb.Register("NavigationServer3D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationServer3D{*(*classdb.NavigationServer3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ProcessInfo = classdb.NavigationServer3DProcessInfo

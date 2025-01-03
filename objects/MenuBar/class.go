@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A horizontal menu bar that creates a [MenuButton] for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node.
@@ -124,7 +124,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MenuBar"))
-	return Instance{classdb.MenuBar(object)}
+	return Instance{*(*classdb.MenuBar)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Flat() bool {
@@ -444,7 +444,7 @@ func (self class) GetMenuPopup(menu gd.Int) objects.PopupMenu {
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PopupMenu{classdb.PopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.PopupMenu{gd.PointerLifetimeBoundTo[classdb.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -477,5 +477,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MenuBar", func(ptr gd.Object) any { return [1]classdb.MenuBar{classdb.MenuBar(ptr)} })
+	classdb.Register("MenuBar", func(ptr gd.Object) any { return [1]classdb.MenuBar{*(*classdb.MenuBar)(unsafe.Pointer(&ptr))} })
 }

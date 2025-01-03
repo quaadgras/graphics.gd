@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -284,7 +284,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNode"))
-	return Instance{classdb.AnimationNode(object)}
+	return Instance{*(*classdb.AnimationNode)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FilterEnabled() bool {
@@ -697,7 +697,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNode", func(ptr gd.Object) any { return [1]classdb.AnimationNode{classdb.AnimationNode(ptr)} })
+	classdb.Register("AnimationNode", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNode{*(*classdb.AnimationNode)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type FilterAction = classdb.AnimationNodeFilterAction

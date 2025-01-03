@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
@@ -449,7 +449,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCustom"))
-	return Instance{classdb.VisualShaderNodeCustom(object)}
+	return Instance{*(*classdb.VisualShaderNodeCustom)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -903,5 +903,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeCustom", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeCustom{classdb.VisualShaderNodeCustom(ptr)} })
+	classdb.Register("VisualShaderNodeCustom", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeCustom{*(*classdb.VisualShaderNodeCustom)(unsafe.Pointer(&ptr))}
+	})
 }

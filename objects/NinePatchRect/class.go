@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Also known as 9-slice panels, [NinePatchRect] produces clean panels of any size based on a small texture. To do so, it splits the texture in a 3×3 grid. When you scale the node, it tiles the texture's edges horizontally or vertically, tiles the center on both axes, and leaves the corners unchanged.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NinePatchRect"))
-	return Instance{classdb.NinePatchRect(object)}
+	return Instance{*(*classdb.NinePatchRect)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Texture() objects.Texture2D {
@@ -130,7 +130,7 @@ func (self class) GetTexture() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -270,7 +270,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NinePatchRect", func(ptr gd.Object) any { return [1]classdb.NinePatchRect{classdb.NinePatchRect(ptr)} })
+	classdb.Register("NinePatchRect", func(ptr gd.Object) any {
+		return [1]classdb.NinePatchRect{*(*classdb.NinePatchRect)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AxisStretchMode = classdb.NinePatchRectAxisStretchMode

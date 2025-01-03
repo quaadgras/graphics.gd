@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
@@ -835,7 +835,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderingDevice"))
-	return Instance{classdb.RenderingDevice(object)}
+	return Instance{*(*classdb.RenderingDevice)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -1071,7 +1071,7 @@ func (self class) TextureGetFormat(texture gd.RID) objects.RDTextureFormat {
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RDTextureFormat{classdb.RDTextureFormat(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[classdb.RDTextureFormat](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1356,7 +1356,7 @@ func (self class) ShaderCompileSpirvFromSource(shader_source objects.RDShaderSou
 	callframe.Arg(frame, allow_cache)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_compile_spirv_from_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RDShaderSPIRV{classdb.RDShaderSPIRV(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[classdb.RDShaderSPIRV](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2252,7 +2252,7 @@ func (self class) CreateLocalDevice() objects.RenderingDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_create_local_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RenderingDevice{classdb.RenderingDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[classdb.RenderingDevice](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2395,7 +2395,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderingDevice", func(ptr gd.Object) any { return [1]classdb.RenderingDevice{classdb.RenderingDevice(ptr)} })
+	classdb.Register("RenderingDevice", func(ptr gd.Object) any {
+		return [1]classdb.RenderingDevice{*(*classdb.RenderingDevice)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DeviceType = classdb.RenderingDeviceDeviceType

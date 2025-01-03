@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VisibleOnScreenEnabler2D] contains a rectangular region of 2D space and a target node. The target node will be automatically enabled (via its [member Node.process_mode] property) when any part of this region becomes visible on the screen, and automatically disabled otherwise. This can for example be used to activate enemies only when the player approaches them.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenEnabler2D"))
-	return Instance{classdb.VisibleOnScreenEnabler2D(object)}
+	return Instance{*(*classdb.VisibleOnScreenEnabler2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) EnableMode() classdb.VisibleOnScreenEnabler2DEnableMode {
@@ -136,7 +136,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisibleOnScreenEnabler2D", func(ptr gd.Object) any {
-		return [1]classdb.VisibleOnScreenEnabler2D{classdb.VisibleOnScreenEnabler2D(ptr)}
+		return [1]classdb.VisibleOnScreenEnabler2D{*(*classdb.VisibleOnScreenEnabler2D)(unsafe.Pointer(&ptr))}
 	})
 }
 

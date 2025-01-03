@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -319,7 +319,7 @@ func (self class) GetInterface(idx gd.Int) objects.XRInterface {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRInterface{gd.PointerWithOwnershipTransferredToGo[classdb.XRInterface](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -346,7 +346,7 @@ func (self class) FindInterface(name gd.String) objects.XRInterface {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRInterface{gd.PointerWithOwnershipTransferredToGo[classdb.XRInterface](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -398,7 +398,7 @@ func (self class) GetTracker(tracker_name gd.StringName) objects.XRTracker {
 	callframe.Arg(frame, pointers.Get(tracker_name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRTracker{classdb.XRTracker(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRTracker{gd.PointerWithOwnershipTransferredToGo[classdb.XRTracker](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -408,7 +408,7 @@ func (self class) GetPrimaryInterface() objects.XRInterface {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRInterface{classdb.XRInterface(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRInterface{gd.PointerWithOwnershipTransferredToGo[classdb.XRInterface](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -452,7 +452,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRServer", func(ptr gd.Object) any { return [1]classdb.XRServer{classdb.XRServer(ptr)} })
+	classdb.Register("XRServer", func(ptr gd.Object) any { return [1]classdb.XRServer{*(*classdb.XRServer)(unsafe.Pointer(&ptr))} })
 }
 
 type TrackerType = classdb.XRServerTrackerType

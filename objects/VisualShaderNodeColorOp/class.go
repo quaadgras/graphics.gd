@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Applies [member operator] to two color inputs.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeColorOp"))
-	return Instance{classdb.VisualShaderNodeColorOp(object)}
+	return Instance{*(*classdb.VisualShaderNodeColorOp)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Operator() classdb.VisualShaderNodeColorOpOperator {
@@ -102,7 +102,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeColorOp", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeColorOp{classdb.VisualShaderNodeColorOp(ptr)}
+		return [1]classdb.VisualShaderNodeColorOp{*(*classdb.VisualShaderNodeColorOp)(unsafe.Pointer(&ptr))}
 	})
 }
 

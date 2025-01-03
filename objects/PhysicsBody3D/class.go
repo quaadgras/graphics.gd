@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [PhysicsBody3D] is an abstract base class for 3D game objects affected by physics. All 3D physics bodies inherit from it.
@@ -95,7 +95,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsBody3D"))
-	return Instance{classdb.PhysicsBody3D(object)}
+	return Instance{*(*classdb.PhysicsBody3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) AxisLockLinearX() bool {
@@ -164,7 +164,7 @@ func (self class) MoveAndCollide(motion gd.Vector3, test_only bool, safe_margin 
 	callframe.Arg(frame, max_collisions)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody3D.Bind_move_and_collide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.KinematicCollision3D{classdb.KinematicCollision3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.KinematicCollision3D{gd.PointerWithOwnershipTransferredToGo[classdb.KinematicCollision3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -296,5 +296,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsBody3D", func(ptr gd.Object) any { return [1]classdb.PhysicsBody3D{classdb.PhysicsBody3D(ptr)} })
+	classdb.Register("PhysicsBody3D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsBody3D{*(*classdb.PhysicsBody3D)(unsafe.Pointer(&ptr))}
+	})
 }

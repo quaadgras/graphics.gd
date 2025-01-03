@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Class that has everything pertaining to a 2D world: A physics space, a canvas, and a sound space. 2D nodes register their resources into the current 2D world.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("World2D"))
-	return Instance{classdb.World2D(object)}
+	return Instance{*(*classdb.World2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Canvas() Resource.ID {
@@ -92,7 +92,7 @@ func (self class) GetDirectSpaceState() objects.PhysicsDirectSpaceState2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_direct_space_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsDirectSpaceState2D{classdb.PhysicsDirectSpaceState2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[classdb.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -121,5 +121,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("World2D", func(ptr gd.Object) any { return [1]classdb.World2D{classdb.World2D(ptr)} })
+	classdb.Register("World2D", func(ptr gd.Object) any { return [1]classdb.World2D{*(*classdb.World2D)(unsafe.Pointer(&ptr))} })
 }

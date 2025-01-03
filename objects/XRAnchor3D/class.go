@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [XRAnchor3D] point is an [XRNode3D] that maps a real world location identified by the AR platform to a position within the game world. For example, as long as plane detection in ARKit is on, ARKit will identify and update the position of planes (tables, floors, etc.) and create anchors for them.
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRAnchor3D"))
-	return Instance{classdb.XRAnchor3D(object)}
+	return Instance{*(*classdb.XRAnchor3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -113,5 +113,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRAnchor3D", func(ptr gd.Object) any { return [1]classdb.XRAnchor3D{classdb.XRAnchor3D(ptr)} })
+	classdb.Register("XRAnchor3D", func(ptr gd.Object) any { return [1]classdb.XRAnchor3D{*(*classdb.XRAnchor3D)(unsafe.Pointer(&ptr))} })
 }

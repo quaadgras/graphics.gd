@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Adds a chorus audio effect. The effect applies a filter with voices to duplicate the audio source and manipulate it through the filter.
@@ -77,7 +77,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectChorus"))
-	return Instance{classdb.AudioEffectChorus(object)}
+	return Instance{*(*classdb.AudioEffectChorus)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) VoiceCount() int {
@@ -317,5 +317,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectChorus", func(ptr gd.Object) any { return [1]classdb.AudioEffectChorus{classdb.AudioEffectChorus(ptr)} })
+	classdb.Register("AudioEffectChorus", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectChorus{*(*classdb.AudioEffectChorus)(unsafe.Pointer(&ptr))}
+	})
 }

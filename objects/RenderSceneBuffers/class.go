@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract scene buffers object, created for each viewport for which 3D rendering is done. It manages any additional buffers used during rendering and will discard buffers when the viewport is resized.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffers"))
-	return Instance{classdb.RenderSceneBuffers(object)}
+	return Instance{*(*classdb.RenderSceneBuffers)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -78,5 +78,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderSceneBuffers", func(ptr gd.Object) any { return [1]classdb.RenderSceneBuffers{classdb.RenderSceneBuffers(ptr)} })
+	classdb.Register("RenderSceneBuffers", func(ptr gd.Object) any {
+		return [1]classdb.RenderSceneBuffers{*(*classdb.RenderSceneBuffers)(unsafe.Pointer(&ptr))}
+	})
 }

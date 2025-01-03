@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Node for back-buffering the currently-displayed screen. The region defined in the [BackBufferCopy] node is buffered with the content of the screen it covers, or the entire screen according to the [member copy_mode]. It can be accessed in shader scripts using the screen texture (i.e. a uniform sampler with [code]hint_screen_texture[/code]).
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BackBufferCopy"))
-	return Instance{classdb.BackBufferCopy(object)}
+	return Instance{*(*classdb.BackBufferCopy)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CopyMode() classdb.BackBufferCopyCopyMode {
@@ -125,7 +125,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BackBufferCopy", func(ptr gd.Object) any { return [1]classdb.BackBufferCopy{classdb.BackBufferCopy(ptr)} })
+	classdb.Register("BackBufferCopy", func(ptr gd.Object) any {
+		return [1]classdb.BackBufferCopy{*(*classdb.BackBufferCopy)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type CopyMode = classdb.BackBufferCopyCopyMode

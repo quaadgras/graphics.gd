@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for [ImageTextureLayered] and [CompressedTextureLayered]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
@@ -192,7 +192,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextureLayered"))
-	return Instance{classdb.TextureLayered(object)}
+	return Instance{*(*classdb.TextureLayered)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -364,7 +364,7 @@ func (self class) GetLayerData(layer gd.Int) objects.Image {
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layer_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -425,7 +425,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureLayered", func(ptr gd.Object) any { return [1]classdb.TextureLayered{classdb.TextureLayered(ptr)} })
+	classdb.Register("TextureLayered", func(ptr gd.Object) any {
+		return [1]classdb.TextureLayered{*(*classdb.TextureLayered)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type LayeredType = classdb.TextureLayeredLayeredType

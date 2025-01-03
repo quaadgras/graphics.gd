@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. Only one [AudioListener2D] can be current. Using [method make_current] will disable the previous [AudioListener2D].
@@ -63,7 +63,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioListener2D"))
-	return Instance{classdb.AudioListener2D(object)}
+	return Instance{*(*classdb.AudioListener2D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -128,5 +128,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioListener2D", func(ptr gd.Object) any { return [1]classdb.AudioListener2D{classdb.AudioListener2D(ptr)} })
+	classdb.Register("AudioListener2D", func(ptr gd.Object) any {
+		return [1]classdb.AudioListener2D{*(*classdb.AudioListener2D)(unsafe.Pointer(&ptr))}
+	})
 }

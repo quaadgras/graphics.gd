@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
@@ -80,7 +80,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Label"))
-	return Instance{classdb.Label(object)}
+	return Instance{*(*classdb.Label)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Text() string {
@@ -314,7 +314,7 @@ func (self class) GetLabelSettings() objects.LabelSettings {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_label_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.LabelSettings{classdb.LabelSettings(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.LabelSettings{gd.PointerWithOwnershipTransferredToGo[classdb.LabelSettings](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -720,7 +720,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Label", func(ptr gd.Object) any { return [1]classdb.Label{classdb.Label(ptr)} })
+	classdb.Register("Label", func(ptr gd.Object) any { return [1]classdb.Label{*(*classdb.Label)(unsafe.Pointer(&ptr))} })
 }
 
 type HorizontalAlignment int

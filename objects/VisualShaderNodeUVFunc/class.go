@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 UV functions are similar to [Vector2] functions, but the input port of this node uses the shader's UV value by default.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeUVFunc"))
-	return Instance{classdb.VisualShaderNodeUVFunc(object)}
+	return Instance{*(*classdb.VisualShaderNodeUVFunc)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Function() classdb.VisualShaderNodeUVFuncFunction {
@@ -101,7 +101,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeUVFunc", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeUVFunc{classdb.VisualShaderNodeUVFunc(ptr)} })
+	classdb.Register("VisualShaderNodeUVFunc", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeUVFunc{*(*classdb.VisualShaderNodeUVFunc)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Function = classdb.VisualShaderNodeUVFuncFunction

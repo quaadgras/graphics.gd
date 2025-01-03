@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translated to [code]uniform sampler2DArray[/code] in the shader language.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTexture2DArray"))
-	return Instance{classdb.VisualShaderNodeTexture2DArray(object)}
+	return Instance{*(*classdb.VisualShaderNodeTexture2DArray)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TextureArray() objects.Texture2DArray {
@@ -65,7 +65,7 @@ func (self class) GetTextureArray() objects.Texture2DArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2DArray{classdb.Texture2DArray(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2DArray{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2DArray](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -111,6 +111,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTexture2DArray", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTexture2DArray{classdb.VisualShaderNodeTexture2DArray(ptr)}
+		return [1]classdb.VisualShaderNodeTexture2DArray{*(*classdb.VisualShaderNodeTexture2DArray)(unsafe.Pointer(&ptr))}
 	})
 }

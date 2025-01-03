@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is used to manage directories and their content, even outside of the project folder.
@@ -369,7 +369,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirAccess"))
-	return Instance{classdb.DirAccess(object)}
+	return Instance{*(*classdb.DirAccess)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) IncludeNavigational() bool {
@@ -398,7 +398,7 @@ func (self class) Open(path gd.String) objects.DirAccess {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.DirAccess{classdb.DirAccess(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.DirAccess{gd.PointerWithOwnershipTransferredToGo[classdb.DirAccess](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -931,7 +931,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DirAccess", func(ptr gd.Object) any { return [1]classdb.DirAccess{classdb.DirAccess(ptr)} })
+	classdb.Register("DirAccess", func(ptr gd.Object) any { return [1]classdb.DirAccess{*(*classdb.DirAccess)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

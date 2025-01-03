@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A variant of [BoxContainer] that can only arrange its child controls vertically. Child controls are rearranged automatically when their minimum size changes.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VBoxContainer"))
-	return Instance{classdb.VBoxContainer(object)}
+	return Instance{*(*classdb.VBoxContainer)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVBoxContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -86,5 +86,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VBoxContainer", func(ptr gd.Object) any { return [1]classdb.VBoxContainer{classdb.VBoxContainer(ptr)} })
+	classdb.Register("VBoxContainer", func(ptr gd.Object) any {
+		return [1]classdb.VBoxContainer{*(*classdb.VBoxContainer)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 When packing nested containers using [PackedDataContainer], they are recursively packed into [PackedDataContainerRef] (only applies to [Array] and [Dictionary]). Their data can be retrieved the same way as from [PackedDataContainer].
@@ -66,7 +66,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PackedDataContainerRef"))
-	return Instance{classdb.PackedDataContainerRef(object)}
+	return Instance{*(*classdb.PackedDataContainerRef)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -102,5 +102,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PackedDataContainerRef", func(ptr gd.Object) any { return [1]classdb.PackedDataContainerRef{classdb.PackedDataContainerRef(ptr)} })
+	classdb.Register("PackedDataContainerRef", func(ptr gd.Object) any {
+		return [1]classdb.PackedDataContainerRef{*(*classdb.PackedDataContainerRef)(unsafe.Pointer(&ptr))}
+	})
 }

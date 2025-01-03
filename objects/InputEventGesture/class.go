@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 InputEventGestures are sent when a user performs a supported gesture on a touch screen. Gestures can't be emulated using mouse, because they typically require multi-touch.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventGesture"))
-	return Instance{classdb.InputEventGesture(object)}
+	return Instance{*(*classdb.InputEventGesture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Position() Vector2.XY {
@@ -114,5 +114,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventGesture", func(ptr gd.Object) any { return [1]classdb.InputEventGesture{classdb.InputEventGesture(ptr)} })
+	classdb.Register("InputEventGesture", func(ptr gd.Object) any {
+		return [1]classdb.InputEventGesture{*(*classdb.InputEventGesture)(unsafe.Pointer(&ptr))}
+	})
 }

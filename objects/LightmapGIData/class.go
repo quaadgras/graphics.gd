@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [LightmapGIData] contains baked lightmap and dynamic object probe data for [LightmapGI]. It is replaced every time lightmaps are baked in [LightmapGI].
@@ -68,7 +68,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapGIData"))
-	return Instance{classdb.LightmapGIData(object)}
+	return Instance{*(*classdb.LightmapGIData)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LightmapTextures() gd.Array {
@@ -207,7 +207,7 @@ func (self class) GetLightTexture() objects.TextureLayered {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_light_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TextureLayered{classdb.TextureLayered(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TextureLayered{gd.PointerWithOwnershipTransferredToGo[classdb.TextureLayered](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -236,5 +236,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("LightmapGIData", func(ptr gd.Object) any { return [1]classdb.LightmapGIData{classdb.LightmapGIData(ptr)} })
+	classdb.Register("LightmapGIData", func(ptr gd.Object) any {
+		return [1]classdb.LightmapGIData{*(*classdb.LightmapGIData)(unsafe.Pointer(&ptr))}
+	})
 }

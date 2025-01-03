@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Area3D] is a region of 3D space defined by one or multiple [CollisionShape3D] or [CollisionPolygon3D] child nodes. It detects when other [CollisionObject3D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
@@ -96,7 +96,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Area3D"))
-	return Instance{classdb.Area3D(object)}
+	return Instance{*(*classdb.Area3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Monitoring() bool {
@@ -838,7 +838,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Area3D", func(ptr gd.Object) any { return [1]classdb.Area3D{classdb.Area3D(ptr)} })
+	classdb.Register("Area3D", func(ptr gd.Object) any { return [1]classdb.Area3D{*(*classdb.Area3D)(unsafe.Pointer(&ptr))} })
 }
 
 type SpaceOverride = classdb.Area3DSpaceOverride

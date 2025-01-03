@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
@@ -1250,7 +1250,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPlugin"))
-	return Instance{classdb.EditorPlugin(object)}
+	return Instance{*(*classdb.EditorPlugin)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -1836,7 +1836,7 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 func (self class) AddControlToContainer(container classdb.EditorPluginCustomControlContainer, control objects.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -1849,12 +1849,12 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 //go:nosplit
 func (self class) AddControlToBottomPanel(control objects.Control, title gd.String, shortcut objects.Shortcut) objects.Button {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Button{classdb.Button(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Button{gd.PointerMustAssertInstanceID[classdb.Button](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1869,7 +1869,7 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 func (self class) AddControlToDock(slot classdb.EditorPluginDockSlot, control objects.Control, shortcut objects.Shortcut) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(control[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1946,7 +1946,7 @@ Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. U
 func (self class) AddToolSubmenuItem(name gd.String, submenu objects.PopupMenu) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(submenu[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -1972,7 +1972,7 @@ func (self class) GetExportAsMenu() objects.PopupMenu {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PopupMenu{classdb.PopupMenu(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.PopupMenu{gd.PointerLifetimeBoundTo[classdb.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2078,7 +2078,7 @@ func (self class) GetUndoRedo() objects.EditorUndoRedoManager {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorUndoRedoManager{classdb.EditorUndoRedoManager(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[classdb.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2365,7 +2365,7 @@ func (self class) GetEditorInterface() objects.EditorInterface {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorInterface{classdb.EditorInterface(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorInterface{gd.PointerLifetimeBoundTo[classdb.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2380,7 +2380,7 @@ func (self class) GetScriptCreateDialog() objects.ScriptCreateDialog {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ScriptCreateDialog{classdb.ScriptCreateDialog(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.ScriptCreateDialog{gd.PointerLifetimeBoundTo[classdb.ScriptCreateDialog](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -2560,7 +2560,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorPlugin", func(ptr gd.Object) any { return [1]classdb.EditorPlugin{classdb.EditorPlugin(ptr)} })
+	classdb.Register("EditorPlugin", func(ptr gd.Object) any {
+		return [1]classdb.EditorPlugin{*(*classdb.EditorPlugin)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type CustomControlContainer = classdb.EditorPluginCustomControlContainer

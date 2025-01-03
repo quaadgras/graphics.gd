@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Contains all nodes and resources of a GLTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
@@ -101,7 +101,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFState"))
-	return Instance{classdb.GLTFState(object)}
+	return Instance{*(*classdb.GLTFState)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Json() Dictionary.Any {
@@ -616,7 +616,7 @@ func (self class) GetAnimationPlayer(idx gd.Int) objects.AnimationPlayer {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationPlayer{classdb.AnimationPlayer(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.AnimationPlayer{gd.PointerMustAssertInstanceID[classdb.AnimationPlayer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1008,7 +1008,7 @@ func (self class) GetSceneNode(idx gd.Int) objects.Node {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1119,5 +1119,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFState", func(ptr gd.Object) any { return [1]classdb.GLTFState{classdb.GLTFState(ptr)} })
+	classdb.Register("GLTFState", func(ptr gd.Object) any { return [1]classdb.GLTFState{*(*classdb.GLTFState)(unsafe.Pointer(&ptr))} })
 }

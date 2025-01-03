@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Displays a rectangle filled with a solid [member color]. If you need to display the border alone, consider using a [Panel] instead.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ColorRect"))
-	return Instance{classdb.ColorRect(object)}
+	return Instance{*(*classdb.ColorRect)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -99,5 +99,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ColorRect", func(ptr gd.Object) any { return [1]classdb.ColorRect{classdb.ColorRect(ptr)} })
+	classdb.Register("ColorRect", func(ptr gd.Object) any { return [1]classdb.ColorRect{*(*classdb.ColorRect)(unsafe.Pointer(&ptr))} })
 }

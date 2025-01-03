@@ -3,11 +3,11 @@
 package gd
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"unsafe"
+	"fmt"
 
 	"graphics.gd/internal/callframe"
 )
@@ -99,14 +99,15 @@ func (Godot *API) linkMethods(editor bool) {
 			continue
 		}
 
+		className := NewStringName(class.Name)
 		for j := 0; j < class.Type.NumField(); j++ {
 			method := class.Type.Field(j)
 			method.Name = strings.TrimSuffix(method.Name, "_")
 			method.Name = strings.TrimPrefix(method.Name, "Bind_")
 			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
 
-			className := NewStringName(class.Name)
 			methodName := NewStringName(method.Name)
+
 			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
@@ -116,7 +117,10 @@ func (Godot *API) linkMethods(editor bool) {
 				fmt.Println("null bind ", class.Name, method.Name)
 			}
 			*(direct.Interface().(*MethodBind)) = bind
+
+			methodName.Free()
 		}
+		className.Free()
 	}
 }
 

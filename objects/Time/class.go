@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The Time singleton allows converting time between various formats and also getting time information from the system.
@@ -558,7 +558,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Time", func(ptr gd.Object) any { return [1]classdb.Time{classdb.Time(ptr)} })
+	classdb.Register("Time", func(ptr gd.Object) any { return [1]classdb.Time{*(*classdb.Time)(unsafe.Pointer(&ptr))} })
 }
 
 type Month = classdb.TimeMonth

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D ray shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D]. When a [SeparationRayShape2D] collides with an object, it tries to separate itself from it by moving its endpoint to the collision point. For example, a [SeparationRayShape2D] next to a character can allow it to instantly move up when touching stairs.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SeparationRayShape2D"))
-	return Instance{classdb.SeparationRayShape2D(object)}
+	return Instance{*(*classdb.SeparationRayShape2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Length() Float.X {
@@ -125,5 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SeparationRayShape2D", func(ptr gd.Object) any { return [1]classdb.SeparationRayShape2D{classdb.SeparationRayShape2D(ptr)} })
+	classdb.Register("SeparationRayShape2D", func(ptr gd.Object) any {
+		return [1]classdb.SeparationRayShape2D{*(*classdb.SeparationRayShape2D)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A synchronization mutex (mutual exclusion). This is used to synchronize multiple [Thread]s, and is equivalent to a binary [Semaphore]. It guarantees that only one thread can access a critical section at a time.
@@ -67,7 +67,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Mutex"))
-	return Instance{classdb.Mutex(object)}
+	return Instance{*(*classdb.Mutex)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -127,5 +127,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Mutex", func(ptr gd.Object) any { return [1]classdb.Mutex{classdb.Mutex(ptr)} })
+	classdb.Register("Mutex", func(ptr gd.Object) any { return [1]classdb.Mutex{*(*classdb.Mutex)(unsafe.Pointer(&ptr))} })
 }

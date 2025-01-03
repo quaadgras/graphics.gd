@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This object manages the SceneTree selection in the editor.
@@ -74,7 +74,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSelection"))
-	return Instance{classdb.EditorSelection(object)}
+	return Instance{*(*classdb.EditorSelection)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -95,7 +95,7 @@ Adds a node to the selection.
 //go:nosplit
 func (self class) AddNode(node objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_add_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -159,5 +159,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorSelection", func(ptr gd.Object) any { return [1]classdb.EditorSelection{classdb.EditorSelection(ptr)} })
+	classdb.Register("EditorSelection", func(ptr gd.Object) any {
+		return [1]classdb.EditorSelection{*(*classdb.EditorSelection)(unsafe.Pointer(&ptr))}
+	})
 }

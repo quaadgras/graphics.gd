@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VideoStream] resource handling the [url=https://www.theora.org/]Ogg Theora[/url] video format with [code].ogv[/code] extension. The Theora codec is decoded on the CPU.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamTheora"))
-	return Instance{classdb.VideoStreamTheora(object)}
+	return Instance{*(*classdb.VideoStreamTheora)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVideoStreamTheora() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -74,5 +74,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VideoStreamTheora", func(ptr gd.Object) any { return [1]classdb.VideoStreamTheora{classdb.VideoStreamTheora(ptr)} })
+	classdb.Register("VideoStreamTheora", func(ptr gd.Object) any {
+		return [1]classdb.VideoStreamTheora{*(*classdb.VideoStreamTheora)(unsafe.Pointer(&ptr))}
+	})
 }

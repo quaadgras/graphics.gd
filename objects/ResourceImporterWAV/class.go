@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 WAV is an uncompressed format, which can provide higher quality compared to Ogg Vorbis and MP3. It also has the lowest CPU cost to decode. This means high numbers of WAV sounds can be played at the same time, even on low-end deviceS.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterWAV"))
-	return Instance{classdb.ResourceImporterWAV(object)}
+	return Instance{*(*classdb.ResourceImporterWAV)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterWAV() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -66,5 +66,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterWAV", func(ptr gd.Object) any { return [1]classdb.ResourceImporterWAV{classdb.ResourceImporterWAV(ptr)} })
+	classdb.Register("ResourceImporterWAV", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterWAV{*(*classdb.ResourceImporterWAV)(unsafe.Pointer(&ptr))}
+	})
 }

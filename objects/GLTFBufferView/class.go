@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 GLTFBufferView is a data structure representing GLTF a [code]bufferView[/code] that would be found in the [code]"bufferViews"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer that can be used to identify and extract data from the buffer.
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFBufferView"))
-	return Instance{classdb.GLTFBufferView(object)}
+	return Instance{*(*classdb.GLTFBufferView)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Buffer() int {
@@ -249,5 +249,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFBufferView", func(ptr gd.Object) any { return [1]classdb.GLTFBufferView{classdb.GLTFBufferView(ptr)} })
+	classdb.Register("GLTFBufferView", func(ptr gd.Object) any {
+		return [1]classdb.GLTFBufferView{*(*classdb.GLTFBufferView)(unsafe.Pointer(&ptr))}
+	})
 }

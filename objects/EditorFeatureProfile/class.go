@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
@@ -117,7 +117,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorFeatureProfile"))
-	return Instance{classdb.EditorFeatureProfile(object)}
+	return Instance{*(*classdb.EditorFeatureProfile)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -292,7 +292,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFeatureProfile", func(ptr gd.Object) any { return [1]classdb.EditorFeatureProfile{classdb.EditorFeatureProfile(ptr)} })
+	classdb.Register("EditorFeatureProfile", func(ptr gd.Object) any {
+		return [1]classdb.EditorFeatureProfile{*(*classdb.EditorFeatureProfile)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Feature = classdb.EditorFeatureProfileFeature

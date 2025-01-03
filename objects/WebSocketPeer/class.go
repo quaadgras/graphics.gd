@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class represents WebSocket connection, and can be used as a WebSocket client (RFC 6455-compliant) or as a remote peer of a WebSocket server.
@@ -188,7 +188,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketPeer"))
-	return Instance{classdb.WebSocketPeer(object)}
+	return Instance{*(*classdb.WebSocketPeer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SupportedProtocols() []string {
@@ -568,7 +568,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebSocketPeer", func(ptr gd.Object) any { return [1]classdb.WebSocketPeer{classdb.WebSocketPeer(ptr)} })
+	classdb.Register("WebSocketPeer", func(ptr gd.Object) any {
+		return [1]classdb.WebSocketPeer{*(*classdb.WebSocketPeer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type WriteMode = classdb.WebSocketPeerWriteMode

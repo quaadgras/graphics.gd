@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Utility class which holds a reference to the internal identifier of an [Object] instance, as given by [method Object.get_instance_id]. This ID can then be used to retrieve the object instance with [method @GlobalScope.instance_from_id].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EncodedObjectAsID"))
-	return Instance{classdb.EncodedObjectAsID(object)}
+	return Instance{*(*classdb.EncodedObjectAsID)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ObjectId() int {
@@ -86,5 +86,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EncodedObjectAsID", func(ptr gd.Object) any { return [1]classdb.EncodedObjectAsID{classdb.EncodedObjectAsID(ptr)} })
+	classdb.Register("EncodedObjectAsID", func(ptr gd.Object) any {
+		return [1]classdb.EncodedObjectAsID{*(*classdb.EncodedObjectAsID)(unsafe.Pointer(&ptr))}
+	})
 }

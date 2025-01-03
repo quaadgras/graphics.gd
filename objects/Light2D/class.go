@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Casts light in a 2D environment. A light is defined as a color, an energy value, a mode (see constants), and various other parameters (range and shadows-related).
@@ -56,7 +56,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Light2D"))
-	return Instance{classdb.Light2D(object)}
+	return Instance{*(*classdb.Light2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -515,7 +515,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Light2D", func(ptr gd.Object) any { return [1]classdb.Light2D{classdb.Light2D(ptr)} })
+	classdb.Register("Light2D", func(ptr gd.Object) any { return [1]classdb.Light2D{*(*classdb.Light2D)(unsafe.Pointer(&ptr))} })
 }
 
 type ShadowFilter = classdb.Light2DShadowFilter

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A physics joint that attaches two 2D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody2D] can be attached to a [StaticBody2D] to create a pendulum or a seesaw.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PinJoint2D"))
-	return Instance{classdb.PinJoint2D(object)}
+	return Instance{*(*classdb.PinJoint2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Softness() Float.X {
@@ -237,5 +237,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PinJoint2D", func(ptr gd.Object) any { return [1]classdb.PinJoint2D{classdb.PinJoint2D(ptr)} })
+	classdb.Register("PinJoint2D", func(ptr gd.Object) any { return [1]classdb.PinJoint2D{*(*classdb.PinJoint2D)(unsafe.Pointer(&ptr))} })
 }

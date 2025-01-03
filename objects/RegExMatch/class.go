@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
@@ -69,7 +69,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegExMatch"))
-	return Instance{classdb.RegExMatch(object)}
+	return Instance{*(*classdb.RegExMatch)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Subject() string {
@@ -190,5 +190,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RegExMatch", func(ptr gd.Object) any { return [1]classdb.RegExMatch{classdb.RegExMatch(ptr)} })
+	classdb.Register("RegExMatch", func(ptr gd.Object) any { return [1]classdb.RegExMatch{*(*classdb.RegExMatch)(unsafe.Pointer(&ptr))} })
 }

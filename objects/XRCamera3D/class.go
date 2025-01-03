@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is a helper spatial node for our camera; note that, if stereoscopic rendering is applicable (VR-HMD), most of the camera properties are ignored, as the HMD information overrides them. The only properties that can be trusted are the near and far planes.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRCamera3D"))
-	return Instance{classdb.XRCamera3D(object)}
+	return Instance{*(*classdb.XRCamera3D)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsXRCamera3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -71,5 +71,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRCamera3D", func(ptr gd.Object) any { return [1]classdb.XRCamera3D{classdb.XRCamera3D(ptr)} })
+	classdb.Register("XRCamera3D", func(ptr gd.Object) any { return [1]classdb.XRCamera3D{*(*classdb.XRCamera3D)(unsafe.Pointer(&ptr))} })
 }

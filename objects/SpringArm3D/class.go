@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [SpringArm3D] casts a ray or a shape along its Z axis and moves all its direct children to the collision point, with an optional margin. This is useful for 3rd person cameras that move closer to the player when inside a tight space (you may need to exclude the player's collider from the [SpringArm3D]'s collision check).
@@ -69,7 +69,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpringArm3D"))
-	return Instance{classdb.SpringArm3D(object)}
+	return Instance{*(*classdb.SpringArm3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CollisionMask() int {
@@ -150,7 +150,7 @@ func (self class) GetShape() objects.Shape3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shape3D{classdb.Shape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shape3D{gd.PointerWithOwnershipTransferredToGo[classdb.Shape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -250,5 +250,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpringArm3D", func(ptr gd.Object) any { return [1]classdb.SpringArm3D{classdb.SpringArm3D(ptr)} })
+	classdb.Register("SpringArm3D", func(ptr gd.Object) any { return [1]classdb.SpringArm3D{*(*classdb.SpringArm3D)(unsafe.Pointer(&ptr))} })
 }

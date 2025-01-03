@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
@@ -187,7 +187,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Crypto"))
-	return Instance{classdb.Crypto(object)}
+	return Instance{*(*classdb.Crypto)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -213,7 +213,7 @@ func (self class) GenerateRsa(size gd.Int) objects.CryptoKey {
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CryptoKey{classdb.CryptoKey(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CryptoKey{gd.PointerWithOwnershipTransferredToGo[classdb.CryptoKey](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -247,7 +247,7 @@ func (self class) GenerateSelfSignedCertificate(key objects.CryptoKey, issuer_na
 	callframe.Arg(frame, pointers.Get(not_after))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.X509Certificate{classdb.X509Certificate(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.X509Certificate{gd.PointerWithOwnershipTransferredToGo[classdb.X509Certificate](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -368,5 +368,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Crypto", func(ptr gd.Object) any { return [1]classdb.Crypto{classdb.Crypto(ptr)} })
+	classdb.Register("Crypto", func(ptr gd.Object) any { return [1]classdb.Crypto{*(*classdb.Crypto)(unsafe.Pointer(&ptr))} })
 }

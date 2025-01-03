@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Provides direct access to a physics body in the [PhysicsServer3D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody3D], and is intended for changing the direct state of that body. See [method RigidBody3D._integrate_forces].
@@ -254,7 +254,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState3D"))
-	return Instance{classdb.PhysicsDirectBodyState3D(object)}
+	return Instance{*(*classdb.PhysicsDirectBodyState3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Step() Float.X {
@@ -820,7 +820,7 @@ func (self class) GetContactColliderObject(contact_idx gd.Int) gd.Object {
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -882,7 +882,7 @@ func (self class) GetSpaceState() objects.PhysicsDirectSpaceState3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsDirectSpaceState3D{classdb.PhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[classdb.PhysicsDirectSpaceState3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -906,6 +906,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsDirectBodyState3D", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsDirectBodyState3D{classdb.PhysicsDirectBodyState3D(ptr)}
+		return [1]classdb.PhysicsDirectBodyState3D{*(*classdb.PhysicsDirectBodyState3D)(unsafe.Pointer(&ptr))}
 	})
 }

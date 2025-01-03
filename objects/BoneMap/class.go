@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class contains a dictionary that uses a list of bone names in [SkeletonProfile] as key names.
@@ -63,7 +63,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoneMap"))
-	return Instance{classdb.BoneMap(object)}
+	return Instance{*(*classdb.BoneMap)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Profile() objects.SkeletonProfile {
@@ -79,7 +79,7 @@ func (self class) GetProfile() objects.SkeletonProfile {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SkeletonProfile{classdb.SkeletonProfile(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[classdb.SkeletonProfile](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -169,5 +169,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BoneMap", func(ptr gd.Object) any { return [1]classdb.BoneMap{classdb.BoneMap(ptr)} })
+	classdb.Register("BoneMap", func(ptr gd.Object) any { return [1]classdb.BoneMap{*(*classdb.BoneMap)(unsafe.Pointer(&ptr))} })
 }

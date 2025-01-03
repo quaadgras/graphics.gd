@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A container that arranges its child controls horizontally or vertically, rearranging them automatically when their minimum size changes.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoxContainer"))
-	return Instance{classdb.BoxContainer(object)}
+	return Instance{*(*classdb.BoxContainer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Alignment() classdb.BoxContainerAlignmentMode {
@@ -76,7 +76,7 @@ func (self class) AddSpacer(begin bool) objects.Control {
 	callframe.Arg(frame, begin)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_add_spacer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Control{gd.PointerLifetimeBoundTo[classdb.Control](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -153,7 +153,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("BoxContainer", func(ptr gd.Object) any { return [1]classdb.BoxContainer{classdb.BoxContainer(ptr)} })
+	classdb.Register("BoxContainer", func(ptr gd.Object) any {
+		return [1]classdb.BoxContainer{*(*classdb.BoxContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AlignmentMode = classdb.BoxContainerAlignmentMode

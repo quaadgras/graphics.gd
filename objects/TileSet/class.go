@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
@@ -595,7 +595,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSet"))
-	return Instance{classdb.TileSet(object)}
+	return Instance{*(*classdb.TileSet)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TileShape() classdb.TileSetTileShape {
@@ -743,7 +743,7 @@ func (self class) GetSource(source_id gd.Int) objects.TileSetSource {
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TileSetSource{classdb.TileSetSource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TileSetSource{gd.PointerWithOwnershipTransferredToGo[classdb.TileSetSource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1075,7 +1075,7 @@ func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) objects.Phy
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsMaterial{classdb.PhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[classdb.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1742,7 +1742,7 @@ func (self class) GetPattern(index gd.Int) objects.TileMapPattern {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TileMapPattern{classdb.TileMapPattern(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[classdb.TileMapPattern](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1796,7 +1796,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileSet", func(ptr gd.Object) any { return [1]classdb.TileSet{classdb.TileSet(ptr)} })
+	classdb.Register("TileSet", func(ptr gd.Object) any { return [1]classdb.TileSet{*(*classdb.TileSet)(unsafe.Pointer(&ptr))} })
 }
 
 type TileShape = classdb.TileSetTileShape

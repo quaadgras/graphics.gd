@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorSceneFormatImporter] allows to define an importer script for a third-party 3D format.
@@ -107,7 +107,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporter"))
-	return Instance{classdb.EditorSceneFormatImporter(object)}
+	return Instance{*(*classdb.EditorSceneFormatImporter)(unsafe.Pointer(&object))}
 }
 
 func (class) _get_import_flags(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -212,6 +212,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorSceneFormatImporter", func(ptr gd.Object) any {
-		return [1]classdb.EditorSceneFormatImporter{classdb.EditorSceneFormatImporter(ptr)}
+		return [1]classdb.EditorSceneFormatImporter{*(*classdb.EditorSceneFormatImporter)(unsafe.Pointer(&ptr))}
 	})
 }

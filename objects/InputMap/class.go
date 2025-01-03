@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Manages all [InputEventAction] which can be created/modified from the project settings menu [b]Project > Project Settings > Input Map[/b] or in code with [method add_action] and [method action_add_event]. See [method Node._input].
@@ -326,5 +326,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputMap", func(ptr gd.Object) any { return [1]classdb.InputMap{classdb.InputMap(ptr)} })
+	classdb.Register("InputMap", func(ptr gd.Object) any { return [1]classdb.InputMap{*(*classdb.InputMap)(unsafe.Pointer(&ptr))} })
 }

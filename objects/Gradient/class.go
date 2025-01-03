@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource describes a color transition by defining a set of colored points and how to interpolate between them.
@@ -105,7 +105,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Gradient"))
-	return Instance{classdb.Gradient(object)}
+	return Instance{*(*classdb.Gradient)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) InterpolationMode() classdb.GradientInterpolationMode {
@@ -358,7 +358,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Gradient", func(ptr gd.Object) any { return [1]classdb.Gradient{classdb.Gradient(ptr)} })
+	classdb.Register("Gradient", func(ptr gd.Object) any { return [1]classdb.Gradient{*(*classdb.Gradient)(unsafe.Pointer(&ptr))} })
 }
 
 type InterpolationMode = classdb.GradientInterpolationMode

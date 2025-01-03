@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamWAV"))
-	return Instance{classdb.AudioStreamWAV(object)}
+	return Instance{*(*classdb.AudioStreamWAV)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Data() []byte {
@@ -285,7 +285,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamWAV", func(ptr gd.Object) any { return [1]classdb.AudioStreamWAV{classdb.AudioStreamWAV(ptr)} })
+	classdb.Register("AudioStreamWAV", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamWAV{*(*classdb.AudioStreamWAV)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Format = classdb.AudioStreamWAVFormat

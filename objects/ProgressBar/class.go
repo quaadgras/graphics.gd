@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A control used for visual representation of a percentage. Shows fill percentage from right to left.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ProgressBar"))
-	return Instance{classdb.ProgressBar(object)}
+	return Instance{*(*classdb.ProgressBar)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FillMode() int {
@@ -182,7 +182,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ProgressBar", func(ptr gd.Object) any { return [1]classdb.ProgressBar{classdb.ProgressBar(ptr)} })
+	classdb.Register("ProgressBar", func(ptr gd.Object) any { return [1]classdb.ProgressBar{*(*classdb.ProgressBar)(unsafe.Pointer(&ptr))} })
 }
 
 type FillMode = classdb.ProgressBarFillMode

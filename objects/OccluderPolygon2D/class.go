@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Editor facility that helps you draw a 2D polygon used as resource for [LightOccluder2D].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OccluderPolygon2D"))
-	return Instance{classdb.OccluderPolygon2D(object)}
+	return Instance{*(*classdb.OccluderPolygon2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Closed() bool {
@@ -147,7 +147,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OccluderPolygon2D", func(ptr gd.Object) any { return [1]classdb.OccluderPolygon2D{classdb.OccluderPolygon2D(ptr)} })
+	classdb.Register("OccluderPolygon2D", func(ptr gd.Object) any {
+		return [1]classdb.OccluderPolygon2D{*(*classdb.OccluderPolygon2D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type CullMode = classdb.OccluderPolygon2DCullMode

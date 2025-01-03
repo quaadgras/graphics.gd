@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 ORMMaterial3D's properties are inherited from [BaseMaterial3D]. Unlike [StandardMaterial3D], ORMMaterial3D uses a single texture for ambient occlusion, roughness and metallic maps, known as an ORM texture.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ORMMaterial3D"))
-	return Instance{classdb.ORMMaterial3D(object)}
+	return Instance{*(*classdb.ORMMaterial3D)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsORMMaterial3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -80,5 +80,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ORMMaterial3D", func(ptr gd.Object) any { return [1]classdb.ORMMaterial3D{classdb.ORMMaterial3D(ptr)} })
+	classdb.Register("ORMMaterial3D", func(ptr gd.Object) any {
+		return [1]classdb.ORMMaterial3D{*(*classdb.ORMMaterial3D)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node defines how particles are emitted. It allows to customize e.g. position and velocity. Available ports are different depending on which function this node is inside (start, process, collision) and whether custom data is enabled.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleOutput"))
-	return Instance{classdb.VisualShaderNodeParticleOutput(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleOutput)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeParticleOutput() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleOutput", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleOutput{classdb.VisualShaderNodeParticleOutput(ptr)}
+		return [1]classdb.VisualShaderNodeParticleOutput{*(*classdb.VisualShaderNodeParticleOutput)(unsafe.Pointer(&ptr))}
 	})
 }

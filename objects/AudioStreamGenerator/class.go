@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AudioStreamGenerator] is a type of audio stream that does not play back sounds on its own; instead, it expects a script to generate audio data for it. See also [AudioStreamGeneratorPlayback].
@@ -102,7 +102,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamGenerator"))
-	return Instance{classdb.AudioStreamGenerator(object)}
+	return Instance{*(*classdb.AudioStreamGenerator)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MixRate() Float.X {
@@ -189,5 +189,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamGenerator", func(ptr gd.Object) any { return [1]classdb.AudioStreamGenerator{classdb.AudioStreamGenerator(ptr)} })
+	classdb.Register("AudioStreamGenerator", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamGenerator{*(*classdb.AudioStreamGenerator)(unsafe.Pointer(&ptr))}
+	})
 }

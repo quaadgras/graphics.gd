@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Generic 2D position hint for editing. It's just like a plain [Node2D], but it displays as a cross in the 2D editor at all times. You can set the cross' visual size by using the gizmo in the 2D editor while the node is selected.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Marker2D"))
-	return Instance{classdb.Marker2D(object)}
+	return Instance{*(*classdb.Marker2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) GizmoExtents() Float.X {
@@ -97,5 +97,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Marker2D", func(ptr gd.Object) any { return [1]classdb.Marker2D{classdb.Marker2D(ptr)} })
+	classdb.Register("Marker2D", func(ptr gd.Object) any { return [1]classdb.Marker2D{*(*classdb.Marker2D)(unsafe.Pointer(&ptr))} })
 }

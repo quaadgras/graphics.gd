@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A dialog used for confirmation of actions. This window is similar to [AcceptDialog], but pressing its Cancel button can have a different outcome from pressing the OK button. The order of the two buttons varies depending on the host OS.
@@ -58,7 +58,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConfirmationDialog"))
-	return Instance{classdb.ConfirmationDialog(object)}
+	return Instance{*(*classdb.ConfirmationDialog)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CancelButtonText() string {
@@ -78,7 +78,7 @@ func (self class) GetCancelButton() objects.Button {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Button{classdb.Button(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Button{gd.PointerLifetimeBoundTo[classdb.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -134,5 +134,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConfirmationDialog", func(ptr gd.Object) any { return [1]classdb.ConfirmationDialog{classdb.ConfirmationDialog(ptr)} })
+	classdb.Register("ConfirmationDialog", func(ptr gd.Object) any {
+		return [1]classdb.ConfirmationDialog{*(*classdb.ConfirmationDialog)(unsafe.Pointer(&ptr))}
+	})
 }

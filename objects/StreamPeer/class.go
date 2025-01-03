@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
@@ -278,7 +278,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeer"))
-	return Instance{classdb.StreamPeer(object)}
+	return Instance{*(*classdb.StreamPeer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BigEndian() bool {
@@ -745,7 +745,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StreamPeer", func(ptr gd.Object) any { return [1]classdb.StreamPeer{classdb.StreamPeer(ptr)} })
+	classdb.Register("StreamPeer", func(ptr gd.Object) any { return [1]classdb.StreamPeer{*(*classdb.StreamPeer)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

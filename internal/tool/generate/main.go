@@ -450,6 +450,7 @@ func generate() error {
 	fmt.Fprintln(core, `package gd`)
 	fmt.Fprintln(core)
 	fmt.Fprintln(core, `import "reflect"`)
+	fmt.Fprintln(core, `import "unsafe"`)
 	fmt.Fprintln(core, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(core, `import "graphics.gd/internal/callframe"`)
 	fmt.Fprintln(core)
@@ -464,6 +465,7 @@ func generate() error {
 	fmt.Fprintln(all, `package gd`)
 	fmt.Fprintln(all)
 	fmt.Fprintln(all, `import "reflect"`)
+	fmt.Fprintln(all, `import "unsafe"`)
 	fmt.Fprintln(all, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(all, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(all)
@@ -541,7 +543,7 @@ func generate() error {
 		if isPtr {
 			_, ok := classDB[result]
 			if ok || result == "Object" {
-				fmt.Fprintf(core, "\tvar ret %v = PointerMustAssertInstanceID(r_ret.Get())\n", result)
+				fmt.Fprintf(core, "\tvar ret %v = PointerMustAssertInstanceID[Object](r_ret.Get())\n", result)
 			} else {
 				fmt.Fprintf(core, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}
@@ -661,11 +663,11 @@ func generate() error {
 			genEnum(pkg, w, nil, class.Name, enum)
 		}
 		if class.Name != "Object" && class.Name != "RefCounted" {
-			fmt.Fprintf(w, "type %[1]v pointers.PointerNamed[%[1]v, [3]uintptr, [1]pointers.Type]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
-			fmt.Fprintf(w, "func (self %[1]v) Free() { Object(self).Free() }\n", class.Name)
+			fmt.Fprintf(w, "type %[1]v pointers.Trio[%[1]v]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
+			fmt.Fprintf(w, "func (self %[1]v) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }\n", class.Name)
 		}
 		if class.Inherits != "" {
-			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() "+prefix+"Object { return "+prefix+"Object(self) }\n", class.Name)
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() "+prefix+"Object { return (*(*Object)(unsafe.Pointer(&self))) }\n", class.Name)
 		}
 		if class.Name == "Object" || class.Name == "RefCounted" {
 			for _, method := range class.Methods {
@@ -903,11 +905,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if ok || result == "gd.Object" {
 			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 			case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-				fmt.Fprintf(w, "\tvar ret %v = "+prefix+"PointerWithOwnershipTransferredToGo(r_ret.Get())\n", result)
+				fmt.Fprintf(w, "\tvar ret %v = "+prefix+"PointerWithOwnershipTransferredToGo[Object](r_ret.Get())\n", result)
 			case gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerLifetimeBoundTo(self.AsObject(), r_ret.Get())\n", result)
+				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerLifetimeBoundTo[Object](self.AsObject(), r_ret.Get())\n", result)
 			case gdjson.MustAssertInstanceID:
-				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerMustAssertInstanceID(r_ret.Get())\n", result)
+				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerMustAssertInstanceID[Object](r_ret.Get())\n", result)
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}

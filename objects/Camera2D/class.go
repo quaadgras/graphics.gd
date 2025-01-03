@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Camera node for 2D scenes. It forces the screen (current layer) to scroll following this node. This makes it easier (and faster) to program scrollable scenes than manually changing the position of [CanvasItem]-based nodes.
@@ -97,7 +97,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Camera2D"))
-	return Instance{classdb.Camera2D(object)}
+	return Instance{*(*classdb.Camera2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Offset() Vector2.XY {
@@ -645,7 +645,7 @@ func (self class) GetCustomViewport() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_custom_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -843,7 +843,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Camera2D", func(ptr gd.Object) any { return [1]classdb.Camera2D{classdb.Camera2D(ptr)} })
+	classdb.Register("Camera2D", func(ptr gd.Object) any { return [1]classdb.Camera2D{*(*classdb.Camera2D)(unsafe.Pointer(&ptr))} })
 }
 
 type AnchorMode = classdb.Camera2DAnchorMode

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [BitMap] resources are typically used as click masks in [TextureButton] and [TouchScreenButton].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterBitMap"))
-	return Instance{classdb.ResourceImporterBitMap(object)}
+	return Instance{*(*classdb.ResourceImporterBitMap)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterBitMap() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -68,5 +68,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterBitMap", func(ptr gd.Object) any { return [1]classdb.ResourceImporterBitMap{classdb.ResourceImporterBitMap(ptr)} })
+	classdb.Register("ResourceImporterBitMap", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterBitMap{*(*classdb.ResourceImporterBitMap)(unsafe.Pointer(&ptr))}
+	})
 }

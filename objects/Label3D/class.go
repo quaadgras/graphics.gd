@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node for displaying plain text in 3D space. By adjusting various properties of this node, you can configure things such as the text's appearance and whether it always faces the camera.
@@ -52,7 +52,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Label3D"))
-	return Instance{classdb.Label3D(object)}
+	return Instance{*(*classdb.Label3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PixelSize() Float.X {
@@ -553,7 +553,7 @@ func (self class) GetFont() objects.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -878,7 +878,7 @@ func (self class) GenerateTriangleMesh() objects.TriangleMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TriangleMesh{classdb.TriangleMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[classdb.TriangleMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -915,7 +915,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Label3D", func(ptr gd.Object) any { return [1]classdb.Label3D{classdb.Label3D(ptr)} })
+	classdb.Register("Label3D", func(ptr gd.Object) any { return [1]classdb.Label3D{*(*classdb.Label3D)(unsafe.Pointer(&ptr))} })
 }
 
 type DrawFlags = classdb.Label3DDrawFlags

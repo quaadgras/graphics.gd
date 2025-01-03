@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class extends [PhysicsServer3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -1843,7 +1843,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsServer3DExtension"))
-	return Instance{classdb.PhysicsServer3DExtension(object)}
+	return Instance{*(*classdb.PhysicsServer3DExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -4417,6 +4417,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsServer3DExtension", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsServer3DExtension{classdb.PhysicsServer3DExtension(ptr)}
+		return [1]classdb.PhysicsServer3DExtension{*(*classdb.PhysicsServer3DExtension)(unsafe.Pointer(&ptr))}
 	})
 }

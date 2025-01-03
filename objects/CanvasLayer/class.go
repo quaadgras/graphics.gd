@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CanvasItem]-derived nodes that are direct or indirect children of a [CanvasLayer] will be drawn in that layer. The layer is a numeric index that defines the draw order. The default 2D scene renders with index [code]0[/code], so a [CanvasLayer] with index [code]-1[/code] will be drawn below, and a [CanvasLayer] with index [code]1[/code] will be drawn above. This order will hold regardless of the [member CanvasItem.z_index] of the nodes within each layer.
@@ -73,7 +73,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasLayer"))
-	return Instance{classdb.CanvasLayer(object)}
+	return Instance{*(*classdb.CanvasLayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Layer() int {
@@ -349,7 +349,7 @@ func (self class) GetCustomViewport() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasLayer.Bind_get_custom_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -389,5 +389,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasLayer", func(ptr gd.Object) any { return [1]classdb.CanvasLayer{classdb.CanvasLayer(ptr)} })
+	classdb.Register("CanvasLayer", func(ptr gd.Object) any { return [1]classdb.CanvasLayer{*(*classdb.CanvasLayer)(unsafe.Pointer(&ptr))} })
 }

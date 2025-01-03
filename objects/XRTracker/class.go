@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This object is the base of all XR trackers.
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRTracker"))
-	return Instance{classdb.XRTracker(object)}
+	return Instance{*(*classdb.XRTracker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Type() classdb.XRServerTrackerType {
@@ -139,5 +139,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRTracker", func(ptr gd.Object) any { return [1]classdb.XRTracker{classdb.XRTracker(ptr)} })
+	classdb.Register("XRTracker", func(ptr gd.Object) any { return [1]classdb.XRTracker{*(*classdb.XRTracker)(unsafe.Pointer(&ptr))} })
 }

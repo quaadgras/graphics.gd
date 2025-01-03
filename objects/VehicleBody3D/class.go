@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This physics body implements all the physics logic needed to simulate a car. It is based on the raycast vehicle system commonly found in physics engines. Aside from a [CollisionShape3D] for the main body of the vehicle, you must also add a [VehicleWheel3D] node for each wheel. You should also add a [MeshInstance3D] to this node for the 3D model of the vehicle, but this model should generally not include meshes for the wheels. You can control the vehicle by using the [member brake], [member engine_force], and [member steering] properties. The position or orientation of this node shouldn't be changed directly.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VehicleBody3D"))
-	return Instance{classdb.VehicleBody3D(object)}
+	return Instance{*(*classdb.VehicleBody3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) EngineForce() Float.X {
@@ -167,5 +167,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VehicleBody3D", func(ptr gd.Object) any { return [1]classdb.VehicleBody3D{classdb.VehicleBody3D(ptr)} })
+	classdb.Register("VehicleBody3D", func(ptr gd.Object) any {
+		return [1]classdb.VehicleBody3D{*(*classdb.VehicleBody3D)(unsafe.Pointer(&ptr))}
+	})
 }

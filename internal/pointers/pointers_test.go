@@ -7,41 +7,6 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-type MyPointer pointers.PointerNamed[MyPointer, [1]uintptr, [1]pointers.Type]
-
-func (p MyPointer) Free() {
-	if ptr, ok := pointers.End(p); ok {
-		_ = ptr // free the pointer
-	}
-}
-
-func TestPointer(t *testing.T) {
-	for i := 0; i < 100; i++ {
-		if i%5 == 0 {
-			pointers.Cycle()
-			pointers.MarkAndSweep()
-		}
-		var p = pointers.New[MyPointer]([1]uintptr{1})
-		if pointers.Get(p) != [1]uintptr{1} {
-			t.Fatal("bad")
-		}
-	}
-}
-
-func BenchmarkDiscrete(b *testing.B) {
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if i%512 == 0 {
-			pointers.Cycle()
-			pointers.MarkAndSweep()
-		}
-		var p = pointers.New[MyPointer]([1]uintptr{1})
-		if pointers.Get(p) != [1]uintptr{1} {
-			b.Fatal("bad")
-		}
-	}
-}
-
 type MmmPointer mmm.Pointer[struct{}, MmmPointer, [1]uintptr]
 
 func (p MmmPointer) Free() {
@@ -60,5 +25,48 @@ func BenchmarkMMM(b *testing.B) {
 		if mmm.Get(p) != [1]uintptr{1} {
 			b.Fatal("bad")
 		}
+	}
+}
+
+var simulated_pointers = make(map[[1]uintptr]bool)
+
+type MyPointer pointers.Solo[MyPointer]
+
+func (ptr MyPointer) Free() {
+	raw, ok := pointers.End(ptr)
+	if ok {
+		delete(simulated_pointers, raw)
+	}
+}
+
+func BenchmarkDiscrete(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if i%512 == 0 {
+			pointers.Cycle()
+		}
+		var p = pointers.New[MyPointer]([1]uintptr{1})
+		if pointers.Get(p) != [1]uintptr{1} {
+			b.Fatal("bad")
+		}
+	}
+}
+
+type MyString pointers.Pair[MyString]
+
+func (ptr MyString) Free() {}
+
+type MySlice pointers.Trio[MySlice]
+
+func (ptr MySlice) Free() {}
+
+func TestPointersV2(t *testing.T) {
+	pointers.New[MyPointer]([1]uintptr{1})
+	simulated_pointers[[1]uintptr{1}] = true
+
+	pointers.Cycle()
+
+	if len(simulated_pointers) != 0 {
+		t.Fatal("simulated pointers not freed")
 	}
 }

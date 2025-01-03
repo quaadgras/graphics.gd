@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node used for advanced animation transitions in an [AnimationPlayer].
@@ -55,7 +55,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationTree"))
-	return Instance{classdb.AnimationTree(object)}
+	return Instance{*(*classdb.AnimationTree)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TreeRoot() objects.AnimationRootNode {
@@ -96,7 +96,7 @@ func (self class) GetTreeRoot() objects.AnimationRootNode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_tree_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationRootNode{classdb.AnimationRootNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[classdb.AnimationRootNode](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -192,7 +192,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationTree", func(ptr gd.Object) any { return [1]classdb.AnimationTree{classdb.AnimationTree(ptr)} })
+	classdb.Register("AnimationTree", func(ptr gd.Object) any {
+		return [1]classdb.AnimationTree{*(*classdb.AnimationTree)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AnimationProcessCallback = classdb.AnimationTreeAnimationProcessCallback

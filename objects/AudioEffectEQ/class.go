@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 AudioEffectEQ gives you control over frequencies. Use it to compensate for existing deficiencies in audio. AudioEffectEQs are useful on the Master bus to completely master a mix and give it more character. They are also useful when a game is run on a mobile device, to adjust the mix to that kind of speakers (it can be added but disabled when headphones are plugged).
@@ -61,7 +61,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectEQ"))
-	return Instance{classdb.AudioEffectEQ(object)}
+	return Instance{*(*classdb.AudioEffectEQ)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -134,5 +134,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectEQ", func(ptr gd.Object) any { return [1]classdb.AudioEffectEQ{classdb.AudioEffectEQ(ptr)} })
+	classdb.Register("AudioEffectEQ", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectEQ{*(*classdb.AudioEffectEQ)(unsafe.Pointer(&ptr))}
+	})
 }

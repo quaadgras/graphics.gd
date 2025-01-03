@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The base class for the desktop platform exporters. These include Windows and Linux/BSD, but not macOS. See the classes inheriting this one for more details.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatformPC"))
-	return Instance{classdb.EditorExportPlatformPC(object)}
+	return Instance{*(*classdb.EditorExportPlatformPC)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorExportPlatformPC() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -68,5 +68,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlatformPC", func(ptr gd.Object) any { return [1]classdb.EditorExportPlatformPC{classdb.EditorExportPlatformPC(ptr)} })
+	classdb.Register("EditorExportPlatformPC", func(ptr gd.Object) any {
+		return [1]classdb.EditorExportPlatformPC{*(*classdb.EditorExportPlatformPC)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Light3D is the [i]abstract[/i] base class for light nodes. As it can't be instantiated, it shouldn't be used directly. Other types of light nodes inherit from it. Light3D contains the common variables and parameters used for lighting.
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Light3D"))
-	return Instance{classdb.Light3D(object)}
+	return Instance{*(*classdb.Light3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LightIntensityLumens() Float.X {
@@ -510,7 +510,7 @@ func (self class) GetProjector() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_projector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -573,7 +573,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Light3D", func(ptr gd.Object) any { return [1]classdb.Light3D{classdb.Light3D(ptr)} })
+	classdb.Register("Light3D", func(ptr gd.Object) any { return [1]classdb.Light3D{*(*classdb.Light3D)(unsafe.Pointer(&ptr))} })
 }
 
 type Param = classdb.Light3DParam

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -2205,7 +2205,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OS", func(ptr gd.Object) any { return [1]classdb.OS{classdb.OS(ptr)} })
+	classdb.Register("OS", func(ptr gd.Object) any { return [1]classdb.OS{*(*classdb.OS)(unsafe.Pointer(&ptr))} })
 }
 
 type RenderingDriver = classdb.OSRenderingDriver

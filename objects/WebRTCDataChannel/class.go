@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.WebRTCDataChannel
 type Any interface {
@@ -122,7 +122,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCDataChannel"))
-	return Instance{classdb.WebRTCDataChannel(object)}
+	return Instance{*(*classdb.WebRTCDataChannel)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) WriteMode() classdb.WebRTCDataChannelWriteMode {
@@ -333,7 +333,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebRTCDataChannel", func(ptr gd.Object) any { return [1]classdb.WebRTCDataChannel{classdb.WebRTCDataChannel(ptr)} })
+	classdb.Register("WebRTCDataChannel", func(ptr gd.Object) any {
+		return [1]classdb.WebRTCDataChannel{*(*classdb.WebRTCDataChannel)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type WriteMode = classdb.WebRTCDataChannelWriteMode

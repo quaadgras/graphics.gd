@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource defines a custom rendering effect that can be applied to [Viewport]s through the viewports' [Environment]. You can implement a callback that is called during rendering at a given stage of the rendering pipeline and allows you to insert additional passes. Note that this callback happens on the rendering thread. CompositorEffect is an abstract base class and must be extended to implement specific rendering logic.
@@ -57,7 +57,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompositorEffect"))
-	return Instance{classdb.CompositorEffect(object)}
+	return Instance{*(*classdb.CompositorEffect)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -290,7 +290,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CompositorEffect", func(ptr gd.Object) any { return [1]classdb.CompositorEffect{classdb.CompositorEffect(ptr)} })
+	classdb.Register("CompositorEffect", func(ptr gd.Object) any {
+		return [1]classdb.CompositorEffect{*(*classdb.CompositorEffect)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type EffectCallbackType = classdb.CompositorEffectEffectCallbackType

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A resource to add to an [AnimationNodeBlendTree]. This animation node will execute a sub-animation and return once it finishes. Blend times for fading in and out can be customized, as well as filters.
@@ -86,7 +86,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeOneShot"))
-	return Instance{classdb.AnimationNodeOneShot(object)}
+	return Instance{*(*classdb.AnimationNodeOneShot)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MixMode() classdb.AnimationNodeOneShotMixMode {
@@ -194,7 +194,7 @@ func (self class) GetFadeinCurve() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -232,7 +232,7 @@ func (self class) GetFadeoutCurve() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -368,7 +368,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeOneShot", func(ptr gd.Object) any { return [1]classdb.AnimationNodeOneShot{classdb.AnimationNodeOneShot(ptr)} })
+	classdb.Register("AnimationNodeOneShot", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeOneShot{*(*classdb.AnimationNodeOneShot)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type OneShotRequest = classdb.AnimationNodeOneShotOneShotRequest

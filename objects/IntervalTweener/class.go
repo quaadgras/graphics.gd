@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [IntervalTweener] is used to make delays in a tweening sequence. See [method Tween.tween_interval] for more usage information.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("IntervalTweener"))
-	return Instance{classdb.IntervalTweener(object)}
+	return Instance{*(*classdb.IntervalTweener)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsIntervalTweener() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -65,5 +65,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("IntervalTweener", func(ptr gd.Object) any { return [1]classdb.IntervalTweener{classdb.IntervalTweener(ptr)} })
+	classdb.Register("IntervalTweener", func(ptr gd.Object) any {
+		return [1]classdb.IntervalTweener{*(*classdb.IntervalTweener)(unsafe.Pointer(&ptr))}
+	})
 }

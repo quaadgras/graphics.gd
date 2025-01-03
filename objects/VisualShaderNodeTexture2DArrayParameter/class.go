@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This parameter allows to provide a collection of textures for the shader. You can use [VisualShaderNodeTexture2DArray] to extract the textures from array.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTexture2DArrayParameter"))
-	return Instance{classdb.VisualShaderNodeTexture2DArrayParameter(object)}
+	return Instance{*(*classdb.VisualShaderNodeTexture2DArrayParameter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeTexture2DArrayParameter() Advanced {
@@ -92,6 +92,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTexture2DArrayParameter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTexture2DArrayParameter{classdb.VisualShaderNodeTexture2DArrayParameter(ptr)}
+		return [1]classdb.VisualShaderNodeTexture2DArrayParameter{*(*classdb.VisualShaderNodeTexture2DArrayParameter)(unsafe.Pointer(&ptr))}
 	})
 }

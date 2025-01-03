@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 InputEventShortcut is a special event that can be received in [method Node._input], [method Node._shortcut_input], and [method Node._unhandled_input]. It is typically sent by the editor's Command Palette to trigger actions, but can also be sent manually using [method Viewport.push_input].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventShortcut"))
-	return Instance{classdb.InputEventShortcut(object)}
+	return Instance{*(*classdb.InputEventShortcut)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Shortcut() objects.Shortcut {
@@ -64,7 +64,7 @@ func (self class) GetShortcut() objects.Shortcut {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventShortcut.Bind_get_shortcut, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shortcut{classdb.Shortcut(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shortcut{gd.PointerWithOwnershipTransferredToGo[classdb.Shortcut](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -99,5 +99,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventShortcut", func(ptr gd.Object) any { return [1]classdb.InputEventShortcut{classdb.InputEventShortcut(ptr)} })
+	classdb.Register("InputEventShortcut", func(ptr gd.Object) any {
+		return [1]classdb.InputEventShortcut{*(*classdb.InputEventShortcut)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This resource holds data that can be used to animate anything in the engine. Animations are divided into tracks and each track must be linked to a node. The state of that node can be changed through time, by adding timed keys (events) to the track.
@@ -547,7 +547,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Animation"))
-	return Instance{classdb.Animation(object)}
+	return Instance{*(*classdb.Animation)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Length() Float.X {
@@ -1408,7 +1408,7 @@ func (self class) AudioTrackGetKeyStream(track_idx gd.Int, key_idx gd.Int) objec
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1647,7 +1647,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Animation", func(ptr gd.Object) any { return [1]classdb.Animation{classdb.Animation(ptr)} })
+	classdb.Register("Animation", func(ptr gd.Object) any { return [1]classdb.Animation{*(*classdb.Animation)(unsafe.Pointer(&ptr))} })
 }
 
 type TrackType = classdb.AnimationTrackType

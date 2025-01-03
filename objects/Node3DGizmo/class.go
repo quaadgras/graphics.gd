@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This abstract class helps connect the [Node3D] scene with the editor-specific [EditorNode3DGizmo] class.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node3DGizmo"))
-	return Instance{classdb.Node3DGizmo(object)}
+	return Instance{*(*classdb.Node3DGizmo)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsNode3DGizmo() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -60,5 +60,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Node3DGizmo", func(ptr gd.Object) any { return [1]classdb.Node3DGizmo{classdb.Node3DGizmo(ptr)} })
+	classdb.Register("Node3DGizmo", func(ptr gd.Object) any { return [1]classdb.Node3DGizmo{*(*classdb.Node3DGizmo)(unsafe.Pointer(&ptr))} })
 }

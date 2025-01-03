@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A resource used by [AnimationNodeBlendTree].
@@ -92,7 +92,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeBlendSpace1D"))
-	return Instance{classdb.AnimationNodeBlendSpace1D(object)}
+	return Instance{*(*classdb.AnimationNodeBlendSpace1D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MinSpace() Float.X {
@@ -206,7 +206,7 @@ func (self class) GetBlendPointNode(point gd.Int) objects.AnimationRootNode {
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_blend_point_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationRootNode{classdb.AnimationRootNode(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[classdb.AnimationRootNode](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -391,7 +391,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AnimationNodeBlendSpace1D", func(ptr gd.Object) any {
-		return [1]classdb.AnimationNodeBlendSpace1D{classdb.AnimationNodeBlendSpace1D(ptr)}
+		return [1]classdb.AnimationNodeBlendSpace1D{*(*classdb.AnimationNodeBlendSpace1D)(unsafe.Pointer(&ptr))}
 	})
 }
 

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
@@ -159,7 +159,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegEx"))
-	return Instance{classdb.RegEx(object)}
+	return Instance{*(*classdb.RegEx)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -171,7 +171,7 @@ func (self class) CreateFromString(pattern gd.String) objects.RegEx {
 	callframe.Arg(frame, pointers.Get(pattern))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_create_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RegEx{classdb.RegEx(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RegEx{gd.PointerWithOwnershipTransferredToGo[classdb.RegEx](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -213,7 +213,7 @@ func (self class) Search(subject gd.String, offset gd.Int, end gd.Int) objects.R
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_search, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RegExMatch{classdb.RegExMatch(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RegExMatch{gd.PointerWithOwnershipTransferredToGo[classdb.RegExMatch](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -324,7 +324,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RegEx", func(ptr gd.Object) any { return [1]classdb.RegEx{classdb.RegEx(ptr)} })
+	classdb.Register("RegEx", func(ptr gd.Object) any { return [1]classdb.RegEx{*(*classdb.RegEx)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

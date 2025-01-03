@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A link between two positions on [NavigationRegion3D]s that agents can be routed through. These positions can be on the same [NavigationRegion3D] or on two different ones. Links are useful to express navigation methods other than traveling along the surface of the navigation mesh, such as ziplines, teleporters, or gaps that can be jumped across.
@@ -91,7 +91,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationLink3D"))
-	return Instance{classdb.NavigationLink3D(object)}
+	return Instance{*(*classdb.NavigationLink3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -393,5 +393,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationLink3D", func(ptr gd.Object) any { return [1]classdb.NavigationLink3D{classdb.NavigationLink3D(ptr)} })
+	classdb.Register("NavigationLink3D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationLink3D{*(*classdb.NavigationLink3D)(unsafe.Pointer(&ptr))}
+	})
 }

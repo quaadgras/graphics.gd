@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node internally calls [code]emit_subparticle[/code] shader method. It will emit a particle from the configured sub-emitter and also allows to customize how its emitted. Requires a sub-emitter assigned to the particles node with this shader.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleEmit"))
-	return Instance{classdb.VisualShaderNodeParticleEmit(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleEmit)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Flags() classdb.VisualShaderNodeParticleEmitEmitFlags {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleEmit", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleEmit{classdb.VisualShaderNodeParticleEmit(ptr)}
+		return [1]classdb.VisualShaderNodeParticleEmit{*(*classdb.VisualShaderNodeParticleEmit)(unsafe.Pointer(&ptr))}
 	})
 }
 

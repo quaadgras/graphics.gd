@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
@@ -671,7 +671,7 @@ func (self class) GetMainLoop() objects.MainLoop {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_main_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MainLoop{classdb.MainLoop(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.MainLoop{gd.PointerLifetimeBoundTo[classdb.MainLoop](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -881,7 +881,7 @@ func (self class) GetSingleton(name gd.StringName) gd.Object {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -934,7 +934,7 @@ Returns:
 //go:nosplit
 func (self class) RegisterScriptLanguage(language objects.ScriptLanguage) error {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(language[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()))
 	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_script_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
@@ -981,7 +981,7 @@ func (self class) GetScriptLanguage(index gd.Int) objects.ScriptLanguage {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_script_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ScriptLanguage{classdb.ScriptLanguage(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.ScriptLanguage{gd.PointerMustAssertInstanceID[classdb.ScriptLanguage](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1053,7 +1053,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Engine", func(ptr gd.Object) any { return [1]classdb.Engine{classdb.Engine(ptr)} })
+	classdb.Register("Engine", func(ptr gd.Object) any { return [1]classdb.Engine{*(*classdb.Engine)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Popup] is a base class for contextual windows and panels with fixed position. It's a modal by default (see [member Window.popup_window]) and provides methods for implementing custom popup behavior.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Popup"))
-	return Instance{classdb.Popup(object)}
+	return Instance{*(*classdb.Popup)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) OnPopupHide(cb func()) {
@@ -74,5 +74,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Popup", func(ptr gd.Object) any { return [1]classdb.Popup{classdb.Popup(ptr)} })
+	classdb.Register("Popup", func(ptr gd.Object) any { return [1]classdb.Popup{*(*classdb.Popup)(unsafe.Pointer(&ptr))} })
 }

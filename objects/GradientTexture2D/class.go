@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D texture that obtains colors from a [Gradient] to fill the texture data. This texture is able to transform a color transition into different patterns such as a linear or a radial gradient. The gradient is sampled individually for each pixel so it does not necessarily represent an exact copy of the gradient(see [member width] and [member height]). See also [GradientTexture1D], [CurveTexture] and [CurveXYZTexture].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GradientTexture2D"))
-	return Instance{classdb.GradientTexture2D(object)}
+	return Instance{*(*classdb.GradientTexture2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Gradient() objects.Gradient {
@@ -114,7 +114,7 @@ func (self class) GetGradient() objects.Gradient {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Gradient{classdb.Gradient(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Gradient{gd.PointerWithOwnershipTransferredToGo[classdb.Gradient](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -266,7 +266,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GradientTexture2D", func(ptr gd.Object) any { return [1]classdb.GradientTexture2D{classdb.GradientTexture2D(ptr)} })
+	classdb.Register("GradientTexture2D", func(ptr gd.Object) any {
+		return [1]classdb.GradientTexture2D{*(*classdb.GradientTexture2D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Fill = classdb.GradientTexture2DFill

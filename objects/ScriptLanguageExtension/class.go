@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.ScriptLanguageExtension
 type Any interface {
@@ -652,7 +652,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptLanguageExtension"))
-	return Instance{classdb.ScriptLanguageExtension(object)}
+	return Instance{*(*classdb.ScriptLanguageExtension)(unsafe.Pointer(&object))}
 }
 
 func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1562,7 +1562,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ScriptLanguageExtension", func(ptr gd.Object) any {
-		return [1]classdb.ScriptLanguageExtension{classdb.ScriptLanguageExtension(ptr)}
+		return [1]classdb.ScriptLanguageExtension{*(*classdb.ScriptLanguageExtension)(unsafe.Pointer(&ptr))}
 	})
 }
 

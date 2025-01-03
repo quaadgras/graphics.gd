@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 MP3 audio stream driver. See [member data] if you want to load an MP3 file at run-time.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamMP3"))
-	return Instance{classdb.AudioStreamMP3(object)}
+	return Instance{*(*classdb.AudioStreamMP3)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Data() []byte {
@@ -235,5 +235,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamMP3", func(ptr gd.Object) any { return [1]classdb.AudioStreamMP3{classdb.AudioStreamMP3(ptr)} })
+	classdb.Register("AudioStreamMP3", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamMP3{*(*classdb.AudioStreamMP3)(unsafe.Pointer(&ptr))}
+	})
 }

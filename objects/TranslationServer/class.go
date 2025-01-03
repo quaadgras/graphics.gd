@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The server that manages all language translations. Translations can be added to or removed from it.
@@ -449,7 +449,7 @@ func (self class) GetTranslationObject(locale gd.String) objects.Translation {
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_translation_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Translation{classdb.Translation(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Translation{gd.PointerWithOwnershipTransferredToGo[classdb.Translation](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -528,5 +528,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TranslationServer", func(ptr gd.Object) any { return [1]classdb.TranslationServer{classdb.TranslationServer(ptr)} })
+	classdb.Register("TranslationServer", func(ptr gd.Object) any {
+		return [1]classdb.TranslationServer{*(*classdb.TranslationServer)(unsafe.Pointer(&ptr))}
+	})
 }

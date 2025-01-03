@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Resizable nodes have a handle that allows the user to adjust their size as needed.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeResizableBase"))
-	return Instance{classdb.VisualShaderNodeResizableBase(object)}
+	return Instance{*(*classdb.VisualShaderNodeResizableBase)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector2.XY {
@@ -105,6 +105,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeResizableBase", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeResizableBase{classdb.VisualShaderNodeResizableBase(ptr)}
+		return [1]classdb.VisualShaderNodeResizableBase{*(*classdb.VisualShaderNodeResizableBase)(unsafe.Pointer(&ptr))}
 	})
 }

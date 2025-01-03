@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for WebSocket server and client, allowing them to be used as multiplayer peer for the [MultiplayerAPI].
@@ -77,7 +77,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketMultiplayerPeer"))
-	return Instance{classdb.WebSocketMultiplayerPeer(object)}
+	return Instance{*(*classdb.WebSocketMultiplayerPeer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SupportedProtocols() []string {
@@ -169,7 +169,7 @@ func (self class) GetPeer(peer_id gd.Int) objects.WebSocketPeer {
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.WebSocketPeer{classdb.WebSocketPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.WebSocketPeer{gd.PointerWithOwnershipTransferredToGo[classdb.WebSocketPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -349,7 +349,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("WebSocketMultiplayerPeer", func(ptr gd.Object) any {
-		return [1]classdb.WebSocketMultiplayerPeer{classdb.WebSocketMultiplayerPeer(ptr)}
+		return [1]classdb.WebSocketMultiplayerPeer{*(*classdb.WebSocketMultiplayerPeer)(unsafe.Pointer(&ptr))}
 	})
 }
 

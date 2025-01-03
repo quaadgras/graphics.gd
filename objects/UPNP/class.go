@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
@@ -175,7 +175,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UPNP"))
-	return Instance{classdb.UPNP(object)}
+	return Instance{*(*classdb.UPNP)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DiscoverMulticastIf() string {
@@ -224,7 +224,7 @@ func (self class) GetDevice(index gd.Int) objects.UPNPDevice {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.UPNPDevice{classdb.UPNPDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[classdb.UPNPDevice](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -285,7 +285,7 @@ func (self class) GetGateway() objects.UPNPDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.UPNPDevice{classdb.UPNPDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[classdb.UPNPDevice](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -434,7 +434,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("UPNP", func(ptr gd.Object) any { return [1]classdb.UPNP{classdb.UPNP(ptr)} })
+	classdb.Register("UPNP", func(ptr gd.Object) any { return [1]classdb.UPNP{*(*classdb.UPNP)(unsafe.Pointer(&ptr))} })
 }
 
 type UPNPResult = classdb.UPNPUPNPResult

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CanvasModulate] applies a color tint to all nodes on a canvas. Only one can be used to tint a canvas, but [CanvasLayer]s can be used to render things independently.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasModulate"))
-	return Instance{classdb.CanvasModulate(object)}
+	return Instance{*(*classdb.CanvasModulate)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -97,5 +97,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasModulate", func(ptr gd.Object) any { return [1]classdb.CanvasModulate{classdb.CanvasModulate(ptr)} })
+	classdb.Register("CanvasModulate", func(ptr gd.Object) any {
+		return [1]classdb.CanvasModulate{*(*classdb.CanvasModulate)(unsafe.Pointer(&ptr))}
+	})
 }

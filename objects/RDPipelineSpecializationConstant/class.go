@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [i]specialization constant[/i] is a way to create additional variants of shaders without actually increasing the number of shader versions that are compiled. This allows improving performance by reducing the number of shader versions and reducing [code]if[/code] branching, while still allowing shaders to be flexible for different use cases.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDPipelineSpecializationConstant"))
-	return Instance{classdb.RDPipelineSpecializationConstant(object)}
+	return Instance{*(*classdb.RDPipelineSpecializationConstant)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Value() any {
@@ -118,6 +118,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("RDPipelineSpecializationConstant", func(ptr gd.Object) any {
-		return [1]classdb.RDPipelineSpecializationConstant{classdb.RDPipelineSpecializationConstant(ptr)}
+		return [1]classdb.RDPipelineSpecializationConstant{*(*classdb.RDPipelineSpecializationConstant)(unsafe.Pointer(&ptr))}
 	})
 }

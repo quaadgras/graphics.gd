@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Provides data transformation and encoding utility functions.
@@ -182,5 +182,5 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Marshalls", func(ptr gd.Object) any { return [1]classdb.Marshalls{classdb.Marshalls(ptr)} })
+	classdb.Register("Marshalls", func(ptr gd.Object) any { return [1]classdb.Marshalls{*(*classdb.Marshalls)(unsafe.Pointer(&ptr))} })
 }

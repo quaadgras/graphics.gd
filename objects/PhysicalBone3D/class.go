@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [PhysicalBone3D] node is a physics body that can be used to make bones in a [Skeleton3D] react to physics.
@@ -78,7 +78,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicalBone3D"))
-	return Instance{classdb.PhysicalBone3D(object)}
+	return Instance{*(*classdb.PhysicalBone3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) JointType() classdb.PhysicalBone3DJointType {
@@ -610,7 +610,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicalBone3D", func(ptr gd.Object) any { return [1]classdb.PhysicalBone3D{classdb.PhysicalBone3D(ptr)} })
+	classdb.Register("PhysicalBone3D", func(ptr gd.Object) any {
+		return [1]classdb.PhysicalBone3D{*(*classdb.PhysicalBone3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DampMode = classdb.PhysicalBone3DDampMode

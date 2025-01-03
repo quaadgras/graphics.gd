@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node was replaced by [VisualShaderNodeFrame] and only exists to preserve compatibility. In the [VisualShader] editor it behaves exactly like [VisualShaderNodeFrame].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeComment"))
-	return Instance{classdb.VisualShaderNodeComment(object)}
+	return Instance{*(*classdb.VisualShaderNodeComment)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Description() string {
@@ -116,6 +116,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeComment", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeComment{classdb.VisualShaderNodeComment(ptr)}
+		return [1]classdb.VisualShaderNodeComment{*(*classdb.VisualShaderNodeComment)(unsafe.Pointer(&ptr))}
 	})
 }

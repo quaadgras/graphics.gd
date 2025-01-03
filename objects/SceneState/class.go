@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Maintains a list of resources, nodes, exported and overridden properties, and built-in scripts associated with a scene. They cannot be modified from a [SceneState], only accessed. Useful for peeking into what a [PackedScene] contains without instantiating it.
@@ -191,7 +191,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneState"))
-	return Instance{classdb.SceneState(object)}
+	return Instance{*(*classdb.SceneState)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -303,7 +303,7 @@ func (self class) GetNodeInstance(idx gd.Int) objects.PackedScene {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PackedScene{classdb.PackedScene(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PackedScene{gd.PointerWithOwnershipTransferredToGo[classdb.PackedScene](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -511,7 +511,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneState", func(ptr gd.Object) any { return [1]classdb.SceneState{classdb.SceneState(ptr)} })
+	classdb.Register("SceneState", func(ptr gd.Object) any { return [1]classdb.SceneState{*(*classdb.SceneState)(unsafe.Pointer(&ptr))} })
 }
 
 type GenEditState = classdb.SceneStateGenEditState

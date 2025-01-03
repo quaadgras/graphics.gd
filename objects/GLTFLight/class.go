@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
@@ -77,7 +77,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFLight"))
-	return Instance{classdb.GLTFLight(object)}
+	return Instance{*(*classdb.GLTFLight)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Color() Color.RGBA {
@@ -137,7 +137,7 @@ func (self class) FromNode(light_node objects.Light3D) objects.GLTFLight {
 	callframe.Arg(frame, pointers.Get(light_node[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GLTFLight{classdb.GLTFLight(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GLTFLight{gd.PointerWithOwnershipTransferredToGo[classdb.GLTFLight](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -150,7 +150,7 @@ func (self class) ToNode() objects.Light3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Light3D{classdb.Light3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Light3D{gd.PointerWithOwnershipTransferredToGo[classdb.Light3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -164,7 +164,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) objects.GLTFLight {
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.GLTFLight{classdb.GLTFLight(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.GLTFLight{gd.PointerWithOwnershipTransferredToGo[classdb.GLTFLight](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -341,5 +341,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFLight", func(ptr gd.Object) any { return [1]classdb.GLTFLight{classdb.GLTFLight(ptr)} })
+	classdb.Register("GLTFLight", func(ptr gd.Object) any { return [1]classdb.GLTFLight{*(*classdb.GLTFLight)(unsafe.Pointer(&ptr))} })
 }

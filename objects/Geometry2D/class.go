@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
@@ -636,7 +636,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Geometry2D", func(ptr gd.Object) any { return [1]classdb.Geometry2D{classdb.Geometry2D(ptr)} })
+	classdb.Register("Geometry2D", func(ptr gd.Object) any { return [1]classdb.Geometry2D{*(*classdb.Geometry2D)(unsafe.Pointer(&ptr))} })
 }
 
 type PolyBooleanOperation = classdb.Geometry2DPolyBooleanOperation

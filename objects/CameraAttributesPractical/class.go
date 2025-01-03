@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Controls camera-specific attributes such as auto-exposure, depth of field, and exposure override.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraAttributesPractical"))
-	return Instance{classdb.CameraAttributesPractical(object)}
+	return Instance{*(*classdb.CameraAttributesPractical)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DofBlurFarEnabled() bool {
@@ -322,6 +322,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("CameraAttributesPractical", func(ptr gd.Object) any {
-		return [1]classdb.CameraAttributesPractical{classdb.CameraAttributesPractical(ptr)}
+		return [1]classdb.CameraAttributesPractical{*(*classdb.CameraAttributesPractical)(unsafe.Pointer(&ptr))}
 	})
 }

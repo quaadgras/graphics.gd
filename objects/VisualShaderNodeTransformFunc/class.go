@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Computes an inverse or transpose function on the provided [Transform3D].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeTransformFunc"))
-	return Instance{classdb.VisualShaderNodeTransformFunc(object)}
+	return Instance{*(*classdb.VisualShaderNodeTransformFunc)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Function() classdb.VisualShaderNodeTransformFuncFunction {
@@ -104,7 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeTransformFunc", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeTransformFunc{classdb.VisualShaderNodeTransformFunc(ptr)}
+		return [1]classdb.VisualShaderNodeTransformFunc{*(*classdb.VisualShaderNodeTransformFunc)(unsafe.Pointer(&ptr))}
 	})
 }
 

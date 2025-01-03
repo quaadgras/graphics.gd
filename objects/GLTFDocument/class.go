@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 GLTFDocument supports reading data from a glTF file, buffer, or Godot scene. This data can then be written to the filesystem, buffer, or used to create a Godot scene.
@@ -104,7 +104,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFDocument"))
-	return Instance{classdb.GLTFDocument(object)}
+	return Instance{*(*classdb.GLTFDocument)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ImageFormat() string {
@@ -253,7 +253,7 @@ func (self class) GenerateScene(state objects.GLTFState, bake_fps gd.Float, trim
 	callframe.Arg(frame, remove_immutable_tracks)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_generate_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerWithOwnershipTransferredToGo[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -338,7 +338,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFDocument", func(ptr gd.Object) any { return [1]classdb.GLTFDocument{classdb.GLTFDocument(ptr)} })
+	classdb.Register("GLTFDocument", func(ptr gd.Object) any {
+		return [1]classdb.GLTFDocument{*(*classdb.GLTFDocument)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type RootNodeMode = classdb.GLTFDocumentRootNodeMode

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Plays input signal back after a period of time. The delayed signal may be played back multiple times to create the sound of a repeating, decaying echo. Delay effects range from a subtle echo effect to a pronounced blending of previous sounds with new sounds.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectDelay"))
-	return Instance{classdb.AudioEffectDelay(object)}
+	return Instance{*(*classdb.AudioEffectDelay)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Dry() Float.X {
@@ -424,5 +424,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectDelay", func(ptr gd.Object) any { return [1]classdb.AudioEffectDelay{classdb.AudioEffectDelay(ptr)} })
+	classdb.Register("AudioEffectDelay", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectDelay{*(*classdb.AudioEffectDelay)(unsafe.Pointer(&ptr))}
+	})
 }

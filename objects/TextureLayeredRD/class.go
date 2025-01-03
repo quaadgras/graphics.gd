@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for [Texture2DArrayRD], [TextureCubemapRD] and [TextureCubemapArrayRD]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextureLayeredRD"))
-	return Instance{classdb.TextureLayeredRD(object)}
+	return Instance{*(*classdb.TextureLayeredRD)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TextureRdRid() Resource.ID {
@@ -104,5 +104,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextureLayeredRD", func(ptr gd.Object) any { return [1]classdb.TextureLayeredRD{classdb.TextureLayeredRD(ptr)} })
+	classdb.Register("TextureLayeredRD", func(ptr gd.Object) any {
+		return [1]classdb.TextureLayeredRD{*(*classdb.TextureLayeredRD)(unsafe.Pointer(&ptr))}
+	})
 }

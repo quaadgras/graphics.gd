@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node uses hand tracking data from an [XRHandTracker] to pose the skeleton of a hand mesh.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRHandModifier3D"))
-	return Instance{classdb.XRHandModifier3D(object)}
+	return Instance{*(*classdb.XRHandModifier3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) HandTracker() string {
@@ -125,7 +125,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRHandModifier3D", func(ptr gd.Object) any { return [1]classdb.XRHandModifier3D{classdb.XRHandModifier3D(ptr)} })
+	classdb.Register("XRHandModifier3D", func(ptr gd.Object) any {
+		return [1]classdb.XRHandModifier3D{*(*classdb.XRHandModifier3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type BoneUpdate = classdb.XRHandModifier3DBoneUpdate

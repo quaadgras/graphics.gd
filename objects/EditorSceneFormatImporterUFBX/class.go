@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 EditorSceneFormatImporterUFBX is designed to load FBX files and supports both binary and ASCII FBX files from version 3000 onward. This class supports various 3D object types like meshes, skins, blend shapes, materials, and rigging information. The class aims for feature parity with the official FBX SDK and supports FBX 7.4 specifications.
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterUFBX"))
-	return Instance{classdb.EditorSceneFormatImporterUFBX(object)}
+	return Instance{*(*classdb.EditorSceneFormatImporterUFBX)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsEditorSceneFormatImporterUFBX() Advanced {
@@ -71,6 +71,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("EditorSceneFormatImporterUFBX", func(ptr gd.Object) any {
-		return [1]classdb.EditorSceneFormatImporterUFBX{classdb.EditorSceneFormatImporterUFBX(ptr)}
+		return [1]classdb.EditorSceneFormatImporterUFBX{*(*classdb.EditorSceneFormatImporterUFBX)(unsafe.Pointer(&ptr))}
 	})
 }

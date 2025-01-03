@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
@@ -127,7 +127,7 @@ func (self class) GetInterface(intf gd.String) objects.JavaScriptObject {
 	callframe.Arg(frame, pointers.Get(intf))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.JavaScriptObject{classdb.JavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[classdb.JavaScriptObject](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -141,7 +141,7 @@ func (self class) CreateCallback(callable gd.Callable) objects.JavaScriptObject 
 	callframe.Arg(frame, pointers.Get(callable))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.JavaScriptObject{classdb.JavaScriptObject(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[classdb.JavaScriptObject](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -214,7 +214,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JavaScriptBridge", func(ptr gd.Object) any { return [1]classdb.JavaScriptBridge{classdb.JavaScriptBridge(ptr)} })
+	classdb.Register("JavaScriptBridge", func(ptr gd.Object) any {
+		return [1]classdb.JavaScriptBridge{*(*classdb.JavaScriptBridge)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

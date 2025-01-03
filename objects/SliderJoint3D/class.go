@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A physics joint that restricts the movement of a 3D physics body along an axis relative to another physics body. For example, Body A could be a [StaticBody3D] representing a piston base, while Body B could be a [RigidBody3D] representing the piston head, moving up and down.
@@ -55,7 +55,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SliderJoint3D"))
-	return Instance{classdb.SliderJoint3D(object)}
+	return Instance{*(*classdb.SliderJoint3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -109,7 +109,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SliderJoint3D", func(ptr gd.Object) any { return [1]classdb.SliderJoint3D{classdb.SliderJoint3D(ptr)} })
+	classdb.Register("SliderJoint3D", func(ptr gd.Object) any {
+		return [1]classdb.SliderJoint3D{*(*classdb.SliderJoint3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Param = classdb.SliderJoint3DParam

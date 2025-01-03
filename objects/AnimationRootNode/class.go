@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AnimationRootNode] is a base class for [AnimationNode]s that hold a complete animation. A complete animation refers to the output of an [AnimationNodeOutput] in an [AnimationNodeBlendTree] or the output of another [AnimationRootNode]. Used for [member AnimationTree.tree_root] or in other [AnimationRootNode]s.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationRootNode"))
-	return Instance{classdb.AnimationRootNode(object)}
+	return Instance{*(*classdb.AnimationRootNode)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAnimationRootNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -74,5 +74,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationRootNode", func(ptr gd.Object) any { return [1]classdb.AnimationRootNode{classdb.AnimationRootNode(ptr)} })
+	classdb.Register("AnimationRootNode", func(ptr gd.Object) any {
+		return [1]classdb.AnimationRootNode{*(*classdb.AnimationRootNode)(unsafe.Pointer(&ptr))}
+	})
 }

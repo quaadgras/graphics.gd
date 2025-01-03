@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This [SkeletonModification2D] uses an algorithm called Cyclic Coordinate Descent Inverse Kinematics, or CCDIK, to manipulate a chain of bones in a [Skeleton2D] so it reaches a defined target.
@@ -143,7 +143,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DCCDIK"))
-	return Instance{classdb.SkeletonModification2DCCDIK(object)}
+	return Instance{*(*classdb.SkeletonModification2DCCDIK)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TargetNodepath() Path.String {
@@ -452,6 +452,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModification2DCCDIK", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModification2DCCDIK{classdb.SkeletonModification2DCCDIK(ptr)}
+		return [1]classdb.SkeletonModification2DCCDIK{*(*classdb.SkeletonModification2DCCDIK)(unsafe.Pointer(&ptr))}
 	})
 }

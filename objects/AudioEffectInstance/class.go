@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An audio effect instance manipulates the audio it receives for a given effect. This instance is automatically created by an [AudioEffect] when it is added to a bus, and should usually not be created directly. If necessary, it can be fetched at run-time with [method AudioServer.get_bus_effect_instance].
@@ -73,7 +73,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectInstance"))
-	return Instance{classdb.AudioEffectInstance(object)}
+	return Instance{*(*classdb.AudioEffectInstance)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -129,5 +129,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectInstance", func(ptr gd.Object) any { return [1]classdb.AudioEffectInstance{classdb.AudioEffectInstance(ptr)} })
+	classdb.Register("AudioEffectInstance", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectInstance{*(*classdb.AudioEffectInstance)(unsafe.Pointer(&ptr))}
+	})
 }

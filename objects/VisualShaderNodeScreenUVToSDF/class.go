@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translates to [code]screen_uv_to_sdf(uv)[/code] in the shader language. If the UV port isn't connected, [code]SCREEN_UV[/code] is used instead.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeScreenUVToSDF"))
-	return Instance{classdb.VisualShaderNodeScreenUVToSDF(object)}
+	return Instance{*(*classdb.VisualShaderNodeScreenUVToSDF)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeScreenUVToSDF() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeScreenUVToSDF", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeScreenUVToSDF{classdb.VisualShaderNodeScreenUVToSDF(ptr)}
+		return [1]classdb.VisualShaderNodeScreenUVToSDF{*(*classdb.VisualShaderNodeScreenUVToSDF)(unsafe.Pointer(&ptr))}
 	})
 }

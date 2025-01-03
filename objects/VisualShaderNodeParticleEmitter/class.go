@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Particle emitter nodes can be used in "start" step of particle shaders and they define the starting position of the particles. Connect them to the Position output port.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleEmitter"))
-	return Instance{classdb.VisualShaderNodeParticleEmitter(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleEmitter)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mode2d() bool {
@@ -104,6 +104,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleEmitter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleEmitter{classdb.VisualShaderNodeParticleEmitter(ptr)}
+		return [1]classdb.VisualShaderNodeParticleEmitter{*(*classdb.VisualShaderNodeParticleEmitter)(unsafe.Pointer(&ptr))}
 	})
 }

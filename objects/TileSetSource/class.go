@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Exposes a set of tiles for a [TileSet] resource.
@@ -87,7 +87,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSetSource"))
-	return Instance{classdb.TileSetSource(object)}
+	return Instance{*(*classdb.TileSetSource)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -201,5 +201,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileSetSource", func(ptr gd.Object) any { return [1]classdb.TileSetSource{classdb.TileSetSource(ptr)} })
+	classdb.Register("TileSetSource", func(ptr gd.Object) any {
+		return [1]classdb.TileSetSource{*(*classdb.TileSetSource)(unsafe.Pointer(&ptr))}
+	})
 }

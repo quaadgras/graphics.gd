@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Comes with a built-in editor for texture's curves.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCurveTexture"))
-	return Instance{classdb.VisualShaderNodeCurveTexture(object)}
+	return Instance{*(*classdb.VisualShaderNodeCurveTexture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Texture() objects.CurveTexture {
@@ -65,7 +65,7 @@ func (self class) GetTexture() objects.CurveTexture {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CurveTexture{classdb.CurveTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CurveTexture{gd.PointerWithOwnershipTransferredToGo[classdb.CurveTexture](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -111,6 +111,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeCurveTexture", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeCurveTexture{classdb.VisualShaderNodeCurveTexture(ptr)}
+		return [1]classdb.VisualShaderNodeCurveTexture{*(*classdb.VisualShaderNodeCurveTexture)(unsafe.Pointer(&ptr))}
 	})
 }

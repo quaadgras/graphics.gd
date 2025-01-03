@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about screen drag events. See [method Node._input].
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventScreenDrag"))
-	return Instance{classdb.InputEventScreenDrag(object)}
+	return Instance{*(*classdb.InputEventScreenDrag)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Index() int {
@@ -324,5 +324,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventScreenDrag", func(ptr gd.Object) any { return [1]classdb.InputEventScreenDrag{classdb.InputEventScreenDrag(ptr)} })
+	classdb.Register("InputEventScreenDrag", func(ptr gd.Object) any {
+		return [1]classdb.InputEventScreenDrag{*(*classdb.InputEventScreenDrag)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class implements a writer that allows storing the multiple blobs in a zip archive.
@@ -91,7 +91,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ZIPPacker"))
-	return Instance{classdb.ZIPPacker(object)}
+	return Instance{*(*classdb.ZIPPacker)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -185,7 +185,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ZIPPacker", func(ptr gd.Object) any { return [1]classdb.ZIPPacker{classdb.ZIPPacker(ptr)} })
+	classdb.Register("ZIPPacker", func(ptr gd.Object) any { return [1]classdb.ZIPPacker{*(*classdb.ZIPPacker)(unsafe.Pointer(&ptr))} })
 }
 
 type ZipAppend = classdb.ZIPPackerZipAppend

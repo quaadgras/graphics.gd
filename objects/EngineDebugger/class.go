@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EngineDebugger] handles the communication between the editor and the running game. It is active in the running game. Messages can be sent/received through it. It also manages the profilers.
@@ -527,5 +527,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EngineDebugger", func(ptr gd.Object) any { return [1]classdb.EngineDebugger{classdb.EngineDebugger(ptr)} })
+	classdb.Register("EngineDebugger", func(ptr gd.Object) any {
+		return [1]classdb.EngineDebugger{*(*classdb.EngineDebugger)(unsafe.Pointer(&ptr))}
+	})
 }

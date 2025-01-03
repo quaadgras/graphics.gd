@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [ViewportTexture] provides the content of a [Viewport] as a dynamic [Texture2D]. This can be used to combine the rendering of [Control], [Node2D] and [Node3D] nodes. For example, you can use this texture to display a 3D scene inside a [TextureRect], or a 2D overlay in a [Sprite3D].
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ViewportTexture"))
-	return Instance{classdb.ViewportTexture(object)}
+	return Instance{*(*classdb.ViewportTexture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ViewportPath() Path.String {
@@ -108,5 +108,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ViewportTexture", func(ptr gd.Object) any { return [1]classdb.ViewportTexture{classdb.ViewportTexture(ptr)} })
+	classdb.Register("ViewportTexture", func(ptr gd.Object) any {
+		return [1]classdb.ViewportTexture{*(*classdb.ViewportTexture)(unsafe.Pointer(&ptr))}
+	})
 }

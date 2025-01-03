@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Can have [PathFollow3D] child nodes moving along the [Curve3D]. See [PathFollow3D] for more information on the usage.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Path3D"))
-	return Instance{classdb.Path3D(object)}
+	return Instance{*(*classdb.Path3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Curve() objects.Curve3D {
@@ -65,7 +65,7 @@ func (self class) GetCurve() objects.Curve3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path3D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve3D{classdb.Curve3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve3D{gd.PointerWithOwnershipTransferredToGo[classdb.Curve3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -94,5 +94,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Path3D", func(ptr gd.Object) any { return [1]classdb.Path3D{classdb.Path3D(ptr)} })
+	classdb.Register("Path3D", func(ptr gd.Object) any { return [1]classdb.Path3D{*(*classdb.Path3D)(unsafe.Pointer(&ptr))} })
 }

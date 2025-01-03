@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] standard, and contain extended details and visuals for each blend shape. Additionally the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Tracking Standard Comparison[/url] page documents the relationship between Unified Expressions and other standards.
@@ -54,7 +54,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRFaceTracker"))
-	return Instance{classdb.XRFaceTracker(object)}
+	return Instance{*(*classdb.XRFaceTracker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BlendShapes() []float32 {
@@ -135,7 +135,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRFaceTracker", func(ptr gd.Object) any { return [1]classdb.XRFaceTracker{classdb.XRFaceTracker(ptr)} })
+	classdb.Register("XRFaceTracker", func(ptr gd.Object) any {
+		return [1]classdb.XRFaceTracker{*(*classdb.XRFaceTracker)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type BlendShapeEntry = classdb.XRFaceTrackerBlendShapeEntry

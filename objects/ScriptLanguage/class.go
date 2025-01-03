@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 type Instance [1]classdb.ScriptLanguage
 type Any interface {
@@ -34,7 +34,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptLanguage"))
-	return Instance{classdb.ScriptLanguage(object)}
+	return Instance{*(*classdb.ScriptLanguage)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsScriptLanguage() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -54,7 +54,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ScriptLanguage", func(ptr gd.Object) any { return [1]classdb.ScriptLanguage{classdb.ScriptLanguage(ptr)} })
+	classdb.Register("ScriptLanguage", func(ptr gd.Object) any {
+		return [1]classdb.ScriptLanguage{*(*classdb.ScriptLanguage)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ScriptNameCasing = classdb.ScriptLanguageScriptNameCasing

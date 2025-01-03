@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A vertical slider, used to adjust a value by moving a grabber along a vertical axis. It is a [Range]-based control and goes from bottom (min) to top (max). Note that this direction is the opposite of [VScrollBar]'s.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VSlider"))
-	return Instance{classdb.VSlider(object)}
+	return Instance{*(*classdb.VSlider)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVSlider() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -78,5 +78,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VSlider", func(ptr gd.Object) any { return [1]classdb.VSlider{classdb.VSlider(ptr)} })
+	classdb.Register("VSlider", func(ptr gd.Object) any { return [1]classdb.VSlider{*(*classdb.VSlider)(unsafe.Pointer(&ptr))} })
 }

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A directional light is a type of [Light3D] node that models an infinite number of parallel rays covering the entire scene. It is used for lights with strong intensity that are located far away from the scene to model sunlight or moonlight. The worldspace location of the DirectionalLight3D transform (origin) is ignored. Only the basis is used to determine light direction.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirectionalLight3D"))
-	return Instance{classdb.DirectionalLight3D(object)}
+	return Instance{*(*classdb.DirectionalLight3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DirectionalShadowMode() classdb.DirectionalLight3DShadowMode {
@@ -155,7 +155,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DirectionalLight3D", func(ptr gd.Object) any { return [1]classdb.DirectionalLight3D{classdb.DirectionalLight3D(ptr)} })
+	classdb.Register("DirectionalLight3D", func(ptr gd.Object) any {
+		return [1]classdb.DirectionalLight3D{*(*classdb.DirectionalLight3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ShadowMode = classdb.DirectionalLight3DShadowMode

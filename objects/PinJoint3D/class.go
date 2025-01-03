@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A physics joint that attaches two 3D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody3D] can be attached to a [StaticBody3D] to create a pendulum or a seesaw.
@@ -55,7 +55,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PinJoint3D"))
-	return Instance{classdb.PinJoint3D(object)}
+	return Instance{*(*classdb.PinJoint3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -109,7 +109,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PinJoint3D", func(ptr gd.Object) any { return [1]classdb.PinJoint3D{classdb.PinJoint3D(ptr)} })
+	classdb.Register("PinJoint3D", func(ptr gd.Object) any { return [1]classdb.PinJoint3D{*(*classdb.PinJoint3D)(unsafe.Pointer(&ptr))} })
 }
 
 type Param = classdb.PinJoint3DParam

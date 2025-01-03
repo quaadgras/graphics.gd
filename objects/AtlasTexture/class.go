@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [Texture2D] resource that draws only part of its [member atlas] texture, as defined by the [member region]. An additional [member margin] can also be set, which is useful for small adjustments.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AtlasTexture"))
-	return Instance{classdb.AtlasTexture(object)}
+	return Instance{*(*classdb.AtlasTexture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Atlas() objects.Texture2D {
@@ -92,7 +92,7 @@ func (self class) GetAtlas() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_atlas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -188,5 +188,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AtlasTexture", func(ptr gd.Object) any { return [1]classdb.AtlasTexture{classdb.AtlasTexture(ptr)} })
+	classdb.Register("AtlasTexture", func(ptr gd.Object) any {
+		return [1]classdb.AtlasTexture{*(*classdb.AtlasTexture)(unsafe.Pointer(&ptr))}
+	})
 }

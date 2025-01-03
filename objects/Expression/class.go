@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
@@ -116,7 +116,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Expression"))
-	return Instance{classdb.Expression(object)}
+	return Instance{*(*classdb.Expression)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -197,7 +197,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Expression", func(ptr gd.Object) any { return [1]classdb.Expression{classdb.Expression(ptr)} })
+	classdb.Register("Expression", func(ptr gd.Object) any { return [1]classdb.Expression{*(*classdb.Expression)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

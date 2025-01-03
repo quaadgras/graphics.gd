@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 TouchScreenButton allows you to create on-screen buttons for touch devices. It's intended for gameplay use, such as a unit you have to touch to move. Unlike [Button], TouchScreenButton supports multitouch out of the box. Several TouchScreenButtons can be pressed at the same time with touch input.
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TouchScreenButton"))
-	return Instance{classdb.TouchScreenButton(object)}
+	return Instance{*(*classdb.TouchScreenButton)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TextureNormal() objects.Texture2D {
@@ -138,7 +138,7 @@ func (self class) GetTextureNormal() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_texture_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -157,7 +157,7 @@ func (self class) GetTexturePressed() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_texture_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -176,7 +176,7 @@ func (self class) GetBitmask() objects.BitMap {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_bitmask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.BitMap{classdb.BitMap(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.BitMap{gd.PointerWithOwnershipTransferredToGo[classdb.BitMap](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -195,7 +195,7 @@ func (self class) GetShape() objects.Shape2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Shape2D{classdb.Shape2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Shape2D{gd.PointerWithOwnershipTransferredToGo[classdb.Shape2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -342,7 +342,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TouchScreenButton", func(ptr gd.Object) any { return [1]classdb.TouchScreenButton{classdb.TouchScreenButton(ptr)} })
+	classdb.Register("TouchScreenButton", func(ptr gd.Object) any {
+		return [1]classdb.TouchScreenButton{*(*classdb.TouchScreenButton)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type VisibilityMode = classdb.TouchScreenButtonVisibilityMode

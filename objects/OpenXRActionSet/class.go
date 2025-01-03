@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Action sets in OpenXR define a collection of actions that can be activated in unison. This allows games to easily change between different states that require different inputs or need to reinterpret inputs. For instance we could have an action set that is active when a menu is open, an action set that is active when the player is freely walking around and an action set that is active when the player is controlling a vehicle.
@@ -61,7 +61,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRActionSet"))
-	return Instance{classdb.OpenXRActionSet(object)}
+	return Instance{*(*classdb.OpenXRActionSet)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LocalizedName() string {
@@ -206,5 +206,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("OpenXRActionSet", func(ptr gd.Object) any { return [1]classdb.OpenXRActionSet{classdb.OpenXRActionSet(ptr)} })
+	classdb.Register("OpenXRActionSet", func(ptr gd.Object) any {
+		return [1]classdb.OpenXRActionSet{*(*classdb.OpenXRActionSet)(unsafe.Pointer(&ptr))}
+	})
 }

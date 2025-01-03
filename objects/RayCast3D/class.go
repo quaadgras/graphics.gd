@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A raycast represents a ray from its origin to its [member target_position] that finds the closest [CollisionObject3D] along its path, if it intersects any.
@@ -168,7 +168,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RayCast3D"))
-	return Instance{classdb.RayCast3D(object)}
+	return Instance{*(*classdb.RayCast3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Enabled() bool {
@@ -322,7 +322,7 @@ func (self class) GetCollider() gd.Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo(r_ret.Get())
+	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -667,5 +667,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RayCast3D", func(ptr gd.Object) any { return [1]classdb.RayCast3D{classdb.RayCast3D(ptr)} })
+	classdb.Register("RayCast3D", func(ptr gd.Object) any { return [1]classdb.RayCast3D{*(*classdb.RayCast3D)(unsafe.Pointer(&ptr))} })
 }

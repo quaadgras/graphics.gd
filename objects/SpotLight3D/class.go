@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A Spotlight is a type of [Light3D] node that emits lights in a specific direction, in the shape of a cone. The light is attenuated through the distance. This attenuation can be configured by changing the energy, radius and attenuation parameters of [Light3D].
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpotLight3D"))
-	return Instance{classdb.SpotLight3D(object)}
+	return Instance{*(*classdb.SpotLight3D)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsSpotLight3D() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -77,5 +77,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpotLight3D", func(ptr gd.Object) any { return [1]classdb.SpotLight3D{classdb.SpotLight3D(ptr)} })
+	classdb.Register("SpotLight3D", func(ptr gd.Object) any { return [1]classdb.SpotLight3D{*(*classdb.SpotLight3D)(unsafe.Pointer(&ptr))} })
 }

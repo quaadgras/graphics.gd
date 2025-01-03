@@ -315,7 +315,7 @@ func variantAsValueType[T comparable](variant Variant, vtype VariantType) T {
 	return ret
 }
 
-func variantAsPointerType[T pointers.Pointer[T, Size, R], Size pointers.Shape, R pointers.PointerType](variant Variant, vtype VariantType) T {
+func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Size](frame)
 	Global.variant.IntoType[vtype](r_ret.Uintptr(), callframe.Arg(frame, pointers.Get(variant)))
@@ -324,13 +324,13 @@ func variantAsPointerType[T pointers.Pointer[T, Size, R], Size pointers.Shape, R
 	return pointers.New[T](ret)
 }
 
-func LetVariantAsPointerType[T pointers.Pointer[T, Size, R], Size pointers.Shape, R pointers.PointerType](variant Variant, vtype VariantType) T {
+func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Size](frame)
 	Global.variant.IntoType[vtype](r_ret.Uintptr(), callframe.Arg(frame, pointers.Get(variant)))
 	var ret = r_ret.Get()
 	frame.Free()
-	return pointers.New[T](ret)
+	return pointers.Let[T](ret)
 }
 
 var ObjectAs = func(name string, ptr Object) any {

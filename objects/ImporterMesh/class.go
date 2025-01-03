@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
@@ -215,7 +215,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMesh"))
-	return Instance{classdb.ImporterMesh(object)}
+	return Instance{*(*classdb.ImporterMesh)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -429,7 +429,7 @@ func (self class) GetSurfaceMaterial(surface_idx gd.Int) objects.Material {
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -502,7 +502,7 @@ func (self class) GetMesh(base_mesh objects.ArrayMesh) objects.ArrayMesh {
 	callframe.Arg(frame, pointers.Get(base_mesh[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ArrayMesh{classdb.ArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[classdb.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -567,5 +567,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ImporterMesh", func(ptr gd.Object) any { return [1]classdb.ImporterMesh{classdb.ImporterMesh(ptr)} })
+	classdb.Register("ImporterMesh", func(ptr gd.Object) any {
+		return [1]classdb.ImporterMesh{*(*classdb.ImporterMesh)(unsafe.Pointer(&ptr))}
+	})
 }

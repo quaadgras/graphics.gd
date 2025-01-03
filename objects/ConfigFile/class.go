@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
@@ -252,7 +252,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConfigFile"))
-	return Instance{classdb.ConfigFile(object)}
+	return Instance{*(*classdb.ConfigFile)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -517,7 +517,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConfigFile", func(ptr gd.Object) any { return [1]classdb.ConfigFile{classdb.ConfigFile(ptr)} })
+	classdb.Register("ConfigFile", func(ptr gd.Object) any { return [1]classdb.ConfigFile{*(*classdb.ConfigFile)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

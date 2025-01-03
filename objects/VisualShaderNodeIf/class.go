@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This visual shader node has six input ports:
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeIf"))
-	return Instance{classdb.VisualShaderNodeIf(object)}
+	return Instance{*(*classdb.VisualShaderNodeIf)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeIf() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -76,5 +76,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeIf", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeIf{classdb.VisualShaderNodeIf(ptr)} })
+	classdb.Register("VisualShaderNodeIf", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeIf{*(*classdb.VisualShaderNodeIf)(unsafe.Pointer(&ptr))}
+	})
 }

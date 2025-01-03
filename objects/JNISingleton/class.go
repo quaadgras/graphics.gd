@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The JNISingleton is implemented only in the Android export. It's used to call methods and connect signals from an Android plugin written in Java or Kotlin. Methods and signals can be called and connected to the JNISingleton as if it is a Node. See [url=https://en.wikipedia.org/wiki/Java_Native_Interface]Java Native Interface - Wikipedia[/url] for more information.
@@ -37,7 +37,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JNISingleton"))
-	return Instance{classdb.JNISingleton(object)}
+	return Instance{*(*classdb.JNISingleton)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsJNISingleton() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -57,5 +57,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JNISingleton", func(ptr gd.Object) any { return [1]classdb.JNISingleton{classdb.JNISingleton(ptr)} })
+	classdb.Register("JNISingleton", func(ptr gd.Object) any {
+		return [1]classdb.JNISingleton{*(*classdb.JNISingleton)(unsafe.Pointer(&ptr))}
+	})
 }

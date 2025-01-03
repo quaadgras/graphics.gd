@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Returns the boolean result of the comparison between [code]INF[/code] or [code]NaN[/code] and a scalar parameter.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeIs"))
-	return Instance{classdb.VisualShaderNodeIs(object)}
+	return Instance{*(*classdb.VisualShaderNodeIs)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Function() classdb.VisualShaderNodeIsFunction {
@@ -99,7 +99,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VisualShaderNodeIs", func(ptr gd.Object) any { return [1]classdb.VisualShaderNodeIs{classdb.VisualShaderNodeIs(ptr)} })
+	classdb.Register("VisualShaderNodeIs", func(ptr gd.Object) any {
+		return [1]classdb.VisualShaderNodeIs{*(*classdb.VisualShaderNodeIs)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Function = classdb.VisualShaderNodeIsFunction

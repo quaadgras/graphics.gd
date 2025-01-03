@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Holds physics-related properties of a surface, namely its roughness and bounciness. This class is used to apply these properties to a physics body.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsMaterial"))
-	return Instance{classdb.PhysicsMaterial(object)}
+	return Instance{*(*classdb.PhysicsMaterial)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Friction() Float.X {
@@ -174,5 +174,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PhysicsMaterial", func(ptr gd.Object) any { return [1]classdb.PhysicsMaterial{classdb.PhysicsMaterial(ptr)} })
+	classdb.Register("PhysicsMaterial", func(ptr gd.Object) any {
+		return [1]classdb.PhysicsMaterial{*(*classdb.PhysicsMaterial)(unsafe.Pointer(&ptr))}
+	})
 }

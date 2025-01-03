@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 InputEventFromWindow represents events specifically received by windows. This includes mouse events, keyboard events in focused windows or touch screen actions.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventFromWindow"))
-	return Instance{classdb.InputEventFromWindow(object)}
+	return Instance{*(*classdb.InputEventFromWindow)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) WindowId() int {
@@ -99,5 +99,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventFromWindow", func(ptr gd.Object) any { return [1]classdb.InputEventFromWindow{classdb.InputEventFromWindow(ptr)} })
+	classdb.Register("InputEventFromWindow", func(ptr gd.Object) any {
+		return [1]classdb.InputEventFromWindow{*(*classdb.InputEventFromWindow)(unsafe.Pointer(&ptr))}
+	})
 }

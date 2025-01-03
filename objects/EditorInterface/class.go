@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -543,7 +543,7 @@ func (self class) GetCommandPalette() objects.EditorCommandPalette {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_command_palette, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorCommandPalette{classdb.EditorCommandPalette(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorCommandPalette{gd.PointerLifetimeBoundTo[classdb.EditorCommandPalette](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -556,7 +556,7 @@ func (self class) GetResourceFilesystem() objects.EditorFileSystem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_filesystem, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorFileSystem{classdb.EditorFileSystem(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorFileSystem{gd.PointerLifetimeBoundTo[classdb.EditorFileSystem](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -569,7 +569,7 @@ func (self class) GetEditorPaths() objects.EditorPaths {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorPaths{classdb.EditorPaths(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorPaths{gd.PointerLifetimeBoundTo[classdb.EditorPaths](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -582,7 +582,7 @@ func (self class) GetResourcePreviewer() objects.EditorResourcePreview {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_previewer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorResourcePreview{classdb.EditorResourcePreview(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorResourcePreview{gd.PointerLifetimeBoundTo[classdb.EditorResourcePreview](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -595,7 +595,7 @@ func (self class) GetSelection() objects.EditorSelection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorSelection{classdb.EditorSelection(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorSelection{gd.PointerLifetimeBoundTo[classdb.EditorSelection](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -608,7 +608,7 @@ func (self class) GetEditorSettings() objects.EditorSettings {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorSettings{classdb.EditorSettings(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.EditorSettings{gd.PointerWithOwnershipTransferredToGo[classdb.EditorSettings](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -664,7 +664,7 @@ func (self class) GetEditorTheme() objects.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Theme{classdb.Theme(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Theme{gd.PointerWithOwnershipTransferredToGo[classdb.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -678,7 +678,7 @@ func (self class) GetBaseControl() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_base_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.Control{gd.PointerLifetimeBoundTo[classdb.Control](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -693,7 +693,7 @@ func (self class) GetEditorMainScreen() objects.VBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_main_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VBoxContainer{classdb.VBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VBoxContainer{gd.PointerLifetimeBoundTo[classdb.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -707,7 +707,7 @@ func (self class) GetScriptEditor() objects.ScriptEditor {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_script_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ScriptEditor{classdb.ScriptEditor(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.ScriptEditor{gd.PointerLifetimeBoundTo[classdb.ScriptEditor](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -720,7 +720,7 @@ func (self class) GetEditorViewport2d() objects.SubViewport {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SubViewport{classdb.SubViewport(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.SubViewport{gd.PointerLifetimeBoundTo[classdb.SubViewport](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -734,7 +734,7 @@ func (self class) GetEditorViewport3d(idx gd.Int) objects.SubViewport {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SubViewport{classdb.SubViewport(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.SubViewport{gd.PointerLifetimeBoundTo[classdb.SubViewport](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -946,7 +946,7 @@ func (self class) GetFileSystemDock() objects.FileSystemDock {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_file_system_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.FileSystemDock{classdb.FileSystemDock(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.FileSystemDock{gd.PointerLifetimeBoundTo[classdb.FileSystemDock](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1011,7 +1011,7 @@ func (self class) GetInspector() objects.EditorInspector {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_inspector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorInspector{classdb.EditorInspector(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorInspector{gd.PointerLifetimeBoundTo[classdb.EditorInspector](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1114,7 +1114,7 @@ func (self class) GetEditedSceneRoot() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1263,7 +1263,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorInterface", func(ptr gd.Object) any { return [1]classdb.EditorInterface{classdb.EditorInterface(ptr)} })
+	classdb.Register("EditorInterface", func(ptr gd.Object) any {
+		return [1]classdb.EditorInterface{*(*classdb.EditorInterface)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

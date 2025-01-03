@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base resource that provides the functionality of exporting a release build of a project to a platform, from the editor. Stores platform-specific metadata such as the name and supported features of the platform, and performs the exporting of projects, PCK files, and ZIP files. Uses an export template for the platform provided at the time of project exporting.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatform"))
-	return Instance{classdb.EditorExportPlatform(object)}
+	return Instance{*(*classdb.EditorExportPlatform)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -79,5 +79,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorExportPlatform", func(ptr gd.Object) any { return [1]classdb.EditorExportPlatform{classdb.EditorExportPlatform(ptr)} })
+	classdb.Register("EditorExportPlatform", func(ptr gd.Object) any {
+		return [1]classdb.EditorExportPlatform{*(*classdb.EditorExportPlatform)(unsafe.Pointer(&ptr))}
+	})
 }

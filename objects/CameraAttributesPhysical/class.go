@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [CameraAttributesPhysical] is used to set rendering settings based on a physically-based camera's settings. It is responsible for exposure, auto-exposure, and depth of field.
@@ -50,7 +50,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraAttributesPhysical"))
-	return Instance{classdb.CameraAttributesPhysical(object)}
+	return Instance{*(*classdb.CameraAttributesPhysical)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FrustumFocusDistance() Float.X {
@@ -315,6 +315,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("CameraAttributesPhysical", func(ptr gd.Object) any {
-		return [1]classdb.CameraAttributesPhysical{classdb.CameraAttributesPhysical(ptr)}
+		return [1]classdb.CameraAttributesPhysical{*(*classdb.CameraAttributesPhysical)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
@@ -142,7 +142,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Resource"))
-	return Instance{classdb.Resource(object)}
+	return Instance{*(*classdb.Resource)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ResourceLocalToScene() bool {
@@ -288,7 +288,7 @@ func (self class) GetLocalScene() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_local_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -370,7 +370,7 @@ func (self class) Duplicate(subresources bool) objects.Resource {
 	callframe.Arg(frame, subresources)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -405,5 +405,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Resource", func(ptr gd.Object) any { return [1]classdb.Resource{classdb.Resource(ptr)} })
+	classdb.Register("Resource", func(ptr gd.Object) any { return [1]classdb.Resource{*(*classdb.Resource)(unsafe.Pointer(&ptr))} })
 }

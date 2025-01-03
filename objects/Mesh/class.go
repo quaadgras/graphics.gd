@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
@@ -353,7 +353,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Mesh"))
-	return Instance{classdb.Mesh(object)}
+	return Instance{*(*classdb.Mesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LightmapSizeHint() Vector2i.XY {
@@ -661,7 +661,7 @@ func (self class) SurfaceGetMaterial(surf_idx gd.Int) objects.Material {
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -674,7 +674,7 @@ func (self class) CreatePlaceholder() objects.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -687,7 +687,7 @@ func (self class) CreateTrimeshShape() objects.ConcavePolygonShape3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_trimesh_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ConcavePolygonShape3D{classdb.ConcavePolygonShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[classdb.ConcavePolygonShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -704,7 +704,7 @@ func (self class) CreateConvexShape(clean bool, simplify bool) objects.ConvexPol
 	callframe.Arg(frame, simplify)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_convex_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ConvexPolygonShape3D{classdb.ConvexPolygonShape3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ConvexPolygonShape3D{gd.PointerWithOwnershipTransferredToGo[classdb.ConvexPolygonShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -719,7 +719,7 @@ func (self class) CreateOutline(margin gd.Float) objects.Mesh {
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -732,7 +732,7 @@ func (self class) GenerateTriangleMesh() objects.TriangleMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TriangleMesh{classdb.TriangleMesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[classdb.TriangleMesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -817,7 +817,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Mesh", func(ptr gd.Object) any { return [1]classdb.Mesh{classdb.Mesh(ptr)} })
+	classdb.Register("Mesh", func(ptr gd.Object) any { return [1]classdb.Mesh{*(*classdb.Mesh)(unsafe.Pointer(&ptr))} })
 }
 
 type PrimitiveType = classdb.MeshPrimitiveType

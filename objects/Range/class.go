@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Range is an abstract base class for controls that represent a number within a range, using a configured [member step] and [member page] size. See e.g. [ScrollBar] and [Slider] for examples of higher-level nodes using Range.
@@ -79,7 +79,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Range"))
-	return Instance{classdb.Range(object)}
+	return Instance{*(*classdb.Range)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MinValue() Float.X {
@@ -438,5 +438,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Range", func(ptr gd.Object) any { return [1]classdb.Range{classdb.Range(ptr)} })
+	classdb.Register("Range", func(ptr gd.Object) any { return [1]classdb.Range{*(*classdb.Range)(unsafe.Pointer(&ptr))} })
 }

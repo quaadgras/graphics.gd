@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
@@ -229,7 +229,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTree"))
-	return Instance{classdb.SceneTree(object)}
+	return Instance{*(*classdb.SceneTree)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) AutoAcceptQuit() bool {
@@ -321,7 +321,7 @@ func (self class) GetRoot() objects.Window {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Window{classdb.Window(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Window{gd.PointerMustAssertInstanceID[classdb.Window](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -438,7 +438,7 @@ func (self class) IsDebuggingNavigationHint() bool {
 //go:nosplit
 func (self class) SetEditedSceneRoot(scene objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(scene[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(scene[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -449,7 +449,7 @@ func (self class) GetEditedSceneRoot() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -506,7 +506,7 @@ func (self class) CreateTimer(time_sec gd.Float, process_always bool, process_in
 	callframe.Arg(frame, ignore_time_scale)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_create_timer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SceneTreeTimer{classdb.SceneTreeTimer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SceneTreeTimer{gd.PointerWithOwnershipTransferredToGo[classdb.SceneTreeTimer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -520,7 +520,7 @@ func (self class) CreateTween() objects.Tween {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Tween{classdb.Tween(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Tween{gd.PointerWithOwnershipTransferredToGo[classdb.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -692,7 +692,7 @@ func (self class) GetFirstNodeInGroup(group gd.StringName) objects.Node {
 	callframe.Arg(frame, pointers.Get(group))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_first_node_in_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -714,7 +714,7 @@ func (self class) GetNodeCountInGroup(group gd.StringName) gd.Int {
 //go:nosplit
 func (self class) SetCurrentScene(child_node objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(child_node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child_node[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_current_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -725,7 +725,7 @@ func (self class) GetCurrentScene() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_current_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -813,7 +813,7 @@ func (self class) GetMultiplayer(for_path gd.NodePath) objects.MultiplayerAPI {
 	callframe.Arg(frame, pointers.Get(for_path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.MultiplayerAPI{classdb.MultiplayerAPI(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[classdb.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -891,7 +891,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneTree", func(ptr gd.Object) any { return [1]classdb.SceneTree{classdb.SceneTree(ptr)} })
+	classdb.Register("SceneTree", func(ptr gd.Object) any { return [1]classdb.SceneTree{*(*classdb.SceneTree)(unsafe.Pointer(&ptr))} })
 }
 
 type GroupCallFlags = classdb.SceneTreeGroupCallFlags

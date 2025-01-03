@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
@@ -86,7 +86,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRPositionalTracker"))
-	return Instance{classdb.XRPositionalTracker(object)}
+	return Instance{*(*classdb.XRPositionalTracker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Profile() string {
@@ -166,7 +166,7 @@ func (self class) GetPose(name gd.StringName) objects.XRPose {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRPose{classdb.XRPose(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRPose{gd.PointerWithOwnershipTransferredToGo[classdb.XRPose](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -278,7 +278,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRPositionalTracker", func(ptr gd.Object) any { return [1]classdb.XRPositionalTracker{classdb.XRPositionalTracker(ptr)} })
+	classdb.Register("XRPositionalTracker", func(ptr gd.Object) any {
+		return [1]classdb.XRPositionalTracker{*(*classdb.XRPositionalTracker)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TrackerHand = classdb.XRPositionalTrackerTrackerHand

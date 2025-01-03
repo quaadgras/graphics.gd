@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Container for parsed source geometry data used in navigation mesh baking.
@@ -103,7 +103,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationMeshSourceGeometryData2D"))
-	return Instance{classdb.NavigationMeshSourceGeometryData2D(object)}
+	return Instance{*(*classdb.NavigationMeshSourceGeometryData2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TraversableOutlines() gd.Array {
@@ -350,6 +350,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("NavigationMeshSourceGeometryData2D", func(ptr gd.Object) any {
-		return [1]classdb.NavigationMeshSourceGeometryData2D{classdb.NavigationMeshSourceGeometryData2D(ptr)}
+		return [1]classdb.NavigationMeshSourceGeometryData2D{*(*classdb.NavigationMeshSourceGeometryData2D)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
@@ -103,7 +103,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPaths"))
-	return Instance{classdb.EditorPaths(object)}
+	return Instance{*(*classdb.EditorPaths)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -222,5 +222,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorPaths", func(ptr gd.Object) any { return [1]classdb.EditorPaths{classdb.EditorPaths(ptr)} })
+	classdb.Register("EditorPaths", func(ptr gd.Object) any { return [1]classdb.EditorPaths{*(*classdb.EditorPaths)(unsafe.Pointer(&ptr))} })
 }

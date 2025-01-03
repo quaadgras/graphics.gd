@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A physics joint that restricts the movement of two 2D physics bodies to a fixed axis. For example, a [StaticBody2D] representing a piston base can be attached to a [RigidBody2D] representing the piston head, moving up and down.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GrooveJoint2D"))
-	return Instance{classdb.GrooveJoint2D(object)}
+	return Instance{*(*classdb.GrooveJoint2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Length() Float.X {
@@ -129,5 +129,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GrooveJoint2D", func(ptr gd.Object) any { return [1]classdb.GrooveJoint2D{classdb.GrooveJoint2D(ptr)} })
+	classdb.Register("GrooveJoint2D", func(ptr gd.Object) any {
+		return [1]classdb.GrooveJoint2D{*(*classdb.GrooveJoint2D)(unsafe.Pointer(&ptr))}
+	})
 }

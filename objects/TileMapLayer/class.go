@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Node for 2D tile-based maps. A [TileMapLayer] uses a [TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [TileMap] node, which is deprecated, [TileMapLayer] has only one layer of tiles. You can use several [TileMapLayer] to achieve the same result as a [TileMap] node.
@@ -298,7 +298,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileMapLayer"))
-	return Instance{classdb.TileMapLayer(object)}
+	return Instance{*(*classdb.TileMapLayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TileMapData() []byte {
@@ -532,7 +532,7 @@ func (self class) GetCellTileData(coords gd.Vector2i) objects.TileData {
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TileData{classdb.TileData(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TileData{gd.PointerWithOwnershipTransferredToGo[classdb.TileData](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -590,7 +590,7 @@ func (self class) GetPattern(coords_array gd.Array) objects.TileMapPattern {
 	callframe.Arg(frame, pointers.Get(coords_array))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TileMapPattern{classdb.TileMapPattern(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[classdb.TileMapPattern](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -822,7 +822,7 @@ func (self class) GetTileSet() objects.TileSet {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.TileSet{classdb.TileSet(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.TileSet{gd.PointerWithOwnershipTransferredToGo[classdb.TileSet](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1043,7 +1043,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TileMapLayer", func(ptr gd.Object) any { return [1]classdb.TileMapLayer{classdb.TileMapLayer(ptr)} })
+	classdb.Register("TileMapLayer", func(ptr gd.Object) any {
+		return [1]classdb.TileMapLayer{*(*classdb.TileMapLayer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DebugVisibilityMode = classdb.TileMapLayerDebugVisibilityMode

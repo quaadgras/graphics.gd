@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. This can be used to listen from a location different from the [Camera3D].
@@ -69,7 +69,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioListener3D"))
-	return Instance{classdb.AudioListener3D(object)}
+	return Instance{*(*classdb.AudioListener3D)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -141,5 +141,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioListener3D", func(ptr gd.Object) any { return [1]classdb.AudioListener3D{classdb.AudioListener3D(ptr)} })
+	classdb.Register("AudioListener3D", func(ptr gd.Object) any {
+		return [1]classdb.AudioListener3D{*(*classdb.AudioListener3D)(unsafe.Pointer(&ptr))}
+	})
 }

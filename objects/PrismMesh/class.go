@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Class representing a prism-shaped [PrimitiveMesh].
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PrismMesh"))
-	return Instance{classdb.PrismMesh(object)}
+	return Instance{*(*classdb.PrismMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LeftToRight() Float.X {
@@ -212,5 +212,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PrismMesh", func(ptr gd.Object) any { return [1]classdb.PrismMesh{classdb.PrismMesh(ptr)} })
+	classdb.Register("PrismMesh", func(ptr gd.Object) any { return [1]classdb.PrismMesh{*(*classdb.PrismMesh)(unsafe.Pointer(&ptr))} })
 }

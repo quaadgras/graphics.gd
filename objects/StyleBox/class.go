@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [StyleBox] is an abstract base class for drawing stylized boxes for UI elements. It is used for panels, buttons, [LineEdit] backgrounds, [Tree] backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a [StyleBox] assigned as mask to a control, clicks and motion signals will go through it to the one below.
@@ -139,7 +139,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBox"))
-	return Instance{classdb.StyleBox(object)}
+	return Instance{*(*classdb.StyleBox)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ContentMarginLeft() Float.X {
@@ -315,7 +315,7 @@ func (self class) GetCurrentItemDrawn() objects.CanvasItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBox.Bind_get_current_item_drawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CanvasItem{classdb.CanvasItem(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.CanvasItem{gd.PointerMustAssertInstanceID[classdb.CanvasItem](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -375,7 +375,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBox", func(ptr gd.Object) any { return [1]classdb.StyleBox{classdb.StyleBox(ptr)} })
+	classdb.Register("StyleBox", func(ptr gd.Object) any { return [1]classdb.StyleBox{*(*classdb.StyleBox)(unsafe.Pointer(&ptr))} })
 }
 
 type Side int

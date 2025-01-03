@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
@@ -125,7 +125,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeStateMachinePlayback"))
-	return Instance{classdb.AnimationNodeStateMachinePlayback(object)}
+	return Instance{*(*classdb.AnimationNodeStateMachinePlayback)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -288,6 +288,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AnimationNodeStateMachinePlayback", func(ptr gd.Object) any {
-		return [1]classdb.AnimationNodeStateMachinePlayback{classdb.AnimationNodeStateMachinePlayback(ptr)}
+		return [1]classdb.AnimationNodeStateMachinePlayback{*(*classdb.AnimationNodeStateMachinePlayback)(unsafe.Pointer(&ptr))}
 	})
 }

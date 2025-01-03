@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Creates a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] using scalar values that can be provided from separate inputs.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorCompose"))
-	return Instance{classdb.VisualShaderNodeVectorCompose(object)}
+	return Instance{*(*classdb.VisualShaderNodeVectorCompose)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeVectorCompose() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVectorCompose", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVectorCompose{classdb.VisualShaderNodeVectorCompose(ptr)}
+		return [1]classdb.VisualShaderNodeVectorCompose{*(*classdb.VisualShaderNodeVectorCompose)(unsafe.Pointer(&ptr))}
 	})
 }

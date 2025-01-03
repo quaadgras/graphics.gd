@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.
@@ -519,7 +519,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasItem"))
-	return Instance{classdb.CanvasItem(object)}
+	return Instance{*(*classdb.CanvasItem)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Visible() bool {
@@ -1573,7 +1573,7 @@ func (self class) GetCanvasLayerNode() objects.CanvasLayer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.CanvasLayer{classdb.CanvasLayer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.CanvasLayer{gd.PointerWithOwnershipTransferredToGo[classdb.CanvasLayer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1586,7 +1586,7 @@ func (self class) GetWorld2d() objects.World2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World2D{classdb.World2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World2D{gd.PointerWithOwnershipTransferredToGo[classdb.World2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1605,7 +1605,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1713,7 +1713,7 @@ func (self class) MakeInputLocal(event objects.InputEvent) objects.InputEvent {
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_input_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.InputEvent{classdb.InputEvent(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.InputEvent{gd.PointerWithOwnershipTransferredToGo[classdb.InputEvent](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1859,7 +1859,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CanvasItem", func(ptr gd.Object) any { return [1]classdb.CanvasItem{classdb.CanvasItem(ptr)} })
+	classdb.Register("CanvasItem", func(ptr gd.Object) any { return [1]classdb.CanvasItem{*(*classdb.CanvasItem)(unsafe.Pointer(&ptr))} })
 }
 
 type TextureFilter = classdb.CanvasItemTextureFilter

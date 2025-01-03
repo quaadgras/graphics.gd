@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
@@ -194,7 +194,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebXRInterface"))
-	return Instance{classdb.WebXRInterface(object)}
+	return Instance{*(*classdb.WebXRInterface)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SessionMode() string {
@@ -382,7 +382,7 @@ func (self class) GetInputSourceTracker(input_source_id gd.Int) objects.XRContro
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_input_source_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.XRControllerTracker{classdb.XRControllerTracker(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.XRControllerTracker{gd.PointerWithOwnershipTransferredToGo[classdb.XRControllerTracker](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -526,7 +526,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WebXRInterface", func(ptr gd.Object) any { return [1]classdb.WebXRInterface{classdb.WebXRInterface(ptr)} })
+	classdb.Register("WebXRInterface", func(ptr gd.Object) any {
+		return [1]classdb.WebXRInterface{*(*classdb.WebXRInterface)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TargetRayMode = classdb.WebXRInterfaceTargetRayMode

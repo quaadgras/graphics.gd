@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A hand tracking system will create an instance of this object and add it to the [XRServer]. This tracking system will then obtain skeleton data, convert it to the Godot Humanoid hand skeleton and store this data on the [XRHandTracker] object.
@@ -113,7 +113,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRHandTracker"))
-	return Instance{classdb.XRHandTracker(object)}
+	return Instance{*(*classdb.XRHandTracker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) HasTrackingData() bool {
@@ -335,7 +335,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRHandTracker", func(ptr gd.Object) any { return [1]classdb.XRHandTracker{classdb.XRHandTracker(ptr)} })
+	classdb.Register("XRHandTracker", func(ptr gd.Object) any {
+		return [1]classdb.XRHandTracker{*(*classdb.XRHandTracker)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type HandTrackingSource = classdb.XRHandTrackerHandTrackingSource

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Input event type for gamepad buttons. For gamepad analog sticks and joysticks, see [InputEventJoypadMotion].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventJoypadButton"))
-	return Instance{classdb.InputEventJoypadButton(object)}
+	return Instance{*(*classdb.InputEventJoypadButton)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ButtonIndex() JoyButton {
@@ -142,7 +142,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventJoypadButton", func(ptr gd.Object) any { return [1]classdb.InputEventJoypadButton{classdb.InputEventJoypadButton(ptr)} })
+	classdb.Register("InputEventJoypadButton", func(ptr gd.Object) any {
+		return [1]classdb.InputEventJoypadButton{*(*classdb.InputEventJoypadButton)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type JoyButton int

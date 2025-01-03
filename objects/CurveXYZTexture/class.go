@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 1D texture where the red, green, and blue color channels correspond to points on 3 [Curve] resources. Compared to using separate [CurveTexture]s, this further simplifies the task of saving curves as image files.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CurveXYZTexture"))
-	return Instance{classdb.CurveXYZTexture(object)}
+	return Instance{*(*classdb.CurveXYZTexture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SetWidth(value int) {
@@ -95,7 +95,7 @@ func (self class) GetCurveX() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -114,7 +114,7 @@ func (self class) GetCurveY() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -133,7 +133,7 @@ func (self class) GetCurveZ() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -172,5 +172,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CurveXYZTexture", func(ptr gd.Object) any { return [1]classdb.CurveXYZTexture{classdb.CurveXYZTexture(ptr)} })
+	classdb.Register("CurveXYZTexture", func(ptr gd.Object) any {
+		return [1]classdb.CurveXYZTexture{*(*classdb.CurveXYZTexture)(unsafe.Pointer(&ptr))}
+	})
 }

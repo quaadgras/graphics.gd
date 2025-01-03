@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [MarginContainer] adds an adjustable margin on each side of its child controls. The margins are added around all children, not around each individual one. To control the [MarginContainer]'s margins, use the [code]margin_*[/code] theme properties listed below.
@@ -60,7 +60,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MarginContainer"))
-	return Instance{classdb.MarginContainer(object)}
+	return Instance{*(*classdb.MarginContainer)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsMarginContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -98,5 +98,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MarginContainer", func(ptr gd.Object) any { return [1]classdb.MarginContainer{classdb.MarginContainer(ptr)} })
+	classdb.Register("MarginContainer", func(ptr gd.Object) any {
+		return [1]classdb.MarginContainer{*(*classdb.MarginContainer)(unsafe.Pointer(&ptr))}
+	})
 }

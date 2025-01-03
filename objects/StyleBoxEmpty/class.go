@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An empty [StyleBox] that can be used to display nothing instead of the default style (e.g. it can "disable" [code]focus[/code] styles).
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBoxEmpty"))
-	return Instance{classdb.StyleBoxEmpty(object)}
+	return Instance{*(*classdb.StyleBoxEmpty)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsStyleBoxEmpty() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -73,5 +73,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxEmpty", func(ptr gd.Object) any { return [1]classdb.StyleBoxEmpty{classdb.StyleBoxEmpty(ptr)} })
+	classdb.Register("StyleBoxEmpty", func(ptr gd.Object) any {
+		return [1]classdb.StyleBoxEmpty{*(*classdb.StyleBoxEmpty)(unsafe.Pointer(&ptr))}
+	})
 }

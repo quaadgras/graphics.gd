@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -1293,7 +1293,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Input", func(ptr gd.Object) any { return [1]classdb.Input{classdb.Input(ptr)} })
+	classdb.Register("Input", func(ptr gd.Object) any { return [1]classdb.Input{*(*classdb.Input)(unsafe.Pointer(&ptr))} })
 }
 
 type MouseModeValue = classdb.InputMouseMode

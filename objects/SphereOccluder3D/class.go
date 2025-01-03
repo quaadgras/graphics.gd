@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [SphereOccluder3D] stores a sphere shape that can be used by the engine's occlusion culling system.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SphereOccluder3D"))
-	return Instance{classdb.SphereOccluder3D(object)}
+	return Instance{*(*classdb.SphereOccluder3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Radius() Float.X {
@@ -101,5 +101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SphereOccluder3D", func(ptr gd.Object) any { return [1]classdb.SphereOccluder3D{classdb.SphereOccluder3D(ptr)} })
+	classdb.Register("SphereOccluder3D", func(ptr gd.Object) any {
+		return [1]classdb.SphereOccluder3D{*(*classdb.SphereOccluder3D)(unsafe.Pointer(&ptr))}
+	})
 }

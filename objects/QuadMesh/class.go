@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Class representing a square [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Y axes; this rotation is more suited for use with billboarded materials. A [QuadMesh] is equivalent to a [PlaneMesh] except its default [member PlaneMesh.orientation] is [constant PlaneMesh.FACE_Z].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("QuadMesh"))
-	return Instance{classdb.QuadMesh(object)}
+	return Instance{*(*classdb.QuadMesh)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsQuadMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -83,5 +83,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("QuadMesh", func(ptr gd.Object) any { return [1]classdb.QuadMesh{classdb.QuadMesh(ptr)} })
+	classdb.Register("QuadMesh", func(ptr gd.Object) any { return [1]classdb.QuadMesh{*(*classdb.QuadMesh)(unsafe.Pointer(&ptr))} })
 }

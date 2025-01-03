@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 3D world boundary shape, intended for use in physics. [WorldBoundaryShape3D] works like an infinite plane that forces all physics bodies to stay above it. The [member plane]'s normal determines which direction is considered as "above" and in the editor, the line over the plane represents this direction. It can for example be used for endless flat floors.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WorldBoundaryShape3D"))
-	return Instance{classdb.WorldBoundaryShape3D(object)}
+	return Instance{*(*classdb.WorldBoundaryShape3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Plane() Plane.NormalD {
@@ -98,5 +98,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("WorldBoundaryShape3D", func(ptr gd.Object) any { return [1]classdb.WorldBoundaryShape3D{classdb.WorldBoundaryShape3D(ptr)} })
+	classdb.Register("WorldBoundaryShape3D", func(ptr gd.Object) any {
+		return [1]classdb.WorldBoundaryShape3D{*(*classdb.WorldBoundaryShape3D)(unsafe.Pointer(&ptr))}
+	})
 }

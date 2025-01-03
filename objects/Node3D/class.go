@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
@@ -307,7 +307,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node3D"))
-	return Instance{classdb.Node3D(object)}
+	return Instance{*(*classdb.Node3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Transform() Transform3D.BasisOrigin {
@@ -721,7 +721,7 @@ func (self class) GetParentNode3d() objects.Node3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_parent_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node3D{classdb.Node3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node3D{gd.PointerMustAssertInstanceID[classdb.Node3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -790,7 +790,7 @@ func (self class) GetWorld3d() objects.World3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World3D{classdb.World3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World3D{gd.PointerWithOwnershipTransferredToGo[classdb.World3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1244,7 +1244,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Node3D", func(ptr gd.Object) any { return [1]classdb.Node3D{classdb.Node3D(ptr)} })
+	classdb.Register("Node3D", func(ptr gd.Object) any { return [1]classdb.Node3D{*(*classdb.Node3D)(unsafe.Pointer(&ptr))} })
 }
 
 type RotationEditMode = classdb.Node3DRotationEditMode

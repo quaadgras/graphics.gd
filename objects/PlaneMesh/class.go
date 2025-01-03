@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Class representing a planar [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Z axes; this default rotation isn't suited for use with billboarded materials. For billboarded materials, change [member orientation] to [constant FACE_Z].
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaneMesh"))
-	return Instance{classdb.PlaneMesh(object)}
+	return Instance{*(*classdb.PlaneMesh)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector2.XY {
@@ -213,7 +213,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PlaneMesh", func(ptr gd.Object) any { return [1]classdb.PlaneMesh{classdb.PlaneMesh(ptr)} })
+	classdb.Register("PlaneMesh", func(ptr gd.Object) any { return [1]classdb.PlaneMesh{*(*classdb.PlaneMesh)(unsafe.Pointer(&ptr))} })
 }
 
 type Orientation = classdb.PlaneMeshOrientation

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Returns falloff based on the dot product of surface normal and view direction of camera (pass associated inputs to it).
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFresnel"))
-	return Instance{classdb.VisualShaderNodeFresnel(object)}
+	return Instance{*(*classdb.VisualShaderNodeFresnel)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeFresnel() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -76,6 +76,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeFresnel", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeFresnel{classdb.VisualShaderNodeFresnel(ptr)}
+		return [1]classdb.VisualShaderNodeFresnel{*(*classdb.VisualShaderNodeFresnel)(unsafe.Pointer(&ptr))}
 	})
 }

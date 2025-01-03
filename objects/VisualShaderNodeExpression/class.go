@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Custom Godot Shading Language expression, with a custom number of input and output ports.
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeExpression"))
-	return Instance{classdb.VisualShaderNodeExpression(object)}
+	return Instance{*(*classdb.VisualShaderNodeExpression)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Expression() string {
@@ -119,6 +119,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeExpression", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeExpression{classdb.VisualShaderNodeExpression(ptr)}
+		return [1]classdb.VisualShaderNodeExpression{*(*classdb.VisualShaderNodeExpression)(unsafe.Pointer(&ptr))}
 	})
 }

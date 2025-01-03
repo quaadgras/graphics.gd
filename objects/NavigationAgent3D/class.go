@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 3D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
@@ -179,7 +179,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationAgent3D"))
-	return Instance{classdb.NavigationAgent3D(object)}
+	return Instance{*(*classdb.NavigationAgent3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TargetPosition() Vector3.XYZ {
@@ -943,7 +943,7 @@ func (self class) GetCurrentNavigationResult() objects.NavigationPathQueryResult
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_result, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.NavigationPathQueryResult3D{classdb.NavigationPathQueryResult3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.NavigationPathQueryResult3D{gd.PointerWithOwnershipTransferredToGo[classdb.NavigationPathQueryResult3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1256,5 +1256,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationAgent3D", func(ptr gd.Object) any { return [1]classdb.NavigationAgent3D{classdb.NavigationAgent3D(ptr)} })
+	classdb.Register("NavigationAgent3D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationAgent3D{*(*classdb.NavigationAgent3D)(unsafe.Pointer(&ptr))}
+	})
 }

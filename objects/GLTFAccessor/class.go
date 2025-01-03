@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 GLTFAccessor is a data structure representing GLTF a [code]accessor[/code] that would be found in the [code]"accessors"[/code] array. A buffer is a blob of binary data. A buffer view is a slice of a buffer. An accessor is a typed interpretation of the data in a buffer view.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFAccessor"))
-	return Instance{classdb.GLTFAccessor(object)}
+	return Instance{*(*classdb.GLTFAccessor)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BufferView() int {
@@ -471,7 +471,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GLTFAccessor", func(ptr gd.Object) any { return [1]classdb.GLTFAccessor{classdb.GLTFAccessor(ptr)} })
+	classdb.Register("GLTFAccessor", func(ptr gd.Object) any {
+		return [1]classdb.GLTFAccessor{*(*classdb.GLTFAccessor)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type GLTFAccessorType = classdb.GLTFAccessorGLTFAccessorType

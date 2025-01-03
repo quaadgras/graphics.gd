@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for [CompressedTexture2DArray] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [TextureLayered].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedTextureLayered"))
-	return Instance{classdb.CompressedTextureLayered(object)}
+	return Instance{*(*classdb.CompressedTextureLayered)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) LoadPath() string {
@@ -112,7 +112,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("CompressedTextureLayered", func(ptr gd.Object) any {
-		return [1]classdb.CompressedTextureLayered{classdb.CompressedTextureLayered(ptr)}
+		return [1]classdb.CompressedTextureLayered{*(*classdb.CompressedTextureLayered)(unsafe.Pointer(&ptr))}
 	})
 }
 

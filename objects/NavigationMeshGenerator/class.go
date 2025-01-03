@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is responsible for creating and clearing 3D navigation meshes used as [NavigationMesh] resources inside [NavigationRegion3D]. The [NavigationMeshGenerator] has very limited to no use for 2D as the navigation mesh baking process expects 3D node types and 3D source geometry to parse.
@@ -137,6 +137,6 @@ func (self class) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("NavigationMeshGenerator", func(ptr gd.Object) any {
-		return [1]classdb.NavigationMeshGenerator{classdb.NavigationMeshGenerator(ptr)}
+		return [1]classdb.NavigationMeshGenerator{*(*classdb.NavigationMeshGenerator)(unsafe.Pointer(&ptr))}
 	})
 }

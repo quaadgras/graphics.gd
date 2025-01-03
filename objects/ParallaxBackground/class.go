@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a parallax effect. Each [ParallaxLayer] can move at a different speed using [member ParallaxLayer.motion_offset]. This creates an illusion of depth in a 2D game. If not used with a [Camera2D], you must manually calculate the [member scroll_offset].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ParallaxBackground"))
-	return Instance{classdb.ParallaxBackground(object)}
+	return Instance{*(*classdb.ParallaxBackground)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ScrollOffset() Vector2.XY {
@@ -230,5 +230,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ParallaxBackground", func(ptr gd.Object) any { return [1]classdb.ParallaxBackground{classdb.ParallaxBackground(ptr)} })
+	classdb.Register("ParallaxBackground", func(ptr gd.Object) any {
+		return [1]classdb.ParallaxBackground{*(*classdb.ParallaxBackground)(unsafe.Pointer(&ptr))}
+	})
 }

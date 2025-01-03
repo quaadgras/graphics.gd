@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
@@ -280,7 +280,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("IP", func(ptr gd.Object) any { return [1]classdb.IP{classdb.IP(ptr)} })
+	classdb.Register("IP", func(ptr gd.Object) any { return [1]classdb.IP{*(*classdb.IP)(unsafe.Pointer(&ptr))} })
 }
 
 type ResolverStatus = classdb.IPResolverStatus

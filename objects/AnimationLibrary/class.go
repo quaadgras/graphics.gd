@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An animation library stores a set of animations accessible through [StringName] keys, for use with [AnimationPlayer] nodes.
@@ -80,7 +80,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationLibrary"))
-	return Instance{classdb.AnimationLibrary(object)}
+	return Instance{*(*classdb.AnimationLibrary)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -146,7 +146,7 @@ func (self class) GetAnimation(name gd.StringName) objects.Animation {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Animation{classdb.Animation(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Animation{gd.PointerWithOwnershipTransferredToGo[classdb.Animation](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -204,7 +204,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationLibrary", func(ptr gd.Object) any { return [1]classdb.AnimationLibrary{classdb.AnimationLibrary(ptr)} })
+	classdb.Register("AnimationLibrary", func(ptr gd.Object) any {
+		return [1]classdb.AnimationLibrary{*(*classdb.AnimationLibrary)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap and are restricted to a plane projection. This means the y-axis of the vertices is ignored, instead the obstacle's global y-axis position is used for placement. The projected shape is extruded by the obstacles height along the y-axis.
@@ -79,7 +79,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationObstacle3D"))
-	return Instance{classdb.NavigationObstacle3D(object)}
+	return Instance{*(*classdb.NavigationObstacle3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Radius() Float.X {
@@ -410,5 +410,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("NavigationObstacle3D", func(ptr gd.Object) any { return [1]classdb.NavigationObstacle3D{classdb.NavigationObstacle3D(ptr)} })
+	classdb.Register("NavigationObstacle3D", func(ptr gd.Object) any {
+		return [1]classdb.NavigationObstacle3D{*(*classdb.NavigationObstacle3D)(unsafe.Pointer(&ptr))}
+	})
 }

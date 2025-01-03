@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A directional light is a type of [Light2D] node that models an infinite number of parallel rays covering the entire scene. It is used for lights with strong intensity that are located far away from the scene (for example: to model sunlight or moonlight).
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirectionalLight2D"))
-	return Instance{classdb.DirectionalLight2D(object)}
+	return Instance{*(*classdb.DirectionalLight2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) MaxDistance() Float.X {
@@ -103,5 +103,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("DirectionalLight2D", func(ptr gd.Object) any { return [1]classdb.DirectionalLight2D{classdb.DirectionalLight2D(ptr)} })
+	classdb.Register("DirectionalLight2D", func(ptr gd.Object) any {
+		return [1]classdb.DirectionalLight2D{*(*classdb.DirectionalLight2D)(unsafe.Pointer(&ptr))}
+	})
 }

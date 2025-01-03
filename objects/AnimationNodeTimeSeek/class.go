@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This animation node can be used to cause a seek command to happen to any sub-children of the animation graph. Use to play an [Animation] from the start or a certain playback position inside the [AnimationNodeBlendTree].
@@ -60,7 +60,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeTimeSeek"))
-	return Instance{classdb.AnimationNodeTimeSeek(object)}
+	return Instance{*(*classdb.AnimationNodeTimeSeek)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAnimationNodeTimeSeek() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -94,5 +94,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeTimeSeek", func(ptr gd.Object) any { return [1]classdb.AnimationNodeTimeSeek{classdb.AnimationNodeTimeSeek(ptr)} })
+	classdb.Register("AnimationNodeTimeSeek", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeTimeSeek{*(*classdb.AnimationNodeTimeSeek)(unsafe.Pointer(&ptr))}
+	})
 }

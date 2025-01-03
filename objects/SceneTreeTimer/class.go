@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A one-shot timer managed by the scene tree, which emits [signal timeout] on completion. See also [method SceneTree.create_timer].
@@ -61,7 +61,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTreeTimer"))
-	return Instance{classdb.SceneTreeTimer(object)}
+	return Instance{*(*classdb.SceneTreeTimer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) TimeLeft() Float.X {
@@ -113,5 +113,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SceneTreeTimer", func(ptr gd.Object) any { return [1]classdb.SceneTreeTimer{classdb.SceneTreeTimer(ptr)} })
+	classdb.Register("SceneTreeTimer", func(ptr gd.Object) any {
+		return [1]classdb.SceneTreeTimer{*(*classdb.SceneTreeTimer)(unsafe.Pointer(&ptr))}
+	})
 }

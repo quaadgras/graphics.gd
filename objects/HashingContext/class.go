@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
@@ -113,7 +113,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HashingContext"))
-	return Instance{classdb.HashingContext(object)}
+	return Instance{*(*classdb.HashingContext)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -175,7 +175,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HashingContext", func(ptr gd.Object) any { return [1]classdb.HashingContext{classdb.HashingContext(ptr)} })
+	classdb.Register("HashingContext", func(ptr gd.Object) any {
+		return [1]classdb.HashingContext{*(*classdb.HashingContext)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type HashType = classdb.HashingContextHashType

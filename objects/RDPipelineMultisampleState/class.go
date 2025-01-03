@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [RDPipelineMultisampleState] is used to control how multisample or supersample antialiasing is being performed when rendering using [RenderingDevice].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDPipelineMultisampleState"))
-	return Instance{classdb.RDPipelineMultisampleState(object)}
+	return Instance{*(*classdb.RDPipelineMultisampleState)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SampleCount() classdb.RenderingDeviceTextureSamples {
@@ -226,6 +226,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("RDPipelineMultisampleState", func(ptr gd.Object) any {
-		return [1]classdb.RDPipelineMultisampleState{classdb.RDPipelineMultisampleState(ptr)}
+		return [1]classdb.RDPipelineMultisampleState{*(*classdb.RDPipelineMultisampleState)(unsafe.Pointer(&ptr))}
 	})
 }

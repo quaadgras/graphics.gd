@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Inputs a value to a varying defined in the shader. You need to first create a varying that can be used in the given function, e.g. varying setter in Fragment shader requires a varying with mode set to [constant VisualShader.VARYING_MODE_FRAG_TO_LIGHT].
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVaryingSetter"))
-	return Instance{classdb.VisualShaderNodeVaryingSetter(object)}
+	return Instance{*(*classdb.VisualShaderNodeVaryingSetter)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeVaryingSetter() Advanced {
@@ -85,6 +85,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeVaryingSetter", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeVaryingSetter{classdb.VisualShaderNodeVaryingSetter(ptr)}
+		return [1]classdb.VisualShaderNodeVaryingSetter{*(*classdb.VisualShaderNodeVaryingSetter)(unsafe.Pointer(&ptr))}
 	})
 }

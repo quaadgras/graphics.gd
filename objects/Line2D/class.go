@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node draws a 2D polyline, i.e. a shape consisting of several points connected by segments. [Line2D] is not a mathematical polyline, i.e. the segments are not infinitely thin. It is intended for rendering and it can be colored and optionally textured.
@@ -88,7 +88,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Line2D"))
-	return Instance{classdb.Line2D(object)}
+	return Instance{*(*classdb.Line2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Points() []Vector2.XY {
@@ -351,7 +351,7 @@ func (self class) GetCurve() objects.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve{classdb.Curve(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve{gd.PointerWithOwnershipTransferredToGo[classdb.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -389,7 +389,7 @@ func (self class) GetGradient() objects.Gradient {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Gradient{classdb.Gradient(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Gradient{gd.PointerWithOwnershipTransferredToGo[classdb.Gradient](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -408,7 +408,7 @@ func (self class) GetTexture() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -572,7 +572,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Line2D", func(ptr gd.Object) any { return [1]classdb.Line2D{classdb.Line2D(ptr)} })
+	classdb.Register("Line2D", func(ptr gd.Object) any { return [1]classdb.Line2D{*(*classdb.Line2D)(unsafe.Pointer(&ptr))} })
 }
 
 type LineJointMode = classdb.Line2DLineJointMode

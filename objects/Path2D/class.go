@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Can have [PathFollow2D] child nodes moving along the [Curve2D]. See [PathFollow2D] for more information on usage.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Path2D"))
-	return Instance{classdb.Path2D(object)}
+	return Instance{*(*classdb.Path2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Curve() objects.Curve2D {
@@ -66,7 +66,7 @@ func (self class) GetCurve() objects.Curve2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path2D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Curve2D{classdb.Curve2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Curve2D{gd.PointerWithOwnershipTransferredToGo[classdb.Curve2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -97,5 +97,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Path2D", func(ptr gd.Object) any { return [1]classdb.Path2D{classdb.Path2D(ptr)} })
+	classdb.Register("Path2D", func(ptr gd.Object) any { return [1]classdb.Path2D{*(*classdb.Path2D)(unsafe.Pointer(&ptr))} })
 }

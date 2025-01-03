@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Similar to [EditorResourcePicker] this [Control] node is used in the editor's Inspector dock, but only to edit the [code]script[/code] property of a [Node]. Default options for creating new resources of all possible subtypes are replaced with dedicated buttons that open the "Attach Node Script" dialog. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScriptPicker"))
-	return Instance{classdb.EditorScriptPicker(object)}
+	return Instance{*(*classdb.EditorScriptPicker)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ScriptOwner() objects.Node {
@@ -59,7 +59,7 @@ func (self Instance) SetScriptOwner(value objects.Node) {
 //go:nosplit
 func (self class) SetScriptOwner(owner_node objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(owner_node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScriptPicker.Bind_set_script_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -70,7 +70,7 @@ func (self class) GetScriptOwner() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScriptPicker.Bind_get_script_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -127,5 +127,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorScriptPicker", func(ptr gd.Object) any { return [1]classdb.EditorScriptPicker{classdb.EditorScriptPicker(ptr)} })
+	classdb.Register("EditorScriptPicker", func(ptr gd.Object) any {
+		return [1]classdb.EditorScriptPicker{*(*classdb.EditorScriptPicker)(unsafe.Pointer(&ptr))}
+	})
 }

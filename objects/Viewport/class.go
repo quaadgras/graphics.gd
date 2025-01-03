@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
@@ -269,7 +269,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Viewport"))
-	return Instance{classdb.Viewport(object)}
+	return Instance{*(*classdb.Viewport)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Disable3d() bool {
@@ -654,7 +654,7 @@ func (self class) GetWorld2d() objects.World2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World2D{classdb.World2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World2D{gd.PointerWithOwnershipTransferredToGo[classdb.World2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -667,7 +667,7 @@ func (self class) FindWorld2d() objects.World2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World2D{classdb.World2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World2D{gd.PointerWithOwnershipTransferredToGo[classdb.World2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -949,7 +949,7 @@ func (self class) GetTexture() objects.ViewportTexture {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ViewportTexture{classdb.ViewportTexture(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ViewportTexture{gd.PointerWithOwnershipTransferredToGo[classdb.ViewportTexture](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1176,7 +1176,7 @@ func (self class) GuiGetFocusOwner() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerMustAssertInstanceID[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1190,7 +1190,7 @@ func (self class) GuiGetHoveredControl() objects.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Control{classdb.Control(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Control{gd.PointerWithOwnershipTransferredToGo[classdb.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1583,7 +1583,7 @@ func (self class) GetCamera2d() objects.Camera2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Camera2D{classdb.Camera2D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Camera2D{gd.PointerMustAssertInstanceID[classdb.Camera2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1602,7 +1602,7 @@ func (self class) GetWorld3d() objects.World3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World3D{classdb.World3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World3D{gd.PointerWithOwnershipTransferredToGo[classdb.World3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1615,7 +1615,7 @@ func (self class) FindWorld3d() objects.World3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.World3D{classdb.World3D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.World3D{gd.PointerWithOwnershipTransferredToGo[classdb.World3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1647,7 +1647,7 @@ func (self class) GetCamera3d() objects.Camera3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Camera3D{classdb.Camera3D(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Camera3D{gd.PointerMustAssertInstanceID[classdb.Camera3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1837,7 +1837,7 @@ func (self class) GetVrsTexture() objects.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1868,7 +1868,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Viewport", func(ptr gd.Object) any { return [1]classdb.Viewport{classdb.Viewport(ptr)} })
+	classdb.Register("Viewport", func(ptr gd.Object) any { return [1]classdb.Viewport{*(*classdb.Viewport)(unsafe.Pointer(&ptr))} })
 }
 
 type PositionalShadowAtlasQuadrantSubdiv = classdb.ViewportPositionalShadowAtlasQuadrantSubdiv

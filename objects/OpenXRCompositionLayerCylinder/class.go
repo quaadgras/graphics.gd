@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An OpenXR composition layer that allows rendering a [SubViewport] on an internal slice of a cylinder.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRCompositionLayerCylinder"))
-	return Instance{classdb.OpenXRCompositionLayerCylinder(object)}
+	return Instance{*(*classdb.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Radius() Float.X {
@@ -183,6 +183,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("OpenXRCompositionLayerCylinder", func(ptr gd.Object) any {
-		return [1]classdb.OpenXRCompositionLayerCylinder{classdb.OpenXRCompositionLayerCylinder(ptr)}
+		return [1]classdb.OpenXRCompositionLayerCylinder{*(*classdb.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&ptr))}
 	})
 }

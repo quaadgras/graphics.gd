@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Parent class for various CSG primitives. It contains code and functionality that is common between them. It cannot be used directly. Instead use one of the various classes that inherit from it.
@@ -43,7 +43,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGPrimitive3D"))
-	return Instance{classdb.CSGPrimitive3D(object)}
+	return Instance{*(*classdb.CSGPrimitive3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) FlipFaces() bool {
@@ -111,5 +111,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGPrimitive3D", func(ptr gd.Object) any { return [1]classdb.CSGPrimitive3D{classdb.CSGPrimitive3D(ptr)} })
+	classdb.Register("CSGPrimitive3D", func(ptr gd.Object) any {
+		return [1]classdb.CSGPrimitive3D{*(*classdb.CSGPrimitive3D)(unsafe.Pointer(&ptr))}
+	})
 }

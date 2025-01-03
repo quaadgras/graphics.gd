@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Contains frames and animation data for playback.
@@ -162,7 +162,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SpriteFrames"))
-	return Instance{classdb.SpriteFrames(object)}
+	return Instance{*(*classdb.SpriteFrames)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -350,7 +350,7 @@ func (self class) GetFrameTexture(anim gd.StringName, idx gd.Int) objects.Textur
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -421,5 +421,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SpriteFrames", func(ptr gd.Object) any { return [1]classdb.SpriteFrames{classdb.SpriteFrames(ptr)} })
+	classdb.Register("SpriteFrames", func(ptr gd.Object) any {
+		return [1]classdb.SpriteFrames{*(*classdb.SpriteFrames)(unsafe.Pointer(&ptr))}
+	})
 }

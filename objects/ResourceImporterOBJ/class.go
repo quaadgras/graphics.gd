@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Unlike [ResourceImporterScene], [ResourceImporterOBJ] will import a single [Mesh] resource by default instead of importing a [PackedScene]. This makes it easier to use the [Mesh] resource in nodes that expect direct [Mesh] resources, such as [GridMap], [GPUParticles3D] or [CPUParticles3D]. Note that it is still possible to save mesh resources from 3D scenes using the [b]Advanced Import Settings[/b] dialog, regardless of the source format.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterOBJ"))
-	return Instance{classdb.ResourceImporterOBJ(object)}
+	return Instance{*(*classdb.ResourceImporterOBJ)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterOBJ() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -67,5 +67,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceImporterOBJ", func(ptr gd.Object) any { return [1]classdb.ResourceImporterOBJ{classdb.ResourceImporterOBJ(ptr)} })
+	classdb.Register("ResourceImporterOBJ", func(ptr gd.Object) any {
+		return [1]classdb.ResourceImporterOBJ{*(*classdb.ResourceImporterOBJ)(unsafe.Pointer(&ptr))}
+	})
 }

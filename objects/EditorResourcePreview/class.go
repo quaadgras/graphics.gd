@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node is used to generate previews for resources or files.
@@ -76,7 +76,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourcePreview"))
-	return Instance{classdb.EditorResourcePreview(object)}
+	return Instance{*(*classdb.EditorResourcePreview)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -169,5 +169,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorResourcePreview", func(ptr gd.Object) any { return [1]classdb.EditorResourcePreview{classdb.EditorResourcePreview(ptr)} })
+	classdb.Register("EditorResourcePreview", func(ptr gd.Object) any {
+		return [1]classdb.EditorResourcePreview{*(*classdb.EditorResourcePreview)(unsafe.Pointer(&ptr))}
+	})
 }

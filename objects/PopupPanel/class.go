@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A popup with a configurable panel background. Any child controls added to this node will be stretched to fit the panel's size (similar to how [PanelContainer] works). If you are making windows, see [Window].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PopupPanel"))
-	return Instance{classdb.PopupPanel(object)}
+	return Instance{*(*classdb.PopupPanel)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsPopupPanel() Advanced       { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -73,5 +73,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PopupPanel", func(ptr gd.Object) any { return [1]classdb.PopupPanel{classdb.PopupPanel(ptr)} })
+	classdb.Register("PopupPanel", func(ptr gd.Object) any { return [1]classdb.PopupPanel{*(*classdb.PopupPanel)(unsafe.Pointer(&ptr))} })
 }

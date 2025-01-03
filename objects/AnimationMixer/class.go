@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Base class for [AnimationPlayer] and [AnimationTree] to manage animation lists. It also has general properties and methods for playback and blending.
@@ -339,7 +339,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationMixer"))
-	return Instance{classdb.AnimationMixer(object)}
+	return Instance{*(*classdb.AnimationMixer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Active() bool {
@@ -506,7 +506,7 @@ func (self class) GetAnimationLibrary(name gd.StringName) objects.AnimationLibra
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AnimationLibrary{classdb.AnimationLibrary(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[classdb.AnimationLibrary](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -547,7 +547,7 @@ func (self class) GetAnimation(name gd.StringName) objects.Animation {
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Animation{classdb.Animation(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Animation{gd.PointerWithOwnershipTransferredToGo[classdb.Animation](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1036,7 +1036,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationMixer", func(ptr gd.Object) any { return [1]classdb.AnimationMixer{classdb.AnimationMixer(ptr)} })
+	classdb.Register("AnimationMixer", func(ptr gd.Object) any {
+		return [1]classdb.AnimationMixer{*(*classdb.AnimationMixer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AnimationCallbackModeProcess = classdb.AnimationMixerAnimationCallbackModeProcess

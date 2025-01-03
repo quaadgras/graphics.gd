@@ -21,7 +21,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An array of 2D points is extruded to quickly and easily create a variety of 3D meshes. See also [CSGMesh3D] for using 3D meshes as CSG nodes.
@@ -47,7 +47,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGPolygon3D"))
-	return Instance{classdb.CSGPolygon3D(object)}
+	return Instance{*(*classdb.CSGPolygon3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Polygon() []Vector2.XY {
@@ -458,7 +458,7 @@ func (self class) GetMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -526,7 +526,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("CSGPolygon3D", func(ptr gd.Object) any { return [1]classdb.CSGPolygon3D{classdb.CSGPolygon3D(ptr)} })
+	classdb.Register("CSGPolygon3D", func(ptr gd.Object) any {
+		return [1]classdb.CSGPolygon3D{*(*classdb.CSGPolygon3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Mode = classdb.CSGPolygon3DMode

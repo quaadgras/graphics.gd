@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstract base class for all joints in 3D physics. 3D joints bind together two physics bodies ([member node_a] and [member node_b]) and apply a constraint. If only one body is defined, it is attached to a fixed [StaticBody3D] without collision shapes.
@@ -48,7 +48,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Joint3D"))
-	return Instance{classdb.Joint3D(object)}
+	return Instance{*(*classdb.Joint3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) NodeA() Path.String {
@@ -192,5 +192,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Joint3D", func(ptr gd.Object) any { return [1]classdb.Joint3D{classdb.Joint3D(ptr)} })
+	classdb.Register("Joint3D", func(ptr gd.Object) any { return [1]classdb.Joint3D{*(*classdb.Joint3D)(unsafe.Pointer(&ptr))} })
 }

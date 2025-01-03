@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
@@ -120,7 +120,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImport"))
-	return Instance{classdb.EditorScenePostImport(object)}
+	return Instance{*(*classdb.EditorScenePostImport)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -175,5 +175,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorScenePostImport", func(ptr gd.Object) any { return [1]classdb.EditorScenePostImport{classdb.EditorScenePostImport(ptr)} })
+	classdb.Register("EditorScenePostImport", func(ptr gd.Object) any {
+		return [1]classdb.EditorScenePostImport{*(*classdb.EditorScenePostImport)(unsafe.Pointer(&ptr))}
+	})
 }

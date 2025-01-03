@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Different types are available: clip, tan, lo-fi (bit crushing), overdrive, or waveshape.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectDistortion"))
-	return Instance{classdb.AudioEffectDistortion(object)}
+	return Instance{*(*classdb.AudioEffectDistortion)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Mode() classdb.AudioEffectDistortionMode {
@@ -209,7 +209,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectDistortion", func(ptr gd.Object) any { return [1]classdb.AudioEffectDistortion{classdb.AudioEffectDistortion(ptr)} })
+	classdb.Register("AudioEffectDistortion", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectDistortion{*(*classdb.AudioEffectDistortion)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Mode = classdb.AudioEffectDistortionMode

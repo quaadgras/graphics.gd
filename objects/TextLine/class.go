@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Abstraction over [TextServer] for handling a single line of text.
@@ -169,7 +169,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextLine"))
-	return Instance{classdb.TextLine(object)}
+	return Instance{*(*classdb.TextLine)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Direction() classdb.TextServerDirection {
@@ -683,7 +683,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("TextLine", func(ptr gd.Object) any { return [1]classdb.TextLine{classdb.TextLine(ptr)} })
+	classdb.Register("TextLine", func(ptr gd.Object) any { return [1]classdb.TextLine{*(*classdb.TextLine)(unsafe.Pointer(&ptr))} })
 }
 
 type HorizontalAlignment int

@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 AudioStream that lets the user play custom streams at any time from code, simultaneously using a single player.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPolyphonic"))
-	return Instance{classdb.AudioStreamPolyphonic(object)}
+	return Instance{*(*classdb.AudioStreamPolyphonic)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Polyphony() int {
@@ -100,5 +100,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPolyphonic", func(ptr gd.Object) any { return [1]classdb.AudioStreamPolyphonic{classdb.AudioStreamPolyphonic(ptr)} })
+	classdb.Register("AudioStreamPolyphonic", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPolyphonic{*(*classdb.AudioStreamPolyphonic)(unsafe.Pointer(&ptr))}
+	})
 }

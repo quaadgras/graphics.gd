@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is intended to be overridden by video decoder extensions with custom implementations of [VideoStream].
@@ -221,7 +221,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamPlayback"))
-	return Instance{classdb.VideoStreamPlayback(object)}
+	return Instance{*(*classdb.VideoStreamPlayback)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -461,5 +461,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("VideoStreamPlayback", func(ptr gd.Object) any { return [1]classdb.VideoStreamPlayback{classdb.VideoStreamPlayback(ptr)} })
+	classdb.Register("VideoStreamPlayback", func(ptr gd.Object) any {
+		return [1]classdb.VideoStreamPlayback{*(*classdb.VideoStreamPlayback)(unsafe.Pointer(&ptr))}
+	})
 }

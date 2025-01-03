@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
@@ -78,7 +78,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DPhysicalBones"))
-	return Instance{classdb.SkeletonModification2DPhysicalBones(object)}
+	return Instance{*(*classdb.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PhysicalBoneChainLength() int {
@@ -208,6 +208,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("SkeletonModification2DPhysicalBones", func(ptr gd.Object) any {
-		return [1]classdb.SkeletonModification2DPhysicalBones{classdb.SkeletonModification2DPhysicalBones(ptr)}
+		return [1]classdb.SkeletonModification2DPhysicalBones{*(*classdb.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&ptr))}
 	})
 }

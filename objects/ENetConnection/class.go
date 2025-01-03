@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
@@ -177,7 +177,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetConnection"))
-	return Instance{classdb.ENetConnection(object)}
+	return Instance{*(*classdb.ENetConnection)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -243,7 +243,7 @@ func (self class) ConnectToHost(address gd.String, port gd.Int, channels gd.Int,
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.ENetPacketPeer{classdb.ENetPacketPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[classdb.ENetPacketPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -458,7 +458,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ENetConnection", func(ptr gd.Object) any { return [1]classdb.ENetConnection{classdb.ENetConnection(ptr)} })
+	classdb.Register("ENetConnection", func(ptr gd.Object) any {
+		return [1]classdb.ENetConnection{*(*classdb.ENetConnection)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type CompressionMode = classdb.ENetConnectionCompressionMode

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By changing various properties of this object, such as the shape, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_shape].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsShapeQueryParameters3D"))
-	return Instance{classdb.PhysicsShapeQueryParameters3D(object)}
+	return Instance{*(*classdb.PhysicsShapeQueryParameters3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CollisionMask() int {
@@ -130,7 +130,7 @@ func (self class) GetShape() objects.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -310,6 +310,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("PhysicsShapeQueryParameters3D", func(ptr gd.Object) any {
-		return [1]classdb.PhysicsShapeQueryParameters3D{classdb.PhysicsShapeQueryParameters3D(ptr)}
+		return [1]classdb.PhysicsShapeQueryParameters3D{*(*classdb.PhysicsShapeQueryParameters3D)(unsafe.Pointer(&ptr))}
 	})
 }

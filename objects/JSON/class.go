@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The [JSON] class enables all data types to be converted to and from a JSON string. This is useful for serializing data, e.g. to save to a file or send over the network.
@@ -159,7 +159,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JSON"))
-	return Instance{classdb.JSON(object)}
+	return Instance{*(*classdb.JSON)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Data() any {
@@ -341,7 +341,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("JSON", func(ptr gd.Object) any { return [1]classdb.JSON{classdb.JSON(ptr)} })
+	classdb.Register("JSON", func(ptr gd.Object) any { return [1]classdb.JSON{*(*classdb.JSON)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

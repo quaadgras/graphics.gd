@@ -19,7 +19,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A static 2D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform2D].
@@ -46,7 +46,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StaticBody2D"))
-	return Instance{classdb.StaticBody2D(object)}
+	return Instance{*(*classdb.StaticBody2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PhysicsMaterialOverride() objects.PhysicsMaterial {
@@ -125,7 +125,7 @@ func (self class) GetPhysicsMaterialOverride() objects.PhysicsMaterial {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.PhysicsMaterial{classdb.PhysicsMaterial(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[classdb.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -168,5 +168,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StaticBody2D", func(ptr gd.Object) any { return [1]classdb.StaticBody2D{classdb.StaticBody2D(ptr)} })
+	classdb.Register("StaticBody2D", func(ptr gd.Object) any {
+		return [1]classdb.StaticBody2D{*(*classdb.StaticBody2D)(unsafe.Pointer(&ptr))}
+	})
 }

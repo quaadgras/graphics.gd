@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A horizontal separator used for separating other controls that are arranged [b]vertically[/b]. [HSeparator] is purely visual and normally drawn as a [StyleBoxLine].
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HSeparator"))
-	return Instance{classdb.HSeparator(object)}
+	return Instance{*(*classdb.HSeparator)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsHSeparator() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -79,5 +79,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HSeparator", func(ptr gd.Object) any { return [1]classdb.HSeparator{classdb.HSeparator(ptr)} })
+	classdb.Register("HSeparator", func(ptr gd.Object) any { return [1]classdb.HSeparator{*(*classdb.HSeparator)(unsafe.Pointer(&ptr))} })
 }

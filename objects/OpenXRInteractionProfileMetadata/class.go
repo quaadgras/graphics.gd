@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class allows OpenXR core and extensions to register metadata relating to supported interaction devices such as controllers, trackers, haptic devices, etc. It is primarily used by the action map editor and to sanitize any action map by removing extension-dependent entries when applicable.
@@ -68,7 +68,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRInteractionProfileMetadata"))
-	return Instance{classdb.OpenXRInteractionProfileMetadata(object)}
+	return Instance{*(*classdb.OpenXRInteractionProfileMetadata)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -153,6 +153,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("OpenXRInteractionProfileMetadata", func(ptr gd.Object) any {
-		return [1]classdb.OpenXRInteractionProfileMetadata{classdb.OpenXRInteractionProfileMetadata(ptr)}
+		return [1]classdb.OpenXRInteractionProfileMetadata{*(*classdb.OpenXRInteractionProfileMetadata)(unsafe.Pointer(&ptr))}
 	})
 }

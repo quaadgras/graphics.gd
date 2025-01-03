@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
@@ -226,7 +226,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPClient"))
-	return Instance{classdb.HTTPClient(object)}
+	return Instance{*(*classdb.HTTPClient)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BlockingModeEnabled() bool {
@@ -284,7 +284,7 @@ func (self class) GetConnection() objects.StreamPeer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StreamPeer{classdb.StreamPeer(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StreamPeer{gd.PointerWithOwnershipTransferredToGo[classdb.StreamPeer](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -609,7 +609,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HTTPClient", func(ptr gd.Object) any { return [1]classdb.HTTPClient{classdb.HTTPClient(ptr)} })
+	classdb.Register("HTTPClient", func(ptr gd.Object) any { return [1]classdb.HTTPClient{*(*classdb.HTTPClient)(unsafe.Pointer(&ptr))} })
 }
 
 type Method = classdb.HTTPClientMethod

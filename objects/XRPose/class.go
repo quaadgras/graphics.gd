@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 XR runtimes often identify multiple locations on devices such as controllers that are spatially tracked.
@@ -47,7 +47,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRPose"))
-	return Instance{classdb.XRPose(object)}
+	return Instance{*(*classdb.XRPose)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) HasTrackingData() bool {
@@ -243,7 +243,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("XRPose", func(ptr gd.Object) any { return [1]classdb.XRPose{classdb.XRPose(ptr)} })
+	classdb.Register("XRPose", func(ptr gd.Object) any { return [1]classdb.XRPose{*(*classdb.XRPose)(unsafe.Pointer(&ptr))} })
 }
 
 type TrackingConfidence = classdb.XRPoseTrackingConfidence

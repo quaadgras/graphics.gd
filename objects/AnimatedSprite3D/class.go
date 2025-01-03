@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AnimatedSprite3D] is similar to the [Sprite3D] node, except it carries multiple textures as animation [member sprite_frames]. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
@@ -107,7 +107,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimatedSprite3D"))
-	return Instance{classdb.AnimatedSprite3D(object)}
+	return Instance{*(*classdb.AnimatedSprite3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SpriteFrames() objects.SpriteFrames {
@@ -172,7 +172,7 @@ func (self class) GetSpriteFrames() objects.SpriteFrames {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.SpriteFrames{classdb.SpriteFrames(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[classdb.SpriteFrames](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -432,5 +432,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimatedSprite3D", func(ptr gd.Object) any { return [1]classdb.AnimatedSprite3D{classdb.AnimatedSprite3D(ptr)} })
+	classdb.Register("AnimatedSprite3D", func(ptr gd.Object) any {
+		return [1]classdb.AnimatedSprite3D{*(*classdb.AnimatedSprite3D)(unsafe.Pointer(&ptr))}
+	})
 }

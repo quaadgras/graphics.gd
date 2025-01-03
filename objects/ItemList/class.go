@@ -20,7 +20,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This control provides a vertical list of selectable items that may be in a single or in multiple columns, with each item having options for text and an icon. Tooltips are supported and may be different for every item in the list.
@@ -372,7 +372,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ItemList"))
-	return Instance{classdb.ItemList(object)}
+	return Instance{*(*classdb.ItemList)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SelectMode() classdb.ItemListSelectMode {
@@ -569,7 +569,7 @@ func (self class) GetItemIcon(idx gd.Int) objects.Texture2D {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1323,7 +1323,7 @@ func (self class) GetVScrollBar() objects.VScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VScrollBar{classdb.VScrollBar(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VScrollBar{gd.PointerLifetimeBoundTo[classdb.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1406,7 +1406,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ItemList", func(ptr gd.Object) any { return [1]classdb.ItemList{classdb.ItemList(ptr)} })
+	classdb.Register("ItemList", func(ptr gd.Object) any { return [1]classdb.ItemList{*(*classdb.ItemList)(unsafe.Pointer(&ptr))} })
 }
 
 type IconMode = classdb.ItemListIconMode

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 RandomNumberGenerator is a class for generating pseudo-random numbers. It currently uses [url=https://www.pcg-random.org/]PCG32[/url].
@@ -109,7 +109,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RandomNumberGenerator"))
-	return Instance{classdb.RandomNumberGenerator(object)}
+	return Instance{*(*classdb.RandomNumberGenerator)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Seed() int {
@@ -293,5 +293,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RandomNumberGenerator", func(ptr gd.Object) any { return [1]classdb.RandomNumberGenerator{classdb.RandomNumberGenerator(ptr)} })
+	classdb.Register("RandomNumberGenerator", func(ptr gd.Object) any {
+		return [1]classdb.RandomNumberGenerator{*(*classdb.RandomNumberGenerator)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 2D game object, with a transform (position, rotation, and scale). All 2D nodes, including physics objects and sprites, inherit from Node2D. Use Node2D as a parent node to move, scale and rotate children in a 2D project. Also gives control of the node's render order.
@@ -121,7 +121,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node2D"))
-	return Instance{classdb.Node2D(object)}
+	return Instance{*(*classdb.Node2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Position() Vector2.XY {
@@ -588,5 +588,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Node2D", func(ptr gd.Object) any { return [1]classdb.Node2D{classdb.Node2D(ptr)} })
+	classdb.Register("Node2D", func(ptr gd.Object) any { return [1]classdb.Node2D{*(*classdb.Node2D)(unsafe.Pointer(&ptr))} })
 }

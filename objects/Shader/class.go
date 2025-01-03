@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
@@ -73,7 +73,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Shader"))
-	return Instance{classdb.Shader(object)}
+	return Instance{*(*classdb.Shader)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Code() string {
@@ -144,7 +144,7 @@ func (self class) GetDefaultTextureParameter(name gd.StringName, index gd.Int) o
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -188,7 +188,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Shader", func(ptr gd.Object) any { return [1]classdb.Shader{classdb.Shader(ptr)} })
+	classdb.Register("Shader", func(ptr gd.Object) any { return [1]classdb.Shader{*(*classdb.Shader)(unsafe.Pointer(&ptr))} })
 }
 
 type Mode = classdb.ShaderMode

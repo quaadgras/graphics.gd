@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A 3D ray shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. When a [SeparationRayShape3D] collides with an object, it tries to separate itself from it by moving its endpoint to the collision point. For example, a [SeparationRayShape3D] next to a character can allow it to instantly move up when touching stairs.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SeparationRayShape3D"))
-	return Instance{classdb.SeparationRayShape3D(object)}
+	return Instance{*(*classdb.SeparationRayShape3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Length() Float.X {
@@ -125,5 +125,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("SeparationRayShape3D", func(ptr gd.Object) any { return [1]classdb.SeparationRayShape3D{classdb.SeparationRayShape3D(ptr)} })
+	classdb.Register("SeparationRayShape3D", func(ptr gd.Object) any {
+		return [1]classdb.SeparationRayShape3D{*(*classdb.SeparationRayShape3D)(unsafe.Pointer(&ptr))}
+	})
 }

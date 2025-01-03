@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A resource used for styling/skinning [Control] and [Window] nodes. While individual controls can be styled using their local theme overrides (see [method Control.add_theme_color_override]), theme resources allow you to store and apply the same settings across all controls sharing the same type (e.g. style all [Button]s the same). One theme resource can be used for the entire project, but you can also set a separate theme resource to a branch of control nodes. A theme resource assigned to a control applies to the control itself, as well as all of its direct and indirect children (as long as a chain of controls is uninterrupted).
@@ -522,7 +522,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Theme"))
-	return Instance{classdb.Theme(object)}
+	return Instance{*(*classdb.Theme)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DefaultBaseScale() Float.X {
@@ -574,7 +574,7 @@ func (self class) GetIcon(name gd.StringName, theme_type gd.StringName) objects.
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Texture2D{classdb.Texture2D(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Texture2D{gd.PointerWithOwnershipTransferredToGo[classdb.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -676,7 +676,7 @@ func (self class) GetStylebox(name gd.StringName, theme_type gd.StringName) obje
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.StyleBox{classdb.StyleBox(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.StyleBox{gd.PointerWithOwnershipTransferredToGo[classdb.StyleBox](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -779,7 +779,7 @@ func (self class) GetFont(name gd.StringName, theme_type gd.StringName) objects.
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1210,7 +1210,7 @@ func (self class) GetDefaultFont() objects.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Font{classdb.Font(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Font{gd.PointerWithOwnershipTransferredToGo[classdb.Font](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -1536,7 +1536,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Theme", func(ptr gd.Object) any { return [1]classdb.Theme{classdb.Theme(ptr)} })
+	classdb.Register("Theme", func(ptr gd.Object) any { return [1]classdb.Theme{*(*classdb.Theme)(unsafe.Pointer(&ptr))} })
 }
 
 type DataType = classdb.ThemeDataType

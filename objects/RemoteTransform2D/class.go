@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 RemoteTransform2D pushes its own [Transform2D] to another [Node2D] derived node (called the remote node) in the scene.
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RemoteTransform2D"))
-	return Instance{classdb.RemoteTransform2D(object)}
+	return Instance{*(*classdb.RemoteTransform2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) RemotePath() Path.String {
@@ -224,5 +224,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RemoteTransform2D", func(ptr gd.Object) any { return [1]classdb.RemoteTransform2D{classdb.RemoteTransform2D(ptr)} })
+	classdb.Register("RemoteTransform2D", func(ptr gd.Object) any {
+		return [1]classdb.RemoteTransform2D{*(*classdb.RemoteTransform2D)(unsafe.Pointer(&ptr))}
+	})
 }

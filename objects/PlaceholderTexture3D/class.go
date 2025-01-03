@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class is used when loading a project that uses a [Texture3D] subclass in 2 conditions:
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderTexture3D"))
-	return Instance{classdb.PlaceholderTexture3D(object)}
+	return Instance{*(*classdb.PlaceholderTexture3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Size() Vector3i.XYZ {
@@ -108,5 +108,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PlaceholderTexture3D", func(ptr gd.Object) any { return [1]classdb.PlaceholderTexture3D{classdb.PlaceholderTexture3D(ptr)} })
+	classdb.Register("PlaceholderTexture3D", func(ptr gd.Object) any {
+		return [1]classdb.PlaceholderTexture3D{*(*classdb.PlaceholderTexture3D)(unsafe.Pointer(&ptr))}
+	})
 }

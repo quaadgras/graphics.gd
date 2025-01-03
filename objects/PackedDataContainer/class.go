@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [PackedDataContainer] can be used to efficiently store data from untyped containers. The data is packed into raw bytes and can be saved to file. Only [Array] and [Dictionary] can be stored this way.
@@ -72,7 +72,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PackedDataContainer"))
-	return Instance{classdb.PackedDataContainer(object)}
+	return Instance{*(*classdb.PackedDataContainer)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -127,7 +127,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PackedDataContainer", func(ptr gd.Object) any { return [1]classdb.PackedDataContainer{classdb.PackedDataContainer(ptr)} })
+	classdb.Register("PackedDataContainer", func(ptr gd.Object) any {
+		return [1]classdb.PackedDataContainer{*(*classdb.PackedDataContainer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Error int

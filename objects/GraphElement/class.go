@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [GraphElement] allows to create custom elements for a [GraphEdit] graph. By default such elements can be selected, resized, and repositioned, but they cannot be connected. For a graph element that allows for connections see [GraphNode].
@@ -42,7 +42,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphElement"))
-	return Instance{classdb.GraphElement(object)}
+	return Instance{*(*classdb.GraphElement)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PositionOffset() Vector2.XY {
@@ -246,5 +246,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GraphElement", func(ptr gd.Object) any { return [1]classdb.GraphElement{classdb.GraphElement(ptr)} })
+	classdb.Register("GraphElement", func(ptr gd.Object) any {
+		return [1]classdb.GraphElement{*(*classdb.GraphElement)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Allows modulation of pitch independently of tempo. All frequencies can be increased/decreased with minimal effect on transients.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectPitchShift"))
-	return Instance{classdb.AudioEffectPitchShift(object)}
+	return Instance{*(*classdb.AudioEffectPitchShift)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PitchScale() Float.X {
@@ -154,7 +154,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioEffectPitchShift", func(ptr gd.Object) any { return [1]classdb.AudioEffectPitchShift{classdb.AudioEffectPitchShift(ptr)} })
+	classdb.Register("AudioEffectPitchShift", func(ptr gd.Object) any {
+		return [1]classdb.AudioEffectPitchShift{*(*classdb.AudioEffectPitchShift)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type FFTSize = classdb.AudioEffectPitchShiftFFTSize

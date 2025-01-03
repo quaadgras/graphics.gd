@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores the factor of a magnifying touch gesture. This is usually performed when the user pinches the touch screen and used for zooming in/out.
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventMagnifyGesture"))
-	return Instance{classdb.InputEventMagnifyGesture(object)}
+	return Instance{*(*classdb.InputEventMagnifyGesture)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Factor() Float.X {
@@ -125,6 +125,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("InputEventMagnifyGesture", func(ptr gd.Object) any {
-		return [1]classdb.InputEventMagnifyGesture{classdb.InputEventMagnifyGesture(ptr)}
+		return [1]classdb.InputEventMagnifyGesture{*(*classdb.InputEventMagnifyGesture)(unsafe.Pointer(&ptr))}
 	})
 }

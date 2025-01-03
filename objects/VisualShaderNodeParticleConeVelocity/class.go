@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This node can be used in "start" step of particle shader. It defines the initial velocity of the particles, making them move in cone shape starting from the center, with a given spread.
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeParticleConeVelocity"))
-	return Instance{classdb.VisualShaderNodeParticleConeVelocity(object)}
+	return Instance{*(*classdb.VisualShaderNodeParticleConeVelocity)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeParticleConeVelocity() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeParticleConeVelocity", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeParticleConeVelocity{classdb.VisualShaderNodeParticleConeVelocity(ptr)}
+		return [1]classdb.VisualShaderNodeParticleConeVelocity{*(*classdb.VisualShaderNodeParticleConeVelocity)(unsafe.Pointer(&ptr))}
 	})
 }

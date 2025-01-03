@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class defines the interface for noise generation libraries to inherit from.
@@ -110,7 +110,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Noise"))
-	return Instance{classdb.Noise(object)}
+	return Instance{*(*classdb.Noise)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -200,7 +200,7 @@ func (self class) GetImage(width gd.Int, height gd.Int, invert bool, in_3d_space
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -220,7 +220,7 @@ func (self class) GetSeamlessImage(width gd.Int, height gd.Int, invert bool, in_
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -288,5 +288,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Noise", func(ptr gd.Object) any { return [1]classdb.Noise{classdb.Noise(ptr)} })
+	classdb.Register("Noise", func(ptr gd.Object) any { return [1]classdb.Noise{*(*classdb.Noise)(unsafe.Pointer(&ptr))} })
 }

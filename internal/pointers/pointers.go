@@ -35,7 +35,7 @@
 package pointers
 
 import (
-	"reflect"
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"unsafe"
@@ -43,74 +43,153 @@ import (
 
 const pageSize = 3 * 4 * 5 * 20
 const shapesMax = 4
-const cyclesMax = 4
-const uniqueMax = 16
 
 // tables stores the pointers that are managed by the pointers package.
 // there is one table for each pointer shape, followed by the pointers
 // themselves which have the following structure:
 //
-//	type entry[T Shape] struct {
-//		rev uintptr // when 1, locks the entry, when 0, the entry is free, when 2, pinned.
-//		age uintptr // when 1, locks the entry, when 2, queues mark, 3 and 4 are used to track marking.
-//		ptr [unsafe.Sizeof([1]T{})/unsafe.Sizeof(uintptr(0))]uintptr
+//	type entry[T Size] struct {
+//		revision revision  // the current revision number.
+//		freefunc func(any) // unsafe pointer to the free function method
+//		pointers T		   // the actual pointer values.
 //	 }
-var tables [uniqueMax][shapesMax]atomicSlice[[pageSize]atomic.Uintptr]
+var tables [shapesMax]atomicSlice[[pageSize]atomic.Uintptr]
 
 var static [shapesMax][][pageSize]uintptr
 var counts [shapesMax]atomic.Uintptr // static counts
 
 const (
-	offRev = iota
-	offAge
-	offPtr
+	offsetRevision = iota
+	offsetFreeFunc
+	offsetPointers
 )
+
+// revision number, two most significant bits (in order of most to least) are used
+// to indicate whether the pointer is pinned and whether or not it has been used in
+// the last cycle.
+type revision uintptr
+
+const (
+	revisionEOF    = 0
+	revisionLocked = 1
+	revisionClosed = 2 // the first pointer is the next free slot.
+)
+
+// matches ignores the most significant 2 bits.
+func (r revision) matches(other revision) bool {
+	return r&0x3FFFFFFFFFFFFFFF == other&0x3FFFFFFFFFFFFFFF
+}
+
+// isPinned returns true if the pointer is pinned.
+// (the most significant bit is set).
+func (r revision) isPinned() bool {
+	return r&(1<<63) != 0
+}
+
+// isActive returns true if the pointer was used in the last cycle.
+func (r revision) isActive() bool {
+	return r&(1<<62) != 0 || r.isPinned()
+}
+
+// active returns an active revision.
+func (r revision) active() revision {
+	return r | 1<<62
+}
+
+// expire an active pointer, so that
+// it will need to be marked as active
+// again to prevent it from being
+// freed in the next cycle.
+func (r revision) expire() revision {
+	return r &^ (1 << 62)
+}
+
+// pinned returns a pinned revision.
+func (r revision) pinned() revision {
+	return r | 1<<63
+}
+
+// unpinned returns an unpinned revision.
+func (r revision) unpinned() revision {
+	return r &^ 1 << 63
+}
 
 // writes stores a small ring of write indicies for each global, the garbage
 // collection will cycle through these indicies to determine the write head
 // for each table. Any entries -2 or less will be freed.
-var writes [uniqueMax][shapesMax]atomic.Uintptr
-
-// current cycle number, used as the first index into [writes].
-var cyclen atomic.Uintptr
-
-func init() {
-	cyclen.Store(5)
-}
+var writes [shapesMax]atomic.Uintptr
 
 // Cycle triggers an deadline garbage collection cycle, to clean up temporary
 // objects, only pointers allocated in the current or last cycle will
 // be preserved.
 func Cycle() {
-	cyclen.Add(1)
-}
-
-// Root is the root of the object graph. Pointers must exist within this
-// value to be considered reachable. Roots must either be thread-safe to
-// read or implement the [sync.Locker] interface.
-var Root any
-
-// MarkAndSweep performs a mark and sweep garbage collection cycle.
-// The root parameter is the [Root] of the object graph, all reachable
-// objects will be marked and all unmarked objects will be freed.
-func MarkAndSweep() {
-	now := cyclen.Load()
-	mark(now, false, reflect.ValueOf(Root))
-	var count int
-
-	for u := range uniqueMax {
-		for s := range shapesMax {
-			tab := &tables[u][s]
-			for j := range tab.len.Load() {
-				page := tab.Index(j)
-				for i := uintptr(0); i < pageSize; i += uintptr(s + 2) {
-					age := page[i+offAge].Load()
-					if age == 0 {
-						break
+	for s := range shapesMax {
+		tab := &tables[s]
+		for j := range tab.len.Load() {
+			page := tab.Index(j)
+			for i := uintptr(0); i < pageSize; i += uintptr(s + 2) {
+				rev := revision(page[i+offsetRevision].Load())
+				if rev == revisionEOF {
+					break // end of the table.
+				}
+				if rev == revisionClosed {
+					continue
+				}
+				if rev.isActive() {
+					if !rev.isPinned() {
+						page[i+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.expire()))
 					}
-					if age > 2 && age-2 < now-2 {
-						end(page[i+offRev].Load(), u, s, j*pageSize+i)
-						count++
+				} else {
+					jump := page[i+offsetFreeFunc].Load()
+					if jump == 0 {
+						end(rev, s, uintptr(j*pageSize+i))
+					} else if page[i+offsetFreeFunc].CompareAndSwap(jump, 0) {
+						switch s {
+						case 1:
+							type Solo struct {
+								sentinal uintptr
+								revision revision
+								checksum [1]uintptr
+							}
+							free := *(*func(Solo))(unsafe.Pointer(&jump))
+							free(Solo{
+								sentinal: j*pageSize + i,
+								revision: rev,
+								checksum: [1]uintptr{page[i+offsetPointers].Load()},
+							})
+						case 2:
+							type Pair struct {
+								sentinal uintptr
+								revision revision
+								checksum [2]uintptr
+							}
+							free := *(*func(Pair))(unsafe.Pointer(&jump))
+							free(Pair{
+								sentinal: j*pageSize + i,
+								revision: revision(page[i+offsetRevision].Load()),
+								checksum: [2]uintptr{
+									page[i+offsetPointers].Load(),
+									page[i+offsetPointers+1].Load(),
+								},
+							})
+						case 3:
+							type Trio struct {
+								sentinal uintptr
+								revision revision
+								checksum [3]uintptr
+							}
+							free := *(*func(Trio))(unsafe.Pointer(&jump))
+							free(Trio{
+								sentinal: j*pageSize + i,
+								revision: revision(page[i+offsetRevision].Load()),
+								checksum: [3]uintptr{
+									page[i+offsetPointers].Load(),
+									page[i+offsetPointers+1].Load(),
+									page[i+offsetPointers+2].Load(),
+								},
+							})
+						}
+						// TODO confirm that [End] was called?
 					}
 				}
 			}
@@ -118,184 +197,77 @@ func MarkAndSweep() {
 	}
 }
 
-var typeLocker = reflect.TypeOf([0]sync.Locker{}).Elem()
-var typePointer = reflect.TypeOf([0]PointerAny{}).Elem()
-
-func mark(now uintptr, locked bool, rvalue reflect.Value) {
-	if !rvalue.IsValid() || rvalue.IsNil() {
-		return
-	}
-	if !locked && rvalue.Type().Implements(typeLocker) {
-		rvalue.Interface().(sync.Locker).Lock()
-		defer rvalue.Interface().(sync.Locker).Unlock()
-		locked = true
-	}
-	switch rvalue.Kind() {
-	case reflect.Pointer:
-		if !rvalue.IsNil() {
-			mark(now, locked, rvalue.Elem())
-			return
-		}
-	case reflect.Slice, reflect.Array:
-		for i := 0; i < rvalue.Len(); i++ {
-			mark(now, locked, rvalue.Index(i))
-		}
-	case reflect.Map:
-		for _, key := range rvalue.MapKeys() {
-			mark(now, locked, rvalue.MapIndex(key))
-		}
-		for _, key := range rvalue.MapKeys() {
-			mark(now, locked, key)
-		}
-	case reflect.Struct:
-		if rvalue.Type().Implements(typePointer) {
-			ptr := rvalue.Interface().(PointerAny)
-			addr, shape, ptype := ptr.pointer()
-			tab := &tables[ptype][shape]
-			page, off := addr/pageSize, addr%pageSize
-			arr := tab.Index(page)
-			arr[off+offAge].Store(now)
-		}
-		for i := 0; i < rvalue.NumField(); i++ {
-			mark(now, locked, rvalue.Field(i))
-		}
-	}
-}
-
-// Shape of up to [3]uintptr's, suitable for supporting fat pointers.
-type Shape interface {
-	[1]uintptr | [2]uintptr | [3]uintptr
-}
-
-// PointerNamed that is invisible to the Go runtime. The pointers package manages it instead.
-// Supports pointer shapes up to [3]uintptr's in size. The first type parameter should be the
-// named type being defined as a pointers pointer type.
-type PointerNamed[T Pointer[T, S, N], S Shape, N PointerType] struct {
-	_ [0]N // prevents converting between different pointer types.
-
-	// if both the address and the revision are zero, then this is an
-	// unsafe pointer and the ptr value is exposed directly, in this
-	// case, no protections are provided.
-	//
-	// if the address is non-zero and the revision is zero, then this
-	// is a static pointer, it cannot be freed and will the ptr field
-	// is ignored.
-
-	address[S, N]
-
-	rev uintptr // revision counter.
-	ptr S       // pointer checksum.
-}
-
-type samplePointer PointerNamed[samplePointer, [1]uintptr, [1]Type]
-
-var _ PointerAny = samplePointer{}
-
-func (p samplePointer) Free() { End(p) }
-
-type address[S Shape, N PointerType] uintptr
-
-func (a address[S, N]) pointer() (addr, shape, ptype uintptr) {
-	return uintptr(a), uintptr(len([1]S{}[0])), uintptr(len([1]N{}[0]))
-}
-
-type PointerAny interface {
-	pointer() (addr, shape, ptype uintptr)
-}
-
-// Pointer is the underlying type for a [PointerNamed].
-type Pointer[T any, S Shape, N PointerType] interface {
-	~struct {
-		_ [0]N
-
-		address[S, N]
-
-		rev uintptr
-		ptr S
-	}
-	Free()
-}
-
 // New manages the given pointer value discretely.
-func New[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
-	now := cyclen.Load()
-	tab := &tables[len([1]N{}[0])][len(ptr)]
-	wat := &writes[len([1]N{}[0])][len(ptr)]
+func New[T Generic[T, P], P Size](ptr P) T {
+	return malloc(ptr, T.Free)
+}
+
+// Let returns a borrowed pointer, which we will not be freed when [End] is called.
+func Let[T Generic[T, P], P Size](ptr P) T {
+	return malloc(ptr, (func(T))(nil))
+}
+
+func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
+	tab := &tables[len(ptr)]
+	wat := &writes[len(ptr)]
 	for {
 		idx := wat.Load()
 		page, addr := idx/pageSize, idx%pageSize
 		arr := tab.Index(page)
-		age := arr[addr+offAge].Load()
-		rev := arr[addr+offRev].Load()
-		nxt := age
-		if rev == 0 || rev != 2 {
-			nxt = idx + offPtr + uintptr(len(ptr))
+		rev := revision(arr[addr+offsetRevision].Load())
+		nxt := arr[addr+offsetPointers].Load()
+		if rev == 0 {
+			nxt = idx + offsetPointers + uintptr(len(ptr))
 		}
-		if wat.CompareAndSwap(idx, nxt) && age != 1 && arr[addr+offAge].CompareAndSwap(age, 1) {
+		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
 			var current struct {
-				_ [0]N
+				_ [0]*T
 
-				address[P, N]
-
-				rev uintptr
-				ptr P
+				sentinal uintptr
+				revision revision
+				checksum P
 			}
-			current.address = address[P, N](idx)
-			if rev > 2 {
-				current.rev = arr[addr+offRev].Load()
-				for i := range uintptr(len(ptr)) {
-					current.ptr[i] = arr[addr+offPtr+i].Load()
-				}
-				T(current).Free()
-				if arr[addr+offRev].Load() != 1 {
-					panic("bad free")
-				}
-			}
-			arr[addr+offAge].Store(now)
-			arr[addr+offRev].Store(now)
+			current.sentinal = idx
+			rev := uintptr(max(rev, 2) + 1)
+			arr[addr+offsetRevision].Store(rev)
+			//
+			// NOTE the below function extraction is somewhat unsafe and
+			// relies on specific assumptions on how static function pointers
+			// are represented by the Go compiler. Tests should catch when
+			// this assumption breaks. We do this to avoid allocations and
+			// to avoid any Go runtime from pointer-scanning our [tables].
+			//
+			var (
+				free = free
+				jump = uintptr(*(*unsafe.Pointer)(unsafe.Pointer(&free)))
+			)
+			arr[addr+offsetFreeFunc].Store(jump)
 			for i := range uintptr(len(ptr)) {
-				arr[addr+offPtr+i].Store(uintptr(ptr[i]))
+				arr[addr+offsetPointers+i].Store(uintptr(ptr[i]))
 			}
-			current.rev = now
-			current.ptr = ptr
+			current.revision = revision(rev)
+			current.checksum = ptr
 			return T(current)
 		}
 	}
 }
 
-// End the lifetime of the pointer, returning the underlying pointer value
-// and ok=true if this is the first time the pointer has been freed.
-func End[T Pointer[T, P, N], P Shape, N PointerType](ptr T) (P, bool) {
-	p := (struct {
-		_ [0]N
-
-		address[P, N]
-
-		rev uintptr
-		ptr P
-	})(ptr)
-	if p.ptr == [1]P{}[0] {
-		return [1]P{}[0], false
+func end(rev revision, s int, p uintptr) bool {
+	if rev < 2 {
+		return false
 	}
-	if end(p.rev, len([1]N{}[0]), len(p.ptr), uintptr(p.address)) {
-		return p.ptr, true
-	}
-	return [1]P{}[0], false
-}
-
-func end(rev uintptr, u, s int, p uintptr) bool {
 	page, addr := uintptr(p/pageSize), uintptr(p%pageSize)
-	arr := tables[u][s].Index(page)
-	if arr[addr+offRev].Load() > 1 && arr[addr+offRev].CompareAndSwap(rev, 1) {
-		age := arr[addr+offAge].Load()
-		if age == 1 {
-			return true
-		}
-		arr[addr+offRev].Store(2) // next free.
+	arr := tables[s].Index(page)
+	existing := revision(arr[addr+offsetRevision].Load())
+	if !rev.matches(existing) {
+		return false
+	}
+	if arr[addr+offsetRevision].CompareAndSwap(uintptr(existing), revisionLocked) {
+		arr[addr+offsetRevision].Store(revisionClosed) // next free.
 		for {
-			end := writes[u][s].Load()
-			arr[addr+offAge].Store(end)
-			if writes[u][s].CompareAndSwap(end, p) {
+			end := writes[s].Load()
+			arr[addr+offsetPointers].Store(end)
+			if writes[s].CompareAndSwap(end, p) {
 				return true
 			}
 		}
@@ -303,55 +275,48 @@ func end(rev uintptr, u, s int, p uintptr) bool {
 	return false
 }
 
-// Pin the pointer, preventing it from being freed until the next mark
-// and sweep cycle. The pointer must be placed in a root in order for
-// it to remain reachable.
-
 // Get returns the underlying pointer value, or panics if the pointer
 // has been freed.
-func Get[T Pointer[T, P, N], P Shape, N PointerType](ptr T) P {
+func Get[T Generic[T, P], P Size](ptr T) P {
 	p := (struct {
-		_ [0]N
+		_ [0]*T
 
-		address[P, N]
-
-		rev uintptr
-		ptr P
+		sentinal uintptr
+		revision revision
+		checksum P
 	})(ptr)
-	if p.rev == 0 && p.address == 0 {
-		return p.ptr
+	if p.revision == 0 && p.sentinal == 0 {
+		return p.checksum
 	}
-	if p.rev == 0 {
+	if p.revision == 0 {
 		var result P
-		for i := 0; i < len(p.ptr); i++ {
-			result[i] = static[len(p.ptr)][p.address/pageSize][uintptr(p.address)%pageSize+uintptr(i)]
+		for i := 0; i < len(p.checksum); i++ {
+			result[i] = static[len(p.checksum)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)]
 		}
 		return result
 	}
-	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
-	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
-	rev := arr[addr+offRev].Load()
-	if rev != 2 && rev != uintptr(p.rev) {
+	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	if !rev.matches(p.revision) {
+		fmt.Printf("%b != %b\n", rev, p.revision)
 		panic("expired pointer")
 	}
-	for i := range uintptr(len(p.ptr)) {
-		if arr[addr+offPtr+i].Load() != p.ptr[i] {
-			panic("expired pointer")
-		}
+	if !rev.isActive() {
+		arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.active()))
 	}
-	return p.ptr
+	return p.checksum
 }
 
 // Add allocates a new pointer that can be mutated with [Set].
-func Add[T Pointer[T, P, N], P Shape, N PointerType](val P) T {
+func Add[T Generic[T, P], P Size](val P) T {
 	addr := counts[len(val)].Add(uintptr(len(val)))
 	var result struct {
-		_ [0]N
+		_ [0]*T
 
-		address[P, N]
-
-		rev uintptr
-		ptr P
+		sentinal uintptr
+		revision revision
+		checksum P
 	}
 	if len(static[len(val)]) <= int(addr/pageSize) {
 		static[len(val)] = append(static[len(val)], [pageSize]uintptr{})
@@ -359,36 +324,23 @@ func Add[T Pointer[T, P, N], P Shape, N PointerType](val P) T {
 	for i := 0; i < len(val); i++ {
 		static[len(val)][addr/pageSize][addr%pageSize+uintptr(i)] = uintptr(val[i])
 	}
-	result.address = address[P, N](addr)
+	result.sentinal = addr
 	return T(result)
 }
 
 // Set overwrites the underlying added pointer value.
-func Set[T Pointer[T, P, N], P Shape, N PointerType](ptr T, val P) {
+func Set[T Generic[T, P], P Size](ptr T, val P) {
 	p := (struct {
-		_ [0]N
+		_ [0]*T
 
-		address[P, N]
-
-		rev uintptr
-		ptr P
+		sentinal uintptr
+		revision revision
+		checksum P
 	})(ptr)
 	for i := 0; i < len(val); i++ {
-		static[len(val)][p.address/pageSize][uintptr(p.address)%pageSize+uintptr(i)] = uintptr(val[i])
+		static[len(val)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)] = uintptr(val[i])
 	}
 }
-
-// PointerType restricts the unique pointer types that can be used with the pointers package.
-// A unique pointer type is a pointer
-type PointerType interface {
-	[0]Type | [1]Type | [2]Type | [3]Type |
-		[4]Type | [5]Type | [6]Type | [7]Type |
-		[8]Type | [9]Type | [10]Type | [11]Type |
-		[12]Type | [13]Type | [14]Type | [15]Type
-}
-
-// Type ID, should be prefixed by an array size.
-type Type struct{}
 
 type atomicSlice[T any] struct {
 	mut sync.Mutex // only locked for appends.
@@ -420,44 +372,120 @@ func (s *atomicSlice[T]) Index(i uintptr) *T {
 }
 
 // Raw returns an [unsafe.Pointer] equivalent to [Pointer], zero overhead, but it provides no protections on use.
-func Raw[T Pointer[T, P, N], P Shape, N PointerType](ptr P) T {
+func Raw[T Generic[T, P], P Size](ptr P) T {
 	var result struct {
-		_ [0]N
+		_ [0]*T
 
-		address[P, N]
-
-		rev uintptr
-		ptr P
+		sentinal uintptr
+		revision revision
+		checksum P
 	}
-	result.ptr = ptr
+	result.checksum = ptr
 	return T(result)
 }
 
 // Pin the pointer, preventing it from being freed until [Free] is called on it.
-func Pin[T Pointer[T, P, N], P Shape, N PointerType](ptr T) T {
+func Pin[T Generic[T, P], P Size](ptr T) T {
 	p := (struct {
-		_ [0]N
+		_ [0]*T
 
-		address[P, N]
-
-		rev uintptr
-		ptr P
+		sentinal uintptr
+		revision revision
+		checksum P
 	})(ptr)
-	if p.rev == 0 {
+	if p.revision == 0 {
 		panic("cannot pin a nil pointer")
 	}
-	page, addr := uintptr(p.address/pageSize), uintptr(p.address%pageSize)
-	arr := tables[len([1]N{}[0])][len(p.ptr)].Index(page)
-	rev := arr[addr+offRev].Load()
-	if rev != uintptr(p.rev) {
+	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	if !rev.matches(p.revision) {
 		panic("expired pointer")
 	}
-	for i := range uintptr(len(p.ptr)) {
-		if arr[addr+offPtr+i].Load() != p.ptr[i] {
-			panic("expired pointer")
-		}
+	arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.pinned()))
+	return ptr
+}
+
+// Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
+type Size interface {
+	[1]uintptr | [2]uintptr | [3]uintptr
+}
+
+// Generic pointer.
+type Generic[T any, S Size] interface {
+	~struct {
+		_ [0]*T
+
+		sentinal uintptr
+		revision revision
+		checksum S
 	}
-	p.rev = 2
-	arr[addr+offRev].Store(2)
-	return T(p)
+	Free()
+}
+
+// End the lifetime of the pointer, returning the underlying pointer value
+// and ok=true if this is the first time the pointer has been freed.
+func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uintptr
+		revision revision
+		checksum Raw
+	})(ptr)
+	if p.checksum == [1]Raw{}[0] {
+		return [1]Raw{}[0], false
+	}
+	if end(p.revision, len(p.checksum), uintptr(p.sentinal)) {
+		return p.checksum, true
+	}
+	return [1]Raw{}[0], false
+}
+
+// Solo pointer value that safely wraps a single uintptr-sized value.
+type Solo[T Generic[T, [1]uintptr]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uintptr
+	revision revision
+	checksum [1]uintptr
+}
+
+// Pair pointer value that safely wraps a pair of uintptr-sized values.
+type Pair[T Generic[T, [2]uintptr]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uintptr
+	revision revision
+	checksum [2]uintptr
+}
+
+// Trio pointer value that safely wraps three uintptr-sized values.
+type Trio[T Generic[T, [3]uintptr]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uintptr
+	revision revision
+	checksum [3]uintptr
 }

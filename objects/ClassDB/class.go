@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Provides access to metadata stored for every available class.
@@ -642,7 +642,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ClassDB", func(ptr gd.Object) any { return [1]classdb.ClassDB{classdb.ClassDB(ptr)} })
+	classdb.Register("ClassDB", func(ptr gd.Object) any { return [1]classdb.ClassDB{*(*classdb.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

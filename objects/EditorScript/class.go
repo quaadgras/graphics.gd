@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Scripts extending this class and implementing its [method _run] method can be executed from the Script Editor's [b]File > Run[/b] menu option (or by pressing [kbd]Ctrl + Shift + X[/kbd]) while the editor is running. This is useful for adding custom in-editor functionality to Godot. For more complex additions, consider using [EditorPlugin]s instead.
@@ -103,7 +103,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScript"))
-	return Instance{classdb.EditorScript(object)}
+	return Instance{*(*classdb.EditorScript)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -122,7 +122,7 @@ Makes [param node] root of the currently opened scene. Only works if the scene i
 //go:nosplit
 func (self class) AddRootNode(node objects.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(node[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -136,7 +136,7 @@ func (self class) GetScene() objects.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Node{classdb.Node(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.Node{gd.PointerMustAssertInstanceID[classdb.Node](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -149,7 +149,7 @@ func (self class) GetEditorInterface() objects.EditorInterface {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.EditorInterface{classdb.EditorInterface(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.EditorInterface{gd.PointerLifetimeBoundTo[classdb.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -176,5 +176,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorScript", func(ptr gd.Object) any { return [1]classdb.EditorScript{classdb.EditorScript(ptr)} })
+	classdb.Register("EditorScript", func(ptr gd.Object) any {
+		return [1]classdb.EditorScript{*(*classdb.EditorScript)(unsafe.Pointer(&ptr))}
+	})
 }

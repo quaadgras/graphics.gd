@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A resource to add to an [AnimationNodeBlendTree]. Blends two animations out of three additively out of three based on the amount value.
@@ -45,7 +45,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeAdd3"))
-	return Instance{classdb.AnimationNodeAdd3(object)}
+	return Instance{*(*classdb.AnimationNodeAdd3)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsAnimationNodeAdd3() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -85,5 +85,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationNodeAdd3", func(ptr gd.Object) any { return [1]classdb.AnimationNodeAdd3{classdb.AnimationNodeAdd3(ptr)} })
+	classdb.Register("AnimationNodeAdd3", func(ptr gd.Object) any {
+		return [1]classdb.AnimationNodeAdd3{*(*classdb.AnimationNodeAdd3)(unsafe.Pointer(&ptr))}
+	})
 }

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/objects"
 )
 
@@ -90,9 +91,11 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 		}
 		signal := signals[chosen]
 		gd.NewCallable(func() {
-			if gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance)) == (gd.Object{}) {
+			lookup := gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance))
+			if lookup == (gd.Object{}) {
 				panic("manageSignals: object freed")
 			}
+			pointers.End(lookup)
 			rtype := value.Type()
 			if rtype.Kind() == reflect.Struct && rtype.NumField() == 0 {
 				signal.signal.Emit()

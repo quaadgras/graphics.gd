@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An audio effect that can be used to adjust the intensity of stereo panning.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectStereoEnhance"))
-	return Instance{classdb.AudioEffectStereoEnhance(object)}
+	return Instance{*(*classdb.AudioEffectStereoEnhance)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) PanPullout() Float.X {
@@ -157,6 +157,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioEffectStereoEnhance", func(ptr gd.Object) any {
-		return [1]classdb.AudioEffectStereoEnhance{classdb.AudioEffectStereoEnhance(ptr)}
+		return [1]classdb.AudioEffectStereoEnhance{*(*classdb.AudioEffectStereoEnhance)(unsafe.Pointer(&ptr))}
 	})
 }

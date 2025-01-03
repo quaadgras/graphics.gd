@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Stores information about multi-touch press/release input events. Supports touch press, touch release and [member index] for multi-touch count and order.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventScreenTouch"))
-	return Instance{classdb.InputEventScreenTouch(object)}
+	return Instance{*(*classdb.InputEventScreenTouch)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Index() int {
@@ -187,5 +187,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("InputEventScreenTouch", func(ptr gd.Object) any { return [1]classdb.InputEventScreenTouch{classdb.InputEventScreenTouch(ptr)} })
+	classdb.Register("InputEventScreenTouch", func(ptr gd.Object) any {
+		return [1]classdb.InputEventScreenTouch{*(*classdb.InputEventScreenTouch)(unsafe.Pointer(&ptr))}
+	})
 }

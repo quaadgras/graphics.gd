@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A singleton used to load resource files from the filesystem.
@@ -203,7 +203,7 @@ func (self class) LoadThreadedGet(path gd.String) objects.Resource {
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -226,7 +226,7 @@ func (self class) Load(path gd.String, type_hint gd.String, cache_mode classdb.R
 	callframe.Arg(frame, cache_mode)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Resource{classdb.Resource(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Resource{gd.PointerWithOwnershipTransferredToGo[classdb.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -355,7 +355,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ResourceLoader", func(ptr gd.Object) any { return [1]classdb.ResourceLoader{classdb.ResourceLoader(ptr)} })
+	classdb.Register("ResourceLoader", func(ptr gd.Object) any {
+		return [1]classdb.ResourceLoader{*(*classdb.ResourceLoader)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type ThreadLoadStatus = classdb.ResourceLoaderThreadLoadStatus

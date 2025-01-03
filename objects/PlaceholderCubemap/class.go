@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class replaces a [Cubemap] or a [Cubemap]-derived class in 2 conditions:
@@ -44,7 +44,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderCubemap"))
-	return Instance{classdb.PlaceholderCubemap(object)}
+	return Instance{*(*classdb.PlaceholderCubemap)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsPlaceholderCubemap() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -88,5 +88,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("PlaceholderCubemap", func(ptr gd.Object) any { return [1]classdb.PlaceholderCubemap{classdb.PlaceholderCubemap(ptr)} })
+	classdb.Register("PlaceholderCubemap", func(ptr gd.Object) any {
+		return [1]classdb.PlaceholderCubemap{*(*classdb.PlaceholderCubemap)(unsafe.Pointer(&ptr))}
+	})
 }

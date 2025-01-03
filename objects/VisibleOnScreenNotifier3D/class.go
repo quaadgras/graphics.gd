@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VisibleOnScreenNotifier3D] represents a box-shaped region of 3D space. When any part of this region becomes visible on screen or in a [Camera3D]'s view, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
@@ -51,7 +51,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenNotifier3D"))
-	return Instance{classdb.VisibleOnScreenNotifier3D(object)}
+	return Instance{*(*classdb.VisibleOnScreenNotifier3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SetAabb(value AABB.PositionSize) {
@@ -120,6 +120,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisibleOnScreenNotifier3D", func(ptr gd.Object) any {
-		return [1]classdb.VisibleOnScreenNotifier3D{classdb.VisibleOnScreenNotifier3D(ptr)}
+		return [1]classdb.VisibleOnScreenNotifier3D{*(*classdb.VisibleOnScreenNotifier3D)(unsafe.Pointer(&ptr))}
 	})
 }

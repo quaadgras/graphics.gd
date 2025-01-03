@@ -12,7 +12,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The HMACContext class is useful for advanced HMAC use cases, such as streaming the message as it supports creating the message over time rather than providing it all at once.
@@ -105,7 +105,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HMACContext"))
-	return Instance{classdb.HMACContext(object)}
+	return Instance{*(*classdb.HMACContext)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -168,7 +168,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HMACContext", func(ptr gd.Object) any { return [1]classdb.HMACContext{classdb.HMACContext(ptr)} })
+	classdb.Register("HMACContext", func(ptr gd.Object) any { return [1]classdb.HMACContext{*(*classdb.HMACContext)(unsafe.Pointer(&ptr))} })
 }
 
 type Error int

@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 An animation player is used for general-purpose playback of animations. It contains a dictionary of [AnimationLibrary] resources and custom blend times between animation transitions.
@@ -210,7 +210,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationPlayer"))
-	return Instance{classdb.AnimationPlayer(object)}
+	return Instance{*(*classdb.AnimationPlayer)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) CurrentAnimation() string {
@@ -838,7 +838,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AnimationPlayer", func(ptr gd.Object) any { return [1]classdb.AnimationPlayer{classdb.AnimationPlayer(ptr)} })
+	classdb.Register("AnimationPlayer", func(ptr gd.Object) any {
+		return [1]classdb.AnimationPlayer{*(*classdb.AnimationPlayer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AnimationProcessCallback = classdb.AnimationPlayerAnimationProcessCallback

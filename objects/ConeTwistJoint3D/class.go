@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A physics joint that connects two 3D physics bodies in a way that simulates a ball-and-socket joint. The twist axis is initiated as the X axis of the [ConeTwistJoint3D]. Once the physics bodies swing, the twist axis is calculated as the middle of the X axes of the joint in the local space of the two physics bodies. Useful for limbs like shoulders and hips, lamps hanging off a ceiling, etc.
@@ -41,7 +41,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConeTwistJoint3D"))
-	return Instance{classdb.ConeTwistJoint3D(object)}
+	return Instance{*(*classdb.ConeTwistJoint3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) SwingSpan() Float.X {
@@ -135,7 +135,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ConeTwistJoint3D", func(ptr gd.Object) any { return [1]classdb.ConeTwistJoint3D{classdb.ConeTwistJoint3D(ptr)} })
+	classdb.Register("ConeTwistJoint3D", func(ptr gd.Object) any {
+		return [1]classdb.ConeTwistJoint3D{*(*classdb.ConeTwistJoint3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Param = classdb.ConeTwistJoint3DParam

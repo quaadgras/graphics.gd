@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class can be used to augment or replace the default [MultiplayerAPI] implementation via script or extensions.
@@ -264,7 +264,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPIExtension"))
-	return Instance{classdb.MultiplayerAPIExtension(object)}
+	return Instance{*(*classdb.MultiplayerAPIExtension)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -450,7 +450,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("MultiplayerAPIExtension", func(ptr gd.Object) any {
-		return [1]classdb.MultiplayerAPIExtension{classdb.MultiplayerAPIExtension(ptr)}
+		return [1]classdb.MultiplayerAPIExtension{*(*classdb.MultiplayerAPIExtension)(unsafe.Pointer(&ptr))}
 	})
 }
 

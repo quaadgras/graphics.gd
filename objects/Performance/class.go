@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This class provides access to a number of different monitors related to performance, such as memory usage, draw calls, and FPS. These are the same as the values displayed in the [b]Monitor[/b] tab in the editor's [b]Debugger[/b] panel. By using the [method get_monitor] method of this class, you can access this data from your code.
@@ -321,7 +321,7 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("Performance", func(ptr gd.Object) any { return [1]classdb.Performance{classdb.Performance(ptr)} })
+	classdb.Register("Performance", func(ptr gd.Object) any { return [1]classdb.Performance{*(*classdb.Performance)(unsafe.Pointer(&ptr))} })
 }
 
 type Monitor = classdb.PerformanceMonitor

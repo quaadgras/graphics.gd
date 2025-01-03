@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
@@ -148,7 +148,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FileDialog"))
-	return Instance{classdb.FileDialog(object)}
+	return Instance{*(*classdb.FileDialog)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) ModeOverridesTitle() bool {
@@ -517,7 +517,7 @@ func (self class) GetVbox() objects.VBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VBoxContainer{classdb.VBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VBoxContainer{gd.PointerLifetimeBoundTo[classdb.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -531,7 +531,7 @@ func (self class) GetLineEdit() objects.LineEdit {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.LineEdit{classdb.LineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.LineEdit{gd.PointerLifetimeBoundTo[classdb.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -685,7 +685,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("FileDialog", func(ptr gd.Object) any { return [1]classdb.FileDialog{classdb.FileDialog(ptr)} })
+	classdb.Register("FileDialog", func(ptr gd.Object) any { return [1]classdb.FileDialog{*(*classdb.FileDialog)(unsafe.Pointer(&ptr))} })
 }
 
 type FileMode = classdb.FileDialogFileMode

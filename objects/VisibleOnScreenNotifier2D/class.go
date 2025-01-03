@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [VisibleOnScreenNotifier2D] represents a rectangular region of 2D space. When any part of this region becomes visible on screen or in a viewport, it will emit a [signal screen_entered] signal, and likewise it will emit a [signal screen_exited] signal when no part of it remains visible.
@@ -51,7 +51,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenNotifier2D"))
-	return Instance{classdb.VisibleOnScreenNotifier2D(object)}
+	return Instance{*(*classdb.VisibleOnScreenNotifier2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Rect() Rect2.PositionSize {
@@ -134,6 +134,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisibleOnScreenNotifier2D", func(ptr gd.Object) any {
-		return [1]classdb.VisibleOnScreenNotifier2D{classdb.VisibleOnScreenNotifier2D(ptr)}
+		return [1]classdb.VisibleOnScreenNotifier2D{*(*classdb.VisibleOnScreenNotifier2D)(unsafe.Pointer(&ptr))}
 	})
 }

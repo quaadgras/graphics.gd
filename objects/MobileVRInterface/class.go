@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is a generic mobile VR implementation where you need to provide details about the phone and HMD used. It does not rely on any existing framework. This is the most basic interface we have. For the best effect, you need a mobile phone with a gyroscope and accelerometer.
@@ -49,7 +49,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MobileVRInterface"))
-	return Instance{classdb.MobileVRInterface(object)}
+	return Instance{*(*classdb.MobileVRInterface)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) EyeHeight() Float.X {
@@ -346,5 +346,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("MobileVRInterface", func(ptr gd.Object) any { return [1]classdb.MobileVRInterface{classdb.MobileVRInterface(ptr)} })
+	classdb.Register("MobileVRInterface", func(ptr gd.Object) any {
+		return [1]classdb.MobileVRInterface{*(*classdb.MobileVRInterface)(unsafe.Pointer(&ptr))}
+	})
 }

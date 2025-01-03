@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Translated to [code]uint[/code] in the shader language.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeUIntConstant"))
-	return Instance{classdb.VisualShaderNodeUIntConstant(object)}
+	return Instance{*(*classdb.VisualShaderNodeUIntConstant)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Constant() int {
@@ -111,6 +111,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeUIntConstant", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeUIntConstant{classdb.VisualShaderNodeUIntConstant(ptr)}
+		return [1]classdb.VisualShaderNodeUIntConstant{*(*classdb.VisualShaderNodeUIntConstant)(unsafe.Pointer(&ptr))}
 	})
 }

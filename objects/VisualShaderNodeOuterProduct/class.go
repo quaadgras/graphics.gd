@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [code]OuterProduct[/code] treats the first parameter [code]c[/code] as a column vector (matrix with one column) and the second parameter [code]r[/code] as a row vector (matrix with one row) and does a linear algebraic matrix multiply [code]c * r[/code], yielding a matrix whose number of rows is the number of components in [code]c[/code] and whose number of columns is the number of components in [code]r[/code].
@@ -39,7 +39,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeOuterProduct"))
-	return Instance{classdb.VisualShaderNodeOuterProduct(object)}
+	return Instance{*(*classdb.VisualShaderNodeOuterProduct)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsVisualShaderNodeOuterProduct() Advanced {
@@ -78,6 +78,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("VisualShaderNodeOuterProduct", func(ptr gd.Object) any {
-		return [1]classdb.VisualShaderNodeOuterProduct{classdb.VisualShaderNodeOuterProduct(ptr)}
+		return [1]classdb.VisualShaderNodeOuterProduct{*(*classdb.VisualShaderNodeOuterProduct)(unsafe.Pointer(&ptr))}
 	})
 }

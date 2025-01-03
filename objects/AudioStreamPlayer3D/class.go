@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Plays audio with positional sound effects, based on the relative position of the audio listener. Positional effects include distance attenuation, directionality, and the Doppler effect. For greater realism, a low-pass filter is applied to distant sounds. This can be disabled by setting [member attenuation_filter_cutoff_hz] to [code]20500[/code].
@@ -85,7 +85,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlayer3D"))
-	return Instance{classdb.AudioStreamPlayer3D(object)}
+	return Instance{*(*classdb.AudioStreamPlayer3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Stream() objects.AudioStream {
@@ -266,7 +266,7 @@ func (self class) GetStream() objects.AudioStream {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -692,7 +692,7 @@ func (self class) GetStreamPlayback() objects.AudioStreamPlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_stream_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStreamPlayback{classdb.AudioStreamPlayback(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -740,7 +740,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AudioStreamPlayer3D", func(ptr gd.Object) any { return [1]classdb.AudioStreamPlayer3D{classdb.AudioStreamPlayer3D(ptr)} })
+	classdb.Register("AudioStreamPlayer3D", func(ptr gd.Object) any {
+		return [1]classdb.AudioStreamPlayer3D{*(*classdb.AudioStreamPlayer3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type AttenuationModel = classdb.AudioStreamPlayer3DAttenuationModel

@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Playback component of [AudioStreamInteractive]. Contains functions to change the currently played clip.
@@ -52,7 +52,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackInteractive"))
-	return Instance{classdb.AudioStreamPlaybackInteractive(object)}
+	return Instance{*(*classdb.AudioStreamPlaybackInteractive)(unsafe.Pointer(&object))}
 }
 
 /*
@@ -108,6 +108,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioStreamPlaybackInteractive", func(ptr gd.Object) any {
-		return [1]classdb.AudioStreamPlaybackInteractive{classdb.AudioStreamPlaybackInteractive(ptr)}
+		return [1]classdb.AudioStreamPlaybackInteractive{*(*classdb.AudioStreamPlaybackInteractive)(unsafe.Pointer(&ptr))}
 	})
 }

@@ -22,7 +22,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 3D particle node used to create a variety of particle systems and effects. [GPUParticles3D] features an emitter that generates some number of particles at a given rate.
@@ -78,7 +78,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticles3D"))
-	return Instance{classdb.GPUParticles3D(object)}
+	return Instance{*(*classdb.GPUParticles3D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Emitting() bool {
@@ -574,7 +574,7 @@ func (self class) GetProcessMaterial() objects.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_process_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Material{classdb.Material(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Material{gd.PointerWithOwnershipTransferredToGo[classdb.Material](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -669,7 +669,7 @@ func (self class) GetDrawPassMesh(pass gd.Int) objects.Mesh {
 	callframe.Arg(frame, pass)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_draw_pass_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Mesh{classdb.Mesh(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Mesh{gd.PointerWithOwnershipTransferredToGo[classdb.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -688,7 +688,7 @@ func (self class) GetSkin() objects.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Skin{classdb.Skin(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Skin{gd.PointerWithOwnershipTransferredToGo[classdb.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -878,7 +878,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("GPUParticles3D", func(ptr gd.Object) any { return [1]classdb.GPUParticles3D{classdb.GPUParticles3D(ptr)} })
+	classdb.Register("GPUParticles3D", func(ptr gd.Object) any {
+		return [1]classdb.GPUParticles3D{*(*classdb.GPUParticles3D)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type DrawOrder = classdb.GPUParticles3DDrawOrder

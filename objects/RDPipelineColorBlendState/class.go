@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This object is used by [RenderingDevice].
@@ -38,7 +38,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDPipelineColorBlendState"))
-	return Instance{classdb.RDPipelineColorBlendState(object)}
+	return Instance{*(*classdb.RDPipelineColorBlendState)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) EnableLogicOp() bool {
@@ -172,6 +172,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("RDPipelineColorBlendState", func(ptr gd.Object) any {
-		return [1]classdb.RDPipelineColorBlendState{classdb.RDPipelineColorBlendState(ptr)}
+		return [1]classdb.RDPipelineColorBlendState{*(*classdb.RDPipelineColorBlendState)(unsafe.Pointer(&ptr))}
 	})
 }

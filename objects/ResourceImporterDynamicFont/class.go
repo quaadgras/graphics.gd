@@ -13,7 +13,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Unlike bitmap fonts, dynamic fonts can be resized to any size and still look crisp. Dynamic fonts also optionally support MSDF font rendering, which allows for run-time scale changes with no re-rasterization cost.
@@ -40,7 +40,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterDynamicFont"))
-	return Instance{classdb.ResourceImporterDynamicFont(object)}
+	return Instance{*(*classdb.ResourceImporterDynamicFont)(unsafe.Pointer(&object))}
 }
 
 func (self class) AsResourceImporterDynamicFont() Advanced {
@@ -73,6 +73,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("ResourceImporterDynamicFont", func(ptr gd.Object) any {
-		return [1]classdb.ResourceImporterDynamicFont{classdb.ResourceImporterDynamicFont(ptr)}
+		return [1]classdb.ResourceImporterDynamicFont{*(*classdb.ResourceImporterDynamicFont)(unsafe.Pointer(&ptr))}
 	})
 }

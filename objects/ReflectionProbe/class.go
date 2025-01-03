@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 Captures its surroundings as a cubemap, and stores versions of it with increasing levels of blur to simulate different material roughnesses.
@@ -47,7 +47,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ReflectionProbe"))
-	return Instance{classdb.ReflectionProbe(object)}
+	return Instance{*(*classdb.ReflectionProbe)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) UpdateMode() classdb.ReflectionProbeUpdateMode {
@@ -454,7 +454,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("ReflectionProbe", func(ptr gd.Object) any { return [1]classdb.ReflectionProbe{classdb.ReflectionProbe(ptr)} })
+	classdb.Register("ReflectionProbe", func(ptr gd.Object) any {
+		return [1]classdb.ReflectionProbe{*(*classdb.ReflectionProbe)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type UpdateMode = classdb.ReflectionProbeUpdateMode

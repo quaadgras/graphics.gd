@@ -16,7 +16,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [AStarGrid2D] is a variant of [AStar2D] that is specialized for partial 2D grids. It is simpler to use because it doesn't require you to manually create points and connect them together. This class also supports multiple types of heuristics, modes for diagonal movement, and a jumping mode to speed up calculations.
@@ -205,7 +205,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStarGrid2D"))
-	return Instance{classdb.AStarGrid2D(object)}
+	return Instance{*(*classdb.AStarGrid2D)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Region() Rect2i.PositionSize {
@@ -703,7 +703,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("AStarGrid2D", func(ptr gd.Object) any { return [1]classdb.AStarGrid2D{classdb.AStarGrid2D(ptr)} })
+	classdb.Register("AStarGrid2D", func(ptr gd.Object) any { return [1]classdb.AStarGrid2D{*(*classdb.AStarGrid2D)(unsafe.Pointer(&ptr))} })
 }
 
 type Heuristic = classdb.AStarGrid2DHeuristic

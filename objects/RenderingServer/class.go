@@ -27,7 +27,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -4226,7 +4226,7 @@ func (self class) Texture2dGet(texture gd.RID) objects.Image {
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -4241,7 +4241,7 @@ func (self class) Texture2dLayerGet(texture gd.RID, layer gd.Int) objects.Image 
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -7944,7 +7944,7 @@ func (self class) SkyBakePanorama(sky gd.RID, energy gd.Float, bake_irradiance b
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -8448,7 +8448,7 @@ func (self class) EnvironmentBakePanorama(environment gd.RID, bake_irradiance bo
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.Image{classdb.Image(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.Image{gd.PointerWithOwnershipTransferredToGo[classdb.Image](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -10838,7 +10838,7 @@ func (self class) GetRenderingDevice() objects.RenderingDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RenderingDevice{classdb.RenderingDevice(gd.PointerMustAssertInstanceID(r_ret.Get()))}
+	var ret = objects.RenderingDevice{gd.PointerBorrowedTemporarily[classdb.RenderingDevice](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -10852,7 +10852,7 @@ func (self class) CreateLocalRenderingDevice() objects.RenderingDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.RenderingDevice{classdb.RenderingDevice(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[classdb.RenderingDevice](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -10910,7 +10910,9 @@ func (self class) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("RenderingServer", func(ptr gd.Object) any { return [1]classdb.RenderingServer{classdb.RenderingServer(ptr)} })
+	classdb.Register("RenderingServer", func(ptr gd.Object) any {
+		return [1]classdb.RenderingServer{*(*classdb.RenderingServer)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type TextureLayeredType = classdb.RenderingServerTextureLayeredType

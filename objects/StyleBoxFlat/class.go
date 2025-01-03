@@ -17,7 +17,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 By configuring various properties of this style box, you can achieve many common looks without the need of a texture. This includes optionally rounded borders, antialiasing, shadows, and skew.
@@ -82,7 +82,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBoxFlat"))
-	return Instance{classdb.StyleBoxFlat(object)}
+	return Instance{*(*classdb.StyleBoxFlat)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) BgColor() Color.RGBA {
@@ -638,7 +638,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("StyleBoxFlat", func(ptr gd.Object) any { return [1]classdb.StyleBoxFlat{classdb.StyleBoxFlat(ptr)} })
+	classdb.Register("StyleBoxFlat", func(ptr gd.Object) any {
+		return [1]classdb.StyleBoxFlat{*(*classdb.StyleBoxFlat)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type Corner int

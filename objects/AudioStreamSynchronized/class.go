@@ -15,7 +15,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 This is a stream that can be fitted with sub-streams, which will be played in-sync. The streams being at exactly the same time when play is pressed, and will end when the last of them ends. If one of the sub-streams loops, then playback will continue.
@@ -68,7 +68,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamSynchronized"))
-	return Instance{classdb.AudioStreamSynchronized(object)}
+	return Instance{*(*classdb.AudioStreamSynchronized)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) StreamCount() int {
@@ -120,7 +120,7 @@ func (self class) GetSyncStream(stream_index gd.Int) objects.AudioStream {
 	callframe.Arg(frame, stream_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.AudioStream{classdb.AudioStream(gd.PointerWithOwnershipTransferredToGo(r_ret.Get()))}
+	var ret = objects.AudioStream{gd.PointerWithOwnershipTransferredToGo[classdb.AudioStream](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -185,6 +185,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	classdb.Register("AudioStreamSynchronized", func(ptr gd.Object) any {
-		return [1]classdb.AudioStreamSynchronized{classdb.AudioStreamSynchronized(ptr)}
+		return [1]classdb.AudioStreamSynchronized{*(*classdb.AudioStreamSynchronized)(unsafe.Pointer(&ptr))}
 	})
 }

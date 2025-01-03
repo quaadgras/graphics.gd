@@ -14,7 +14,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
@@ -267,7 +267,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPRequest"))
-	return Instance{classdb.HTTPRequest(object)}
+	return Instance{*(*classdb.HTTPRequest)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) DownloadFile() string {
@@ -610,7 +610,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("HTTPRequest", func(ptr gd.Object) any { return [1]classdb.HTTPRequest{classdb.HTTPRequest(ptr)} })
+	classdb.Register("HTTPRequest", func(ptr gd.Object) any { return [1]classdb.HTTPRequest{*(*classdb.HTTPRequest)(unsafe.Pointer(&ptr))} })
 }
 
 type Result = classdb.HTTPRequestResult

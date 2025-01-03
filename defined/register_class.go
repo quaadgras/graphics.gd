@@ -213,6 +213,7 @@ func (class classImplementation) IsExposed() bool {
 
 func (class classImplementation) CreateInstance() gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
+	super = pointers.Pin(super)
 	instance := class.reloadInstance(super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
@@ -237,7 +238,7 @@ func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterf
 	var signals []signalChan
 	for i := 0; i < value.NumField(); i++ {
 		var field = value.Type().Field(i)
-		if !field.IsExported() || field.Name == "Class" {
+		if !field.IsExported() || field.Name == "Object" {
 			continue
 		}
 		var (
@@ -249,7 +250,7 @@ func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterf
 		}
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
-			signal := gd.NewSignalOf(super, gd.NewStringName(name))
+			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
 			ch := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, field.Type.Elem()), 0)
 			rvalue.Elem().Set(ch)
 			signals = append(signals, signalChan{
@@ -311,7 +312,7 @@ var lastGC int
 
 func (instance *instanceImplementation) setupForCall() func() {
 	if frame := Engine.GetFramesDrawn(); frame > lastGC {
-		pointers.MarkAndSweep()
+		pointers.Cycle()
 	}
 	return func() {}
 }
@@ -435,7 +436,7 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 	var list = make([]gd.PropertyInfo, 0, rtype.NumField())
 	for i := 0; i < rtype.NumField(); i++ {
 		field := rtype.Field(i)
-		if !field.IsExported() || field.Anonymous {
+		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
 			continue
 		}
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
@@ -552,6 +553,27 @@ func (instance *instanceImplementation) GetRID() gd.RID {
 func (instance *instanceImplementation) Free() {
 	for _, signal := range instance.signals {
 		signal.rvalue.Close()
+		signal.signal.Free()
+	}
+	rvalue := reflect.ValueOf(instance.Value).Elem()
+	for i := range rvalue.NumField() {
+		field := rvalue.Type().Field(i)
+		if !field.IsExported() || field.Name == "Object" {
+			continue
+		}
+		type isNode interface {
+			AsNode() Node.Instance
+		}
+		nodeType := reflect.TypeOf([0]isNode{}).Elem()
+		if field.Type.Implements(nodeType) || reflect.PointerTo(field.Type).Implements(nodeType) {
+			continue
+		}
+		if field.Type.Implements(reflect.TypeFor[interface{ Free() }]()) {
+			rvalue.Field(i).Interface().(interface{ Free() }).Free()
+		}
+		if field.Type.Kind() == reflect.Array && field.Type.Len() == 1 && field.Type.Elem().Implements(reflect.TypeFor[interface{ Free() }]()) {
+			rvalue.Field(i).Index(0).Interface().(interface{ Free() }).Free()
+		}
 	}
 	gd.ExtensionInstances.Delete(instance.object)
 	defer instance.setupForCall()()
@@ -567,7 +589,10 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	var parent objects.Node = objects.Node{classdb.Node(instance.Value.getObject())}
+	parent, ok := objects.As[Node.Instance](instance.Value.getObject())
+	if !ok {
+		return
+	}
 
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
@@ -625,13 +650,19 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
+		} else {
+			type isUnsafe interface {
+				UnsafePointer() unsafe.Pointer
+			}
+			*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(child))
+			defer pointers.End(child)
 		}
 		var mode Node.InternalMode = Node.InternalModeDisabled
 		if !field.IsExported() {
 			mode = Node.InternalModeFront
 		}
 		Node.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
-		var adding objects.Node = objects.Node{classdb.Node(class.AsNode().AsObject())}
+		var adding objects.Node = objects.Node{pointers.Raw[classdb.Node](pointers.Get(class.AsNode()[0]))}
 		Node.Advanced(parent).AddChild(adding, true, mode)
 		Node.Advanced(class.AsNode()).SetOwner(owner)
 		return
@@ -648,7 +679,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		type isUnsafe interface {
 			UnsafePointer() unsafe.Pointer
 		}
-		*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.New[gd.Object](pointers.Get(node[0]))
+		*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(node[0]))
 		pointers.End(node[0])
 	}
 }

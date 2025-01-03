@@ -18,7 +18,7 @@ var _ unsafe.Pointer
 var _ objects.Engine
 var _ reflect.Type
 var _ callframe.Frame
-var _ = pointers.Root
+var _ = pointers.Cycle
 
 /*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
@@ -153,7 +153,7 @@ func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorFileDialog"))
-	return Instance{classdb.EditorFileDialog(object)}
+	return Instance{*(*classdb.EditorFileDialog)(unsafe.Pointer(&object))}
 }
 
 func (self Instance) Access() classdb.EditorFileDialogAccess {
@@ -494,7 +494,7 @@ func (self class) GetVbox() objects.VBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.VBoxContainer{classdb.VBoxContainer(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.VBoxContainer{gd.PointerLifetimeBoundTo[classdb.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -508,7 +508,7 @@ func (self class) GetLineEdit() objects.LineEdit {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = objects.LineEdit{classdb.LineEdit(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret.Get()))}
+	var ret = objects.LineEdit{gd.PointerLifetimeBoundTo[classdb.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -595,7 +595,7 @@ Adds the given [param menu] to the side of the file dialog with the given [param
 //go:nosplit
 func (self class) AddSideMenu(menu objects.Control, title gd.String) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(gd.Object(menu[0])))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(menu[0].AsObject()))
 	callframe.Arg(frame, pointers.Get(title))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_add_side_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -674,7 +674,9 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	classdb.Register("EditorFileDialog", func(ptr gd.Object) any { return [1]classdb.EditorFileDialog{classdb.EditorFileDialog(ptr)} })
+	classdb.Register("EditorFileDialog", func(ptr gd.Object) any {
+		return [1]classdb.EditorFileDialog{*(*classdb.EditorFileDialog)(unsafe.Pointer(&ptr))}
+	})
 }
 
 type FileMode = classdb.EditorFileDialogFileMode
