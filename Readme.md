@@ -73,10 +73,10 @@ https://docs.godotengine.org/en/latest/index.html
 ## Frame-Based Memory Management
 
 Engine references must be 'used' every frame in order to remain alive, otherwise
-they will automatically be garbage collected every frame. You shouldn't have to
+they will automatically be garbage collected each frame. You shouldn't have to
 worry about any memory management as long as you keep Engine references inside an
 extension class and don't hold onto references across frames. If you get an
-"expired pointer" error, it means eiher the reference has outlived its frame and
+"expired pointer" error, it means either the reference has outlived its frame and
 has not been used since or the ownership of the value was transferred to the engine.
 
 ## Recommendations
