@@ -10,6 +10,8 @@ import (
 	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
+
+	_ "graphics.gd/startup"
 )
 
 func TestGetGodotVersion(t *testing.T) {
