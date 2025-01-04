@@ -7,9 +7,7 @@ import (
 	"math"
 	"unsafe"
 
-	gd "graphics.gd"
-
-	internal "graphics.gd/internal"
+	gd "graphics.gd/internal"
 	"graphics.gd/variant"
 )
 
@@ -25,7 +23,7 @@ type ByteArray struct {
 func (array ByteArray) conv(c byte) gd.Int { return gd.Int(c) }
 func (array ByteArray) wrap(c gd.Int) byte { return byte(c) }
 func (array ByteArray) alloc() gd.PackedByteArray {
-	return internal.NewPackedByteArray()
+	return gd.NewPackedByteArray()
 }
 
 func (array ByteArray) make(local []byte, proxy gd.PackedByteArray) ByteArray {

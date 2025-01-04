@@ -7,8 +7,8 @@ import (
 	"testing"
 	"unsafe"
 
+	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
-	"graphics.gd/startup"
 )
 
 func TestGetGodotVersion(t *testing.T) {
@@ -51,5 +51,5 @@ func TestNativeStructSize(t *testing.T) {
 }
 
 func TestGetLibraryPath(t *testing.T) {
-	fmt.Println(startup.LibraryPath())
+	fmt.Println(GDExtension.LibraryPath())
 }

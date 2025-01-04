@@ -4,7 +4,7 @@ package Signal
 import (
 	"sync"
 
-	errors "graphics.gd"
+	"graphics.gd/classdb/Engine"
 	gd "graphics.gd/internal"
 	"graphics.gd/variant/Callable"
 )
@@ -23,7 +23,7 @@ type Chan[T any] struct {
 
 type Any = gd.Signal
 
-const ErrInvalidParameter = errors.ErrInvalidParameter
+const ErrInvalidParameter = Engine.ErrInvalidParameter
 
 // Attach connects this signal to the specified [Callable.Func]
 // A signal can only be connected once to the same [Callable.Func].
@@ -34,7 +34,7 @@ func (c *Chan[T]) Attach(fn Callable.Func) error { //gd:Signal.connect
 	}
 	for _, f := range c.funcs {
 		if f == fn {
-			return errors.ErrInvalidParameter
+			return Engine.ErrInvalidParameter
 		}
 	}
 	c.funcs = append(c.funcs, fn)

@@ -6,7 +6,7 @@ import (
 	"maps"
 	"reflect"
 
-	gd "graphics.gd"
+	gd "graphics.gd/internal"
 	"graphics.gd/variant"
 )
 

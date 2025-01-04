@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"runtime"
 
-	gd "graphics.gd"
+	gd "graphics.gd/internal"
 	"graphics.gd/variant/Array"
 )
 

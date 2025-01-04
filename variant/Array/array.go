@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"sort"
 
-	gd "graphics.gd"
+	gd "graphics.gd/internal"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Int"
 )

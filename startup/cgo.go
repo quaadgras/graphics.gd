@@ -5,7 +5,6 @@ import (
 	"os"
 	"unsafe"
 
-	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 
 	"runtime.link/api"
@@ -45,11 +44,6 @@ func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) ui
 	init.minimum_initialization_level = initializationLevel(internal.GDExtensionInitializationLevelScene)
 	doInitialization(init)
 	return 1
-}
-
-// LibraryPath is the path to the shared library that contains the GD extension.
-func LibraryPath() string {
-	return gd.Global.GetLibraryPath(gd.Global.ExtensionToken).String()
 }
 
 //go:linkname main main.main
