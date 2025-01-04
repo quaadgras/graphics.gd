@@ -20,6 +20,9 @@ func init() {
 	})
 }
 
+// Advanced StringName for those who know what they are doing.
+type Advanced = gd.StringName
+
 // New returns an engine-optimised StringName for use with Advanced functions.
 // Can be initialised ahead of time as a global variable.
 func New(s string) gd.StringName {

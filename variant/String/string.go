@@ -46,9 +46,12 @@ func init() {
 	})
 }
 
+// Advanced String for those who know what they are doing.
+type Advanced = gd.String
+
 // New returns an engine-optimised String for use with Advanced functions.
 // Can be initialised ahead of time as a global variable.
-func New(vals ...any) gd.String { //gd:String() str
+func New(vals ...any) Advanced { //gd:String() str
 	if !gd.Linked {
 		str := pointers.Add[gd.String]([1]uintptr{})
 		static[fmt.Sprint(vals...)] = str

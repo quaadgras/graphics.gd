@@ -52,25 +52,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 
 		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
 			Name: gd.NewStringName(method.Name),
-			// FIXME type check and return an error if arguments are invalid.
-			Call: func(instance any, v ...gd.Variant) (gd.Variant, error) {
-				var args = make([]reflect.Value, len(v)+offset)
-				for i := 0; i < len(v); i++ {
-					if method.Type.In(i + 1 + offset).Implements(reflect.TypeOf([0]gd.IsClass{}).Elem()) {
-						var obj = reflect.New(method.Type.In(i + 1 + offset))
-						*(*gd.Object)(obj.UnsafePointer()) = gd.LetVariantAsPointerType[gd.Object](v[i], gd.TypeObject)
-						args[i+offset] = obj.Elem()
-					} else {
-						args[i+offset] = reflect.ValueOf(v[i].Interface())
-					}
-				}
-				extensionInstance := instance.(*instanceImplementation).Value
-				rets := reflect.ValueOf(extensionInstance).Method(i).Call(args)
-				if len(rets) > 0 {
-					return gd.NewVariant(rets[0].Interface()), nil
-				}
-				return gd.Variant{}, nil
-			},
+			Call: variantCall(method, i, offset),
 			PointerCall: func(instance any, args gd.UnsafeArgs, ret gd.UnsafeBack) {
 				extensionInstance := instance.(*instanceImplementation).Value
 				slowCall(hasContext, reflect.ValueOf(extensionInstance).Method(i), args, ret)
@@ -80,6 +62,24 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 			ReturnValueInfo:     returns,
 			ReturnValueMetadata: returnMetadata,
 		})
+	}
+}
+
+func variantCall(method reflect.Method, i, offset int) func(instance any, v ...gd.Variant) (gd.Variant, error) {
+	return func(instance any, v ...gd.Variant) (result gd.Variant, err error) {
+		var args = make([]reflect.Value, len(v)+offset)
+		for i := len(v) + offset; i < method.Type.NumIn(); i++ {
+			args[i+offset], err = gd.ConvertVariantTypeToDesiredGoType(v[i], method.Type.In(i))
+			if err != nil {
+				return gd.Variant{}, err
+			}
+		}
+		extensionInstance := instance.(*instanceImplementation).Value
+		rets := reflect.ValueOf(extensionInstance).Method(i).Call(args)
+		if len(rets) > 0 {
+			return gd.NewVariant(rets[0].Interface()), nil
+		}
+		return gd.Variant{}, nil
 	}
 }
 
