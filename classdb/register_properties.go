@@ -10,7 +10,7 @@ import (
 	gd "graphics.gd/internal"
 )
 
-func propertyOf(field reflect.StructField) gd.PropertyInfo {
+func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 	var name = field.Name
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -18,7 +18,10 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 	}
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
-	vtype := variantTypeOf(field.Type)
+	vtype, ok := variantTypeOf(field.Type)
+	if !ok {
+		return gd.PropertyInfo{}, false
+	}
 	if vtype == gd.TypeArray {
 		_, generic, ok := strings.Cut(field.Type.String(), "[")
 		if ok {
@@ -47,23 +50,23 @@ func propertyOf(field reflect.StructField) gd.PropertyInfo {
 		Hint:       int64(hint),
 		HintString: gd.NewString(hintString),
 		Usage:      int64(usage),
-	}
+	}, true
 }
 
-func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
+func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType, ok bool) {
 	switch rtype.Kind() {
 	case reflect.Bool:
-		return gd.TypeBool
+		return gd.TypeBool, true
 	case reflect.Int32, reflect.Int64, reflect.Int:
-		return gd.TypeInt
+		return gd.TypeInt, true
 	case reflect.Float32, reflect.Float64:
-		return gd.TypeFloat
+		return gd.TypeFloat, true
 	case reflect.Pointer:
 		if rtype.Elem().Kind() == reflect.Struct {
-			return gd.TypeObject
+			return gd.TypeObject, true
 		}
 	case reflect.Map:
-		return gd.TypeDictionary
+		return gd.TypeDictionary, true
 	}
 	switch rtype {
 	case reflect.TypeOf([0]gd.Variant{}).Elem():
@@ -159,9 +162,9 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 			case reflect.TypeOf([0]int{}).Elem():
 				vtype = gd.TypeInt
 			default:
-				panic("gdextension.RegisterClass: unsupported property type " + rtype.String())
+				return vtype, false
 			}
 		}
 	}
-	return
+	return vtype, true
 }

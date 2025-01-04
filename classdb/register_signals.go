@@ -33,11 +33,14 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			}
 			var args []gd.PropertyInfo
 			for i := 0; i < ftype.NumIn(); i++ {
-				args = append(args, gd.PropertyInfo{
-					Type:      variantTypeOf(ftype.In(i)),
-					Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
-					ClassName: gd.NewStringName(nameOf(ftype.In(i))),
-				})
+				vtype, ok := variantTypeOf(ftype.In(i))
+				if ok {
+					args = append(args, gd.PropertyInfo{
+						Type:      vtype,
+						Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+						ClassName: gd.NewStringName(nameOf(ftype.In(i))),
+					})
+				}
 			}
 			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
 		}
@@ -48,18 +51,24 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			if etype.Kind() == reflect.Func {
 				for i := 0; i < etype.NumOut(); i++ {
 					arg := etype.Out(i)
-					args = append(args, gd.PropertyInfo{
-						Type:      variantTypeOf(arg),
-						Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
-						ClassName: gd.NewStringName(nameOf(arg)),
-					})
+					vtype, ok := variantTypeOf(arg)
+					if ok {
+						args = append(args, gd.PropertyInfo{
+							Type:      vtype,
+							Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+							ClassName: gd.NewStringName(nameOf(arg)),
+						})
+					}
 				}
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
-				args = append(args, gd.PropertyInfo{
-					Type:      variantTypeOf(etype),
-					Name:      gd.NewStringName("event"),
-					ClassName: gd.NewStringName(nameOf(etype)),
-				})
+				vtype, ok := variantTypeOf(etype)
+				if ok {
+					args = append(args, gd.PropertyInfo{
+						Type:      vtype,
+						Name:      gd.NewStringName("event"),
+						ClassName: gd.NewStringName(nameOf(etype)),
+					})
+				}
 			}
 			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
 		}

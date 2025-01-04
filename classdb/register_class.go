@@ -17,6 +17,7 @@ import (
 	ProjectSettingsClass "graphics.gd/classdb/ProjectSettings"
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
+	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/variant/StringName"
 
 	gd "graphics.gd/internal"
@@ -29,7 +30,7 @@ type Tool interface{ tool() }
 
 // Extension can be embedded inside of a struct to represent a new Extension type.
 // The extended class will be available by calling the [Extension.Super] method.
-type Extension[T any, S gd.IsClass] struct {
+type Extension[T Class, S gd.IsClass] struct {
 	gd.Class[T, S]
 }
 
@@ -43,15 +44,20 @@ func NameFor[T Class]() string {
 }
 
 func (class Extension[T, S]) super() S {
-	return *class.Super()
+	return class.Super()
+}
+
+func (class *Extension[T, S]) Super() S {
+	class.AsObject()
+	return *class.Class.Super()
 }
 
 func (class Extension[T, S]) getObject() gd.Object {
-	return *(*gd.Object)(unsafe.Pointer(class.Super()))
+	return *(*gd.Object)(unsafe.Pointer(class.Class.Super()))
 }
 
 func (class *Extension[T, S]) setObject(obj gd.Object) {
-	*(*gd.Object)(unsafe.Pointer(class.Super())) = obj
+	*(*gd.Object)(unsafe.Pointer(class.Class.Super())) = obj
 }
 
 func (class Extension[T, S]) superType() reflect.Type {
@@ -77,6 +83,9 @@ func (class *Extension[T, S]) AsObject() gd.Object {
 	obj := class.getObject()
 	if obj == (gd.Object{}) {
 		impl, ok := registered.Load(reflect.TypeFor[T]())
+		if !ok {
+			Register[T]()
+		}
 		if ok {
 			instancer := impl.(*classImplementation)
 			obj = instancer.CreateInstance()
@@ -157,8 +166,14 @@ func Register[T Class]() {
 		className.Free()
 		superName.Free()
 	})
-	registerSignals(className, classType)
-	registerMethods(className, classType)
+	switch super.(type) {
+	case interface {
+		AsShaderMaterial() ShaderMaterialClass.Instance
+	}:
+	default:
+		registerSignals(className, classType)
+		registerMethods(className, classType)
+	}
 	if _, ok := any(super).(interface {
 		AsMainLoop() MainLoopClass.Instance
 	}); ok {
@@ -443,7 +458,10 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
 			continue
 		}
-		list = append(list, propertyOf(field))
+		ptype, ok := propertyOf(field)
+		if ok {
+			list = append(list, ptype)
+		}
 	}
 	return list
 }

@@ -3,8 +3,10 @@ package startup
 
 import (
 	"iter"
+	"runtime"
 
 	"graphics.gd/classdb"
+	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/ProjectSettings"
 	gd "graphics.gd/internal"
@@ -15,6 +17,10 @@ import (
 // as the main loop entrypoint. After the graphics engine has started up, it will use
 // the given struct to execute as the main loop. Blocks until the engine shuts down.
 func MainLoop[T classdb.ExtensionTo[M], M MainLoopClass.Any]() {
+	if EngineClass.IsEditorHint() {
+		doneInit <- struct{}{}
+		runtime.Goexit()
+	}
 	startupEngine = true
 	classdb.Register[T]()
 	className := classdb.NameFor[T]()
@@ -28,6 +34,10 @@ var done = make(chan struct{})
 
 // Wait until the engine has been fully started up.
 func Wait() {
+	if EngineClass.IsEditorHint() {
+		doneInit <- struct{}{}
+		runtime.Goexit()
+	}
 	wait := make(chan struct{})
 	doneInit <- struct{}{}
 	gd.NewCallable(func() {
@@ -40,6 +50,10 @@ var startupEngine = false
 
 // Engine starts up the engine and blocks until it shuts down.
 func Engine() {
+	if EngineClass.IsEditorHint() {
+		doneInit <- struct{}{}
+		runtime.Goexit()
+	}
 	startupEngine = true
 	doneInit <- struct{}{}
 	<-done
@@ -89,6 +103,10 @@ func (goMainLoop) Finalize() {
 //			// finalize
 //		}
 func Rendering() iter.Seq[Float.X] {
+	if EngineClass.IsEditorHint() {
+		doneInit <- struct{}{}
+		runtime.Goexit()
+	}
 	classdb.Register[goMainLoop]()
 	className := classdb.NameFor[goMainLoop]()
 	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
