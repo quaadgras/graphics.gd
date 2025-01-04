@@ -72,7 +72,6 @@ type revision uintptr
 const (
 	revisionEOF    = 0
 	revisionLocked = 1
-	revisionClosed = 2 // the first pointer is the next free slot.
 )
 
 // matches ignores the most significant 2 bits.
@@ -95,6 +94,10 @@ func (r revision) isActive() bool {
 func (r revision) active() revision {
 	return r | 1<<62
 }
+
+func (r revision) isClosed() bool  { return r&(1<<61) != 0 }
+func (r revision) close() revision { return r | 1<<61 }
+func (r revision) reset() revision { return r &^ (1 << 61) }
 
 // expire an active pointer, so that
 // it will need to be marked as active
@@ -132,7 +135,7 @@ func Cycle() {
 				if rev == revisionEOF {
 					break // end of the table.
 				}
-				if rev == revisionClosed {
+				if rev.isClosed() {
 					continue
 				}
 				if rev.isActive() {
@@ -228,7 +231,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 				checksum P
 			}
 			current.sentinal = idx
-			rev := (max(rev, 2) + 1).active()
+			rev := (max(rev, 2) + 1).active().reset()
 			arr[addr+offsetRevision].Store(uintptr(rev))
 			//
 			// NOTE the below function extraction is somewhat unsafe and
@@ -263,7 +266,7 @@ func end(rev revision, s int, p uintptr) bool {
 		return false
 	}
 	if arr[addr+offsetRevision].CompareAndSwap(uintptr(existing), revisionLocked) {
-		arr[addr+offsetRevision].Store(revisionClosed) // next free.
+		arr[addr+offsetRevision].Store(uintptr(existing.close())) // next free.
 		for {
 			end := writes[s].Load()
 			arr[addr+offsetPointers].Store(end)
