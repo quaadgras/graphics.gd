@@ -1,10 +1,4 @@
 golang.org/x/text v0.15.0 h1:h1V/4gjBv8v9cjcR6+AR5+/cIYK5N/WAgiv4xlsEtAk=
 golang.org/x/text v0.15.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=
-grow.graphics/rd v0.0.0-20240706100320-00baa9f2a15d h1:+pZ325kp76tdP6LaFZGbvvILzT0JEHTBsqWsGaDickw=
-grow.graphics/rd v0.0.0-20240706100320-00baa9f2a15d/go.mod h1:LTLElyAX7gsYU8EPr4JW/CWIaEN6TuB6X4mcdkgV4ys=
-grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
-grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
-grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9 h1:7DTN0CCvKzohFhaeb1vNC1XackvyL4u1UwQDBzQixJo=
-grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
 runtime.link v0.0.0-20241005094610-e19c9804d053 h1:CPI88sjOPMOYp0E9aszxGEI7lN6Z42cQxx+F09mkLF8=
 runtime.link v0.0.0-20241005094610-e19c9804d053/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
