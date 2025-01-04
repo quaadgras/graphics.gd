@@ -1574,7 +1574,7 @@ func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.CanvasLayer{gd.PointerWithOwnershipTransferredToGo[gdclass.CanvasLayer](r_ret.Get())}
+	var ret = [1]gdclass.CanvasLayer{gd.PointerLifetimeBoundTo[gdclass.CanvasLayer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }

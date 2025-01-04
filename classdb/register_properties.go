@@ -8,7 +8,6 @@ import (
 
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
 )
 
 func propertyOf(field reflect.StructField) gd.PropertyInfo {
@@ -143,7 +142,7 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType) {
 		vtype = gd.TypePackedColorArray
 	case reflect.TypeOf([0]unsafe.Pointer{}).Elem():
 		vtype = gd.TypeNil
-	case reflect.TypeOf([0]*gdclass.ScriptLanguageExtensionProfilingInfo{}).Elem():
+	case reflect.TypeOf([0]*gd.ScriptLanguageExtensionProfilingInfo{}).Elem():
 		vtype = gd.TypeNil
 	default:
 		switch {

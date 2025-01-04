@@ -22,7 +22,7 @@ An audio effect instance manipulates the audio it receives for a given effect. T
 	type AudioEffectInstance interface {
 		//Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
 		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Process(src_buffer unsafe.Pointer, dst_buffer *gdclass.AudioFrame, frame_count int)
+		Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)
 		//Override this method to customize the processing behavior of this effect instance.
 		//Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
 		ProcessSilence() bool
@@ -38,10 +38,10 @@ type Any interface {
 Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *gdclass.AudioFrame, frame_count int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-		var dst_buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 1)
+		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, int(frame_count))
@@ -81,10 +81,10 @@ func New() Instance {
 Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *gdclass.AudioFrame, frame_count gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-		var dst_buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 1)
+		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, frame_count)

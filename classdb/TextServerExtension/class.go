@@ -526,10 +526,10 @@ External [TextServer] implementations should inherit from this class.
 		ShapedTextIsReady(shaped Resource.ID) bool
 		//[b]Required.[/b]
 		//Returns an array of glyphs in the visual order.
-		ShapedTextGetGlyphs(shaped Resource.ID) *gdclass. Glyph
+		ShapedTextGetGlyphs(shaped Resource.ID) * Glyph
 		//[b]Required.[/b]
 		//Returns text glyphs in the logical order.
-		ShapedTextSortLogical(shaped Resource.ID) *gdclass. Glyph
+		ShapedTextSortLogical(shaped Resource.ID) * Glyph
 		//[b]Required.[/b]
 		//Returns number of glyphs in the buffer.
 		ShapedTextGetGlyphCount(shaped Resource.ID) int
@@ -556,7 +556,7 @@ External [TextServer] implementations should inherit from this class.
 		ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) int
 		//[b]Required.[/b]
 		//Returns array of the glyphs in the ellipsis.
-		ShapedTextGetEllipsisGlyphs(shaped Resource.ID) *gdclass. Glyph
+		ShapedTextGetEllipsisGlyphs(shaped Resource.ID) * Glyph
 		//[b]Optional.[/b]
 		//Trims text if it exceeds the given width.
 		ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag)
@@ -595,7 +595,7 @@ External [TextServer] implementations should inherit from this class.
 		ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) int
 		//[b]Optional.[/b]
 		//Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
-		ShapedTextGetCarets(shaped Resource.ID, position int, caret *gdclass.CaretInfo)
+		ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo)
 		//[b]Optional.[/b]
 		//Returns selection rectangles for the specified character range.
 		ShapedTextGetSelection(shaped Resource.ID, start int, end int) []Vector2.XY
@@ -3052,7 +3052,7 @@ func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped Resou
 [b]Required.[/b]
 Returns an array of glyphs in the visual order.
 */
-func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3065,7 +3065,7 @@ func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped Res
 [b]Required.[/b]
 Returns text glyphs in the logical order.
 */
-func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped Resource.ID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped Resource.ID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3204,7 +3204,7 @@ func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Point
 [b]Required.[/b]
 Returns array of the glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped Resource.ID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3386,11 +3386,11 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsaf
 [b]Optional.[/b]
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped Resource.ID, position int, caret *gdclass.CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped Resource.ID, position int, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var position = gd.UnsafeGet[gd.Int](p_args, 1)
-		var caret = gd.UnsafeGet[*gdclass.CaretInfo](p_args, 2)
+		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, int(position), caret)
 	}
@@ -6196,7 +6196,7 @@ func (class) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped gd.RID) 
 [b]Required.[/b]
 Returns an array of glyphs in the visual order.
 */
-func (class) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6209,7 +6209,7 @@ func (class) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID
 [b]Required.[/b]
 Returns text glyphs in the logical order.
 */
-func (class) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped gd.RID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped gd.RID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6347,7 +6347,7 @@ func (class) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer,
 [b]Required.[/b]
 Returns array of the glyphs in the ellipsis.
 */
-func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *gdclass.Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped gd.RID) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -6526,11 +6526,11 @@ func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.P
 [b]Optional.[/b]
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (class) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.RID, position gd.Int, caret *gdclass.CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped gd.RID, position gd.Int, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
 		var position = gd.UnsafeGet[gd.Int](p_args, 1)
-		var caret = gd.UnsafeGet[*gdclass.CaretInfo](p_args, 2)
+		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, position, caret)
 	}

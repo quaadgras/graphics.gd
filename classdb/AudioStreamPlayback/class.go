@@ -35,7 +35,7 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 		Seek(position Float.X)
 		//Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Mix(buffer *gdclass.AudioFrame, rate_scale Float.X, frames int) int
+		Mix(buffer *AudioFrame, rate_scale Float.X, frames int) int
 		//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 		TagUsedStreams()
 		//Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
@@ -119,9 +119,9 @@ func (Instance) _seek(impl func(ptr unsafe.Pointer, position Float.X)) (cb gd.Ex
 Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *gdclass.AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 0)
+		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[gd.Float](p_args, 1)
 		var frames = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -271,9 +271,9 @@ func (class) _seek(impl func(ptr unsafe.Pointer, position gd.Float)) (cb gd.Exte
 Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
-func (class) _mix(impl func(ptr unsafe.Pointer, buffer *gdclass.AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 0)
+		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[gd.Float](p_args, 1)
 		var frames = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()

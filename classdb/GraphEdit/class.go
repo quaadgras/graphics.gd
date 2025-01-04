@@ -968,7 +968,7 @@ func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 	callframe.Arg(frame, pointers.Get(element))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_element_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.GraphFrame{gd.PointerWithOwnershipTransferredToGo[gdclass.GraphFrame](r_ret.Get())}
+	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }

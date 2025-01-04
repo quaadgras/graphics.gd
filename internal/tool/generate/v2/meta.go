@@ -20,38 +20,6 @@ func (db ClassDB) nameOf(pkg, original string) string {
 	return class.Package + "." + class.Name
 }
 
-func (db ClassDB) genArgs(pkg string, method gdjson.Method) string {
-	var args []string
-	for _, arg := range method.Arguments {
-		if arg.Name == "type" {
-			arg.Name = "typ"
-		}
-		if arg.Name == "func" {
-			arg.Name = "fn"
-		}
-		if arg.Name == "default" {
-			arg.Name = "def"
-		}
-		if arg.Name == "interface" {
-			arg.Name = "iface"
-		}
-		if arg.Name == "range" {
-			arg.Name = "rng"
-		}
-		if arg.Name == "var" {
-			arg.Name = "variable"
-		}
-		if arg.Name == "map" {
-			arg.Name = "mapping"
-		}
-		if arg.Name == "internal" {
-			arg.Name = "internal_"
-		}
-		args = append(args, fmt.Sprintf("%v %v", arg.Name, db.convertType(pkg, arg.Meta, arg.Type)))
-	}
-	return strings.Join(args, ", ")
-}
-
 func pascal(name string) string {
 	words := strings.Split(name, "_")
 	for i := range words {
@@ -214,7 +182,9 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		gdType = strings.TrimPrefix(gdType, "const")
 
 		if strings.HasSuffix(gdType, "*") {
-			return "*gdclass." + gdType[:len(gdType)-1]
+			fmt.Println(pkg, gdType)
+			gdType = strings.TrimPrefix(gdType, pkg)
+			return "*" + gdType[:len(gdType)-1]
 		}
 
 		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
@@ -363,7 +333,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return ftype
 	default:
-		return classDB.convertType("", meta, gdType)
+		return classDB.convertType(class.Name, meta, gdType)
 	}
 }
 

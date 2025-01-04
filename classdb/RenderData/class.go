@@ -92,7 +92,7 @@ func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.RenderSceneData{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneData](r_ret.Get())}
+	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret.Get())}
 	frame.Free()
 	return ret
 }

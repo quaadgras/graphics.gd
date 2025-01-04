@@ -592,18 +592,18 @@ func (Instance) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, e
 		impl(self, enable)
 	}
 }
-func (Instance) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *gdclass.ScriptLanguageExtensionProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var info_array = gd.UnsafeGet[*gdclass.ScriptLanguageExtensionProfilingInfo](p_args, 0)
+		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
 		var info_max = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, int(info_max))
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
-func (Instance) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *gdclass.ScriptLanguageExtensionProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var info_array = gd.UnsafeGet[*gdclass.ScriptLanguageExtensionProfilingInfo](p_args, 0)
+		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
 		var info_max = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, int(info_max))
@@ -1252,9 +1252,9 @@ func (class) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, enab
 	}
 }
 
-func (class) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *gdclass.ScriptLanguageExtensionProfilingInfo, info_max gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var info_array = gd.UnsafeGet[*gdclass.ScriptLanguageExtensionProfilingInfo](p_args, 0)
+		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
 		var info_max = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, info_max)
@@ -1262,9 +1262,9 @@ func (class) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_
 	}
 }
 
-func (class) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *gdclass.ScriptLanguageExtensionProfilingInfo, info_max gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var info_array = gd.UnsafeGet[*gdclass.ScriptLanguageExtensionProfilingInfo](p_args, 0)
+		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
 		var info_max = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, info_max)

@@ -1191,7 +1191,7 @@ func (self class) GuiGetHoveredControl() [1]gdclass.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.Control{gd.PointerWithOwnershipTransferredToGo[gdclass.Control](r_ret.Get())}
+	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
 	return ret
 }

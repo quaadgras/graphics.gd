@@ -21,7 +21,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 	}
 	for _, prop := range class.Properties {
 		ptype := classDB.convertTypeSimple(class, "", "", prop.Type)
-		expert := classDB.convertType("", "", prop.Type)
+		expert := classDB.convertType(class.Name, "", prop.Type)
 		var foundGetter bool
 		var foundSetter bool
 		if prop.Getter != "" {
@@ -29,7 +29,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 				if method.Name == prop.Getter {
 					ptype = classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 					foundGetter = true
-					expert = classDB.convertType("", method.ReturnValue.Meta, method.ReturnValue.Type)
+					expert = classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 					break
 				}
 			}
@@ -42,7 +42,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 						i = 1
 					}
 					ptype = classDB.convertTypeSimple(class, "", method.Arguments[i].Meta, method.Arguments[i].Type)
-					expert = classDB.convertType("", method.Arguments[i].Meta, method.Arguments[i].Type)
+					expert = classDB.convertType(class.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					foundSetter = true
 					break
 				}
@@ -84,7 +84,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 						i = 1
 					}
 					ptype = classDB.convertTypeSimple(class, "", method.Arguments[i].Meta, method.Arguments[i].Type)
-					expert = classDB.convertType("", method.Arguments[i].Meta, method.Arguments[i].Type)
+					expert = classDB.convertType(class.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					found = true
 					break
 				}

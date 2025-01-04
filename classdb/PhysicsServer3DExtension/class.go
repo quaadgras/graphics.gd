@@ -138,7 +138,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
 		BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
 		BodySetRayPickable(body Resource.ID, enable bool)
-		BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer3DExtensionMotionResult) bool
+		BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
 		BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D
 		SoftBodyCreate() Resource.ID
 		SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)
@@ -1160,7 +1160,7 @@ func (Instance) _body_set_ray_pickable(impl func(ptr unsafe.Pointer, body Resour
 		impl(self, body, enable)
 	}
 }
-func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer3DExtensionMotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var from = gd.UnsafeGet[gd.Transform3D](p_args, 1)
@@ -1169,7 +1169,7 @@ func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID
 		var max_collisions = gd.UnsafeGet[gd.Int](p_args, 4)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 5)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 6)
-		var result = gd.UnsafeGet[*gdclass.PhysicsServer3DExtensionMotionResult](p_args, 7)
+		var result = gd.UnsafeGet[*MotionResult](p_args, 7)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, from, motion, Float.X(margin), int(max_collisions), collide_separation_ray, recovery_as_collision, result)
 		gd.UnsafeSet(p_back, ret)
@@ -2886,7 +2886,7 @@ func (class) _body_set_ray_pickable(impl func(ptr unsafe.Pointer, body gd.RID, e
 	}
 }
 
-func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from gd.Transform3D, motion gd.Vector3, margin gd.Float, max_collisions gd.Int, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer3DExtensionMotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from gd.Transform3D, motion gd.Vector3, margin gd.Float, max_collisions gd.Int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var from = gd.UnsafeGet[gd.Transform3D](p_args, 1)
@@ -2895,7 +2895,7 @@ func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from g
 		var max_collisions = gd.UnsafeGet[gd.Int](p_args, 4)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 5)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 6)
-		var result = gd.UnsafeGet[*gdclass.PhysicsServer3DExtensionMotionResult](p_args, 7)
+		var result = gd.UnsafeGet[*MotionResult](p_args, 7)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, from, motion, margin, max_collisions, collide_separation_ray, recovery_as_collision, result)
 		gd.UnsafeSet(p_back, ret)

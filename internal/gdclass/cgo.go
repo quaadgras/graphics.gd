@@ -1,8 +1,6 @@
 package gdclass
 
-import gd "graphics.gd/internal"
-
-type AudioFrame = gd.AudioFrame
+/*type AudioFrame = gd.AudioFrame
 
 type PhysicsServer2DExtensionMotionResult = gd.PhysicsServer2DExtensionMotionResult
 type PhysicsServer2DExtensionRayResult = gd.PhysicsServer2DExtensionRayResult
@@ -15,4 +13,4 @@ type PhysicsServer3DExtensionMotionCollision = gd.PhysicsServer3DExtensionMotion
 type PhysicsServer3DExtensionMotionResult = gd.PhysicsServer3DExtensionMotionResult
 type ScriptLanguageExtensionProfilingInfo = gd.ScriptLanguageExtensionProfilingInfo
 type Glyph = gd.Glyph
-type CaretInfo = gd.CaretInfo
+type CaretInfo = gd.CaretInfo*/

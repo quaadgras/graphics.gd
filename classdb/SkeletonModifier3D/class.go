@@ -106,7 +106,7 @@ func (self class) GetSkeleton() [1]gdclass.Skeleton3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.Skeleton3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Skeleton3D](r_ret.Get())}
+	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret.Get())}
 	frame.Free()
 	return ret
 }

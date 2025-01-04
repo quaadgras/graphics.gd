@@ -1,0 +1,8 @@
+package PhysicsDirectSpaceState2DExtension
+
+import gd "graphics.gd/internal"
+
+type PhysicsServer2DExtensionRayResult = gd.PhysicsServer2DExtensionRayResult
+type PhysicsServer2DExtensionShapeResult = gd.PhysicsServer2DExtensionShapeResult
+type PhysicsServer2DExtensionShapeRestInfo = gd.PhysicsServer2DExtensionShapeRestInfo
+type PhysicsServer2DExtensionMotionResult = gd.PhysicsServer2DExtensionMotionResult

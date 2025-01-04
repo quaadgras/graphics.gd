@@ -968,7 +968,7 @@ An [param id] can optionally be provided. If no [param id] is provided, one will
 func (self class) AddSubmenuNodeItem(label gd.String, submenu [1]gdclass.PopupMenu, id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(submenu[0])[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
 	callframe.Arg(frame, id)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_add_submenu_node_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1139,7 +1139,7 @@ Sets the submenu of the item at the given [param index]. The submenu is a [Popup
 func (self class) SetItemSubmenuNode(index gd.Int, submenu [1]gdclass.PopupMenu) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(submenu[0])[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_submenu_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -1480,7 +1480,7 @@ func (self class) GetItemSubmenuNode(index gd.Int) [1]gdclass.PopupMenu {
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_submenu_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.PopupMenu{gd.PointerWithOwnershipTransferredToGo[gdclass.PopupMenu](r_ret.Get())}
+	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }

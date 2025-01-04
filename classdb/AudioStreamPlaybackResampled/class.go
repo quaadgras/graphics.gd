@@ -23,9 +23,9 @@ type Any interface {
 	AsAudioStreamPlaybackResampled() Instance
 }
 
-func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *gdclass.AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var dst_buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 0)
+		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, int(frame_count))
@@ -60,9 +60,9 @@ func New() Instance {
 	return Instance{*(*gdclass.AudioStreamPlaybackResampled)(unsafe.Pointer(&object))}
 }
 
-func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *gdclass.AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var dst_buffer = gd.UnsafeGet[*gdclass.AudioFrame](p_args, 0)
+		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, frame_count)

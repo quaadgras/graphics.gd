@@ -7,6 +7,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
 )
@@ -30,7 +31,7 @@ func TestGetGodotVersion(t *testing.T) {
 func TestNativeStructSize(t *testing.T) {
 	for name, expectation := range map[string]uintptr{
 		"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),
-		"AudioFrame":                              unsafe.Sizeof(gd.AudioFrame{}),
+		"AudioFrame":                              unsafe.Sizeof(AudioEffectInstance.AudioFrame{}),
 		"ScriptLanguageExtensionProfilingInfo":    unsafe.Sizeof(gd.ScriptLanguageExtensionProfilingInfo{}),
 		"Glyph":                                   unsafe.Sizeof(gd.Glyph{}),
 		"CaretInfo":                               unsafe.Sizeof(gd.CaretInfo{}),

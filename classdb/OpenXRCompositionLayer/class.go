@@ -97,7 +97,7 @@ func (self Instance) SetEnableHolePunch(value bool) {
 //go:nosplit
 func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(viewport[0])[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_layer_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -108,7 +108,7 @@ func (self class) GetLayerViewport() [1]gdclass.SubViewport {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_layer_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.SubViewport{gd.PointerWithOwnershipTransferredToGo[gdclass.SubViewport](r_ret.Get())}
+	var ret = [1]gdclass.SubViewport{gd.PointerMustAssertInstanceID[gdclass.SubViewport](r_ret.Get())}
 	frame.Free()
 	return ret
 }

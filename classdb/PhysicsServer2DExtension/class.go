@@ -262,7 +262,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 		//Overridable version of [method PhysicsServer2D.body_get_direct_state].
 		BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState2D
 		//Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
-		BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer2DExtensionMotionResult) bool
+		BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
 		//Overridable version of [method PhysicsServer2D.joint_create].
 		JointCreate() Resource.ID
 		//Overridable version of [method PhysicsServer2D.joint_clear].
@@ -1748,7 +1748,7 @@ func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body Resour
 /*
 Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
 */
-func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer2DExtensionMotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var from = gd.UnsafeGet[gd.Transform2D](p_args, 1)
@@ -1756,7 +1756,7 @@ func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body Resource.ID
 		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 4)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 5)
-		var result = gd.UnsafeGet[*gdclass.PhysicsServer2DExtensionMotionResult](p_args, 6)
+		var result = gd.UnsafeGet[*MotionResult](p_args, 6)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, from, motion, Float.X(margin), collide_separation_ray, recovery_as_collision, result)
 		gd.UnsafeSet(p_back, ret)
@@ -3523,7 +3523,7 @@ func (class) _body_get_direct_state(impl func(ptr unsafe.Pointer, body gd.RID) [
 /*
 Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
 */
-func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from gd.Transform2D, motion gd.Vector2, margin gd.Float, collide_separation_ray bool, recovery_as_collision bool, result *gdclass.PhysicsServer2DExtensionMotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from gd.Transform2D, motion gd.Vector2, margin gd.Float, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var from = gd.UnsafeGet[gd.Transform2D](p_args, 1)
@@ -3531,7 +3531,7 @@ func (class) _body_test_motion(impl func(ptr unsafe.Pointer, body gd.RID, from g
 		var margin = gd.UnsafeGet[gd.Float](p_args, 3)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 4)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 5)
-		var result = gd.UnsafeGet[*gdclass.PhysicsServer2DExtensionMotionResult](p_args, 6)
+		var result = gd.UnsafeGet[*MotionResult](p_args, 6)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body, from, motion, margin, collide_separation_ray, recovery_as_collision, result)
 		gd.UnsafeSet(p_back, ret)

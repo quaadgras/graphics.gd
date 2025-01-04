@@ -132,7 +132,7 @@ func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.HBoxContainer{gd.PointerWithOwnershipTransferredToGo[gdclass.HBoxContainer](r_ret.Get())}
+	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
 }

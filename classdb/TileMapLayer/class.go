@@ -533,7 +533,7 @@ func (self class) GetCellTileData(coords gd.Vector2i) [1]gdclass.TileData {
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gdclass.TileData{gd.PointerWithOwnershipTransferredToGo[gdclass.TileData](r_ret.Get())}
+	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
 	return ret
 }

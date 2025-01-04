@@ -410,7 +410,7 @@ Registers the given extension as a composition layer provider.
 //go:nosplit
 func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension[0])[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_register_composition_layer_provider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
