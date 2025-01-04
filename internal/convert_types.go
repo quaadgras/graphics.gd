@@ -3,72 +3,82 @@
 package gd
 
 import (
-	"errors"
+	"fmt"
 	"reflect"
 )
 
-var ErrInvalidParameter = errors.New("invalid parameter")
-
-func ConvertVariantTypeToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
+func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
+	default:
+		return ConvertToDesiredGoType(value.Interface(), rtype)
+	}
+}
+
+func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error) {
+	if reflect.TypeOf(value) == rtype {
+		return reflect.ValueOf(value), nil
+	}
+	variant, ok := value.(Variant)
+	if ok {
+		return convertVariantToDesiredGoType(variant, rtype)
+	}
+	switch rtype.Kind() {
+	case reflect.Bool:
+		return reflect.ValueOf(value).Convert(rtype), nil
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
-		switch value.Type() {
-		case TypeInt:
-			return reflect.ValueOf(value.Interface().(Int)).Convert(rtype), nil
-		case TypeFloat:
-			return reflect.ValueOf(int(value.Interface().(Float))).Convert(rtype), nil
+		switch value := value.(type) {
+		case Int, Float:
+			return reflect.ValueOf(value).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Uint64:
-		switch value.Type() {
-		case TypeRID:
-			return reflect.ValueOf(value.Interface().(RID)).Convert(rtype), nil
-		case TypeInt:
-			return reflect.ValueOf(uint64(value.Interface().(Int))).Convert(rtype), nil
-		case TypeFloat:
-			return reflect.ValueOf(uint64(value.Interface().(Float))).Convert(rtype), nil
+		switch value := value.(type) {
+		case RID, Int, Float:
+			return reflect.ValueOf(value).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Float32, reflect.Float64:
-		switch value.Type() {
-		case TypeFloat:
-			return reflect.ValueOf(value.Interface().(Float)).Convert(rtype), nil
-		case TypeInt:
-			return reflect.ValueOf(float64(value.Interface().(Int))).Convert(rtype), nil
+		switch value := value.(type) {
+		case Float, Int:
+			return reflect.ValueOf(value).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Complex64, reflect.Complex128:
-		switch value.Type() {
-		case TypeFloat:
-			return reflect.ValueOf(complex(value.Interface().(Float), 0)).Convert(rtype), nil
-		case TypeInt:
-			return reflect.ValueOf(complex(float64(value.Interface().(Int)), 0)).Convert(rtype), nil
-		case TypeVector2:
-			vec2 := value.Interface().(Vector2)
-			return reflect.ValueOf(complex(vec2.X, vec2.Y)).Convert(rtype), nil
+		switch value := value.(type) {
+		case Float:
+			return reflect.ValueOf(complex(value, 0)).Convert(rtype), nil
+		case Int:
+			return reflect.ValueOf(complex(float64(value), 0)).Convert(rtype), nil
+		case Vector2:
+			return reflect.ValueOf(complex(value.X, value.Y)).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Array:
-		return convertVariantTypeToArrayOf(rtype.Elem(), value)
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			var obj = reflect.New(rtype)
+			*(*Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
+			return obj.Elem(), nil
+		}
+		return convertToGoArrayOf(rtype.Elem(), value)
 	case reflect.Chan:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	case reflect.Func:
-		return convertVariantTypeToFunc(rtype, value)
+		return convertToGoFunc(rtype, value)
 	case reflect.Map:
-		return convertVariantTypeToMap(rtype, value)
+		return convertToGoMap(rtype, value)
 	case reflect.Pointer:
-		switch value.Type() {
-		case TypeNil:
+		switch value {
+		case nil:
 			return reflect.Zero(rtype), nil
 		default:
 			var elem = reflect.New(rtype.Elem())
-			value, err := ConvertVariantTypeToDesiredGoType(value, rtype.Elem())
+			value, err := ConvertToDesiredGoType(value, rtype.Elem())
 			if err != nil {
 				return reflect.Value{}, err
 			}
@@ -76,40 +86,40 @@ func ConvertVariantTypeToDesiredGoType(value Variant, rtype reflect.Type) (refle
 			return elem, nil
 		}
 	case reflect.Slice:
-		return convertVariantTypeToSliceOf(rtype.Elem(), value)
+		return convertToGoSliceOf(rtype.Elem(), value)
 	case reflect.String:
-		switch value.Type() {
-		case TypeString:
-			return reflect.ValueOf(value.Interface().(String).String()).Convert(rtype), nil
-		case TypeStringName:
-			return reflect.ValueOf(value.Interface().(StringName).String()).Convert(rtype), nil
+		switch value := value.(type) {
+		case String:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
+		case StringName:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Struct:
 		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = LetVariantAsPointerType[Object](value, TypeObject)
+			*(*Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
 			return obj.Elem(), nil
 		}
-		return convertVariantTypeToStruct(rtype, value)
+		return convertToGoStruct(rtype, value)
 	default:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
 }
 
-func convertVariantTypeToMap(rtype reflect.Type, value Variant) (reflect.Value, error) {
-	if value.Type() != TypeDictionary {
-		return reflect.Value{}, ErrInvalidParameter
+func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
+	dictionary, ok := value.(Dictionary)
+	if !ok {
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
-	var dictionary = value.Interface().(Dictionary)
 	var mapValue = reflect.MakeMap(rtype)
 	for _, key := range dictionary.Keys().Iter() {
-		keyValue, err := ConvertVariantTypeToDesiredGoType(key, rtype.Key())
+		keyValue, err := convertVariantToDesiredGoType(key, rtype.Key())
 		if err != nil {
 			return reflect.Value{}, err
 		}
-		valueValue, err := ConvertVariantTypeToDesiredGoType(dictionary.Index(key), rtype.Elem())
+		valueValue, err := convertVariantToDesiredGoType(dictionary.Index(key), rtype.Elem())
 		if err != nil {
 			return reflect.Value{}, err
 		}
@@ -118,10 +128,10 @@ func convertVariantTypeToMap(rtype reflect.Type, value Variant) (reflect.Value, 
 	return mapValue, nil
 }
 
-func convertVariantTypeToStruct(rtype reflect.Type, value Variant) (reflect.Value, error) {
-	switch value.Type() {
-	case TypeObject:
-		var object = value.Interface().(IsClass).AsObject()
+func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
+	switch value := value.(type) {
+	case IsClass:
+		var object = value.(IsClass).AsObject()
 		var structure = reflect.New(rtype).Elem()
 		for i := 0; i < rtype.NumField(); i++ {
 			field := rtype.Field(i)
@@ -129,23 +139,23 @@ func convertVariantTypeToStruct(rtype reflect.Type, value Variant) (reflect.Valu
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := ConvertVariantTypeToDesiredGoType(object.Get(NewStringName(name)), field.Type)
+			fieldValue, err := convertVariantToDesiredGoType(object.Get(NewStringName(name)), field.Type)
 			if err != nil {
 				return reflect.Value{}, err
 			}
 			structure.Field(i).Set(fieldValue)
 		}
 		return structure, nil
-	case TypeDictionary:
+	case Dictionary:
 		var structure = reflect.New(rtype)
-		var dictionary = value.Interface().(Dictionary)
+		var dictionary = value
 		for i := 0; i < rtype.NumField(); i++ {
 			field := rtype.Field(i)
 			name := field.Name
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := ConvertVariantTypeToDesiredGoType(dictionary.Index(NewVariant(name)), field.Type)
+			fieldValue, err := convertVariantToDesiredGoType(dictionary.Index(NewVariant(name)), field.Type)
 			if err != nil {
 				return reflect.Value{}, err
 			}
@@ -153,14 +163,14 @@ func convertVariantTypeToStruct(rtype reflect.Type, value Variant) (reflect.Valu
 		}
 		return structure, nil
 	default:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
 }
 
-func convertVariantTypeToFunc(rtype reflect.Type, value Variant) (reflect.Value, error) {
-	switch value.Type() {
-	case TypeCallable:
-		callable := value.Interface().(Callable)
+func convertToGoFunc(rtype reflect.Type, value any) (reflect.Value, error) {
+	switch value := value.(type) {
+	case Callable:
+		callable := value
 		return reflect.MakeFunc(rtype, func(args []reflect.Value) []reflect.Value {
 			variants := make([]Variant, len(args))
 			for i, arg := range args {
@@ -170,7 +180,7 @@ func convertVariantTypeToFunc(rtype reflect.Type, value Variant) (reflect.Value,
 				callable.Call(variants...)
 				return nil
 			}
-			val, err := ConvertVariantTypeToDesiredGoType(callable.Call(variants...), rtype.Out(0))
+			val, err := convertVariantToDesiredGoType(callable.Call(variants...), rtype.Out(0))
 			if err != nil {
 				panic("invalid return type")
 			}
@@ -178,8 +188,8 @@ func convertVariantTypeToFunc(rtype reflect.Type, value Variant) (reflect.Value,
 				val,
 			}
 		}), nil
-	case TypeSignal:
-		signal := value.Interface().(Signal)
+	case Signal:
+		signal := value
 		return reflect.MakeFunc(rtype, func(args []reflect.Value) []reflect.Value {
 			variants := make([]Variant, len(args))
 			for i, arg := range args {
@@ -189,16 +199,15 @@ func convertVariantTypeToFunc(rtype reflect.Type, value Variant) (reflect.Value,
 			return nil
 		}), nil
 	default:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
 }
 
-func convertVariantTypeToArrayOf(rtype reflect.Type, value Variant) (reflect.Value, error) {
-	if value.Type() == TypeArray {
+func convertToGoArrayOf(rtype reflect.Type, value any) (reflect.Value, error) {
+	if value, ok := value.(Array); ok {
 		var array = reflect.New(rtype).Elem()
-		var godot = value.Interface().(Array)
 		for i := 0; i < rtype.Len(); i++ {
-			elem, err := ConvertVariantTypeToDesiredGoType(godot.Index(Int(i)), rtype.Elem())
+			elem, err := convertVariantToDesiredGoType(value.Index(Int(i)), rtype.Elem())
 			if err != nil {
 				return reflect.Value{}, err
 			}
@@ -208,36 +217,39 @@ func convertVariantTypeToArrayOf(rtype reflect.Type, value Variant) (reflect.Val
 	}
 	switch rtype.Kind() {
 	case reflect.Uint8:
-		if value.Type() != TypePackedByteArray {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedByteArray)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedByteArray).Bytes()).Convert(rtype), nil
+		return reflect.ValueOf(packed.Bytes()).Convert(rtype), nil
 	case reflect.Int32:
-		if value.Type() != TypePackedInt32Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedInt32Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedInt32Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float32:
-		if value.Type() != TypePackedFloat32Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedFloat32Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedFloat32Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float64:
-		if value.Type() != TypePackedFloat64Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedFloat64Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedFloat64Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	default:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
 }
 
-func convertVariantTypeToSliceOf(rtype reflect.Type, value Variant) (reflect.Value, error) {
-	if value.Type() == TypeArray {
-		var godot = value.Interface().(Array)
-		var slice = reflect.MakeSlice(reflect.SliceOf(rtype), int(godot.Size()), int(godot.Size()))
-		for i := 0; i < int(godot.Size()); i++ {
-			elem, err := ConvertVariantTypeToDesiredGoType(godot.Index(Int(i)), rtype)
+func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
+	if value, ok := value.(Array); ok {
+		var slice = reflect.MakeSlice(reflect.SliceOf(rtype), int(value.Size()), int(value.Size()))
+		for i := 0; i < int(value.Size()); i++ {
+			elem, err := convertVariantToDesiredGoType(value.Index(Int(i)), rtype)
 			if err != nil {
 				return reflect.Value{}, err
 			}
@@ -247,56 +259,65 @@ func convertVariantTypeToSliceOf(rtype reflect.Type, value Variant) (reflect.Val
 	}
 	switch rtype.Kind() {
 	case reflect.Uint8:
-		if value.Type() != TypePackedByteArray {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedByteArray)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedByteArray).Bytes()).Convert(rtype), nil
+		return reflect.ValueOf(packed.Bytes()).Convert(rtype), nil
 	case reflect.Int32:
-		if value.Type() != TypePackedInt32Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedInt32Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedInt32Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float32:
-		if value.Type() != TypePackedFloat32Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedFloat32Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedFloat32Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float64:
-		if value.Type() != TypePackedFloat64Array {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedFloat64Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedFloat64Array).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.String:
-		if value.Type() != TypePackedStringArray {
-			return reflect.Value{}, ErrInvalidParameter
+		packed, ok := value.(PackedStringArray)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(value.Interface().(PackedStringArray).AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.Strings()).Convert(rtype), nil
 	case reflect.Struct:
 		switch rtype {
 		case reflect.TypeFor[Vector2]():
-			if value.Type() != TypePackedVector2Array {
-				return reflect.Value{}, ErrInvalidParameter
+			packed, ok := value.(PackedVector2Array)
+			if !ok {
+				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(value.Interface().(PackedVector2Array).AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 		case reflect.TypeFor[Vector3]():
-			if value.Type() != TypePackedVector3Array {
-				return reflect.Value{}, ErrInvalidParameter
+			packed, ok := value.(PackedVector3Array)
+			if !ok {
+				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(value.Interface().(PackedVector3Array).AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 		case reflect.TypeFor[Color]():
-			if value.Type() != TypePackedColorArray {
-				return reflect.Value{}, ErrInvalidParameter
+			packed, ok := value.(PackedColorArray)
+			if !ok {
+				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(value.Interface().(PackedColorArray).AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 		case reflect.TypeFor[Vector4]():
-			if value.Type() != TypePackedVector4Array {
-				return reflect.Value{}, ErrInvalidParameter
+			packed, ok := value.(PackedVector4Array)
+			if !ok {
+				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(value.Interface().(PackedVector4Array).AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 		default:
-			return reflect.Value{}, ErrInvalidParameter
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	default:
-		return reflect.Value{}, ErrInvalidParameter
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}
 }

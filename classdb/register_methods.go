@@ -7,6 +7,8 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/String"
+
+	EngineClass "graphics.gd/classdb/Engine"
 )
 
 func registerMethods(class gd.StringName, rtype reflect.Type) {
@@ -52,7 +54,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 
 		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
 			Name: gd.NewStringName(method.Name),
-			Call: variantCall(method, i, offset),
+			Call: variantCall(method),
 			PointerCall: func(instance any, args gd.UnsafeArgs, ret gd.UnsafeBack) {
 				extensionInstance := instance.(*instanceImplementation).Value
 				slowCall(hasContext, reflect.ValueOf(extensionInstance).Method(i), args, ret)
@@ -65,17 +67,18 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 	}
 }
 
-func variantCall(method reflect.Method, i, offset int) func(instance any, v ...gd.Variant) (gd.Variant, error) {
+func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.Variant, error) {
 	return func(instance any, v ...gd.Variant) (result gd.Variant, err error) {
-		var args = make([]reflect.Value, len(v)+offset)
-		for i := len(v) + offset; i < method.Type.NumIn(); i++ {
-			args[i+offset], err = gd.ConvertVariantTypeToDesiredGoType(v[i], method.Type.In(i))
+		var args = make([]reflect.Value, len(v))
+		for i := 0; i < method.Type.NumIn()-1; i++ {
+			args[i], err = gd.ConvertToDesiredGoType(v[i], method.Type.In(i+1))
 			if err != nil {
+				EngineClass.Raise(err)
 				return gd.Variant{}, err
 			}
 		}
 		extensionInstance := instance.(*instanceImplementation).Value
-		rets := reflect.ValueOf(extensionInstance).Method(i).Call(args)
+		rets := reflect.ValueOf(extensionInstance).Method(method.Index).Call(args)
 		if len(rets) > 0 {
 			return gd.NewVariant(rets[0].Interface()), nil
 		}
@@ -87,144 +90,152 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 	var (
 		args = make([]reflect.Value, method.Type().NumIn())
 	)
+	var err error
 	var offset = 0
 	for i := offset; i < method.Type().NumIn(); i++ {
-		switch method.Type().In(i) {
-		case reflect.TypeOf(gd.Bool(false)):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Bool](p_args, i-offset))
-		case reflect.TypeOf(gd.Int(0)):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Int](p_args, i-offset))
-		case reflect.TypeOf(gd.Float(0)):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Float](p_args, i-offset))
-		case reflect.TypeOf(gd.String{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.String](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.Vector2{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector2](p_args, i-offset))
-		case reflect.TypeOf(gd.Vector2i{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector2i](p_args, i-offset))
-		case reflect.TypeOf(gd.Rect2{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Rect2](p_args, i-offset))
-		case reflect.TypeOf(gd.Rect2i{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Rect2i](p_args, i-offset))
-		case reflect.TypeOf(gd.Vector3{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector3](p_args, i-offset))
-		case reflect.TypeOf(gd.Vector3i{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector3i](p_args, i-offset))
-		case reflect.TypeOf(gd.Transform2D{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Transform2D](p_args, i-offset))
-		case reflect.TypeOf(gd.Vector4{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector4](p_args, i-offset))
-		case reflect.TypeOf(gd.Vector4i{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Vector4i](p_args, i-offset))
-		case reflect.TypeOf(gd.Plane{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Plane](p_args, i-offset))
-		case reflect.TypeOf(gd.Quaternion{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Quaternion](p_args, i-offset))
-		case reflect.TypeOf(gd.AABB{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.AABB](p_args, i-offset))
-		case reflect.TypeOf(gd.Basis{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Basis](p_args, i-offset))
-		case reflect.TypeOf(gd.Transform3D{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Transform3D](p_args, i-offset))
-		case reflect.TypeOf(gd.Projection{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Projection](p_args, i-offset))
-		case reflect.TypeOf(gd.Color{}):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.Color](p_args, i-offset))
-		case reflect.TypeOf(gd.StringName{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.StringName](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.NodePath{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.NodePath](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.RID(0)):
-			args[i] = reflect.ValueOf(gd.UnsafeGet[gd.RID](p_args, i-offset))
-		case reflect.TypeOf(gd.Object{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.Object]([3]uintptr{ptr[0]})
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.Callable{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.Callable](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.Signal{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.Signal](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.Dictionary{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.Dictionary](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.Array{}):
-			ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedByteArray{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedByteArray](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedInt32Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedInt32Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedInt64Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedInt64Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedFloat32Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedFloat32Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedFloat64Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedFloat64Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedStringArray{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedStringArray](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedVector2Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedVector2Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedVector3Array{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedVector3Array](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		case reflect.TypeOf(gd.PackedColorArray{}):
-			ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
-			val := pointers.Let[gd.PackedColorArray](ptr)
-			defer val.Free()
-			args[i] = reflect.ValueOf(val)
-		default:
-			args[i] = reflect.New(method.Type().In(i)).Elem()
-			switch method.Type().In(i).Kind() {
-			case reflect.String:
+		rtype := method.Type().In(i)
+		vtype, ok := variantTypeOf(rtype)
+		if ok {
+			var value any
+			switch vtype {
+			case gd.TypeBool:
+				value = gd.UnsafeGet[gd.Bool](p_args, i-offset)
+			case gd.TypeInt:
+				value = gd.UnsafeGet[gd.Int](p_args, i-offset)
+			case gd.TypeFloat:
+				value = gd.UnsafeGet[gd.Float](p_args, i-offset)
+			case gd.TypeString:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
 				defer val.Free()
-				args[i].SetString(val.String())
+				value = reflect.ValueOf(val)
+			case gd.TypeVector2:
+				value = gd.UnsafeGet[gd.Vector2](p_args, i-offset)
+			case gd.TypeVector2i:
+				value = gd.UnsafeGet[gd.Vector2i](p_args, i-offset)
+			case gd.TypeRect2:
+				value = gd.UnsafeGet[gd.Rect2](p_args, i-offset)
+			case gd.TypeRect2i:
+				value = gd.UnsafeGet[gd.Rect2i](p_args, i-offset)
+			case gd.TypeVector3:
+				value = gd.UnsafeGet[gd.Vector3](p_args, i-offset)
+			case gd.TypeVector3i:
+				value = gd.UnsafeGet[gd.Vector3i](p_args, i-offset)
+			case gd.TypeTransform2D:
+				value = gd.UnsafeGet[gd.Transform2D](p_args, i-offset)
+			case gd.TypeVector4:
+				value = gd.UnsafeGet[gd.Vector4](p_args, i-offset)
+			case gd.TypeVector4i:
+				value = gd.UnsafeGet[gd.Vector4i](p_args, i-offset)
+			case gd.TypePlane:
+				value = gd.UnsafeGet[gd.Plane](p_args, i-offset)
+			case gd.TypeQuaternion:
+				value = gd.UnsafeGet[gd.Quaternion](p_args, i-offset)
+			case gd.TypeAABB:
+				value = gd.UnsafeGet[gd.AABB](p_args, i-offset)
+			case gd.TypeBasis:
+				value = gd.UnsafeGet[gd.Basis](p_args, i-offset)
+			case gd.TypeTransform3D:
+				value = gd.UnsafeGet[gd.Transform3D](p_args, i-offset)
+			case gd.TypeProjection:
+				value = gd.UnsafeGet[gd.Projection](p_args, i-offset)
+			case gd.TypeColor:
+				value = gd.UnsafeGet[gd.Color](p_args, i-offset)
+			case gd.TypeStringName:
+				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.StringName](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeNodePath:
+				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.NodePath](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeRID:
+				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
+			case gd.TypeObject:
+				ptr := gd.UnsafeGet[[3]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.Object](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeCallable:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.Callable](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeSignal:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.Signal](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeDictionary:
+				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.Dictionary](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeArray:
+				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedByteArray:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedByteArray](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedInt32Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedInt32Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedInt64Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedInt64Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedFloat32Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedFloat32Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedFloat64Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedFloat64Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedStringArray:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedStringArray](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedVector2Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedVector2Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedVector3Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedVector3Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedColorArray:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedColorArray](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypePackedVector4Array:
+				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				val := pointers.Let[gd.PackedVector4Array](ptr)
+				defer val.Free()
+				value = reflect.ValueOf(val)
+			case gd.TypeNil:
+				value = nil
 			default:
-				panic(fmt.Sprintf("gdextension: unsupported Godot -> Go type %v", method.Type().In(i)))
+				panic(fmt.Sprintf("gdextension: unsupported Godot -> Go variant type %v", vtype))
+			}
+			args[i], err = gd.ConvertToDesiredGoType(value, rtype)
+			if err != nil {
+				panic(err)
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import (
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	FloatType "graphics.gd/variant/Float"
 )
 
 // Variant returns a variant from the given value, which must be one of the
@@ -18,204 +19,250 @@ func NewVariant(v any) Variant {
 	}
 	var frame = callframe.New()
 	var ret = callframe.Ret[[3]uintptr](frame)
-	switch val := v.(type) {
-	case Variant:
-		frame.Free()
-		return Global.Variants.NewCopy(val)
-	case Bool, bool:
-		var arg = callframe.Arg(frame, val)
+	rtype := reflect.TypeOf(v)
+	value := reflect.ValueOf(v)
+	switch rtype.Kind() {
+	case reflect.Bool:
+		var arg = callframe.Arg(frame, value.Bool())
 		Global.variant.FromType[TypeBool](ret, arg.Uintptr())
-	case Int:
-		var arg = callframe.Arg(frame, val)
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		var arg = callframe.Arg(frame, Int(value.Int()))
 		Global.variant.FromType[TypeInt](ret, arg.Uintptr())
-	case Float:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeFloat](ret, arg.Uintptr())
-	case String:
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeString](ret, arg.Uintptr())
-	case Vector2:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector2](ret, arg.Uintptr())
-	case Vector2i:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector2i](ret, arg.Uintptr())
-	case Rect2:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeRect2](ret, arg.Uintptr())
-	case Rect2i:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeRect2i](ret, arg.Uintptr())
-	case Vector3:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector3](ret, arg.Uintptr())
-	case Vector3i:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector3i](ret, arg.Uintptr())
-	case Transform2D:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeTransform2D](ret, arg.Uintptr())
-	case Vector4:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector4](ret, arg.Uintptr())
-	case Vector4i:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeVector4i](ret, arg.Uintptr())
-	case Plane:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypePlane](ret, arg.Uintptr())
-	case Quaternion:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeQuaternion](ret, arg.Uintptr())
-	case AABB:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeAABB](ret, arg.Uintptr())
-	case Basis:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeBasis](ret, arg.Uintptr())
-	case Transform3D:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeTransform3D](ret, arg.Uintptr())
-	case Projection:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeProjection](ret, arg.Uintptr())
-	case Color:
-		var arg = callframe.Arg(frame, val)
-		Global.variant.FromType[TypeColor](ret, arg.Uintptr())
-	case StringName:
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeStringName](ret, arg.Uintptr())
-	case NodePath:
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeStringName](ret, arg.Uintptr())
-	case RID:
-		var arg = callframe.Arg(frame, val)
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
+		var arg = callframe.Arg(frame, Int(value.Uint()))
+		Global.variant.FromType[TypeInt](ret, arg.Uintptr())
+	case reflect.Uint64:
+		var arg = callframe.Arg(frame, RID(value.Uint()))
 		Global.variant.FromType[TypeRID](ret, arg.Uintptr())
-	case Object:
-		if pointers.Get(val) == ([3]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeObject](ret, arg.Uintptr())
-	case Callable:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeCallable](ret, arg.Uintptr())
-	case Signal:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeSignal](ret, arg.Uintptr())
-	case Dictionary:
-		if pointers.Get(val) == ([1]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
-	case Array:
-		if pointers.Get(val) == ([1]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypeArray](ret, arg.Uintptr())
-	case PackedByteArray:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedByteArray](ret, arg.Uintptr())
-	case PackedInt32Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedInt32Array](ret, arg.Uintptr())
-	case PackedInt64Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedInt64Array](ret, arg.Uintptr())
-	case PackedFloat32Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedFloat32Array](ret, arg.Uintptr())
-	case PackedFloat64Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedFloat64Array](ret, arg.Uintptr())
-	case PackedStringArray:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedStringArray](ret, arg.Uintptr())
-	case PackedVector2Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedVector2Array](ret, arg.Uintptr())
-	case PackedVector3Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedVector3Array](ret, arg.Uintptr())
-	case PackedVector4Array:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedVector4Array](ret, arg.Uintptr())
-	case PackedColorArray:
-		if pointers.Get(val) == ([2]uintptr{}) {
-			return Global.Variants.NewNil()
-		}
-		var arg = callframe.Arg(frame, pointers.Get(val))
-		Global.variant.FromType[TypePackedColorArray](ret, arg.Uintptr())
-	case interface{ Variant() Variant }:
-		return val.Variant()
-	default:
-		class, ok := v.(IsClass)
-		if ok {
-			if reflect.ValueOf(v).IsZero() {
+	case reflect.Float32, reflect.Float64:
+		var arg = callframe.Arg(frame, Float(value.Float()))
+		Global.variant.FromType[TypeFloat](ret, arg.Uintptr())
+	case reflect.Complex64, reflect.Complex128:
+		var arg = callframe.Arg(frame, Vector2{
+			X: FloatType.X(real(value.Complex())),
+			Y: FloatType.X(imag(value.Complex())),
+		})
+		Global.variant.FromType[TypeVector2](ret, arg.Uintptr())
+	case reflect.Array:
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			obj := value.Interface().(IsClass).AsObject()
+			if pointers.Get(obj) == ([3]uintptr{}) {
 				return Global.Variants.NewNil()
 			}
-			var arg = callframe.Arg(frame, pointers.Get(class.AsObject()))
+			var arg = callframe.Arg(frame, pointers.Get(obj))
 			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
 		} else {
-			rtype := reflect.TypeOf(v)
-			value := reflect.ValueOf(v)
-			switch rtype.Kind() {
-			case reflect.String:
-				var s = NewString(value.String())
-				var arg = callframe.Arg(frame, pointers.Get(s))
-				Global.variant.FromType[TypeString](ret, arg.Uintptr())
-			case reflect.Map:
-				var dict = NewDictionary()
-				for _, key := range value.MapKeys() {
-					var k = NewVariant(key.Interface())
-					var v = NewVariant(value.MapIndex(key).Interface())
-					dict.SetIndex(k, v)
-				}
-				var arg = callframe.Arg(frame, pointers.Get(dict))
-				Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
-			default:
-				panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
-			}
+			var arg = callframe.Arg(frame, pointers.Get(newArray(value)))
+			Global.variant.FromType[TypeArray](ret, arg.Uintptr())
 		}
+	case reflect.Func:
+		if value.IsNil() {
+			return Global.Variants.NewNil()
+		}
+		var arg = callframe.Arg(frame, NewCallable(value))
+		Global.variant.FromType[TypeCallable](ret, arg.Uintptr())
+	case reflect.Map:
+		if value.IsNil() {
+			return Global.Variants.NewNil()
+		}
+		var arg = callframe.Arg(frame, pointers.Get(newDictionary(value)))
+		Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
+	case reflect.String:
+		var s = NewString(value.String())
+		var arg = callframe.Arg(frame, pointers.Get(s))
+		Global.variant.FromType[TypeString](ret, arg.Uintptr())
+	case reflect.Struct:
+		switch val := v.(type) {
+		case Variant:
+			return val
+		case Vector2:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector2](ret, arg.Uintptr())
+		case Vector2i:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector2i](ret, arg.Uintptr())
+		case Rect2:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeRect2](ret, arg.Uintptr())
+		case Rect2i:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeRect2i](ret, arg.Uintptr())
+		case Vector3:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector3](ret, arg.Uintptr())
+		case Vector3i:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector3i](ret, arg.Uintptr())
+		case Transform2D:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeTransform2D](ret, arg.Uintptr())
+		case Vector4:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector4](ret, arg.Uintptr())
+		case Vector4i:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector4i](ret, arg.Uintptr())
+		case Plane:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypePlane](ret, arg.Uintptr())
+		case Quaternion:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeQuaternion](ret, arg.Uintptr())
+		case AABB:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeAABB](ret, arg.Uintptr())
+		case Basis:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeBasis](ret, arg.Uintptr())
+		case Transform3D:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeTransform3D](ret, arg.Uintptr())
+		case Projection:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeProjection](ret, arg.Uintptr())
+		case Color:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeColor](ret, arg.Uintptr())
+		case String:
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeString](ret, arg.Uintptr())
+		case StringName:
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeStringName](ret, arg.Uintptr())
+		case NodePath:
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeStringName](ret, arg.Uintptr())
+		case Object:
+
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
+		case Callable:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeCallable](ret, arg.Uintptr())
+		case Signal:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeSignal](ret, arg.Uintptr())
+		case Dictionary:
+			if pointers.Get(val) == ([1]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
+		case Array:
+			if pointers.Get(val) == ([1]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypeArray](ret, arg.Uintptr())
+		case PackedByteArray:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedByteArray](ret, arg.Uintptr())
+		case PackedInt32Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedInt32Array](ret, arg.Uintptr())
+		case PackedInt64Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedInt64Array](ret, arg.Uintptr())
+		case PackedFloat32Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Uintptr())
+		case PackedFloat64Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Uintptr())
+		case PackedStringArray:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedStringArray](ret, arg.Uintptr())
+		case PackedVector2Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedVector2Array](ret, arg.Uintptr())
+		case PackedVector3Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedVector3Array](ret, arg.Uintptr())
+		case PackedVector4Array:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedVector4Array](ret, arg.Uintptr())
+		case PackedColorArray:
+			if pointers.Get(val) == ([2]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(val))
+			Global.variant.FromType[TypePackedColorArray](ret, arg.Uintptr())
+		default:
+			var arg = callframe.Arg(frame, pointers.Get(newDictionary(value)))
+			Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
+		}
+
+	default:
+		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
 	var variant = pointers.New[Variant](ret.Get())
 	frame.Free()
 	return variant
+}
+
+func newDictionary(val reflect.Value) Dictionary {
+	var dict = NewDictionary()
+	switch val.Kind() {
+	case reflect.Map:
+		for _, key := range val.MapKeys() {
+			dict.SetIndex(NewVariant(key.Interface()), NewVariant(val.MapIndex(key).Interface()))
+		}
+	case reflect.Struct:
+		for i := 0; i < val.NumField(); i++ {
+			field := val.Type().Field(i)
+			if !field.IsExported() {
+				continue
+			}
+			name := field.Name
+			if tag := field.Tag.Get("gd"); tag != "" {
+				name = tag
+			}
+			dict.SetIndex(NewVariant(name), NewVariant(val.Field(i).Interface()))
+		}
+	}
+	return dict
+}
+
+func newArray(val reflect.Value) Array {
+	var array = NewArray()
+	array.Resize(Int(val.Len()))
+	for i := 0; i < val.Len(); i++ {
+		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))
+	}
+	return array
 }
 
 // Interface returns the variant's value as one of the the native Godot values
