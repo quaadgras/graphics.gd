@@ -1,3 +1,4 @@
+// Package PolygonOccluder3D provides methods for working with PolygonOccluder3D object instances.
 package PolygonOccluder3D
 
 import "unsafe"

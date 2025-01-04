@@ -1,3 +1,4 @@
+// Package VehicleWheel3D provides methods for working with VehicleWheel3D object instances.
 package VehicleWheel3D
 
 import "unsafe"

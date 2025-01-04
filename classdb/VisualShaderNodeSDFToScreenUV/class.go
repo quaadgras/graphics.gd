@@ -1,3 +1,4 @@
+// Package VisualShaderNodeSDFToScreenUV provides methods for working with VisualShaderNodeSDFToScreenUV object instances.
 package VisualShaderNodeSDFToScreenUV
 
 import "unsafe"

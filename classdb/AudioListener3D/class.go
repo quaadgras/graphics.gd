@@ -1,3 +1,4 @@
+// Package AudioListener3D provides methods for working with AudioListener3D object instances.
 package AudioListener3D
 
 import "unsafe"

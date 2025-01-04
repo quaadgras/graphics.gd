@@ -1,3 +1,4 @@
+// Package ScriptCreateDialog provides methods for working with ScriptCreateDialog object instances.
 package ScriptCreateDialog
 
 import "unsafe"

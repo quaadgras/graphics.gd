@@ -1,3 +1,4 @@
+// Package AudioStreamWAV provides methods for working with AudioStreamWAV object instances.
 package AudioStreamWAV
 
 import "unsafe"

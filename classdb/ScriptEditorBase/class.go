@@ -1,3 +1,4 @@
+// Package ScriptEditorBase provides methods for working with ScriptEditorBase object instances.
 package ScriptEditorBase
 
 import "unsafe"

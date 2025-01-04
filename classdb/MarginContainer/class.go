@@ -1,3 +1,4 @@
+// Package MarginContainer provides methods for working with MarginContainer object instances.
 package MarginContainer
 
 import "unsafe"

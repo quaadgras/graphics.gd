@@ -1,3 +1,4 @@
+// Package TranslationServer provides methods for working with TranslationServer object instances.
 package TranslationServer
 
 import "unsafe"

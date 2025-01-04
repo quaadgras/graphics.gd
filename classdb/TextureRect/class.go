@@ -1,3 +1,4 @@
+// Package TextureRect provides methods for working with TextureRect object instances.
 package TextureRect
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package MeshInstance2D provides methods for working with MeshInstance2D object instances.
 package MeshInstance2D
 
 import "unsafe"

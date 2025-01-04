@@ -1,3 +1,4 @@
+// Package ENetPacketPeer provides methods for working with ENetPacketPeer object instances.
 package ENetPacketPeer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Shape3D provides methods for working with Shape3D object instances.
 package Shape3D
 
 import "unsafe"

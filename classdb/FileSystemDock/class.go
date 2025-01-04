@@ -1,3 +1,4 @@
+// Package FileSystemDock provides methods for working with FileSystemDock object instances.
 package FileSystemDock
 
 import "unsafe"

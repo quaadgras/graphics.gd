@@ -1,3 +1,4 @@
+// Package OpenXRActionSet provides methods for working with OpenXRActionSet object instances.
 package OpenXRActionSet
 
 import "unsafe"

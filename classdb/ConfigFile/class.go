@@ -1,3 +1,4 @@
+// Package ConfigFile provides methods for working with ConfigFile object instances.
 package ConfigFile
 
 import "unsafe"

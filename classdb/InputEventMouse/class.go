@@ -1,3 +1,4 @@
+// Package InputEventMouse provides methods for working with InputEventMouse object instances.
 package InputEventMouse
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ArrayOccluder3D provides methods for working with ArrayOccluder3D object instances.
 package ArrayOccluder3D
 
 import "unsafe"

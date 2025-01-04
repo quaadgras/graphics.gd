@@ -1,3 +1,4 @@
+// Package SkeletonProfile provides methods for working with SkeletonProfile object instances.
 package SkeletonProfile
 
 import "unsafe"

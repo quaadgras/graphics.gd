@@ -1,3 +1,4 @@
+// Package PointLight2D provides methods for working with PointLight2D object instances.
 package PointLight2D
 
 import "unsafe"

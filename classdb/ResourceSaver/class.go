@@ -1,3 +1,4 @@
+// Package ResourceSaver provides methods for working with ResourceSaver object instances.
 package ResourceSaver
 
 import "unsafe"

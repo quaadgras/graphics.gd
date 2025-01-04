@@ -1,3 +1,4 @@
+// Package GraphElement provides methods for working with GraphElement object instances.
 package GraphElement
 
 import "unsafe"

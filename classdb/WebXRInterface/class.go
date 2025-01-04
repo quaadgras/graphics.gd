@@ -1,3 +1,4 @@
+// Package WebXRInterface provides methods for working with WebXRInterface object instances.
 package WebXRInterface
 
 import "unsafe"

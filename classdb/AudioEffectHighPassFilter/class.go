@@ -1,3 +1,4 @@
+// Package AudioEffectHighPassFilter provides methods for working with AudioEffectHighPassFilter object instances.
 package AudioEffectHighPassFilter
 
 import "unsafe"

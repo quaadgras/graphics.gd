@@ -1,3 +1,4 @@
+// Package Button provides methods for working with Button object instances.
 package Button
 
 import "unsafe"

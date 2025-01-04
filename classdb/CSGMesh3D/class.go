@@ -1,3 +1,4 @@
+// Package CSGMesh3D provides methods for working with CSGMesh3D object instances.
 package CSGMesh3D
 
 import "unsafe"

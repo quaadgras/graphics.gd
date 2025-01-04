@@ -1,3 +1,4 @@
+// Package ColorPickerButton provides methods for working with ColorPickerButton object instances.
 package ColorPickerButton
 
 import "unsafe"

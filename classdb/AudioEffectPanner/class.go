@@ -1,3 +1,4 @@
+// Package AudioEffectPanner provides methods for working with AudioEffectPanner object instances.
 package AudioEffectPanner
 
 import "unsafe"

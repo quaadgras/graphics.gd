@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFloatConstant provides methods for working with VisualShaderNodeFloatConstant object instances.
 package VisualShaderNodeFloatConstant
 
 import "unsafe"

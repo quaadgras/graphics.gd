@@ -1,3 +1,4 @@
+// Package TextLine provides methods for working with TextLine object instances.
 package TextLine
 
 import "unsafe"

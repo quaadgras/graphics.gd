@@ -1,3 +1,4 @@
+// Package NavigationLink3D provides methods for working with NavigationLink3D object instances.
 package NavigationLink3D
 
 import "unsafe"

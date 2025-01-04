@@ -1,3 +1,4 @@
+// Package AspectRatioContainer provides methods for working with AspectRatioContainer object instances.
 package AspectRatioContainer
 
 import "unsafe"

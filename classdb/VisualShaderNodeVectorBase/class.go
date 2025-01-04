@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorBase provides methods for working with VisualShaderNodeVectorBase object instances.
 package VisualShaderNodeVectorBase
 
 import "unsafe"

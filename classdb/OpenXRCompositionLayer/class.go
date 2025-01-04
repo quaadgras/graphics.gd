@@ -1,3 +1,4 @@
+// Package OpenXRCompositionLayer provides methods for working with OpenXRCompositionLayer object instances.
 package OpenXRCompositionLayer
 
 import "unsafe"

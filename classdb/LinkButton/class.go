@@ -1,3 +1,4 @@
+// Package LinkButton provides methods for working with LinkButton object instances.
 package LinkButton
 
 import "unsafe"

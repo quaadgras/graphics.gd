@@ -1,3 +1,4 @@
+// Package RDFramebufferPass provides methods for working with RDFramebufferPass object instances.
 package RDFramebufferPass
 
 import "unsafe"

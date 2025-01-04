@@ -1,3 +1,4 @@
+// Package OpenXRInterface provides methods for working with OpenXRInterface object instances.
 package OpenXRInterface
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package GLTFNode provides methods for working with GLTFNode object instances.
 package GLTFNode
 
 import "unsafe"

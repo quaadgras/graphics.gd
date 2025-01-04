@@ -1,3 +1,4 @@
+// Package EditorCommandPalette provides methods for working with EditorCommandPalette object instances.
 package EditorCommandPalette
 
 import "unsafe"

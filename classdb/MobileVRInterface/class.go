@@ -1,3 +1,4 @@
+// Package MobileVRInterface provides methods for working with MobileVRInterface object instances.
 package MobileVRInterface
 
 import "unsafe"

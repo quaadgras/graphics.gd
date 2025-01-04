@@ -1,3 +1,4 @@
+// Package XRAnchor3D provides methods for working with XRAnchor3D object instances.
 package XRAnchor3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VBoxContainer provides methods for working with VBoxContainer object instances.
 package VBoxContainer
 
 import "unsafe"

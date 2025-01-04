@@ -1,3 +1,4 @@
+// Package OggPacketSequence provides methods for working with OggPacketSequence object instances.
 package OggPacketSequence
 
 import "unsafe"

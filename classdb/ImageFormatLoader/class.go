@@ -1,3 +1,4 @@
+// Package ImageFormatLoader provides methods for working with ImageFormatLoader object instances.
 package ImageFormatLoader
 
 import "unsafe"

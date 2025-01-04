@@ -1,3 +1,4 @@
+// Package FogVolume provides methods for working with FogVolume object instances.
 package FogVolume
 
 import "unsafe"

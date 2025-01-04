@@ -1,3 +1,4 @@
+// Package BackBufferCopy provides methods for working with BackBufferCopy object instances.
 package BackBufferCopy
 
 import "unsafe"

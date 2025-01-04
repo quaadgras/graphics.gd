@@ -1,3 +1,4 @@
+// Package ZIPPacker provides methods for working with ZIPPacker object instances.
 package ZIPPacker
 
 import "unsafe"

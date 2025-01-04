@@ -1,3 +1,4 @@
+// Package HTTPClient provides methods for working with HTTPClient object instances.
 package HTTPClient
 
 import "unsafe"

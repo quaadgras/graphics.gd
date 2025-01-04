@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformOp provides methods for working with VisualShaderNodeTransformOp object instances.
 package VisualShaderNodeTransformOp
 
 import "unsafe"

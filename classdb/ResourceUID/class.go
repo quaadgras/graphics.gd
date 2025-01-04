@@ -1,3 +1,4 @@
+// Package ResourceUID provides methods for working with ResourceUID object instances.
 package ResourceUID
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package XRFaceModifier3D provides methods for working with XRFaceModifier3D object instances.
 package XRFaceModifier3D
 
 import "unsafe"

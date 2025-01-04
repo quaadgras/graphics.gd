@@ -1,3 +1,4 @@
+// Package OpenXRCompositionLayerQuad provides methods for working with OpenXRCompositionLayerQuad object instances.
 package OpenXRCompositionLayerQuad
 
 import "unsafe"

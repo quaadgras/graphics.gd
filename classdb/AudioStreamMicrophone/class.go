@@ -1,3 +1,4 @@
+// Package AudioStreamMicrophone provides methods for working with AudioStreamMicrophone object instances.
 package AudioStreamMicrophone
 
 import "unsafe"

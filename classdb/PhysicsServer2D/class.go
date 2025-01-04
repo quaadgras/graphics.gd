@@ -1,3 +1,4 @@
+// Package PhysicsServer2D provides methods for working with PhysicsServer2D object instances.
 package PhysicsServer2D
 
 import "unsafe"

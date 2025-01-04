@@ -1,3 +1,4 @@
+// Package VisualShaderNodeWorldPositionFromDepth provides methods for working with VisualShaderNodeWorldPositionFromDepth object instances.
 package VisualShaderNodeWorldPositionFromDepth
 
 import "unsafe"

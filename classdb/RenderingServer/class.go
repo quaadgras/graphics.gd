@@ -1,3 +1,4 @@
+// Package RenderingServer provides methods for working with RenderingServer object instances.
 package RenderingServer
 
 import "unsafe"

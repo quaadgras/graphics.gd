@@ -1,3 +1,4 @@
+// Package PointMesh provides methods for working with PointMesh object instances.
 package PointMesh
 
 import "unsafe"

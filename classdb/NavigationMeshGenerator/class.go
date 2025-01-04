@@ -1,3 +1,4 @@
+// Package NavigationMeshGenerator provides methods for working with NavigationMeshGenerator object instances.
 package NavigationMeshGenerator
 
 import "unsafe"

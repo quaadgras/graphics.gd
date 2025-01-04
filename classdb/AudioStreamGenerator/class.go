@@ -1,3 +1,4 @@
+// Package AudioStreamGenerator provides methods for working with AudioStreamGenerator object instances.
 package AudioStreamGenerator
 
 import "unsafe"

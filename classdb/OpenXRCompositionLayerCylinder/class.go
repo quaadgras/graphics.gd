@@ -1,3 +1,4 @@
+// Package OpenXRCompositionLayerCylinder provides methods for working with OpenXRCompositionLayerCylinder object instances.
 package OpenXRCompositionLayerCylinder
 
 import "unsafe"

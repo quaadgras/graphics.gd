@@ -1,3 +1,4 @@
+// Package RDPipelineColorBlendStateAttachment provides methods for working with RDPipelineColorBlendStateAttachment object instances.
 package RDPipelineColorBlendStateAttachment
 
 import "unsafe"

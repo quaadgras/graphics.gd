@@ -1,3 +1,4 @@
+// Package ImageTexture3D provides methods for working with ImageTexture3D object instances.
 package ImageTexture3D
 
 import "unsafe"

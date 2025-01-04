@@ -1,3 +1,4 @@
+// Package StaticBody2D provides methods for working with StaticBody2D object instances.
 package StaticBody2D
 
 import "unsafe"

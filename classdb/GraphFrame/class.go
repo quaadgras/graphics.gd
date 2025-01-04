@@ -1,3 +1,4 @@
+// Package GraphFrame provides methods for working with GraphFrame object instances.
 package GraphFrame
 
 import "unsafe"

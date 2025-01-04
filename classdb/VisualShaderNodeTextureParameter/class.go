@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTextureParameter provides methods for working with VisualShaderNodeTextureParameter object instances.
 package VisualShaderNodeTextureParameter
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package NavigationMeshSourceGeometryData3D provides methods for working with NavigationMeshSourceGeometryData3D object instances.
 package NavigationMeshSourceGeometryData3D
 
 import "unsafe"

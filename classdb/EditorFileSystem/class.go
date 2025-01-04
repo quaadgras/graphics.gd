@@ -1,3 +1,4 @@
+// Package EditorFileSystem provides methods for working with EditorFileSystem object instances.
 package EditorFileSystem
 
 import "unsafe"

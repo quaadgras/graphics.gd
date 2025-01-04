@@ -1,3 +1,4 @@
+// Package SkeletonModification2D provides methods for working with SkeletonModification2D object instances.
 package SkeletonModification2D
 
 import "unsafe"

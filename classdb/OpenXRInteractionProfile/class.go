@@ -1,3 +1,4 @@
+// Package OpenXRInteractionProfile provides methods for working with OpenXRInteractionProfile object instances.
 package OpenXRInteractionProfile
 
 import "unsafe"

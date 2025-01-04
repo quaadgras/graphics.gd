@@ -1,3 +1,4 @@
+// Package Timer provides methods for working with Timer object instances.
 package Timer
 
 import "unsafe"

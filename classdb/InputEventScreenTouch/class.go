@@ -1,3 +1,4 @@
+// Package InputEventScreenTouch provides methods for working with InputEventScreenTouch object instances.
 package InputEventScreenTouch
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CPUParticles3D provides methods for working with CPUParticles3D object instances.
 package CPUParticles3D
 
 import "unsafe"

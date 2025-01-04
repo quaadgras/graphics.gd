@@ -1,3 +1,4 @@
+// Package Camera2D provides methods for working with Camera2D object instances.
 package Camera2D
 
 import "unsafe"

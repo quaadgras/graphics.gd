@@ -1,3 +1,4 @@
+// Package UndoRedo provides methods for working with UndoRedo object instances.
 package UndoRedo
 
 import "unsafe"

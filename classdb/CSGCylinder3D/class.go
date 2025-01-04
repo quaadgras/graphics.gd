@@ -1,3 +1,4 @@
+// Package CSGCylinder3D provides methods for working with CSGCylinder3D object instances.
 package CSGCylinder3D
 
 import "unsafe"

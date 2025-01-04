@@ -1,3 +1,4 @@
+// Package Bone2D provides methods for working with Bone2D object instances.
 package Bone2D
 
 import "unsafe"

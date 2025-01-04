@@ -1,3 +1,4 @@
+// Package CSGSphere3D provides methods for working with CSGSphere3D object instances.
 package CSGSphere3D
 
 import "unsafe"

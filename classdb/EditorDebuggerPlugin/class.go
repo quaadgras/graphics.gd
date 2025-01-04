@@ -1,3 +1,4 @@
+// Package EditorDebuggerPlugin provides methods for working with EditorDebuggerPlugin object instances.
 package EditorDebuggerPlugin
 
 import "unsafe"

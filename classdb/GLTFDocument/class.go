@@ -1,3 +1,4 @@
+// Package GLTFDocument provides methods for working with GLTFDocument object instances.
 package GLTFDocument
 
 import "unsafe"

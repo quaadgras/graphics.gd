@@ -1,3 +1,4 @@
+// Package MainLoop provides methods for working with MainLoop object instances.
 package MainLoop
 
 import "unsafe"

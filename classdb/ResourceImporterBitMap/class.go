@@ -1,3 +1,4 @@
+// Package ResourceImporterBitMap provides methods for working with ResourceImporterBitMap object instances.
 package ResourceImporterBitMap
 
 import "unsafe"

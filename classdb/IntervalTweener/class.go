@@ -1,3 +1,4 @@
+// Package IntervalTweener provides methods for working with IntervalTweener object instances.
 package IntervalTweener
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VSplitContainer provides methods for working with VSplitContainer object instances.
 package VSplitContainer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PacketPeer provides methods for working with PacketPeer object instances.
 package PacketPeer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PlaneMesh provides methods for working with PlaneMesh object instances.
 package PlaneMesh
 
 import "unsafe"

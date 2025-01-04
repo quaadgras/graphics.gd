@@ -1,3 +1,4 @@
+// Package Marker3D provides methods for working with Marker3D object instances.
 package Marker3D
 
 import "unsafe"

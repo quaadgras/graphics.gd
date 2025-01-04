@@ -1,3 +1,4 @@
+// Package Sprite3D provides methods for working with Sprite3D object instances.
 package Sprite3D
 
 import "unsafe"

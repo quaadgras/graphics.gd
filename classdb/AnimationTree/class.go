@@ -1,3 +1,4 @@
+// Package AnimationTree provides methods for working with AnimationTree object instances.
 package AnimationTree
 
 import "unsafe"

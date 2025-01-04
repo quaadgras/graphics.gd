@@ -1,3 +1,4 @@
+// Package InputEvent provides methods for working with InputEvent object instances.
 package InputEvent
 
 import "unsafe"

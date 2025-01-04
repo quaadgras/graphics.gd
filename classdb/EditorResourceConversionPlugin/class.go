@@ -1,3 +1,4 @@
+// Package EditorResourceConversionPlugin provides methods for working with EditorResourceConversionPlugin object instances.
 package EditorResourceConversionPlugin
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package TileData provides methods for working with TileData object instances.
 package TileData
 
 import "unsafe"

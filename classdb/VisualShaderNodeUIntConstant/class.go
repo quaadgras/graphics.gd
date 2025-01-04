@@ -1,3 +1,4 @@
+// Package VisualShaderNodeUIntConstant provides methods for working with VisualShaderNodeUIntConstant object instances.
 package VisualShaderNodeUIntConstant
 
 import "unsafe"

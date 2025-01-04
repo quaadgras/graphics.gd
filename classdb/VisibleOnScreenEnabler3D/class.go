@@ -1,3 +1,4 @@
+// Package VisibleOnScreenEnabler3D provides methods for working with VisibleOnScreenEnabler3D object instances.
 package VisibleOnScreenEnabler3D
 
 import "unsafe"

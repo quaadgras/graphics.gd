@@ -1,3 +1,4 @@
+// Package CanvasModulate provides methods for working with CanvasModulate object instances.
 package CanvasModulate
 
 import "unsafe"

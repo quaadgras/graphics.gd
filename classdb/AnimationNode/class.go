@@ -1,3 +1,4 @@
+// Package AnimationNode provides methods for working with AnimationNode object instances.
 package AnimationNode
 
 import "unsafe"

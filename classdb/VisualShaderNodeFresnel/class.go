@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFresnel provides methods for working with VisualShaderNodeFresnel object instances.
 package VisualShaderNodeFresnel
 
 import "unsafe"

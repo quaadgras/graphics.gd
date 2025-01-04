@@ -1,3 +1,4 @@
+// Package PackedDataContainerRef provides methods for working with PackedDataContainerRef object instances.
 package PackedDataContainerRef
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Script provides methods for working with Script object instances.
 package Script
 
 import "unsafe"

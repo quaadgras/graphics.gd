@@ -1,3 +1,4 @@
+// Package RDPipelineColorBlendState provides methods for working with RDPipelineColorBlendState object instances.
 package RDPipelineColorBlendState
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package TextureCubemapRD provides methods for working with TextureCubemapRD object instances.
 package TextureCubemapRD
 
 import "unsafe"

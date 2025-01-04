@@ -1,3 +1,4 @@
+// Package StreamPeerExtension provides methods for working with StreamPeerExtension object instances.
 package StreamPeerExtension
 
 import "unsafe"

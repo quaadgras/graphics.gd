@@ -1,3 +1,4 @@
+// Package HTTPRequest provides methods for working with HTTPRequest object instances.
 package HTTPRequest
 
 import "unsafe"

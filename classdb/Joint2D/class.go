@@ -1,3 +1,4 @@
+// Package Joint2D provides methods for working with Joint2D object instances.
 package Joint2D
 
 import "unsafe"

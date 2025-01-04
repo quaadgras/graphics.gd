@@ -1,3 +1,4 @@
+// Package GLTFPhysicsBody provides methods for working with GLTFPhysicsBody object instances.
 package GLTFPhysicsBody
 
 import "unsafe"

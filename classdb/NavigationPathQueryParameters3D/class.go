@@ -1,3 +1,4 @@
+// Package NavigationPathQueryParameters3D provides methods for working with NavigationPathQueryParameters3D object instances.
 package NavigationPathQueryParameters3D
 
 import "unsafe"

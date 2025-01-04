@@ -1,3 +1,4 @@
+// Package EditorScript provides methods for working with EditorScript object instances.
 package EditorScript
 
 import "unsafe"

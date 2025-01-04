@@ -1,3 +1,4 @@
+// Package GraphNode provides methods for working with GraphNode object instances.
 package GraphNode
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeUVFunc provides methods for working with VisualShaderNodeUVFunc object instances.
 package VisualShaderNodeUVFunc
 
 import "unsafe"

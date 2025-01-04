@@ -1,3 +1,4 @@
+// Package XRController3D provides methods for working with XRController3D object instances.
 package XRController3D
 
 import "unsafe"

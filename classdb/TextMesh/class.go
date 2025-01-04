@@ -1,3 +1,4 @@
+// Package TextMesh provides methods for working with TextMesh object instances.
 package TextMesh
 
 import "unsafe"

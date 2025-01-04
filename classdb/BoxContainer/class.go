@@ -1,3 +1,4 @@
+// Package BoxContainer provides methods for working with BoxContainer object instances.
 package BoxContainer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package NativeMenu provides methods for working with NativeMenu object instances.
 package NativeMenu
 
 import "unsafe"

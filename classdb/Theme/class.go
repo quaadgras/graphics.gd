@@ -1,3 +1,4 @@
+// Package Theme provides methods for working with Theme object instances.
 package Theme
 
 import "unsafe"

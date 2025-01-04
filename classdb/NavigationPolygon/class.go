@@ -1,3 +1,4 @@
+// Package NavigationPolygon provides methods for working with NavigationPolygon object instances.
 package NavigationPolygon
 
 import "unsafe"

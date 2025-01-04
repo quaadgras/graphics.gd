@@ -1,3 +1,4 @@
+// Package ButtonGroup provides methods for working with ButtonGroup object instances.
 package ButtonGroup
 
 import "unsafe"

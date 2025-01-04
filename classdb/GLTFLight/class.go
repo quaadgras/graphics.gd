@@ -1,3 +1,4 @@
+// Package GLTFLight provides methods for working with GLTFLight object instances.
 package GLTFLight
 
 import "unsafe"

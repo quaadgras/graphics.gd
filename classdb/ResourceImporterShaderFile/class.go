@@ -1,3 +1,4 @@
+// Package ResourceImporterShaderFile provides methods for working with ResourceImporterShaderFile object instances.
 package ResourceImporterShaderFile
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package WebRTCMultiplayerPeer provides methods for working with WebRTCMultiplayerPeer object instances.
 package WebRTCMultiplayerPeer
 
 import "unsafe"

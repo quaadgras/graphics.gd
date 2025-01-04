@@ -1,3 +1,4 @@
+// Package Node3DGizmo provides methods for working with Node3DGizmo object instances.
 package Node3DGizmo
 
 import "unsafe"

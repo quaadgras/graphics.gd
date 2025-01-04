@@ -1,3 +1,4 @@
+// Package PathFollow3D provides methods for working with PathFollow3D object instances.
 package PathFollow3D
 
 import "unsafe"

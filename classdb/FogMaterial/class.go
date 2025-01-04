@@ -1,3 +1,4 @@
+// Package FogMaterial provides methods for working with FogMaterial object instances.
 package FogMaterial
 
 import "unsafe"

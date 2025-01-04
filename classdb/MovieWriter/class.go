@@ -1,3 +1,4 @@
+// Package MovieWriter provides methods for working with MovieWriter object instances.
 package MovieWriter
 
 import "unsafe"

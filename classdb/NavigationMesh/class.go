@@ -1,3 +1,4 @@
+// Package NavigationMesh provides methods for working with NavigationMesh object instances.
 package NavigationMesh
 
 import "unsafe"

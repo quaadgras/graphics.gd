@@ -1,3 +1,4 @@
+// Package AnimatedTexture provides methods for working with AnimatedTexture object instances.
 package AnimatedTexture
 
 import "unsafe"

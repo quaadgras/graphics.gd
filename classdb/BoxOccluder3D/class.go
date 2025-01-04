@@ -1,3 +1,4 @@
+// Package BoxOccluder3D provides methods for working with BoxOccluder3D object instances.
 package BoxOccluder3D
 
 import "unsafe"

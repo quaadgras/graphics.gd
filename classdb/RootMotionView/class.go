@@ -1,3 +1,4 @@
+// Package RootMotionView provides methods for working with RootMotionView object instances.
 package RootMotionView
 
 import "unsafe"

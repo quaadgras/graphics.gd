@@ -1,3 +1,4 @@
+// Package LightmapGIData provides methods for working with LightmapGIData object instances.
 package LightmapGIData
 
 import "unsafe"

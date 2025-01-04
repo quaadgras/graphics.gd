@@ -1,3 +1,4 @@
+// Package AudioEffectEQ6 provides methods for working with AudioEffectEQ6 object instances.
 package AudioEffectEQ6
 
 import "unsafe"

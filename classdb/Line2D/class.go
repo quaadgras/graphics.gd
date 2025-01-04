@@ -1,3 +1,4 @@
+// Package Line2D provides methods for working with Line2D object instances.
 package Line2D
 
 import "unsafe"

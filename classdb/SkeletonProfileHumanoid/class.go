@@ -1,3 +1,4 @@
+// Package SkeletonProfileHumanoid provides methods for working with SkeletonProfileHumanoid object instances.
 package SkeletonProfileHumanoid
 
 import "unsafe"

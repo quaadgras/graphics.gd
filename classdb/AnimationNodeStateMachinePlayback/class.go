@@ -1,3 +1,4 @@
+// Package AnimationNodeStateMachinePlayback provides methods for working with AnimationNodeStateMachinePlayback object instances.
 package AnimationNodeStateMachinePlayback
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CompressedTexture3D provides methods for working with CompressedTexture3D object instances.
 package CompressedTexture3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package XRTracker provides methods for working with XRTracker object instances.
 package XRTracker
 
 import "unsafe"

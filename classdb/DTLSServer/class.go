@@ -1,3 +1,4 @@
+// Package DTLSServer provides methods for working with DTLSServer object instances.
 package DTLSServer
 
 import "unsafe"

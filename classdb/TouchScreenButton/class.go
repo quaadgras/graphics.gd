@@ -1,3 +1,4 @@
+// Package TouchScreenButton provides methods for working with TouchScreenButton object instances.
 package TouchScreenButton
 
 import "unsafe"

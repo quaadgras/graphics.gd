@@ -1,3 +1,4 @@
+// Package MenuBar provides methods for working with MenuBar object instances.
 package MenuBar
 
 import "unsafe"

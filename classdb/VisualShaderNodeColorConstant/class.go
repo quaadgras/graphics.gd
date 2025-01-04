@@ -1,3 +1,4 @@
+// Package VisualShaderNodeColorConstant provides methods for working with VisualShaderNodeColorConstant object instances.
 package VisualShaderNodeColorConstant
 
 import "unsafe"

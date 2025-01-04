@@ -1,3 +1,4 @@
+// Package EditorScriptPicker provides methods for working with EditorScriptPicker object instances.
 package EditorScriptPicker
 
 import "unsafe"

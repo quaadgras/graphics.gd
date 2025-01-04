@@ -1,3 +1,4 @@
+// Package VisualShaderNodeGroupBase provides methods for working with VisualShaderNodeGroupBase object instances.
 package VisualShaderNodeGroupBase
 
 import "unsafe"

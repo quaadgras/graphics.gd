@@ -1,3 +1,4 @@
+// Package ResourceImporter provides methods for working with ResourceImporter object instances.
 package ResourceImporter
 
 import "unsafe"

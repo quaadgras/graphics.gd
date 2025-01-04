@@ -1,3 +1,4 @@
+// Package XMLParser provides methods for working with XMLParser object instances.
 package XMLParser
 
 import "unsafe"

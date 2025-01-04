@@ -1,3 +1,4 @@
+// Package Font provides methods for working with Font object instances.
 package Font
 
 import "unsafe"

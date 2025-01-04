@@ -1,3 +1,4 @@
+// Package AudioStreamPolyphonic provides methods for working with AudioStreamPolyphonic object instances.
 package AudioStreamPolyphonic
 
 import "unsafe"

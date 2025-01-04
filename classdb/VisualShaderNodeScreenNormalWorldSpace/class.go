@@ -1,3 +1,4 @@
+// Package VisualShaderNodeScreenNormalWorldSpace provides methods for working with VisualShaderNodeScreenNormalWorldSpace object instances.
 package VisualShaderNodeScreenNormalWorldSpace
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AnimationNodeAdd2 provides methods for working with AnimationNodeAdd2 object instances.
 package AnimationNodeAdd2
 
 import "unsafe"

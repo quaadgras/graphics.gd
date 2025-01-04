@@ -1,3 +1,4 @@
+// Package FastNoiseLite provides methods for working with FastNoiseLite object instances.
 package FastNoiseLite
 
 import "unsafe"

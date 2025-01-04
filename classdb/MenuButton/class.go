@@ -1,3 +1,4 @@
+// Package MenuButton provides methods for working with MenuButton object instances.
 package MenuButton
 
 import "unsafe"

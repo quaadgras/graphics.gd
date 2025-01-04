@@ -1,3 +1,4 @@
+// Package RDVertexAttribute provides methods for working with RDVertexAttribute object instances.
 package RDVertexAttribute
 
 import "unsafe"

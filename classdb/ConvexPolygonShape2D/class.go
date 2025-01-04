@@ -1,3 +1,4 @@
+// Package ConvexPolygonShape2D provides methods for working with ConvexPolygonShape2D object instances.
 package ConvexPolygonShape2D
 
 import "unsafe"

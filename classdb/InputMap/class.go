@@ -1,3 +1,4 @@
+// Package InputMap provides methods for working with InputMap object instances.
 package InputMap
 
 import "unsafe"

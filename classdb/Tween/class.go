@@ -1,3 +1,4 @@
+// Package Tween provides methods for working with Tween object instances.
 package Tween
 
 import "unsafe"

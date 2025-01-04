@@ -1,3 +1,4 @@
+// Package EditorPaths provides methods for working with EditorPaths object instances.
 package EditorPaths
 
 import "unsafe"

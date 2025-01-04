@@ -1,3 +1,4 @@
+// Package Panel provides methods for working with Panel object instances.
 package Panel
 
 import "unsafe"

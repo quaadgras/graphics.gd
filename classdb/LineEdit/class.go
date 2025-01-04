@@ -1,3 +1,4 @@
+// Package LineEdit provides methods for working with LineEdit object instances.
 package LineEdit
 
 import "unsafe"

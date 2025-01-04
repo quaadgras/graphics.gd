@@ -1,3 +1,4 @@
+// Package NavigationObstacle2D provides methods for working with NavigationObstacle2D object instances.
 package NavigationObstacle2D
 
 import "unsafe"

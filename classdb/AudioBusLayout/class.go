@@ -1,3 +1,4 @@
+// Package AudioBusLayout provides methods for working with AudioBusLayout object instances.
 package AudioBusLayout
 
 import "unsafe"

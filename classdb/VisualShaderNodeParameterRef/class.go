@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParameterRef provides methods for working with VisualShaderNodeParameterRef object instances.
 package VisualShaderNodeParameterRef
 
 import "unsafe"

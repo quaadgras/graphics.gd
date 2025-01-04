@@ -1,3 +1,4 @@
+// Package EditorFileSystemImportFormatSupportQuery provides methods for working with EditorFileSystemImportFormatSupportQuery object instances.
 package EditorFileSystemImportFormatSupportQuery
 
 import "unsafe"

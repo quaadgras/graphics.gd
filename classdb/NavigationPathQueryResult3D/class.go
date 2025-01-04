@@ -1,3 +1,4 @@
+// Package NavigationPathQueryResult3D provides methods for working with NavigationPathQueryResult3D object instances.
 package NavigationPathQueryResult3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PanoramaSkyMaterial provides methods for working with PanoramaSkyMaterial object instances.
 package PanoramaSkyMaterial
 
 import "unsafe"

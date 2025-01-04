@@ -1,3 +1,4 @@
+// Package VideoStreamPlayback provides methods for working with VideoStreamPlayback object instances.
 package VideoStreamPlayback
 
 import "unsafe"

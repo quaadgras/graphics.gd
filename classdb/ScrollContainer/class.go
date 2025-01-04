@@ -1,3 +1,4 @@
+// Package ScrollContainer provides methods for working with ScrollContainer object instances.
 package ScrollContainer
 
 import "unsafe"

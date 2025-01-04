@@ -1,3 +1,4 @@
+// Package EditorResourcePreview provides methods for working with EditorResourcePreview object instances.
 package EditorResourcePreview
 
 import "unsafe"

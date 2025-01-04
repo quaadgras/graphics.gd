@@ -1,3 +1,4 @@
+// Package MultiMesh provides methods for working with MultiMesh object instances.
 package MultiMesh
 
 import "unsafe"

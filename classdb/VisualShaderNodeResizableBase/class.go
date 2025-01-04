@@ -1,3 +1,4 @@
+// Package VisualShaderNodeResizableBase provides methods for working with VisualShaderNodeResizableBase object instances.
 package VisualShaderNodeResizableBase
 
 import "unsafe"

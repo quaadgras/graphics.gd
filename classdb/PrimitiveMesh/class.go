@@ -1,3 +1,4 @@
+// Package PrimitiveMesh provides methods for working with PrimitiveMesh object instances.
 package PrimitiveMesh
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package MultiMeshInstance2D provides methods for working with MultiMeshInstance2D object instances.
 package MultiMeshInstance2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectLimiter provides methods for working with AudioEffectLimiter object instances.
 package AudioEffectLimiter
 
 import "unsafe"

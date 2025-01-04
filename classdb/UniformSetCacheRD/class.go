@@ -1,3 +1,4 @@
+// Package UniformSetCacheRD provides methods for working with UniformSetCacheRD object instances.
 package UniformSetCacheRD
 
 import "unsafe"

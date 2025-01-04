@@ -1,3 +1,4 @@
+// Package AnimationNodeBlendTree provides methods for working with AnimationNodeBlendTree object instances.
 package AnimationNodeBlendTree
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformParameter provides methods for working with VisualShaderNodeTransformParameter object instances.
 package VisualShaderNodeTransformParameter
 
 import "unsafe"

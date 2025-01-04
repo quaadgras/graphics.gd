@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTextureSDFNormal provides methods for working with VisualShaderNodeTextureSDFNormal object instances.
 package VisualShaderNodeTextureSDFNormal
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectLowShelfFilter provides methods for working with AudioEffectLowShelfFilter object instances.
 package AudioEffectLowShelfFilter
 
 import "unsafe"

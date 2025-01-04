@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorDistance provides methods for working with VisualShaderNodeVectorDistance object instances.
 package VisualShaderNodeVectorDistance
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ConcavePolygonShape2D provides methods for working with ConcavePolygonShape2D object instances.
 package ConcavePolygonShape2D
 
 import "unsafe"

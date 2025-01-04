@@ -1,3 +1,4 @@
+// Package AnimationNodeBlendSpace1D provides methods for working with AnimationNodeBlendSpace1D object instances.
 package AnimationNodeBlendSpace1D
 
 import "unsafe"

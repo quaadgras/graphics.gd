@@ -1,3 +1,4 @@
+// Package RenderData provides methods for working with RenderData object instances.
 package RenderData
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CameraTexture provides methods for working with CameraTexture object instances.
 package CameraTexture
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectPitchShift provides methods for working with AudioEffectPitchShift object instances.
 package AudioEffectPitchShift
 
 import "unsafe"

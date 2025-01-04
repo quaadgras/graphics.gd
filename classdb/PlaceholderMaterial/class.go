@@ -1,3 +1,4 @@
+// Package PlaceholderMaterial provides methods for working with PlaceholderMaterial object instances.
 package PlaceholderMaterial
 
 import "unsafe"

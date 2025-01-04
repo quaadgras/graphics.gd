@@ -1,3 +1,4 @@
+// Package X509Certificate provides methods for working with X509Certificate object instances.
 package X509Certificate
 
 import "unsafe"

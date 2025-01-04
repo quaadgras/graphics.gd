@@ -1,3 +1,4 @@
+// Package CSGBox3D provides methods for working with CSGBox3D object instances.
 package CSGBox3D
 
 import "unsafe"

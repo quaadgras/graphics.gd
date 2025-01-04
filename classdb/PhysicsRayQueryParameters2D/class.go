@@ -1,3 +1,4 @@
+// Package PhysicsRayQueryParameters2D provides methods for working with PhysicsRayQueryParameters2D object instances.
 package PhysicsRayQueryParameters2D
 
 import "unsafe"

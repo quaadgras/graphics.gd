@@ -1,3 +1,4 @@
+// Package GPUParticles2D provides methods for working with GPUParticles2D object instances.
 package GPUParticles2D
 
 import "unsafe"

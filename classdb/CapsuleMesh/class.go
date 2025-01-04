@@ -1,3 +1,4 @@
+// Package CapsuleMesh provides methods for working with CapsuleMesh object instances.
 package CapsuleMesh
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Noise provides methods for working with Noise object instances.
 package Noise
 
 import "unsafe"

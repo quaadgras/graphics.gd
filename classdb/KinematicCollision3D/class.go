@@ -1,3 +1,4 @@
+// Package KinematicCollision3D provides methods for working with KinematicCollision3D object instances.
 package KinematicCollision3D
 
 import "unsafe"

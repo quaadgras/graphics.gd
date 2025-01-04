@@ -1,3 +1,4 @@
+// Package StreamPeer provides methods for working with StreamPeer object instances.
 package StreamPeer
 
 import "unsafe"

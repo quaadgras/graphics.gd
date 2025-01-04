@@ -1,3 +1,4 @@
+// Package NinePatchRect provides methods for working with NinePatchRect object instances.
 package NinePatchRect
 
 import "unsafe"

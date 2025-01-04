@@ -1,3 +1,4 @@
+// Package EditorExportPlatformAndroid provides methods for working with EditorExportPlatformAndroid object instances.
 package EditorExportPlatformAndroid
 
 import "unsafe"

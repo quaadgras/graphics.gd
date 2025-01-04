@@ -1,3 +1,4 @@
+// Package SurfaceTool provides methods for working with SurfaceTool object instances.
 package SurfaceTool
 
 import "unsafe"

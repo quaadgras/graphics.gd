@@ -1,3 +1,4 @@
+// Package MeshDataTool provides methods for working with MeshDataTool object instances.
 package MeshDataTool
 
 import "unsafe"

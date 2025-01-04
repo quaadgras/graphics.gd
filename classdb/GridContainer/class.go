@@ -1,3 +1,4 @@
+// Package GridContainer provides methods for working with GridContainer object instances.
 package GridContainer
 
 import "unsafe"

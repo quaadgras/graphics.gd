@@ -1,3 +1,4 @@
+// Package EditorPlugin provides methods for working with EditorPlugin object instances.
 package EditorPlugin
 
 import "unsafe"

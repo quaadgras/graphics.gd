@@ -1,3 +1,4 @@
+// Package ScriptEditor provides methods for working with ScriptEditor object instances.
 package ScriptEditor
 
 import "unsafe"

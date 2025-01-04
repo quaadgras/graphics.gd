@@ -1,3 +1,4 @@
+// Package CSGCombiner3D provides methods for working with CSGCombiner3D object instances.
 package CSGCombiner3D
 
 import "unsafe"

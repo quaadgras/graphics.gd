@@ -1,3 +1,4 @@
+// Package JSONRPC provides methods for working with JSONRPC object instances.
 package JSONRPC
 
 import "unsafe"

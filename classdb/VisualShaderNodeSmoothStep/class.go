@@ -1,3 +1,4 @@
+// Package VisualShaderNodeSmoothStep provides methods for working with VisualShaderNodeSmoothStep object instances.
 package VisualShaderNodeSmoothStep
 
 import "unsafe"

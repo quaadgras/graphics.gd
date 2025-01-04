@@ -1,3 +1,4 @@
+// Package PhysicsTestMotionParameters3D provides methods for working with PhysicsTestMotionParameters3D object instances.
 package PhysicsTestMotionParameters3D
 
 import "unsafe"

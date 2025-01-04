@@ -1,3 +1,4 @@
+// Package AudioStreamPlayer2D provides methods for working with AudioStreamPlayer2D object instances.
 package AudioStreamPlayer2D
 
 import "unsafe"

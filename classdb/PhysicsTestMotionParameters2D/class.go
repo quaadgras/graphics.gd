@@ -1,3 +1,4 @@
+// Package PhysicsTestMotionParameters2D provides methods for working with PhysicsTestMotionParameters2D object instances.
 package PhysicsTestMotionParameters2D
 
 import "unsafe"

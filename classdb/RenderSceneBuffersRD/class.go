@@ -1,3 +1,4 @@
+// Package RenderSceneBuffersRD provides methods for working with RenderSceneBuffersRD object instances.
 package RenderSceneBuffersRD
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package XRCamera3D provides methods for working with XRCamera3D object instances.
 package XRCamera3D
 
 import "unsafe"

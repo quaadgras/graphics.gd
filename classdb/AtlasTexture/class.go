@@ -1,3 +1,4 @@
+// Package AtlasTexture provides methods for working with AtlasTexture object instances.
 package AtlasTexture
 
 import "unsafe"

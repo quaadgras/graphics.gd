@@ -1,3 +1,4 @@
+// Package Gradient provides methods for working with Gradient object instances.
 package Gradient
 
 import "unsafe"

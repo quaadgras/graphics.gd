@@ -1,3 +1,4 @@
+// Package PhysicsDirectBodyState2D provides methods for working with PhysicsDirectBodyState2D object instances.
 package PhysicsDirectBodyState2D
 
 import "unsafe"

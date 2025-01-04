@@ -1,3 +1,4 @@
+// Package EditorTranslationParserPlugin provides methods for working with EditorTranslationParserPlugin object instances.
 package EditorTranslationParserPlugin
 
 import "unsafe"

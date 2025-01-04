@@ -1,3 +1,4 @@
+// Package VScrollBar provides methods for working with VScrollBar object instances.
 package VScrollBar
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeProximityFade provides methods for working with VisualShaderNodeProximityFade object instances.
 package VisualShaderNodeProximityFade
 
 import "unsafe"

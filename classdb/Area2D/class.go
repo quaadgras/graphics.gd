@@ -1,3 +1,4 @@
+// Package Area2D provides methods for working with Area2D object instances.
 package Area2D
 
 import "unsafe"

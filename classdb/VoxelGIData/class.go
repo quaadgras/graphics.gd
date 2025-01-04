@@ -1,3 +1,4 @@
+// Package VoxelGIData provides methods for working with VoxelGIData object instances.
 package VoxelGIData
 
 import "unsafe"

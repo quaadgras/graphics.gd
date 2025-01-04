@@ -1,3 +1,4 @@
+// Package XRVRS provides methods for working with XRVRS object instances.
 package XRVRS
 
 import "unsafe"

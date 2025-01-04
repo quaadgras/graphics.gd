@@ -1,3 +1,4 @@
+// Package ColorPicker provides methods for working with ColorPicker object instances.
 package ColorPicker
 
 import "unsafe"

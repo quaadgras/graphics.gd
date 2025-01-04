@@ -1,3 +1,4 @@
+// Package RichTextEffect provides methods for working with RichTextEffect object instances.
 package RichTextEffect
 
 import "unsafe"

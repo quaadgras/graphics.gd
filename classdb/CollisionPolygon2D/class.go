@@ -1,3 +1,4 @@
+// Package CollisionPolygon2D provides methods for working with CollisionPolygon2D object instances.
 package CollisionPolygon2D
 
 import "unsafe"

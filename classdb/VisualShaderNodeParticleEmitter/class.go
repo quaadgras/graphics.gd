@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleEmitter provides methods for working with VisualShaderNodeParticleEmitter object instances.
 package VisualShaderNodeParticleEmitter
 
 import "unsafe"

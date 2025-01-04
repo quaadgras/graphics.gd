@@ -1,3 +1,4 @@
+// Package AnimationNodeOutput provides methods for working with AnimationNodeOutput object instances.
 package AnimationNodeOutput
 
 import "unsafe"

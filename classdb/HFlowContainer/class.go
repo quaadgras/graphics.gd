@@ -1,3 +1,4 @@
+// Package HFlowContainer provides methods for working with HFlowContainer object instances.
 package HFlowContainer
 
 import "unsafe"

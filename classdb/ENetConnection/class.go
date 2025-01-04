@@ -1,3 +1,4 @@
+// Package ENetConnection provides methods for working with ENetConnection object instances.
 package ENetConnection
 
 import "unsafe"

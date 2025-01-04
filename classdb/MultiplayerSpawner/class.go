@@ -1,3 +1,4 @@
+// Package MultiplayerSpawner provides methods for working with MultiplayerSpawner object instances.
 package MultiplayerSpawner
 
 import "unsafe"

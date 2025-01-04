@@ -1,3 +1,4 @@
+// Package ResourceImporterImageFont provides methods for working with ResourceImporterImageFont object instances.
 package ResourceImporterImageFont
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PlaceholderTexture2D provides methods for working with PlaceholderTexture2D object instances.
 package PlaceholderTexture2D
 
 import "unsafe"

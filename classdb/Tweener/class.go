@@ -1,3 +1,4 @@
+// Package Tweener provides methods for working with Tweener object instances.
 package Tweener
 
 import "unsafe"

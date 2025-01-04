@@ -1,3 +1,4 @@
+// Package CameraAttributesPhysical provides methods for working with CameraAttributesPhysical object instances.
 package CameraAttributesPhysical
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeColorOp provides methods for working with VisualShaderNodeColorOp object instances.
 package VisualShaderNodeColorOp
 
 import "unsafe"

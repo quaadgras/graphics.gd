@@ -1,3 +1,4 @@
+// Package CapsuleShape2D provides methods for working with CapsuleShape2D object instances.
 package CapsuleShape2D
 
 import "unsafe"

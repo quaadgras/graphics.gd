@@ -1,3 +1,4 @@
+// Package RDTextureView provides methods for working with RDTextureView object instances.
 package RDTextureView
 
 import "unsafe"

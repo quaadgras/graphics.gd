@@ -1,3 +1,4 @@
+// Package NavigationServer2D provides methods for working with NavigationServer2D object instances.
 package NavigationServer2D
 
 import "unsafe"

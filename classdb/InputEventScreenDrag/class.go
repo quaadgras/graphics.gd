@@ -1,3 +1,4 @@
+// Package InputEventScreenDrag provides methods for working with InputEventScreenDrag object instances.
 package InputEventScreenDrag
 
 import "unsafe"

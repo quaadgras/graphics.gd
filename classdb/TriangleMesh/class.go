@@ -1,3 +1,4 @@
+// Package TriangleMesh provides methods for working with TriangleMesh object instances.
 package TriangleMesh
 
 import "unsafe"

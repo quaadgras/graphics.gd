@@ -1,3 +1,4 @@
+// Package AudioStreamPlaybackPlaylist provides methods for working with AudioStreamPlaybackPlaylist object instances.
 package AudioStreamPlaybackPlaylist
 
 import "unsafe"

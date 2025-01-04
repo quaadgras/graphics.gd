@@ -1,3 +1,4 @@
+// Package AudioEffectDistortion provides methods for working with AudioEffectDistortion object instances.
 package AudioEffectDistortion
 
 import "unsafe"

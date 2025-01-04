@@ -1,3 +1,4 @@
+// Package EditorInspector provides methods for working with EditorInspector object instances.
 package EditorInspector
 
 import "unsafe"

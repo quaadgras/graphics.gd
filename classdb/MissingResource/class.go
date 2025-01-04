@@ -1,3 +1,4 @@
+// Package MissingResource provides methods for working with MissingResource object instances.
 package MissingResource
 
 import "unsafe"

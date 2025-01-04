@@ -1,3 +1,4 @@
+// Package PlaceholderMesh provides methods for working with PlaceholderMesh object instances.
 package PlaceholderMesh
 
 import "unsafe"

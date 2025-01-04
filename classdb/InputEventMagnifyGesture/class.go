@@ -1,3 +1,4 @@
+// Package InputEventMagnifyGesture provides methods for working with InputEventMagnifyGesture object instances.
 package InputEventMagnifyGesture
 
 import "unsafe"

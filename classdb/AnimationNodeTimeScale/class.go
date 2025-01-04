@@ -1,3 +1,4 @@
+// Package AnimationNodeTimeScale provides methods for working with AnimationNodeTimeScale object instances.
 package AnimationNodeTimeScale
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ImageTextureLayered provides methods for working with ImageTextureLayered object instances.
 package ImageTextureLayered
 
 import "unsafe"

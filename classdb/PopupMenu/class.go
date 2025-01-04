@@ -1,3 +1,4 @@
+// Package PopupMenu provides methods for working with PopupMenu object instances.
 package PopupMenu
 
 import "unsafe"

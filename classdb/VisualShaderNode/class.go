@@ -1,3 +1,4 @@
+// Package VisualShaderNode provides methods for working with VisualShaderNode object instances.
 package VisualShaderNode
 
 import "unsafe"

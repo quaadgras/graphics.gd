@@ -1,3 +1,4 @@
+// Package FBXState provides methods for working with FBXState object instances.
 package FBXState
 
 import "unsafe"

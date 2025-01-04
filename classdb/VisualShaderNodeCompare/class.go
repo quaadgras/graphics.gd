@@ -1,3 +1,4 @@
+// Package VisualShaderNodeCompare provides methods for working with VisualShaderNodeCompare object instances.
 package VisualShaderNodeCompare
 
 import "unsafe"

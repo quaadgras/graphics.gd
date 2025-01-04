@@ -1,3 +1,4 @@
+// Package VisualShader provides methods for working with VisualShader object instances.
 package VisualShader
 
 import "unsafe"

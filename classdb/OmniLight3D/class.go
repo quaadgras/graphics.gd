@@ -1,3 +1,4 @@
+// Package OmniLight3D provides methods for working with OmniLight3D object instances.
 package OmniLight3D
 
 import "unsafe"

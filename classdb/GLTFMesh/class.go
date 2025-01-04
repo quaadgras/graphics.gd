@@ -1,3 +1,4 @@
+// Package GLTFMesh provides methods for working with GLTFMesh object instances.
 package GLTFMesh
 
 import "unsafe"

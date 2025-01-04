@@ -1,3 +1,4 @@
+// Package GPUParticlesAttractor3D provides methods for working with GPUParticlesAttractor3D object instances.
 package GPUParticlesAttractor3D
 
 import "unsafe"

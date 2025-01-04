@@ -1,3 +1,4 @@
+// Package Container provides methods for working with Container object instances.
 package Container
 
 import "unsafe"

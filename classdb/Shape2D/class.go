@@ -1,3 +1,4 @@
+// Package Shape2D provides methods for working with Shape2D object instances.
 package Shape2D
 
 import "unsafe"

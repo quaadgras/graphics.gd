@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFloatFunc provides methods for working with VisualShaderNodeFloatFunc object instances.
 package VisualShaderNodeFloatFunc
 
 import "unsafe"

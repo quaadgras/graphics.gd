@@ -1,3 +1,4 @@
+// Package AudioEffectLowPassFilter provides methods for working with AudioEffectLowPassFilter object instances.
 package AudioEffectLowPassFilter
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PrismMesh provides methods for working with PrismMesh object instances.
 package PrismMesh
 
 import "unsafe"

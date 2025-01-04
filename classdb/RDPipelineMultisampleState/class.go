@@ -1,3 +1,4 @@
+// Package RDPipelineMultisampleState provides methods for working with RDPipelineMultisampleState object instances.
 package RDPipelineMultisampleState
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ImporterMesh provides methods for working with ImporterMesh object instances.
 package ImporterMesh
 
 import "unsafe"

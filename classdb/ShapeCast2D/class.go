@@ -1,3 +1,4 @@
+// Package ShapeCast2D provides methods for working with ShapeCast2D object instances.
 package ShapeCast2D
 
 import "unsafe"

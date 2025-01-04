@@ -1,3 +1,4 @@
+// Package MeshTexture provides methods for working with MeshTexture object instances.
 package MeshTexture
 
 import "unsafe"

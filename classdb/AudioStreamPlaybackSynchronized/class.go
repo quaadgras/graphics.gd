@@ -1,3 +1,4 @@
+// Package AudioStreamPlaybackSynchronized provides methods for working with AudioStreamPlaybackSynchronized object instances.
 package AudioStreamPlaybackSynchronized
 
 import "unsafe"

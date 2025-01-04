@@ -1,3 +1,4 @@
+// Package NavigationLink2D provides methods for working with NavigationLink2D object instances.
 package NavigationLink2D
 
 import "unsafe"

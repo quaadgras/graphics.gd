@@ -1,3 +1,4 @@
+// Package VisualShaderNodeIs provides methods for working with VisualShaderNodeIs object instances.
 package VisualShaderNodeIs
 
 import "unsafe"

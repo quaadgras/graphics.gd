@@ -123,7 +123,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		return xray.New(err)
 	}
 	defer file.Close()
-	fmt.Fprintf(file, "package %s\n\n", class.Name)
+	fmt.Fprintf(file, `// Package %s provides methods for working with %[1]s object instances.`, class.Name)
+	fmt.Fprintf(file, "\npackage %s\n\n", class.Name)
 	fmt.Fprintln(file, `import "unsafe"`)
 	if singleton {
 		fmt.Fprintln(file, `import "sync"`)

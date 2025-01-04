@@ -1,3 +1,4 @@
+// Package Separator provides methods for working with Separator object instances.
 package Separator
 
 import "unsafe"

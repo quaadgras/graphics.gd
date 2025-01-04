@@ -1,3 +1,4 @@
+// Package AudioStreamPlayer provides methods for working with AudioStreamPlayer object instances.
 package AudioStreamPlayer
 
 import "unsafe"

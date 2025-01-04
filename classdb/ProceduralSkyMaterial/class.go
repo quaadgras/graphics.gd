@@ -1,3 +1,4 @@
+// Package ProceduralSkyMaterial provides methods for working with ProceduralSkyMaterial object instances.
 package ProceduralSkyMaterial
 
 import "unsafe"

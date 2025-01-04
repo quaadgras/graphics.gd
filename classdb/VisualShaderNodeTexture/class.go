@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTexture provides methods for working with VisualShaderNodeTexture object instances.
 package VisualShaderNodeTexture
 
 import "unsafe"

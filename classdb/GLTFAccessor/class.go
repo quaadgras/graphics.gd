@@ -1,3 +1,4 @@
+// Package GLTFAccessor provides methods for working with GLTFAccessor object instances.
 package GLTFAccessor
 
 import "unsafe"

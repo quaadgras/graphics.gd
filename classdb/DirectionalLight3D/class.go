@@ -1,3 +1,4 @@
+// Package DirectionalLight3D provides methods for working with DirectionalLight3D object instances.
 package DirectionalLight3D
 
 import "unsafe"

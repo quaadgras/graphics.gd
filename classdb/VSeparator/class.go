@@ -1,3 +1,4 @@
+// Package VSeparator provides methods for working with VSeparator object instances.
 package VSeparator
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectReverb provides methods for working with AudioEffectReverb object instances.
 package AudioEffectReverb
 
 import "unsafe"

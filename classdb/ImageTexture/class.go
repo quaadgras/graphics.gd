@@ -1,3 +1,4 @@
+// Package ImageTexture provides methods for working with ImageTexture object instances.
 package ImageTexture
 
 import "unsafe"

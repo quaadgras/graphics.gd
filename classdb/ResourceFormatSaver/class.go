@@ -1,3 +1,4 @@
+// Package ResourceFormatSaver provides methods for working with ResourceFormatSaver object instances.
 package ResourceFormatSaver
 
 import "unsafe"

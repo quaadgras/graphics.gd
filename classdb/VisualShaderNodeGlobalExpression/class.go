@@ -1,3 +1,4 @@
+// Package VisualShaderNodeGlobalExpression provides methods for working with VisualShaderNodeGlobalExpression object instances.
 package VisualShaderNodeGlobalExpression
 
 import "unsafe"

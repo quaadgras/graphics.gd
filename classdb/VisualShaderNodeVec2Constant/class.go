@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVec2Constant provides methods for working with VisualShaderNodeVec2Constant object instances.
 package VisualShaderNodeVec2Constant
 
 import "unsafe"

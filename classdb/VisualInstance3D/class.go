@@ -1,3 +1,4 @@
+// Package VisualInstance3D provides methods for working with VisualInstance3D object instances.
 package VisualInstance3D
 
 import "unsafe"

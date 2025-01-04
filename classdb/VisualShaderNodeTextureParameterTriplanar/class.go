@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTextureParameterTriplanar provides methods for working with VisualShaderNodeTextureParameterTriplanar object instances.
 package VisualShaderNodeTextureParameterTriplanar
 
 import "unsafe"

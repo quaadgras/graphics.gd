@@ -1,3 +1,4 @@
+// Package Curve provides methods for working with Curve object instances.
 package Curve
 
 import "unsafe"

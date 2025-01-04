@@ -1,3 +1,4 @@
+// Package VisualShaderNodeExpression provides methods for working with VisualShaderNodeExpression object instances.
 package VisualShaderNodeExpression
 
 import "unsafe"

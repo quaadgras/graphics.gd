@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformCompose provides methods for working with VisualShaderNodeTransformCompose object instances.
 package VisualShaderNodeTransformCompose
 
 import "unsafe"

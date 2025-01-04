@@ -1,3 +1,4 @@
+// Package GPUParticlesAttractorVectorField3D provides methods for working with GPUParticlesAttractorVectorField3D object instances.
 package GPUParticlesAttractorVectorField3D
 
 import "unsafe"

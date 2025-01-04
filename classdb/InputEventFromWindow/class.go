@@ -1,3 +1,4 @@
+// Package InputEventFromWindow provides methods for working with InputEventFromWindow object instances.
 package InputEventFromWindow
 
 import "unsafe"

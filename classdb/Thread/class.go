@@ -1,3 +1,4 @@
+// Package Thread provides methods for working with Thread object instances.
 package Thread
 
 import "unsafe"

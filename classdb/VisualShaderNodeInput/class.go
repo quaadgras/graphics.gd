@@ -1,3 +1,4 @@
+// Package VisualShaderNodeInput provides methods for working with VisualShaderNodeInput object instances.
 package VisualShaderNodeInput
 
 import "unsafe"

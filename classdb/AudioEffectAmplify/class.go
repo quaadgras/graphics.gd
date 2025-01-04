@@ -1,3 +1,4 @@
+// Package AudioEffectAmplify provides methods for working with AudioEffectAmplify object instances.
 package AudioEffectAmplify
 
 import "unsafe"

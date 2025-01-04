@@ -1,3 +1,4 @@
+// Package MissingNode provides methods for working with MissingNode object instances.
 package MissingNode
 
 import "unsafe"

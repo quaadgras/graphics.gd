@@ -1,3 +1,4 @@
+// Package MeshInstance3D provides methods for working with MeshInstance3D object instances.
 package MeshInstance3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AnimationNodeTimeSeek provides methods for working with AnimationNodeTimeSeek object instances.
 package AnimationNodeTimeSeek
 
 import "unsafe"

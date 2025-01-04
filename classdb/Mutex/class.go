@@ -1,3 +1,4 @@
+// Package Mutex provides methods for working with Mutex object instances.
 package Mutex
 
 import "unsafe"

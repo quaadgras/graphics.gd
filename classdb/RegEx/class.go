@@ -1,3 +1,4 @@
+// Package RegEx provides methods for working with RegEx object instances.
 package RegEx
 
 import "unsafe"

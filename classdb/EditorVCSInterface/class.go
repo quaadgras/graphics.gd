@@ -1,3 +1,4 @@
+// Package EditorVCSInterface provides methods for working with EditorVCSInterface object instances.
 package EditorVCSInterface
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package GLTFSkeleton provides methods for working with GLTFSkeleton object instances.
 package GLTFSkeleton
 
 import "unsafe"

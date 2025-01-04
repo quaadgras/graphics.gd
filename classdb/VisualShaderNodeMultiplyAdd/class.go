@@ -1,3 +1,4 @@
+// Package VisualShaderNodeMultiplyAdd provides methods for working with VisualShaderNodeMultiplyAdd object instances.
 package VisualShaderNodeMultiplyAdd
 
 import "unsafe"

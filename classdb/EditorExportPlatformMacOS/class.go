@@ -1,3 +1,4 @@
+// Package EditorExportPlatformMacOS provides methods for working with EditorExportPlatformMacOS object instances.
 package EditorExportPlatformMacOS
 
 import "unsafe"

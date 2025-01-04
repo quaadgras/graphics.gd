@@ -1,3 +1,4 @@
+// Package EditorExportPlatformWindows provides methods for working with EditorExportPlatformWindows object instances.
 package EditorExportPlatformWindows
 
 import "unsafe"

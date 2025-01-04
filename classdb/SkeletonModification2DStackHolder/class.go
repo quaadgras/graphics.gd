@@ -1,3 +1,4 @@
+// Package SkeletonModification2DStackHolder provides methods for working with SkeletonModification2DStackHolder object instances.
 package SkeletonModification2DStackHolder
 
 import "unsafe"

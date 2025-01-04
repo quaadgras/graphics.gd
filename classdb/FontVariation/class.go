@@ -1,3 +1,4 @@
+// Package FontVariation provides methods for working with FontVariation object instances.
 package FontVariation
 
 import "unsafe"

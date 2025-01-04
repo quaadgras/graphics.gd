@@ -1,3 +1,4 @@
+// Package Node2D provides methods for working with Node2D object instances.
 package Node2D
 
 import "unsafe"

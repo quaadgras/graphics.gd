@@ -1,3 +1,4 @@
+// Package MultiplayerPeer provides methods for working with MultiplayerPeer object instances.
 package MultiplayerPeer
 
 import "unsafe"

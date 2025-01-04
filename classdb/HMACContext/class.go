@@ -1,3 +1,4 @@
+// Package HMACContext provides methods for working with HMACContext object instances.
 package HMACContext
 
 import "unsafe"

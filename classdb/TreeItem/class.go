@@ -1,3 +1,4 @@
+// Package TreeItem provides methods for working with TreeItem object instances.
 package TreeItem
 
 import "unsafe"

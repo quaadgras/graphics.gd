@@ -1,3 +1,4 @@
+// Package EditorSceneFormatImporter provides methods for working with EditorSceneFormatImporter object instances.
 package EditorSceneFormatImporter
 
 import "unsafe"

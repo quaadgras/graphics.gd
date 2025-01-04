@@ -1,3 +1,4 @@
+// Package OpenXRExtensionWrapperExtension provides methods for working with OpenXRExtensionWrapperExtension object instances.
 package OpenXRExtensionWrapperExtension
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package FileDialog provides methods for working with FileDialog object instances.
 package FileDialog
 
 import "unsafe"

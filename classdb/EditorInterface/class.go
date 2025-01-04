@@ -1,3 +1,4 @@
+// Package EditorInterface provides methods for working with EditorInterface object instances.
 package EditorInterface
 
 import "unsafe"

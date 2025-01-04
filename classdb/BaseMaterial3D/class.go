@@ -1,3 +1,4 @@
+// Package BaseMaterial3D provides methods for working with BaseMaterial3D object instances.
 package BaseMaterial3D
 
 import "unsafe"

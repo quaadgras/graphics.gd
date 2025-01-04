@@ -1,3 +1,4 @@
+// Package QuadOccluder3D provides methods for working with QuadOccluder3D object instances.
 package QuadOccluder3D
 
 import "unsafe"

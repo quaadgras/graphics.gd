@@ -1,3 +1,4 @@
+// Package EditorResourceTooltipPlugin provides methods for working with EditorResourceTooltipPlugin object instances.
 package EditorResourceTooltipPlugin
 
 import "unsafe"

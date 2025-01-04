@@ -1,3 +1,4 @@
+// Package VisualShaderNodeRotationByAxis provides methods for working with VisualShaderNodeRotationByAxis object instances.
 package VisualShaderNodeRotationByAxis
 
 import "unsafe"

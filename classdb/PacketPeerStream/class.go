@@ -1,3 +1,4 @@
+// Package PacketPeerStream provides methods for working with PacketPeerStream object instances.
 package PacketPeerStream
 
 import "unsafe"

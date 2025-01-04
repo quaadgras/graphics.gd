@@ -1,3 +1,4 @@
+// Package AnimationNodeOneShot provides methods for working with AnimationNodeOneShot object instances.
 package AnimationNodeOneShot
 
 import "unsafe"

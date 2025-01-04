@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFloatParameter provides methods for working with VisualShaderNodeFloatParameter object instances.
 package VisualShaderNodeFloatParameter
 
 import "unsafe"

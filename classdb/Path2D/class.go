@@ -1,3 +1,4 @@
+// Package Path2D provides methods for working with Path2D object instances.
 package Path2D
 
 import "unsafe"

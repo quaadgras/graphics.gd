@@ -1,3 +1,4 @@
+// Package RandomNumberGenerator provides methods for working with RandomNumberGenerator object instances.
 package RandomNumberGenerator
 
 import "unsafe"

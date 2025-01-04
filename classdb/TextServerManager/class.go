@@ -1,3 +1,4 @@
+// Package TextServerManager provides methods for working with TextServerManager object instances.
 package TextServerManager
 
 import "unsafe"

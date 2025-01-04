@@ -1,3 +1,4 @@
+// Package CylinderMesh provides methods for working with CylinderMesh object instances.
 package CylinderMesh
 
 import "unsafe"

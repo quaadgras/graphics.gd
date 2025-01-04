@@ -1,3 +1,4 @@
+// Package Polygon2D provides methods for working with Polygon2D object instances.
 package Polygon2D
 
 import "unsafe"

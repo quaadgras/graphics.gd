@@ -1,3 +1,4 @@
+// Package ImporterMeshInstance3D provides methods for working with ImporterMeshInstance3D object instances.
 package ImporterMeshInstance3D
 
 import "unsafe"

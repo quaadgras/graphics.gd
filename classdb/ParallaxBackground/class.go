@@ -1,3 +1,4 @@
+// Package ParallaxBackground provides methods for working with ParallaxBackground object instances.
 package ParallaxBackground
 
 import "unsafe"

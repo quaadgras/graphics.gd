@@ -1,3 +1,4 @@
+// Package SkeletonModification2DPhysicalBones provides methods for working with SkeletonModification2DPhysicalBones object instances.
 package SkeletonModification2DPhysicalBones
 
 import "unsafe"

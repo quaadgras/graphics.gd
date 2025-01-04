@@ -1,3 +1,4 @@
+// Package WebSocketMultiplayerPeer provides methods for working with WebSocketMultiplayerPeer object instances.
 package WebSocketMultiplayerPeer
 
 import "unsafe"

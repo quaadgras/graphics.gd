@@ -1,3 +1,4 @@
+// Package VisualShaderNodeClamp provides methods for working with VisualShaderNodeClamp object instances.
 package VisualShaderNodeClamp
 
 import "unsafe"

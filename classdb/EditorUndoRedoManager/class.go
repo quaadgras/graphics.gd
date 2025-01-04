@@ -1,3 +1,4 @@
+// Package EditorUndoRedoManager provides methods for working with EditorUndoRedoManager object instances.
 package EditorUndoRedoManager
 
 import "unsafe"

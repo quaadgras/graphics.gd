@@ -1,3 +1,4 @@
+// Package PhysicsRayQueryParameters3D provides methods for working with PhysicsRayQueryParameters3D object instances.
 package PhysicsRayQueryParameters3D
 
 import "unsafe"

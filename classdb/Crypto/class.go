@@ -1,3 +1,4 @@
+// Package Crypto provides methods for working with Crypto object instances.
 package Crypto
 
 import "unsafe"

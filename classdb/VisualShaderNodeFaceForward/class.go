@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFaceForward provides methods for working with VisualShaderNodeFaceForward object instances.
 package VisualShaderNodeFaceForward
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package SkeletonIK3D provides methods for working with SkeletonIK3D object instances.
 package SkeletonIK3D
 
 import "unsafe"

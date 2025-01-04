@@ -1,3 +1,4 @@
+// Package StreamPeerTCP provides methods for working with StreamPeerTCP object instances.
 package StreamPeerTCP
 
 import "unsafe"

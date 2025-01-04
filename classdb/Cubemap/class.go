@@ -1,3 +1,4 @@
+// Package Cubemap provides methods for working with Cubemap object instances.
 package Cubemap
 
 import "unsafe"

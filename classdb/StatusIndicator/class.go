@@ -1,3 +1,4 @@
+// Package StatusIndicator provides methods for working with StatusIndicator object instances.
 package StatusIndicator
 
 import "unsafe"

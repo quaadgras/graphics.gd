@@ -1,3 +1,4 @@
+// Package XRPositionalTracker provides methods for working with XRPositionalTracker object instances.
 package XRPositionalTracker
 
 import "unsafe"

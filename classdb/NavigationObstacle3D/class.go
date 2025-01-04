@@ -1,3 +1,4 @@
+// Package NavigationObstacle3D provides methods for working with NavigationObstacle3D object instances.
 package NavigationObstacle3D
 
 import "unsafe"

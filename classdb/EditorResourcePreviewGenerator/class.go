@@ -1,3 +1,4 @@
+// Package EditorResourcePreviewGenerator provides methods for working with EditorResourcePreviewGenerator object instances.
 package EditorResourcePreviewGenerator
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformFunc provides methods for working with VisualShaderNodeTransformFunc object instances.
 package VisualShaderNodeTransformFunc
 
 import "unsafe"

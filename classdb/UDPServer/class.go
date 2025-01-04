@@ -1,3 +1,4 @@
+// Package UDPServer provides methods for working with UDPServer object instances.
 package UDPServer
 
 import "unsafe"

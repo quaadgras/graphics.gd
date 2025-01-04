@@ -1,3 +1,4 @@
+// Package TextEdit provides methods for working with TextEdit object instances.
 package TextEdit
 
 import "unsafe"

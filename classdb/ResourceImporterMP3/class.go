@@ -1,3 +1,4 @@
+// Package ResourceImporterMP3 provides methods for working with ResourceImporterMP3 object instances.
 package ResourceImporterMP3
 
 import "unsafe"

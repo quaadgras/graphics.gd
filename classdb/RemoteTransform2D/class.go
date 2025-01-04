@@ -1,3 +1,4 @@
+// Package RemoteTransform2D provides methods for working with RemoteTransform2D object instances.
 package RemoteTransform2D
 
 import "unsafe"

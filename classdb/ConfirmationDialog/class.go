@@ -1,3 +1,4 @@
+// Package ConfirmationDialog provides methods for working with ConfirmationDialog object instances.
 package ConfirmationDialog
 
 import "unsafe"

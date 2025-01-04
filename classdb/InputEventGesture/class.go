@@ -1,3 +1,4 @@
+// Package InputEventGesture provides methods for working with InputEventGesture object instances.
 package InputEventGesture
 
 import "unsafe"

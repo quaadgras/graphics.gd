@@ -1,3 +1,4 @@
+// Package BoxShape3D provides methods for working with BoxShape3D object instances.
 package BoxShape3D
 
 import "unsafe"

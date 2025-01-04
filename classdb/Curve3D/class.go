@@ -1,3 +1,4 @@
+// Package Curve3D provides methods for working with Curve3D object instances.
 package Curve3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CompressedTextureLayered provides methods for working with CompressedTextureLayered object instances.
 package CompressedTextureLayered
 
 import "unsafe"

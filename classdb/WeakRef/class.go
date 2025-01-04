@@ -1,3 +1,4 @@
+// Package WeakRef provides methods for working with WeakRef object instances.
 package WeakRef
 
 import "unsafe"

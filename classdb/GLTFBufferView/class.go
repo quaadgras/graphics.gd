@@ -1,3 +1,4 @@
+// Package GLTFBufferView provides methods for working with GLTFBufferView object instances.
 package GLTFBufferView
 
 import "unsafe"

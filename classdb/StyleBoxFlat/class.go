@@ -1,3 +1,4 @@
+// Package StyleBoxFlat provides methods for working with StyleBoxFlat object instances.
 package StyleBoxFlat
 
 import "unsafe"

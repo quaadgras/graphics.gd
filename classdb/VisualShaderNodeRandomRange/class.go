@@ -1,3 +1,4 @@
+// Package VisualShaderNodeRandomRange provides methods for working with VisualShaderNodeRandomRange object instances.
 package VisualShaderNodeRandomRange
 
 import "unsafe"

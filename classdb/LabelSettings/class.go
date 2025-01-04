@@ -1,3 +1,4 @@
+// Package LabelSettings provides methods for working with LabelSettings object instances.
 package LabelSettings
 
 import "unsafe"

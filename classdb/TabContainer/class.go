@@ -1,3 +1,4 @@
+// Package TabContainer provides methods for working with TabContainer object instances.
 package TabContainer
 
 import "unsafe"

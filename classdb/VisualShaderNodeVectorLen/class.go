@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorLen provides methods for working with VisualShaderNodeVectorLen object instances.
 package VisualShaderNodeVectorLen
 
 import "unsafe"

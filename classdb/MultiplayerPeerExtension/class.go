@@ -1,3 +1,4 @@
+// Package MultiplayerPeerExtension provides methods for working with MultiplayerPeerExtension object instances.
 package MultiplayerPeerExtension
 
 import "unsafe"

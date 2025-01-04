@@ -1,3 +1,4 @@
+// Package CanvasItem provides methods for working with CanvasItem object instances.
 package CanvasItem
 
 import "unsafe"

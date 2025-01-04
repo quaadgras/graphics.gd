@@ -1,3 +1,4 @@
+// Package ShaderGlobalsOverride provides methods for working with ShaderGlobalsOverride object instances.
 package ShaderGlobalsOverride
 
 import "unsafe"

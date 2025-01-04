@@ -1,3 +1,4 @@
+// Package HSplitContainer provides methods for working with HSplitContainer object instances.
 package HSplitContainer
 
 import "unsafe"

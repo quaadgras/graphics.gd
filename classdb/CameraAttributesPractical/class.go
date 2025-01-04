@@ -1,3 +1,4 @@
+// Package CameraAttributesPractical provides methods for working with CameraAttributesPractical object instances.
 package CameraAttributesPractical
 
 import "unsafe"

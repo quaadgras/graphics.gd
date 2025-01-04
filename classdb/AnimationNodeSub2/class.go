@@ -1,3 +1,4 @@
+// Package AnimationNodeSub2 provides methods for working with AnimationNodeSub2 object instances.
 package AnimationNodeSub2
 
 import "unsafe"

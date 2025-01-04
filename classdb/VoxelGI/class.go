@@ -1,3 +1,4 @@
+// Package VoxelGI provides methods for working with VoxelGI object instances.
 package VoxelGI
 
 import "unsafe"

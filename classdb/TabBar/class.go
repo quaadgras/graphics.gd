@@ -1,3 +1,4 @@
+// Package TabBar provides methods for working with TabBar object instances.
 package TabBar
 
 import "unsafe"

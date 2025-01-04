@@ -1,3 +1,4 @@
+// Package ResourceImporterTextureAtlas provides methods for working with ResourceImporterTextureAtlas object instances.
 package ResourceImporterTextureAtlas
 
 import "unsafe"

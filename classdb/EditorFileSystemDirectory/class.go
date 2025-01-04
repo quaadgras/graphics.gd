@@ -1,3 +1,4 @@
+// Package EditorFileSystemDirectory provides methods for working with EditorFileSystemDirectory object instances.
 package EditorFileSystemDirectory
 
 import "unsafe"

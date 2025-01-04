@@ -1,3 +1,4 @@
+// Package ResourceImporterImage provides methods for working with ResourceImporterImage object instances.
 package ResourceImporterImage
 
 import "unsafe"

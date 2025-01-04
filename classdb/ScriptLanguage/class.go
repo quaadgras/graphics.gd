@@ -1,3 +1,4 @@
+// Package ScriptLanguage provides methods for working with ScriptLanguage object instances.
 package ScriptLanguage
 
 import "unsafe"

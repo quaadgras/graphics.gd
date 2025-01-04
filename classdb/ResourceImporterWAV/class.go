@@ -1,3 +1,4 @@
+// Package ResourceImporterWAV provides methods for working with ResourceImporterWAV object instances.
 package ResourceImporterWAV
 
 import "unsafe"

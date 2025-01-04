@@ -1,3 +1,4 @@
+// Package DirAccess provides methods for working with DirAccess object instances.
 package DirAccess
 
 import "unsafe"

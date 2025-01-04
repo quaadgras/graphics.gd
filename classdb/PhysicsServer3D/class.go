@@ -1,3 +1,4 @@
+// Package PhysicsServer3D provides methods for working with PhysicsServer3D object instances.
 package PhysicsServer3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package SliderJoint3D provides methods for working with SliderJoint3D object instances.
 package SliderJoint3D
 
 import "unsafe"

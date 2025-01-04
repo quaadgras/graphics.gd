@@ -1,3 +1,4 @@
+// Package GraphEdit provides methods for working with GraphEdit object instances.
 package GraphEdit
 
 import "unsafe"

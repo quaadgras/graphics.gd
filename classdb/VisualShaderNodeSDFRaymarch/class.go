@@ -1,3 +1,4 @@
+// Package VisualShaderNodeSDFRaymarch provides methods for working with VisualShaderNodeSDFRaymarch object instances.
 package VisualShaderNodeSDFRaymarch
 
 import "unsafe"

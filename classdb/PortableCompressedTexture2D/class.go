@@ -1,3 +1,4 @@
+// Package PortableCompressedTexture2D provides methods for working with PortableCompressedTexture2D object instances.
 package PortableCompressedTexture2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CompressedTexture2D provides methods for working with CompressedTexture2D object instances.
 package CompressedTexture2D
 
 import "unsafe"

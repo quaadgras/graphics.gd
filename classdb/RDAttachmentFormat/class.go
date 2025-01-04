@@ -1,3 +1,4 @@
+// Package RDAttachmentFormat provides methods for working with RDAttachmentFormat object instances.
 package RDAttachmentFormat
 
 import "unsafe"

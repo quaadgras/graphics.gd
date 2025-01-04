@@ -1,3 +1,4 @@
+// Package NavigationAgent2D provides methods for working with NavigationAgent2D object instances.
 package NavigationAgent2D
 
 import "unsafe"

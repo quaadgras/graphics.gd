@@ -1,3 +1,4 @@
+// Package Texture2DRD provides methods for working with Texture2DRD object instances.
 package Texture2DRD
 
 import "unsafe"

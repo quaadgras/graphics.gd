@@ -1,3 +1,4 @@
+// Package Tree provides methods for working with Tree object instances.
 package Tree
 
 import "unsafe"

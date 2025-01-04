@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleAccelerator provides methods for working with VisualShaderNodeParticleAccelerator object instances.
 package VisualShaderNodeParticleAccelerator
 
 import "unsafe"

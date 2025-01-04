@@ -1,3 +1,4 @@
+// Package TCPServer provides methods for working with TCPServer object instances.
 package TCPServer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package TextureLayeredRD provides methods for working with TextureLayeredRD object instances.
 package TextureLayeredRD
 
 import "unsafe"

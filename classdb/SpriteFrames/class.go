@@ -1,3 +1,4 @@
+// Package SpriteFrames provides methods for working with SpriteFrames object instances.
 package SpriteFrames
 
 import "unsafe"

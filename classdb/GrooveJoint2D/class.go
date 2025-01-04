@@ -1,3 +1,4 @@
+// Package GrooveJoint2D provides methods for working with GrooveJoint2D object instances.
 package GrooveJoint2D
 
 import "unsafe"

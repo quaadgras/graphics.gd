@@ -1,3 +1,4 @@
+// Package TextServerAdvanced provides methods for working with TextServerAdvanced object instances.
 package TextServerAdvanced
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeFloatOp provides methods for working with VisualShaderNodeFloatOp object instances.
 package VisualShaderNodeFloatOp
 
 import "unsafe"

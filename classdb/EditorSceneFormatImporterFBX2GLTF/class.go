@@ -1,3 +1,4 @@
+// Package EditorSceneFormatImporterFBX2GLTF provides methods for working with EditorSceneFormatImporterFBX2GLTF object instances.
 package EditorSceneFormatImporterFBX2GLTF
 
 import "unsafe"

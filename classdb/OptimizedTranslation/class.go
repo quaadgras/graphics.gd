@@ -1,3 +1,4 @@
+// Package OptimizedTranslation provides methods for working with OptimizedTranslation object instances.
 package OptimizedTranslation
 
 import "unsafe"

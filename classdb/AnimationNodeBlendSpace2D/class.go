@@ -1,3 +1,4 @@
+// Package AnimationNodeBlendSpace2D provides methods for working with AnimationNodeBlendSpace2D object instances.
 package AnimationNodeBlendSpace2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package EngineProfiler provides methods for working with EngineProfiler object instances.
 package EngineProfiler
 
 import "unsafe"

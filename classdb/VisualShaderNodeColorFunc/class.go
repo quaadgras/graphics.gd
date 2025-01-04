@@ -1,3 +1,4 @@
+// Package VisualShaderNodeColorFunc provides methods for working with VisualShaderNodeColorFunc object instances.
 package VisualShaderNodeColorFunc
 
 import "unsafe"

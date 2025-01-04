@@ -1,3 +1,4 @@
+// Package TLSOptions provides methods for working with TLSOptions object instances.
 package TLSOptions
 
 import "unsafe"

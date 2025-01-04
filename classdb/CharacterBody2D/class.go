@@ -1,3 +1,4 @@
+// Package CharacterBody2D provides methods for working with CharacterBody2D object instances.
 package CharacterBody2D
 
 import "unsafe"

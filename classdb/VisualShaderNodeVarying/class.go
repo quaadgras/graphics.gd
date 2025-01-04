@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVarying provides methods for working with VisualShaderNodeVarying object instances.
 package VisualShaderNodeVarying
 
 import "unsafe"

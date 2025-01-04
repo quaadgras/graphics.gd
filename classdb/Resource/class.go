@@ -1,3 +1,4 @@
+// Package Resource provides methods for working with Resource object instances.
 package Resource
 
 import "unsafe"

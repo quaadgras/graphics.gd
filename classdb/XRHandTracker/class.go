@@ -1,3 +1,4 @@
+// Package XRHandTracker provides methods for working with XRHandTracker object instances.
 package XRHandTracker
 
 import "unsafe"

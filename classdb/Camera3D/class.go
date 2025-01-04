@@ -1,3 +1,4 @@
+// Package Camera3D provides methods for working with Camera3D object instances.
 package Camera3D
 
 import "unsafe"

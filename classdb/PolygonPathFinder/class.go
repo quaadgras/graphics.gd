@@ -1,3 +1,4 @@
+// Package PolygonPathFinder provides methods for working with PolygonPathFinder object instances.
 package PolygonPathFinder
 
 import "unsafe"

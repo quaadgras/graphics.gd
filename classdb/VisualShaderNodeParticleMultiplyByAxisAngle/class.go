@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleMultiplyByAxisAngle provides methods for working with VisualShaderNodeParticleMultiplyByAxisAngle object instances.
 package VisualShaderNodeParticleMultiplyByAxisAngle
 
 import "unsafe"

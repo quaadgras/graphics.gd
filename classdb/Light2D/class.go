@@ -1,3 +1,4 @@
+// Package Light2D provides methods for working with Light2D object instances.
 package Light2D
 
 import "unsafe"

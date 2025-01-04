@@ -1,3 +1,4 @@
+// Package VisualShaderNodeDerivativeFunc provides methods for working with VisualShaderNodeDerivativeFunc object instances.
 package VisualShaderNodeDerivativeFunc
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioSample provides methods for working with AudioSample object instances.
 package AudioSample
 
 import "unsafe"

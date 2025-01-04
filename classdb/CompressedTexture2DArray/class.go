@@ -1,3 +1,4 @@
+// Package CompressedTexture2DArray provides methods for working with CompressedTexture2DArray object instances.
 package CompressedTexture2DArray
 
 import "unsafe"

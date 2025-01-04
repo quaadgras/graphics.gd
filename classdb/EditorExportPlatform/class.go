@@ -1,3 +1,4 @@
+// Package EditorExportPlatform provides methods for working with EditorExportPlatform object instances.
 package EditorExportPlatform
 
 import "unsafe"

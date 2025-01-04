@@ -1,3 +1,4 @@
+// Package Window provides methods for working with Window object instances.
 package Window
 
 import "unsafe"

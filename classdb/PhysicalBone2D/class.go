@@ -1,3 +1,4 @@
+// Package PhysicalBone2D provides methods for working with PhysicalBone2D object instances.
 package PhysicalBone2D
 
 import "unsafe"

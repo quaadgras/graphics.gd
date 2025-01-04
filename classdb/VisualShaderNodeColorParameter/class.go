@@ -1,3 +1,4 @@
+// Package VisualShaderNodeColorParameter provides methods for working with VisualShaderNodeColorParameter object instances.
 package VisualShaderNodeColorParameter
 
 import "unsafe"

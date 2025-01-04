@@ -1,3 +1,4 @@
+// Package VisualShaderNodeOutput provides methods for working with VisualShaderNodeOutput object instances.
 package VisualShaderNodeOutput
 
 import "unsafe"

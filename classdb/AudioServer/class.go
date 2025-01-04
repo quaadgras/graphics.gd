@@ -1,3 +1,4 @@
+// Package AudioServer provides methods for working with AudioServer object instances.
 package AudioServer
 
 import "unsafe"

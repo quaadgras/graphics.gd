@@ -1,3 +1,4 @@
+// Package SceneTreeTimer provides methods for working with SceneTreeTimer object instances.
 package SceneTreeTimer
 
 import "unsafe"

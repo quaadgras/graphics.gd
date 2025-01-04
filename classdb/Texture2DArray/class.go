@@ -1,3 +1,4 @@
+// Package Texture2DArray provides methods for working with Texture2DArray object instances.
 package Texture2DArray
 
 import "unsafe"

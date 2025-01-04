@@ -1,3 +1,4 @@
+// Package InputEventJoypadMotion provides methods for working with InputEventJoypadMotion object instances.
 package InputEventJoypadMotion
 
 import "unsafe"

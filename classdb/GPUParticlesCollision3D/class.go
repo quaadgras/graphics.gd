@@ -1,3 +1,4 @@
+// Package GPUParticlesCollision3D provides methods for working with GPUParticlesCollision3D object instances.
 package GPUParticlesCollision3D
 
 import "unsafe"

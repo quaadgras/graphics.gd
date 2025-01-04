@@ -1,3 +1,4 @@
+// Package VisibleOnScreenNotifier3D provides methods for working with VisibleOnScreenNotifier3D object instances.
 package VisibleOnScreenNotifier3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AStar2D provides methods for working with AStar2D object instances.
 package AStar2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeSwitch provides methods for working with VisualShaderNodeSwitch object instances.
 package VisualShaderNodeSwitch
 
 import "unsafe"

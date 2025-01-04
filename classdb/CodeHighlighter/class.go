@@ -1,3 +1,4 @@
+// Package CodeHighlighter provides methods for working with CodeHighlighter object instances.
 package CodeHighlighter
 
 import "unsafe"

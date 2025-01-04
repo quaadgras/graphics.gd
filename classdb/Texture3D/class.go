@@ -1,3 +1,4 @@
+// Package Texture3D provides methods for working with Texture3D object instances.
 package Texture3D
 
 import "unsafe"

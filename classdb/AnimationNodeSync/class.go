@@ -1,3 +1,4 @@
+// Package AnimationNodeSync provides methods for working with AnimationNodeSync object instances.
 package AnimationNodeSync
 
 import "unsafe"

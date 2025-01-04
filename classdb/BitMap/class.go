@@ -1,3 +1,4 @@
+// Package BitMap provides methods for working with BitMap object instances.
 package BitMap
 
 import "unsafe"

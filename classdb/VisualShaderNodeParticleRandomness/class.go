@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleRandomness provides methods for working with VisualShaderNodeParticleRandomness object instances.
 package VisualShaderNodeParticleRandomness
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectRecord provides methods for working with AudioEffectRecord object instances.
 package AudioEffectRecord
 
 import "unsafe"

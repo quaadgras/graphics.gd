@@ -1,3 +1,4 @@
+// Package VisualShaderNodeIf provides methods for working with VisualShaderNodeIf object instances.
 package VisualShaderNodeIf
 
 import "unsafe"

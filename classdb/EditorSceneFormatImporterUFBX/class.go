@@ -1,3 +1,4 @@
+// Package EditorSceneFormatImporterUFBX provides methods for working with EditorSceneFormatImporterUFBX object instances.
 package EditorSceneFormatImporterUFBX
 
 import "unsafe"

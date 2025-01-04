@@ -1,3 +1,4 @@
+// Package OpenXRInteractionProfileMetadata provides methods for working with OpenXRInteractionProfileMetadata object instances.
 package OpenXRInteractionProfileMetadata
 
 import "unsafe"

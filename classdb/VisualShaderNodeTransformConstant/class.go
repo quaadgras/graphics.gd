@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformConstant provides methods for working with VisualShaderNodeTransformConstant object instances.
 package VisualShaderNodeTransformConstant
 
 import "unsafe"

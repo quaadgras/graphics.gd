@@ -1,3 +1,4 @@
+// Package Sprite2D provides methods for working with Sprite2D object instances.
 package Sprite2D
 
 import "unsafe"

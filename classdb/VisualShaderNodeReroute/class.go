@@ -1,3 +1,4 @@
+// Package VisualShaderNodeReroute provides methods for working with VisualShaderNodeReroute object instances.
 package VisualShaderNodeReroute
 
 import "unsafe"

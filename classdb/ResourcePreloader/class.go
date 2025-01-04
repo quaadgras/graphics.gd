@@ -1,3 +1,4 @@
+// Package ResourcePreloader provides methods for working with ResourcePreloader object instances.
 package ResourcePreloader
 
 import "unsafe"

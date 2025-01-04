@@ -1,3 +1,4 @@
+// Package Geometry2D provides methods for working with Geometry2D object instances.
 package Geometry2D
 
 import "unsafe"

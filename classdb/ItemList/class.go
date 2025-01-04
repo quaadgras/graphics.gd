@@ -1,3 +1,4 @@
+// Package ItemList provides methods for working with ItemList object instances.
 package ItemList
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTextureSDF provides methods for working with VisualShaderNodeTextureSDF object instances.
 package VisualShaderNodeTextureSDF
 
 import "unsafe"

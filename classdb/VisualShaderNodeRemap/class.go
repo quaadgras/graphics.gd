@@ -1,3 +1,4 @@
+// Package VisualShaderNodeRemap provides methods for working with VisualShaderNodeRemap object instances.
 package VisualShaderNodeRemap
 
 import "unsafe"

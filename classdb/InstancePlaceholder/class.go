@@ -1,3 +1,4 @@
+// Package InstancePlaceholder provides methods for working with InstancePlaceholder object instances.
 package InstancePlaceholder
 
 import "unsafe"

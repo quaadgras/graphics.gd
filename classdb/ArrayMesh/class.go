@@ -1,3 +1,4 @@
+// Package ArrayMesh provides methods for working with ArrayMesh object instances.
 package ArrayMesh
 
 import "unsafe"

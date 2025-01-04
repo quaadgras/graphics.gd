@@ -1,3 +1,4 @@
+// Package CubemapArray provides methods for working with CubemapArray object instances.
 package CubemapArray
 
 import "unsafe"

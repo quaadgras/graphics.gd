@@ -1,3 +1,4 @@
+// Package JavaScriptBridge provides methods for working with JavaScriptBridge object instances.
 package JavaScriptBridge
 
 import "unsafe"

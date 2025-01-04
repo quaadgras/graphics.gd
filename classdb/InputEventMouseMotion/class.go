@@ -1,3 +1,4 @@
+// Package InputEventMouseMotion provides methods for working with InputEventMouseMotion object instances.
 package InputEventMouseMotion
 
 import "unsafe"

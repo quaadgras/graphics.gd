@@ -1,3 +1,4 @@
+// Package Marker2D provides methods for working with Marker2D object instances.
 package Marker2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Decal provides methods for working with Decal object instances.
 package Decal
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package NoiseTexture3D provides methods for working with NoiseTexture3D object instances.
 package NoiseTexture3D
 
 import "unsafe"

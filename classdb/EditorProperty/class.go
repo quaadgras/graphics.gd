@@ -1,3 +1,4 @@
+// Package EditorProperty provides methods for working with EditorProperty object instances.
 package EditorProperty
 
 import "unsafe"

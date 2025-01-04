@@ -1,3 +1,4 @@
+// Package Curve2D provides methods for working with Curve2D object instances.
 package Curve2D
 
 import "unsafe"

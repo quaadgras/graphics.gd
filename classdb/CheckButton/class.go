@@ -1,3 +1,4 @@
+// Package CheckButton provides methods for working with CheckButton object instances.
 package CheckButton
 
 import "unsafe"

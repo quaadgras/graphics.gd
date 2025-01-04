@@ -1,3 +1,4 @@
+// Package ZIPReader provides methods for working with ZIPReader object instances.
 package ZIPReader
 
 import "unsafe"

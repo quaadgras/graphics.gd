@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleRingEmitter provides methods for working with VisualShaderNodeParticleRingEmitter object instances.
 package VisualShaderNodeParticleRingEmitter
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package PhysicsBody3D provides methods for working with PhysicsBody3D object instances.
 package PhysicsBody3D
 
 import "unsafe"

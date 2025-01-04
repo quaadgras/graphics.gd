@@ -1,3 +1,4 @@
+// Package CSGPolygon3D provides methods for working with CSGPolygon3D object instances.
 package CSGPolygon3D
 
 import "unsafe"

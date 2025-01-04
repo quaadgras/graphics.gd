@@ -1,3 +1,4 @@
+// Package AnimationNodeTransition provides methods for working with AnimationNodeTransition object instances.
 package AnimationNodeTransition
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AESContext provides methods for working with AESContext object instances.
 package AESContext
 
 import "unsafe"

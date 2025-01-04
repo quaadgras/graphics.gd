@@ -1,3 +1,4 @@
+// Package SphereOccluder3D provides methods for working with SphereOccluder3D object instances.
 package SphereOccluder3D
 
 import "unsafe"

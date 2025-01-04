@@ -1,3 +1,4 @@
+// Package EditorSettings provides methods for working with EditorSettings object instances.
 package EditorSettings
 
 import "unsafe"

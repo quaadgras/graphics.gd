@@ -1,3 +1,4 @@
+// Package Range provides methods for working with Range object instances.
 package Range
 
 import "unsafe"

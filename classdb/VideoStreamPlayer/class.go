@@ -1,3 +1,4 @@
+// Package VideoStreamPlayer provides methods for working with VideoStreamPlayer object instances.
 package VideoStreamPlayer
 
 import "unsafe"

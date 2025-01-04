@@ -1,3 +1,4 @@
+// Package TextureCubemapArrayRD provides methods for working with TextureCubemapArrayRD object instances.
 package TextureCubemapArrayRD
 
 import "unsafe"

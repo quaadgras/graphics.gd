@@ -1,3 +1,4 @@
+// Package AudioEffectStereoEnhance provides methods for working with AudioEffectStereoEnhance object instances.
 package AudioEffectStereoEnhance
 
 import "unsafe"

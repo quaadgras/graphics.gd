@@ -1,3 +1,4 @@
+// Package RenderSceneBuffers provides methods for working with RenderSceneBuffers object instances.
 package RenderSceneBuffers
 
 import "unsafe"

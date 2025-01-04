@@ -1,3 +1,4 @@
+// Package Mesh provides methods for working with Mesh object instances.
 package Mesh
 
 import "unsafe"

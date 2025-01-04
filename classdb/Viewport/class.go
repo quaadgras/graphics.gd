@@ -1,3 +1,4 @@
+// Package Viewport provides methods for working with Viewport object instances.
 package Viewport
 
 import "unsafe"

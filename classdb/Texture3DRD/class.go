@@ -1,3 +1,4 @@
+// Package Texture3DRD provides methods for working with Texture3DRD object instances.
 package Texture3DRD
 
 import "unsafe"

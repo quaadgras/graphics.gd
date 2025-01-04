@@ -1,3 +1,4 @@
+// Package FlowContainer provides methods for working with FlowContainer object instances.
 package FlowContainer
 
 import "unsafe"

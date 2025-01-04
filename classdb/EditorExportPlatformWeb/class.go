@@ -1,3 +1,4 @@
+// Package EditorExportPlatformWeb provides methods for working with EditorExportPlatformWeb object instances.
 package EditorExportPlatformWeb
 
 import "unsafe"

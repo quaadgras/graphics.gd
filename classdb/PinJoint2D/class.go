@@ -1,3 +1,4 @@
+// Package PinJoint2D provides methods for working with PinJoint2D object instances.
 package PinJoint2D
 
 import "unsafe"

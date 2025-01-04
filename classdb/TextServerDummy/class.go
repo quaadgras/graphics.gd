@@ -1,3 +1,4 @@
+// Package TextServerDummy provides methods for working with TextServerDummy object instances.
 package TextServerDummy
 
 import "unsafe"

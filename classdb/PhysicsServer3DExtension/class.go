@@ -1,3 +1,4 @@
+// Package PhysicsServer3DExtension provides methods for working with PhysicsServer3DExtension object instances.
 package PhysicsServer3DExtension
 
 import "unsafe"

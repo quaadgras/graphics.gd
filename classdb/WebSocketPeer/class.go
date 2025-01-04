@@ -1,3 +1,4 @@
+// Package WebSocketPeer provides methods for working with WebSocketPeer object instances.
 package WebSocketPeer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package SphereMesh provides methods for working with SphereMesh object instances.
 package SphereMesh
 
 import "unsafe"

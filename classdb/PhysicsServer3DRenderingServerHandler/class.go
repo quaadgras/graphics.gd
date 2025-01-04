@@ -1,3 +1,4 @@
+// Package PhysicsServer3DRenderingServerHandler provides methods for working with PhysicsServer3DRenderingServerHandler object instances.
 package PhysicsServer3DRenderingServerHandler
 
 import "unsafe"

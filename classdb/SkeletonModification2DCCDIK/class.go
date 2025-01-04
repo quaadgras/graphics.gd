@@ -1,3 +1,4 @@
+// Package SkeletonModification2DCCDIK provides methods for working with SkeletonModification2DCCDIK object instances.
 package SkeletonModification2DCCDIK
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package XRHandModifier3D provides methods for working with XRHandModifier3D object instances.
 package XRHandModifier3D
 
 import "unsafe"

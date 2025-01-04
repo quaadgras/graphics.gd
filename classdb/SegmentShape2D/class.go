@@ -1,3 +1,4 @@
+// Package SegmentShape2D provides methods for working with SegmentShape2D object instances.
 package SegmentShape2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ShaderInclude provides methods for working with ShaderInclude object instances.
 package ShaderInclude
 
 import "unsafe"

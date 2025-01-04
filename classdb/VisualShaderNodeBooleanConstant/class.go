@@ -1,3 +1,4 @@
+// Package VisualShaderNodeBooleanConstant provides methods for working with VisualShaderNodeBooleanConstant object instances.
 package VisualShaderNodeBooleanConstant
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package SceneState provides methods for working with SceneState object instances.
 package SceneState
 
 import "unsafe"

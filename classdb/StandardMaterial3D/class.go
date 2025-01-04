@@ -1,3 +1,4 @@
+// Package StandardMaterial3D provides methods for working with StandardMaterial3D object instances.
 package StandardMaterial3D
 
 import "unsafe"

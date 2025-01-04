@@ -1,3 +1,4 @@
+// Package AudioEffectNotchFilter provides methods for working with AudioEffectNotchFilter object instances.
 package AudioEffectNotchFilter
 
 import "unsafe"

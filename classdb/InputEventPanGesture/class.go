@@ -1,3 +1,4 @@
+// Package InputEventPanGesture provides methods for working with InputEventPanGesture object instances.
 package InputEventPanGesture
 
 import "unsafe"

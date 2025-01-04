@@ -1,3 +1,4 @@
+// Package SkeletonModification2DLookAt provides methods for working with SkeletonModification2DLookAt object instances.
 package SkeletonModification2DLookAt
 
 import "unsafe"

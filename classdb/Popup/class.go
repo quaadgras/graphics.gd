@@ -1,3 +1,4 @@
+// Package Popup provides methods for working with Popup object instances.
 package Popup
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package GradientTexture1D provides methods for working with GradientTexture1D object instances.
 package GradientTexture1D
 
 import "unsafe"

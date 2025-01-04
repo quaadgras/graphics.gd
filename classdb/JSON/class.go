@@ -1,3 +1,4 @@
+// Package JSON provides methods for working with JSON object instances.
 package JSON
 
 import "unsafe"

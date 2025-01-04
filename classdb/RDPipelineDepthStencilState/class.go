@@ -1,3 +1,4 @@
+// Package RDPipelineDepthStencilState provides methods for working with RDPipelineDepthStencilState object instances.
 package RDPipelineDepthStencilState
 
 import "unsafe"

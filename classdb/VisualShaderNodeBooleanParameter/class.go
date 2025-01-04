@@ -1,3 +1,4 @@
+// Package VisualShaderNodeBooleanParameter provides methods for working with VisualShaderNodeBooleanParameter object instances.
 package VisualShaderNodeBooleanParameter
 
 import "unsafe"

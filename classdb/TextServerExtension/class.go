@@ -1,3 +1,4 @@
+// Package TextServerExtension provides methods for working with TextServerExtension object instances.
 package TextServerExtension
 
 import "unsafe"

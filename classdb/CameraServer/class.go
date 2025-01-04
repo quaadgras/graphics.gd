@@ -1,3 +1,4 @@
+// Package CameraServer provides methods for working with CameraServer object instances.
 package CameraServer
 
 import "unsafe"

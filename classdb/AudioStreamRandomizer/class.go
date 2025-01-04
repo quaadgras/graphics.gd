@@ -1,3 +1,4 @@
+// Package AudioStreamRandomizer provides methods for working with AudioStreamRandomizer object instances.
 package AudioStreamRandomizer
 
 import "unsafe"

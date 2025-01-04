@@ -1,3 +1,4 @@
+// Package PopupPanel provides methods for working with PopupPanel object instances.
 package PopupPanel
 
 import "unsafe"

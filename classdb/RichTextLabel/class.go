@@ -1,3 +1,4 @@
+// Package RichTextLabel provides methods for working with RichTextLabel object instances.
 package RichTextLabel
 
 import "unsafe"

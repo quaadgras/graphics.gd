@@ -1,3 +1,4 @@
+// Package RDPipelineSpecializationConstant provides methods for working with RDPipelineSpecializationConstant object instances.
 package RDPipelineSpecializationConstant
 
 import "unsafe"

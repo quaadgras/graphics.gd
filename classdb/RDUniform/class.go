@@ -1,3 +1,4 @@
+// Package RDUniform provides methods for working with RDUniform object instances.
 package RDUniform
 
 import "unsafe"

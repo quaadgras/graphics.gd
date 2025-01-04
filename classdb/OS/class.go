@@ -1,3 +1,4 @@
+// Package OS provides methods for working with OS object instances.
 package OS
 
 import "unsafe"

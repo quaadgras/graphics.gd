@@ -1,3 +1,4 @@
+// Package PhysicsServer2DManager provides methods for working with PhysicsServer2DManager object instances.
 package PhysicsServer2DManager
 
 import "unsafe"

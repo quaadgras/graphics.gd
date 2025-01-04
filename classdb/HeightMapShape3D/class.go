@@ -1,3 +1,4 @@
+// Package HeightMapShape3D provides methods for working with HeightMapShape3D object instances.
 package HeightMapShape3D
 
 import "unsafe"

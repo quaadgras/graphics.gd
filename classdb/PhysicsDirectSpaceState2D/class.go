@@ -1,3 +1,4 @@
+// Package PhysicsDirectSpaceState2D provides methods for working with PhysicsDirectSpaceState2D object instances.
 package PhysicsDirectSpaceState2D
 
 import "unsafe"

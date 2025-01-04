@@ -1,3 +1,4 @@
+// Package CylinderShape3D provides methods for working with CylinderShape3D object instances.
 package CylinderShape3D
 
 import "unsafe"

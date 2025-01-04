@@ -1,3 +1,4 @@
+// Package EditorScenePostImport provides methods for working with EditorScenePostImport object instances.
 package EditorScenePostImport
 
 import "unsafe"

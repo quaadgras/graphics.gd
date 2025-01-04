@@ -1,3 +1,4 @@
+// Package WebRTCPeerConnectionExtension provides methods for working with WebRTCPeerConnectionExtension object instances.
 package WebRTCPeerConnectionExtension
 
 import "unsafe"

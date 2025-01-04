@@ -1,3 +1,4 @@
+// Package StyleBoxEmpty provides methods for working with StyleBoxEmpty object instances.
 package StyleBoxEmpty
 
 import "unsafe"

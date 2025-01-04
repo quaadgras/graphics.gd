@@ -1,3 +1,4 @@
+// Package CollisionObject2D provides methods for working with CollisionObject2D object instances.
 package CollisionObject2D
 
 import "unsafe"

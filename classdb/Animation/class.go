@@ -1,3 +1,4 @@
+// Package Animation provides methods for working with Animation object instances.
 package Animation
 
 import "unsafe"

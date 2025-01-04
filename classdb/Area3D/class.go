@@ -1,3 +1,4 @@
+// Package Area3D provides methods for working with Area3D object instances.
 package Area3D
 
 import "unsafe"

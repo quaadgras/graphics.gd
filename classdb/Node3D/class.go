@@ -1,3 +1,4 @@
+// Package Node3D provides methods for working with Node3D object instances.
 package Node3D
 
 import "unsafe"

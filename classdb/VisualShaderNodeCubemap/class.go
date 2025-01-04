@@ -1,3 +1,4 @@
+// Package VisualShaderNodeCubemap provides methods for working with VisualShaderNodeCubemap object instances.
 package VisualShaderNodeCubemap
 
 import "unsafe"

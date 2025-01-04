@@ -1,3 +1,4 @@
+// Package XRServer provides methods for working with XRServer object instances.
 package XRServer
 
 import "unsafe"

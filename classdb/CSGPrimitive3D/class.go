@@ -1,3 +1,4 @@
+// Package CSGPrimitive3D provides methods for working with CSGPrimitive3D object instances.
 package CSGPrimitive3D
 
 import "unsafe"

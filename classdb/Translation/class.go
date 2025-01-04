@@ -1,3 +1,4 @@
+// Package Translation provides methods for working with Translation object instances.
 package Translation
 
 import "unsafe"

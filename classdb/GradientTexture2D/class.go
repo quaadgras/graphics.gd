@@ -1,3 +1,4 @@
+// Package GradientTexture2D provides methods for working with GradientTexture2D object instances.
 package GradientTexture2D
 
 import "unsafe"

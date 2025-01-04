@@ -1,3 +1,4 @@
+// Package Skin provides methods for working with Skin object instances.
 package Skin
 
 import "unsafe"

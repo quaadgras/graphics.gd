@@ -1,3 +1,4 @@
+// Package Geometry3D provides methods for working with Geometry3D object instances.
 package Geometry3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Label3D provides methods for working with Label3D object instances.
 package Label3D
 
 import "unsafe"

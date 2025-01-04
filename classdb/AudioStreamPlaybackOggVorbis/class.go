@@ -1,3 +1,4 @@
+// Package AudioStreamPlaybackOggVorbis provides methods for working with AudioStreamPlaybackOggVorbis object instances.
 package AudioStreamPlaybackOggVorbis
 
 import "unsafe"

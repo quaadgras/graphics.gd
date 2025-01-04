@@ -1,3 +1,4 @@
+// Package SceneTree provides methods for working with SceneTree object instances.
 package SceneTree
 
 import "unsafe"

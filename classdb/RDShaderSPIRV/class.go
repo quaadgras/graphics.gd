@@ -1,3 +1,4 @@
+// Package RDShaderSPIRV provides methods for working with RDShaderSPIRV object instances.
 package RDShaderSPIRV
 
 import "unsafe"

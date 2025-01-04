@@ -1,3 +1,4 @@
+// Package EditorSelection provides methods for working with EditorSelection object instances.
 package EditorSelection
 
 import "unsafe"

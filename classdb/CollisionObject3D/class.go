@@ -1,3 +1,4 @@
+// Package CollisionObject3D provides methods for working with CollisionObject3D object instances.
 package CollisionObject3D
 
 import "unsafe"

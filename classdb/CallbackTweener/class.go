@@ -1,3 +1,4 @@
+// Package CallbackTweener provides methods for working with CallbackTweener object instances.
 package CallbackTweener
 
 import "unsafe"

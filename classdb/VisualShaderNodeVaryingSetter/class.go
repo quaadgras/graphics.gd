@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVaryingSetter provides methods for working with VisualShaderNodeVaryingSetter object instances.
 package VisualShaderNodeVaryingSetter
 
 import "unsafe"

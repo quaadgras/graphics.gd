@@ -1,3 +1,4 @@
+// Package RectangleShape2D provides methods for working with RectangleShape2D object instances.
 package RectangleShape2D
 
 import "unsafe"

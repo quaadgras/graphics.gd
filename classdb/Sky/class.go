@@ -1,3 +1,4 @@
+// Package Sky provides methods for working with Sky object instances.
 package Sky
 
 import "unsafe"

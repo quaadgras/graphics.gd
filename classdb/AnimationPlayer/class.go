@@ -1,3 +1,4 @@
+// Package AnimationPlayer provides methods for working with AnimationPlayer object instances.
 package AnimationPlayer
 
 import "unsafe"

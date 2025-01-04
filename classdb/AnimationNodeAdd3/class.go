@@ -1,3 +1,4 @@
+// Package AnimationNodeAdd3 provides methods for working with AnimationNodeAdd3 object instances.
 package AnimationNodeAdd3
 
 import "unsafe"

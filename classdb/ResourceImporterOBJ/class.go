@@ -1,3 +1,4 @@
+// Package ResourceImporterOBJ provides methods for working with ResourceImporterOBJ object instances.
 package ResourceImporterOBJ
 
 import "unsafe"

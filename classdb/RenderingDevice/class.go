@@ -1,3 +1,4 @@
+// Package RenderingDevice provides methods for working with RenderingDevice object instances.
 package RenderingDevice
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioSamplePlayback provides methods for working with AudioSamplePlayback object instances.
 package AudioSamplePlayback
 
 import "unsafe"

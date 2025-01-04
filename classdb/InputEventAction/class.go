@@ -1,3 +1,4 @@
+// Package InputEventAction provides methods for working with InputEventAction object instances.
 package InputEventAction
 
 import "unsafe"

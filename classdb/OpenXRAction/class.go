@@ -1,3 +1,4 @@
+// Package OpenXRAction provides methods for working with OpenXRAction object instances.
 package OpenXRAction
 
 import "unsafe"

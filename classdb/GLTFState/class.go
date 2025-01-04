@@ -1,3 +1,4 @@
+// Package GLTFState provides methods for working with GLTFState object instances.
 package GLTFState
 
 import "unsafe"

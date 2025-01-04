@@ -1,3 +1,4 @@
+// Package ReflectionProbe provides methods for working with ReflectionProbe object instances.
 package ReflectionProbe
 
 import "unsafe"

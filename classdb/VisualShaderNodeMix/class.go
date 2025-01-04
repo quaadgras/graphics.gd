@@ -1,3 +1,4 @@
+// Package VisualShaderNodeMix provides methods for working with VisualShaderNodeMix object instances.
 package VisualShaderNodeMix
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CanvasItemMaterial provides methods for working with CanvasItemMaterial object instances.
 package CanvasItemMaterial
 
 import "unsafe"

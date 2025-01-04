@@ -1,3 +1,4 @@
+// Package RDShaderFile provides methods for working with RDShaderFile object instances.
 package RDShaderFile
 
 import "unsafe"

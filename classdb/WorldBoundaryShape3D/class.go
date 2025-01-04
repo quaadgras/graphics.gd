@@ -1,3 +1,4 @@
+// Package WorldBoundaryShape3D provides methods for working with WorldBoundaryShape3D object instances.
 package WorldBoundaryShape3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package InputEventMIDI provides methods for working with InputEventMIDI object instances.
 package InputEventMIDI
 
 import "unsafe"

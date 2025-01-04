@@ -1,3 +1,4 @@
+// Package HingeJoint3D provides methods for working with HingeJoint3D object instances.
 package HingeJoint3D
 
 import "unsafe"

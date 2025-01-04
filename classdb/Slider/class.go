@@ -1,3 +1,4 @@
+// Package Slider provides methods for working with Slider object instances.
 package Slider
 
 import "unsafe"

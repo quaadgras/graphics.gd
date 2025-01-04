@@ -1,3 +1,4 @@
+// Package Environment provides methods for working with Environment object instances.
 package Environment
 
 import "unsafe"

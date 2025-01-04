@@ -1,3 +1,4 @@
+// Package AnimationLibrary provides methods for working with AnimationLibrary object instances.
 package AnimationLibrary
 
 import "unsafe"

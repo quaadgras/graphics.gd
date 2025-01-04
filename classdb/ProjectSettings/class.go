@@ -1,3 +1,4 @@
+// Package ProjectSettings provides methods for working with ProjectSettings object instances.
 package ProjectSettings
 
 import "unsafe"

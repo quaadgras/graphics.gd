@@ -1,3 +1,4 @@
+// Package OpenXRAPIExtension provides methods for working with OpenXRAPIExtension object instances.
 package OpenXRAPIExtension
 
 import "unsafe"

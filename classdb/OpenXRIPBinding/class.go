@@ -1,3 +1,4 @@
+// Package OpenXRIPBinding provides methods for working with OpenXRIPBinding object instances.
 package OpenXRIPBinding
 
 import "unsafe"

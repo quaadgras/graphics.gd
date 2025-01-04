@@ -1,3 +1,4 @@
+// Package VisualShaderNodeDotProduct provides methods for working with VisualShaderNodeDotProduct object instances.
 package VisualShaderNodeDotProduct
 
 import "unsafe"

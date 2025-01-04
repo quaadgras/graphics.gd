@@ -1,3 +1,4 @@
+// Package PacketPeerDTLS provides methods for working with PacketPeerDTLS object instances.
 package PacketPeerDTLS
 
 import "unsafe"

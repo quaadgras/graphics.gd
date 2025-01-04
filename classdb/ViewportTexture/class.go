@@ -1,3 +1,4 @@
+// Package ViewportTexture provides methods for working with ViewportTexture object instances.
 package ViewportTexture
 
 import "unsafe"

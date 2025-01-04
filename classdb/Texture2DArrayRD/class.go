@@ -1,3 +1,4 @@
+// Package Texture2DArrayRD provides methods for working with Texture2DArrayRD object instances.
 package Texture2DArrayRD
 
 import "unsafe"

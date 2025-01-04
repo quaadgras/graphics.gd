@@ -1,3 +1,4 @@
+// Package RenderSceneBuffersExtension provides methods for working with RenderSceneBuffersExtension object instances.
 package RenderSceneBuffersExtension
 
 import "unsafe"

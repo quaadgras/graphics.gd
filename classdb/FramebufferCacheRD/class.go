@@ -1,3 +1,4 @@
+// Package FramebufferCacheRD provides methods for working with FramebufferCacheRD object instances.
 package FramebufferCacheRD
 
 import "unsafe"

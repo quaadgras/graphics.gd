@@ -1,3 +1,4 @@
+// Package XRBodyTracker provides methods for working with XRBodyTracker object instances.
 package XRBodyTracker
 
 import "unsafe"

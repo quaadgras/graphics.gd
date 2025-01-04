@@ -1,3 +1,4 @@
+// Package AudioStreamMP3 provides methods for working with AudioStreamMP3 object instances.
 package AudioStreamMP3
 
 import "unsafe"

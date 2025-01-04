@@ -1,3 +1,4 @@
+// Package GPUParticlesCollisionHeightField3D provides methods for working with GPUParticlesCollisionHeightField3D object instances.
 package GPUParticlesCollisionHeightField3D
 
 import "unsafe"

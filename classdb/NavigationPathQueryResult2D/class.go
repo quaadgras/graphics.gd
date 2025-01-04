@@ -1,3 +1,4 @@
+// Package NavigationPathQueryResult2D provides methods for working with NavigationPathQueryResult2D object instances.
 package NavigationPathQueryResult2D
 
 import "unsafe"

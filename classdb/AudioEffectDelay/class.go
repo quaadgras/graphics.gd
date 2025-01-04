@@ -1,3 +1,4 @@
+// Package AudioEffectDelay provides methods for working with AudioEffectDelay object instances.
 package AudioEffectDelay
 
 import "unsafe"

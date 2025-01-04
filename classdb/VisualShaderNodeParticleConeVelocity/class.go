@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleConeVelocity provides methods for working with VisualShaderNodeParticleConeVelocity object instances.
 package VisualShaderNodeParticleConeVelocity
 
 import "unsafe"

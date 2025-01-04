@@ -1,3 +1,4 @@
+// Package Input provides methods for working with Input object instances.
 package Input
 
 import "unsafe"

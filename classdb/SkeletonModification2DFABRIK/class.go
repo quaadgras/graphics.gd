@@ -1,3 +1,4 @@
+// Package SkeletonModification2DFABRIK provides methods for working with SkeletonModification2DFABRIK object instances.
 package SkeletonModification2DFABRIK
 
 import "unsafe"

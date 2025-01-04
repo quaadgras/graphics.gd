@@ -1,3 +1,4 @@
+// Package AudioEffectBandPassFilter provides methods for working with AudioEffectBandPassFilter object instances.
 package AudioEffectBandPassFilter
 
 import "unsafe"

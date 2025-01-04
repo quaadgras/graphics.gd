@@ -1,3 +1,4 @@
+// Package Path3D provides methods for working with Path3D object instances.
 package Path3D
 
 import "unsafe"

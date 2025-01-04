@@ -1,3 +1,4 @@
+// Package SplitContainer provides methods for working with SplitContainer object instances.
 package SplitContainer
 
 import "unsafe"

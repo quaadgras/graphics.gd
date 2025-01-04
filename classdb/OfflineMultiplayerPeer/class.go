@@ -1,3 +1,4 @@
+// Package OfflineMultiplayerPeer provides methods for working with OfflineMultiplayerPeer object instances.
 package OfflineMultiplayerPeer
 
 import "unsafe"

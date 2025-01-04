@@ -1,3 +1,4 @@
+// Package FileAccess provides methods for working with FileAccess object instances.
 package FileAccess
 
 import "unsafe"

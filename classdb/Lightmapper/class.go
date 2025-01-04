@@ -1,3 +1,4 @@
+// Package Lightmapper provides methods for working with Lightmapper object instances.
 package Lightmapper
 
 import "unsafe"

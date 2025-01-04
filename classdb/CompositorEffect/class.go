@@ -1,3 +1,4 @@
+// Package CompositorEffect provides methods for working with CompositorEffect object instances.
 package CompositorEffect
 
 import "unsafe"

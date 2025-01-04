@@ -1,3 +1,4 @@
+// Package WorkerThreadPool provides methods for working with WorkerThreadPool object instances.
 package WorkerThreadPool
 
 import "unsafe"

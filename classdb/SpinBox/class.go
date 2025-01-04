@@ -1,3 +1,4 @@
+// Package SpinBox provides methods for working with SpinBox object instances.
 package SpinBox
 
 import "unsafe"

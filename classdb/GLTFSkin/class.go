@@ -1,3 +1,4 @@
+// Package GLTFSkin provides methods for working with GLTFSkin object instances.
 package GLTFSkin
 
 import "unsafe"

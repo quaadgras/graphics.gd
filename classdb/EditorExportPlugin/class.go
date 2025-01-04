@@ -1,3 +1,4 @@
+// Package EditorExportPlugin provides methods for working with EditorExportPlugin object instances.
 package EditorExportPlugin
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package RigidBody3D provides methods for working with RigidBody3D object instances.
 package RigidBody3D
 
 import "unsafe"

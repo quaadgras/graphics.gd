@@ -1,3 +1,4 @@
+// Package PhysicsPointQueryParameters2D provides methods for working with PhysicsPointQueryParameters2D object instances.
 package PhysicsPointQueryParameters2D
 
 import "unsafe"

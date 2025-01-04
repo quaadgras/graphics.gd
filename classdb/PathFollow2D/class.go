@@ -1,3 +1,4 @@
+// Package PathFollow2D provides methods for working with PathFollow2D object instances.
 package PathFollow2D
 
 import "unsafe"

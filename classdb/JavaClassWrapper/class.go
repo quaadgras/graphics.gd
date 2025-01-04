@@ -1,3 +1,4 @@
+// Package JavaClassWrapper provides methods for working with JavaClassWrapper object instances.
 package JavaClassWrapper
 
 import "unsafe"

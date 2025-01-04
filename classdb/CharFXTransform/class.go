@@ -1,3 +1,4 @@
+// Package CharFXTransform provides methods for working with CharFXTransform object instances.
 package CharFXTransform
 
 import "unsafe"

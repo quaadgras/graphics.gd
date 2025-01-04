@@ -1,3 +1,4 @@
+// Package XRInterfaceExtension provides methods for working with XRInterfaceExtension object instances.
 package XRInterfaceExtension
 
 import "unsafe"

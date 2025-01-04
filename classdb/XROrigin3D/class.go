@@ -1,3 +1,4 @@
+// Package XROrigin3D provides methods for working with XROrigin3D object instances.
 package XROrigin3D
 
 import "unsafe"

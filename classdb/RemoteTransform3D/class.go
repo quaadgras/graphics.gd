@@ -1,3 +1,4 @@
+// Package RemoteTransform3D provides methods for working with RemoteTransform3D object instances.
 package RemoteTransform3D
 
 import "unsafe"

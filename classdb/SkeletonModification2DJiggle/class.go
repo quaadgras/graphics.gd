@@ -1,3 +1,4 @@
+// Package SkeletonModification2DJiggle provides methods for working with SkeletonModification2DJiggle object instances.
 package SkeletonModification2DJiggle
 
 import "unsafe"

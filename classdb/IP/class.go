@@ -1,3 +1,4 @@
+// Package IP provides methods for working with IP object instances.
 package IP
 
 import "unsafe"

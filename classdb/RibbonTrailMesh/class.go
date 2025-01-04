@@ -1,3 +1,4 @@
+// Package RibbonTrailMesh provides methods for working with RibbonTrailMesh object instances.
 package RibbonTrailMesh
 
 import "unsafe"

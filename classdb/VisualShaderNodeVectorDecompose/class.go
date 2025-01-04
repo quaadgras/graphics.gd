@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorDecompose provides methods for working with VisualShaderNodeVectorDecompose object instances.
 package VisualShaderNodeVectorDecompose
 
 import "unsafe"

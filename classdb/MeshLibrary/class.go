@@ -1,3 +1,4 @@
+// Package MeshLibrary provides methods for working with MeshLibrary object instances.
 package MeshLibrary
 
 import "unsafe"

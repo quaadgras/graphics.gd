@@ -1,3 +1,4 @@
+// Package AStarGrid2D provides methods for working with AStarGrid2D object instances.
 package AStarGrid2D
 
 import "unsafe"

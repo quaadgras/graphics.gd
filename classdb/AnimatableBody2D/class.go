@@ -1,3 +1,4 @@
+// Package AnimatableBody2D provides methods for working with AnimatableBody2D object instances.
 package AnimatableBody2D
 
 import "unsafe"

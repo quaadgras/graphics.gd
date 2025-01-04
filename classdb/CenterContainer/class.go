@@ -1,3 +1,4 @@
+// Package CenterContainer provides methods for working with CenterContainer object instances.
 package CenterContainer
 
 import "unsafe"

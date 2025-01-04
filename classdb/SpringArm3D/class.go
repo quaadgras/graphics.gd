@@ -1,3 +1,4 @@
+// Package SpringArm3D provides methods for working with SpringArm3D object instances.
 package SpringArm3D
 
 import "unsafe"

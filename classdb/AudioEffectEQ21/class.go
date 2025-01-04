@@ -1,3 +1,4 @@
+// Package AudioEffectEQ21 provides methods for working with AudioEffectEQ21 object instances.
 package AudioEffectEQ21
 
 import "unsafe"

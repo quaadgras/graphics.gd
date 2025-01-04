@@ -1,3 +1,4 @@
+// Package LightmapperRD provides methods for working with LightmapperRD object instances.
 package LightmapperRD
 
 import "unsafe"

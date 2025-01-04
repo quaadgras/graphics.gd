@@ -1,3 +1,4 @@
+// Package XRControllerTracker provides methods for working with XRControllerTracker object instances.
 package XRControllerTracker
 
 import "unsafe"

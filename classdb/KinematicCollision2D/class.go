@@ -1,3 +1,4 @@
+// Package KinematicCollision2D provides methods for working with KinematicCollision2D object instances.
 package KinematicCollision2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Time provides methods for working with Time object instances.
 package Time
 
 import "unsafe"

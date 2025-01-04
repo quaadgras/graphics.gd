@@ -1,3 +1,4 @@
+// Package StyleBox provides methods for working with StyleBox object instances.
 package StyleBox
 
 import "unsafe"

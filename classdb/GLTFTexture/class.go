@@ -1,3 +1,4 @@
+// Package GLTFTexture provides methods for working with GLTFTexture object instances.
 package GLTFTexture
 
 import "unsafe"

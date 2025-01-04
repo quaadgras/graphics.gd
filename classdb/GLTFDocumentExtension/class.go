@@ -1,3 +1,4 @@
+// Package GLTFDocumentExtension provides methods for working with GLTFDocumentExtension object instances.
 package GLTFDocumentExtension
 
 import "unsafe"

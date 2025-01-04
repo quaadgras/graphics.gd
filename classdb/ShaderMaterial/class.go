@@ -1,3 +1,4 @@
+// Package ShaderMaterial provides methods for working with ShaderMaterial object instances.
 package ShaderMaterial
 
 import "unsafe"

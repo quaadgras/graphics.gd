@@ -1,3 +1,4 @@
+// Package QuadMesh provides methods for working with QuadMesh object instances.
 package QuadMesh
 
 import "unsafe"

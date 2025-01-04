@@ -1,3 +1,4 @@
+// Package NavigationPathQueryParameters2D provides methods for working with NavigationPathQueryParameters2D object instances.
 package NavigationPathQueryParameters2D
 
 import "unsafe"

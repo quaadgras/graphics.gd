@@ -1,3 +1,4 @@
+// Package VisualShaderNodeSample3D provides methods for working with VisualShaderNodeSample3D object instances.
 package VisualShaderNodeSample3D
 
 import "unsafe"

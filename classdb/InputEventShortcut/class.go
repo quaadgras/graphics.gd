@@ -1,3 +1,4 @@
+// Package InputEventShortcut provides methods for working with InputEventShortcut object instances.
 package InputEventShortcut
 
 import "unsafe"

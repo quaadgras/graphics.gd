@@ -1,3 +1,4 @@
+// Package TileSetAtlasSource provides methods for working with TileSetAtlasSource object instances.
 package TileSetAtlasSource
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Compositor provides methods for working with Compositor object instances.
 package Compositor
 
 import "unsafe"

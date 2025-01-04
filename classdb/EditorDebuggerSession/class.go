@@ -1,3 +1,4 @@
+// Package EditorDebuggerSession provides methods for working with EditorDebuggerSession object instances.
 package EditorDebuggerSession
 
 import "unsafe"

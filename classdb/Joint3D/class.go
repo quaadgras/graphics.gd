@@ -1,3 +1,4 @@
+// Package Joint3D provides methods for working with Joint3D object instances.
 package Joint3D
 
 import "unsafe"

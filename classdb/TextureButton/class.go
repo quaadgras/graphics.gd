@@ -1,3 +1,4 @@
+// Package TextureButton provides methods for working with TextureButton object instances.
 package TextureButton
 
 import "unsafe"

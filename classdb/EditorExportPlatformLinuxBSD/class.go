@@ -1,3 +1,4 @@
+// Package EditorExportPlatformLinuxBSD provides methods for working with EditorExportPlatformLinuxBSD object instances.
 package EditorExportPlatformLinuxBSD
 
 import "unsafe"

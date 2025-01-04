@@ -1,3 +1,4 @@
+// Package TileMap provides methods for working with TileMap object instances.
 package TileMap
 
 import "unsafe"

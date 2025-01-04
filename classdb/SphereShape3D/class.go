@@ -1,3 +1,4 @@
+// Package SphereShape3D provides methods for working with SphereShape3D object instances.
 package SphereShape3D
 
 import "unsafe"

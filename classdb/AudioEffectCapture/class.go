@@ -1,3 +1,4 @@
+// Package AudioEffectCapture provides methods for working with AudioEffectCapture object instances.
 package AudioEffectCapture
 
 import "unsafe"

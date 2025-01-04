@@ -1,3 +1,4 @@
+// Package VisualShaderNodeBillboard provides methods for working with VisualShaderNodeBillboard object instances.
 package VisualShaderNodeBillboard
 
 import "unsafe"

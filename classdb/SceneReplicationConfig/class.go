@@ -1,3 +1,4 @@
+// Package SceneReplicationConfig provides methods for working with SceneReplicationConfig object instances.
 package SceneReplicationConfig
 
 import "unsafe"

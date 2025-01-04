@@ -1,3 +1,4 @@
+// Package World3D provides methods for working with World3D object instances.
 package World3D
 
 import "unsafe"

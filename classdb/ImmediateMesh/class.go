@@ -1,3 +1,4 @@
+// Package ImmediateMesh provides methods for working with ImmediateMesh object instances.
 package ImmediateMesh
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package DisplayServer provides methods for working with DisplayServer object instances.
 package DisplayServer
 
 import "unsafe"

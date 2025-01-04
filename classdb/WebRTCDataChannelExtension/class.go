@@ -1,3 +1,4 @@
+// Package WebRTCDataChannelExtension provides methods for working with WebRTCDataChannelExtension object instances.
 package WebRTCDataChannelExtension
 
 import "unsafe"

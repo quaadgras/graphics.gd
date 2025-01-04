@@ -1,3 +1,4 @@
+// Package CSGShape3D provides methods for working with CSGShape3D object instances.
 package CSGShape3D
 
 import "unsafe"

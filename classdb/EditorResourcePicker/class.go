@@ -1,3 +1,4 @@
+// Package EditorResourcePicker provides methods for working with EditorResourcePicker object instances.
 package EditorResourcePicker
 
 import "unsafe"

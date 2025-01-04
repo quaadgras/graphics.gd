@@ -1,3 +1,4 @@
+// Package Material provides methods for working with Material object instances.
 package Material
 
 import "unsafe"

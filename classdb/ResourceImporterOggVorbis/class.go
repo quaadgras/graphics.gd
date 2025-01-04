@@ -1,3 +1,4 @@
+// Package ResourceImporterOggVorbis provides methods for working with ResourceImporterOggVorbis object instances.
 package ResourceImporterOggVorbis
 
 import "unsafe"

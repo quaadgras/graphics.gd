@@ -1,3 +1,4 @@
+// Package TextureProgressBar provides methods for working with TextureProgressBar object instances.
 package TextureProgressBar
 
 import "unsafe"

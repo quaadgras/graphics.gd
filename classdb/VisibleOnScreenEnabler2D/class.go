@@ -1,3 +1,4 @@
+// Package VisibleOnScreenEnabler2D provides methods for working with VisibleOnScreenEnabler2D object instances.
 package VisibleOnScreenEnabler2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Expression provides methods for working with Expression object instances.
 package Expression
 
 import "unsafe"

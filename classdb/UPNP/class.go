@@ -1,3 +1,4 @@
+// Package UPNP provides methods for working with UPNP object instances.
 package UPNP
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package EngineDebugger provides methods for working with EngineDebugger object instances.
 package EngineDebugger
 
 import "unsafe"

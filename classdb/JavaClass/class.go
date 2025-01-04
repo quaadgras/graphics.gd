@@ -1,3 +1,4 @@
+// Package JavaClass provides methods for working with JavaClass object instances.
 package JavaClass
 
 import "unsafe"

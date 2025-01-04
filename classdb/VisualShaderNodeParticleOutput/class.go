@@ -1,3 +1,4 @@
+// Package VisualShaderNodeParticleOutput provides methods for working with VisualShaderNodeParticleOutput object instances.
 package VisualShaderNodeParticleOutput
 
 import "unsafe"

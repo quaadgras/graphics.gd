@@ -1,3 +1,4 @@
+// Package AnimatedSprite3D provides methods for working with AnimatedSprite3D object instances.
 package AnimatedSprite3D
 
 import "unsafe"

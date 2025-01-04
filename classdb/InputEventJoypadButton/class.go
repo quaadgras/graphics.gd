@@ -1,3 +1,4 @@
+// Package InputEventJoypadButton provides methods for working with InputEventJoypadButton object instances.
 package InputEventJoypadButton
 
 import "unsafe"

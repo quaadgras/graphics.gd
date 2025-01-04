@@ -1,3 +1,4 @@
+// Package RegExMatch provides methods for working with RegExMatch object instances.
 package RegExMatch
 
 import "unsafe"

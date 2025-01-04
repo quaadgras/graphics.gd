@@ -1,3 +1,4 @@
+// Package OccluderPolygon2D provides methods for working with OccluderPolygon2D object instances.
 package OccluderPolygon2D
 
 import "unsafe"

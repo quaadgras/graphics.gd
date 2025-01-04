@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVaryingGetter provides methods for working with VisualShaderNodeVaryingGetter object instances.
 package VisualShaderNodeVaryingGetter
 
 import "unsafe"

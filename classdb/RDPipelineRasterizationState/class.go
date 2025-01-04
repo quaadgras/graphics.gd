@@ -1,3 +1,4 @@
+// Package RDPipelineRasterizationState provides methods for working with RDPipelineRasterizationState object instances.
 package RDPipelineRasterizationState
 
 import "unsafe"

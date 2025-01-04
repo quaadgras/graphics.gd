@@ -1,3 +1,4 @@
+// Package EditorFileDialog provides methods for working with EditorFileDialog object instances.
 package EditorFileDialog
 
 import "unsafe"

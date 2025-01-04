@@ -1,3 +1,4 @@
+// Package AudioEffectChorus provides methods for working with AudioEffectChorus object instances.
 package AudioEffectChorus
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package GLTFDocumentExtensionConvertImporterMesh provides methods for working with GLTFDocumentExtensionConvertImporterMesh object instances.
 package GLTFDocumentExtensionConvertImporterMesh
 
 import "unsafe"

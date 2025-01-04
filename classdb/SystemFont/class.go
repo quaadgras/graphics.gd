@@ -1,3 +1,4 @@
+// Package SystemFont provides methods for working with SystemFont object instances.
 package SystemFont
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package BoxMesh provides methods for working with BoxMesh object instances.
 package BoxMesh
 
 import "unsafe"

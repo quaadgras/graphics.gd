@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformDecompose provides methods for working with VisualShaderNodeTransformDecompose object instances.
 package VisualShaderNodeTransformDecompose
 
 import "unsafe"

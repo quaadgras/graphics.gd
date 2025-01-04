@@ -1,3 +1,4 @@
+// Package NavigationRegion3D provides methods for working with NavigationRegion3D object instances.
 package NavigationRegion3D
 
 import "unsafe"

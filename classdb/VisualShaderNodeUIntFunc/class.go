@@ -1,3 +1,4 @@
+// Package VisualShaderNodeUIntFunc provides methods for working with VisualShaderNodeUIntFunc object instances.
 package VisualShaderNodeUIntFunc
 
 import "unsafe"

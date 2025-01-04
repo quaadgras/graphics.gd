@@ -1,3 +1,4 @@
+// Package PlaceholderTextureLayered provides methods for working with PlaceholderTextureLayered object instances.
 package PlaceholderTextureLayered
 
 import "unsafe"

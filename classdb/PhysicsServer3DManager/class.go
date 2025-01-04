@@ -1,3 +1,4 @@
+// Package PhysicsServer3DManager provides methods for working with PhysicsServer3DManager object instances.
 package PhysicsServer3DManager
 
 import "unsafe"

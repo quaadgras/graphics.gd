@@ -1,3 +1,4 @@
+// Package PlaceholderTexture3D provides methods for working with PlaceholderTexture3D object instances.
 package PlaceholderTexture3D
 
 import "unsafe"

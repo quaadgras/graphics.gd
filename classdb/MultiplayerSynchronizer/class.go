@@ -1,3 +1,4 @@
+// Package MultiplayerSynchronizer provides methods for working with MultiplayerSynchronizer object instances.
 package MultiplayerSynchronizer
 
 import "unsafe"

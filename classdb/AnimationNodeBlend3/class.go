@@ -1,3 +1,4 @@
+// Package AnimationNodeBlend3 provides methods for working with AnimationNodeBlend3 object instances.
 package AnimationNodeBlend3
 
 import "unsafe"

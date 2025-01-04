@@ -1,3 +1,4 @@
+// Package HashingContext provides methods for working with HashingContext object instances.
 package HashingContext
 
 import "unsafe"

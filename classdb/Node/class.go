@@ -1,3 +1,4 @@
+// Package Node provides methods for working with Node object instances.
 package Node
 
 import "unsafe"

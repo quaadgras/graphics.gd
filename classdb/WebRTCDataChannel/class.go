@@ -1,3 +1,4 @@
+// Package WebRTCDataChannel provides methods for working with WebRTCDataChannel object instances.
 package WebRTCDataChannel
 
 import "unsafe"

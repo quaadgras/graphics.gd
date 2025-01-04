@@ -1,3 +1,4 @@
+// Package ParallaxLayer provides methods for working with ParallaxLayer object instances.
 package ParallaxLayer
 
 import "unsafe"

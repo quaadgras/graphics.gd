@@ -1,3 +1,4 @@
+// Package EditorSpinSlider provides methods for working with EditorSpinSlider object instances.
 package EditorSpinSlider
 
 import "unsafe"

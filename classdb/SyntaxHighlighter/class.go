@@ -1,3 +1,4 @@
+// Package SyntaxHighlighter provides methods for working with SyntaxHighlighter object instances.
 package SyntaxHighlighter
 
 import "unsafe"

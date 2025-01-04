@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVec4Parameter provides methods for working with VisualShaderNodeVec4Parameter object instances.
 package VisualShaderNodeVec4Parameter
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package OpenXRHand provides methods for working with OpenXRHand object instances.
 package OpenXRHand
 
 import "unsafe"

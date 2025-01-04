@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTexture2DArrayParameter provides methods for working with VisualShaderNodeTexture2DArrayParameter object instances.
 package VisualShaderNodeTexture2DArrayParameter
 
 import "unsafe"

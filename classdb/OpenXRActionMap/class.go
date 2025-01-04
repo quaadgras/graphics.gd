@@ -1,3 +1,4 @@
+// Package OpenXRActionMap provides methods for working with OpenXRActionMap object instances.
 package OpenXRActionMap
 
 import "unsafe"

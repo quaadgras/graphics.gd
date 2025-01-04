@@ -1,3 +1,4 @@
+// Package ProgressBar provides methods for working with ProgressBar object instances.
 package ProgressBar
 
 import "unsafe"

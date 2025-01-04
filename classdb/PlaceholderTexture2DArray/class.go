@@ -1,3 +1,4 @@
+// Package PlaceholderTexture2DArray provides methods for working with PlaceholderTexture2DArray object instances.
 package PlaceholderTexture2DArray
 
 import "unsafe"

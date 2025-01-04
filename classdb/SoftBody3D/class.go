@@ -1,3 +1,4 @@
+// Package SoftBody3D provides methods for working with SoftBody3D object instances.
 package SoftBody3D
 
 import "unsafe"

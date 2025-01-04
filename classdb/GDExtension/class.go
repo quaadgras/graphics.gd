@@ -1,3 +1,4 @@
+// Package GDExtension provides methods for working with GDExtension object instances.
 package GDExtension
 
 import "unsafe"

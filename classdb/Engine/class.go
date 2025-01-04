@@ -1,3 +1,4 @@
+// Package Engine provides methods for working with Engine object instances.
 package Engine
 
 import "unsafe"

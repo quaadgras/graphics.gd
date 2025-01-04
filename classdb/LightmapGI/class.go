@@ -1,3 +1,4 @@
+// Package LightmapGI provides methods for working with LightmapGI object instances.
 package LightmapGI
 
 import "unsafe"

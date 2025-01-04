@@ -1,3 +1,4 @@
+// Package Shortcut provides methods for working with Shortcut object instances.
 package Shortcut
 
 import "unsafe"

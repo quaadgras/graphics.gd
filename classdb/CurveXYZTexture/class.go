@@ -1,3 +1,4 @@
+// Package CurveXYZTexture provides methods for working with CurveXYZTexture object instances.
 package CurveXYZTexture
 
 import "unsafe"

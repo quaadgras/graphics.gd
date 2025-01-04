@@ -1,3 +1,4 @@
+// Package ClassDB provides methods for working with ClassDB object instances.
 package ClassDB
 
 import "unsafe"

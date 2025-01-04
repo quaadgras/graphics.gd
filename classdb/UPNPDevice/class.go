@@ -1,3 +1,4 @@
+// Package UPNPDevice provides methods for working with UPNPDevice object instances.
 package UPNPDevice
 
 import "unsafe"

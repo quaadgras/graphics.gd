@@ -1,3 +1,4 @@
+// Package ThemeDB provides methods for working with ThemeDB object instances.
 package ThemeDB
 
 import "unsafe"

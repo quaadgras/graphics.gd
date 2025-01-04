@@ -1,3 +1,4 @@
+// Package VisualShaderNodeUIntOp provides methods for working with VisualShaderNodeUIntOp object instances.
 package VisualShaderNodeUIntOp
 
 import "unsafe"

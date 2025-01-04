@@ -1,3 +1,4 @@
+// Package BoneMap provides methods for working with BoneMap object instances.
 package BoneMap
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ENetMultiplayerPeer provides methods for working with ENetMultiplayerPeer object instances.
 package ENetMultiplayerPeer
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package TileMapLayer provides methods for working with TileMapLayer object instances.
 package TileMapLayer
 
 import "unsafe"

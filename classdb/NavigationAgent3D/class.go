@@ -1,3 +1,4 @@
+// Package NavigationAgent3D provides methods for working with NavigationAgent3D object instances.
 package NavigationAgent3D
 
 import "unsafe"

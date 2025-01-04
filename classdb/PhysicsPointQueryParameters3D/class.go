@@ -1,3 +1,4 @@
+// Package PhysicsPointQueryParameters3D provides methods for working with PhysicsPointQueryParameters3D object instances.
 package PhysicsPointQueryParameters3D
 
 import "unsafe"

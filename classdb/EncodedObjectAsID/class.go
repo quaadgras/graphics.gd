@@ -1,3 +1,4 @@
+// Package EncodedObjectAsID provides methods for working with EncodedObjectAsID object instances.
 package EncodedObjectAsID
 
 import "unsafe"

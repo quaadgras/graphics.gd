@@ -1,3 +1,4 @@
+// Package StyleBoxTexture provides methods for working with StyleBoxTexture object instances.
 package StyleBoxTexture
 
 import "unsafe"

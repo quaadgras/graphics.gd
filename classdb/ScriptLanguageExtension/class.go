@@ -1,3 +1,4 @@
+// Package ScriptLanguageExtension provides methods for working with ScriptLanguageExtension object instances.
 package ScriptLanguageExtension
 
 import "unsafe"

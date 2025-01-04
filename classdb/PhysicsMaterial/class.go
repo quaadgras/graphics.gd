@@ -1,3 +1,4 @@
+// Package PhysicsMaterial provides methods for working with PhysicsMaterial object instances.
 package PhysicsMaterial
 
 import "unsafe"

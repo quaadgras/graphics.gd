@@ -1,3 +1,4 @@
+// Package EditorSceneFormatImporterGLTF provides methods for working with EditorSceneFormatImporterGLTF object instances.
 package EditorSceneFormatImporterGLTF
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeDistanceFade provides methods for working with VisualShaderNodeDistanceFade object instances.
 package VisualShaderNodeDistanceFade
 
 import "unsafe"

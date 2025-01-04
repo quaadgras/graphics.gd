@@ -1,3 +1,4 @@
+// Package PackedScene provides methods for working with PackedScene object instances.
 package PackedScene
 
 import "unsafe"

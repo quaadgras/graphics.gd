@@ -1,3 +1,4 @@
+// Package AnimatedSprite2D provides methods for working with AnimatedSprite2D object instances.
 package AnimatedSprite2D
 
 import "unsafe"

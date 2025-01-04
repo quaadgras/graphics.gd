@@ -1,3 +1,4 @@
+// Package EditorFeatureProfile provides methods for working with EditorFeatureProfile object instances.
 package EditorFeatureProfile
 
 import "unsafe"

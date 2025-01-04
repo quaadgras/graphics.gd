@@ -1,3 +1,4 @@
+// Package VSlider provides methods for working with VSlider object instances.
 package VSlider
 
 import "unsafe"

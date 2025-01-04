@@ -1,3 +1,4 @@
+// Package RenderSceneDataRD provides methods for working with RenderSceneDataRD object instances.
 package RenderSceneDataRD
 
 import "unsafe"

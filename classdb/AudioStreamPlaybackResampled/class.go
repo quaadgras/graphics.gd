@@ -1,3 +1,4 @@
+// Package AudioStreamPlaybackResampled provides methods for working with AudioStreamPlaybackResampled object instances.
 package AudioStreamPlaybackResampled
 
 import "unsafe"

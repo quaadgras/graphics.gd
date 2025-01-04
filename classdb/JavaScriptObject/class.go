@@ -1,3 +1,4 @@
+// Package JavaScriptObject provides methods for working with JavaScriptObject object instances.
 package JavaScriptObject
 
 import "unsafe"

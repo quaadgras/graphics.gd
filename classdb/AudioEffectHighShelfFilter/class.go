@@ -1,3 +1,4 @@
+// Package AudioEffectHighShelfFilter provides methods for working with AudioEffectHighShelfFilter object instances.
 package AudioEffectHighShelfFilter
 
 import "unsafe"

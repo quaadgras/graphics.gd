@@ -1,3 +1,4 @@
+// Package NavigationRegion2D provides methods for working with NavigationRegion2D object instances.
 package NavigationRegion2D
 
 import "unsafe"

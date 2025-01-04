@@ -1,3 +1,4 @@
+// Package CanvasLayer provides methods for working with CanvasLayer object instances.
 package CanvasLayer
 
 import "unsafe"

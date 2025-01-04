@@ -1,3 +1,4 @@
+// Package MultiplayerAPI provides methods for working with MultiplayerAPI object instances.
 package MultiplayerAPI
 
 import "unsafe"

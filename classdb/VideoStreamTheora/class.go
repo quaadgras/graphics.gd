@@ -1,3 +1,4 @@
+// Package VideoStreamTheora provides methods for working with VideoStreamTheora object instances.
 package VideoStreamTheora
 
 import "unsafe"

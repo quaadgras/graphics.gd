@@ -1,3 +1,4 @@
+// Package ColorRect provides methods for working with ColorRect object instances.
 package ColorRect
 
 import "unsafe"

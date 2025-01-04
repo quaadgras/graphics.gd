@@ -1,3 +1,4 @@
+// Package VisualShaderNodeTransformVecMult provides methods for working with VisualShaderNodeTransformVecMult object instances.
 package VisualShaderNodeTransformVecMult
 
 import "unsafe"

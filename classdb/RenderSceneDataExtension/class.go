@@ -1,3 +1,4 @@
+// Package RenderSceneDataExtension provides methods for working with RenderSceneDataExtension object instances.
 package RenderSceneDataExtension
 
 import "unsafe"

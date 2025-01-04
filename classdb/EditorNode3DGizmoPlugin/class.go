@@ -1,3 +1,4 @@
+// Package EditorNode3DGizmoPlugin provides methods for working with EditorNode3DGizmoPlugin object instances.
 package EditorNode3DGizmoPlugin
 
 import "unsafe"

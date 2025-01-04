@@ -1,3 +1,4 @@
+// Package Performance provides methods for working with Performance object instances.
 package Performance
 
 import "unsafe"

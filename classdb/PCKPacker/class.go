@@ -1,3 +1,4 @@
+// Package PCKPacker provides methods for working with PCKPacker object instances.
 package PCKPacker
 
 import "unsafe"

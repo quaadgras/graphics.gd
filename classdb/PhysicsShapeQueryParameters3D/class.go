@@ -1,3 +1,4 @@
+// Package PhysicsShapeQueryParameters3D provides methods for working with PhysicsShapeQueryParameters3D object instances.
 package PhysicsShapeQueryParameters3D
 
 import "unsafe"

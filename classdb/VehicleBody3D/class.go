@@ -1,3 +1,4 @@
+// Package VehicleBody3D provides methods for working with VehicleBody3D object instances.
 package VehicleBody3D
 
 import "unsafe"

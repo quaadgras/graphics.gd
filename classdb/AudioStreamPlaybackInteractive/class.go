@@ -1,3 +1,4 @@
+// Package AudioStreamPlaybackInteractive provides methods for working with AudioStreamPlaybackInteractive object instances.
 package AudioStreamPlaybackInteractive
 
 import "unsafe"

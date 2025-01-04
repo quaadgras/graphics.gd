@@ -1,3 +1,4 @@
+// Package StreamPeerTLS provides methods for working with StreamPeerTLS object instances.
 package StreamPeerTLS
 
 import "unsafe"

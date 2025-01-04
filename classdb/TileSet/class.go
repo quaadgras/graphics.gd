@@ -1,3 +1,4 @@
+// Package TileSet provides methods for working with TileSet object instances.
 package TileSet
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ParticleProcessMaterial provides methods for working with ParticleProcessMaterial object instances.
 package ParticleProcessMaterial
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package InputEventKey provides methods for working with InputEventKey object instances.
 package InputEventKey
 
 import "unsafe"

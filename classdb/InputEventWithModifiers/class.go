@@ -1,3 +1,4 @@
+// Package InputEventWithModifiers provides methods for working with InputEventWithModifiers object instances.
 package InputEventWithModifiers
 
 import "unsafe"

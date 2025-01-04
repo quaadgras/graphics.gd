@@ -1,3 +1,4 @@
+// Package ResourceImporterBMFont provides methods for working with ResourceImporterBMFont object instances.
 package ResourceImporterBMFont
 
 import "unsafe"

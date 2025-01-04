@@ -1,3 +1,4 @@
+// Package ResourceFormatLoader provides methods for working with ResourceFormatLoader object instances.
 package ResourceFormatLoader
 
 import "unsafe"

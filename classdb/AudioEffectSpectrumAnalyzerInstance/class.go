@@ -1,3 +1,4 @@
+// Package AudioEffectSpectrumAnalyzerInstance provides methods for working with AudioEffectSpectrumAnalyzerInstance object instances.
 package AudioEffectSpectrumAnalyzerInstance
 
 import "unsafe"

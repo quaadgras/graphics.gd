@@ -1,3 +1,4 @@
+// Package GLTFAnimation provides methods for working with GLTFAnimation object instances.
 package GLTFAnimation
 
 import "unsafe"

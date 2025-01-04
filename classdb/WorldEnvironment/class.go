@@ -1,3 +1,4 @@
+// Package WorldEnvironment provides methods for working with WorldEnvironment object instances.
 package WorldEnvironment
 
 import "unsafe"

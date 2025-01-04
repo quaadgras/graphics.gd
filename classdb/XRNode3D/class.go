@@ -1,3 +1,4 @@
+// Package XRNode3D provides methods for working with XRNode3D object instances.
 package XRNode3D
 
 import "unsafe"

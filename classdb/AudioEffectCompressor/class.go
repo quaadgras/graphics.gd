@@ -1,3 +1,4 @@
+// Package AudioEffectCompressor provides methods for working with AudioEffectCompressor object instances.
 package AudioEffectCompressor
 
 import "unsafe"

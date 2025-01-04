@@ -1,3 +1,4 @@
+// Package FBXDocument provides methods for working with FBXDocument object instances.
 package FBXDocument
 
 import "unsafe"

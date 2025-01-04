@@ -1,3 +1,4 @@
+// Package GLTFTextureSampler provides methods for working with GLTFTextureSampler object instances.
 package GLTFTextureSampler
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CompressedCubemapArray provides methods for working with CompressedCubemapArray object instances.
 package CompressedCubemapArray
 
 import "unsafe"

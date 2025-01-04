@@ -1,3 +1,4 @@
+// Package AnimationNodeStateMachineTransition provides methods for working with AnimationNodeStateMachineTransition object instances.
 package AnimationNodeStateMachineTransition
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package MethodTweener provides methods for working with MethodTweener object instances.
 package MethodTweener
 
 import "unsafe"

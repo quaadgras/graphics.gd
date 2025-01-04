@@ -1,3 +1,4 @@
+// Package GLTFPhysicsShape provides methods for working with GLTFPhysicsShape object instances.
 package GLTFPhysicsShape
 
 import "unsafe"

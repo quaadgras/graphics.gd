@@ -1,3 +1,4 @@
+// Package GLTFSpecGloss provides methods for working with GLTFSpecGloss object instances.
 package GLTFSpecGloss
 
 import "unsafe"

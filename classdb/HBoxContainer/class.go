@@ -1,3 +1,4 @@
+// Package HBoxContainer provides methods for working with HBoxContainer object instances.
 package HBoxContainer
 
 import "unsafe"

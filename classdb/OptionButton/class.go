@@ -1,3 +1,4 @@
+// Package OptionButton provides methods for working with OptionButton object instances.
 package OptionButton
 
 import "unsafe"

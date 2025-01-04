@@ -1,3 +1,4 @@
+// Package AudioListener2D provides methods for working with AudioListener2D object instances.
 package AudioListener2D
 
 import "unsafe"

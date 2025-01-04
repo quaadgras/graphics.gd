@@ -1,3 +1,4 @@
+// Package HSeparator provides methods for working with HSeparator object instances.
 package HSeparator
 
 import "unsafe"

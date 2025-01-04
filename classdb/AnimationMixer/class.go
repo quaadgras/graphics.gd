@@ -1,3 +1,4 @@
+// Package AnimationMixer provides methods for working with AnimationMixer object instances.
 package AnimationMixer
 
 import "unsafe"

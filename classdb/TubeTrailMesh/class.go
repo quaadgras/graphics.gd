@@ -1,3 +1,4 @@
+// Package TubeTrailMesh provides methods for working with TubeTrailMesh object instances.
 package TubeTrailMesh
 
 import "unsafe"

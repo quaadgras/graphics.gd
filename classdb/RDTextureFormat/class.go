@@ -1,3 +1,4 @@
+// Package RDTextureFormat provides methods for working with RDTextureFormat object instances.
 package RDTextureFormat
 
 import "unsafe"

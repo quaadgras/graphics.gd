@@ -1,3 +1,4 @@
+// Package EditorExportPlatformPC provides methods for working with EditorExportPlatformPC object instances.
 package EditorExportPlatformPC
 
 import "unsafe"

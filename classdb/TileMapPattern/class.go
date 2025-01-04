@@ -1,3 +1,4 @@
+// Package TileMapPattern provides methods for working with TileMapPattern object instances.
 package TileMapPattern
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package LightmapProbe provides methods for working with LightmapProbe object instances.
 package LightmapProbe
 
 import "unsafe"

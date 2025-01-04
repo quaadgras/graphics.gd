@@ -1,3 +1,4 @@
+// Package StreamPeerGZIP provides methods for working with StreamPeerGZIP object instances.
 package StreamPeerGZIP
 
 import "unsafe"

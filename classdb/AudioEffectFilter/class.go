@@ -1,3 +1,4 @@
+// Package AudioEffectFilter provides methods for working with AudioEffectFilter object instances.
 package AudioEffectFilter
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AStar3D provides methods for working with AStar3D object instances.
 package AStar3D
 
 import "unsafe"

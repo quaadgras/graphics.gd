@@ -1,3 +1,4 @@
+// Package Semaphore provides methods for working with Semaphore object instances.
 package Semaphore
 
 import "unsafe"

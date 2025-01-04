@@ -1,3 +1,4 @@
+// Package Skeleton2D provides methods for working with Skeleton2D object instances.
 package Skeleton2D
 
 import "unsafe"

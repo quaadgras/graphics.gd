@@ -1,3 +1,4 @@
+// Package PropertyTweener provides methods for working with PropertyTweener object instances.
 package PropertyTweener
 
 import "unsafe"

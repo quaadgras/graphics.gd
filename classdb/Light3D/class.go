@@ -1,3 +1,4 @@
+// Package Light3D provides methods for working with Light3D object instances.
 package Light3D
 
 import "unsafe"

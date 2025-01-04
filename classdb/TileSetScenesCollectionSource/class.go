@@ -1,3 +1,4 @@
+// Package TileSetScenesCollectionSource provides methods for working with TileSetScenesCollectionSource object instances.
 package TileSetScenesCollectionSource
 
 import "unsafe"

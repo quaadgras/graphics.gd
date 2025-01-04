@@ -1,3 +1,4 @@
+// Package VisualShaderNodeStep provides methods for working with VisualShaderNodeStep object instances.
 package VisualShaderNodeStep
 
 import "unsafe"

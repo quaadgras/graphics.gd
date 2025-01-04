@@ -1,3 +1,4 @@
+// Package Texture provides methods for working with Texture object instances.
 package Texture
 
 import "unsafe"

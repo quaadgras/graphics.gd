@@ -1,3 +1,4 @@
+// Package GLTFCamera provides methods for working with GLTFCamera object instances.
 package GLTFCamera
 
 import "unsafe"

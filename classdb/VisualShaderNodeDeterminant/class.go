@@ -1,3 +1,4 @@
+// Package VisualShaderNodeDeterminant provides methods for working with VisualShaderNodeDeterminant object instances.
 package VisualShaderNodeDeterminant
 
 import "unsafe"

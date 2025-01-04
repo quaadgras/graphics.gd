@@ -1,3 +1,4 @@
+// Package Image provides methods for working with Image object instances.
 package Image
 
 import "unsafe"

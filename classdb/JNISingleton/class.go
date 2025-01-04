@@ -1,3 +1,4 @@
+// Package JNISingleton provides methods for working with JNISingleton object instances.
 package JNISingleton
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package HSlider provides methods for working with HSlider object instances.
 package HSlider
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package ReferenceRect provides methods for working with ReferenceRect object instances.
 package ReferenceRect
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CanvasGroup provides methods for working with CanvasGroup object instances.
 package CanvasGroup
 
 import "unsafe"

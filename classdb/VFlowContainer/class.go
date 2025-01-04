@@ -1,3 +1,4 @@
+// Package VFlowContainer provides methods for working with VFlowContainer object instances.
 package VFlowContainer
 
 import "unsafe"

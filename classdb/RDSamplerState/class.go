@@ -1,3 +1,4 @@
+// Package RDSamplerState provides methods for working with RDSamplerState object instances.
 package RDSamplerState
 
 import "unsafe"

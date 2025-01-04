@@ -1,3 +1,4 @@
+// Package NavigationServer3D provides methods for working with NavigationServer3D object instances.
 package NavigationServer3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package Control provides methods for working with Control object instances.
 package Control
 
 import "unsafe"

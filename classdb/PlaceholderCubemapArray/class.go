@@ -1,3 +1,4 @@
+// Package PlaceholderCubemapArray provides methods for working with PlaceholderCubemapArray object instances.
 package PlaceholderCubemapArray
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package BoneAttachment3D provides methods for working with BoneAttachment3D object instances.
 package BoneAttachment3D
 
 import "unsafe"

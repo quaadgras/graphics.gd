@@ -1,3 +1,4 @@
+// Package AudioEffectPhaser provides methods for working with AudioEffectPhaser object instances.
 package AudioEffectPhaser
 
 import "unsafe"

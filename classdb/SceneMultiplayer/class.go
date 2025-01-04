@@ -1,3 +1,4 @@
+// Package SceneMultiplayer provides methods for working with SceneMultiplayer object instances.
 package SceneMultiplayer
 
 import "unsafe"

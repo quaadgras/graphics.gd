@@ -1,3 +1,4 @@
+// Package TextParagraph provides methods for working with TextParagraph object instances.
 package TextParagraph
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisibleOnScreenNotifier2D provides methods for working with VisibleOnScreenNotifier2D object instances.
 package VisibleOnScreenNotifier2D
 
 import "unsafe"

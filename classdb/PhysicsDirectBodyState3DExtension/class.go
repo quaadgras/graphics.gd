@@ -1,3 +1,4 @@
+// Package PhysicsDirectBodyState3DExtension provides methods for working with PhysicsDirectBodyState3DExtension object instances.
 package PhysicsDirectBodyState3DExtension
 
 import "unsafe"

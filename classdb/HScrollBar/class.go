@@ -1,3 +1,4 @@
+// Package HScrollBar provides methods for working with HScrollBar object instances.
 package HScrollBar
 
 import "unsafe"

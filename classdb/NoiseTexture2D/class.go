@@ -1,3 +1,4 @@
+// Package NoiseTexture2D provides methods for working with NoiseTexture2D object instances.
 package NoiseTexture2D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeUVPolarCoord provides methods for working with VisualShaderNodeUVPolarCoord object instances.
 package VisualShaderNodeUVPolarCoord
 
 import "unsafe"

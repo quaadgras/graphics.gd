@@ -1,3 +1,4 @@
+// Package SubViewportContainer provides methods for working with SubViewportContainer object instances.
 package SubViewportContainer
 
 import "unsafe"

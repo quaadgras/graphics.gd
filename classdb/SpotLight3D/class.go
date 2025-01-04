@@ -1,3 +1,4 @@
+// Package SpotLight3D provides methods for working with SpotLight3D object instances.
 package SpotLight3D
 
 import "unsafe"

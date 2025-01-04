@@ -1,3 +1,4 @@
+// Package CameraFeed provides methods for working with CameraFeed object instances.
 package CameraFeed
 
 import "unsafe"

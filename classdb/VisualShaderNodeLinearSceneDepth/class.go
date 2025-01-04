@@ -1,3 +1,4 @@
+// Package VisualShaderNodeLinearSceneDepth provides methods for working with VisualShaderNodeLinearSceneDepth object instances.
 package VisualShaderNodeLinearSceneDepth
 
 import "unsafe"

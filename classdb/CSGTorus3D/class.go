@@ -1,3 +1,4 @@
+// Package CSGTorus3D provides methods for working with CSGTorus3D object instances.
 package CSGTorus3D
 
 import "unsafe"

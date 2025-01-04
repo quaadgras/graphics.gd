@@ -1,3 +1,4 @@
+// Package TextServer provides methods for working with TextServer object instances.
 package TextServer
 
 import "unsafe"

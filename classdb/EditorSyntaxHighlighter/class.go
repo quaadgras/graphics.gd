@@ -1,3 +1,4 @@
+// Package EditorSyntaxHighlighter provides methods for working with EditorSyntaxHighlighter object instances.
 package EditorSyntaxHighlighter
 
 import "unsafe"

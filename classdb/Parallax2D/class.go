@@ -1,3 +1,4 @@
+// Package Parallax2D provides methods for working with Parallax2D object instances.
 package Parallax2D
 
 import "unsafe"

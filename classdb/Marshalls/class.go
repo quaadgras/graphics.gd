@@ -1,3 +1,4 @@
+// Package Marshalls provides methods for working with Marshalls object instances.
 package Marshalls
 
 import "unsafe"

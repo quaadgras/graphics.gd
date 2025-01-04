@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorCompose provides methods for working with VisualShaderNodeVectorCompose object instances.
 package VisualShaderNodeVectorCompose
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package DirectionalLight2D provides methods for working with DirectionalLight2D object instances.
 package DirectionalLight2D
 
 import "unsafe"

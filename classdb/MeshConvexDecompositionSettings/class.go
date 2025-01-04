@@ -1,3 +1,4 @@
+// Package MeshConvexDecompositionSettings provides methods for working with MeshConvexDecompositionSettings object instances.
 package MeshConvexDecompositionSettings
 
 import "unsafe"

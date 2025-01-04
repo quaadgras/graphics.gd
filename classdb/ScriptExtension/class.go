@@ -1,3 +1,4 @@
+// Package ScriptExtension provides methods for working with ScriptExtension object instances.
 package ScriptExtension
 
 import "unsafe"

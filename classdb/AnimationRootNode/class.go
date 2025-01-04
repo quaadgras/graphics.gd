@@ -1,3 +1,4 @@
+// Package AnimationRootNode provides methods for working with AnimationRootNode object instances.
 package AnimationRootNode
 
 import "unsafe"

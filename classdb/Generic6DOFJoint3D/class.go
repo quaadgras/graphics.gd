@@ -1,3 +1,4 @@
+// Package Generic6DOFJoint3D provides methods for working with Generic6DOFJoint3D object instances.
 package Generic6DOFJoint3D
 
 import "unsafe"

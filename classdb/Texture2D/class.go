@@ -1,3 +1,4 @@
+// Package Texture2D provides methods for working with Texture2D object instances.
 package Texture2D
 
 import "unsafe"

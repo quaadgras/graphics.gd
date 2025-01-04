@@ -1,3 +1,4 @@
+// Package EditorExportPlatformIOS provides methods for working with EditorExportPlatformIOS object instances.
 package EditorExportPlatformIOS
 
 import "unsafe"

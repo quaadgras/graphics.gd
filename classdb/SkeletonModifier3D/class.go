@@ -1,3 +1,4 @@
+// Package SkeletonModifier3D provides methods for working with SkeletonModifier3D object instances.
 package SkeletonModifier3D
 
 import "unsafe"

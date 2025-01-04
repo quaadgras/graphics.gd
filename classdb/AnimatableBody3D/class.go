@@ -1,3 +1,4 @@
+// Package AnimatableBody3D provides methods for working with AnimatableBody3D object instances.
 package AnimatableBody3D
 
 import "unsafe"

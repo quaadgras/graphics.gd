@@ -1,3 +1,4 @@
+// Package MultiplayerAPIExtension provides methods for working with MultiplayerAPIExtension object instances.
 package MultiplayerAPIExtension
 
 import "unsafe"

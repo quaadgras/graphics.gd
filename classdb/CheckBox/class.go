@@ -1,3 +1,4 @@
+// Package CheckBox provides methods for working with CheckBox object instances.
 package CheckBox
 
 import "unsafe"

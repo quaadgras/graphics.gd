@@ -1,3 +1,4 @@
+// Package ResourceImporterTexture provides methods for working with ResourceImporterTexture object instances.
 package ResourceImporterTexture
 
 import "unsafe"

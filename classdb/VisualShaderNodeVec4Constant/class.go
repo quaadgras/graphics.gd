@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVec4Constant provides methods for working with VisualShaderNodeVec4Constant object instances.
 package VisualShaderNodeVec4Constant
 
 import "unsafe"

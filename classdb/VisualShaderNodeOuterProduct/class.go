@@ -1,3 +1,4 @@
+// Package VisualShaderNodeOuterProduct provides methods for working with VisualShaderNodeOuterProduct object instances.
 package VisualShaderNodeOuterProduct
 
 import "unsafe"

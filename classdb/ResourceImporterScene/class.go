@@ -1,3 +1,4 @@
+// Package ResourceImporterScene provides methods for working with ResourceImporterScene object instances.
 package ResourceImporterScene
 
 import "unsafe"

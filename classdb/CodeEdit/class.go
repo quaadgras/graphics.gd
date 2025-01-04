@@ -1,3 +1,4 @@
+// Package CodeEdit provides methods for working with CodeEdit object instances.
 package CodeEdit
 
 import "unsafe"

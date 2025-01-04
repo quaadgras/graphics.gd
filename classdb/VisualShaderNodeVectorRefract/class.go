@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorRefract provides methods for working with VisualShaderNodeVectorRefract object instances.
 package VisualShaderNodeVectorRefract
 
 import "unsafe"

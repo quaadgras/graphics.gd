@@ -1,3 +1,4 @@
+// Package SkinReference provides methods for working with SkinReference object instances.
 package SkinReference
 
 import "unsafe"

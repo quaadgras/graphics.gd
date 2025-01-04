@@ -1,3 +1,4 @@
+// Package SpriteBase3D provides methods for working with SpriteBase3D object instances.
 package SpriteBase3D
 
 import "unsafe"

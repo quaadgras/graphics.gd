@@ -1,3 +1,4 @@
+// Package SeparationRayShape3D provides methods for working with SeparationRayShape3D object instances.
 package SeparationRayShape3D
 
 import "unsafe"

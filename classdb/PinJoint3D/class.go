@@ -1,3 +1,4 @@
+// Package PinJoint3D provides methods for working with PinJoint3D object instances.
 package PinJoint3D
 
 import "unsafe"

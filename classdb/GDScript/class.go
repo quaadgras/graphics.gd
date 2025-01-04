@@ -1,3 +1,4 @@
+// Package GDScript provides methods for working with GDScript object instances.
 package GDScript
 
 import "unsafe"

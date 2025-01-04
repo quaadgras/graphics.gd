@@ -1,3 +1,4 @@
+// Package StyleBoxLine provides methods for working with StyleBoxLine object instances.
 package StyleBoxLine
 
 import "unsafe"

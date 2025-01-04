@@ -1,3 +1,4 @@
+// Package PanelContainer provides methods for working with PanelContainer object instances.
 package PanelContainer
 
 import "unsafe"

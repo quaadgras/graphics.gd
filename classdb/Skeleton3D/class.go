@@ -1,3 +1,4 @@
+// Package Skeleton3D provides methods for working with Skeleton3D object instances.
 package Skeleton3D
 
 import "unsafe"

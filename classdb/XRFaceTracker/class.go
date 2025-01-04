@@ -1,3 +1,4 @@
+// Package XRFaceTracker provides methods for working with XRFaceTracker object instances.
 package XRFaceTracker
 
 import "unsafe"

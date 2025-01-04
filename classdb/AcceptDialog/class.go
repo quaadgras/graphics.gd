@@ -1,3 +1,4 @@
+// Package AcceptDialog provides methods for working with AcceptDialog object instances.
 package AcceptDialog
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package FontFile provides methods for working with FontFile object instances.
 package FontFile
 
 import "unsafe"

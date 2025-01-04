@@ -1,3 +1,4 @@
+// Package PhysicsTestMotionResult2D provides methods for working with PhysicsTestMotionResult2D object instances.
 package PhysicsTestMotionResult2D
 
 import "unsafe"

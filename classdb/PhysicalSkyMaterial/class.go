@@ -1,3 +1,4 @@
+// Package PhysicalSkyMaterial provides methods for working with PhysicalSkyMaterial object instances.
 package PhysicalSkyMaterial
 
 import "unsafe"

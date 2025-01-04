@@ -1,3 +1,4 @@
+// Package AudioEffect provides methods for working with AudioEffect object instances.
 package AudioEffect
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package CircleShape2D provides methods for working with CircleShape2D object instances.
 package CircleShape2D
 
 import "unsafe"

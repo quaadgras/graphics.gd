@@ -1,3 +1,4 @@
+// Package CurveTexture provides methods for working with CurveTexture object instances.
 package CurveTexture
 
 import "unsafe"

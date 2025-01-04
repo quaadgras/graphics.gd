@@ -1,3 +1,4 @@
+// Package RayCast2D provides methods for working with RayCast2D object instances.
 package RayCast2D
 
 import "unsafe"

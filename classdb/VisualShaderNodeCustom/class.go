@@ -1,3 +1,4 @@
+// Package VisualShaderNodeCustom provides methods for working with VisualShaderNodeCustom object instances.
 package VisualShaderNodeCustom
 
 import "unsafe"

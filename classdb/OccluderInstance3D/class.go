@@ -1,3 +1,4 @@
+// Package OccluderInstance3D provides methods for working with OccluderInstance3D object instances.
 package OccluderInstance3D
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioEffectBandLimitFilter provides methods for working with AudioEffectBandLimitFilter object instances.
 package AudioEffectBandLimitFilter
 
 import "unsafe"

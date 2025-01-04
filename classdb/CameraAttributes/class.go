@@ -1,3 +1,4 @@
+// Package CameraAttributes provides methods for working with CameraAttributes object instances.
 package CameraAttributes
 
 import "unsafe"

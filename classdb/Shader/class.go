@@ -1,3 +1,4 @@
+// Package Shader provides methods for working with Shader object instances.
 package Shader
 
 import "unsafe"

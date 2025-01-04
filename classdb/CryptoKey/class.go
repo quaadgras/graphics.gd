@@ -1,3 +1,4 @@
+// Package CryptoKey provides methods for working with CryptoKey object instances.
 package CryptoKey
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package VisualShaderNodeVectorOp provides methods for working with VisualShaderNodeVectorOp object instances.
 package VisualShaderNodeVectorOp
 
 import "unsafe"

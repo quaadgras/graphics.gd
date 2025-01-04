@@ -1,3 +1,4 @@
+// Package ConeTwistJoint3D provides methods for working with ConeTwistJoint3D object instances.
 package ConeTwistJoint3D
 
 import "unsafe"

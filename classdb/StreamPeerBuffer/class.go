@@ -1,3 +1,4 @@
+// Package StreamPeerBuffer provides methods for working with StreamPeerBuffer object instances.
 package StreamPeerBuffer
 
 import "unsafe"

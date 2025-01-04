@@ -1,3 +1,4 @@
+// Package SkeletonModification2DTwoBoneIK provides methods for working with SkeletonModification2DTwoBoneIK object instances.
 package SkeletonModification2DTwoBoneIK
 
 import "unsafe"

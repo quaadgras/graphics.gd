@@ -1,3 +1,4 @@
+// Package XRPose provides methods for working with XRPose object instances.
 package XRPose
 
 import "unsafe"

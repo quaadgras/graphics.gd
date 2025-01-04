@@ -1,3 +1,4 @@
+// Package PacketPeerUDP provides methods for working with PacketPeerUDP object instances.
 package PacketPeerUDP
 
 import "unsafe"

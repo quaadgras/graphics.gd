@@ -1,3 +1,4 @@
+// Package Label provides methods for working with Label object instances.
 package Label
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package XRBodyModifier3D provides methods for working with XRBodyModifier3D object instances.
 package XRBodyModifier3D
 
 import "unsafe"

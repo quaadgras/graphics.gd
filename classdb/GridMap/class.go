@@ -1,3 +1,4 @@
+// Package GridMap provides methods for working with GridMap object instances.
 package GridMap
 
 import "unsafe"

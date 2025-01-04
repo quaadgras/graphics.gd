@@ -1,3 +1,4 @@
+// Package CanvasTexture provides methods for working with CanvasTexture object instances.
 package CanvasTexture
 
 import "unsafe"

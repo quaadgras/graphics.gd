@@ -1,3 +1,4 @@
+// Package DampedSpringJoint2D provides methods for working with DampedSpringJoint2D object instances.
 package DampedSpringJoint2D
 
 import "unsafe"

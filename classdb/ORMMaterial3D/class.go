@@ -1,3 +1,4 @@
+// Package ORMMaterial3D provides methods for working with ORMMaterial3D object instances.
 package ORMMaterial3D
 
 import "unsafe"

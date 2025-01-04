@@ -1,3 +1,4 @@
+// Package SubViewport provides methods for working with SubViewport object instances.
 package SubViewport
 
 import "unsafe"

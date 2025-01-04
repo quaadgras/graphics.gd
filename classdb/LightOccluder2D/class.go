@@ -1,3 +1,4 @@
+// Package LightOccluder2D provides methods for working with LightOccluder2D object instances.
 package LightOccluder2D
 
 import "unsafe"

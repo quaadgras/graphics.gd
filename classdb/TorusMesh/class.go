@@ -1,3 +1,4 @@
+// Package TorusMesh provides methods for working with TorusMesh object instances.
 package TorusMesh
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package MultiMeshInstance3D provides methods for working with MultiMeshInstance3D object instances.
 package MultiMeshInstance3D
 
 import "unsafe"

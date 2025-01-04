@@ -1,3 +1,4 @@
+// Package PacketPeerExtension provides methods for working with PacketPeerExtension object instances.
 package PacketPeerExtension
 
 import "unsafe"

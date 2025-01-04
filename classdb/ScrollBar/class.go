@@ -1,3 +1,4 @@
+// Package ScrollBar provides methods for working with ScrollBar object instances.
 package ScrollBar
 
 import "unsafe"

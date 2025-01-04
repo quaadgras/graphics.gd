@@ -1,3 +1,4 @@
+// Package PhysicsTestMotionResult3D provides methods for working with PhysicsTestMotionResult3D object instances.
 package PhysicsTestMotionResult3D
 
 import "unsafe"

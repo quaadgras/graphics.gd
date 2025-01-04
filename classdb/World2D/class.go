@@ -1,3 +1,4 @@
+// Package World2D provides methods for working with World2D object instances.
 package World2D
 
 import "unsafe"

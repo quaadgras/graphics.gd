@@ -1,3 +1,4 @@
+// Package BaseButton provides methods for working with BaseButton object instances.
 package BaseButton
 
 import "unsafe"

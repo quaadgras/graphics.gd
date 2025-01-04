@@ -1,3 +1,4 @@
+// Package VisualShaderNodeCurveTexture provides methods for working with VisualShaderNodeCurveTexture object instances.
 package VisualShaderNodeCurveTexture
 
 import "unsafe"

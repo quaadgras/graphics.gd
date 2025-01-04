@@ -1,3 +1,4 @@
+// Package EditorSceneFormatImporterBlend provides methods for working with EditorSceneFormatImporterBlend object instances.
 package EditorSceneFormatImporterBlend
 
 import "unsafe"

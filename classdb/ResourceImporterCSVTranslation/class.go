@@ -1,3 +1,4 @@
+// Package ResourceImporterCSVTranslation provides methods for working with ResourceImporterCSVTranslation object instances.
 package ResourceImporterCSVTranslation
 
 import "unsafe"

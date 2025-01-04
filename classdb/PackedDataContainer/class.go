@@ -1,3 +1,4 @@
+// Package PackedDataContainer provides methods for working with PackedDataContainer object instances.
 package PackedDataContainer
 
 import "unsafe"

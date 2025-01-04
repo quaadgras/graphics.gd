@@ -1,3 +1,4 @@
+// Package OpenXRCompositionLayerEquirect provides methods for working with OpenXRCompositionLayerEquirect object instances.
 package OpenXRCompositionLayerEquirect
 
 import "unsafe"

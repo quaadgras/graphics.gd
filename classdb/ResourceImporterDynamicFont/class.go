@@ -1,3 +1,4 @@
+// Package ResourceImporterDynamicFont provides methods for working with ResourceImporterDynamicFont object instances.
 package ResourceImporterDynamicFont
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package GDExtensionManager provides methods for working with GDExtensionManager object instances.
 package GDExtensionManager
 
 import "unsafe"

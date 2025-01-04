@@ -1,3 +1,4 @@
+// Package VisualShaderNodeComment provides methods for working with VisualShaderNodeComment object instances.
 package VisualShaderNodeComment
 
 import "unsafe"

@@ -1,3 +1,4 @@
+// Package AudioStreamPlayer3D provides methods for working with AudioStreamPlayer3D object instances.
 package AudioStreamPlayer3D
 
 import "unsafe"

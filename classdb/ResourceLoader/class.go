@@ -1,3 +1,4 @@
+// Package ResourceLoader provides methods for working with ResourceLoader object instances.
 package ResourceLoader
 
 import "unsafe"
