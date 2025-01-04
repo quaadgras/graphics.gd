@@ -35,7 +35,6 @@
 package pointers
 
 import (
-	"fmt"
 	"sync"
 	"sync/atomic"
 	"unsafe"
@@ -300,15 +299,18 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	}
 	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
+	var ptrs P
+	for i := 0; i < len(p.checksum); i++ {
+		ptrs[i] = arr[addr+offsetPointers+uintptr(i)].Load()
+	}
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
-		fmt.Printf("%b != %b\n", rev, p.revision)
 		panic("expired pointer")
 	}
 	if !rev.isActive() {
 		arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.active()))
 	}
-	return p.checksum
+	return ptrs
 }
 
 // Add allocates a new pointer that can be mutated with [Set].
@@ -340,9 +342,28 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 		revision revision
 		checksum P
 	})(ptr)
-	for i := 0; i < len(val); i++ {
-		static[len(val)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)] = uintptr(val[i])
+	if p.revision == 0 && p.sentinal == 0 {
+		panic("cannot set a raw pointer")
 	}
+	if p.revision == 0 {
+		for i := 0; i < len(val); i++ {
+			static[len(val)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)] = uintptr(val[i])
+		}
+		return
+	}
+	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	if !rev.matches(p.revision) {
+		panic("expired pointer")
+	}
+	if arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+		for i := 0; i < len(val); i++ {
+			arr[addr+offsetPointers+uintptr(i)].Store(uintptr(val[i]))
+		}
+		arr[addr+offsetRevision].Store(uintptr(rev.active()))
+	}
+	return
 }
 
 type atomicSlice[T any] struct {

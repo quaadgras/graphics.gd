@@ -4,15 +4,24 @@ package gd_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"unsafe"
 
+	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
+	"graphics.gd/startup"
 
 	_ "graphics.gd/startup"
 )
+
+func TestMain(m *testing.M) {
+	classdb.Register[Converter]()
+	startup.Wait()
+	os.Exit(m.Run())
+}
 
 func TestGetGodotVersion(t *testing.T) {
 	version := gd.Global.GetGodotVersion()

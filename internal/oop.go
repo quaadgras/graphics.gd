@@ -24,7 +24,8 @@ func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr [1]uintpt
 }
 
 func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](ptr T) uintptr {
-	raw, _ := pointers.End(ptr)
+	raw := pointers.Get(ptr)
+	pointers.Set(ptr, [3]uintptr{raw[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{raw[0]})))})
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
