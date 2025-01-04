@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
@@ -368,7 +368,7 @@ func (self Instance) GetChild(idx int) [1]gdclass.Node {
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
-func (self Instance) HasNode(path Path.String) bool {
+func (self Instance) HasNode(path NodePath.String) bool {
 	return bool(class(self).HasNode(gd.NewString(string(path)).NodePath()))
 }
 
@@ -406,14 +406,14 @@ GetNode("/root/MyGame");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNode(path Path.String) [1]gdclass.Node {
+func (self Instance) GetNode(path NodePath.String) [1]gdclass.Node {
 	return [1]gdclass.Node(class(self).GetNode(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
-func (self Instance) GetNodeOrNull(path Path.String) [1]gdclass.Node {
+func (self Instance) GetNodeOrNull(path NodePath.String) [1]gdclass.Node {
 	return [1]gdclass.Node(class(self).GetNodeOrNull(gd.NewString(string(path)).NodePath()))
 }
 
@@ -458,7 +458,7 @@ func (self Instance) FindParent(pattern string) [1]gdclass.Node {
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
-func (self Instance) HasNodeAndResource(path Path.String) bool {
+func (self Instance) HasNodeAndResource(path NodePath.String) bool {
 	return bool(class(self).HasNodeAndResource(gd.NewString(string(path)).NodePath()))
 }
 
@@ -503,7 +503,7 @@ GD.Print(c[2]);             // Prints ^":region"
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNodeAndResource(path Path.String) Array.Any {
+func (self Instance) GetNodeAndResource(path NodePath.String) Array.Any {
 	return Array.Any(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))
 }
 
@@ -538,8 +538,8 @@ func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool {
 /*
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
-func (self Instance) GetPath() Path.String {
-	return Path.String(class(self).GetPath().String())
+func (self Instance) GetPath() NodePath.String {
+	return NodePath.String(class(self).GetPath().String())
 }
 
 /*
@@ -547,8 +547,8 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Instance) GetPathTo(node [1]gdclass.Node) Path.String {
-	return Path.String(class(self).GetPathTo(node, false).String())
+func (self Instance) GetPathTo(node [1]gdclass.Node) NodePath.String {
+	return NodePath.String(class(self).GetPathTo(node, false).String())
 }
 
 /*

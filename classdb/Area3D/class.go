@@ -13,7 +13,7 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -220,11 +220,11 @@ func (self Instance) SetWindAttenuationFactor(value Float.X) {
 	class(self).SetWindAttenuationFactor(gd.Float(value))
 }
 
-func (self Instance) WindSourcePath() Path.String {
-	return Path.String(class(self).GetWindSourcePath().String())
+func (self Instance) WindSourcePath() NodePath.String {
+	return NodePath.String(class(self).GetWindSourcePath().String())
 }
 
-func (self Instance) SetWindSourcePath(value Path.String) {
+func (self Instance) SetWindSourcePath(value NodePath.String) {
 	class(self).SetWindSourcePath(gd.NewString(string(value)).NodePath())
 }
 

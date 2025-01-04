@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Callable"
 
 var _ Object.ID
@@ -82,11 +82,11 @@ func New() Instance {
 	return Instance{*(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) SpawnPath() Path.String {
-	return Path.String(class(self).GetSpawnPath().String())
+func (self Instance) SpawnPath() NodePath.String {
+	return NodePath.String(class(self).GetSpawnPath().String())
 }
 
-func (self Instance) SetSpawnPath(value Path.String) {
+func (self Instance) SetSpawnPath(value NodePath.String) {
 	class(self).SetSpawnPath(gd.NewString(string(value)).NodePath())
 }
 

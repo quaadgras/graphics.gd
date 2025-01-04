@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -32,15 +32,15 @@ type Any interface {
 /*
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointOneBone2dNode(bone2d_node Path.String) {
+func (self Instance) SetJointOneBone2dNode(bone2d_node NodePath.String) {
 	class(self).SetJointOneBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointOneBone2dNode() Path.String {
-	return Path.String(class(self).GetJointOneBone2dNode().String())
+func (self Instance) GetJointOneBone2dNode() NodePath.String {
+	return NodePath.String(class(self).GetJointOneBone2dNode().String())
 }
 
 /*
@@ -60,15 +60,15 @@ func (self Instance) GetJointOneBoneIdx() int {
 /*
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointTwoBone2dNode(bone2d_node Path.String) {
+func (self Instance) SetJointTwoBone2dNode(bone2d_node NodePath.String) {
 	class(self).SetJointTwoBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointTwoBone2dNode() Path.String {
-	return Path.String(class(self).GetJointTwoBone2dNode().String())
+func (self Instance) GetJointTwoBone2dNode() NodePath.String {
+	return NodePath.String(class(self).GetJointTwoBone2dNode().String())
 }
 
 /*
@@ -102,11 +102,11 @@ func New() Instance {
 	return Instance{*(*gdclass.SkeletonModification2DTwoBoneIK)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) TargetNodepath() Path.String {
-	return Path.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() NodePath.String {
+	return NodePath.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value Path.String) {
+func (self Instance) SetTargetNodepath(value NodePath.String) {
 	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 

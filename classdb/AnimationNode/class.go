@@ -12,7 +12,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -224,14 +224,14 @@ func (self Instance) FindInput(name string) int {
 /*
 Adds or removes a path for the filter.
 */
-func (self Instance) SetFilterPath(path Path.String, enable bool) {
+func (self Instance) SetFilterPath(path NodePath.String, enable bool) {
 	class(self).SetFilterPath(gd.NewString(string(path)).NodePath(), enable)
 }
 
 /*
 Returns whether the given path is filtered.
 */
-func (self Instance) IsPathFiltered(path Path.String) bool {
+func (self Instance) IsPathFiltered(path NodePath.String) bool {
 	return bool(class(self).IsPathFiltered(gd.NewString(string(path)).NodePath()))
 }
 

@@ -15,7 +15,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -35,7 +35,7 @@ type Any interface {
 /*
 Adds a bone with the specified [param path] and [param weights].
 */
-func (self Instance) AddBone(path Path.String, weights []float32) {
+func (self Instance) AddBone(path NodePath.String, weights []float32) {
 	class(self).AddBone(gd.NewString(string(path)).NodePath(), gd.NewPackedFloat32Slice(weights))
 }
 
@@ -49,8 +49,8 @@ func (self Instance) GetBoneCount() int {
 /*
 Returns the path to the node associated with the specified bone.
 */
-func (self Instance) GetBonePath(index int) Path.String {
-	return Path.String(class(self).GetBonePath(gd.Int(index)).String())
+func (self Instance) GetBonePath(index int) NodePath.String {
+	return NodePath.String(class(self).GetBonePath(gd.Int(index)).String())
 }
 
 /*
@@ -77,7 +77,7 @@ func (self Instance) ClearBones() {
 /*
 Sets the path to the node associated with the specified bone.
 */
-func (self Instance) SetBonePath(index int, path Path.String) {
+func (self Instance) SetBonePath(index int, path NodePath.String) {
 	class(self).SetBonePath(gd.Int(index), gd.NewString(string(path)).NodePath())
 }
 
@@ -161,11 +161,11 @@ func (self Instance) SetTextureRotation(value Float.X) {
 	class(self).SetTextureRotation(gd.Float(value))
 }
 
-func (self Instance) Skeleton() Path.String {
-	return Path.String(class(self).GetSkeleton().String())
+func (self Instance) Skeleton() NodePath.String {
+	return NodePath.String(class(self).GetSkeleton().String())
 }
 
-func (self Instance) SetSkeleton(value Path.String) {
+func (self Instance) SetSkeleton(value NodePath.String) {
 	class(self).SetSkeleton(gd.NewString(string(value)).NodePath())
 }
 

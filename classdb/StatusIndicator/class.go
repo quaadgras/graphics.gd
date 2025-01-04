@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2i"
 
@@ -65,11 +65,11 @@ func (self Instance) SetIcon(value [1]gdclass.Texture2D) {
 	class(self).SetIcon(value)
 }
 
-func (self Instance) Menu() Path.String {
-	return Path.String(class(self).GetMenu().String())
+func (self Instance) Menu() NodePath.String {
+	return NodePath.String(class(self).GetMenu().String())
 }
 
-func (self Instance) SetMenu(value Path.String) {
+func (self Instance) SetMenu(value NodePath.String) {
 	class(self).SetMenu(gd.NewString(string(value)).NodePath())
 }
 

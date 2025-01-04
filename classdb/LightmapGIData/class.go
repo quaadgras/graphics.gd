@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Rect2"
 
 var _ Object.ID
@@ -30,7 +30,7 @@ type Any interface {
 /*
 Adds an object that is considered baked within this [LightmapGIData].
 */
-func (self Instance) AddUser(path Path.String, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) {
+func (self Instance) AddUser(path NodePath.String, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) {
 	class(self).AddUser(gd.NewString(string(path)).NodePath(), gd.Rect2(uv_scale), gd.Int(slice_index), gd.Int(sub_instance))
 }
 
@@ -44,8 +44,8 @@ func (self Instance) GetUserCount() int {
 /*
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
-func (self Instance) GetUserPath(user_idx int) Path.String {
-	return Path.String(class(self).GetUserPath(gd.Int(user_idx)).String())
+func (self Instance) GetUserPath(user_idx int) NodePath.String {
+	return NodePath.String(class(self).GetUserPath(gd.Int(user_idx)).String())
 }
 
 /*

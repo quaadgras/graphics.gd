@@ -11,7 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
 
@@ -48,11 +48,11 @@ func New() Instance {
 	return Instance{*(*gdclass.RootMotionView)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) AnimationPath() Path.String {
-	return Path.String(class(self).GetAnimationPath().String())
+func (self Instance) AnimationPath() NodePath.String {
+	return NodePath.String(class(self).GetAnimationPath().String())
 }
 
-func (self Instance) SetAnimationPath(value Path.String) {
+func (self Instance) SetAnimationPath(value NodePath.String) {
 	class(self).SetAnimationPath(gd.NewString(string(value)).NodePath())
 }
 

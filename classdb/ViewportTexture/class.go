@@ -11,7 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -48,11 +48,11 @@ func New() Instance {
 	return Instance{*(*gdclass.ViewportTexture)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) ViewportPath() Path.String {
-	return Path.String(class(self).GetViewportPathInScene().String())
+func (self Instance) ViewportPath() NodePath.String {
+	return NodePath.String(class(self).GetViewportPathInScene().String())
 }
 
-func (self Instance) SetViewportPath(value Path.String) {
+func (self Instance) SetViewportPath(value NodePath.String) {
 	class(self).SetViewportPathInScene(gd.NewString(string(value)).NodePath())
 }
 

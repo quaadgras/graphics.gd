@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -67,19 +67,19 @@ func (self Instance) SetTreeRoot(value [1]gdclass.AnimationRootNode) {
 	class(self).SetTreeRoot(value)
 }
 
-func (self Instance) AdvanceExpressionBaseNode() Path.String {
-	return Path.String(class(self).GetAdvanceExpressionBaseNode().String())
+func (self Instance) AdvanceExpressionBaseNode() NodePath.String {
+	return NodePath.String(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
-func (self Instance) SetAdvanceExpressionBaseNode(value Path.String) {
+func (self Instance) SetAdvanceExpressionBaseNode(value NodePath.String) {
 	class(self).SetAdvanceExpressionBaseNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) AnimPlayer() Path.String {
-	return Path.String(class(self).GetAnimationPlayer().String())
+func (self Instance) AnimPlayer() NodePath.String {
+	return NodePath.String(class(self).GetAnimationPlayer().String())
 }
 
-func (self Instance) SetAnimPlayer(value Path.String) {
+func (self Instance) SetAnimPlayer(value NodePath.String) {
 	class(self).SetAnimationPlayer(gd.NewString(string(value)).NodePath())
 }
 

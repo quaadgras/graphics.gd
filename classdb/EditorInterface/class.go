@@ -10,7 +10,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -275,7 +275,7 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelector(callback func(selected Path.String)) {
+func PopupNodeSelector(callback func(selected NodePath.String)) {
 	once.Do(singleton)
 	class(self).PopupNodeSelector(gd.NewCallable(callback), [1]gd.Array{}[0])
 }
@@ -298,7 +298,7 @@ func _on_property_selected(property_path):
 
 [/codeblock]
 */
-func PopupPropertySelector(obj gd.Object, callback func(selected Path.String)) {
+func PopupPropertySelector(obj gd.Object, callback func(selected NodePath.String)) {
 	once.Do(singleton)
 	class(self).PopupPropertySelector(obj, gd.NewCallable(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
 }

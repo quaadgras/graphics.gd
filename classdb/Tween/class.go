@@ -8,7 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -151,7 +151,7 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenProperty(obj gd.Object, property Path.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener {
+func (self Instance) TweenProperty(obj gd.Object, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener {
 	return [1]gdclass.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(string(property)).NodePath(), gd.NewVariant(final_val), gd.Float(duration)))
 }
 

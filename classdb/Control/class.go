@@ -15,7 +15,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -1341,51 +1341,51 @@ func (self Instance) SetTooltipText(value string) {
 	class(self).SetTooltipText(gd.NewString(value))
 }
 
-func (self Instance) FocusNeighborLeft() Path.String {
-	return Path.String(class(self).GetFocusNeighbor(0).String())
+func (self Instance) FocusNeighborLeft() NodePath.String {
+	return NodePath.String(class(self).GetFocusNeighbor(0).String())
 }
 
-func (self Instance) SetFocusNeighborLeft(value Path.String) {
+func (self Instance) SetFocusNeighborLeft(value NodePath.String) {
 	class(self).SetFocusNeighbor(0, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborTop() Path.String {
-	return Path.String(class(self).GetFocusNeighbor(1).String())
+func (self Instance) FocusNeighborTop() NodePath.String {
+	return NodePath.String(class(self).GetFocusNeighbor(1).String())
 }
 
-func (self Instance) SetFocusNeighborTop(value Path.String) {
+func (self Instance) SetFocusNeighborTop(value NodePath.String) {
 	class(self).SetFocusNeighbor(1, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborRight() Path.String {
-	return Path.String(class(self).GetFocusNeighbor(2).String())
+func (self Instance) FocusNeighborRight() NodePath.String {
+	return NodePath.String(class(self).GetFocusNeighbor(2).String())
 }
 
-func (self Instance) SetFocusNeighborRight(value Path.String) {
+func (self Instance) SetFocusNeighborRight(value NodePath.String) {
 	class(self).SetFocusNeighbor(2, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNeighborBottom() Path.String {
-	return Path.String(class(self).GetFocusNeighbor(3).String())
+func (self Instance) FocusNeighborBottom() NodePath.String {
+	return NodePath.String(class(self).GetFocusNeighbor(3).String())
 }
 
-func (self Instance) SetFocusNeighborBottom(value Path.String) {
+func (self Instance) SetFocusNeighborBottom(value NodePath.String) {
 	class(self).SetFocusNeighbor(3, gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusNext() Path.String {
-	return Path.String(class(self).GetFocusNext().String())
+func (self Instance) FocusNext() NodePath.String {
+	return NodePath.String(class(self).GetFocusNext().String())
 }
 
-func (self Instance) SetFocusNext(value Path.String) {
+func (self Instance) SetFocusNext(value NodePath.String) {
 	class(self).SetFocusNext(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) FocusPrevious() Path.String {
-	return Path.String(class(self).GetFocusPrevious().String())
+func (self Instance) FocusPrevious() NodePath.String {
+	return NodePath.String(class(self).GetFocusPrevious().String())
 }
 
-func (self Instance) SetFocusPrevious(value Path.String) {
+func (self Instance) SetFocusPrevious(value NodePath.String) {
 	class(self).SetFocusPrevious(gd.NewString(string(value)).NodePath())
 }
 

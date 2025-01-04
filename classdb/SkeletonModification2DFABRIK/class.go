@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -35,15 +35,15 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath Path.String) {
+func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath NodePath.String) {
 	class(self).SetFabrikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
-func (self Instance) GetFabrikJointBone2dNode(joint_idx int) Path.String {
-	return Path.String(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetFabrikJointBone2dNode(joint_idx int) NodePath.String {
+	return NodePath.String(class(self).GetFabrikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -106,11 +106,11 @@ func New() Instance {
 	return Instance{*(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) TargetNodepath() Path.String {
-	return Path.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() NodePath.String {
+	return NodePath.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value Path.String) {
+func (self Instance) SetTargetNodepath(value NodePath.String) {
 	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 

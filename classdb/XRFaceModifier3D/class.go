@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -54,11 +54,11 @@ func (self Instance) SetFaceTracker(value string) {
 	class(self).SetFaceTracker(gd.NewStringName(value))
 }
 
-func (self Instance) Target() Path.String {
-	return Path.String(class(self).GetTarget().String())
+func (self Instance) Target() NodePath.String {
+	return NodePath.String(class(self).GetTarget().String())
 }
 
-func (self Instance) SetTarget(value Path.String) {
+func (self Instance) SetTarget(value NodePath.String) {
 	class(self).SetTarget(gd.NewString(string(value)).NodePath())
 }
 

@@ -117,6 +117,11 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"return value": MustAssertInstanceID,
 		},
 	},
+	"CanvasItem": {
+		"get_canvas_layer_node": {
+			"return value": LifetimeBoundToClass,
+		},
+	},
 	"ColorPickerButton": {
 		"get_picker": {
 			"return value": LifetimeBoundToClass,
@@ -309,6 +314,14 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_script_create_dialog": {
 			"return value": LifetimeBoundToClass,
 		},
+		"set_dock_tab_icon": {
+			"control": IsTemporaryReference,
+		},
+	},
+	"EngineDebugger": {
+		"script_debug": {
+			"language": IsTemporaryReference,
+		},
 	},
 	"EditorProperty": {
 		"add_focusable": {
@@ -450,8 +463,16 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_menu_hbox": {
 			"return value": LifetimeBoundToClass,
 		},
+		"get_element_frame": {
+			"return value": LifetimeBoundToClass,
+		},
 		"set_selected": {
 			"node": IsTemporaryReference,
+		},
+	},
+	"GraphFrame": {
+		"get_titlebar_hbox": {
+			"return value": LifetimeBoundToClass,
 		},
 	},
 	"GraphNode": {
@@ -604,6 +625,17 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"return value": LifetimeBoundToClass,
 		},
 	},
+	"PopupMenu": {
+		"add_submenu_node_item": {
+			"submenu": OwnershipTransferred,
+		},
+		"set_item_submenu_node": {
+			"submenu": OwnershipTransferred,
+		},
+		"get_item_submenu_node": {
+			"return value": LifetimeBoundToClass,
+		},
+	},
 	"PackedScene": {
 		"pack": {
 			"path": IsTemporaryReference,
@@ -657,6 +689,14 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"body_get_direct_state": {
 			"return value": MustAssertInstanceID,
+		},
+		"soft_body_update_rendering_server": {
+			"rendering_server_handler": IsTemporaryReference,
+		},
+	},
+	"RenderData": {
+		"get_render_scene_data": {
+			"return value": IsTemporaryReference,
 		},
 	},
 	"Range": {
@@ -723,6 +763,11 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"child_node": OwnershipTransferred,
 		},
 		"get_current_scene": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"SkeletonModifier3D": {
+		"get_skeleton": {
 			"return value": MustAssertInstanceID,
 		},
 	},
@@ -798,6 +843,11 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"SyntaxHighlighter": {
 		"get_text_edit": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"TileMapLayer": {
+		"get_cell_tile_data": {
 			"return value": MustAssertInstanceID,
 		},
 	},
@@ -940,6 +990,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_camera_3d": {
 			"return value": MustAssertInstanceID,
 		},
+		"gui_get_hovered_control": {
+			"return value": MustAssertInstanceID,
+		},
 	},
 	"VoxelGI": {
 		"bake": {
@@ -970,6 +1023,22 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"World3D": {
 		"get_direct_space_state": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"OpenXRAPIExtension": {
+		"register_composition_layer_provider": {
+			"extension": OwnershipTransferred,
+		},
+		"unregister_composition_layer_provider": {
+			"extension": ReversesTheOwnership,
+		},
+	},
+	"OpenXRCompositionLayer": {
+		"set_layer_viewport": {
+			"viewport": OwnershipTransferred,
+		},
+		"get_layer_viewport": {
 			"return value": MustAssertInstanceID,
 		},
 	},

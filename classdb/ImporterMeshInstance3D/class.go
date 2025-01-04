@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -58,11 +58,11 @@ func (self Instance) SetSkin(value [1]gdclass.Skin) {
 	class(self).SetSkin(value)
 }
 
-func (self Instance) SkeletonPath() Path.String {
-	return Path.String(class(self).GetSkeletonPath().String())
+func (self Instance) SkeletonPath() NodePath.String {
+	return NodePath.String(class(self).GetSkeletonPath().String())
 }
 
-func (self Instance) SetSkeletonPath(value Path.String) {
+func (self Instance) SetSkeletonPath(value NodePath.String) {
 	class(self).SetSkeletonPath(gd.NewString(string(value)).NodePath())
 }
 

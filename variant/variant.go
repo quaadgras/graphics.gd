@@ -6,7 +6,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
-	"graphics.gd/variant/Path"
+	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Projection"
 	"graphics.gd/variant/Quaternion"
@@ -158,7 +158,7 @@ func TypeOf(val any) Type { //gd:typeof
 	case reflect.Float32, reflect.Float64:
 		return TypeFloat
 	case reflect.String:
-		if rtype == reflect.TypeFor[Path.String]() {
+		if rtype == reflect.TypeFor[NodePath.String]() {
 			return TypeNodePath
 		}
 		return TypeString

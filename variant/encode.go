@@ -10,7 +10,7 @@ import (
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
-	"graphics.gd/variant/Path"
+	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Quaternion"
 	"graphics.gd/variant/Rect2"
@@ -169,7 +169,7 @@ func Marshal(value interface{}) ([]byte, error) { //gd:var_to_bytes var_to_bytes
 		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.G))
 		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.B))
 		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.A))
-	case Path.String:
+	case NodePath.String:
 		buf = binary.LittleEndian.AppendUint32(buf, typeNodePath)
 		buf = binary.LittleEndian.AppendUint32(buf, uint32(len(value)))
 		buf = append(buf, value...)

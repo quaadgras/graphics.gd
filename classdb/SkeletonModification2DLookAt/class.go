@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -124,19 +124,19 @@ func (self Instance) SetBoneIndex(value int) {
 	class(self).SetBoneIndex(gd.Int(value))
 }
 
-func (self Instance) Bone2dNode() Path.String {
-	return Path.String(class(self).GetBone2dNode().String())
+func (self Instance) Bone2dNode() NodePath.String {
+	return NodePath.String(class(self).GetBone2dNode().String())
 }
 
-func (self Instance) SetBone2dNode(value Path.String) {
+func (self Instance) SetBone2dNode(value NodePath.String) {
 	class(self).SetBone2dNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) TargetNodepath() Path.String {
-	return Path.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() NodePath.String {
+	return NodePath.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value Path.String) {
+func (self Instance) SetTargetNodepath(value NodePath.String) {
 	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 

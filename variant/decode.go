@@ -7,7 +7,7 @@ import (
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
-	"graphics.gd/variant/Path"
+	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Quaternion"
 	"graphics.gd/variant/Rect2"
@@ -156,7 +156,7 @@ func UnmarshalAny(data []byte) (any, error) { //gd:bytes_to_var bytes_to_var_wit
 				return nil, err
 			}
 			absolute := flags&1 != 0
-			var path Path.String
+			var path NodePath.String
 			if absolute {
 				path = "/"
 			}
@@ -165,7 +165,7 @@ func UnmarshalAny(data []byte) (any, error) { //gd:bytes_to_var bytes_to_var_wit
 				if err != nil {
 					return nil, err
 				}
-				path += Path.String(s)
+				path += NodePath.String(s)
 				data = data[(len(s)+3)&^3:] // must be multiple of 4 bytes
 			}
 			return path, nil
@@ -174,7 +174,7 @@ func UnmarshalAny(data []byte) (any, error) { //gd:bytes_to_var bytes_to_var_wit
 		if err != nil {
 			return nil, err
 		}
-		return Path.String(s), nil
+		return NodePath.String(s), nil
 	case typeRID:
 		return decode[uint64](data)
 	case typeObject:

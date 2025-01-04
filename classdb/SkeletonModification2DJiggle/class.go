@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -62,15 +62,15 @@ func (self Instance) GetCollisionMask() int {
 /*
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node Path.String) {
+func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node NodePath.String) {
 	class(self).SetJiggleJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
-func (self Instance) GetJiggleJointBone2dNode(joint_idx int) Path.String {
-	return Path.String(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
+func (self Instance) GetJiggleJointBone2dNode(joint_idx int) NodePath.String {
+	return NodePath.String(class(self).GetJiggleJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
@@ -188,11 +188,11 @@ func New() Instance {
 	return Instance{*(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) TargetNodepath() Path.String {
-	return Path.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNodepath() NodePath.String {
+	return NodePath.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNodepath(value Path.String) {
+func (self Instance) SetTargetNodepath(value NodePath.String) {
 	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 

@@ -1,5 +1,5 @@
-// Package Path provides methods and a type for working with slash-separated paths with selectors.
-package Path
+// Package NodePath provides methods and a type for working with slash-separated paths with colon selectors.
+package NodePath
 
 import (
 	"path"
@@ -8,7 +8,7 @@ import (
 
 // String represents a path to an element within a tree.
 //
-// A path is composed of slash-separated (/) names and period-separated (.) selectors.
+// A path is composed of slash-separated (/) names and colon-separated (:) selectors.
 // ".." and "." are special names. They refer to the parent and the current element
 // respectively.
 //
@@ -21,20 +21,15 @@ import (
 //	"../C"  			  // Points to the sibling element C.
 //	"../.." 		      // Points to the grandparent element.
 //	"/root"     		  // Points to the root element.
-//	".Position"           // Points to this items's position.
-//	".Position.X"         // Points to this items's position in the x axis.
-//	"Camera3D.Rotation.Y" // Points to the child Camera3D and its y rotation.
-//	"/root.Size.X"        // Points to the root Window and its width.
+//	":Position"           // Points to this items's position.
+//	":Position:X"         // Points to this items's position in the x axis.
+//	"Camera3D:Rotation:Y" // Points to the child Camera3D and its y rotation.
+//	"/root:Size:X"        // Points to the root Window and its width.
 type String string
 
 // PrefixedWithSelector returns a copy of this path with a period character (.) prefixed,
 // transforming it to a pure selector with no items (relative to the current item).
-func (s String) PrefixedWithSelector() String { return "." + s } //gd:NodePath.get_as_property_path
-
-// WithoutExtension returns the path before the last period character (.) in the path.
-func (s String) WithoutExtension() String { //gd:String.get_basename
-	return String(strings.TrimSuffix(string(s), path.Ext(string(s))))
-}
+func (s String) PrefixedWithSelector() String { return ":" + s } //gd:NodePath.get_as_property_path
 
 // WithoutSelector returns the path up until the first selector.
 func (s String) WithoutSelector() String { //gd:NodePath.get_concatenated_names
@@ -88,15 +83,8 @@ func (s String) Hash() uint32 { //gd:NodePath.hash
 // This method is the opposite of [String.IsRelative].
 //
 // This includes all paths starting with "res://", "user://", "C:\", "/", etc.
-func (s String) IsAbsolute() bool { //gd:String.is_absolute_path NodePath.is_absolute
+func (s String) IsAbsolute() bool { //gd:NodePath.is_absolute
 	return path.IsAbs(string(s))
-}
-
-// IsRelative returns true if the string is a path, and its starting point is dependent on context.
-// The path could begin from the current directory, or the current Node (if the string is derived from
-// a NodePath), and may sometimes be prefixed with "./". This method is the opposite of [String.IsAbsolute].
-func (s String) IsRelative() bool { //gd:String.is_relative_path
-	return !path.IsAbs(string(s))
 }
 
 // IsEmpty returns true if the paths's length is 0 ("").

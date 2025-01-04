@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
@@ -86,22 +86,22 @@ func (self Instance) TrackGetType(track_idx int) gdclass.AnimationTrackType {
 /*
 Gets the path of a track. For more information on the path format, see [method track_set_path].
 */
-func (self Instance) TrackGetPath(track_idx int) Path.String {
-	return Path.String(class(self).TrackGetPath(gd.Int(track_idx)).String())
+func (self Instance) TrackGetPath(track_idx int) NodePath.String {
+	return NodePath.String(class(self).TrackGetPath(gd.Int(track_idx)).String())
 }
 
 /*
 Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [member AnimationMixer.root_node] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by [code]":"[/code].
 For example, [code]"character/skeleton:ankle"[/code] or [code]"character/mesh:transform/local"[/code].
 */
-func (self Instance) TrackSetPath(track_idx int, path Path.String) {
+func (self Instance) TrackSetPath(track_idx int, path NodePath.String) {
 	class(self).TrackSetPath(gd.Int(track_idx), gd.NewString(string(path)).NodePath())
 }
 
 /*
 Returns the index of the specified track. If the track is not found, return -1.
 */
-func (self Instance) FindTrack(path Path.String, atype gdclass.AnimationTrackType) int {
+func (self Instance) FindTrack(path NodePath.String, atype gdclass.AnimationTrackType) int {
 	return int(int(class(self).FindTrack(gd.NewString(string(path)).NodePath(), atype)))
 }
 

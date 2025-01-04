@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -52,19 +52,19 @@ func New() Instance {
 	return Instance{*(*gdclass.Joint3D)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) NodeA() Path.String {
-	return Path.String(class(self).GetNodeA().String())
+func (self Instance) NodeA() NodePath.String {
+	return NodePath.String(class(self).GetNodeA().String())
 }
 
-func (self Instance) SetNodeA(value Path.String) {
+func (self Instance) SetNodeA(value NodePath.String) {
 	class(self).SetNodeA(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) NodeB() Path.String {
-	return Path.String(class(self).GetNodeB().String())
+func (self Instance) NodeB() NodePath.String {
+	return NodePath.String(class(self).GetNodeB().String())
 }
 
-func (self Instance) SetNodeB(value Path.String) {
+func (self Instance) SetNodeB(value NodePath.String) {
 	class(self).SetNodeB(gd.NewString(string(value)).NodePath())
 }
 

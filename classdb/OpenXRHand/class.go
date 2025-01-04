@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -63,11 +63,11 @@ func (self Instance) SetMotionRange(value gdclass.OpenXRHandMotionRange) {
 	class(self).SetMotionRange(value)
 }
 
-func (self Instance) HandSkeleton() Path.String {
-	return Path.String(class(self).GetHandSkeleton().String())
+func (self Instance) HandSkeleton() NodePath.String {
+	return NodePath.String(class(self).GetHandSkeleton().String())
 }
 
-func (self Instance) SetHandSkeleton(value Path.String) {
+func (self Instance) SetHandSkeleton(value NodePath.String) {
 	class(self).SetHandSkeleton(gd.NewString(string(value)).NodePath())
 }
 

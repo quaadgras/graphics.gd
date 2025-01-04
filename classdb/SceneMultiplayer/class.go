@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/MultiplayerAPI"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Float"
 
@@ -92,11 +92,11 @@ func New() Instance {
 	return Instance{*(*gdclass.SceneMultiplayer)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) RootPath() Path.String {
-	return Path.String(class(self).GetRootPath().String())
+func (self Instance) RootPath() NodePath.String {
+	return NodePath.String(class(self).GetRootPath().String())
 }
 
-func (self Instance) SetRootPath(value Path.String) {
+func (self Instance) SetRootPath(value NodePath.String) {
 	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
 }
 

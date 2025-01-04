@@ -13,7 +13,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/Basis"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -439,11 +439,11 @@ func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
-func (self Instance) VisibilityParent() Path.String {
-	return Path.String(class(self).GetVisibilityParent().String())
+func (self Instance) VisibilityParent() NodePath.String {
+	return NodePath.String(class(self).GetVisibilityParent().String())
 }
 
-func (self Instance) SetVisibilityParent(value Path.String) {
+func (self Instance) SetVisibilityParent(value NodePath.String) {
 	class(self).SetVisibilityParent(gd.NewString(string(value)).NodePath())
 }
 

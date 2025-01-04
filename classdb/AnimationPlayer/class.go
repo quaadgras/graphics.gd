@@ -11,7 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -186,15 +186,15 @@ func (self Instance) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodC
 /*
 Sets the node which node path references will travel from.
 */
-func (self Instance) SetRoot(path Path.String) {
+func (self Instance) SetRoot(path NodePath.String) {
 	class(self).SetRoot(gd.NewString(string(path)).NodePath())
 }
 
 /*
 Returns the node which node path references will travel from.
 */
-func (self Instance) GetRoot() Path.String {
-	return Path.String(class(self).GetRoot().String())
+func (self Instance) GetRoot() NodePath.String {
+	return NodePath.String(class(self).GetRoot().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

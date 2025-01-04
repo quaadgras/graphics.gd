@@ -14,7 +14,7 @@ import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 
@@ -145,11 +145,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) ParentCollisionIgnore() Path.String {
-	return Path.String(class(self).GetParentCollisionIgnore().String())
+func (self Instance) ParentCollisionIgnore() NodePath.String {
+	return NodePath.String(class(self).GetParentCollisionIgnore().String())
 }
 
-func (self Instance) SetParentCollisionIgnore(value Path.String) {
+func (self Instance) SetParentCollisionIgnore(value NodePath.String) {
 	class(self).SetParentCollisionIgnore(gd.NewString(string(value)).NodePath())
 }
 

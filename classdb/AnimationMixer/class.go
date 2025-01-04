@@ -9,7 +9,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/Float"
@@ -367,19 +367,19 @@ func (self Instance) SetResetOnSave(value bool) {
 	class(self).SetResetOnSaveEnabled(value)
 }
 
-func (self Instance) RootNode() Path.String {
-	return Path.String(class(self).GetRootNode().String())
+func (self Instance) RootNode() NodePath.String {
+	return NodePath.String(class(self).GetRootNode().String())
 }
 
-func (self Instance) SetRootNode(value Path.String) {
+func (self Instance) SetRootNode(value NodePath.String) {
 	class(self).SetRootNode(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) RootMotionTrack() Path.String {
-	return Path.String(class(self).GetRootMotionTrack().String())
+func (self Instance) RootMotionTrack() NodePath.String {
+	return NodePath.String(class(self).GetRootMotionTrack().String())
 }
 
-func (self Instance) SetRootMotionTrack(value Path.String) {
+func (self Instance) SetRootMotionTrack(value NodePath.String) {
 	class(self).SetRootMotionTrack(gd.NewString(string(value)).NodePath())
 }
 

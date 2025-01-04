@@ -13,7 +13,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
@@ -107,11 +107,11 @@ func (self Instance) SetAmountRatio(value Float.X) {
 	class(self).SetAmountRatio(gd.Float(value))
 }
 
-func (self Instance) SubEmitter() Path.String {
-	return Path.String(class(self).GetSubEmitter().String())
+func (self Instance) SubEmitter() NodePath.String {
+	return NodePath.String(class(self).GetSubEmitter().String())
 }
 
-func (self Instance) SetSubEmitter(value Path.String) {
+func (self Instance) SetSubEmitter(value NodePath.String) {
 	class(self).SetSubEmitter(gd.NewString(string(value)).NodePath())
 }
 

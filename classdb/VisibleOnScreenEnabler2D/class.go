@@ -12,7 +12,7 @@ import "graphics.gd/classdb/VisibleOnScreenNotifier2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -56,11 +56,11 @@ func (self Instance) SetEnableMode(value gdclass.VisibleOnScreenEnabler2DEnableM
 	class(self).SetEnableMode(value)
 }
 
-func (self Instance) EnableNodePath() Path.String {
-	return Path.String(class(self).GetEnableNodePath().String())
+func (self Instance) EnableNodePath() NodePath.String {
+	return NodePath.String(class(self).GetEnableNodePath().String())
 }
 
-func (self Instance) SetEnableNodePath(value Path.String) {
+func (self Instance) SetEnableNodePath(value NodePath.String) {
 	class(self).SetEnableNodePath(gd.NewString(string(value)).NodePath())
 }
 

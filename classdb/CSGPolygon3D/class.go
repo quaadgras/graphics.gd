@@ -16,7 +16,7 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -91,11 +91,11 @@ func (self Instance) SetSpinSides(value int) {
 	class(self).SetSpinSides(gd.Int(value))
 }
 
-func (self Instance) PathNode() Path.String {
-	return Path.String(class(self).GetPathNode().String())
+func (self Instance) PathNode() NodePath.String {
+	return NodePath.String(class(self).GetPathNode().String())
 }
 
-func (self Instance) SetPathNode(value Path.String) {
+func (self Instance) SetPathNode(value NodePath.String) {
 	class(self).SetPathNode(gd.NewString(string(value)).NodePath())
 }
 

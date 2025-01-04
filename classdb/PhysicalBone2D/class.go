@@ -14,7 +14,7 @@ import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -64,11 +64,11 @@ func New() Instance {
 	return Instance{*(*gdclass.PhysicalBone2D)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) Bone2dNodepath() Path.String {
-	return Path.String(class(self).GetBone2dNodepath().String())
+func (self Instance) Bone2dNodepath() NodePath.String {
+	return NodePath.String(class(self).GetBone2dNodepath().String())
 }
 
-func (self Instance) SetBone2dNodepath(value Path.String) {
+func (self Instance) SetBone2dNodepath(value NodePath.String) {
 	class(self).SetBone2dNodepath(gd.NewString(string(value)).NodePath())
 }
 

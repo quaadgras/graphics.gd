@@ -122,10 +122,8 @@ func importsVariant(class gdjson.Class, identifier, s string) string {
 	case "Float", "float":
 		return "graphics.gd/variant/Float"
 	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":
+		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
 		return "graphics.gd/variant/" + s
-	case "NodePath":
-		return "graphics.gd/variant/Path"
 	case "RID":
 		if class.Name == "Resource" {
 			return ""
@@ -326,7 +324,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 	case "Color":
 		return "Color.RGBA"
 	case "NodePath":
-		return "Path.String"
+		return "NodePath.String"
 	case "RID":
 		if class.Name == "Resource" {
 			return "ID"

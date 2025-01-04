@@ -11,7 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -53,11 +53,11 @@ func New() Instance {
 	return Instance{*(*gdclass.RemoteTransform2D)(unsafe.Pointer(&object))}
 }
 
-func (self Instance) RemotePath() Path.String {
-	return Path.String(class(self).GetRemoteNode().String())
+func (self Instance) RemotePath() NodePath.String {
+	return NodePath.String(class(self).GetRemoteNode().String())
 }
 
-func (self Instance) SetRemotePath(value Path.String) {
+func (self Instance) SetRemotePath(value NodePath.String) {
 	class(self).SetRemoteNode(gd.NewString(string(value)).NodePath())
 }
 

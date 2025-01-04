@@ -12,7 +12,7 @@ import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -143,11 +143,11 @@ func (self Instance) SetMagnet(value Vector3.XYZ) {
 	class(self).SetMagnetPosition(gd.Vector3(value))
 }
 
-func (self Instance) TargetNode() Path.String {
-	return Path.String(class(self).GetTargetNode().String())
+func (self Instance) TargetNode() NodePath.String {
+	return NodePath.String(class(self).GetTargetNode().String())
 }
 
-func (self Instance) SetTargetNode(value Path.String) {
+func (self Instance) SetTargetNode(value NodePath.String) {
 	class(self).SetTargetNode(gd.NewString(string(value)).NodePath())
 }
 

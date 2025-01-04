@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
 var _ unsafe.Pointer
@@ -31,15 +31,15 @@ type Any interface {
 Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
-func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node Path.String) {
+func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node NodePath.String) {
 	class(self).SetPhysicalBoneNode(gd.Int(joint_idx), gd.NewString(string(physicalbone2d_node)).NodePath())
 }
 
 /*
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
-func (self Instance) GetPhysicalBoneNode(joint_idx int) Path.String {
-	return Path.String(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
+func (self Instance) GetPhysicalBoneNode(joint_idx int) NodePath.String {
+	return NodePath.String(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
 }
 
 /*

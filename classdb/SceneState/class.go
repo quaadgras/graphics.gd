@@ -8,7 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
-import "graphics.gd/variant/Path"
+import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
@@ -53,15 +53,15 @@ func (self Instance) GetNodeName(idx int) string {
 Returns the path to the node at [param idx].
 If [param for_parent] is [code]true[/code], returns the path of the [param idx] node's parent instead.
 */
-func (self Instance) GetNodePath(idx int) Path.String {
-	return Path.String(class(self).GetNodePath(gd.Int(idx), false).String())
+func (self Instance) GetNodePath(idx int) NodePath.String {
+	return NodePath.String(class(self).GetNodePath(gd.Int(idx), false).String())
 }
 
 /*
 Returns the path to the owner of the node at [param idx], relative to the root node.
 */
-func (self Instance) GetNodeOwnerPath(idx int) Path.String {
-	return Path.String(class(self).GetNodeOwnerPath(gd.Int(idx)).String())
+func (self Instance) GetNodeOwnerPath(idx int) NodePath.String {
+	return NodePath.String(class(self).GetNodeOwnerPath(gd.Int(idx)).String())
 }
 
 /*
@@ -132,8 +132,8 @@ func (self Instance) GetConnectionCount() int {
 /*
 Returns the path to the node that owns the signal at [param idx], relative to the root node.
 */
-func (self Instance) GetConnectionSource(idx int) Path.String {
-	return Path.String(class(self).GetConnectionSource(gd.Int(idx)).String())
+func (self Instance) GetConnectionSource(idx int) NodePath.String {
+	return NodePath.String(class(self).GetConnectionSource(gd.Int(idx)).String())
 }
 
 /*
@@ -146,8 +146,8 @@ func (self Instance) GetConnectionSignal(idx int) string {
 /*
 Returns the path to the node that owns the method connected to the signal at [param idx], relative to the root node.
 */
-func (self Instance) GetConnectionTarget(idx int) Path.String {
-	return Path.String(class(self).GetConnectionTarget(gd.Int(idx)).String())
+func (self Instance) GetConnectionTarget(idx int) NodePath.String {
+	return NodePath.String(class(self).GetConnectionTarget(gd.Int(idx)).String())
 }
 
 /*

@@ -141,7 +141,7 @@ func work() error {
 	if err := extractPkg(".", tags); err != nil {
 		return xray.New(err)
 	}
-	if err := extractPkg("./objects", tags); err != nil {
+	if err := extractPkg("./classdb", tags); err != nil {
 		return xray.New(err)
 	}
 	if err := extractFromPackages("./variant/", tags); err != nil {
