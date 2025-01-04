@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"structs"
 	"sync"
 	"unsafe"
 
@@ -115,10 +116,14 @@ func UnsafeSet[T any](frame UnsafeBack, value T) {
 }
 
 type AudioFrame struct {
+	_ structs.HostLayout
+
 	Left, Right float32
 }
 
 type PhysicsServer2DExtensionMotionResult struct {
+	_ structs.HostLayout
+
 	Travel, Remainder, CollisionPoint, CollisionNormal, ColliderVelocity Vector2
 	CollisionDepth, CollisionSafeFraction, CollisionUnsafeFraction       float32
 	CollisionLocalShape                                                  int32
@@ -128,6 +133,8 @@ type PhysicsServer2DExtensionMotionResult struct {
 }
 
 type PhysicsServer2DExtensionRayResult struct {
+	_ structs.HostLayout
+
 	Position, Normal Vector2
 	RID              RID
 	ColliderID       uint64
@@ -136,6 +143,8 @@ type PhysicsServer2DExtensionRayResult struct {
 }
 
 type PhysicsServer2DExtensionShapeRestInfo struct {
+	_ structs.HostLayout
+
 	Point, Normal, LinearVelocity Vector2
 	RID                           RID
 	ColliderID                    uint64
@@ -143,6 +152,8 @@ type PhysicsServer2DExtensionShapeRestInfo struct {
 }
 
 type PhysicsServer2DExtensionShapeResult struct {
+	_ structs.HostLayout
+
 	RID        RID
 	ColliderID uint64
 	Collider   *Object
@@ -150,6 +161,8 @@ type PhysicsServer2DExtensionShapeResult struct {
 }
 
 type PhysicsServer3DExtensionRayResult struct {
+	_ structs.HostLayout
+
 	Position, Normal Vector3
 	RID              RID
 	ColliderID       uint64
@@ -157,12 +170,16 @@ type PhysicsServer3DExtensionRayResult struct {
 	Shape            int32
 }
 type PhysicsServer3DExtensionShapeResult struct {
+	_ structs.HostLayout
+
 	RID        RID
 	ColliderID uint64
 	Collider   uintptr
 	Shape      int32
 }
 type PhysicsServer3DExtensionShapeRestInfo struct {
+	_ structs.HostLayout
+
 	Point, Normal  Vector3
 	RID            RID
 	ColliderID     uint64
@@ -170,6 +187,8 @@ type PhysicsServer3DExtensionShapeRestInfo struct {
 	LinearVelocity Vector3
 }
 type PhysicsServer3DExtensionMotionCollision struct {
+	_ structs.HostLayout
+
 	Position, Normal        Vector3
 	ColliderVelocity        Vector3
 	ColliderAngularVelocity Vector3
@@ -180,6 +199,8 @@ type PhysicsServer3DExtensionMotionCollision struct {
 	ColliderShape           int32
 }
 type PhysicsServer3DExtensionMotionResult struct {
+	_ structs.HostLayout
+
 	Travel                  Vector3
 	Remainder               Vector3
 	CollisionDepth          float32
@@ -189,6 +210,8 @@ type PhysicsServer3DExtensionMotionResult struct {
 	CollisionCount          int32
 }
 type ScriptLanguageExtensionProfilingInfo struct {
+	_ structs.HostLayout
+
 	Signature    uintptr // StringName.Pointer()
 	CallCount    uint64
 	TotalTime    uint64
@@ -196,6 +219,8 @@ type ScriptLanguageExtensionProfilingInfo struct {
 	InternalTime uint64
 }
 type Glyph struct {
+	_ structs.HostLayout
+
 	Start    int32
 	End      int32
 	Count    uint8
@@ -209,6 +234,8 @@ type Glyph struct {
 	Index    int32
 }
 type CaretInfo struct {
+	_ structs.HostLayout
+
 	LeadingCaret, TrailingCaret Rect2
 
 	LeadingDirection, TrailingDirection uint32
