@@ -1,8 +1,8 @@
 package RID
 
 import (
+	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/objects/Resource"
 )
 
 // New allocates a unique ID which can be used by the implementation to construct an RID.

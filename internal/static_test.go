@@ -3,7 +3,7 @@ package gd_test
 import (
 	"testing"
 
-	"graphics.gd/objects/Image"
+	"graphics.gd/classdb/Image"
 )
 
 func TestStatic(t *testing.T) {

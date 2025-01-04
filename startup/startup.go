@@ -2,19 +2,19 @@
 package startup
 
 import (
-	"graphics.gd/defined"
+	"graphics.gd/classdb"
+	MainLoopClass "graphics.gd/classdb/MainLoop"
+	"graphics.gd/classdb/ProjectSettings"
 	gd "graphics.gd/internal"
-	MainLoopClass "graphics.gd/objects/MainLoop"
-	"graphics.gd/objects/ProjectSettings"
 )
 
-// MainLoop designates the given struct embedding defined.Object[T, MainLoop.Instance]
+// MainLoop designates the given struct embedding classdb.Extension[T, MainLoop.Instance]
 // as the main loop entrypoint. After the graphics engine has started up, it will use
 // the given struct to execute as the main loop. Blocks until the engine shuts down.
-func MainLoop[T defined.ExtensionTo[M], M MainLoopClass.Any]() {
+func MainLoop[T classdb.ExtensionTo[M], M MainLoopClass.Any]() {
 	startupEngine = true
-	defined.InEditor[T]()
-	className := defined.NameFor[T]()
+	classdb.Register[T]()
+	className := classdb.NameFor[T]()
 	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
 	ProjectSettings.SetSetting("application/run/main_loop_type", className)
 	doneInit <- struct{}{}

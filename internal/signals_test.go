@@ -5,12 +5,12 @@ package gd_test
 import (
 	"testing"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects/Node2D"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Node2D"
 )
 
 type CustomSignal struct {
-	defined.Object[CustomSignal, Node2D.Instance]
+	classdb.Extension[CustomSignal, Node2D.Instance]
 
 	HealthChanged chan<- func() (old, new int)
 
@@ -30,7 +30,7 @@ func (c *CustomSignal) TakeDamage(amount int) {
 }
 
 func TestSignals(t *testing.T) {
-	defined.InEditor[CustomSignal]()
+	classdb.Register[CustomSignal]()
 
 	custom := new(CustomSignal)
 	custom.HealthChanged = make(chan func() (int, int), 1)

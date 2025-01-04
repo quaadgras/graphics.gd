@@ -155,7 +155,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 
 		_, ok := classDB[arg.Type]
 		if ok {
-			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[classdb.%v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), expert, arg.Type, i)
+			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[gdclass.%v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), expert, arg.Type, i)
 			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 			continue
 		}
@@ -180,8 +180,8 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	if resultSimple != "" {
 		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
 		if needsLifetime {
-			name := strings.TrimPrefix(resultExpert, "objects.")
-			name = strings.TrimPrefix(name, "[1]classdb.")
+			name := strings.TrimPrefix(resultExpert, "classdb.")
+			name = strings.TrimPrefix(name, "[1]gdclass.")
 			_, ok := classDB[name]
 			if resultExpert == "gd.Object" {
 				ret = fmt.Sprintf("pointers.End(%s)", ret)
@@ -250,7 +250,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(w, "\t\tvar %v = objects.%v{pointers.New[classdb.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
+				fmt.Fprintf(w, "\t\tvar %v = [1]gdclass.%v{pointers.New[gdclass.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
 					fixReserved(arg.Name), arg.Type, i)
 				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
@@ -277,7 +277,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			ret := gdtype.Name(result).ToUnderlying("ret")
 			if isPtr {
-				_, ok := classDB[strings.TrimPrefix(result, "objects.")]
+				_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
 				if ok {
 					ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 				} else {
@@ -369,7 +369,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall(gd.Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
 
 	if isPtr {
-		_, ok := classDB[strings.TrimPrefix(result, "objects.")]
+		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
 		if ok || result == "gd.Object" {
 			if result == "gd.Object" {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
@@ -385,13 +385,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = objects.%s{"+prefix+"PointerWithOwnershipTransferredToGo[classdb.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerWithOwnershipTransferredToGo[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = objects.%s{"+prefix+"PointerLifetimeBoundTo[classdb.%[1]s](self.AsObject(), r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerLifetimeBoundTo[gdclass.%[1]s](self.AsObject(), r_ret.Get())}\n", method.ReturnValue.Type)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = objects.%s{"+prefix+"PointerMustAssertInstanceID[classdb.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerMustAssertInstanceID[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
 				case gdjson.IsTemporaryReference:
-					fmt.Fprintf(w, "\tvar ret = objects.%s{"+prefix+"PointerBorrowedTemporarily[classdb.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerBorrowedTemporarily[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}

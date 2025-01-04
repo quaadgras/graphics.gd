@@ -130,7 +130,7 @@ func importsVariant(class gdjson.Class, identifier, s string) string {
 		if class.Name == "Resource" {
 			return ""
 		}
-		return "graphics.gd/objects/Resource"
+		return "graphics.gd/classdb/Resource"
 	case "Array", "Dictionary", "Signal":
 		return "graphics.gd/variant/" + s
 	case "PackedVector2Array":
@@ -185,7 +185,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	case "enum::GDExtension.InitializationLevel":
 		return maybeInternal("GDExtensionInitializationLevel")
 	case "enum::GDExtensionManager.LoadStatus":
-		return "classdb.GDExtensionManagerLoadStatus"
+		return "gdclass.GDExtensionManagerLoadStatus"
 	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
@@ -216,7 +216,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		gdType = strings.TrimPrefix(gdType, "const")
 
 		if strings.HasSuffix(gdType, "*") {
-			return "*classdb." + gdType[:len(gdType)-1]
+			return "*gdclass." + gdType[:len(gdType)-1]
 		}
 
 		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
@@ -227,7 +227,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 				return "gd." + host + sub
 			}
 			if hasHost {
-				return "classdb." + host + sub
+				return "gdclass." + host + sub
 			} else {
 				return gdType
 			}
@@ -243,7 +243,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if class, ok := classDB[gdType]; ok {
-			return "objects." + class.Name
+			return "[1]gdclass." + class.Name
 		}
 
 		if inCore(gdType) {
@@ -251,7 +251,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		}
 
 		if gdType != "" {
-			return "objects." + gdType
+			return "[1]gdclass." + gdType
 		}
 		return gdType
 	}
@@ -333,7 +333,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return "Resource.ID"
 	case "ObjectID":
-		return "objects.ID"
+		return "Object.ID"
 	case "Signal":
 		return "Signal.Any"
 	case "Dictionary":
@@ -457,8 +457,8 @@ func convertName(fnName string) string {
 func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "[1]")
 	t = strings.TrimPrefix(t, "gd.")
-	t = strings.TrimPrefix(t, "classdb.")
-	t = strings.TrimPrefix(t, "objects.")
+	t = strings.TrimPrefix(t, "gdclass.")
+	t = strings.TrimPrefix(t, "[1]gdclass.")
 	if strings.HasPrefix(t, "ArrayOf") {
 		return "[1]uintptr", true
 	}

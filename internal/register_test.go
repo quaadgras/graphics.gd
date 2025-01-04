@@ -6,20 +6,20 @@ import (
 	"fmt"
 	"testing"
 
-	"graphics.gd/defined"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Node2D"
 	internal "graphics.gd/internal"
-	"graphics.gd/objects/Engine"
-	"graphics.gd/objects/Node"
-	"graphics.gd/objects/Node2D"
 	"graphics.gd/variant/String"
 	"graphics.gd/variant/StringName"
 )
 
 func TestRegister(t *testing.T) {
 	type TestingSimpleClass struct {
-		defined.Object[TestingSimpleClass, Node2D.Advanced]
+		classdb.Extension[TestingSimpleClass, Node2D.Advanced]
 	}
-	defined.InEditor[TestingSimpleClass]()
+	classdb.Register[TestingSimpleClass]()
 
 	if tag := internal.Global.ClassDB.GetClassTag(StringName.New("Node2D")); tag == 0 {
 		t.Fail()
@@ -36,7 +36,7 @@ func TestRegister(t *testing.T) {
 }
 
 type TestingMyClassWithConstants struct {
-	defined.Object[TestingMyClassWithConstants, Node2D.Advanced]
+	classdb.Extension[TestingMyClassWithConstants, Node2D.Advanced]
 }
 
 func (*TestingMyClassWithConstants) OnRegister() {
@@ -50,11 +50,11 @@ func (*TestingMyClassWithConstants) OnRegister() {
 }
 
 func TestRegisterConstants(t *testing.T) {
-	defined.InEditor[TestingMyClassWithConstants]()
+	classdb.Register[TestingMyClassWithConstants]()
 }
 
 type TestingSingleton struct {
-	defined.Object[TestingSingleton, Node.Advanced]
+	classdb.Extension[TestingSingleton, Node.Advanced]
 }
 
 func (TestingSingleton) Ready() {
@@ -62,6 +62,6 @@ func (TestingSingleton) Ready() {
 }
 
 func TestSingleton(t *testing.T) {
-	defined.InEditor[TestingSingleton]()
+	classdb.Register[TestingSingleton]()
 	Engine.Advanced().RegisterSingleton(StringName.New("HelloWorld"), new(TestingSingleton).AsObject())
 }

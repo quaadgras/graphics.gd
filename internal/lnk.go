@@ -3,11 +3,11 @@
 package gd
 
 import (
+	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"unsafe"
-	"fmt"
 
 	"graphics.gd/internal/callframe"
 )

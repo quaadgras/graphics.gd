@@ -24,7 +24,7 @@ func generate() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := os.MkdirAll("./objects", 0755); err != nil {
+	if err := os.MkdirAll("./classdb", 0755); err != nil {
 		return xray.New(err)
 	}
 	var classDB = make(ClassDB)
@@ -64,20 +64,20 @@ func generate() error {
 		mod.IsSingleton = true
 		classDB[class.Name] = mod
 	}
-	file, err := os.Create("./objects/objects.go")
+	file, err := os.Create("./classdb/objects.go")
 	if err != nil {
 		return xray.New(err)
 	}
 	defer file.Close()
-	fmt.Fprintln(file, `package objects`)
+	fmt.Fprintln(file, `package classdb`)
 	fmt.Fprintln(file)
-	fmt.Fprintln(file, `import classdb "graphics.gd/internal/classdb"`)
+	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
 	fmt.Fprintln(file)
 	for _, class := range spec.Classes {
 		if inCore(class.Name) {
 			continue
 		}
-		fmt.Fprintf(file, "type %s = [1]classdb.%[1]s\n", class.Name)
+		fmt.Fprintf(file, "type %s = [1]gdclass.%[1]s\n", class.Name)
 		if err := classDB.generateObjectPackage(class, singletons[class.Name], global_enums); err != nil {
 			return xray.New(err)
 		}
@@ -115,10 +115,10 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 }
 
 func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool, global_enums map[string]gdjson.Enum) error {
-	if err := os.MkdirAll("./objects/"+class.Name, 0755); err != nil {
+	if err := os.MkdirAll("./classdb/"+class.Name, 0755); err != nil {
 		return xray.New(err)
 	}
-	file, err := os.Create("./objects/" + class.Name + "/class.go")
+	file, err := os.Create("./classdb/" + class.Name + "/class.go")
 	if err != nil {
 		return xray.New(err)
 	}
@@ -132,8 +132,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
-	fmt.Fprintln(file, `import "graphics.gd/objects"`)
-	fmt.Fprintln(file, `import classdb "graphics.gd/internal/classdb"`)
+	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Object"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -142,7 +142,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
-			path := fmt.Sprintf("graphics.gd/objects/%s", super.Name)
+			path := fmt.Sprintf("graphics.gd/classdb/%s", super.Name)
 			if !imported[path] {
 				imported[path] = true
 				fmt.Fprintf(file, "import %q\n", path)
@@ -181,8 +181,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 	}
 	fmt.Fprintln(file)
+	fmt.Fprintln(file, "var _ Object.ID")
 	fmt.Fprintln(file, "var _ unsafe.Pointer")
-	fmt.Fprintln(file, "var _ objects.Engine")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Cycle")
@@ -226,14 +226,14 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, "\n*/")
 	}
 	if singleton {
-		fmt.Fprintf(file, "var self objects.%s\n", class.Name)
+		fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var once sync.Once\n")
 		fmt.Fprintf(file, "func singleton() {\n")
 		fmt.Fprintf(file, "\tobj := gd.Global.Object.GetSingleton(gd.Global.Singletons.%s)\n", class.Name)
-		fmt.Fprintf(file, "\tself = *(*objects.%s)(unsafe.Pointer(&obj))\n", class.Name)
+		fmt.Fprintf(file, "\tself = *(*[1]gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
 		fmt.Fprintf(file, "}\n")
 	} else {
-		fmt.Fprintf(file, "type Instance [1]classdb.%s\n", class.Name)
+		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "type Any interface {\n")
 		fmt.Fprintf(file, "\tgd.IsClass\n")
 		fmt.Fprintf(file, "\tAs%s() Instance\n", class.Name)
@@ -260,7 +260,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	} else {
 		fmt.Fprintf(file, "\ntype Advanced = class\n")
 	}
-	fmt.Fprintf(file, "type class [1]classdb.%s\n", class.Name)
+	fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
 	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
 	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	if !singleton {
@@ -325,7 +325,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "}\n")
 	}
 	fmt.Fprintf(file, `func init() {`)
-	fmt.Fprintf(file, `classdb.Register("%s", func(ptr gd.Object) any { return [1]classdb.%[1]s{*(*classdb.%[1]v)(unsafe.Pointer(&ptr))} })`, class.Name)
+	fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return [1]gdclass.%[1]s{*(*gdclass.%[1]v)(unsafe.Pointer(&ptr))} })`, class.Name)
 	fmt.Fprintf(file, "}\n")
 	if class.Name == "DisplayServer" {
 		local_enums["MouseButton"] = true
@@ -345,7 +345,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 	}
 	for _, enum := range class.Enums {
-		generateEnum(file, class.Name, enum, "classdb.")
+		generateEnum(file, class.Name, enum, "gdclass.")
 	}
 	for _, key := range slices.Sorted(maps.Keys(local_enums)) {
 		enum := global_enums[key]
