@@ -33,7 +33,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			}
 			var args []gd.PropertyInfo
 			for i := 0; i < ftype.NumIn(); i++ {
-				vtype, ok := variantTypeOf(ftype.In(i))
+				vtype, ok := gd.VariantTypeOf(ftype.In(i))
 				if ok {
 					args = append(args, gd.PropertyInfo{
 						Type:      vtype,
@@ -51,7 +51,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			if etype.Kind() == reflect.Func {
 				for i := 0; i < etype.NumOut(); i++ {
 					arg := etype.Out(i)
-					vtype, ok := variantTypeOf(arg)
+					vtype, ok := gd.VariantTypeOf(arg)
 					if ok {
 						args = append(args, gd.PropertyInfo{
 							Type:      vtype,
@@ -61,7 +61,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					}
 				}
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
-				vtype, ok := variantTypeOf(etype)
+				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
 					args = append(args, gd.PropertyInfo{
 						Type:      vtype,

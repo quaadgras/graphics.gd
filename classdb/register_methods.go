@@ -93,7 +93,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 	var offset = 0
 	for i := offset; i < method.Type().NumIn(); i++ {
 		rtype := method.Type().In(i)
-		vtype, ok := variantTypeOf(rtype)
+		vtype, ok := gd.VariantTypeOf(rtype)
 		if ok {
 			var value any
 			switch vtype {
@@ -241,7 +241,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 	rrets := method.Call(args)
 	if len(rrets) > 0 {
 		result := rrets[0]
-		vtype, ok := variantTypeOf(result.Type())
+		vtype, ok := gd.VariantTypeOf(result.Type())
 		if !ok {
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", result.Type()))
 		}

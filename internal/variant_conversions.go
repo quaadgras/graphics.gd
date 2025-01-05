@@ -9,6 +9,7 @@ import (
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
 	FloatType "graphics.gd/variant/Float"
+	NodePathType "graphics.gd/variant/NodePath"
 )
 
 // Variant returns a variant from the given value, which must be one of the
@@ -55,6 +56,42 @@ func NewVariant(v any) Variant {
 			var arg = callframe.Arg(frame, pointers.Get(newArray(value)))
 			Global.variant.FromType[TypeArray](ret, arg.Uintptr())
 		}
+	case reflect.Slice:
+		switch value := value.Interface().(type) {
+		case []byte:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedByteSlice(value)))
+			Global.variant.FromType[TypePackedByteArray](ret, arg.Uintptr())
+		case []int32:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedInt32Slice(value)))
+			Global.variant.FromType[TypePackedInt32Array](ret, arg.Uintptr())
+		case []int64:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedInt64Slice(value)))
+			Global.variant.FromType[TypePackedInt64Array](ret, arg.Uintptr())
+		case []float32:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedFloat32Slice(value)))
+			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Uintptr())
+		case []float64:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedFloat64Slice(value)))
+			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Uintptr())
+		case []string:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedStringSlice(value)))
+			Global.variant.FromType[TypePackedStringArray](ret, arg.Uintptr())
+		case []Vector2:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedVector2Slice(value)))
+			Global.variant.FromType[TypePackedVector2Array](ret, arg.Uintptr())
+		case []Vector3:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedVector3Slice(value)))
+			Global.variant.FromType[TypePackedVector3Array](ret, arg.Uintptr())
+		case []Color:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedColorSlice(value)))
+			Global.variant.FromType[TypePackedColorArray](ret, arg.Uintptr())
+		case []Vector4:
+			var arg = callframe.Arg(frame, pointers.Get(NewPackedVector4Slice(value)))
+			Global.variant.FromType[TypePackedVector4Array](ret, arg.Uintptr())
+		default:
+			var arg = callframe.Arg(frame, pointers.Get(newArray(reflect.ValueOf(value))))
+			Global.variant.FromType[TypeArray](ret, arg.Uintptr())
+		}
 	case reflect.Func:
 		if value.IsNil() {
 			return Global.Variants.NewNil()
@@ -68,9 +105,16 @@ func NewVariant(v any) Variant {
 		var arg = callframe.Arg(frame, pointers.Get(newDictionary(value)))
 		Global.variant.FromType[TypeDictionary](ret, arg.Uintptr())
 	case reflect.String:
-		var s = NewString(value.String())
-		var arg = callframe.Arg(frame, pointers.Get(s))
-		Global.variant.FromType[TypeString](ret, arg.Uintptr())
+		switch rtype {
+		case reflect.TypeFor[NodePathType.String]():
+			var s = NewString(value.String()).NodePath()
+			var arg = callframe.Arg(frame, pointers.Get(s))
+			Global.variant.FromType[TypeNodePath](ret, arg.Uintptr())
+		default:
+			var s = NewString(value.String())
+			var arg = callframe.Arg(frame, pointers.Get(s))
+			Global.variant.FromType[TypeString](ret, arg.Uintptr())
+		}
 	case reflect.Struct:
 		switch val := v.(type) {
 		case Variant:
@@ -257,7 +301,12 @@ func newDictionary(val reflect.Value) Dictionary {
 }
 
 func newArray(val reflect.Value) Array {
+	vtype, ok := VariantTypeOf(val.Type().Elem())
+	if !ok {
+		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
+	}
 	var array = NewArray()
+	Global.Array.SetTyped(array, vtype, StringName{}, Object{})
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))

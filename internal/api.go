@@ -13,6 +13,10 @@ import (
 
 type VariantType int
 
+func (t VariantType) String() string {
+	return Global.Variants.GetTypeName(t).String()
+}
+
 // API specification for Godot's GDExtension.
 type API struct {
 	api.Specification

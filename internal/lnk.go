@@ -188,7 +188,7 @@ func (Godot *API) linkTypesetDestruct() {
 }
 
 func (Godot *API) linkVariant() {
-	for i := VariantType(1); i < TypeMax-1; i++ {
+	for i := VariantType(1); i < TypeMax; i++ {
 		Godot.variant.FromType[i] = Godot.Variants.FromTypeConstructor(i)
 		Godot.variant.IntoType[i] = Godot.Variants.ToTypeConstructor(i)
 	}
