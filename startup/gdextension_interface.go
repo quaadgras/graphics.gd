@@ -428,7 +428,6 @@ import "C"
 
 import (
 	"errors"
-	"fmt"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -2586,7 +2585,6 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 
 //export method_ptrcall
 func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
-	fmt.Println(p_method)
 	method := cgo.Handle(p_method).Value().(*gd.Method)
 	method.PointerCall(cgo.Handle(p_instance).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
 }

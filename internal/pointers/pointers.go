@@ -26,6 +26,7 @@
 //	Use(ptr) // refreshes a [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
 //	Pin(ptr) // pin a [New] pointer, so that it will be available for use until the next call to [Free]
 //	Bad(ptr) // returns true if the pointer is nil, or freed.
+//	Lay(ptr) // converts a [New] pointer to a [Let] pointer.
 //
 // [Cycle] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
 // will eventually have their [Free] method called as long as the program continues to construct new pointers of the same types.
@@ -427,6 +428,31 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 		panic("expired pointer")
 	}
 	arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.pinned()))
+	return ptr
+}
+
+// Lay the pointer, preventing the free operation from being called on it (it can still expire).
+func Lay[T Generic[T, P], P Size](ptr T) T {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uintptr
+		revision revision
+		checksum P
+	})(ptr)
+	if p.revision == 0 {
+		panic("cannot let a nil pointer")
+	}
+	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	if !rev.matches(p.revision) {
+		panic("expired pointer")
+	}
+	if arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+		arr[addr+offsetFreeFunc].Store(0)
+		arr[addr+offsetRevision].Store(uintptr(rev.active()))
+	}
 	return ptr
 }
 

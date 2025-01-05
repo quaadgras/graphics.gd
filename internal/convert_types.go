@@ -60,9 +60,9 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
 	case reflect.Array:
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
+			*(*Object)(obj.UnsafePointer()) = reflect.ValueOf(value).Index(0).Interface().(IsClass).AsObject()
 			return obj.Elem(), nil
 		}
 		return convertToGoArrayOf(rtype.Elem(), value)

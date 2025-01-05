@@ -44,8 +44,8 @@ func NewVariant(v any) Variant {
 		})
 		Global.variant.FromType[TypeVector2](ret, arg.Uintptr())
 	case reflect.Array:
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			obj := value.Interface().(IsClass).AsObject()
+		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			obj := value.Index(0).Interface().(IsClass).AsObject()
 			if pointers.Get(obj) == ([3]uintptr{}) {
 				return Global.Variants.NewNil()
 			}
@@ -272,7 +272,7 @@ func (variant Variant) Interface() any {
 	case TypeNil:
 		return nil
 	case TypeBool:
-		return variantAsValueType[bool](variant, vtype)
+		return Bool(variantAsValueType[bool](variant, vtype))
 	case TypeInt:
 		return variantAsValueType[Int](variant, vtype)
 	case TypeFloat:

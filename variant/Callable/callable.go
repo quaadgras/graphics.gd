@@ -23,8 +23,8 @@ type Any = gd.Callable
 // New returns a new [Func] from the given value, if the value is not a Go func
 // then it will be wrapped as if it were a function without any arguments that
 // returns the specified value.
-func New(value any) Func {
-	return &local{value: value}
+func New(value any) Any {
+	return gd.NewCallable(value)
 }
 
 type local struct {
@@ -99,9 +99,9 @@ func Call(fn Func, args ...any) any { //gd:Callable.call Callable.call_deferred 
 }
 
 // Create creates a new Callable for the method named method in the specified value.
-func Create(value any, method string) Func { //gd:Callable.create
+func Create(value any, method string) Any { //gd:Callable.create
 	if value == nil {
-		return nil
+		return Any{}
 	}
 	return New(reflect.ValueOf(value).MethodByName(method).Interface())
 }

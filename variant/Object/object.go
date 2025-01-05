@@ -95,6 +95,7 @@ func (obj Instance) SetMessageTranslation(enable bool) {
 // If a script already exists, its instance is detached, and its property values and state are lost. Built-in
 // property values are still kept.
 func (obj Instance) SetScript(script [1]gdclass.Script) {
+	gd.PointerWithOwnershipTransferredToGodot(script[0])
 	obj[0].SetScript(gd.NewVariant(script))
 }
 
