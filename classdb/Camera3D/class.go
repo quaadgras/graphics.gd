@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Projection"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -177,11 +179,11 @@ func (self Instance) GetCullMaskValue(layer_number int) bool {
 type Advanced = class
 type class [1]gdclass.Camera3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -869,14 +871,14 @@ func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsa
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}
 }
 func init() {

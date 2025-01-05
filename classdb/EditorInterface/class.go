@@ -9,10 +9,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -298,7 +300,7 @@ func _on_property_selected(property_path):
 
 [/codeblock]
 */
-func PopupPropertySelector(obj gd.Object, callback func(selected NodePath.String)) {
+func PopupPropertySelector(obj Object.Instance, callback func(selected NodePath.String)) {
 	once.Do(singleton)
 	class(self).PopupPropertySelector(obj, gd.NewCallable(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
 }
@@ -356,7 +358,7 @@ func GetInspector() [1]gdclass.EditorInspector {
 /*
 Shows the given property on the given [param object] in the editor's Inspector dock. If [param inspector_only] is [code]true[/code], plugins will not attempt to edit [param object].
 */
-func InspectObject(obj gd.Object) {
+func InspectObject(obj Object.Instance) {
 	once.Do(singleton)
 	class(self).InspectObject(obj, gd.NewString(""), false)
 }
@@ -502,7 +504,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.EditorInterface
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -928,9 +930,9 @@ func _on_property_selected(property_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupPropertySelector(obj gd.Object, callback gd.Callable, type_filter gd.PackedInt32Array) {
+func (self class) PopupPropertySelector(obj [1]gd.Object, callback gd.Callable, type_filter gd.PackedInt32Array) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, pointers.Get(type_filter))
 	var r_ret callframe.Nil
@@ -1021,9 +1023,9 @@ func (self class) GetInspector() [1]gdclass.EditorInspector {
 Shows the given property on the given [param object] in the editor's Inspector dock. If [param inspector_only] is [code]true[/code], plugins will not attempt to edit [param object].
 */
 //go:nosplit
-func (self class) InspectObject(obj gd.Object, for_property gd.String, inspector_only bool) {
+func (self class) InspectObject(obj [1]gd.Object, for_property gd.String, inspector_only bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(for_property))
 	callframe.Arg(frame, inspector_only)
 	var r_ret callframe.Nil
@@ -1260,7 +1262,7 @@ func (self class) IsMovieMakerEnabled() bool {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

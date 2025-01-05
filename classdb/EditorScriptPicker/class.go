@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/EditorResourcePicker"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
@@ -17,6 +18,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -36,11 +38,11 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.EditorScriptPicker
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -60,7 +62,7 @@ func (self Instance) SetScriptOwner(value [1]gdclass.Node) {
 //go:nosplit
 func (self class) SetScriptOwner(owner_node [1]gdclass.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScriptPicker.Bind_set_script_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -117,14 +119,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsEditorResourcePicker(), name)
+		return gd.VirtualByName(EditorResourcePicker.Advanced(self.AsEditorResourcePicker()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsEditorResourcePicker(), name)
+		return gd.VirtualByName(EditorResourcePicker.Instance(self.AsEditorResourcePicker()), name)
 	}
 }
 func init() {

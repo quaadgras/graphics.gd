@@ -6,7 +6,6 @@ package gdclass
 import "reflect"
 import "unsafe"
 import "graphics.gd/internal/pointers"
-import gd "graphics.gd/internal"
 
 type AESContextMode int64
 type AESContext pointers.Trio[AESContext]
@@ -14,7 +13,7 @@ type AESContext pointers.Trio[AESContext]
 func (self AESContext) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AESContext) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AESContext) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AESContext) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -23,7 +22,7 @@ type AStar2D pointers.Trio[AStar2D]
 func (self AStar2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AStar2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AStar2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AStar2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -32,7 +31,7 @@ type AStar3D pointers.Trio[AStar3D]
 func (self AStar3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AStar3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AStar3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AStar3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -46,7 +45,7 @@ type AStarGrid2D pointers.Trio[AStarGrid2D]
 func (self AStarGrid2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AStarGrid2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AStarGrid2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AStarGrid2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -55,7 +54,7 @@ type AcceptDialog pointers.Trio[AcceptDialog]
 func (self AcceptDialog) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AcceptDialog) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AcceptDialog) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AcceptDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -64,7 +63,7 @@ type AnimatableBody2D pointers.Trio[AnimatableBody2D]
 func (self AnimatableBody2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimatableBody2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimatableBody2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimatableBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -73,7 +72,7 @@ type AnimatableBody3D pointers.Trio[AnimatableBody3D]
 func (self AnimatableBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimatableBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimatableBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimatableBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -82,7 +81,7 @@ type AnimatedSprite2D pointers.Trio[AnimatedSprite2D]
 func (self AnimatedSprite2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimatedSprite2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimatedSprite2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimatedSprite2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -91,7 +90,7 @@ type AnimatedSprite3D pointers.Trio[AnimatedSprite3D]
 func (self AnimatedSprite3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimatedSprite3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimatedSprite3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimatedSprite3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -100,7 +99,7 @@ type AnimatedTexture pointers.Trio[AnimatedTexture]
 func (self AnimatedTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimatedTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimatedTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimatedTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -120,7 +119,7 @@ type Animation pointers.Trio[Animation]
 func (self Animation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Animation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Animation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Animation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -129,7 +128,7 @@ type AnimationLibrary pointers.Trio[AnimationLibrary]
 func (self AnimationLibrary) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationLibrary) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationLibrary) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationLibrary) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -143,7 +142,7 @@ type AnimationMixer pointers.Trio[AnimationMixer]
 func (self AnimationMixer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationMixer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationMixer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationMixer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -153,7 +152,7 @@ type AnimationNode pointers.Trio[AnimationNode]
 func (self AnimationNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -162,7 +161,7 @@ type AnimationNodeAdd2 pointers.Trio[AnimationNodeAdd2]
 func (self AnimationNodeAdd2) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeAdd2) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeAdd2) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeAdd2) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -171,7 +170,7 @@ type AnimationNodeAdd3 pointers.Trio[AnimationNodeAdd3]
 func (self AnimationNodeAdd3) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeAdd3) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeAdd3) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeAdd3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -181,7 +180,9 @@ type AnimationNodeAnimation pointers.Trio[AnimationNodeAnimation]
 func (self AnimationNodeAnimation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeAnimation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeAnimation) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AnimationNodeAnimation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -190,7 +191,7 @@ type AnimationNodeBlend2 pointers.Trio[AnimationNodeBlend2]
 func (self AnimationNodeBlend2) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeBlend2) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeBlend2) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeBlend2) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -199,7 +200,7 @@ type AnimationNodeBlend3 pointers.Trio[AnimationNodeBlend3]
 func (self AnimationNodeBlend3) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeBlend3) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeBlend3) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeBlend3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -209,8 +210,8 @@ type AnimationNodeBlendSpace1D pointers.Trio[AnimationNodeBlendSpace1D]
 func (self AnimationNodeBlendSpace1D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeBlendSpace1D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AnimationNodeBlendSpace1D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AnimationNodeBlendSpace1D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -221,8 +222,8 @@ type AnimationNodeBlendSpace2D pointers.Trio[AnimationNodeBlendSpace2D]
 func (self AnimationNodeBlendSpace2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeBlendSpace2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AnimationNodeBlendSpace2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AnimationNodeBlendSpace2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -232,7 +233,9 @@ type AnimationNodeBlendTree pointers.Trio[AnimationNodeBlendTree]
 func (self AnimationNodeBlendTree) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeBlendTree) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeBlendTree) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AnimationNodeBlendTree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -244,7 +247,7 @@ type AnimationNodeOneShot pointers.Trio[AnimationNodeOneShot]
 func (self AnimationNodeOneShot) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeOneShot) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeOneShot) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeOneShot) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -253,7 +256,7 @@ type AnimationNodeOutput pointers.Trio[AnimationNodeOutput]
 func (self AnimationNodeOutput) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeOutput) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeOutput) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -263,8 +266,8 @@ type AnimationNodeStateMachine pointers.Trio[AnimationNodeStateMachine]
 func (self AnimationNodeStateMachine) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeStateMachine) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AnimationNodeStateMachine) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AnimationNodeStateMachine) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -274,8 +277,8 @@ type AnimationNodeStateMachinePlayback pointers.Trio[AnimationNodeStateMachinePl
 func (self AnimationNodeStateMachinePlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeStateMachinePlayback) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AnimationNodeStateMachinePlayback) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AnimationNodeStateMachinePlayback) Virtual(name string) reflect.Value {
@@ -290,8 +293,8 @@ type AnimationNodeStateMachineTransition pointers.Trio[AnimationNodeStateMachine
 func (self AnimationNodeStateMachineTransition) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeStateMachineTransition) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AnimationNodeStateMachineTransition) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AnimationNodeStateMachineTransition) Virtual(name string) reflect.Value {
@@ -303,7 +306,7 @@ type AnimationNodeSub2 pointers.Trio[AnimationNodeSub2]
 func (self AnimationNodeSub2) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeSub2) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeSub2) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeSub2) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -312,7 +315,7 @@ type AnimationNodeSync pointers.Trio[AnimationNodeSync]
 func (self AnimationNodeSync) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeSync) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeSync) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeSync) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -321,7 +324,9 @@ type AnimationNodeTimeScale pointers.Trio[AnimationNodeTimeScale]
 func (self AnimationNodeTimeScale) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeTimeScale) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeTimeScale) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AnimationNodeTimeScale) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -330,7 +335,7 @@ type AnimationNodeTimeSeek pointers.Trio[AnimationNodeTimeSeek]
 func (self AnimationNodeTimeSeek) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeTimeSeek) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeTimeSeek) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationNodeTimeSeek) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -339,7 +344,9 @@ type AnimationNodeTransition pointers.Trio[AnimationNodeTransition]
 func (self AnimationNodeTransition) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationNodeTransition) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationNodeTransition) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AnimationNodeTransition) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -351,7 +358,7 @@ type AnimationPlayer pointers.Trio[AnimationPlayer]
 func (self AnimationPlayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationPlayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationPlayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -360,7 +367,7 @@ type AnimationRootNode pointers.Trio[AnimationRootNode]
 func (self AnimationRootNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationRootNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationRootNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationRootNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -370,7 +377,7 @@ type AnimationTree pointers.Trio[AnimationTree]
 func (self AnimationTree) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AnimationTree) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AnimationTree) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AnimationTree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -380,7 +387,7 @@ type Area2D pointers.Trio[Area2D]
 func (self Area2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Area2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Area2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Area2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -390,7 +397,7 @@ type Area3D pointers.Trio[Area3D]
 func (self Area3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Area3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Area3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Area3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -399,7 +406,7 @@ type ArrayMesh pointers.Trio[ArrayMesh]
 func (self ArrayMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ArrayMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ArrayMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ArrayMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -408,7 +415,7 @@ type ArrayOccluder3D pointers.Trio[ArrayOccluder3D]
 func (self ArrayOccluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ArrayOccluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ArrayOccluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ArrayOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -420,7 +427,7 @@ type AspectRatioContainer pointers.Trio[AspectRatioContainer]
 func (self AspectRatioContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AspectRatioContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AspectRatioContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AspectRatioContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -429,7 +436,7 @@ type AtlasTexture pointers.Trio[AtlasTexture]
 func (self AtlasTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AtlasTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AtlasTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AtlasTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -438,7 +445,7 @@ type AudioBusLayout pointers.Trio[AudioBusLayout]
 func (self AudioBusLayout) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioBusLayout) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioBusLayout) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioBusLayout) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -447,7 +454,7 @@ type AudioEffect pointers.Trio[AudioEffect]
 func (self AudioEffect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -456,7 +463,7 @@ type AudioEffectAmplify pointers.Trio[AudioEffectAmplify]
 func (self AudioEffectAmplify) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectAmplify) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectAmplify) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectAmplify) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -465,8 +472,8 @@ type AudioEffectBandLimitFilter pointers.Trio[AudioEffectBandLimitFilter]
 func (self AudioEffectBandLimitFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectBandLimitFilter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectBandLimitFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectBandLimitFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -476,8 +483,8 @@ type AudioEffectBandPassFilter pointers.Trio[AudioEffectBandPassFilter]
 func (self AudioEffectBandPassFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectBandPassFilter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectBandPassFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectBandPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -487,7 +494,7 @@ type AudioEffectCapture pointers.Trio[AudioEffectCapture]
 func (self AudioEffectCapture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectCapture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectCapture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectCapture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -496,7 +503,7 @@ type AudioEffectChorus pointers.Trio[AudioEffectChorus]
 func (self AudioEffectChorus) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectChorus) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectChorus) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectChorus) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -505,7 +512,7 @@ type AudioEffectCompressor pointers.Trio[AudioEffectCompressor]
 func (self AudioEffectCompressor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectCompressor) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectCompressor) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectCompressor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -514,7 +521,7 @@ type AudioEffectDelay pointers.Trio[AudioEffectDelay]
 func (self AudioEffectDelay) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectDelay) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectDelay) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectDelay) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -524,7 +531,7 @@ type AudioEffectDistortion pointers.Trio[AudioEffectDistortion]
 func (self AudioEffectDistortion) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectDistortion) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectDistortion) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectDistortion) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -533,7 +540,7 @@ type AudioEffectEQ pointers.Trio[AudioEffectEQ]
 func (self AudioEffectEQ) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectEQ) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectEQ) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectEQ) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -542,7 +549,7 @@ type AudioEffectEQ10 pointers.Trio[AudioEffectEQ10]
 func (self AudioEffectEQ10) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectEQ10) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectEQ10) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectEQ10) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -551,7 +558,7 @@ type AudioEffectEQ21 pointers.Trio[AudioEffectEQ21]
 func (self AudioEffectEQ21) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectEQ21) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectEQ21) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectEQ21) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -560,7 +567,7 @@ type AudioEffectEQ6 pointers.Trio[AudioEffectEQ6]
 func (self AudioEffectEQ6) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectEQ6) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectEQ6) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectEQ6) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -570,7 +577,7 @@ type AudioEffectFilter pointers.Trio[AudioEffectFilter]
 func (self AudioEffectFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectFilter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectFilter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -579,7 +586,9 @@ type AudioEffectHardLimiter pointers.Trio[AudioEffectHardLimiter]
 func (self AudioEffectHardLimiter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectHardLimiter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectHardLimiter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioEffectHardLimiter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -588,8 +597,8 @@ type AudioEffectHighPassFilter pointers.Trio[AudioEffectHighPassFilter]
 func (self AudioEffectHighPassFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectHighPassFilter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectHighPassFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectHighPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -599,8 +608,8 @@ type AudioEffectHighShelfFilter pointers.Trio[AudioEffectHighShelfFilter]
 func (self AudioEffectHighShelfFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectHighShelfFilter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectHighShelfFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectHighShelfFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -610,7 +619,7 @@ type AudioEffectInstance pointers.Trio[AudioEffectInstance]
 func (self AudioEffectInstance) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectInstance) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectInstance) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectInstance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -619,7 +628,7 @@ type AudioEffectLimiter pointers.Trio[AudioEffectLimiter]
 func (self AudioEffectLimiter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectLimiter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectLimiter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectLimiter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -628,7 +637,9 @@ type AudioEffectLowPassFilter pointers.Trio[AudioEffectLowPassFilter]
 func (self AudioEffectLowPassFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectLowPassFilter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectLowPassFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioEffectLowPassFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -637,8 +648,8 @@ type AudioEffectLowShelfFilter pointers.Trio[AudioEffectLowShelfFilter]
 func (self AudioEffectLowShelfFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectLowShelfFilter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectLowShelfFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectLowShelfFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -648,7 +659,9 @@ type AudioEffectNotchFilter pointers.Trio[AudioEffectNotchFilter]
 func (self AudioEffectNotchFilter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectNotchFilter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectNotchFilter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioEffectNotchFilter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -657,7 +670,7 @@ type AudioEffectPanner pointers.Trio[AudioEffectPanner]
 func (self AudioEffectPanner) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectPanner) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectPanner) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectPanner) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -666,7 +679,7 @@ type AudioEffectPhaser pointers.Trio[AudioEffectPhaser]
 func (self AudioEffectPhaser) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectPhaser) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectPhaser) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectPhaser) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -676,7 +689,7 @@ type AudioEffectPitchShift pointers.Trio[AudioEffectPitchShift]
 func (self AudioEffectPitchShift) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectPitchShift) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectPitchShift) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectPitchShift) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -685,7 +698,7 @@ type AudioEffectRecord pointers.Trio[AudioEffectRecord]
 func (self AudioEffectRecord) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectRecord) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectRecord) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectRecord) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -694,7 +707,7 @@ type AudioEffectReverb pointers.Trio[AudioEffectReverb]
 func (self AudioEffectReverb) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectReverb) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectReverb) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioEffectReverb) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -704,8 +717,8 @@ type AudioEffectSpectrumAnalyzer pointers.Trio[AudioEffectSpectrumAnalyzer]
 func (self AudioEffectSpectrumAnalyzer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectSpectrumAnalyzer) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectSpectrumAnalyzer) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectSpectrumAnalyzer) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -716,8 +729,8 @@ type AudioEffectSpectrumAnalyzerInstance pointers.Trio[AudioEffectSpectrumAnalyz
 func (self AudioEffectSpectrumAnalyzerInstance) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectSpectrumAnalyzerInstance) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioEffectSpectrumAnalyzerInstance) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioEffectSpectrumAnalyzerInstance) Virtual(name string) reflect.Value {
@@ -729,7 +742,9 @@ type AudioEffectStereoEnhance pointers.Trio[AudioEffectStereoEnhance]
 func (self AudioEffectStereoEnhance) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioEffectStereoEnhance) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioEffectStereoEnhance) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioEffectStereoEnhance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -738,7 +753,7 @@ type AudioListener2D pointers.Trio[AudioListener2D]
 func (self AudioListener2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioListener2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioListener2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioListener2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -747,7 +762,7 @@ type AudioListener3D pointers.Trio[AudioListener3D]
 func (self AudioListener3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioListener3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioListener3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioListener3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -756,7 +771,7 @@ type AudioSample pointers.Trio[AudioSample]
 func (self AudioSample) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioSample) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioSample) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioSample) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -765,7 +780,7 @@ type AudioSamplePlayback pointers.Trio[AudioSamplePlayback]
 func (self AudioSamplePlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioSamplePlayback) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioSamplePlayback) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioSamplePlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -777,7 +792,7 @@ type AudioServer pointers.Trio[AudioServer]
 func (self AudioServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -786,7 +801,7 @@ type AudioStream pointers.Trio[AudioStream]
 func (self AudioStream) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStream) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStream) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStream) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -795,7 +810,7 @@ type AudioStreamGenerator pointers.Trio[AudioStreamGenerator]
 func (self AudioStreamGenerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamGenerator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamGenerator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -804,8 +819,8 @@ type AudioStreamGeneratorPlayback pointers.Trio[AudioStreamGeneratorPlayback]
 func (self AudioStreamGeneratorPlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamGeneratorPlayback) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamGeneratorPlayback) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamGeneratorPlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -822,7 +837,9 @@ type AudioStreamInteractive pointers.Trio[AudioStreamInteractive]
 func (self AudioStreamInteractive) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamInteractive) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamInteractive) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioStreamInteractive) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -831,7 +848,7 @@ type AudioStreamMP3 pointers.Trio[AudioStreamMP3]
 func (self AudioStreamMP3) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamMP3) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamMP3) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamMP3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -840,7 +857,7 @@ type AudioStreamMicrophone pointers.Trio[AudioStreamMicrophone]
 func (self AudioStreamMicrophone) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamMicrophone) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamMicrophone) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamMicrophone) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -849,7 +866,7 @@ type AudioStreamOggVorbis pointers.Trio[AudioStreamOggVorbis]
 func (self AudioStreamOggVorbis) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamOggVorbis) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamOggVorbis) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -858,7 +875,7 @@ type AudioStreamPlayback pointers.Trio[AudioStreamPlayback]
 func (self AudioStreamPlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlayback) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPlayback) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -867,8 +884,8 @@ type AudioStreamPlaybackInteractive pointers.Trio[AudioStreamPlaybackInteractive
 func (self AudioStreamPlaybackInteractive) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackInteractive) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackInteractive) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackInteractive) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -878,8 +895,8 @@ type AudioStreamPlaybackOggVorbis pointers.Trio[AudioStreamPlaybackOggVorbis]
 func (self AudioStreamPlaybackOggVorbis) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackOggVorbis) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackOggVorbis) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -889,8 +906,8 @@ type AudioStreamPlaybackPlaylist pointers.Trio[AudioStreamPlaybackPlaylist]
 func (self AudioStreamPlaybackPlaylist) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackPlaylist) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackPlaylist) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackPlaylist) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -900,8 +917,8 @@ type AudioStreamPlaybackPolyphonic pointers.Trio[AudioStreamPlaybackPolyphonic]
 func (self AudioStreamPlaybackPolyphonic) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackPolyphonic) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackPolyphonic) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackPolyphonic) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -911,8 +928,8 @@ type AudioStreamPlaybackResampled pointers.Trio[AudioStreamPlaybackResampled]
 func (self AudioStreamPlaybackResampled) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackResampled) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackResampled) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackResampled) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -922,8 +939,8 @@ type AudioStreamPlaybackSynchronized pointers.Trio[AudioStreamPlaybackSynchroniz
 func (self AudioStreamPlaybackSynchronized) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaybackSynchronized) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self AudioStreamPlaybackSynchronized) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self AudioStreamPlaybackSynchronized) Virtual(name string) reflect.Value {
@@ -936,7 +953,7 @@ type AudioStreamPlayer pointers.Trio[AudioStreamPlayer]
 func (self AudioStreamPlayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPlayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -945,7 +962,7 @@ type AudioStreamPlayer2D pointers.Trio[AudioStreamPlayer2D]
 func (self AudioStreamPlayer2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlayer2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPlayer2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPlayer2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -957,7 +974,7 @@ type AudioStreamPlayer3D pointers.Trio[AudioStreamPlayer3D]
 func (self AudioStreamPlayer3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlayer3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPlayer3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPlayer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -966,7 +983,7 @@ type AudioStreamPlaylist pointers.Trio[AudioStreamPlaylist]
 func (self AudioStreamPlaylist) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPlaylist) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPlaylist) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPlaylist) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -975,7 +992,7 @@ type AudioStreamPolyphonic pointers.Trio[AudioStreamPolyphonic]
 func (self AudioStreamPolyphonic) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamPolyphonic) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamPolyphonic) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamPolyphonic) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -985,7 +1002,7 @@ type AudioStreamRandomizer pointers.Trio[AudioStreamRandomizer]
 func (self AudioStreamRandomizer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamRandomizer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamRandomizer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamRandomizer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -994,7 +1011,9 @@ type AudioStreamSynchronized pointers.Trio[AudioStreamSynchronized]
 func (self AudioStreamSynchronized) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamSynchronized) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamSynchronized) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self AudioStreamSynchronized) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1006,7 +1025,7 @@ type AudioStreamWAV pointers.Trio[AudioStreamWAV]
 func (self AudioStreamWAV) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self AudioStreamWAV) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self AudioStreamWAV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self AudioStreamWAV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1016,7 +1035,7 @@ type BackBufferCopy pointers.Trio[BackBufferCopy]
 func (self BackBufferCopy) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BackBufferCopy) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BackBufferCopy) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BackBufferCopy) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1028,7 +1047,7 @@ type BaseButton pointers.Trio[BaseButton]
 func (self BaseButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BaseButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BaseButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BaseButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1070,7 +1089,7 @@ type BaseMaterial3D pointers.Trio[BaseMaterial3D]
 func (self BaseMaterial3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BaseMaterial3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BaseMaterial3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BaseMaterial3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1079,7 +1098,7 @@ type BitMap pointers.Trio[BitMap]
 func (self BitMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BitMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BitMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1088,7 +1107,7 @@ type Bone2D pointers.Trio[Bone2D]
 func (self Bone2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Bone2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Bone2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Bone2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1097,7 +1116,7 @@ type BoneAttachment3D pointers.Trio[BoneAttachment3D]
 func (self BoneAttachment3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoneAttachment3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoneAttachment3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoneAttachment3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1106,7 +1125,7 @@ type BoneMap pointers.Trio[BoneMap]
 func (self BoneMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoneMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoneMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoneMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1116,7 +1135,7 @@ type BoxContainer pointers.Trio[BoxContainer]
 func (self BoxContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoxContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoxContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1125,7 +1144,7 @@ type BoxMesh pointers.Trio[BoxMesh]
 func (self BoxMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoxMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoxMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoxMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1134,7 +1153,7 @@ type BoxOccluder3D pointers.Trio[BoxOccluder3D]
 func (self BoxOccluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoxOccluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoxOccluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoxOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1143,7 +1162,7 @@ type BoxShape3D pointers.Trio[BoxShape3D]
 func (self BoxShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self BoxShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self BoxShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self BoxShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1152,7 +1171,7 @@ type Button pointers.Trio[Button]
 func (self Button) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Button) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Button) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Button) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1161,7 +1180,7 @@ type ButtonGroup pointers.Trio[ButtonGroup]
 func (self ButtonGroup) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ButtonGroup) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ButtonGroup) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ButtonGroup) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1177,7 +1196,7 @@ type CPUParticles2D pointers.Trio[CPUParticles2D]
 func (self CPUParticles2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CPUParticles2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CPUParticles2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CPUParticles2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1193,7 +1212,7 @@ type CPUParticles3D pointers.Trio[CPUParticles3D]
 func (self CPUParticles3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CPUParticles3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CPUParticles3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CPUParticles3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1202,7 +1221,7 @@ type CSGBox3D pointers.Trio[CSGBox3D]
 func (self CSGBox3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGBox3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGBox3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGBox3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1211,7 +1230,7 @@ type CSGCombiner3D pointers.Trio[CSGCombiner3D]
 func (self CSGCombiner3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGCombiner3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGCombiner3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGCombiner3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1220,7 +1239,7 @@ type CSGCylinder3D pointers.Trio[CSGCylinder3D]
 func (self CSGCylinder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGCylinder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGCylinder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGCylinder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1229,7 +1248,7 @@ type CSGMesh3D pointers.Trio[CSGMesh3D]
 func (self CSGMesh3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGMesh3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGMesh3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGMesh3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1243,7 +1262,7 @@ type CSGPolygon3D pointers.Trio[CSGPolygon3D]
 func (self CSGPolygon3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGPolygon3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGPolygon3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGPolygon3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1252,7 +1271,7 @@ type CSGPrimitive3D pointers.Trio[CSGPrimitive3D]
 func (self CSGPrimitive3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGPrimitive3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGPrimitive3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGPrimitive3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1262,7 +1281,7 @@ type CSGShape3D pointers.Trio[CSGShape3D]
 func (self CSGShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1271,7 +1290,7 @@ type CSGSphere3D pointers.Trio[CSGSphere3D]
 func (self CSGSphere3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGSphere3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGSphere3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1280,7 +1299,7 @@ type CSGTorus3D pointers.Trio[CSGTorus3D]
 func (self CSGTorus3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CSGTorus3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CSGTorus3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGTorus3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1289,7 +1308,7 @@ type CallbackTweener pointers.Trio[CallbackTweener]
 func (self CallbackTweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CallbackTweener) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CallbackTweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CallbackTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1301,7 +1320,7 @@ type Camera2D pointers.Trio[Camera2D]
 func (self Camera2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Camera2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Camera2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Camera2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1315,7 +1334,7 @@ type Camera3D pointers.Trio[Camera3D]
 func (self Camera3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Camera3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Camera3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Camera3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1324,7 +1343,7 @@ type CameraAttributes pointers.Trio[CameraAttributes]
 func (self CameraAttributes) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraAttributes) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CameraAttributes) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CameraAttributes) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1333,7 +1352,9 @@ type CameraAttributesPhysical pointers.Trio[CameraAttributesPhysical]
 func (self CameraAttributesPhysical) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraAttributesPhysical) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CameraAttributesPhysical) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self CameraAttributesPhysical) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1342,8 +1363,8 @@ type CameraAttributesPractical pointers.Trio[CameraAttributesPractical]
 func (self CameraAttributesPractical) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraAttributesPractical) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self CameraAttributesPractical) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self CameraAttributesPractical) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -1356,7 +1377,7 @@ type CameraFeed pointers.Trio[CameraFeed]
 func (self CameraFeed) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraFeed) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CameraFeed) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CameraFeed) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1366,7 +1387,7 @@ type CameraServer pointers.Trio[CameraServer]
 func (self CameraServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CameraServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CameraServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1375,7 +1396,7 @@ type CameraTexture pointers.Trio[CameraTexture]
 func (self CameraTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CameraTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CameraTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CameraTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1384,7 +1405,7 @@ type CanvasGroup pointers.Trio[CanvasGroup]
 func (self CanvasGroup) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasGroup) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasGroup) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasGroup) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1398,7 +1419,7 @@ type CanvasItem pointers.Trio[CanvasItem]
 func (self CanvasItem) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasItem) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasItem) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasItem) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1410,7 +1431,7 @@ type CanvasItemMaterial pointers.Trio[CanvasItemMaterial]
 func (self CanvasItemMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasItemMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasItemMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasItemMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1419,7 +1440,7 @@ type CanvasLayer pointers.Trio[CanvasLayer]
 func (self CanvasLayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasLayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasLayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1428,7 +1449,7 @@ type CanvasModulate pointers.Trio[CanvasModulate]
 func (self CanvasModulate) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasModulate) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasModulate) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasModulate) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1437,7 +1458,7 @@ type CanvasTexture pointers.Trio[CanvasTexture]
 func (self CanvasTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CanvasTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CanvasTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CanvasTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1446,7 +1467,7 @@ type CapsuleMesh pointers.Trio[CapsuleMesh]
 func (self CapsuleMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CapsuleMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CapsuleMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CapsuleMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1455,7 +1476,7 @@ type CapsuleShape2D pointers.Trio[CapsuleShape2D]
 func (self CapsuleShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CapsuleShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CapsuleShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CapsuleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1464,7 +1485,7 @@ type CapsuleShape3D pointers.Trio[CapsuleShape3D]
 func (self CapsuleShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CapsuleShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CapsuleShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CapsuleShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1473,7 +1494,7 @@ type CenterContainer pointers.Trio[CenterContainer]
 func (self CenterContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CenterContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CenterContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CenterContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1482,7 +1503,7 @@ type CharFXTransform pointers.Trio[CharFXTransform]
 func (self CharFXTransform) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CharFXTransform) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CharFXTransform) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CharFXTransform) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1494,7 +1515,7 @@ type CharacterBody2D pointers.Trio[CharacterBody2D]
 func (self CharacterBody2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CharacterBody2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CharacterBody2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CharacterBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1506,7 +1527,7 @@ type CharacterBody3D pointers.Trio[CharacterBody3D]
 func (self CharacterBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CharacterBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CharacterBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CharacterBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1515,7 +1536,7 @@ type CheckBox pointers.Trio[CheckBox]
 func (self CheckBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CheckBox) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CheckBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CheckBox) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1524,7 +1545,7 @@ type CheckButton pointers.Trio[CheckButton]
 func (self CheckButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CheckButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CheckButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CheckButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1533,7 +1554,7 @@ type CircleShape2D pointers.Trio[CircleShape2D]
 func (self CircleShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CircleShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CircleShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CircleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1542,7 +1563,7 @@ type ClassDB pointers.Trio[ClassDB]
 func (self ClassDB) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ClassDB) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ClassDB) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ClassDB) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1554,7 +1575,7 @@ type CodeEdit pointers.Trio[CodeEdit]
 func (self CodeEdit) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CodeEdit) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CodeEdit) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CodeEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1563,7 +1584,7 @@ type CodeHighlighter pointers.Trio[CodeHighlighter]
 func (self CodeHighlighter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CodeHighlighter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CodeHighlighter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CodeHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1573,7 +1594,7 @@ type CollisionObject2D pointers.Trio[CollisionObject2D]
 func (self CollisionObject2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionObject2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionObject2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionObject2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1583,7 +1604,7 @@ type CollisionObject3D pointers.Trio[CollisionObject3D]
 func (self CollisionObject3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionObject3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionObject3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionObject3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1593,7 +1614,7 @@ type CollisionPolygon2D pointers.Trio[CollisionPolygon2D]
 func (self CollisionPolygon2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionPolygon2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionPolygon2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionPolygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1602,7 +1623,7 @@ type CollisionPolygon3D pointers.Trio[CollisionPolygon3D]
 func (self CollisionPolygon3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionPolygon3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionPolygon3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionPolygon3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1611,7 +1632,7 @@ type CollisionShape2D pointers.Trio[CollisionShape2D]
 func (self CollisionShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1620,7 +1641,7 @@ type CollisionShape3D pointers.Trio[CollisionShape3D]
 func (self CollisionShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CollisionShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CollisionShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1632,7 +1653,7 @@ type ColorPicker pointers.Trio[ColorPicker]
 func (self ColorPicker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ColorPicker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ColorPicker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ColorPicker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1641,7 +1662,7 @@ type ColorPickerButton pointers.Trio[ColorPickerButton]
 func (self ColorPickerButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ColorPickerButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ColorPickerButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ColorPickerButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1650,7 +1671,7 @@ type ColorRect pointers.Trio[ColorRect]
 func (self ColorRect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ColorRect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ColorRect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ColorRect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1659,7 +1680,7 @@ type Compositor pointers.Trio[Compositor]
 func (self Compositor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Compositor) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Compositor) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Compositor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1669,7 +1690,7 @@ type CompositorEffect pointers.Trio[CompositorEffect]
 func (self CompositorEffect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompositorEffect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompositorEffect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CompositorEffect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1678,7 +1699,7 @@ type CompressedCubemap pointers.Trio[CompressedCubemap]
 func (self CompressedCubemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedCubemap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedCubemap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CompressedCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1687,7 +1708,9 @@ type CompressedCubemapArray pointers.Trio[CompressedCubemapArray]
 func (self CompressedCubemapArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedCubemapArray) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedCubemapArray) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self CompressedCubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1696,7 +1719,7 @@ type CompressedTexture2D pointers.Trio[CompressedTexture2D]
 func (self CompressedTexture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedTexture2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedTexture2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CompressedTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1705,7 +1728,9 @@ type CompressedTexture2DArray pointers.Trio[CompressedTexture2DArray]
 func (self CompressedTexture2DArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedTexture2DArray) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedTexture2DArray) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self CompressedTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1714,7 +1739,7 @@ type CompressedTexture3D pointers.Trio[CompressedTexture3D]
 func (self CompressedTexture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedTexture3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedTexture3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CompressedTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1723,7 +1748,9 @@ type CompressedTextureLayered pointers.Trio[CompressedTextureLayered]
 func (self CompressedTextureLayered) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CompressedTextureLayered) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CompressedTextureLayered) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self CompressedTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1732,7 +1759,7 @@ type ConcavePolygonShape2D pointers.Trio[ConcavePolygonShape2D]
 func (self ConcavePolygonShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConcavePolygonShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConcavePolygonShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConcavePolygonShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1741,7 +1768,7 @@ type ConcavePolygonShape3D pointers.Trio[ConcavePolygonShape3D]
 func (self ConcavePolygonShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConcavePolygonShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConcavePolygonShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConcavePolygonShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1751,7 +1778,7 @@ type ConeTwistJoint3D pointers.Trio[ConeTwistJoint3D]
 func (self ConeTwistJoint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConeTwistJoint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConeTwistJoint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConeTwistJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1760,7 +1787,7 @@ type ConfigFile pointers.Trio[ConfigFile]
 func (self ConfigFile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConfigFile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConfigFile) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConfigFile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1769,7 +1796,7 @@ type ConfirmationDialog pointers.Trio[ConfirmationDialog]
 func (self ConfirmationDialog) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConfirmationDialog) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConfirmationDialog) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConfirmationDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1778,7 +1805,7 @@ type Container pointers.Trio[Container]
 func (self Container) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Container) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Container) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Container) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1806,7 +1833,7 @@ type Control pointers.Trio[Control]
 func (self Control) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Control) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Control) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Control) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1815,7 +1842,7 @@ type ConvexPolygonShape2D pointers.Trio[ConvexPolygonShape2D]
 func (self ConvexPolygonShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConvexPolygonShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConvexPolygonShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConvexPolygonShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1824,7 +1851,7 @@ type ConvexPolygonShape3D pointers.Trio[ConvexPolygonShape3D]
 func (self ConvexPolygonShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ConvexPolygonShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ConvexPolygonShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ConvexPolygonShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1833,7 +1860,7 @@ type Crypto pointers.Trio[Crypto]
 func (self Crypto) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Crypto) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Crypto) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Crypto) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1842,7 +1869,7 @@ type CryptoKey pointers.Trio[CryptoKey]
 func (self CryptoKey) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CryptoKey) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CryptoKey) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CryptoKey) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1851,7 +1878,7 @@ type Cubemap pointers.Trio[Cubemap]
 func (self Cubemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Cubemap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Cubemap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Cubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1860,7 +1887,7 @@ type CubemapArray pointers.Trio[CubemapArray]
 func (self CubemapArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CubemapArray) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CubemapArray) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1870,7 +1897,7 @@ type Curve pointers.Trio[Curve]
 func (self Curve) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Curve) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Curve) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Curve) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1879,7 +1906,7 @@ type Curve2D pointers.Trio[Curve2D]
 func (self Curve2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Curve2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Curve2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Curve2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1888,7 +1915,7 @@ type Curve3D pointers.Trio[Curve3D]
 func (self Curve3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Curve3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Curve3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Curve3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1898,7 +1925,7 @@ type CurveTexture pointers.Trio[CurveTexture]
 func (self CurveTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CurveTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CurveTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CurveTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1907,7 +1934,7 @@ type CurveXYZTexture pointers.Trio[CurveXYZTexture]
 func (self CurveXYZTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CurveXYZTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CurveXYZTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CurveXYZTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1916,7 +1943,7 @@ type CylinderMesh pointers.Trio[CylinderMesh]
 func (self CylinderMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CylinderMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CylinderMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CylinderMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1925,7 +1952,7 @@ type CylinderShape3D pointers.Trio[CylinderShape3D]
 func (self CylinderShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self CylinderShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self CylinderShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CylinderShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1934,7 +1961,7 @@ type DTLSServer pointers.Trio[DTLSServer]
 func (self DTLSServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DTLSServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DTLSServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DTLSServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1943,7 +1970,7 @@ type DampedSpringJoint2D pointers.Trio[DampedSpringJoint2D]
 func (self DampedSpringJoint2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DampedSpringJoint2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DampedSpringJoint2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DampedSpringJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1953,7 +1980,7 @@ type Decal pointers.Trio[Decal]
 func (self Decal) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Decal) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Decal) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Decal) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1962,7 +1989,7 @@ type DirAccess pointers.Trio[DirAccess]
 func (self DirAccess) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DirAccess) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DirAccess) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DirAccess) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1971,7 +1998,7 @@ type DirectionalLight2D pointers.Trio[DirectionalLight2D]
 func (self DirectionalLight2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DirectionalLight2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DirectionalLight2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DirectionalLight2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -1983,7 +2010,7 @@ type DirectionalLight3D pointers.Trio[DirectionalLight3D]
 func (self DirectionalLight3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DirectionalLight3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DirectionalLight3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DirectionalLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2015,7 +2042,7 @@ type DisplayServer pointers.Trio[DisplayServer]
 func (self DisplayServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self DisplayServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self DisplayServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DisplayServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2029,7 +2056,7 @@ type ENetConnection pointers.Trio[ENetConnection]
 func (self ENetConnection) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ENetConnection) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ENetConnection) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ENetConnection) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2038,7 +2065,7 @@ type ENetMultiplayerPeer pointers.Trio[ENetMultiplayerPeer]
 func (self ENetMultiplayerPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ENetMultiplayerPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ENetMultiplayerPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ENetMultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2050,7 +2077,7 @@ type ENetPacketPeer pointers.Trio[ENetPacketPeer]
 func (self ENetPacketPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ENetPacketPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ENetPacketPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ENetPacketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2059,7 +2086,7 @@ type EditorCommandPalette pointers.Trio[EditorCommandPalette]
 func (self EditorCommandPalette) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorCommandPalette) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorCommandPalette) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorCommandPalette) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2068,7 +2095,7 @@ type EditorDebuggerPlugin pointers.Trio[EditorDebuggerPlugin]
 func (self EditorDebuggerPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorDebuggerPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorDebuggerPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorDebuggerPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2077,7 +2104,7 @@ type EditorDebuggerSession pointers.Trio[EditorDebuggerSession]
 func (self EditorDebuggerSession) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorDebuggerSession) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorDebuggerSession) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorDebuggerSession) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2086,7 +2113,7 @@ type EditorExportPlatform pointers.Trio[EditorExportPlatform]
 func (self EditorExportPlatform) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatform) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorExportPlatform) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorExportPlatform) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2095,8 +2122,8 @@ type EditorExportPlatformAndroid pointers.Trio[EditorExportPlatformAndroid]
 func (self EditorExportPlatformAndroid) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformAndroid) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorExportPlatformAndroid) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorExportPlatformAndroid) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2106,7 +2133,9 @@ type EditorExportPlatformIOS pointers.Trio[EditorExportPlatformIOS]
 func (self EditorExportPlatformIOS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformIOS) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorExportPlatformIOS) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self EditorExportPlatformIOS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2115,8 +2144,8 @@ type EditorExportPlatformLinuxBSD pointers.Trio[EditorExportPlatformLinuxBSD]
 func (self EditorExportPlatformLinuxBSD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformLinuxBSD) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorExportPlatformLinuxBSD) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorExportPlatformLinuxBSD) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2126,8 +2155,8 @@ type EditorExportPlatformMacOS pointers.Trio[EditorExportPlatformMacOS]
 func (self EditorExportPlatformMacOS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformMacOS) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorExportPlatformMacOS) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorExportPlatformMacOS) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2137,7 +2166,9 @@ type EditorExportPlatformPC pointers.Trio[EditorExportPlatformPC]
 func (self EditorExportPlatformPC) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformPC) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorExportPlatformPC) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self EditorExportPlatformPC) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2146,7 +2177,9 @@ type EditorExportPlatformWeb pointers.Trio[EditorExportPlatformWeb]
 func (self EditorExportPlatformWeb) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformWeb) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorExportPlatformWeb) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self EditorExportPlatformWeb) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2155,8 +2188,8 @@ type EditorExportPlatformWindows pointers.Trio[EditorExportPlatformWindows]
 func (self EditorExportPlatformWindows) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlatformWindows) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorExportPlatformWindows) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorExportPlatformWindows) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2166,7 +2199,7 @@ type EditorExportPlugin pointers.Trio[EditorExportPlugin]
 func (self EditorExportPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorExportPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorExportPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorExportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2176,7 +2209,7 @@ type EditorFeatureProfile pointers.Trio[EditorFeatureProfile]
 func (self EditorFeatureProfile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorFeatureProfile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorFeatureProfile) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorFeatureProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2190,7 +2223,7 @@ type EditorFileDialog pointers.Trio[EditorFileDialog]
 func (self EditorFileDialog) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorFileDialog) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorFileDialog) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorFileDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2199,7 +2232,7 @@ type EditorFileSystem pointers.Trio[EditorFileSystem]
 func (self EditorFileSystem) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorFileSystem) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorFileSystem) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorFileSystem) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2208,8 +2241,8 @@ type EditorFileSystemDirectory pointers.Trio[EditorFileSystemDirectory]
 func (self EditorFileSystemDirectory) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorFileSystemDirectory) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorFileSystemDirectory) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorFileSystemDirectory) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2221,8 +2254,8 @@ func (self EditorFileSystemImportFormatSupportQuery) Free() {
 }
 
 //go:nosplit
-func (self EditorFileSystemImportFormatSupportQuery) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorFileSystemImportFormatSupportQuery) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorFileSystemImportFormatSupportQuery) Virtual(name string) reflect.Value {
@@ -2234,7 +2267,7 @@ type EditorImportPlugin pointers.Trio[EditorImportPlugin]
 func (self EditorImportPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorImportPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorImportPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorImportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2243,7 +2276,7 @@ type EditorInspector pointers.Trio[EditorInspector]
 func (self EditorInspector) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorInspector) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorInspector) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorInspector) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2252,7 +2285,7 @@ type EditorInspectorPlugin pointers.Trio[EditorInspectorPlugin]
 func (self EditorInspectorPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorInspectorPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorInspectorPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorInspectorPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2261,7 +2294,7 @@ type EditorInterface pointers.Trio[EditorInterface]
 func (self EditorInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2270,7 +2303,7 @@ type EditorNode3DGizmo pointers.Trio[EditorNode3DGizmo]
 func (self EditorNode3DGizmo) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorNode3DGizmo) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorNode3DGizmo) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorNode3DGizmo) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2279,7 +2312,9 @@ type EditorNode3DGizmoPlugin pointers.Trio[EditorNode3DGizmoPlugin]
 func (self EditorNode3DGizmoPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorNode3DGizmoPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorNode3DGizmoPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self EditorNode3DGizmoPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2288,7 +2323,7 @@ type EditorPaths pointers.Trio[EditorPaths]
 func (self EditorPaths) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorPaths) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorPaths) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorPaths) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2302,7 +2337,7 @@ type EditorPlugin pointers.Trio[EditorPlugin]
 func (self EditorPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorPlugin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorPlugin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2311,7 +2346,7 @@ type EditorProperty pointers.Trio[EditorProperty]
 func (self EditorProperty) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorProperty) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorProperty) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorProperty) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2320,8 +2355,8 @@ type EditorResourceConversionPlugin pointers.Trio[EditorResourceConversionPlugin
 func (self EditorResourceConversionPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorResourceConversionPlugin) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorResourceConversionPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorResourceConversionPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2331,7 +2366,7 @@ type EditorResourcePicker pointers.Trio[EditorResourcePicker]
 func (self EditorResourcePicker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorResourcePicker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorResourcePicker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorResourcePicker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2340,7 +2375,7 @@ type EditorResourcePreview pointers.Trio[EditorResourcePreview]
 func (self EditorResourcePreview) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorResourcePreview) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorResourcePreview) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorResourcePreview) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2349,8 +2384,8 @@ type EditorResourcePreviewGenerator pointers.Trio[EditorResourcePreviewGenerator
 func (self EditorResourcePreviewGenerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorResourcePreviewGenerator) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorResourcePreviewGenerator) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorResourcePreviewGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2360,8 +2395,8 @@ type EditorResourceTooltipPlugin pointers.Trio[EditorResourceTooltipPlugin]
 func (self EditorResourceTooltipPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorResourceTooltipPlugin) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorResourceTooltipPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorResourceTooltipPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2371,8 +2406,8 @@ type EditorSceneFormatImporter pointers.Trio[EditorSceneFormatImporter]
 func (self EditorSceneFormatImporter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSceneFormatImporter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorSceneFormatImporter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorSceneFormatImporter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2382,8 +2417,8 @@ type EditorSceneFormatImporterBlend pointers.Trio[EditorSceneFormatImporterBlend
 func (self EditorSceneFormatImporterBlend) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSceneFormatImporterBlend) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorSceneFormatImporterBlend) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorSceneFormatImporterBlend) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2393,8 +2428,8 @@ type EditorSceneFormatImporterFBX2GLTF pointers.Trio[EditorSceneFormatImporterFB
 func (self EditorSceneFormatImporterFBX2GLTF) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSceneFormatImporterFBX2GLTF) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorSceneFormatImporterFBX2GLTF) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorSceneFormatImporterFBX2GLTF) Virtual(name string) reflect.Value {
@@ -2406,8 +2441,8 @@ type EditorSceneFormatImporterGLTF pointers.Trio[EditorSceneFormatImporterGLTF]
 func (self EditorSceneFormatImporterGLTF) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSceneFormatImporterGLTF) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorSceneFormatImporterGLTF) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorSceneFormatImporterGLTF) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2417,8 +2452,8 @@ type EditorSceneFormatImporterUFBX pointers.Trio[EditorSceneFormatImporterUFBX]
 func (self EditorSceneFormatImporterUFBX) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSceneFormatImporterUFBX) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorSceneFormatImporterUFBX) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorSceneFormatImporterUFBX) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2428,7 +2463,7 @@ type EditorScenePostImport pointers.Trio[EditorScenePostImport]
 func (self EditorScenePostImport) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorScenePostImport) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorScenePostImport) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorScenePostImport) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2438,8 +2473,8 @@ type EditorScenePostImportPlugin pointers.Trio[EditorScenePostImportPlugin]
 func (self EditorScenePostImportPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorScenePostImportPlugin) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorScenePostImportPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorScenePostImportPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2449,7 +2484,7 @@ type EditorScript pointers.Trio[EditorScript]
 func (self EditorScript) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorScript) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorScript) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorScript) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2458,7 +2493,7 @@ type EditorScriptPicker pointers.Trio[EditorScriptPicker]
 func (self EditorScriptPicker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorScriptPicker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorScriptPicker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorScriptPicker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2467,7 +2502,7 @@ type EditorSelection pointers.Trio[EditorSelection]
 func (self EditorSelection) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSelection) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorSelection) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorSelection) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2476,7 +2511,7 @@ type EditorSettings pointers.Trio[EditorSettings]
 func (self EditorSettings) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSettings) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorSettings) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2485,7 +2520,7 @@ type EditorSpinSlider pointers.Trio[EditorSpinSlider]
 func (self EditorSpinSlider) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSpinSlider) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorSpinSlider) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorSpinSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2494,7 +2529,9 @@ type EditorSyntaxHighlighter pointers.Trio[EditorSyntaxHighlighter]
 func (self EditorSyntaxHighlighter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorSyntaxHighlighter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorSyntaxHighlighter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self EditorSyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2503,8 +2540,8 @@ type EditorTranslationParserPlugin pointers.Trio[EditorTranslationParserPlugin]
 func (self EditorTranslationParserPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorTranslationParserPlugin) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self EditorTranslationParserPlugin) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self EditorTranslationParserPlugin) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2515,7 +2552,7 @@ type EditorUndoRedoManager pointers.Trio[EditorUndoRedoManager]
 func (self EditorUndoRedoManager) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorUndoRedoManager) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorUndoRedoManager) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorUndoRedoManager) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2527,7 +2564,7 @@ type EditorVCSInterface pointers.Trio[EditorVCSInterface]
 func (self EditorVCSInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EditorVCSInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EditorVCSInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorVCSInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2536,7 +2573,7 @@ type EncodedObjectAsID pointers.Trio[EncodedObjectAsID]
 func (self EncodedObjectAsID) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EncodedObjectAsID) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EncodedObjectAsID) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EncodedObjectAsID) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2545,7 +2582,7 @@ type Engine pointers.Trio[Engine]
 func (self Engine) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Engine) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Engine) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Engine) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2554,7 +2591,7 @@ type EngineDebugger pointers.Trio[EngineDebugger]
 func (self EngineDebugger) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EngineDebugger) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EngineDebugger) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EngineDebugger) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2563,7 +2600,7 @@ type EngineProfiler pointers.Trio[EngineProfiler]
 func (self EngineProfiler) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self EngineProfiler) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self EngineProfiler) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EngineProfiler) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2585,7 +2622,7 @@ type Environment pointers.Trio[Environment]
 func (self Environment) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Environment) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Environment) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Environment) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2594,7 +2631,7 @@ type Expression pointers.Trio[Expression]
 func (self Expression) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Expression) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Expression) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Expression) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2603,7 +2640,7 @@ type FBXDocument pointers.Trio[FBXDocument]
 func (self FBXDocument) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FBXDocument) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FBXDocument) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FBXDocument) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2612,7 +2649,7 @@ type FBXState pointers.Trio[FBXState]
 func (self FBXState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FBXState) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FBXState) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FBXState) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2632,7 +2669,7 @@ type FastNoiseLite pointers.Trio[FastNoiseLite]
 func (self FastNoiseLite) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FastNoiseLite) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FastNoiseLite) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FastNoiseLite) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2646,7 +2683,7 @@ type FileAccess pointers.Trio[FileAccess]
 func (self FileAccess) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FileAccess) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FileAccess) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FileAccess) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2658,7 +2695,7 @@ type FileDialog pointers.Trio[FileDialog]
 func (self FileDialog) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FileDialog) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FileDialog) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FileDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2667,7 +2704,7 @@ type FileSystemDock pointers.Trio[FileSystemDock]
 func (self FileSystemDock) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FileSystemDock) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FileSystemDock) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FileSystemDock) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2679,7 +2716,7 @@ type FlowContainer pointers.Trio[FlowContainer]
 func (self FlowContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FlowContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FlowContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2688,7 +2725,7 @@ type FogMaterial pointers.Trio[FogMaterial]
 func (self FogMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FogMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FogMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FogMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2697,7 +2734,7 @@ type FogVolume pointers.Trio[FogVolume]
 func (self FogVolume) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FogVolume) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FogVolume) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FogVolume) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2706,7 +2743,7 @@ type Font pointers.Trio[Font]
 func (self Font) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Font) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Font) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Font) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2715,7 +2752,7 @@ type FontFile pointers.Trio[FontFile]
 func (self FontFile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FontFile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FontFile) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FontFile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2724,7 +2761,7 @@ type FontVariation pointers.Trio[FontVariation]
 func (self FontVariation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FontVariation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FontVariation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FontVariation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2733,7 +2770,7 @@ type FramebufferCacheRD pointers.Trio[FramebufferCacheRD]
 func (self FramebufferCacheRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self FramebufferCacheRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self FramebufferCacheRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FramebufferCacheRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2755,7 +2792,7 @@ type GDExtension pointers.Trio[GDExtension]
 func (self GDExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GDExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GDExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GDExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2765,7 +2802,7 @@ type GDExtensionManager pointers.Trio[GDExtensionManager]
 func (self GDExtensionManager) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GDExtensionManager) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GDExtensionManager) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GDExtensionManager) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2774,7 +2811,7 @@ type GDScript pointers.Trio[GDScript]
 func (self GDScript) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GDScript) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GDScript) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GDScript) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2784,7 +2821,7 @@ type GLTFAccessor pointers.Trio[GLTFAccessor]
 func (self GLTFAccessor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFAccessor) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFAccessor) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFAccessor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2793,7 +2830,7 @@ type GLTFAnimation pointers.Trio[GLTFAnimation]
 func (self GLTFAnimation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFAnimation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFAnimation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFAnimation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2802,7 +2839,7 @@ type GLTFBufferView pointers.Trio[GLTFBufferView]
 func (self GLTFBufferView) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFBufferView) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFBufferView) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFBufferView) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2811,7 +2848,7 @@ type GLTFCamera pointers.Trio[GLTFCamera]
 func (self GLTFCamera) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFCamera) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFCamera) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFCamera) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2821,7 +2858,7 @@ type GLTFDocument pointers.Trio[GLTFDocument]
 func (self GLTFDocument) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFDocument) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFDocument) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFDocument) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2830,7 +2867,7 @@ type GLTFDocumentExtension pointers.Trio[GLTFDocumentExtension]
 func (self GLTFDocumentExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFDocumentExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFDocumentExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFDocumentExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2841,8 +2878,8 @@ func (self GLTFDocumentExtensionConvertImporterMesh) Free() {
 }
 
 //go:nosplit
-func (self GLTFDocumentExtensionConvertImporterMesh) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GLTFDocumentExtensionConvertImporterMesh) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GLTFDocumentExtensionConvertImporterMesh) Virtual(name string) reflect.Value {
@@ -2854,7 +2891,7 @@ type GLTFLight pointers.Trio[GLTFLight]
 func (self GLTFLight) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFLight) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFLight) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFLight) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2863,7 +2900,7 @@ type GLTFMesh pointers.Trio[GLTFMesh]
 func (self GLTFMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2872,7 +2909,7 @@ type GLTFNode pointers.Trio[GLTFNode]
 func (self GLTFNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2881,7 +2918,7 @@ type GLTFPhysicsBody pointers.Trio[GLTFPhysicsBody]
 func (self GLTFPhysicsBody) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFPhysicsBody) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFPhysicsBody) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFPhysicsBody) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2890,7 +2927,7 @@ type GLTFPhysicsShape pointers.Trio[GLTFPhysicsShape]
 func (self GLTFPhysicsShape) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFPhysicsShape) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFPhysicsShape) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFPhysicsShape) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2899,7 +2936,7 @@ type GLTFSkeleton pointers.Trio[GLTFSkeleton]
 func (self GLTFSkeleton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFSkeleton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFSkeleton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFSkeleton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2908,7 +2945,7 @@ type GLTFSkin pointers.Trio[GLTFSkin]
 func (self GLTFSkin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFSkin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFSkin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFSkin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2917,7 +2954,7 @@ type GLTFSpecGloss pointers.Trio[GLTFSpecGloss]
 func (self GLTFSpecGloss) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFSpecGloss) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFSpecGloss) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFSpecGloss) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2926,7 +2963,7 @@ type GLTFState pointers.Trio[GLTFState]
 func (self GLTFState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFState) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFState) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFState) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2935,7 +2972,7 @@ type GLTFTexture pointers.Trio[GLTFTexture]
 func (self GLTFTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2944,7 +2981,7 @@ type GLTFTextureSampler pointers.Trio[GLTFTextureSampler]
 func (self GLTFTextureSampler) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GLTFTextureSampler) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GLTFTextureSampler) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GLTFTextureSampler) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2956,7 +2993,7 @@ type GPUParticles2D pointers.Trio[GPUParticles2D]
 func (self GPUParticles2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticles2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GPUParticles2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GPUParticles2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2970,7 +3007,7 @@ type GPUParticles3D pointers.Trio[GPUParticles3D]
 func (self GPUParticles3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticles3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GPUParticles3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GPUParticles3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2979,7 +3016,9 @@ type GPUParticlesAttractor3D pointers.Trio[GPUParticlesAttractor3D]
 func (self GPUParticlesAttractor3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesAttractor3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GPUParticlesAttractor3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self GPUParticlesAttractor3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -2988,8 +3027,8 @@ type GPUParticlesAttractorBox3D pointers.Trio[GPUParticlesAttractorBox3D]
 func (self GPUParticlesAttractorBox3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesAttractorBox3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesAttractorBox3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesAttractorBox3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -2999,8 +3038,8 @@ type GPUParticlesAttractorSphere3D pointers.Trio[GPUParticlesAttractorSphere3D]
 func (self GPUParticlesAttractorSphere3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesAttractorSphere3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesAttractorSphere3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesAttractorSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -3010,8 +3049,8 @@ type GPUParticlesAttractorVectorField3D pointers.Trio[GPUParticlesAttractorVecto
 func (self GPUParticlesAttractorVectorField3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesAttractorVectorField3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesAttractorVectorField3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesAttractorVectorField3D) Virtual(name string) reflect.Value {
@@ -3023,7 +3062,9 @@ type GPUParticlesCollision3D pointers.Trio[GPUParticlesCollision3D]
 func (self GPUParticlesCollision3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesCollision3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GPUParticlesCollision3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self GPUParticlesCollision3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3032,8 +3073,8 @@ type GPUParticlesCollisionBox3D pointers.Trio[GPUParticlesCollisionBox3D]
 func (self GPUParticlesCollisionBox3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesCollisionBox3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesCollisionBox3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesCollisionBox3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -3046,8 +3087,8 @@ type GPUParticlesCollisionHeightField3D pointers.Trio[GPUParticlesCollisionHeigh
 func (self GPUParticlesCollisionHeightField3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesCollisionHeightField3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesCollisionHeightField3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesCollisionHeightField3D) Virtual(name string) reflect.Value {
@@ -3060,8 +3101,8 @@ type GPUParticlesCollisionSDF3D pointers.Trio[GPUParticlesCollisionSDF3D]
 func (self GPUParticlesCollisionSDF3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesCollisionSDF3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesCollisionSDF3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesCollisionSDF3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -3071,8 +3112,8 @@ type GPUParticlesCollisionSphere3D pointers.Trio[GPUParticlesCollisionSphere3D]
 func (self GPUParticlesCollisionSphere3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GPUParticlesCollisionSphere3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self GPUParticlesCollisionSphere3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self GPUParticlesCollisionSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -3085,7 +3126,7 @@ type Generic6DOFJoint3D pointers.Trio[Generic6DOFJoint3D]
 func (self Generic6DOFJoint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Generic6DOFJoint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Generic6DOFJoint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Generic6DOFJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3099,7 +3140,7 @@ type Geometry2D pointers.Trio[Geometry2D]
 func (self Geometry2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Geometry2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Geometry2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Geometry2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3108,7 +3149,7 @@ type Geometry3D pointers.Trio[Geometry3D]
 func (self Geometry3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Geometry3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Geometry3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Geometry3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3124,7 +3165,7 @@ type GeometryInstance3D pointers.Trio[GeometryInstance3D]
 func (self GeometryInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GeometryInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GeometryInstance3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GeometryInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3136,7 +3177,7 @@ type Gradient pointers.Trio[Gradient]
 func (self Gradient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Gradient) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Gradient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Gradient) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3145,7 +3186,7 @@ type GradientTexture1D pointers.Trio[GradientTexture1D]
 func (self GradientTexture1D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GradientTexture1D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GradientTexture1D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GradientTexture1D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3157,7 +3198,7 @@ type GradientTexture2D pointers.Trio[GradientTexture2D]
 func (self GradientTexture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GradientTexture2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GradientTexture2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GradientTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3169,7 +3210,7 @@ type GraphEdit pointers.Trio[GraphEdit]
 func (self GraphEdit) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GraphEdit) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GraphEdit) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GraphEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3178,7 +3219,7 @@ type GraphElement pointers.Trio[GraphElement]
 func (self GraphElement) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GraphElement) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GraphElement) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GraphElement) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3187,7 +3228,7 @@ type GraphFrame pointers.Trio[GraphFrame]
 func (self GraphFrame) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GraphFrame) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GraphFrame) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GraphFrame) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3196,7 +3237,7 @@ type GraphNode pointers.Trio[GraphNode]
 func (self GraphNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GraphNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GraphNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GraphNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3205,7 +3246,7 @@ type GridContainer pointers.Trio[GridContainer]
 func (self GridContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GridContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GridContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GridContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3214,7 +3255,7 @@ type GridMap pointers.Trio[GridMap]
 func (self GridMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GridMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GridMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GridMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3223,7 +3264,7 @@ type GrooveJoint2D pointers.Trio[GrooveJoint2D]
 func (self GrooveJoint2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self GrooveJoint2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self GrooveJoint2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self GrooveJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3232,7 +3273,7 @@ type HBoxContainer pointers.Trio[HBoxContainer]
 func (self HBoxContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HBoxContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HBoxContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HBoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3241,7 +3282,7 @@ type HFlowContainer pointers.Trio[HFlowContainer]
 func (self HFlowContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HFlowContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HFlowContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HFlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3250,7 +3291,7 @@ type HMACContext pointers.Trio[HMACContext]
 func (self HMACContext) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HMACContext) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HMACContext) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HMACContext) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3259,7 +3300,7 @@ type HScrollBar pointers.Trio[HScrollBar]
 func (self HScrollBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HScrollBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HScrollBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3268,7 +3309,7 @@ type HSeparator pointers.Trio[HSeparator]
 func (self HSeparator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HSeparator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HSeparator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HSeparator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3277,7 +3318,7 @@ type HSlider pointers.Trio[HSlider]
 func (self HSlider) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HSlider) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HSlider) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3286,7 +3327,7 @@ type HSplitContainer pointers.Trio[HSplitContainer]
 func (self HSplitContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HSplitContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HSplitContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HSplitContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3300,7 +3341,7 @@ type HTTPClient pointers.Trio[HTTPClient]
 func (self HTTPClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HTTPClient) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HTTPClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HTTPClient) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3310,7 +3351,7 @@ type HTTPRequest pointers.Trio[HTTPRequest]
 func (self HTTPRequest) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HTTPRequest) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HTTPRequest) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HTTPRequest) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3320,7 +3361,7 @@ type HashingContext pointers.Trio[HashingContext]
 func (self HashingContext) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HashingContext) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HashingContext) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HashingContext) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3329,7 +3370,7 @@ type HeightMapShape3D pointers.Trio[HeightMapShape3D]
 func (self HeightMapShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HeightMapShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HeightMapShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HeightMapShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3341,7 +3382,7 @@ type HingeJoint3D pointers.Trio[HingeJoint3D]
 func (self HingeJoint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self HingeJoint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self HingeJoint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self HingeJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3353,7 +3394,7 @@ type IP pointers.Trio[IP]
 func (self IP) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self IP) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self IP) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self IP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3375,7 +3416,7 @@ type Image pointers.Trio[Image]
 func (self Image) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Image) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Image) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Image) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3385,7 +3426,7 @@ type ImageFormatLoader pointers.Trio[ImageFormatLoader]
 func (self ImageFormatLoader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImageFormatLoader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImageFormatLoader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImageFormatLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3394,8 +3435,8 @@ type ImageFormatLoaderExtension pointers.Trio[ImageFormatLoaderExtension]
 func (self ImageFormatLoaderExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImageFormatLoaderExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ImageFormatLoaderExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ImageFormatLoaderExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -3405,7 +3446,7 @@ type ImageTexture pointers.Trio[ImageTexture]
 func (self ImageTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImageTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImageTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImageTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3414,7 +3455,7 @@ type ImageTexture3D pointers.Trio[ImageTexture3D]
 func (self ImageTexture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImageTexture3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImageTexture3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImageTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3423,7 +3464,7 @@ type ImageTextureLayered pointers.Trio[ImageTextureLayered]
 func (self ImageTextureLayered) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImageTextureLayered) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImageTextureLayered) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImageTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3432,7 +3473,7 @@ type ImmediateMesh pointers.Trio[ImmediateMesh]
 func (self ImmediateMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImmediateMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImmediateMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImmediateMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3441,7 +3482,7 @@ type ImporterMesh pointers.Trio[ImporterMesh]
 func (self ImporterMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImporterMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImporterMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ImporterMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3450,7 +3491,9 @@ type ImporterMeshInstance3D pointers.Trio[ImporterMeshInstance3D]
 func (self ImporterMeshInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ImporterMeshInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ImporterMeshInstance3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ImporterMeshInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3462,7 +3505,7 @@ type Input pointers.Trio[Input]
 func (self Input) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Input) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Input) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Input) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3471,7 +3514,7 @@ type InputEvent pointers.Trio[InputEvent]
 func (self InputEvent) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEvent) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEvent) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEvent) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3480,7 +3523,7 @@ type InputEventAction pointers.Trio[InputEventAction]
 func (self InputEventAction) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventAction) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventAction) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventAction) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3489,7 +3532,7 @@ type InputEventFromWindow pointers.Trio[InputEventFromWindow]
 func (self InputEventFromWindow) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventFromWindow) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventFromWindow) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventFromWindow) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3498,7 +3541,7 @@ type InputEventGesture pointers.Trio[InputEventGesture]
 func (self InputEventGesture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventGesture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventGesture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3507,7 +3550,9 @@ type InputEventJoypadButton pointers.Trio[InputEventJoypadButton]
 func (self InputEventJoypadButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventJoypadButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventJoypadButton) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self InputEventJoypadButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3516,7 +3561,9 @@ type InputEventJoypadMotion pointers.Trio[InputEventJoypadMotion]
 func (self InputEventJoypadMotion) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventJoypadMotion) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventJoypadMotion) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self InputEventJoypadMotion) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3525,7 +3572,7 @@ type InputEventKey pointers.Trio[InputEventKey]
 func (self InputEventKey) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventKey) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventKey) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventKey) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3534,7 +3581,7 @@ type InputEventMIDI pointers.Trio[InputEventMIDI]
 func (self InputEventMIDI) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventMIDI) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventMIDI) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventMIDI) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3543,7 +3590,9 @@ type InputEventMagnifyGesture pointers.Trio[InputEventMagnifyGesture]
 func (self InputEventMagnifyGesture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventMagnifyGesture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventMagnifyGesture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self InputEventMagnifyGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3552,7 +3601,7 @@ type InputEventMouse pointers.Trio[InputEventMouse]
 func (self InputEventMouse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventMouse) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventMouse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventMouse) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3561,7 +3610,7 @@ type InputEventMouseButton pointers.Trio[InputEventMouseButton]
 func (self InputEventMouseButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventMouseButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventMouseButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventMouseButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3570,7 +3619,7 @@ type InputEventMouseMotion pointers.Trio[InputEventMouseMotion]
 func (self InputEventMouseMotion) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventMouseMotion) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventMouseMotion) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventMouseMotion) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3579,7 +3628,7 @@ type InputEventPanGesture pointers.Trio[InputEventPanGesture]
 func (self InputEventPanGesture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventPanGesture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventPanGesture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventPanGesture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3588,7 +3637,7 @@ type InputEventScreenDrag pointers.Trio[InputEventScreenDrag]
 func (self InputEventScreenDrag) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventScreenDrag) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventScreenDrag) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventScreenDrag) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3597,7 +3646,7 @@ type InputEventScreenTouch pointers.Trio[InputEventScreenTouch]
 func (self InputEventScreenTouch) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventScreenTouch) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventScreenTouch) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventScreenTouch) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3606,7 +3655,7 @@ type InputEventShortcut pointers.Trio[InputEventShortcut]
 func (self InputEventShortcut) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventShortcut) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventShortcut) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputEventShortcut) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3615,7 +3664,9 @@ type InputEventWithModifiers pointers.Trio[InputEventWithModifiers]
 func (self InputEventWithModifiers) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputEventWithModifiers) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputEventWithModifiers) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self InputEventWithModifiers) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3624,7 +3675,7 @@ type InputMap pointers.Trio[InputMap]
 func (self InputMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InputMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InputMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InputMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3633,7 +3684,7 @@ type InstancePlaceholder pointers.Trio[InstancePlaceholder]
 func (self InstancePlaceholder) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self InstancePlaceholder) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self InstancePlaceholder) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self InstancePlaceholder) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3642,7 +3693,7 @@ type IntervalTweener pointers.Trio[IntervalTweener]
 func (self IntervalTweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self IntervalTweener) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self IntervalTweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self IntervalTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3654,7 +3705,7 @@ type ItemList pointers.Trio[ItemList]
 func (self ItemList) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ItemList) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ItemList) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ItemList) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3663,7 +3714,7 @@ type JNISingleton pointers.Trio[JNISingleton]
 func (self JNISingleton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JNISingleton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JNISingleton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JNISingleton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3672,7 +3723,7 @@ type JSON pointers.Trio[JSON]
 func (self JSON) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JSON) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JSON) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JSON) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3682,7 +3733,7 @@ type JSONRPC pointers.Trio[JSONRPC]
 func (self JSONRPC) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JSONRPC) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JSONRPC) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JSONRPC) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3691,7 +3742,7 @@ type JavaClass pointers.Trio[JavaClass]
 func (self JavaClass) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JavaClass) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JavaClass) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JavaClass) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3700,7 +3751,7 @@ type JavaClassWrapper pointers.Trio[JavaClassWrapper]
 func (self JavaClassWrapper) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JavaClassWrapper) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JavaClassWrapper) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JavaClassWrapper) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3709,7 +3760,7 @@ type JavaScriptBridge pointers.Trio[JavaScriptBridge]
 func (self JavaScriptBridge) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JavaScriptBridge) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JavaScriptBridge) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JavaScriptBridge) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3718,7 +3769,7 @@ type JavaScriptObject pointers.Trio[JavaScriptObject]
 func (self JavaScriptObject) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self JavaScriptObject) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self JavaScriptObject) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self JavaScriptObject) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3727,7 +3778,7 @@ type Joint2D pointers.Trio[Joint2D]
 func (self Joint2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Joint2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Joint2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Joint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3736,7 +3787,7 @@ type Joint3D pointers.Trio[Joint3D]
 func (self Joint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Joint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Joint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Joint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3745,7 +3796,7 @@ type KinematicCollision2D pointers.Trio[KinematicCollision2D]
 func (self KinematicCollision2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self KinematicCollision2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self KinematicCollision2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self KinematicCollision2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3754,7 +3805,7 @@ type KinematicCollision3D pointers.Trio[KinematicCollision3D]
 func (self KinematicCollision3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self KinematicCollision3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self KinematicCollision3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self KinematicCollision3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3763,7 +3814,7 @@ type Label pointers.Trio[Label]
 func (self Label) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Label) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Label) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Label) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3775,7 +3826,7 @@ type Label3D pointers.Trio[Label3D]
 func (self Label3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Label3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Label3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Label3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3784,7 +3835,7 @@ type LabelSettings pointers.Trio[LabelSettings]
 func (self LabelSettings) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LabelSettings) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LabelSettings) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LabelSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3796,7 +3847,7 @@ type Light2D pointers.Trio[Light2D]
 func (self Light2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Light2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Light2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Light2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3808,7 +3859,7 @@ type Light3D pointers.Trio[Light3D]
 func (self Light3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Light3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Light3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Light3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3817,7 +3868,7 @@ type LightOccluder2D pointers.Trio[LightOccluder2D]
 func (self LightOccluder2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LightOccluder2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LightOccluder2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LightOccluder2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3833,7 +3884,7 @@ type LightmapGI pointers.Trio[LightmapGI]
 func (self LightmapGI) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LightmapGI) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LightmapGI) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LightmapGI) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3842,7 +3893,7 @@ type LightmapGIData pointers.Trio[LightmapGIData]
 func (self LightmapGIData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LightmapGIData) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LightmapGIData) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LightmapGIData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3851,7 +3902,7 @@ type LightmapProbe pointers.Trio[LightmapProbe]
 func (self LightmapProbe) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LightmapProbe) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LightmapProbe) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LightmapProbe) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3860,7 +3911,7 @@ type Lightmapper pointers.Trio[Lightmapper]
 func (self Lightmapper) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Lightmapper) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Lightmapper) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Lightmapper) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3869,7 +3920,7 @@ type LightmapperRD pointers.Trio[LightmapperRD]
 func (self LightmapperRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LightmapperRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LightmapperRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LightmapperRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3883,7 +3934,7 @@ type Line2D pointers.Trio[Line2D]
 func (self Line2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Line2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Line2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Line2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3895,7 +3946,7 @@ type LineEdit pointers.Trio[LineEdit]
 func (self LineEdit) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LineEdit) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LineEdit) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LineEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3905,7 +3956,7 @@ type LinkButton pointers.Trio[LinkButton]
 func (self LinkButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self LinkButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self LinkButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self LinkButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3914,7 +3965,7 @@ type MainLoop pointers.Trio[MainLoop]
 func (self MainLoop) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MainLoop) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MainLoop) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MainLoop) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3923,7 +3974,7 @@ type MarginContainer pointers.Trio[MarginContainer]
 func (self MarginContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MarginContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MarginContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MarginContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3932,7 +3983,7 @@ type Marker2D pointers.Trio[Marker2D]
 func (self Marker2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Marker2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Marker2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Marker2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3941,7 +3992,7 @@ type Marker3D pointers.Trio[Marker3D]
 func (self Marker3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Marker3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Marker3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Marker3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3950,7 +4001,7 @@ type Marshalls pointers.Trio[Marshalls]
 func (self Marshalls) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Marshalls) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Marshalls) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Marshalls) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3959,7 +4010,7 @@ type Material pointers.Trio[Material]
 func (self Material) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Material) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Material) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Material) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3968,7 +4019,7 @@ type MenuBar pointers.Trio[MenuBar]
 func (self MenuBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MenuBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MenuBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MenuBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3977,7 +4028,7 @@ type MenuButton pointers.Trio[MenuButton]
 func (self MenuButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MenuButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MenuButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MenuButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -3995,7 +4046,7 @@ type Mesh pointers.Trio[Mesh]
 func (self Mesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Mesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Mesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Mesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4005,8 +4056,8 @@ type MeshConvexDecompositionSettings pointers.Trio[MeshConvexDecompositionSettin
 func (self MeshConvexDecompositionSettings) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshConvexDecompositionSettings) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self MeshConvexDecompositionSettings) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self MeshConvexDecompositionSettings) Virtual(name string) reflect.Value {
@@ -4018,7 +4069,7 @@ type MeshDataTool pointers.Trio[MeshDataTool]
 func (self MeshDataTool) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshDataTool) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MeshDataTool) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MeshDataTool) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4027,7 +4078,7 @@ type MeshInstance2D pointers.Trio[MeshInstance2D]
 func (self MeshInstance2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshInstance2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MeshInstance2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MeshInstance2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4036,7 +4087,7 @@ type MeshInstance3D pointers.Trio[MeshInstance3D]
 func (self MeshInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MeshInstance3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MeshInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4045,7 +4096,7 @@ type MeshLibrary pointers.Trio[MeshLibrary]
 func (self MeshLibrary) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshLibrary) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MeshLibrary) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MeshLibrary) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4054,7 +4105,7 @@ type MeshTexture pointers.Trio[MeshTexture]
 func (self MeshTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MeshTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MeshTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MeshTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4063,7 +4114,7 @@ type MethodTweener pointers.Trio[MethodTweener]
 func (self MethodTweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MethodTweener) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MethodTweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MethodTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4072,7 +4123,7 @@ type MissingNode pointers.Trio[MissingNode]
 func (self MissingNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MissingNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MissingNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MissingNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4081,7 +4132,7 @@ type MissingResource pointers.Trio[MissingResource]
 func (self MissingResource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MissingResource) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MissingResource) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MissingResource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4090,7 +4141,7 @@ type MobileVRInterface pointers.Trio[MobileVRInterface]
 func (self MobileVRInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MobileVRInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MobileVRInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MobileVRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4099,7 +4150,7 @@ type MovieWriter pointers.Trio[MovieWriter]
 func (self MovieWriter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MovieWriter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MovieWriter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MovieWriter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4109,7 +4160,7 @@ type MultiMesh pointers.Trio[MultiMesh]
 func (self MultiMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4118,7 +4169,7 @@ type MultiMeshInstance2D pointers.Trio[MultiMeshInstance2D]
 func (self MultiMeshInstance2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiMeshInstance2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiMeshInstance2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiMeshInstance2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4127,7 +4178,7 @@ type MultiMeshInstance3D pointers.Trio[MultiMeshInstance3D]
 func (self MultiMeshInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiMeshInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiMeshInstance3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiMeshInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4137,7 +4188,7 @@ type MultiplayerAPI pointers.Trio[MultiplayerAPI]
 func (self MultiplayerAPI) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerAPI) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerAPI) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiplayerAPI) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4146,7 +4197,9 @@ type MultiplayerAPIExtension pointers.Trio[MultiplayerAPIExtension]
 func (self MultiplayerAPIExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerAPIExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerAPIExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self MultiplayerAPIExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4158,7 +4211,7 @@ type MultiplayerPeer pointers.Trio[MultiplayerPeer]
 func (self MultiplayerPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4167,7 +4220,9 @@ type MultiplayerPeerExtension pointers.Trio[MultiplayerPeerExtension]
 func (self MultiplayerPeerExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerPeerExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerPeerExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self MultiplayerPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4176,7 +4231,7 @@ type MultiplayerSpawner pointers.Trio[MultiplayerSpawner]
 func (self MultiplayerSpawner) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerSpawner) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerSpawner) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self MultiplayerSpawner) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4186,7 +4241,9 @@ type MultiplayerSynchronizer pointers.Trio[MultiplayerSynchronizer]
 func (self MultiplayerSynchronizer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self MultiplayerSynchronizer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self MultiplayerSynchronizer) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self MultiplayerSynchronizer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4195,7 +4252,7 @@ type Mutex pointers.Trio[Mutex]
 func (self Mutex) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Mutex) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Mutex) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Mutex) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4207,7 +4264,7 @@ type NativeMenu pointers.Trio[NativeMenu]
 func (self NativeMenu) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NativeMenu) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NativeMenu) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NativeMenu) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4216,7 +4273,7 @@ type NavigationAgent2D pointers.Trio[NavigationAgent2D]
 func (self NavigationAgent2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationAgent2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationAgent2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationAgent2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4225,7 +4282,7 @@ type NavigationAgent3D pointers.Trio[NavigationAgent3D]
 func (self NavigationAgent3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationAgent3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationAgent3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationAgent3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4234,7 +4291,7 @@ type NavigationLink2D pointers.Trio[NavigationLink2D]
 func (self NavigationLink2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationLink2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationLink2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationLink2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4243,7 +4300,7 @@ type NavigationLink3D pointers.Trio[NavigationLink3D]
 func (self NavigationLink3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationLink3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationLink3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationLink3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4257,7 +4314,7 @@ type NavigationMesh pointers.Trio[NavigationMesh]
 func (self NavigationMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4266,7 +4323,9 @@ type NavigationMeshGenerator pointers.Trio[NavigationMeshGenerator]
 func (self NavigationMeshGenerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationMeshGenerator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationMeshGenerator) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self NavigationMeshGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4275,8 +4334,8 @@ type NavigationMeshSourceGeometryData2D pointers.Trio[NavigationMeshSourceGeomet
 func (self NavigationMeshSourceGeometryData2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationMeshSourceGeometryData2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationMeshSourceGeometryData2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationMeshSourceGeometryData2D) Virtual(name string) reflect.Value {
@@ -4288,8 +4347,8 @@ type NavigationMeshSourceGeometryData3D pointers.Trio[NavigationMeshSourceGeomet
 func (self NavigationMeshSourceGeometryData3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationMeshSourceGeometryData3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationMeshSourceGeometryData3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationMeshSourceGeometryData3D) Virtual(name string) reflect.Value {
@@ -4301,7 +4360,7 @@ type NavigationObstacle2D pointers.Trio[NavigationObstacle2D]
 func (self NavigationObstacle2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationObstacle2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationObstacle2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationObstacle2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4310,7 +4369,7 @@ type NavigationObstacle3D pointers.Trio[NavigationObstacle3D]
 func (self NavigationObstacle3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationObstacle3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationObstacle3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationObstacle3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4324,8 +4383,8 @@ type NavigationPathQueryParameters2D pointers.Trio[NavigationPathQueryParameters
 func (self NavigationPathQueryParameters2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationPathQueryParameters2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationPathQueryParameters2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationPathQueryParameters2D) Virtual(name string) reflect.Value {
@@ -4342,8 +4401,8 @@ type NavigationPathQueryParameters3D pointers.Trio[NavigationPathQueryParameters
 func (self NavigationPathQueryParameters3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationPathQueryParameters3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationPathQueryParameters3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationPathQueryParameters3D) Virtual(name string) reflect.Value {
@@ -4356,8 +4415,8 @@ type NavigationPathQueryResult2D pointers.Trio[NavigationPathQueryResult2D]
 func (self NavigationPathQueryResult2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationPathQueryResult2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationPathQueryResult2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationPathQueryResult2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4368,8 +4427,8 @@ type NavigationPathQueryResult3D pointers.Trio[NavigationPathQueryResult3D]
 func (self NavigationPathQueryResult3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationPathQueryResult3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self NavigationPathQueryResult3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self NavigationPathQueryResult3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4382,7 +4441,7 @@ type NavigationPolygon pointers.Trio[NavigationPolygon]
 func (self NavigationPolygon) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationPolygon) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationPolygon) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationPolygon) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4391,7 +4450,7 @@ type NavigationRegion2D pointers.Trio[NavigationRegion2D]
 func (self NavigationRegion2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationRegion2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationRegion2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationRegion2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4400,7 +4459,7 @@ type NavigationRegion3D pointers.Trio[NavigationRegion3D]
 func (self NavigationRegion3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationRegion3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationRegion3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationRegion3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4409,7 +4468,7 @@ type NavigationServer2D pointers.Trio[NavigationServer2D]
 func (self NavigationServer2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationServer2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationServer2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationServer2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4419,7 +4478,7 @@ type NavigationServer3D pointers.Trio[NavigationServer3D]
 func (self NavigationServer3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NavigationServer3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NavigationServer3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NavigationServer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4429,7 +4488,7 @@ type NinePatchRect pointers.Trio[NinePatchRect]
 func (self NinePatchRect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NinePatchRect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NinePatchRect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NinePatchRect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4451,7 +4510,7 @@ type Node pointers.Trio[Node]
 func (self Node) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Node) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Node) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Node) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4460,7 +4519,7 @@ type Node2D pointers.Trio[Node2D]
 func (self Node2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Node2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Node2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Node2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4470,7 +4529,7 @@ type Node3D pointers.Trio[Node3D]
 func (self Node3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Node3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Node3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Node3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4479,7 +4538,7 @@ type Node3DGizmo pointers.Trio[Node3DGizmo]
 func (self Node3DGizmo) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Node3DGizmo) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Node3DGizmo) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Node3DGizmo) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4488,7 +4547,7 @@ type Noise pointers.Trio[Noise]
 func (self Noise) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Noise) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Noise) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Noise) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4497,7 +4556,7 @@ type NoiseTexture2D pointers.Trio[NoiseTexture2D]
 func (self NoiseTexture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NoiseTexture2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NoiseTexture2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NoiseTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4506,7 +4565,7 @@ type NoiseTexture3D pointers.Trio[NoiseTexture3D]
 func (self NoiseTexture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self NoiseTexture3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self NoiseTexture3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self NoiseTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4515,7 +4574,7 @@ type ORMMaterial3D pointers.Trio[ORMMaterial3D]
 func (self ORMMaterial3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ORMMaterial3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ORMMaterial3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ORMMaterial3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4527,7 +4586,7 @@ type OS pointers.Trio[OS]
 func (self OS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OS) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OS) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4536,7 +4595,7 @@ type Occluder3D pointers.Trio[Occluder3D]
 func (self Occluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Occluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Occluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Occluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4545,7 +4604,7 @@ type OccluderInstance3D pointers.Trio[OccluderInstance3D]
 func (self OccluderInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OccluderInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OccluderInstance3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OccluderInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4555,7 +4614,7 @@ type OccluderPolygon2D pointers.Trio[OccluderPolygon2D]
 func (self OccluderPolygon2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OccluderPolygon2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OccluderPolygon2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OccluderPolygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4564,7 +4623,9 @@ type OfflineMultiplayerPeer pointers.Trio[OfflineMultiplayerPeer]
 func (self OfflineMultiplayerPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OfflineMultiplayerPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OfflineMultiplayerPeer) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self OfflineMultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4573,7 +4634,7 @@ type OggPacketSequence pointers.Trio[OggPacketSequence]
 func (self OggPacketSequence) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OggPacketSequence) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OggPacketSequence) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OggPacketSequence) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4582,8 +4643,8 @@ type OggPacketSequencePlayback pointers.Trio[OggPacketSequencePlayback]
 func (self OggPacketSequencePlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OggPacketSequencePlayback) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OggPacketSequencePlayback) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OggPacketSequencePlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4594,7 +4655,7 @@ type OmniLight3D pointers.Trio[OmniLight3D]
 func (self OmniLight3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OmniLight3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OmniLight3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OmniLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4604,7 +4665,7 @@ type OpenXRAPIExtension pointers.Trio[OpenXRAPIExtension]
 func (self OpenXRAPIExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRAPIExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRAPIExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRAPIExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4614,7 +4675,7 @@ type OpenXRAction pointers.Trio[OpenXRAction]
 func (self OpenXRAction) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRAction) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRAction) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRAction) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4623,7 +4684,7 @@ type OpenXRActionMap pointers.Trio[OpenXRActionMap]
 func (self OpenXRActionMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRActionMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRActionMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRActionMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4632,7 +4693,7 @@ type OpenXRActionSet pointers.Trio[OpenXRActionSet]
 func (self OpenXRActionSet) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRActionSet) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRActionSet) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRActionSet) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4641,7 +4702,9 @@ type OpenXRCompositionLayer pointers.Trio[OpenXRCompositionLayer]
 func (self OpenXRCompositionLayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRCompositionLayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRCompositionLayer) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self OpenXRCompositionLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4650,8 +4713,8 @@ type OpenXRCompositionLayerCylinder pointers.Trio[OpenXRCompositionLayerCylinder
 func (self OpenXRCompositionLayerCylinder) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRCompositionLayerCylinder) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OpenXRCompositionLayerCylinder) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OpenXRCompositionLayerCylinder) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4661,8 +4724,8 @@ type OpenXRCompositionLayerEquirect pointers.Trio[OpenXRCompositionLayerEquirect
 func (self OpenXRCompositionLayerEquirect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRCompositionLayerEquirect) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OpenXRCompositionLayerEquirect) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OpenXRCompositionLayerEquirect) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4672,8 +4735,8 @@ type OpenXRCompositionLayerQuad pointers.Trio[OpenXRCompositionLayerQuad]
 func (self OpenXRCompositionLayerQuad) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRCompositionLayerQuad) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OpenXRCompositionLayerQuad) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OpenXRCompositionLayerQuad) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -4683,8 +4746,8 @@ type OpenXRExtensionWrapperExtension pointers.Trio[OpenXRExtensionWrapperExtensi
 func (self OpenXRExtensionWrapperExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRExtensionWrapperExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OpenXRExtensionWrapperExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OpenXRExtensionWrapperExtension) Virtual(name string) reflect.Value {
@@ -4703,7 +4766,7 @@ type OpenXRHand pointers.Trio[OpenXRHand]
 func (self OpenXRHand) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRHand) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRHand) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRHand) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4712,7 +4775,7 @@ type OpenXRIPBinding pointers.Trio[OpenXRIPBinding]
 func (self OpenXRIPBinding) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRIPBinding) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRIPBinding) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRIPBinding) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4721,7 +4784,9 @@ type OpenXRInteractionProfile pointers.Trio[OpenXRInteractionProfile]
 func (self OpenXRInteractionProfile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRInteractionProfile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRInteractionProfile) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self OpenXRInteractionProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4730,8 +4795,8 @@ type OpenXRInteractionProfileMetadata pointers.Trio[OpenXRInteractionProfileMeta
 func (self OpenXRInteractionProfileMetadata) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRInteractionProfileMetadata) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self OpenXRInteractionProfileMetadata) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self OpenXRInteractionProfileMetadata) Virtual(name string) reflect.Value {
@@ -4752,7 +4817,7 @@ type OpenXRInterface pointers.Trio[OpenXRInterface]
 func (self OpenXRInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OpenXRInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OpenXRInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OpenXRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4761,7 +4826,7 @@ type OptimizedTranslation pointers.Trio[OptimizedTranslation]
 func (self OptimizedTranslation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OptimizedTranslation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OptimizedTranslation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OptimizedTranslation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4770,7 +4835,7 @@ type OptionButton pointers.Trio[OptionButton]
 func (self OptionButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self OptionButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self OptionButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self OptionButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4779,7 +4844,7 @@ type PCKPacker pointers.Trio[PCKPacker]
 func (self PCKPacker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PCKPacker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PCKPacker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PCKPacker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4788,7 +4853,7 @@ type PackedDataContainer pointers.Trio[PackedDataContainer]
 func (self PackedDataContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PackedDataContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PackedDataContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PackedDataContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4797,7 +4862,9 @@ type PackedDataContainerRef pointers.Trio[PackedDataContainerRef]
 func (self PackedDataContainerRef) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PackedDataContainerRef) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PackedDataContainerRef) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PackedDataContainerRef) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4807,7 +4874,7 @@ type PackedScene pointers.Trio[PackedScene]
 func (self PackedScene) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PackedScene) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PackedScene) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PackedScene) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4816,7 +4883,7 @@ type PacketPeer pointers.Trio[PacketPeer]
 func (self PacketPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PacketPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PacketPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PacketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4826,7 +4893,7 @@ type PacketPeerDTLS pointers.Trio[PacketPeerDTLS]
 func (self PacketPeerDTLS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PacketPeerDTLS) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PacketPeerDTLS) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PacketPeerDTLS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4835,7 +4902,7 @@ type PacketPeerExtension pointers.Trio[PacketPeerExtension]
 func (self PacketPeerExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PacketPeerExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PacketPeerExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PacketPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4844,7 +4911,7 @@ type PacketPeerStream pointers.Trio[PacketPeerStream]
 func (self PacketPeerStream) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PacketPeerStream) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PacketPeerStream) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PacketPeerStream) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4853,7 +4920,7 @@ type PacketPeerUDP pointers.Trio[PacketPeerUDP]
 func (self PacketPeerUDP) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PacketPeerUDP) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PacketPeerUDP) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PacketPeerUDP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4862,7 +4929,7 @@ type Panel pointers.Trio[Panel]
 func (self Panel) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Panel) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Panel) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Panel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4871,7 +4938,7 @@ type PanelContainer pointers.Trio[PanelContainer]
 func (self PanelContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PanelContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PanelContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PanelContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4880,7 +4947,7 @@ type PanoramaSkyMaterial pointers.Trio[PanoramaSkyMaterial]
 func (self PanoramaSkyMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PanoramaSkyMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PanoramaSkyMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PanoramaSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4889,7 +4956,7 @@ type Parallax2D pointers.Trio[Parallax2D]
 func (self Parallax2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Parallax2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Parallax2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Parallax2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4898,7 +4965,7 @@ type ParallaxBackground pointers.Trio[ParallaxBackground]
 func (self ParallaxBackground) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ParallaxBackground) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ParallaxBackground) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ParallaxBackground) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4907,7 +4974,7 @@ type ParallaxLayer pointers.Trio[ParallaxLayer]
 func (self ParallaxLayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ParallaxLayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ParallaxLayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ParallaxLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4925,7 +4992,9 @@ type ParticleProcessMaterial pointers.Trio[ParticleProcessMaterial]
 func (self ParticleProcessMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ParticleProcessMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ParticleProcessMaterial) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ParticleProcessMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4934,7 +5003,7 @@ type Path2D pointers.Trio[Path2D]
 func (self Path2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Path2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Path2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Path2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4943,7 +5012,7 @@ type Path3D pointers.Trio[Path3D]
 func (self Path3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Path3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Path3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Path3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4952,7 +5021,7 @@ type PathFollow2D pointers.Trio[PathFollow2D]
 func (self PathFollow2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PathFollow2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PathFollow2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PathFollow2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4962,7 +5031,7 @@ type PathFollow3D pointers.Trio[PathFollow3D]
 func (self PathFollow3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PathFollow3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PathFollow3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PathFollow3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4972,7 +5041,7 @@ type Performance pointers.Trio[Performance]
 func (self Performance) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Performance) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Performance) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Performance) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4981,7 +5050,7 @@ type PhysicalBone2D pointers.Trio[PhysicalBone2D]
 func (self PhysicalBone2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicalBone2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicalBone2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicalBone2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -4993,7 +5062,7 @@ type PhysicalBone3D pointers.Trio[PhysicalBone3D]
 func (self PhysicalBone3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicalBone3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicalBone3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicalBone3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5002,7 +5071,9 @@ type PhysicalBoneSimulator3D pointers.Trio[PhysicalBoneSimulator3D]
 func (self PhysicalBoneSimulator3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicalBoneSimulator3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicalBoneSimulator3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicalBoneSimulator3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5011,7 +5082,7 @@ type PhysicalSkyMaterial pointers.Trio[PhysicalSkyMaterial]
 func (self PhysicalSkyMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicalSkyMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicalSkyMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicalSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5020,7 +5091,7 @@ type PhysicsBody2D pointers.Trio[PhysicsBody2D]
 func (self PhysicsBody2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsBody2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsBody2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicsBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5029,7 +5100,7 @@ type PhysicsBody3D pointers.Trio[PhysicsBody3D]
 func (self PhysicsBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicsBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5038,7 +5109,9 @@ type PhysicsDirectBodyState2D pointers.Trio[PhysicsDirectBodyState2D]
 func (self PhysicsDirectBodyState2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectBodyState2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsDirectBodyState2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsDirectBodyState2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5047,8 +5120,8 @@ type PhysicsDirectBodyState2DExtension pointers.Trio[PhysicsDirectBodyState2DExt
 func (self PhysicsDirectBodyState2DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectBodyState2DExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectBodyState2DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectBodyState2DExtension) Virtual(name string) reflect.Value {
@@ -5060,7 +5133,9 @@ type PhysicsDirectBodyState3D pointers.Trio[PhysicsDirectBodyState3D]
 func (self PhysicsDirectBodyState3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectBodyState3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsDirectBodyState3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsDirectBodyState3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5069,8 +5144,8 @@ type PhysicsDirectBodyState3DExtension pointers.Trio[PhysicsDirectBodyState3DExt
 func (self PhysicsDirectBodyState3DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectBodyState3DExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectBodyState3DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectBodyState3DExtension) Virtual(name string) reflect.Value {
@@ -5082,8 +5157,8 @@ type PhysicsDirectSpaceState2D pointers.Trio[PhysicsDirectSpaceState2D]
 func (self PhysicsDirectSpaceState2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectSpaceState2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectSpaceState2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectSpaceState2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5093,8 +5168,8 @@ type PhysicsDirectSpaceState2DExtension pointers.Trio[PhysicsDirectSpaceState2DE
 func (self PhysicsDirectSpaceState2DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectSpaceState2DExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectSpaceState2DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectSpaceState2DExtension) Virtual(name string) reflect.Value {
@@ -5106,8 +5181,8 @@ type PhysicsDirectSpaceState3D pointers.Trio[PhysicsDirectSpaceState3D]
 func (self PhysicsDirectSpaceState3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectSpaceState3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectSpaceState3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectSpaceState3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5117,8 +5192,8 @@ type PhysicsDirectSpaceState3DExtension pointers.Trio[PhysicsDirectSpaceState3DE
 func (self PhysicsDirectSpaceState3DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsDirectSpaceState3DExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsDirectSpaceState3DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsDirectSpaceState3DExtension) Virtual(name string) reflect.Value {
@@ -5130,7 +5205,7 @@ type PhysicsMaterial pointers.Trio[PhysicsMaterial]
 func (self PhysicsMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicsMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5139,8 +5214,8 @@ type PhysicsPointQueryParameters2D pointers.Trio[PhysicsPointQueryParameters2D]
 func (self PhysicsPointQueryParameters2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsPointQueryParameters2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsPointQueryParameters2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsPointQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5150,8 +5225,8 @@ type PhysicsPointQueryParameters3D pointers.Trio[PhysicsPointQueryParameters3D]
 func (self PhysicsPointQueryParameters3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsPointQueryParameters3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsPointQueryParameters3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsPointQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5161,8 +5236,8 @@ type PhysicsRayQueryParameters2D pointers.Trio[PhysicsRayQueryParameters2D]
 func (self PhysicsRayQueryParameters2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsRayQueryParameters2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsRayQueryParameters2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsRayQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5172,8 +5247,8 @@ type PhysicsRayQueryParameters3D pointers.Trio[PhysicsRayQueryParameters3D]
 func (self PhysicsRayQueryParameters3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsRayQueryParameters3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsRayQueryParameters3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsRayQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5214,7 +5289,7 @@ type PhysicsServer2D pointers.Trio[PhysicsServer2D]
 func (self PhysicsServer2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicsServer2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5223,7 +5298,9 @@ type PhysicsServer2DExtension pointers.Trio[PhysicsServer2DExtension]
 func (self PhysicsServer2DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer2DExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer2DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsServer2DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5232,7 +5309,9 @@ type PhysicsServer2DManager pointers.Trio[PhysicsServer2DManager]
 func (self PhysicsServer2DManager) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer2DManager) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer2DManager) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsServer2DManager) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5278,7 +5357,7 @@ type PhysicsServer3D pointers.Trio[PhysicsServer3D]
 func (self PhysicsServer3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PhysicsServer3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5287,7 +5366,9 @@ type PhysicsServer3DExtension pointers.Trio[PhysicsServer3DExtension]
 func (self PhysicsServer3DExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer3DExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer3DExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsServer3DExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5296,7 +5377,9 @@ type PhysicsServer3DManager pointers.Trio[PhysicsServer3DManager]
 func (self PhysicsServer3DManager) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer3DManager) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PhysicsServer3DManager) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PhysicsServer3DManager) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5305,8 +5388,8 @@ type PhysicsServer3DRenderingServerHandler pointers.Trio[PhysicsServer3DRenderin
 func (self PhysicsServer3DRenderingServerHandler) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsServer3DRenderingServerHandler) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsServer3DRenderingServerHandler) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsServer3DRenderingServerHandler) Virtual(name string) reflect.Value {
@@ -5318,8 +5401,8 @@ type PhysicsShapeQueryParameters2D pointers.Trio[PhysicsShapeQueryParameters2D]
 func (self PhysicsShapeQueryParameters2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsShapeQueryParameters2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsShapeQueryParameters2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsShapeQueryParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5329,8 +5412,8 @@ type PhysicsShapeQueryParameters3D pointers.Trio[PhysicsShapeQueryParameters3D]
 func (self PhysicsShapeQueryParameters3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsShapeQueryParameters3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsShapeQueryParameters3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsShapeQueryParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5340,8 +5423,8 @@ type PhysicsTestMotionParameters2D pointers.Trio[PhysicsTestMotionParameters2D]
 func (self PhysicsTestMotionParameters2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsTestMotionParameters2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsTestMotionParameters2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsTestMotionParameters2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5351,8 +5434,8 @@ type PhysicsTestMotionParameters3D pointers.Trio[PhysicsTestMotionParameters3D]
 func (self PhysicsTestMotionParameters3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsTestMotionParameters3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsTestMotionParameters3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsTestMotionParameters3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5362,8 +5445,8 @@ type PhysicsTestMotionResult2D pointers.Trio[PhysicsTestMotionResult2D]
 func (self PhysicsTestMotionResult2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsTestMotionResult2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsTestMotionResult2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsTestMotionResult2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5373,8 +5456,8 @@ type PhysicsTestMotionResult3D pointers.Trio[PhysicsTestMotionResult3D]
 func (self PhysicsTestMotionResult3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PhysicsTestMotionResult3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PhysicsTestMotionResult3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PhysicsTestMotionResult3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5384,7 +5467,7 @@ type PinJoint2D pointers.Trio[PinJoint2D]
 func (self PinJoint2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PinJoint2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PinJoint2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PinJoint2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5394,7 +5477,7 @@ type PinJoint3D pointers.Trio[PinJoint3D]
 func (self PinJoint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PinJoint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PinJoint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PinJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5403,7 +5486,7 @@ type PlaceholderCubemap pointers.Trio[PlaceholderCubemap]
 func (self PlaceholderCubemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderCubemap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderCubemap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaceholderCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5412,7 +5495,9 @@ type PlaceholderCubemapArray pointers.Trio[PlaceholderCubemapArray]
 func (self PlaceholderCubemapArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderCubemapArray) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderCubemapArray) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self PlaceholderCubemapArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5421,7 +5506,7 @@ type PlaceholderMaterial pointers.Trio[PlaceholderMaterial]
 func (self PlaceholderMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaceholderMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5430,7 +5515,7 @@ type PlaceholderMesh pointers.Trio[PlaceholderMesh]
 func (self PlaceholderMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaceholderMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5439,7 +5524,7 @@ type PlaceholderTexture2D pointers.Trio[PlaceholderTexture2D]
 func (self PlaceholderTexture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderTexture2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderTexture2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaceholderTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5448,8 +5533,8 @@ type PlaceholderTexture2DArray pointers.Trio[PlaceholderTexture2DArray]
 func (self PlaceholderTexture2DArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderTexture2DArray) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PlaceholderTexture2DArray) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PlaceholderTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5459,7 +5544,7 @@ type PlaceholderTexture3D pointers.Trio[PlaceholderTexture3D]
 func (self PlaceholderTexture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderTexture3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaceholderTexture3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaceholderTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5468,8 +5553,8 @@ type PlaceholderTextureLayered pointers.Trio[PlaceholderTextureLayered]
 func (self PlaceholderTextureLayered) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaceholderTextureLayered) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PlaceholderTextureLayered) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PlaceholderTextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5480,7 +5565,7 @@ type PlaneMesh pointers.Trio[PlaneMesh]
 func (self PlaneMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PlaneMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PlaneMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PlaneMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5489,7 +5574,7 @@ type PointLight2D pointers.Trio[PointLight2D]
 func (self PointLight2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PointLight2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PointLight2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PointLight2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5498,7 +5583,7 @@ type PointMesh pointers.Trio[PointMesh]
 func (self PointMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PointMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PointMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PointMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5507,7 +5592,7 @@ type Polygon2D pointers.Trio[Polygon2D]
 func (self Polygon2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Polygon2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Polygon2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Polygon2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5516,7 +5601,7 @@ type PolygonOccluder3D pointers.Trio[PolygonOccluder3D]
 func (self PolygonOccluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PolygonOccluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PolygonOccluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PolygonOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5525,7 +5610,7 @@ type PolygonPathFinder pointers.Trio[PolygonPathFinder]
 func (self PolygonPathFinder) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PolygonPathFinder) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PolygonPathFinder) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PolygonPathFinder) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5534,7 +5619,7 @@ type Popup pointers.Trio[Popup]
 func (self Popup) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Popup) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Popup) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Popup) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5543,7 +5628,7 @@ type PopupMenu pointers.Trio[PopupMenu]
 func (self PopupMenu) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PopupMenu) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PopupMenu) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PopupMenu) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5552,7 +5637,7 @@ type PopupPanel pointers.Trio[PopupPanel]
 func (self PopupPanel) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PopupPanel) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PopupPanel) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PopupPanel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5562,8 +5647,8 @@ type PortableCompressedTexture2D pointers.Trio[PortableCompressedTexture2D]
 func (self PortableCompressedTexture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PortableCompressedTexture2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self PortableCompressedTexture2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self PortableCompressedTexture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5573,7 +5658,7 @@ type PrimitiveMesh pointers.Trio[PrimitiveMesh]
 func (self PrimitiveMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PrimitiveMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PrimitiveMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PrimitiveMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5582,7 +5667,7 @@ type PrismMesh pointers.Trio[PrismMesh]
 func (self PrismMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PrismMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PrismMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PrismMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5591,7 +5676,7 @@ type ProceduralSkyMaterial pointers.Trio[ProceduralSkyMaterial]
 func (self ProceduralSkyMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ProceduralSkyMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ProceduralSkyMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ProceduralSkyMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5601,7 +5686,7 @@ type ProgressBar pointers.Trio[ProgressBar]
 func (self ProgressBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ProgressBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ProgressBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ProgressBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5610,7 +5695,7 @@ type ProjectSettings pointers.Trio[ProjectSettings]
 func (self ProjectSettings) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ProjectSettings) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ProjectSettings) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ProjectSettings) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5619,7 +5704,7 @@ type PropertyTweener pointers.Trio[PropertyTweener]
 func (self PropertyTweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self PropertyTweener) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self PropertyTweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PropertyTweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5628,7 +5713,7 @@ type QuadMesh pointers.Trio[QuadMesh]
 func (self QuadMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self QuadMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self QuadMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self QuadMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5637,7 +5722,7 @@ type QuadOccluder3D pointers.Trio[QuadOccluder3D]
 func (self QuadOccluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self QuadOccluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self QuadOccluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self QuadOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5646,7 +5731,7 @@ type RDAttachmentFormat pointers.Trio[RDAttachmentFormat]
 func (self RDAttachmentFormat) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDAttachmentFormat) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDAttachmentFormat) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDAttachmentFormat) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5655,7 +5740,7 @@ type RDFramebufferPass pointers.Trio[RDFramebufferPass]
 func (self RDFramebufferPass) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDFramebufferPass) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDFramebufferPass) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDFramebufferPass) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5664,8 +5749,8 @@ type RDPipelineColorBlendState pointers.Trio[RDPipelineColorBlendState]
 func (self RDPipelineColorBlendState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineColorBlendState) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineColorBlendState) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineColorBlendState) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5675,8 +5760,8 @@ type RDPipelineColorBlendStateAttachment pointers.Trio[RDPipelineColorBlendState
 func (self RDPipelineColorBlendStateAttachment) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineColorBlendStateAttachment) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineColorBlendStateAttachment) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineColorBlendStateAttachment) Virtual(name string) reflect.Value {
@@ -5688,8 +5773,8 @@ type RDPipelineDepthStencilState pointers.Trio[RDPipelineDepthStencilState]
 func (self RDPipelineDepthStencilState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineDepthStencilState) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineDepthStencilState) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineDepthStencilState) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5699,8 +5784,8 @@ type RDPipelineMultisampleState pointers.Trio[RDPipelineMultisampleState]
 func (self RDPipelineMultisampleState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineMultisampleState) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineMultisampleState) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineMultisampleState) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5710,8 +5795,8 @@ type RDPipelineRasterizationState pointers.Trio[RDPipelineRasterizationState]
 func (self RDPipelineRasterizationState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineRasterizationState) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineRasterizationState) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineRasterizationState) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5721,8 +5806,8 @@ type RDPipelineSpecializationConstant pointers.Trio[RDPipelineSpecializationCons
 func (self RDPipelineSpecializationConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDPipelineSpecializationConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RDPipelineSpecializationConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RDPipelineSpecializationConstant) Virtual(name string) reflect.Value {
@@ -5734,7 +5819,7 @@ type RDSamplerState pointers.Trio[RDSamplerState]
 func (self RDSamplerState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDSamplerState) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDSamplerState) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDSamplerState) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5743,7 +5828,7 @@ type RDShaderFile pointers.Trio[RDShaderFile]
 func (self RDShaderFile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDShaderFile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDShaderFile) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDShaderFile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5752,7 +5837,7 @@ type RDShaderSPIRV pointers.Trio[RDShaderSPIRV]
 func (self RDShaderSPIRV) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDShaderSPIRV) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDShaderSPIRV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDShaderSPIRV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5761,7 +5846,7 @@ type RDShaderSource pointers.Trio[RDShaderSource]
 func (self RDShaderSource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDShaderSource) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDShaderSource) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDShaderSource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5770,7 +5855,7 @@ type RDTextureFormat pointers.Trio[RDTextureFormat]
 func (self RDTextureFormat) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDTextureFormat) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDTextureFormat) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDTextureFormat) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5779,7 +5864,7 @@ type RDTextureView pointers.Trio[RDTextureView]
 func (self RDTextureView) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDTextureView) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDTextureView) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDTextureView) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5788,7 +5873,7 @@ type RDUniform pointers.Trio[RDUniform]
 func (self RDUniform) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDUniform) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDUniform) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDUniform) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5797,7 +5882,7 @@ type RDVertexAttribute pointers.Trio[RDVertexAttribute]
 func (self RDVertexAttribute) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RDVertexAttribute) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RDVertexAttribute) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RDVertexAttribute) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5806,7 +5891,7 @@ type RandomNumberGenerator pointers.Trio[RandomNumberGenerator]
 func (self RandomNumberGenerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RandomNumberGenerator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RandomNumberGenerator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RandomNumberGenerator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5815,7 +5900,7 @@ type Range pointers.Trio[Range]
 func (self Range) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Range) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Range) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Range) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5824,7 +5909,7 @@ type RayCast2D pointers.Trio[RayCast2D]
 func (self RayCast2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RayCast2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RayCast2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RayCast2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5833,7 +5918,7 @@ type RayCast3D pointers.Trio[RayCast3D]
 func (self RayCast3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RayCast3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RayCast3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RayCast3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5842,7 +5927,7 @@ type RectangleShape2D pointers.Trio[RectangleShape2D]
 func (self RectangleShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RectangleShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RectangleShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RectangleShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5851,7 +5936,7 @@ type ReferenceRect pointers.Trio[ReferenceRect]
 func (self ReferenceRect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ReferenceRect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ReferenceRect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ReferenceRect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5863,7 +5948,7 @@ type ReflectionProbe pointers.Trio[ReflectionProbe]
 func (self ReflectionProbe) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ReflectionProbe) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ReflectionProbe) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ReflectionProbe) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5872,7 +5957,7 @@ type RegEx pointers.Trio[RegEx]
 func (self RegEx) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RegEx) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RegEx) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RegEx) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5881,7 +5966,7 @@ type RegExMatch pointers.Trio[RegExMatch]
 func (self RegExMatch) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RegExMatch) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RegExMatch) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RegExMatch) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5890,7 +5975,7 @@ type RemoteTransform2D pointers.Trio[RemoteTransform2D]
 func (self RemoteTransform2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RemoteTransform2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RemoteTransform2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RemoteTransform2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5899,7 +5984,7 @@ type RemoteTransform3D pointers.Trio[RemoteTransform3D]
 func (self RemoteTransform3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RemoteTransform3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RemoteTransform3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RemoteTransform3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5908,7 +5993,7 @@ type RenderData pointers.Trio[RenderData]
 func (self RenderData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderData) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderData) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5917,7 +6002,7 @@ type RenderDataExtension pointers.Trio[RenderDataExtension]
 func (self RenderDataExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderDataExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderDataExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderDataExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5926,7 +6011,7 @@ type RenderDataRD pointers.Trio[RenderDataRD]
 func (self RenderDataRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderDataRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderDataRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderDataRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5935,7 +6020,7 @@ type RenderSceneBuffers pointers.Trio[RenderSceneBuffers]
 func (self RenderSceneBuffers) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneBuffers) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderSceneBuffers) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderSceneBuffers) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5944,8 +6029,8 @@ type RenderSceneBuffersConfiguration pointers.Trio[RenderSceneBuffersConfigurati
 func (self RenderSceneBuffersConfiguration) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneBuffersConfiguration) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RenderSceneBuffersConfiguration) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RenderSceneBuffersConfiguration) Virtual(name string) reflect.Value {
@@ -5957,8 +6042,8 @@ type RenderSceneBuffersExtension pointers.Trio[RenderSceneBuffersExtension]
 func (self RenderSceneBuffersExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneBuffersExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self RenderSceneBuffersExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self RenderSceneBuffersExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -5968,7 +6053,7 @@ type RenderSceneBuffersRD pointers.Trio[RenderSceneBuffersRD]
 func (self RenderSceneBuffersRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneBuffersRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderSceneBuffersRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderSceneBuffersRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5977,7 +6062,7 @@ type RenderSceneData pointers.Trio[RenderSceneData]
 func (self RenderSceneData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneData) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderSceneData) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderSceneData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5986,7 +6071,9 @@ type RenderSceneDataExtension pointers.Trio[RenderSceneDataExtension]
 func (self RenderSceneDataExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneDataExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderSceneDataExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self RenderSceneDataExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -5995,7 +6082,7 @@ type RenderSceneDataRD pointers.Trio[RenderSceneDataRD]
 func (self RenderSceneDataRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderSceneDataRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderSceneDataRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderSceneDataRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6067,7 +6154,7 @@ type RenderingDevice pointers.Trio[RenderingDevice]
 func (self RenderingDevice) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderingDevice) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderingDevice) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderingDevice) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6231,7 +6318,7 @@ type RenderingServer pointers.Trio[RenderingServer]
 func (self RenderingServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RenderingServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RenderingServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RenderingServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6240,7 +6327,7 @@ type Resource pointers.Trio[Resource]
 func (self Resource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Resource) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Resource) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Resource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6250,7 +6337,7 @@ type ResourceFormatLoader pointers.Trio[ResourceFormatLoader]
 func (self ResourceFormatLoader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceFormatLoader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceFormatLoader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceFormatLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6259,7 +6346,7 @@ type ResourceFormatSaver pointers.Trio[ResourceFormatSaver]
 func (self ResourceFormatSaver) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceFormatSaver) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceFormatSaver) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceFormatSaver) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6269,7 +6356,7 @@ type ResourceImporter pointers.Trio[ResourceImporter]
 func (self ResourceImporter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6278,7 +6365,9 @@ type ResourceImporterBMFont pointers.Trio[ResourceImporterBMFont]
 func (self ResourceImporterBMFont) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterBMFont) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterBMFont) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ResourceImporterBMFont) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6287,7 +6376,9 @@ type ResourceImporterBitMap pointers.Trio[ResourceImporterBitMap]
 func (self ResourceImporterBitMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterBitMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterBitMap) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ResourceImporterBitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6296,8 +6387,8 @@ type ResourceImporterCSVTranslation pointers.Trio[ResourceImporterCSVTranslation
 func (self ResourceImporterCSVTranslation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterCSVTranslation) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterCSVTranslation) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterCSVTranslation) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6307,8 +6398,8 @@ type ResourceImporterDynamicFont pointers.Trio[ResourceImporterDynamicFont]
 func (self ResourceImporterDynamicFont) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterDynamicFont) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterDynamicFont) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterDynamicFont) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6318,7 +6409,7 @@ type ResourceImporterImage pointers.Trio[ResourceImporterImage]
 func (self ResourceImporterImage) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterImage) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterImage) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporterImage) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6327,8 +6418,8 @@ type ResourceImporterImageFont pointers.Trio[ResourceImporterImageFont]
 func (self ResourceImporterImageFont) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterImageFont) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterImageFont) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterImageFont) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6338,8 +6429,8 @@ type ResourceImporterLayeredTexture pointers.Trio[ResourceImporterLayeredTexture
 func (self ResourceImporterLayeredTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterLayeredTexture) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterLayeredTexture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterLayeredTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6349,7 +6440,7 @@ type ResourceImporterMP3 pointers.Trio[ResourceImporterMP3]
 func (self ResourceImporterMP3) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterMP3) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterMP3) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporterMP3) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6358,7 +6449,7 @@ type ResourceImporterOBJ pointers.Trio[ResourceImporterOBJ]
 func (self ResourceImporterOBJ) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterOBJ) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterOBJ) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporterOBJ) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6367,8 +6458,8 @@ type ResourceImporterOggVorbis pointers.Trio[ResourceImporterOggVorbis]
 func (self ResourceImporterOggVorbis) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterOggVorbis) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterOggVorbis) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterOggVorbis) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6378,7 +6469,7 @@ type ResourceImporterScene pointers.Trio[ResourceImporterScene]
 func (self ResourceImporterScene) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterScene) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterScene) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporterScene) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6387,8 +6478,8 @@ type ResourceImporterShaderFile pointers.Trio[ResourceImporterShaderFile]
 func (self ResourceImporterShaderFile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterShaderFile) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterShaderFile) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterShaderFile) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6398,7 +6489,9 @@ type ResourceImporterTexture pointers.Trio[ResourceImporterTexture]
 func (self ResourceImporterTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterTexture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ResourceImporterTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6407,8 +6500,8 @@ type ResourceImporterTextureAtlas pointers.Trio[ResourceImporterTextureAtlas]
 func (self ResourceImporterTextureAtlas) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterTextureAtlas) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self ResourceImporterTextureAtlas) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self ResourceImporterTextureAtlas) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6418,7 +6511,7 @@ type ResourceImporterWAV pointers.Trio[ResourceImporterWAV]
 func (self ResourceImporterWAV) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceImporterWAV) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceImporterWAV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceImporterWAV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6430,7 +6523,7 @@ type ResourceLoader pointers.Trio[ResourceLoader]
 func (self ResourceLoader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceLoader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceLoader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceLoader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6439,7 +6532,7 @@ type ResourcePreloader pointers.Trio[ResourcePreloader]
 func (self ResourcePreloader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourcePreloader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourcePreloader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourcePreloader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6449,7 +6542,7 @@ type ResourceSaver pointers.Trio[ResourceSaver]
 func (self ResourceSaver) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceSaver) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceSaver) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceSaver) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6458,7 +6551,7 @@ type ResourceUID pointers.Trio[ResourceUID]
 func (self ResourceUID) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ResourceUID) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ResourceUID) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ResourceUID) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6468,7 +6561,7 @@ type RibbonTrailMesh pointers.Trio[RibbonTrailMesh]
 func (self RibbonTrailMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RibbonTrailMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RibbonTrailMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RibbonTrailMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6477,7 +6570,7 @@ type RichTextEffect pointers.Trio[RichTextEffect]
 func (self RichTextEffect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RichTextEffect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RichTextEffect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RichTextEffect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6493,7 +6586,7 @@ type RichTextLabel pointers.Trio[RichTextLabel]
 func (self RichTextLabel) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RichTextLabel) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RichTextLabel) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RichTextLabel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6509,7 +6602,7 @@ type RigidBody2D pointers.Trio[RigidBody2D]
 func (self RigidBody2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RigidBody2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RigidBody2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RigidBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6523,7 +6616,7 @@ type RigidBody3D pointers.Trio[RigidBody3D]
 func (self RigidBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RigidBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RigidBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RigidBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6532,7 +6625,7 @@ type RootMotionView pointers.Trio[RootMotionView]
 func (self RootMotionView) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self RootMotionView) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RootMotionView) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self RootMotionView) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6541,7 +6634,7 @@ type SceneMultiplayer pointers.Trio[SceneMultiplayer]
 func (self SceneMultiplayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SceneMultiplayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SceneMultiplayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SceneMultiplayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6551,7 +6644,9 @@ type SceneReplicationConfig pointers.Trio[SceneReplicationConfig]
 func (self SceneReplicationConfig) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SceneReplicationConfig) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SceneReplicationConfig) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self SceneReplicationConfig) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6561,7 +6656,7 @@ type SceneState pointers.Trio[SceneState]
 func (self SceneState) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SceneState) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SceneState) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SceneState) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6571,7 +6666,7 @@ type SceneTree pointers.Trio[SceneTree]
 func (self SceneTree) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SceneTree) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SceneTree) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SceneTree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6580,7 +6675,7 @@ type SceneTreeTimer pointers.Trio[SceneTreeTimer]
 func (self SceneTreeTimer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SceneTreeTimer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SceneTreeTimer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SceneTreeTimer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6589,7 +6684,7 @@ type Script pointers.Trio[Script]
 func (self Script) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Script) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Script) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Script) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6598,7 +6693,7 @@ type ScriptCreateDialog pointers.Trio[ScriptCreateDialog]
 func (self ScriptCreateDialog) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptCreateDialog) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptCreateDialog) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScriptCreateDialog) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6607,7 +6702,7 @@ type ScriptEditor pointers.Trio[ScriptEditor]
 func (self ScriptEditor) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptEditor) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptEditor) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScriptEditor) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6616,7 +6711,7 @@ type ScriptEditorBase pointers.Trio[ScriptEditorBase]
 func (self ScriptEditorBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptEditorBase) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptEditorBase) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScriptEditorBase) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6625,7 +6720,7 @@ type ScriptExtension pointers.Trio[ScriptExtension]
 func (self ScriptExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScriptExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6635,7 +6730,7 @@ type ScriptLanguage pointers.Trio[ScriptLanguage]
 func (self ScriptLanguage) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptLanguage) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptLanguage) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScriptLanguage) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6649,7 +6744,9 @@ type ScriptLanguageExtension pointers.Trio[ScriptLanguageExtension]
 func (self ScriptLanguageExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScriptLanguageExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScriptLanguageExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self ScriptLanguageExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6658,7 +6755,7 @@ type ScrollBar pointers.Trio[ScrollBar]
 func (self ScrollBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScrollBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScrollBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6668,7 +6765,7 @@ type ScrollContainer pointers.Trio[ScrollContainer]
 func (self ScrollContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ScrollContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ScrollContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ScrollContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6677,7 +6774,7 @@ type SegmentShape2D pointers.Trio[SegmentShape2D]
 func (self SegmentShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SegmentShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SegmentShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SegmentShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6686,7 +6783,7 @@ type Semaphore pointers.Trio[Semaphore]
 func (self Semaphore) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Semaphore) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Semaphore) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Semaphore) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6695,7 +6792,7 @@ type SeparationRayShape2D pointers.Trio[SeparationRayShape2D]
 func (self SeparationRayShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SeparationRayShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SeparationRayShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SeparationRayShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6704,7 +6801,7 @@ type SeparationRayShape3D pointers.Trio[SeparationRayShape3D]
 func (self SeparationRayShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SeparationRayShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SeparationRayShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SeparationRayShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6713,7 +6810,7 @@ type Separator pointers.Trio[Separator]
 func (self Separator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Separator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Separator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Separator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6723,7 +6820,7 @@ type Shader pointers.Trio[Shader]
 func (self Shader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Shader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Shader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Shader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6732,7 +6829,7 @@ type ShaderGlobalsOverride pointers.Trio[ShaderGlobalsOverride]
 func (self ShaderGlobalsOverride) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ShaderGlobalsOverride) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ShaderGlobalsOverride) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ShaderGlobalsOverride) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6741,7 +6838,7 @@ type ShaderInclude pointers.Trio[ShaderInclude]
 func (self ShaderInclude) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ShaderInclude) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ShaderInclude) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ShaderInclude) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6750,7 +6847,7 @@ type ShaderMaterial pointers.Trio[ShaderMaterial]
 func (self ShaderMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ShaderMaterial) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ShaderMaterial) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ShaderMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6759,7 +6856,7 @@ type Shape2D pointers.Trio[Shape2D]
 func (self Shape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Shape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Shape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Shape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6768,7 +6865,7 @@ type Shape3D pointers.Trio[Shape3D]
 func (self Shape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Shape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Shape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Shape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6777,7 +6874,7 @@ type ShapeCast2D pointers.Trio[ShapeCast2D]
 func (self ShapeCast2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ShapeCast2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ShapeCast2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ShapeCast2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6786,7 +6883,7 @@ type ShapeCast3D pointers.Trio[ShapeCast3D]
 func (self ShapeCast3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ShapeCast3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ShapeCast3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ShapeCast3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6795,7 +6892,7 @@ type Shortcut pointers.Trio[Shortcut]
 func (self Shortcut) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Shortcut) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Shortcut) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Shortcut) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6804,7 +6901,7 @@ type Skeleton2D pointers.Trio[Skeleton2D]
 func (self Skeleton2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Skeleton2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Skeleton2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Skeleton2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6814,7 +6911,7 @@ type Skeleton3D pointers.Trio[Skeleton3D]
 func (self Skeleton3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Skeleton3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Skeleton3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Skeleton3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6823,7 +6920,7 @@ type SkeletonIK3D pointers.Trio[SkeletonIK3D]
 func (self SkeletonIK3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonIK3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkeletonIK3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SkeletonIK3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6832,7 +6929,9 @@ type SkeletonModification2D pointers.Trio[SkeletonModification2D]
 func (self SkeletonModification2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkeletonModification2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self SkeletonModification2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6841,8 +6940,8 @@ type SkeletonModification2DCCDIK pointers.Trio[SkeletonModification2DCCDIK]
 func (self SkeletonModification2DCCDIK) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DCCDIK) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DCCDIK) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DCCDIK) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6852,8 +6951,8 @@ type SkeletonModification2DFABRIK pointers.Trio[SkeletonModification2DFABRIK]
 func (self SkeletonModification2DFABRIK) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DFABRIK) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DFABRIK) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DFABRIK) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6863,8 +6962,8 @@ type SkeletonModification2DJiggle pointers.Trio[SkeletonModification2DJiggle]
 func (self SkeletonModification2DJiggle) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DJiggle) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DJiggle) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DJiggle) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6874,8 +6973,8 @@ type SkeletonModification2DLookAt pointers.Trio[SkeletonModification2DLookAt]
 func (self SkeletonModification2DLookAt) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DLookAt) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DLookAt) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DLookAt) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6885,8 +6984,8 @@ type SkeletonModification2DPhysicalBones pointers.Trio[SkeletonModification2DPhy
 func (self SkeletonModification2DPhysicalBones) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DPhysicalBones) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DPhysicalBones) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DPhysicalBones) Virtual(name string) reflect.Value {
@@ -6898,8 +6997,8 @@ type SkeletonModification2DStackHolder pointers.Trio[SkeletonModification2DStack
 func (self SkeletonModification2DStackHolder) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DStackHolder) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DStackHolder) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DStackHolder) Virtual(name string) reflect.Value {
@@ -6911,8 +7010,8 @@ type SkeletonModification2DTwoBoneIK pointers.Trio[SkeletonModification2DTwoBone
 func (self SkeletonModification2DTwoBoneIK) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModification2DTwoBoneIK) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModification2DTwoBoneIK) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModification2DTwoBoneIK) Virtual(name string) reflect.Value {
@@ -6924,8 +7023,8 @@ type SkeletonModificationStack2D pointers.Trio[SkeletonModificationStack2D]
 func (self SkeletonModificationStack2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModificationStack2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self SkeletonModificationStack2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self SkeletonModificationStack2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -6935,7 +7034,7 @@ type SkeletonModifier3D pointers.Trio[SkeletonModifier3D]
 func (self SkeletonModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonModifier3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkeletonModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SkeletonModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6945,7 +7044,7 @@ type SkeletonProfile pointers.Trio[SkeletonProfile]
 func (self SkeletonProfile) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonProfile) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkeletonProfile) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SkeletonProfile) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6954,7 +7053,9 @@ type SkeletonProfileHumanoid pointers.Trio[SkeletonProfileHumanoid]
 func (self SkeletonProfileHumanoid) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkeletonProfileHumanoid) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkeletonProfileHumanoid) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self SkeletonProfileHumanoid) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6963,7 +7064,7 @@ type Skin pointers.Trio[Skin]
 func (self Skin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Skin) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Skin) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Skin) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6972,7 +7073,7 @@ type SkinReference pointers.Trio[SkinReference]
 func (self SkinReference) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SkinReference) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SkinReference) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SkinReference) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6984,7 +7085,7 @@ type Sky pointers.Trio[Sky]
 func (self Sky) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Sky) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Sky) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Sky) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -6993,7 +7094,7 @@ type Slider pointers.Trio[Slider]
 func (self Slider) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Slider) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Slider) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Slider) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7003,7 +7104,7 @@ type SliderJoint3D pointers.Trio[SliderJoint3D]
 func (self SliderJoint3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SliderJoint3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SliderJoint3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SliderJoint3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7013,7 +7114,7 @@ type SoftBody3D pointers.Trio[SoftBody3D]
 func (self SoftBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SoftBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SoftBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SoftBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7022,7 +7123,7 @@ type SphereMesh pointers.Trio[SphereMesh]
 func (self SphereMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SphereMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SphereMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SphereMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7031,7 +7132,7 @@ type SphereOccluder3D pointers.Trio[SphereOccluder3D]
 func (self SphereOccluder3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SphereOccluder3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SphereOccluder3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SphereOccluder3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7040,7 +7141,7 @@ type SphereShape3D pointers.Trio[SphereShape3D]
 func (self SphereShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SphereShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SphereShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SphereShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7049,7 +7150,7 @@ type SpinBox pointers.Trio[SpinBox]
 func (self SpinBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SpinBox) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SpinBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpinBox) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7059,7 +7160,7 @@ type SplitContainer pointers.Trio[SplitContainer]
 func (self SplitContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SplitContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SplitContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SplitContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7068,7 +7169,7 @@ type SpotLight3D pointers.Trio[SpotLight3D]
 func (self SpotLight3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SpotLight3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SpotLight3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpotLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7077,7 +7178,7 @@ type SpringArm3D pointers.Trio[SpringArm3D]
 func (self SpringArm3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SpringArm3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SpringArm3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpringArm3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7086,7 +7187,7 @@ type Sprite2D pointers.Trio[Sprite2D]
 func (self Sprite2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Sprite2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Sprite2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Sprite2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7095,7 +7196,7 @@ type Sprite3D pointers.Trio[Sprite3D]
 func (self Sprite3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Sprite3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Sprite3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Sprite3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7107,7 +7208,7 @@ type SpriteBase3D pointers.Trio[SpriteBase3D]
 func (self SpriteBase3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SpriteBase3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SpriteBase3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpriteBase3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7116,7 +7217,7 @@ type SpriteFrames pointers.Trio[SpriteFrames]
 func (self SpriteFrames) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SpriteFrames) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SpriteFrames) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SpriteFrames) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7125,7 +7226,7 @@ type StandardMaterial3D pointers.Trio[StandardMaterial3D]
 func (self StandardMaterial3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StandardMaterial3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StandardMaterial3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StandardMaterial3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7134,7 +7235,7 @@ type StaticBody2D pointers.Trio[StaticBody2D]
 func (self StaticBody2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StaticBody2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StaticBody2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StaticBody2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7143,7 +7244,7 @@ type StaticBody3D pointers.Trio[StaticBody3D]
 func (self StaticBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StaticBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StaticBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StaticBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7152,7 +7253,7 @@ type StatusIndicator pointers.Trio[StatusIndicator]
 func (self StatusIndicator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StatusIndicator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StatusIndicator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StatusIndicator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7161,7 +7262,7 @@ type StreamPeer pointers.Trio[StreamPeer]
 func (self StreamPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7170,7 +7271,7 @@ type StreamPeerBuffer pointers.Trio[StreamPeerBuffer]
 func (self StreamPeerBuffer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeerBuffer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeerBuffer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeerBuffer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7179,7 +7280,7 @@ type StreamPeerExtension pointers.Trio[StreamPeerExtension]
 func (self StreamPeerExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeerExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeerExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7188,7 +7289,7 @@ type StreamPeerGZIP pointers.Trio[StreamPeerGZIP]
 func (self StreamPeerGZIP) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeerGZIP) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeerGZIP) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeerGZIP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7198,7 +7299,7 @@ type StreamPeerTCP pointers.Trio[StreamPeerTCP]
 func (self StreamPeerTCP) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeerTCP) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeerTCP) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeerTCP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7208,7 +7309,7 @@ type StreamPeerTLS pointers.Trio[StreamPeerTLS]
 func (self StreamPeerTLS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StreamPeerTLS) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StreamPeerTLS) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StreamPeerTLS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7217,7 +7318,7 @@ type StyleBox pointers.Trio[StyleBox]
 func (self StyleBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StyleBox) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StyleBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StyleBox) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7226,7 +7327,7 @@ type StyleBoxEmpty pointers.Trio[StyleBoxEmpty]
 func (self StyleBoxEmpty) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StyleBoxEmpty) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StyleBoxEmpty) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StyleBoxEmpty) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7235,7 +7336,7 @@ type StyleBoxFlat pointers.Trio[StyleBoxFlat]
 func (self StyleBoxFlat) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StyleBoxFlat) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StyleBoxFlat) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StyleBoxFlat) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7244,7 +7345,7 @@ type StyleBoxLine pointers.Trio[StyleBoxLine]
 func (self StyleBoxLine) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StyleBoxLine) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StyleBoxLine) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StyleBoxLine) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7254,7 +7355,7 @@ type StyleBoxTexture pointers.Trio[StyleBoxTexture]
 func (self StyleBoxTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self StyleBoxTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self StyleBoxTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StyleBoxTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7266,7 +7367,7 @@ type SubViewport pointers.Trio[SubViewport]
 func (self SubViewport) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SubViewport) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SubViewport) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SubViewport) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7275,7 +7376,7 @@ type SubViewportContainer pointers.Trio[SubViewportContainer]
 func (self SubViewportContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SubViewportContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SubViewportContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SubViewportContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7287,7 +7388,7 @@ type SurfaceTool pointers.Trio[SurfaceTool]
 func (self SurfaceTool) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SurfaceTool) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SurfaceTool) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SurfaceTool) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7296,7 +7397,7 @@ type SyntaxHighlighter pointers.Trio[SyntaxHighlighter]
 func (self SyntaxHighlighter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SyntaxHighlighter) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SyntaxHighlighter) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SyntaxHighlighter) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7305,7 +7406,7 @@ type SystemFont pointers.Trio[SystemFont]
 func (self SystemFont) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self SystemFont) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self SystemFont) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self SystemFont) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7314,7 +7415,7 @@ type TCPServer pointers.Trio[TCPServer]
 func (self TCPServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TCPServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TCPServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TCPServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7323,7 +7424,7 @@ type TLSOptions pointers.Trio[TLSOptions]
 func (self TLSOptions) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TLSOptions) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TLSOptions) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TLSOptions) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7335,7 +7436,7 @@ type TabBar pointers.Trio[TabBar]
 func (self TabBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TabBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TabBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TabBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7345,7 +7446,7 @@ type TabContainer pointers.Trio[TabContainer]
 func (self TabContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TabContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TabContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TabContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7367,7 +7468,7 @@ type TextEdit pointers.Trio[TextEdit]
 func (self TextEdit) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextEdit) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextEdit) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextEdit) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7376,7 +7477,7 @@ type TextLine pointers.Trio[TextLine]
 func (self TextLine) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextLine) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextLine) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextLine) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7385,7 +7486,7 @@ type TextMesh pointers.Trio[TextMesh]
 func (self TextMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7394,7 +7495,7 @@ type TextParagraph pointers.Trio[TextParagraph]
 func (self TextParagraph) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextParagraph) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextParagraph) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextParagraph) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7440,7 +7541,7 @@ type TextServer pointers.Trio[TextServer]
 func (self TextServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7449,7 +7550,7 @@ type TextServerAdvanced pointers.Trio[TextServerAdvanced]
 func (self TextServerAdvanced) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextServerAdvanced) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextServerAdvanced) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextServerAdvanced) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7458,7 +7559,7 @@ type TextServerDummy pointers.Trio[TextServerDummy]
 func (self TextServerDummy) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextServerDummy) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextServerDummy) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextServerDummy) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7467,7 +7568,7 @@ type TextServerExtension pointers.Trio[TextServerExtension]
 func (self TextServerExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextServerExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextServerExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextServerExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7476,7 +7577,7 @@ type TextServerManager pointers.Trio[TextServerManager]
 func (self TextServerManager) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextServerManager) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextServerManager) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextServerManager) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7485,7 +7586,7 @@ type Texture pointers.Trio[Texture]
 func (self Texture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7494,7 +7595,7 @@ type Texture2D pointers.Trio[Texture2D]
 func (self Texture2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7503,7 +7604,7 @@ type Texture2DArray pointers.Trio[Texture2DArray]
 func (self Texture2DArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture2DArray) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture2DArray) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7512,7 +7613,7 @@ type Texture2DArrayRD pointers.Trio[Texture2DArrayRD]
 func (self Texture2DArrayRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture2DArrayRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture2DArrayRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture2DArrayRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7521,7 +7622,7 @@ type Texture2DRD pointers.Trio[Texture2DRD]
 func (self Texture2DRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture2DRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture2DRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture2DRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7530,7 +7631,7 @@ type Texture3D pointers.Trio[Texture3D]
 func (self Texture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7539,7 +7640,7 @@ type Texture3DRD pointers.Trio[Texture3DRD]
 func (self Texture3DRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Texture3DRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Texture3DRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Texture3DRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7549,7 +7650,7 @@ type TextureButton pointers.Trio[TextureButton]
 func (self TextureButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7558,7 +7659,7 @@ type TextureCubemapArrayRD pointers.Trio[TextureCubemapArrayRD]
 func (self TextureCubemapArrayRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureCubemapArrayRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureCubemapArrayRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureCubemapArrayRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7567,7 +7668,7 @@ type TextureCubemapRD pointers.Trio[TextureCubemapRD]
 func (self TextureCubemapRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureCubemapRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureCubemapRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureCubemapRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7577,7 +7678,7 @@ type TextureLayered pointers.Trio[TextureLayered]
 func (self TextureLayered) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureLayered) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureLayered) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureLayered) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7586,7 +7687,7 @@ type TextureLayeredRD pointers.Trio[TextureLayeredRD]
 func (self TextureLayeredRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureLayeredRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureLayeredRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureLayeredRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7596,7 +7697,7 @@ type TextureProgressBar pointers.Trio[TextureProgressBar]
 func (self TextureProgressBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureProgressBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureProgressBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureProgressBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7608,7 +7709,7 @@ type TextureRect pointers.Trio[TextureRect]
 func (self TextureRect) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TextureRect) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TextureRect) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TextureRect) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7618,7 +7719,7 @@ type Theme pointers.Trio[Theme]
 func (self Theme) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Theme) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Theme) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Theme) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7627,7 +7728,7 @@ type ThemeDB pointers.Trio[ThemeDB]
 func (self ThemeDB) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ThemeDB) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ThemeDB) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ThemeDB) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7637,7 +7738,7 @@ type Thread pointers.Trio[Thread]
 func (self Thread) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Thread) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Thread) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Thread) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7646,7 +7747,7 @@ type TileData pointers.Trio[TileData]
 func (self TileData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileData) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileData) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7656,7 +7757,7 @@ type TileMap pointers.Trio[TileMap]
 func (self TileMap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileMap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7666,7 +7767,7 @@ type TileMapLayer pointers.Trio[TileMapLayer]
 func (self TileMapLayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileMapLayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileMapLayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileMapLayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7675,7 +7776,7 @@ type TileMapPattern pointers.Trio[TileMapPattern]
 func (self TileMapPattern) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileMapPattern) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileMapPattern) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileMapPattern) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7693,7 +7794,7 @@ type TileSet pointers.Trio[TileSet]
 func (self TileSet) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileSet) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileSet) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileSet) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7703,7 +7804,7 @@ type TileSetAtlasSource pointers.Trio[TileSetAtlasSource]
 func (self TileSetAtlasSource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileSetAtlasSource) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileSetAtlasSource) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileSetAtlasSource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7712,8 +7813,8 @@ type TileSetScenesCollectionSource pointers.Trio[TileSetScenesCollectionSource]
 func (self TileSetScenesCollectionSource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileSetScenesCollectionSource) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self TileSetScenesCollectionSource) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self TileSetScenesCollectionSource) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -7723,7 +7824,7 @@ type TileSetSource pointers.Trio[TileSetSource]
 func (self TileSetSource) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TileSetSource) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TileSetSource) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TileSetSource) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7735,7 +7836,7 @@ type Time pointers.Trio[Time]
 func (self Time) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Time) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Time) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Time) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7745,7 +7846,7 @@ type Timer pointers.Trio[Timer]
 func (self Timer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Timer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Timer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Timer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7754,7 +7855,7 @@ type TorusMesh pointers.Trio[TorusMesh]
 func (self TorusMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TorusMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TorusMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TorusMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7764,7 +7865,7 @@ type TouchScreenButton pointers.Trio[TouchScreenButton]
 func (self TouchScreenButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TouchScreenButton) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TouchScreenButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TouchScreenButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7773,7 +7874,7 @@ type Translation pointers.Trio[Translation]
 func (self Translation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Translation) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Translation) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Translation) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7782,7 +7883,7 @@ type TranslationServer pointers.Trio[TranslationServer]
 func (self TranslationServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TranslationServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TranslationServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TranslationServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7794,7 +7895,7 @@ type Tree pointers.Trio[Tree]
 func (self Tree) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Tree) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Tree) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Tree) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7804,7 +7905,7 @@ type TreeItem pointers.Trio[TreeItem]
 func (self TreeItem) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TreeItem) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TreeItem) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TreeItem) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7813,7 +7914,7 @@ type TriangleMesh pointers.Trio[TriangleMesh]
 func (self TriangleMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TriangleMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TriangleMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TriangleMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7822,7 +7923,7 @@ type TubeTrailMesh pointers.Trio[TubeTrailMesh]
 func (self TubeTrailMesh) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self TubeTrailMesh) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self TubeTrailMesh) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self TubeTrailMesh) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7838,7 +7939,7 @@ type Tween pointers.Trio[Tween]
 func (self Tween) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Tween) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Tween) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Tween) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7847,7 +7948,7 @@ type Tweener pointers.Trio[Tweener]
 func (self Tweener) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Tweener) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Tweener) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Tweener) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7856,7 +7957,7 @@ type UDPServer pointers.Trio[UDPServer]
 func (self UDPServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self UDPServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self UDPServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self UDPServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7866,7 +7967,7 @@ type UPNP pointers.Trio[UPNP]
 func (self UPNP) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self UPNP) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self UPNP) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self UPNP) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7876,7 +7977,7 @@ type UPNPDevice pointers.Trio[UPNPDevice]
 func (self UPNPDevice) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self UPNPDevice) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self UPNPDevice) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self UPNPDevice) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7886,7 +7987,7 @@ type UndoRedo pointers.Trio[UndoRedo]
 func (self UndoRedo) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self UndoRedo) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self UndoRedo) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self UndoRedo) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7895,7 +7996,7 @@ type UniformSetCacheRD pointers.Trio[UniformSetCacheRD]
 func (self UniformSetCacheRD) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self UniformSetCacheRD) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self UniformSetCacheRD) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self UniformSetCacheRD) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7904,7 +8005,7 @@ type VBoxContainer pointers.Trio[VBoxContainer]
 func (self VBoxContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VBoxContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VBoxContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VBoxContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7913,7 +8014,7 @@ type VFlowContainer pointers.Trio[VFlowContainer]
 func (self VFlowContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VFlowContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VFlowContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VFlowContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7922,7 +8023,7 @@ type VScrollBar pointers.Trio[VScrollBar]
 func (self VScrollBar) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VScrollBar) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VScrollBar) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VScrollBar) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7931,7 +8032,7 @@ type VSeparator pointers.Trio[VSeparator]
 func (self VSeparator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VSeparator) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VSeparator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VSeparator) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7940,7 +8041,7 @@ type VSlider pointers.Trio[VSlider]
 func (self VSlider) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VSlider) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VSlider) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VSlider) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7949,7 +8050,7 @@ type VSplitContainer pointers.Trio[VSplitContainer]
 func (self VSplitContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VSplitContainer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VSplitContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VSplitContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7958,7 +8059,7 @@ type VehicleBody3D pointers.Trio[VehicleBody3D]
 func (self VehicleBody3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VehicleBody3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VehicleBody3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VehicleBody3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7967,7 +8068,7 @@ type VehicleWheel3D pointers.Trio[VehicleWheel3D]
 func (self VehicleWheel3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VehicleWheel3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VehicleWheel3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VehicleWheel3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7976,7 +8077,7 @@ type VideoStream pointers.Trio[VideoStream]
 func (self VideoStream) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VideoStream) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VideoStream) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VideoStream) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7985,7 +8086,7 @@ type VideoStreamPlayback pointers.Trio[VideoStreamPlayback]
 func (self VideoStreamPlayback) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VideoStreamPlayback) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VideoStreamPlayback) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VideoStreamPlayback) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -7994,7 +8095,7 @@ type VideoStreamPlayer pointers.Trio[VideoStreamPlayer]
 func (self VideoStreamPlayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VideoStreamPlayer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VideoStreamPlayer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VideoStreamPlayer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8003,7 +8104,7 @@ type VideoStreamTheora pointers.Trio[VideoStreamTheora]
 func (self VideoStreamTheora) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VideoStreamTheora) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VideoStreamTheora) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VideoStreamTheora) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8037,7 +8138,7 @@ type Viewport pointers.Trio[Viewport]
 func (self Viewport) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Viewport) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Viewport) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Viewport) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8046,7 +8147,7 @@ type ViewportTexture pointers.Trio[ViewportTexture]
 func (self ViewportTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ViewportTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ViewportTexture) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ViewportTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8056,7 +8157,9 @@ type VisibleOnScreenEnabler2D pointers.Trio[VisibleOnScreenEnabler2D]
 func (self VisibleOnScreenEnabler2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisibleOnScreenEnabler2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisibleOnScreenEnabler2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisibleOnScreenEnabler2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8066,7 +8169,9 @@ type VisibleOnScreenEnabler3D pointers.Trio[VisibleOnScreenEnabler3D]
 func (self VisibleOnScreenEnabler3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisibleOnScreenEnabler3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisibleOnScreenEnabler3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisibleOnScreenEnabler3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8075,8 +8180,8 @@ type VisibleOnScreenNotifier2D pointers.Trio[VisibleOnScreenNotifier2D]
 func (self VisibleOnScreenNotifier2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisibleOnScreenNotifier2D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisibleOnScreenNotifier2D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisibleOnScreenNotifier2D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8086,8 +8191,8 @@ type VisibleOnScreenNotifier3D pointers.Trio[VisibleOnScreenNotifier3D]
 func (self VisibleOnScreenNotifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisibleOnScreenNotifier3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisibleOnScreenNotifier3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisibleOnScreenNotifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8097,7 +8202,7 @@ type VisualInstance3D pointers.Trio[VisualInstance3D]
 func (self VisualInstance3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualInstance3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualInstance3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualInstance3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8111,7 +8216,7 @@ type VisualShader pointers.Trio[VisualShader]
 func (self VisualShader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShader) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8121,7 +8226,7 @@ type VisualShaderNode pointers.Trio[VisualShaderNode]
 func (self VisualShaderNode) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNode) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNode) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNode) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8131,8 +8236,8 @@ type VisualShaderNodeBillboard pointers.Trio[VisualShaderNodeBillboard]
 func (self VisualShaderNodeBillboard) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeBillboard) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeBillboard) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeBillboard) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8142,8 +8247,8 @@ type VisualShaderNodeBooleanConstant pointers.Trio[VisualShaderNodeBooleanConsta
 func (self VisualShaderNodeBooleanConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeBooleanConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeBooleanConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeBooleanConstant) Virtual(name string) reflect.Value {
@@ -8155,8 +8260,8 @@ type VisualShaderNodeBooleanParameter pointers.Trio[VisualShaderNodeBooleanParam
 func (self VisualShaderNodeBooleanParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeBooleanParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeBooleanParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeBooleanParameter) Virtual(name string) reflect.Value {
@@ -8169,7 +8274,7 @@ type VisualShaderNodeClamp pointers.Trio[VisualShaderNodeClamp]
 func (self VisualShaderNodeClamp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeClamp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeClamp) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeClamp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8178,8 +8283,8 @@ type VisualShaderNodeColorConstant pointers.Trio[VisualShaderNodeColorConstant]
 func (self VisualShaderNodeColorConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeColorConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeColorConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeColorConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8190,8 +8295,8 @@ type VisualShaderNodeColorFunc pointers.Trio[VisualShaderNodeColorFunc]
 func (self VisualShaderNodeColorFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeColorFunc) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeColorFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeColorFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8202,7 +8307,9 @@ type VisualShaderNodeColorOp pointers.Trio[VisualShaderNodeColorOp]
 func (self VisualShaderNodeColorOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeColorOp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeColorOp) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeColorOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8211,8 +8318,8 @@ type VisualShaderNodeColorParameter pointers.Trio[VisualShaderNodeColorParameter
 func (self VisualShaderNodeColorParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeColorParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeColorParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeColorParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8222,7 +8329,9 @@ type VisualShaderNodeComment pointers.Trio[VisualShaderNodeComment]
 func (self VisualShaderNodeComment) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeComment) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeComment) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeComment) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8236,7 +8345,9 @@ type VisualShaderNodeCompare pointers.Trio[VisualShaderNodeCompare]
 func (self VisualShaderNodeCompare) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCompare) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeCompare) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeCompare) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8245,7 +8356,9 @@ type VisualShaderNodeConstant pointers.Trio[VisualShaderNodeConstant]
 func (self VisualShaderNodeConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeConstant) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8257,7 +8370,9 @@ type VisualShaderNodeCubemap pointers.Trio[VisualShaderNodeCubemap]
 func (self VisualShaderNodeCubemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCubemap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeCubemap) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeCubemap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8266,8 +8381,8 @@ type VisualShaderNodeCubemapParameter pointers.Trio[VisualShaderNodeCubemapParam
 func (self VisualShaderNodeCubemapParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCubemapParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeCubemapParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeCubemapParameter) Virtual(name string) reflect.Value {
@@ -8279,8 +8394,8 @@ type VisualShaderNodeCurveTexture pointers.Trio[VisualShaderNodeCurveTexture]
 func (self VisualShaderNodeCurveTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCurveTexture) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeCurveTexture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeCurveTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8290,8 +8405,8 @@ type VisualShaderNodeCurveXYZTexture pointers.Trio[VisualShaderNodeCurveXYZTextu
 func (self VisualShaderNodeCurveXYZTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCurveXYZTexture) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeCurveXYZTexture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeCurveXYZTexture) Virtual(name string) reflect.Value {
@@ -8303,7 +8418,9 @@ type VisualShaderNodeCustom pointers.Trio[VisualShaderNodeCustom]
 func (self VisualShaderNodeCustom) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeCustom) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeCustom) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeCustom) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8317,8 +8434,8 @@ type VisualShaderNodeDerivativeFunc pointers.Trio[VisualShaderNodeDerivativeFunc
 func (self VisualShaderNodeDerivativeFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeDerivativeFunc) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeDerivativeFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeDerivativeFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8328,8 +8445,8 @@ type VisualShaderNodeDeterminant pointers.Trio[VisualShaderNodeDeterminant]
 func (self VisualShaderNodeDeterminant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeDeterminant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeDeterminant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeDeterminant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8339,8 +8456,8 @@ type VisualShaderNodeDistanceFade pointers.Trio[VisualShaderNodeDistanceFade]
 func (self VisualShaderNodeDistanceFade) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeDistanceFade) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeDistanceFade) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeDistanceFade) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8350,8 +8467,8 @@ type VisualShaderNodeDotProduct pointers.Trio[VisualShaderNodeDotProduct]
 func (self VisualShaderNodeDotProduct) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeDotProduct) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeDotProduct) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeDotProduct) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8361,8 +8478,8 @@ type VisualShaderNodeExpression pointers.Trio[VisualShaderNodeExpression]
 func (self VisualShaderNodeExpression) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeExpression) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeExpression) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeExpression) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8372,8 +8489,8 @@ type VisualShaderNodeFaceForward pointers.Trio[VisualShaderNodeFaceForward]
 func (self VisualShaderNodeFaceForward) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFaceForward) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeFaceForward) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeFaceForward) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8383,8 +8500,8 @@ type VisualShaderNodeFloatConstant pointers.Trio[VisualShaderNodeFloatConstant]
 func (self VisualShaderNodeFloatConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFloatConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeFloatConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeFloatConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8395,8 +8512,8 @@ type VisualShaderNodeFloatFunc pointers.Trio[VisualShaderNodeFloatFunc]
 func (self VisualShaderNodeFloatFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFloatFunc) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeFloatFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeFloatFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8407,7 +8524,9 @@ type VisualShaderNodeFloatOp pointers.Trio[VisualShaderNodeFloatOp]
 func (self VisualShaderNodeFloatOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFloatOp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeFloatOp) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeFloatOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8417,8 +8536,8 @@ type VisualShaderNodeFloatParameter pointers.Trio[VisualShaderNodeFloatParameter
 func (self VisualShaderNodeFloatParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFloatParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeFloatParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeFloatParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8428,7 +8547,7 @@ type VisualShaderNodeFrame pointers.Trio[VisualShaderNodeFrame]
 func (self VisualShaderNodeFrame) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFrame) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeFrame) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeFrame) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8437,7 +8556,9 @@ type VisualShaderNodeFresnel pointers.Trio[VisualShaderNodeFresnel]
 func (self VisualShaderNodeFresnel) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeFresnel) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeFresnel) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeFresnel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8446,8 +8567,8 @@ type VisualShaderNodeGlobalExpression pointers.Trio[VisualShaderNodeGlobalExpres
 func (self VisualShaderNodeGlobalExpression) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeGlobalExpression) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeGlobalExpression) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeGlobalExpression) Virtual(name string) reflect.Value {
@@ -8459,8 +8580,8 @@ type VisualShaderNodeGroupBase pointers.Trio[VisualShaderNodeGroupBase]
 func (self VisualShaderNodeGroupBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeGroupBase) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeGroupBase) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeGroupBase) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8470,7 +8591,7 @@ type VisualShaderNodeIf pointers.Trio[VisualShaderNodeIf]
 func (self VisualShaderNodeIf) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIf) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeIf) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeIf) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8479,7 +8600,7 @@ type VisualShaderNodeInput pointers.Trio[VisualShaderNodeInput]
 func (self VisualShaderNodeInput) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeInput) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeInput) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeInput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8488,8 +8609,8 @@ type VisualShaderNodeIntConstant pointers.Trio[VisualShaderNodeIntConstant]
 func (self VisualShaderNodeIntConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIntConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeIntConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeIntConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8500,7 +8621,9 @@ type VisualShaderNodeIntFunc pointers.Trio[VisualShaderNodeIntFunc]
 func (self VisualShaderNodeIntFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIntFunc) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeIntFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeIntFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8510,7 +8633,7 @@ type VisualShaderNodeIntOp pointers.Trio[VisualShaderNodeIntOp]
 func (self VisualShaderNodeIntOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIntOp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeIntOp) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeIntOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8520,8 +8643,8 @@ type VisualShaderNodeIntParameter pointers.Trio[VisualShaderNodeIntParameter]
 func (self VisualShaderNodeIntParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIntParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeIntParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeIntParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8532,7 +8655,7 @@ type VisualShaderNodeIs pointers.Trio[VisualShaderNodeIs]
 func (self VisualShaderNodeIs) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeIs) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeIs) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeIs) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8541,8 +8664,8 @@ type VisualShaderNodeLinearSceneDepth pointers.Trio[VisualShaderNodeLinearSceneD
 func (self VisualShaderNodeLinearSceneDepth) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeLinearSceneDepth) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeLinearSceneDepth) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeLinearSceneDepth) Virtual(name string) reflect.Value {
@@ -8555,7 +8678,7 @@ type VisualShaderNodeMix pointers.Trio[VisualShaderNodeMix]
 func (self VisualShaderNodeMix) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeMix) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeMix) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeMix) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8565,8 +8688,8 @@ type VisualShaderNodeMultiplyAdd pointers.Trio[VisualShaderNodeMultiplyAdd]
 func (self VisualShaderNodeMultiplyAdd) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeMultiplyAdd) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeMultiplyAdd) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeMultiplyAdd) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8576,8 +8699,8 @@ type VisualShaderNodeOuterProduct pointers.Trio[VisualShaderNodeOuterProduct]
 func (self VisualShaderNodeOuterProduct) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeOuterProduct) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeOuterProduct) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeOuterProduct) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8587,7 +8710,9 @@ type VisualShaderNodeOutput pointers.Trio[VisualShaderNodeOutput]
 func (self VisualShaderNodeOutput) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeOutput) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeOutput) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8597,8 +8722,8 @@ type VisualShaderNodeParameter pointers.Trio[VisualShaderNodeParameter]
 func (self VisualShaderNodeParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8608,8 +8733,8 @@ type VisualShaderNodeParameterRef pointers.Trio[VisualShaderNodeParameterRef]
 func (self VisualShaderNodeParameterRef) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParameterRef) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParameterRef) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParameterRef) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8620,8 +8745,8 @@ type VisualShaderNodeParticleAccelerator pointers.Trio[VisualShaderNodeParticleA
 func (self VisualShaderNodeParticleAccelerator) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleAccelerator) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleAccelerator) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleAccelerator) Virtual(name string) reflect.Value {
@@ -8633,8 +8758,8 @@ type VisualShaderNodeParticleBoxEmitter pointers.Trio[VisualShaderNodeParticleBo
 func (self VisualShaderNodeParticleBoxEmitter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleBoxEmitter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleBoxEmitter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleBoxEmitter) Virtual(name string) reflect.Value {
@@ -8646,8 +8771,8 @@ type VisualShaderNodeParticleConeVelocity pointers.Trio[VisualShaderNodeParticle
 func (self VisualShaderNodeParticleConeVelocity) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleConeVelocity) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleConeVelocity) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleConeVelocity) Virtual(name string) reflect.Value {
@@ -8660,8 +8785,8 @@ type VisualShaderNodeParticleEmit pointers.Trio[VisualShaderNodeParticleEmit]
 func (self VisualShaderNodeParticleEmit) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleEmit) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleEmit) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleEmit) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8671,8 +8796,8 @@ type VisualShaderNodeParticleEmitter pointers.Trio[VisualShaderNodeParticleEmitt
 func (self VisualShaderNodeParticleEmitter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleEmitter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleEmitter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleEmitter) Virtual(name string) reflect.Value {
@@ -8684,8 +8809,8 @@ type VisualShaderNodeParticleMeshEmitter pointers.Trio[VisualShaderNodeParticleM
 func (self VisualShaderNodeParticleMeshEmitter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleMeshEmitter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleMeshEmitter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleMeshEmitter) Virtual(name string) reflect.Value {
@@ -8699,8 +8824,8 @@ func (self VisualShaderNodeParticleMultiplyByAxisAngle) Free() {
 }
 
 //go:nosplit
-func (self VisualShaderNodeParticleMultiplyByAxisAngle) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleMultiplyByAxisAngle) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleMultiplyByAxisAngle) Virtual(name string) reflect.Value {
@@ -8712,8 +8837,8 @@ type VisualShaderNodeParticleOutput pointers.Trio[VisualShaderNodeParticleOutput
 func (self VisualShaderNodeParticleOutput) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleOutput) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleOutput) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleOutput) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8724,8 +8849,8 @@ type VisualShaderNodeParticleRandomness pointers.Trio[VisualShaderNodeParticleRa
 func (self VisualShaderNodeParticleRandomness) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleRandomness) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleRandomness) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleRandomness) Virtual(name string) reflect.Value {
@@ -8737,8 +8862,8 @@ type VisualShaderNodeParticleRingEmitter pointers.Trio[VisualShaderNodeParticleR
 func (self VisualShaderNodeParticleRingEmitter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleRingEmitter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleRingEmitter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleRingEmitter) Virtual(name string) reflect.Value {
@@ -8750,8 +8875,8 @@ type VisualShaderNodeParticleSphereEmitter pointers.Trio[VisualShaderNodeParticl
 func (self VisualShaderNodeParticleSphereEmitter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeParticleSphereEmitter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeParticleSphereEmitter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeParticleSphereEmitter) Virtual(name string) reflect.Value {
@@ -8763,8 +8888,8 @@ type VisualShaderNodeProximityFade pointers.Trio[VisualShaderNodeProximityFade]
 func (self VisualShaderNodeProximityFade) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeProximityFade) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeProximityFade) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeProximityFade) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8774,8 +8899,8 @@ type VisualShaderNodeRandomRange pointers.Trio[VisualShaderNodeRandomRange]
 func (self VisualShaderNodeRandomRange) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeRandomRange) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeRandomRange) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeRandomRange) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8785,7 +8910,7 @@ type VisualShaderNodeRemap pointers.Trio[VisualShaderNodeRemap]
 func (self VisualShaderNodeRemap) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeRemap) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeRemap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeRemap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8794,7 +8919,9 @@ type VisualShaderNodeReroute pointers.Trio[VisualShaderNodeReroute]
 func (self VisualShaderNodeReroute) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeReroute) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeReroute) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeReroute) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8803,8 +8930,8 @@ type VisualShaderNodeResizableBase pointers.Trio[VisualShaderNodeResizableBase]
 func (self VisualShaderNodeResizableBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeResizableBase) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeResizableBase) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeResizableBase) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8814,8 +8941,8 @@ type VisualShaderNodeRotationByAxis pointers.Trio[VisualShaderNodeRotationByAxis
 func (self VisualShaderNodeRotationByAxis) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeRotationByAxis) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeRotationByAxis) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeRotationByAxis) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8825,8 +8952,8 @@ type VisualShaderNodeSDFRaymarch pointers.Trio[VisualShaderNodeSDFRaymarch]
 func (self VisualShaderNodeSDFRaymarch) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeSDFRaymarch) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeSDFRaymarch) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeSDFRaymarch) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8836,8 +8963,8 @@ type VisualShaderNodeSDFToScreenUV pointers.Trio[VisualShaderNodeSDFToScreenUV]
 func (self VisualShaderNodeSDFToScreenUV) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeSDFToScreenUV) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeSDFToScreenUV) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeSDFToScreenUV) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8848,7 +8975,9 @@ type VisualShaderNodeSample3D pointers.Trio[VisualShaderNodeSample3D]
 func (self VisualShaderNodeSample3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeSample3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeSample3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeSample3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8857,8 +8986,8 @@ type VisualShaderNodeScreenNormalWorldSpace pointers.Trio[VisualShaderNodeScreen
 func (self VisualShaderNodeScreenNormalWorldSpace) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeScreenNormalWorldSpace) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeScreenNormalWorldSpace) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeScreenNormalWorldSpace) Virtual(name string) reflect.Value {
@@ -8870,8 +8999,8 @@ type VisualShaderNodeScreenUVToSDF pointers.Trio[VisualShaderNodeScreenUVToSDF]
 func (self VisualShaderNodeScreenUVToSDF) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeScreenUVToSDF) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeScreenUVToSDF) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeScreenUVToSDF) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8882,8 +9011,8 @@ type VisualShaderNodeSmoothStep pointers.Trio[VisualShaderNodeSmoothStep]
 func (self VisualShaderNodeSmoothStep) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeSmoothStep) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeSmoothStep) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeSmoothStep) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8894,7 +9023,7 @@ type VisualShaderNodeStep pointers.Trio[VisualShaderNodeStep]
 func (self VisualShaderNodeStep) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeStep) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeStep) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VisualShaderNodeStep) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8904,7 +9033,9 @@ type VisualShaderNodeSwitch pointers.Trio[VisualShaderNodeSwitch]
 func (self VisualShaderNodeSwitch) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeSwitch) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeSwitch) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeSwitch) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8916,7 +9047,9 @@ type VisualShaderNodeTexture pointers.Trio[VisualShaderNodeTexture]
 func (self VisualShaderNodeTexture) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTexture) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeTexture) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeTexture) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -8925,8 +9058,8 @@ type VisualShaderNodeTexture2DArray pointers.Trio[VisualShaderNodeTexture2DArray
 func (self VisualShaderNodeTexture2DArray) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTexture2DArray) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTexture2DArray) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTexture2DArray) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8938,8 +9071,8 @@ func (self VisualShaderNodeTexture2DArrayParameter) Free() {
 }
 
 //go:nosplit
-func (self VisualShaderNodeTexture2DArrayParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTexture2DArrayParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTexture2DArrayParameter) Virtual(name string) reflect.Value {
@@ -8951,8 +9084,8 @@ type VisualShaderNodeTexture2DParameter pointers.Trio[VisualShaderNodeTexture2DP
 func (self VisualShaderNodeTexture2DParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTexture2DParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTexture2DParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTexture2DParameter) Virtual(name string) reflect.Value {
@@ -8964,8 +9097,8 @@ type VisualShaderNodeTexture3D pointers.Trio[VisualShaderNodeTexture3D]
 func (self VisualShaderNodeTexture3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTexture3D) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTexture3D) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTexture3D) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -8975,8 +9108,8 @@ type VisualShaderNodeTexture3DParameter pointers.Trio[VisualShaderNodeTexture3DP
 func (self VisualShaderNodeTexture3DParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTexture3DParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTexture3DParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTexture3DParameter) Virtual(name string) reflect.Value {
@@ -8997,8 +9130,8 @@ type VisualShaderNodeTextureParameter pointers.Trio[VisualShaderNodeTextureParam
 func (self VisualShaderNodeTextureParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTextureParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTextureParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTextureParameter) Virtual(name string) reflect.Value {
@@ -9012,8 +9145,8 @@ func (self VisualShaderNodeTextureParameterTriplanar) Free() {
 }
 
 //go:nosplit
-func (self VisualShaderNodeTextureParameterTriplanar) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTextureParameterTriplanar) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTextureParameterTriplanar) Virtual(name string) reflect.Value {
@@ -9025,8 +9158,8 @@ type VisualShaderNodeTextureSDF pointers.Trio[VisualShaderNodeTextureSDF]
 func (self VisualShaderNodeTextureSDF) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTextureSDF) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTextureSDF) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTextureSDF) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9036,8 +9169,8 @@ type VisualShaderNodeTextureSDFNormal pointers.Trio[VisualShaderNodeTextureSDFNo
 func (self VisualShaderNodeTextureSDFNormal) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTextureSDFNormal) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTextureSDFNormal) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTextureSDFNormal) Virtual(name string) reflect.Value {
@@ -9049,8 +9182,8 @@ type VisualShaderNodeTransformCompose pointers.Trio[VisualShaderNodeTransformCom
 func (self VisualShaderNodeTransformCompose) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformCompose) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformCompose) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformCompose) Virtual(name string) reflect.Value {
@@ -9062,8 +9195,8 @@ type VisualShaderNodeTransformConstant pointers.Trio[VisualShaderNodeTransformCo
 func (self VisualShaderNodeTransformConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformConstant) Virtual(name string) reflect.Value {
@@ -9075,8 +9208,8 @@ type VisualShaderNodeTransformDecompose pointers.Trio[VisualShaderNodeTransformD
 func (self VisualShaderNodeTransformDecompose) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformDecompose) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformDecompose) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformDecompose) Virtual(name string) reflect.Value {
@@ -9089,8 +9222,8 @@ type VisualShaderNodeTransformFunc pointers.Trio[VisualShaderNodeTransformFunc]
 func (self VisualShaderNodeTransformFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformFunc) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9101,8 +9234,8 @@ type VisualShaderNodeTransformOp pointers.Trio[VisualShaderNodeTransformOp]
 func (self VisualShaderNodeTransformOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformOp) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformOp) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformOp) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9112,8 +9245,8 @@ type VisualShaderNodeTransformParameter pointers.Trio[VisualShaderNodeTransformP
 func (self VisualShaderNodeTransformParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformParameter) Virtual(name string) reflect.Value {
@@ -9126,8 +9259,8 @@ type VisualShaderNodeTransformVecMult pointers.Trio[VisualShaderNodeTransformVec
 func (self VisualShaderNodeTransformVecMult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeTransformVecMult) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeTransformVecMult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeTransformVecMult) Virtual(name string) reflect.Value {
@@ -9139,8 +9272,8 @@ type VisualShaderNodeUIntConstant pointers.Trio[VisualShaderNodeUIntConstant]
 func (self VisualShaderNodeUIntConstant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUIntConstant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeUIntConstant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeUIntConstant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9151,7 +9284,9 @@ type VisualShaderNodeUIntFunc pointers.Trio[VisualShaderNodeUIntFunc]
 func (self VisualShaderNodeUIntFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUIntFunc) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeUIntFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeUIntFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9161,7 +9296,9 @@ type VisualShaderNodeUIntOp pointers.Trio[VisualShaderNodeUIntOp]
 func (self VisualShaderNodeUIntOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUIntOp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeUIntOp) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeUIntOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9170,8 +9307,8 @@ type VisualShaderNodeUIntParameter pointers.Trio[VisualShaderNodeUIntParameter]
 func (self VisualShaderNodeUIntParameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUIntParameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeUIntParameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeUIntParameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9182,7 +9319,9 @@ type VisualShaderNodeUVFunc pointers.Trio[VisualShaderNodeUVFunc]
 func (self VisualShaderNodeUVFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUVFunc) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeUVFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeUVFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9191,8 +9330,8 @@ type VisualShaderNodeUVPolarCoord pointers.Trio[VisualShaderNodeUVPolarCoord]
 func (self VisualShaderNodeUVPolarCoord) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeUVPolarCoord) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeUVPolarCoord) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeUVPolarCoord) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9202,7 +9341,9 @@ type VisualShaderNodeVarying pointers.Trio[VisualShaderNodeVarying]
 func (self VisualShaderNodeVarying) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVarying) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeVarying) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeVarying) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9211,8 +9352,8 @@ type VisualShaderNodeVaryingGetter pointers.Trio[VisualShaderNodeVaryingGetter]
 func (self VisualShaderNodeVaryingGetter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVaryingGetter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVaryingGetter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVaryingGetter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9222,8 +9363,8 @@ type VisualShaderNodeVaryingSetter pointers.Trio[VisualShaderNodeVaryingSetter]
 func (self VisualShaderNodeVaryingSetter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVaryingSetter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVaryingSetter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVaryingSetter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9233,8 +9374,8 @@ type VisualShaderNodeVec2Constant pointers.Trio[VisualShaderNodeVec2Constant]
 func (self VisualShaderNodeVec2Constant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec2Constant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec2Constant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec2Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9244,8 +9385,8 @@ type VisualShaderNodeVec2Parameter pointers.Trio[VisualShaderNodeVec2Parameter]
 func (self VisualShaderNodeVec2Parameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec2Parameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec2Parameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec2Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9255,8 +9396,8 @@ type VisualShaderNodeVec3Constant pointers.Trio[VisualShaderNodeVec3Constant]
 func (self VisualShaderNodeVec3Constant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec3Constant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec3Constant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec3Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9266,8 +9407,8 @@ type VisualShaderNodeVec3Parameter pointers.Trio[VisualShaderNodeVec3Parameter]
 func (self VisualShaderNodeVec3Parameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec3Parameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec3Parameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec3Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9277,8 +9418,8 @@ type VisualShaderNodeVec4Constant pointers.Trio[VisualShaderNodeVec4Constant]
 func (self VisualShaderNodeVec4Constant) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec4Constant) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec4Constant) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec4Constant) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9288,8 +9429,8 @@ type VisualShaderNodeVec4Parameter pointers.Trio[VisualShaderNodeVec4Parameter]
 func (self VisualShaderNodeVec4Parameter) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVec4Parameter) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVec4Parameter) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVec4Parameter) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9300,8 +9441,8 @@ type VisualShaderNodeVectorBase pointers.Trio[VisualShaderNodeVectorBase]
 func (self VisualShaderNodeVectorBase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorBase) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorBase) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorBase) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9311,8 +9452,8 @@ type VisualShaderNodeVectorCompose pointers.Trio[VisualShaderNodeVectorCompose]
 func (self VisualShaderNodeVectorCompose) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorCompose) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorCompose) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorCompose) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9322,8 +9463,8 @@ type VisualShaderNodeVectorDecompose pointers.Trio[VisualShaderNodeVectorDecompo
 func (self VisualShaderNodeVectorDecompose) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorDecompose) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorDecompose) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorDecompose) Virtual(name string) reflect.Value {
@@ -9335,8 +9476,8 @@ type VisualShaderNodeVectorDistance pointers.Trio[VisualShaderNodeVectorDistance
 func (self VisualShaderNodeVectorDistance) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorDistance) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorDistance) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorDistance) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9347,8 +9488,8 @@ type VisualShaderNodeVectorFunc pointers.Trio[VisualShaderNodeVectorFunc]
 func (self VisualShaderNodeVectorFunc) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorFunc) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorFunc) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorFunc) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9358,8 +9499,8 @@ type VisualShaderNodeVectorLen pointers.Trio[VisualShaderNodeVectorLen]
 func (self VisualShaderNodeVectorLen) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorLen) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorLen) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorLen) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9370,7 +9511,9 @@ type VisualShaderNodeVectorOp pointers.Trio[VisualShaderNodeVectorOp]
 func (self VisualShaderNodeVectorOp) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorOp) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VisualShaderNodeVectorOp) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self VisualShaderNodeVectorOp) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9379,8 +9522,8 @@ type VisualShaderNodeVectorRefract pointers.Trio[VisualShaderNodeVectorRefract]
 func (self VisualShaderNodeVectorRefract) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeVectorRefract) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeVectorRefract) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeVectorRefract) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9390,8 +9533,8 @@ type VisualShaderNodeWorldPositionFromDepth pointers.Trio[VisualShaderNodeWorldP
 func (self VisualShaderNodeWorldPositionFromDepth) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VisualShaderNodeWorldPositionFromDepth) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self VisualShaderNodeWorldPositionFromDepth) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self VisualShaderNodeWorldPositionFromDepth) Virtual(name string) reflect.Value {
@@ -9404,7 +9547,7 @@ type VoxelGI pointers.Trio[VoxelGI]
 func (self VoxelGI) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VoxelGI) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VoxelGI) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VoxelGI) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9413,7 +9556,7 @@ type VoxelGIData pointers.Trio[VoxelGIData]
 func (self VoxelGIData) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self VoxelGIData) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self VoxelGIData) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VoxelGIData) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9422,7 +9565,7 @@ type WeakRef pointers.Trio[WeakRef]
 func (self WeakRef) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WeakRef) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WeakRef) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WeakRef) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9434,7 +9577,7 @@ type WebRTCDataChannel pointers.Trio[WebRTCDataChannel]
 func (self WebRTCDataChannel) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebRTCDataChannel) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebRTCDataChannel) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WebRTCDataChannel) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9443,8 +9586,8 @@ type WebRTCDataChannelExtension pointers.Trio[WebRTCDataChannelExtension]
 func (self WebRTCDataChannelExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebRTCDataChannelExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self WebRTCDataChannelExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self WebRTCDataChannelExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9454,7 +9597,7 @@ type WebRTCMultiplayerPeer pointers.Trio[WebRTCMultiplayerPeer]
 func (self WebRTCMultiplayerPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebRTCMultiplayerPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebRTCMultiplayerPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WebRTCMultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9468,7 +9611,7 @@ type WebRTCPeerConnection pointers.Trio[WebRTCPeerConnection]
 func (self WebRTCPeerConnection) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebRTCPeerConnection) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebRTCPeerConnection) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WebRTCPeerConnection) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9477,8 +9620,8 @@ type WebRTCPeerConnectionExtension pointers.Trio[WebRTCPeerConnectionExtension]
 func (self WebRTCPeerConnectionExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebRTCPeerConnectionExtension) AsObject() gd.Object {
-	return (*(*Object)(unsafe.Pointer(&self)))
+func (self WebRTCPeerConnectionExtension) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
 }
 
 func (self WebRTCPeerConnectionExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -9488,7 +9631,9 @@ type WebSocketMultiplayerPeer pointers.Trio[WebSocketMultiplayerPeer]
 func (self WebSocketMultiplayerPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebSocketMultiplayerPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebSocketMultiplayerPeer) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
 
 func (self WebSocketMultiplayerPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9500,7 +9645,7 @@ type WebSocketPeer pointers.Trio[WebSocketPeer]
 func (self WebSocketPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebSocketPeer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebSocketPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WebSocketPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9510,7 +9655,7 @@ type WebXRInterface pointers.Trio[WebXRInterface]
 func (self WebXRInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WebXRInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WebXRInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WebXRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9532,7 +9677,7 @@ type Window pointers.Trio[Window]
 func (self Window) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self Window) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self Window) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Window) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9541,7 +9686,7 @@ type WorkerThreadPool pointers.Trio[WorkerThreadPool]
 func (self WorkerThreadPool) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WorkerThreadPool) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WorkerThreadPool) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WorkerThreadPool) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9550,7 +9695,7 @@ type World2D pointers.Trio[World2D]
 func (self World2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self World2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self World2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self World2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9559,7 +9704,7 @@ type World3D pointers.Trio[World3D]
 func (self World3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self World3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self World3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self World3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9568,7 +9713,7 @@ type WorldBoundaryShape2D pointers.Trio[WorldBoundaryShape2D]
 func (self WorldBoundaryShape2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WorldBoundaryShape2D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WorldBoundaryShape2D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WorldBoundaryShape2D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9577,7 +9722,7 @@ type WorldBoundaryShape3D pointers.Trio[WorldBoundaryShape3D]
 func (self WorldBoundaryShape3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WorldBoundaryShape3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WorldBoundaryShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WorldBoundaryShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9586,7 +9731,7 @@ type WorldEnvironment pointers.Trio[WorldEnvironment]
 func (self WorldEnvironment) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self WorldEnvironment) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self WorldEnvironment) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self WorldEnvironment) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9595,7 +9740,7 @@ type X509Certificate pointers.Trio[X509Certificate]
 func (self X509Certificate) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self X509Certificate) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self X509Certificate) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self X509Certificate) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9605,7 +9750,7 @@ type XMLParser pointers.Trio[XMLParser]
 func (self XMLParser) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XMLParser) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XMLParser) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XMLParser) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9614,7 +9759,7 @@ type XRAnchor3D pointers.Trio[XRAnchor3D]
 func (self XRAnchor3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRAnchor3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRAnchor3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRAnchor3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9626,7 +9771,7 @@ type XRBodyModifier3D pointers.Trio[XRBodyModifier3D]
 func (self XRBodyModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRBodyModifier3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRBodyModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRBodyModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9640,7 +9785,7 @@ type XRBodyTracker pointers.Trio[XRBodyTracker]
 func (self XRBodyTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRBodyTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRBodyTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRBodyTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9649,7 +9794,7 @@ type XRCamera3D pointers.Trio[XRCamera3D]
 func (self XRCamera3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRCamera3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRCamera3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRCamera3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9658,7 +9803,7 @@ type XRController3D pointers.Trio[XRController3D]
 func (self XRController3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRController3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRController3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRController3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9667,7 +9812,7 @@ type XRControllerTracker pointers.Trio[XRControllerTracker]
 func (self XRControllerTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRControllerTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRControllerTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRControllerTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9676,7 +9821,7 @@ type XRFaceModifier3D pointers.Trio[XRFaceModifier3D]
 func (self XRFaceModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRFaceModifier3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRFaceModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRFaceModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9686,7 +9831,7 @@ type XRFaceTracker pointers.Trio[XRFaceTracker]
 func (self XRFaceTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRFaceTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRFaceTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRFaceTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9696,7 +9841,7 @@ type XRHandModifier3D pointers.Trio[XRHandModifier3D]
 func (self XRHandModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRHandModifier3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRHandModifier3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRHandModifier3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9710,7 +9855,7 @@ type XRHandTracker pointers.Trio[XRHandTracker]
 func (self XRHandTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRHandTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRHandTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRHandTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9726,7 +9871,7 @@ type XRInterface pointers.Trio[XRInterface]
 func (self XRInterface) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRInterface) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9735,7 +9880,7 @@ type XRInterfaceExtension pointers.Trio[XRInterfaceExtension]
 func (self XRInterfaceExtension) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRInterfaceExtension) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRInterfaceExtension) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRInterfaceExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9744,7 +9889,7 @@ type XRNode3D pointers.Trio[XRNode3D]
 func (self XRNode3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRNode3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRNode3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRNode3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9753,7 +9898,7 @@ type XROrigin3D pointers.Trio[XROrigin3D]
 func (self XROrigin3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XROrigin3D) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XROrigin3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XROrigin3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9763,7 +9908,7 @@ type XRPose pointers.Trio[XRPose]
 func (self XRPose) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRPose) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRPose) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRPose) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9773,7 +9918,7 @@ type XRPositionalTracker pointers.Trio[XRPositionalTracker]
 func (self XRPositionalTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRPositionalTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRPositionalTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRPositionalTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9785,7 +9930,7 @@ type XRServer pointers.Trio[XRServer]
 func (self XRServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRServer) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRServer) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9794,7 +9939,7 @@ type XRTracker pointers.Trio[XRTracker]
 func (self XRTracker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRTracker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRTracker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRTracker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9803,7 +9948,7 @@ type XRVRS pointers.Trio[XRVRS]
 func (self XRVRS) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self XRVRS) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self XRVRS) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRVRS) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9813,7 +9958,7 @@ type ZIPPacker pointers.Trio[ZIPPacker]
 func (self ZIPPacker) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ZIPPacker) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ZIPPacker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ZIPPacker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
@@ -9822,6 +9967,6 @@ type ZIPReader pointers.Trio[ZIPReader]
 func (self ZIPReader) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
 
 //go:nosplit
-func (self ZIPReader) AsObject() gd.Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self ZIPReader) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self ZIPReader) Virtual(name string) reflect.Value { return reflect.Value{} }

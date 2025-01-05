@@ -8,9 +8,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -25,7 +27,7 @@ type Any interface {
 	AsJSONRPC() Instance
 }
 
-func (self Instance) SetScope(scope string, target gd.Object) {
+func (self Instance) SetScope(scope string, target Object.Instance) {
 	class(self).SetScope(gd.NewString(scope), target)
 }
 
@@ -83,11 +85,11 @@ func (self Instance) MakeResponseError(code int, message string) Dictionary.Any 
 type Advanced = class
 type class [1]gdclass.JSONRPC
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,10 +99,10 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) SetScope(scope gd.String, target gd.Object) {
+func (self class) SetScope(scope gd.String, target [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scope))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(target))
+	callframe.Arg(frame, pointers.Get(target[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -211,14 +213,14 @@ func (self Instance) AsJSONRPC() Instance { return *((*Instance)(unsafe.Pointer(
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
 func init() {

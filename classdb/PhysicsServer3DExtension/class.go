@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/AABB"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -1834,11 +1836,11 @@ func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool {
 type Advanced = class
 type class [1]gdclass.PhysicsServer3DExtension
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }

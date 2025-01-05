@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -15,6 +16,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -50,8 +52,8 @@ func (self Instance) ForceRaycastUpdate() {
 /*
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
-func (self Instance) GetCollider() gd.Object {
-	return gd.Object(class(self).GetCollider())
+func (self Instance) GetCollider() Object.Instance {
+	return Object.Instance(class(self).GetCollider())
 }
 
 /*
@@ -152,11 +154,11 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool {
 type Advanced = class
 type class [1]gdclass.RayCast2D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -288,11 +290,11 @@ func (self class) ForceRaycastUpdate() {
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
 //go:nosplit
-func (self class) GetCollider() gd.Object {
+func (self class) GetCollider() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -384,7 +386,7 @@ Adds a collision exception so the ray does not report collisions with the specif
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject2D) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node[0])[0])
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_add_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -562,14 +564,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode2D(), name)
+		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode2D(), name)
+		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}
 }
 func init() {

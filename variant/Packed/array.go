@@ -21,6 +21,46 @@ type proxiable interface {
 		gd.PackedInt64Array | gd.PackedStringArray | gd.PackedVector2Array | gd.PackedVector3Array | gd.PackedVector4Array
 }
 
+func NewByteArray() gd.PackedByteArray {
+	return gd.NewPackedByteArray()
+}
+
+func NewColorArray() gd.PackedColorArray {
+	return gd.NewPackedColorArray()
+}
+
+func NewFloat32Array() gd.PackedFloat32Array {
+	return gd.NewPackedFloat32Array()
+}
+
+func NewFloat64Array() gd.PackedFloat64Array {
+	return gd.NewPackedFloat64Array()
+}
+
+func NewInt32Array() gd.PackedInt32Array {
+	return gd.NewPackedInt32Array()
+}
+
+func NewInt64Array() gd.PackedInt64Array {
+	return gd.NewPackedInt64Array()
+}
+
+func NewStringArray() gd.PackedStringArray {
+	return gd.NewPackedStringArray()
+}
+
+func NewVector2Array() gd.PackedVector2Array {
+	return gd.NewPackedVector2Array()
+}
+
+func NewVector3Array() gd.PackedVector3Array {
+	return gd.NewPackedVector3Array()
+}
+
+func NewVector4Array() gd.PackedVector4Array {
+	return gd.NewPackedVector4Array()
+}
+
 type methods[A proxiable, T packable] interface {
 	Index(gd.Int) T
 	Append(value T) gd.Bool

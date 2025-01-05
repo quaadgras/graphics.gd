@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/AABB"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -1356,7 +1358,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.PhysicsServer3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -3663,7 +3665,7 @@ func (self class) GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

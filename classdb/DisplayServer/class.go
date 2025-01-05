@@ -9,6 +9,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -21,6 +22,7 @@ import "graphics.gd/variant/Vector3i"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -1877,7 +1879,7 @@ func IsWindowTransparencyAvailable() bool {
 Registers an [Object] which represents an additional output that will be rendered too, beyond normal windows. The [Object] is only used as an identifier, which can be later passed to [method unregister_additional_output].
 This can be used to prevent Godot from skipping rendering when no normal windows are visible.
 */
-func RegisterAdditionalOutput(obj gd.Object) {
+func RegisterAdditionalOutput(obj Object.Instance) {
 	once.Do(singleton)
 	class(self).RegisterAdditionalOutput(obj)
 }
@@ -1885,7 +1887,7 @@ func RegisterAdditionalOutput(obj gd.Object) {
 /*
 Unregisters an [Object] representing an additional output, that was registered via [method register_additional_output].
 */
-func UnregisterAdditionalOutput(obj gd.Object) {
+func UnregisterAdditionalOutput(obj Object.Instance) {
 	once.Do(singleton)
 	class(self).UnregisterAdditionalOutput(obj)
 }
@@ -1903,7 +1905,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.DisplayServer
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -4811,9 +4813,9 @@ Registers an [Object] which represents an additional output that will be rendere
 This can be used to prevent Godot from skipping rendering when no normal windows are visible.
 */
 //go:nosplit
-func (self class) RegisterAdditionalOutput(obj gd.Object) {
+func (self class) RegisterAdditionalOutput(obj [1]gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_register_additional_output, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -4823,9 +4825,9 @@ func (self class) RegisterAdditionalOutput(obj gd.Object) {
 Unregisters an [Object] representing an additional output, that was registered via [method register_additional_output].
 */
 //go:nosplit
-func (self class) UnregisterAdditionalOutput(obj gd.Object) {
+func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_unregister_additional_output, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -4846,7 +4848,7 @@ func (self class) HasAdditionalOutputs() bool {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

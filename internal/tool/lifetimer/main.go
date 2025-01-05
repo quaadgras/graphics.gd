@@ -79,7 +79,7 @@ func main() {
 					delete(ClassMethodOwnership[class.Name][method.Name], arg.Name)
 					continue
 				}
-				if parent[arg.Type] != "" && !isRefCounted[arg.Type] {
+				if arg.Type == "Object" || (parent[arg.Type] != "" && !isRefCounted[arg.Type]) {
 					isUnsafe = true
 					break
 				}
@@ -87,30 +87,31 @@ func main() {
 			_, ok := ClassMethodOwnership[class.Name][method.Name]["return value"]
 			if ok {
 				delete(ClassMethodOwnership[class.Name][method.Name], "return value")
-			}
-			if parent[method.ReturnValue.Type] != "" && !isRefCounted[method.ReturnValue.Type] && !ok {
-				isUnsafe = true
-			}
-			if isUnsafe {
-				fmt.Print(class.Name, "::", method.Name, "(")
-				for i, arg := range method.Arguments {
-					if i > 0 {
-						fmt.Print(",")
+			} else {
+				if method.ReturnValue.Type == "Object" || (parent[method.ReturnValue.Type] != "" && !isRefCounted[method.ReturnValue.Type] && !ok) {
+					isUnsafe = true
+				}
+				if isUnsafe {
+					fmt.Print(class.Name, "::", method.Name, "(")
+					for i, arg := range method.Arguments {
+						if i > 0 {
+							fmt.Print(",")
+						}
+						fmt.Print(arg.Name)
+						if arg.Type == "Object" || (parent[arg.Type] != "" && !isRefCounted[arg.Type]) {
+							fmt.Print("?")
+						}
 					}
-					fmt.Print(arg.Name)
-					if parent[arg.Type] != "" && !isRefCounted[arg.Type] {
+					fmt.Print(")")
+					fmt.Print(method.ReturnValue.Type)
+					if method.ReturnValue.Type == "Object" || (parent[method.ReturnValue.Type] != "" && !isRefCounted[method.ReturnValue.Type]) {
 						fmt.Print("?")
 					}
+					fmt.Println()
 				}
-				fmt.Print(")")
-				fmt.Print(method.ReturnValue.Type)
-				if parent[method.ReturnValue.Type] != "" && !isRefCounted[method.ReturnValue.Type] {
-					fmt.Print("?")
+				if len(ClassMethodOwnership[class.Name][method.Name]) == 0 {
+					delete(ClassMethodOwnership[class.Name], method.Name)
 				}
-				fmt.Println()
-			}
-			if len(ClassMethodOwnership[class.Name][method.Name]) == 0 {
-				delete(ClassMethodOwnership[class.Name], method.Name)
 			}
 		}
 

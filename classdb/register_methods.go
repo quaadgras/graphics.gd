@@ -152,7 +152,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gd.TypeObject:
 				ptr := gd.UnsafeGet[[3]uintptr](p_args, i-offset)
-				val := pointers.Let[gd.Object](ptr)
+				val := [1]gd.Object{pointers.Let[gd.Object](ptr)}
 				value = val
 			case gd.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
@@ -283,11 +283,11 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			pointers.End(val)
 		case gd.RID:
 			gd.UnsafeSet[gd.RID](p_ret, val)
-		case gd.Object:
-			gd.UnsafeSet[uintptr](p_ret, pointers.Get(val)[0])
-			_, ok := gd.ExtensionInstances.Load(pointers.Get(val)[0])
+		case [1]gd.Object:
+			gd.UnsafeSet[uintptr](p_ret, pointers.Get(val[0])[0])
+			_, ok := gd.ExtensionInstances.Load(pointers.Get(val[0])[0])
 			if !ok {
-				pointers.End(val)
+				pointers.End(val[0])
 			}
 		case gd.Callable:
 			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))

@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -80,15 +82,15 @@ func (self Instance) GetAngle() Float.X {
 /*
 Returns the moving object's colliding shape given a collision index (the deepest collision by default).
 */
-func (self Instance) GetLocalShape() gd.Object {
-	return gd.Object(class(self).GetLocalShape(gd.Int(0)))
+func (self Instance) GetLocalShape() Object.Instance {
+	return Object.Instance(class(self).GetLocalShape(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
 */
-func (self Instance) GetCollider() gd.Object {
-	return gd.Object(class(self).GetCollider(gd.Int(0)))
+func (self Instance) GetCollider() Object.Instance {
+	return Object.Instance(class(self).GetCollider(gd.Int(0)))
 }
 
 /*
@@ -108,8 +110,8 @@ func (self Instance) GetColliderRid() Resource.ID {
 /*
 Returns the colliding body's shape given a collision index (the deepest collision by default).
 */
-func (self Instance) GetColliderShape() gd.Object {
-	return gd.Object(class(self).GetColliderShape(gd.Int(0)))
+func (self Instance) GetColliderShape() Object.Instance {
+	return Object.Instance(class(self).GetColliderShape(gd.Int(0)))
 }
 
 /*
@@ -130,11 +132,11 @@ func (self Instance) GetColliderVelocity() Vector3.XYZ {
 type Advanced = class
 type class [1]gdclass.KinematicCollision3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -242,12 +244,12 @@ func (self class) GetAngle(collision_index gd.Int, up_direction gd.Vector3) gd.F
 Returns the moving object's colliding shape given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetLocalShape(collision_index gd.Int) gd.Object {
+func (self class) GetLocalShape(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -256,12 +258,12 @@ func (self class) GetLocalShape(collision_index gd.Int) gd.Object {
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetCollider(collision_index gd.Int) gd.Object {
+func (self class) GetCollider(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -298,12 +300,12 @@ func (self class) GetColliderRid(collision_index gd.Int) gd.RID {
 Returns the colliding body's shape given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetColliderShape(collision_index gd.Int) gd.Object {
+func (self class) GetColliderShape(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -337,20 +339,24 @@ func (self class) GetColliderVelocity(collision_index gd.Int) gd.Vector3 {
 }
 func (self class) AsKinematicCollision3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsKinematicCollision3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted         { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted      { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

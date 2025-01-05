@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Plane"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -300,11 +302,11 @@ func (self Instance) CommitToArrays() Array.Any {
 type Advanced = class
 type class [1]gdclass.SurfaceTool
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -740,22 +742,26 @@ func (self class) CommitToArrays() gd.Array {
 	frame.Free()
 	return ret
 }
-func (self class) AsSurfaceTool() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSurfaceTool() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsSurfaceTool() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSurfaceTool() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

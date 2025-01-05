@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -585,11 +587,11 @@ func (self Instance) DuplicateLines() {
 type Advanced = class
 type class [1]gdclass.CodeEdit
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -2074,19 +2076,19 @@ func (self class) DuplicateLines() {
 	frame.Free()
 }
 func (self Instance) OnBreakpointToggled(cb func(line int)) {
-	self[0].AsObject().Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCodeCompletionRequested(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int)) {
-	self[0].AsObject().Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSymbolValidate(cb func(symbol string)) {
-	self[0].AsObject().Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsCodeEdit() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -2119,7 +2121,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_filter_code_completion_candidates":
 		return reflect.ValueOf(self._filter_code_completion_candidates)
 	default:
-		return gd.VirtualByName(self.AsTextEdit(), name)
+		return gd.VirtualByName(TextEdit.Advanced(self.AsTextEdit()), name)
 	}
 }
 
@@ -2132,7 +2134,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_filter_code_completion_candidates":
 		return reflect.ValueOf(self._filter_code_completion_candidates)
 	default:
-		return gd.VirtualByName(self.AsTextEdit(), name)
+		return gd.VirtualByName(TextEdit.Instance(self.AsTextEdit()), name)
 	}
 }
 func init() {

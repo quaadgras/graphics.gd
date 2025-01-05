@@ -1,6 +1,4 @@
 golang.org/x/text v0.15.0 h1:h1V/4gjBv8v9cjcR6+AR5+/cIYK5N/WAgiv4xlsEtAk=
 golang.org/x/text v0.15.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=
-runtime.link v0.0.0-20241005094610-e19c9804d053 h1:CPI88sjOPMOYp0E9aszxGEI7lN6Z42cQxx+F09mkLF8=
-runtime.link v0.0.0-20241005094610-e19c9804d053/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
 runtime.link v0.0.0-20241203235822-266e6dd4f99d h1:HzPoM8kUlHbNziC53/jrA4x0Su2XGDLU0VAw/xs8goc=
 runtime.link v0.0.0-20241203235822-266e6dd4f99d/go.mod h1:bs9lT/R79BfIAGcCHrCWiEdDec5nUNSBBjDmAvAsasU=

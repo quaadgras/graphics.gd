@@ -11,6 +11,13 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
+	case reflect.Array:
+		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			var obj = reflect.New(rtype)
+			*(*Object)(obj.UnsafePointer()) = LetVariantAsPointerType[Object](value, TypeObject)
+			return obj.Elem(), nil
+		}
+		fallthrough
 	default:
 		return ConvertToDesiredGoType(value.Interface(), rtype)
 	}
@@ -62,7 +69,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = reflect.ValueOf(value).Interface().(IsClass).AsObject()
+			*(*Object)(obj.UnsafePointer()) = LetVariantAsPointerType[Object](variant, TypeObject)
 			return obj.Elem(), nil
 		}
 		return convertToGoArrayOf(rtype.Elem(), value)
@@ -101,7 +108,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Struct:
 		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
+			*(*[1]Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
 			return obj.Elem(), nil
 		}
 		return convertToGoStruct(rtype, value)
@@ -141,7 +148,7 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := convertVariantToDesiredGoType(object.Get(NewStringName(name)), field.Type)
+			fieldValue, err := convertVariantToDesiredGoType(object[0].Get(NewStringName(name)), field.Type)
 			if err != nil {
 				return reflect.Value{}, err
 			}

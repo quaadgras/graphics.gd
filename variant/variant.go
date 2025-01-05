@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/NodePath"
@@ -393,3 +394,7 @@ const (
 	/*Represents the size of the [enum Variant.Operator] enum.*/
 	OpMax Operator = 25
 )
+
+func Use[T pointers.Generic[T, S], S pointers.Size](ptr T) {
+	pointers.Get(ptr)
+}

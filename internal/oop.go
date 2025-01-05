@@ -25,7 +25,7 @@ func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr [1]uintpt
 
 func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](ptr T) uintptr {
 	raw := pointers.Get(ptr)
-	pointers.Set(ptr, [3]uintptr{raw[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{raw[0]})))})
+	pointers.Set(ptr, [3]uintptr{raw[0], uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{raw[0]})}))})
 	pointers.Lay(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -37,15 +37,15 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr [1]uintp
 	if ptr == ([1]uintptr{}) {
 		return T{}
 	}
-	return pointers.Let[T]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID(pointers.Raw[Object]([3]uintptr{ptr[0]})))})
+	return pointers.Let[T]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{ptr[0]})}))})
 }
 
-func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj Object, ptr [1]uintptr) T {
+func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj [1]Object, ptr [1]uintptr) T {
 	return pointers.Let[T]([3]uintptr{ptr[0], 0})
 }
 
-func (self Object) AsObject() Object {
-	return self
+func (self Object) AsObject() [1]Object {
+	return [1]Object{self}
 }
 
 func (self RefCounted) Free() {
@@ -60,16 +60,18 @@ func (self Object) Free() {
 	if !ok {
 		return
 	}
-	self = Object(pointers.Raw[Object](raw))
+	this := [1]Object{pointers.Raw[Object](raw)}
+	//fmt.Println("FREE ", pointers.Trio[Object](self), this[0].GetClass().String())
+	//	fmt.Println(runtime.Caller(2))
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
-	ref := Global.Object.CastTo(self, Global.refCountedClassTag)
-	if ref != (Object{}) {
+	ref := Global.Object.CastTo(this, Global.refCountedClassTag)
+	if ref != ([1]Object{}) {
 		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
-			Global.Object.Destroy(self)
+			Global.Object.Destroy(this)
 		}
 	} else {
-		Global.Object.Destroy(self)
+		Global.Object.Destroy(this)
 	}
 }
 
@@ -78,7 +80,7 @@ type Class[T any, S IsClass] struct {
 	super S
 }
 
-func (class *Class[T, S]) AsObject() Object {
+func (class *Class[T, S]) AsObject() [1]Object {
 	return class.super.AsObject()
 }
 
@@ -127,7 +129,7 @@ func As[T IsClass](class IsClass) (T, bool) {
 	}
 	var classtag = Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype)))
 	casted := Global.Object.CastTo(class.AsObject(), classtag)
-	if casted != (Object{}) && pointers.Get(casted) != ([3]uintptr{}) {
+	if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uintptr{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	return zero, false
@@ -140,9 +142,9 @@ func as[T any](v Variant) T {
 		return zero
 	}
 	if obj, ok := val.(IsClass); ok {
-		var classtag = Global.ClassDB.GetClassTag(obj.AsObject().GetClass().StringName())
+		var classtag = Global.ClassDB.GetClassTag(obj.AsObject()[0].GetClass().StringName())
 		casted := Global.Object.CastTo(obj.AsObject(), classtag)
-		if casted != (Object{}) && pointers.Get(casted) != ([3]uintptr{}) {
+		if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uintptr{}) {
 			any(&zero).(PointerToClass).SetPointer(casted)
 		}
 		return zero
@@ -162,10 +164,10 @@ type Extends[T IsClass] interface {
 
 type PointerToClass interface {
 	IsClass
-	SetPointer(Object)
+	SetPointer([1]Object)
 }
 
 type IsClass interface {
 	Virtual(string) reflect.Value
-	AsObject() Object
+	AsObject() [1]Object
 }

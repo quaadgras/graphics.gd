@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Color"
 import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -150,7 +152,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 		//}
 		//[/csharp]
 		//[/codeblocks]
-		MakeCustomTooltip(for_text string) gd.Object
+		MakeCustomTooltip(for_text string) Object.Instance
 		//Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
 		//[b]Example usage for clicking a control:[/b]
 		//[codeblocks]
@@ -413,13 +415,13 @@ public override Control _MakeCustomTooltip(string forText)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text string) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text string) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(for_text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -1148,11 +1150,11 @@ func (self Instance) IsLayoutRtl() bool {
 type Advanced = class
 type class [1]gdclass.Control
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1665,12 +1667,12 @@ public override Control _MakeCustomTooltip(string forText)
 [/csharp]
 [/codeblocks]
 */
-func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text gd.String) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text gd.String) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -3116,7 +3118,7 @@ The methods [method _can_drop_data] and [method _drop_data] must be implemented 
 func (self class) ForceDrag(data gd.Variant, preview [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_force_drag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -3251,7 +3253,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 //go:nosplit
 func (self class) SetDragPreview(control [1]gdclass.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_set_drag_preview, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -3384,39 +3386,39 @@ func (self class) IsLocalizingNumeralSystem() bool {
 	return ret
 }
 func (self Instance) OnResized(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("resized"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGuiInput(cb func(event [1]gdclass.InputEvent)) {
-	self[0].AsObject().Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMouseEntered(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMouseExited(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFocusEntered(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFocusExited(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSizeFlagsChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMinimumSizeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnThemeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsControl() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -3451,7 +3453,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_gui_input":
 		return reflect.ValueOf(self._gui_input)
 	default:
-		return gd.VirtualByName(self.AsCanvasItem(), name)
+		return gd.VirtualByName(CanvasItem.Advanced(self.AsCanvasItem()), name)
 	}
 }
 
@@ -3476,7 +3478,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_gui_input":
 		return reflect.ValueOf(self._gui_input)
 	default:
-		return gd.VirtualByName(self.AsCanvasItem(), name)
+		return gd.VirtualByName(CanvasItem.Instance(self.AsCanvasItem()), name)
 	}
 }
 func init() {

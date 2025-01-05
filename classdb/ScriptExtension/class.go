@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -87,28 +89,28 @@ func (Instance) _get_instance_base_type(impl func(ptr unsafe.Pointer) string) (c
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _instance_create(impl func(ptr unsafe.Pointer, for_object gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instance_create(impl func(ptr unsafe.Pointer, for_object Object.Instance) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_object = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(for_object)
+		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(for_object[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _placeholder_instance_create(impl func(ptr unsafe.Pointer, for_object gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _placeholder_instance_create(impl func(ptr unsafe.Pointer, for_object Object.Instance) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_object = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(for_object)
+		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(for_object[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _instance_has(impl func(ptr unsafe.Pointer, obj gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instance_has(impl func(ptr unsafe.Pointer, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -378,11 +380,11 @@ func (Instance) _get_rpc_config(impl func(ptr unsafe.Pointer) any) (cb gd.Extens
 type Advanced = class
 type class [1]gdclass.ScriptExtension
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -461,30 +463,30 @@ func (class) _get_instance_base_type(impl func(ptr unsafe.Pointer) gd.StringName
 	}
 }
 
-func (class) _instance_create(impl func(ptr unsafe.Pointer, for_object gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instance_create(impl func(ptr unsafe.Pointer, for_object [1]gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_object = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(for_object)
+		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(for_object[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _placeholder_instance_create(impl func(ptr unsafe.Pointer, for_object gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _placeholder_instance_create(impl func(ptr unsafe.Pointer, for_object [1]gd.Object) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_object = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(for_object)
+		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(for_object[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _instance_has(impl func(ptr unsafe.Pointer, obj gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instance_has(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -775,8 +777,12 @@ func (self class) AsResource() Resource.Advanced {
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -853,7 +859,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_get_rpc_config":
 		return reflect.ValueOf(self._get_rpc_config)
 	default:
-		return gd.VirtualByName(self.AsScript(), name)
+		return gd.VirtualByName(Script.Advanced(self.AsScript()), name)
 	}
 }
 
@@ -932,7 +938,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_get_rpc_config":
 		return reflect.ValueOf(self._get_rpc_config)
 	default:
-		return gd.VirtualByName(self.AsScript(), name)
+		return gd.VirtualByName(Script.Instance(self.AsScript()), name)
 	}
 }
 func init() {

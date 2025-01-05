@@ -16,7 +16,7 @@ type ID struct {
 
 // Instance returns the Object instance identified by this ID.
 func (id ID) Instance() Instance {
-	return Instance{gd.Global.Object.GetInstanceFromID(gd.ObjectID(id.int64))}
+	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id.int64)))
 }
 
 /*
@@ -33,10 +33,10 @@ type Instance [1]gdclass.Object
 
 // New creates a new Object instance.
 func New() Instance {
-	return Instance{gd.Global.ClassDB.ConstructObject(gd.NewStringName("Object"))}
+	return Instance(gd.Global.ClassDB.ConstructObject(gd.NewStringName("Object")))
 }
 
-func (obj Instance) AsObject() gd.Object             { return obj[0] }
+func (obj Instance) AsObject() [1]gd.Object          { return obj }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 // Virtual method lookup.

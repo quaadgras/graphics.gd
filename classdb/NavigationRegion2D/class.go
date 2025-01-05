@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -15,6 +16,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -95,11 +97,11 @@ func (self Instance) IsBaking() bool {
 type Advanced = class
 type class [1]gdclass.NavigationRegion2D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -373,11 +375,11 @@ func (self class) IsBaking() bool {
 	return ret
 }
 func (self Instance) OnNavigationPolygonChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("navigation_polygon_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_polygon_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBakeFinished(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("bake_finished"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("bake_finished"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsNavigationRegion2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -396,14 +398,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode2D(), name)
+		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode2D(), name)
+		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}
 }
 func init() {

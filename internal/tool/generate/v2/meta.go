@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	"graphics.gd/internal/gdjson"
@@ -176,13 +175,14 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		return "*int32"
 	case "void*", "uint8_t*":
 		return "unsafe.Pointer"
-	case "Object", "RefCounted":
+	case "Object":
+		return "[1]gd.Object"
+	case "RefCounted":
 		return "gd." + gdType
 	default:
 		gdType = strings.TrimPrefix(gdType, "const")
 
 		if strings.HasSuffix(gdType, "*") {
-			fmt.Println(pkg, gdType)
 			gdType = strings.TrimPrefix(gdType, pkg)
 			return "*" + gdType[:len(gdType)-1]
 		}
@@ -207,7 +207,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		gdType = strings.Replace(gdType, ".", "", -1)
 
 		if gdType == "Object" {
-			return "gd.Object"
+			return "[1]gd.Object"
 		}
 
 		if class, ok := classDB[gdType]; ok {
@@ -310,6 +310,8 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		return "Array.Any"
 	case "Variant":
 		return "any"
+	case "Object":
+		return "Object.Instance"
 	case "Callable":
 		details, ok := gdjson.Callables[lookup]
 		if !ok || len(details) == 0 {
@@ -442,7 +444,7 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 		"PackedVector4Array",
 		"PackedColorArray":
 		return "[2]uintptr", true
-	case "Variant":
+	case "Variant", "Object":
 		return "[3]uintptr", true
 	default:
 		if entry, ok := db[t]; ok && !entry.IsEnum {

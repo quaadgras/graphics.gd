@@ -8,8 +8,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -156,14 +158,14 @@ func (self Instance) AddUndoMethod(callable func()) {
 /*
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
-func (self Instance) AddDoProperty(obj gd.Object, property string, value any) {
+func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) {
 	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
-func (self Instance) AddUndoProperty(obj gd.Object, property string, value any) {
+func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) {
 	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
@@ -179,7 +181,7 @@ undo_redo.add_undo_method(remove_child.bind(node))
 undo_redo.commit_action()
 [/codeblock]
 */
-func (self Instance) AddDoReference(obj gd.Object) {
+func (self Instance) AddDoReference(obj Object.Instance) {
 	class(self).AddDoReference(obj)
 }
 
@@ -195,7 +197,7 @@ undo_redo.add_undo_reference(node)
 undo_redo.commit_action()
 [/codeblock]
 */
-func (self Instance) AddUndoReference(obj gd.Object) {
+func (self Instance) AddUndoReference(obj Object.Instance) {
 	class(self).AddUndoReference(obj)
 }
 
@@ -289,11 +291,11 @@ func (self Instance) Undo() bool {
 type Advanced = class
 type class [1]gdclass.UndoRedo
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -379,9 +381,9 @@ func (self class) AddUndoMethod(callable gd.Callable) {
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj gd.Object, property gd.StringName, value gd.Variant) {
+func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret callframe.Nil
@@ -393,9 +395,9 @@ func (self class) AddDoProperty(obj gd.Object, property gd.StringName, value gd.
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj gd.Object, property gd.StringName, value gd.Variant) {
+func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret callframe.Nil
@@ -416,9 +418,9 @@ undo_redo.commit_action()
 [/codeblock]
 */
 //go:nosplit
-func (self class) AddDoReference(obj gd.Object) {
+func (self class) AddDoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -437,9 +439,9 @@ undo_redo.commit_action()
 [/codeblock]
 */
 //go:nosplit
-func (self class) AddUndoReference(obj gd.Object) {
+func (self class) AddUndoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -618,7 +620,7 @@ func (self class) Undo() bool {
 	return ret
 }
 func (self Instance) OnVersionChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsUndoRedo() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -627,14 +629,14 @@ func (self Instance) AsUndoRedo() Instance { return *((*Instance)(unsafe.Pointer
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
 func init() {

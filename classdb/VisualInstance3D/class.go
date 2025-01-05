@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/AABB"
@@ -15,6 +16,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -88,11 +90,11 @@ func (self Instance) GetAabb() AABB.PositionSize {
 type Advanced = class
 type class [1]gdclass.VisualInstance3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -279,7 +281,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_get_aabb":
 		return reflect.ValueOf(self._get_aabb)
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
 }
 
@@ -288,7 +290,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_get_aabb":
 		return reflect.ValueOf(self._get_aabb)
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}
 }
 func init() {

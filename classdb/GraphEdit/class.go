@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -42,7 +44,7 @@ var _ = pointers.Cycle
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInInputHotzone(in_node gd.Object, in_port int, mouse_position Vector2.XY) bool
+		IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
 		//Returns whether the [param mouse_position] is in the output hot zone. For more information on hot zones, see [method _is_in_input_hotzone].
 		//Below is a sample code to help get started:
 		//[codeblock]
@@ -53,7 +55,7 @@ var _ = pointers.Cycle
 		//
 		//    return rect.has_point(mouse_position)
 		//[/codeblock]
-		IsInOutputHotzone(in_node gd.Object, in_port int, mouse_position Vector2.XY) bool
+		IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
 		//Virtual method which can be overridden to customize how connections are drawn.
 		GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY
 		//This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
@@ -95,10 +97,10 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(in_node)
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -121,10 +123,10 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(in_node)
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -370,11 +372,11 @@ func (self Instance) SetSelected(node [1]gdclass.Node) {
 type Advanced = class
 type class [1]gdclass.GraphEdit
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -582,10 +584,10 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(in_node)
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -608,10 +610,10 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 
 [/codeblock]
 */
-func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(in_node)
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1442,75 +1444,75 @@ func (self class) SetSelected(node [1]gdclass.Node) {
 	frame.Free()
 }
 func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int)) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int)) {
-	self[0].AsObject().Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectionDragEnded(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCopyNodesRequest(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPasteNodesRequest(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDuplicateNodesRequest(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDeleteNodesRequest(cb func(nodes gd.Array)) {
-	self[0].AsObject().Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeSelected(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeDeselected(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFrameRectChanged(cb func(frame_ [1]gdclass.GraphFrame, new_rect Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBeginNodeMove(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEndNodeMove(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements Array.Any, frame_ string)) {
-	self[0].AsObject().Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsGraphEdit() Advanced       { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1539,7 +1541,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_is_node_hover_valid":
 		return reflect.ValueOf(self._is_node_hover_valid)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
 }
 
@@ -1554,7 +1556,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_is_node_hover_valid":
 		return reflect.ValueOf(self._is_node_hover_valid)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}
 }
 func init() {

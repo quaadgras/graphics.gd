@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
@@ -16,6 +17,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -118,7 +120,7 @@ func (self Instance) GetRid() Resource.ID {
 /*
 Creates a new shape owner for the given object. Returns [code]owner_id[/code] of the new owner for future reference.
 */
-func (self Instance) CreateShapeOwner(owner gd.Object) int {
+func (self Instance) CreateShapeOwner(owner Object.Instance) int {
 	return int(int(class(self).CreateShapeOwner(owner)))
 }
 
@@ -153,8 +155,8 @@ func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform3D.BasisOrigi
 /*
 Returns the parent object of the given shape owner.
 */
-func (self Instance) ShapeOwnerGetOwner(owner_id int) gd.Object {
-	return gd.Object(class(self).ShapeOwnerGetOwner(gd.Int(owner_id)))
+func (self Instance) ShapeOwnerGetOwner(owner_id int) Object.Instance {
+	return Object.Instance(class(self).ShapeOwnerGetOwner(gd.Int(owner_id)))
 }
 
 /*
@@ -224,11 +226,11 @@ func (self Instance) ShapeFindOwner(shape_index int) int {
 type Advanced = class
 type class [1]gdclass.CollisionObject3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -508,9 +510,9 @@ func (self class) GetRid() gd.RID {
 Creates a new shape owner for the given object. Returns [code]owner_id[/code] of the new owner for future reference.
 */
 //go:nosplit
-func (self class) CreateShapeOwner(owner gd.Object) gd.Int {
+func (self class) CreateShapeOwner(owner [1]gd.Object) gd.Int {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(owner))
+	callframe.Arg(frame, pointers.Get(owner[0])[0])
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_create_shape_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
@@ -574,12 +576,12 @@ func (self class) ShapeOwnerGetTransform(owner_id gd.Int) gd.Transform3D {
 Returns the parent object of the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerGetOwner(owner_id gd.Int) gd.Object {
+func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -707,15 +709,15 @@ func (self class) ShapeFindOwner(shape_index gd.Int) gd.Int {
 	return ret
 }
 func (self Instance) OnInputEvent(cb func(camera [1]gdclass.Node, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) {
-	self[0].AsObject().Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMouseEntered(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMouseExited(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsCollisionObject3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -734,7 +736,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_mouse_exit":
 		return reflect.ValueOf(self._mouse_exit)
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
 }
 
@@ -747,7 +749,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_mouse_exit":
 		return reflect.ValueOf(self._mouse_exit)
 	default:
-		return gd.VirtualByName(self.AsNode3D(), name)
+		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}
 }
 func init() {

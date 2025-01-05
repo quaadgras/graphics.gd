@@ -8,10 +8,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -108,7 +110,7 @@ func (self Instance) Quit() {
 /*
 Queues the given [param obj] to be deleted, calling its [method Object.free] at the end of the current frame. This method is similar to [method Node.queue_free].
 */
-func (self Instance) QueueDelete(obj gd.Object) {
+func (self Instance) QueueDelete(obj Object.Instance) {
 	class(self).QueueDelete(obj)
 }
 
@@ -220,11 +222,11 @@ func (self Instance) GetMultiplayer() [1]gdclass.MultiplayerAPI {
 type Advanced = class
 type class [1]gdclass.SceneTree
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -439,7 +441,7 @@ func (self class) IsDebuggingNavigationHint() bool {
 //go:nosplit
 func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(scene[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(scene[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -602,9 +604,9 @@ func (self class) IsPhysicsInterpolationEnabled() bool {
 Queues the given [param obj] to be deleted, calling its [method Object.free] at the end of the current frame. This method is similar to [method Node.queue_free].
 */
 //go:nosplit
-func (self class) QueueDelete(obj gd.Object) {
+func (self class) QueueDelete(obj [1]gd.Object) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_queue_delete, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -715,7 +717,7 @@ func (self class) GetNodeCountInGroup(group gd.StringName) gd.Int {
 //go:nosplit
 func (self class) SetCurrentScene(child_node [1]gdclass.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child_node[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child_node[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_current_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -838,35 +840,35 @@ func (self class) IsMultiplayerPollEnabled() bool {
 	return ret
 }
 func (self Instance) OnTreeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTreeProcessModeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeAdded(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeRemoved(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeRenamed(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeConfigurationWarningChanged(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnProcessFrame(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPhysicsFrame(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsSceneTree() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -881,14 +883,14 @@ func (self Instance) AsMainLoop() MainLoop.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsMainLoop(), name)
+		return gd.VirtualByName(MainLoop.Advanced(self.AsMainLoop()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsMainLoop(), name)
+		return gd.VirtualByName(MainLoop.Instance(self.AsMainLoop()), name)
 	}
 }
 func init() {

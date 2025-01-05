@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -312,7 +314,7 @@ func (self Instance) GetMetadata(column int) any {
 Sets the given column's custom draw callback to the [param callback] method on [param object].
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
-func (self Instance) SetCustomDraw(column int, obj gd.Object, callback string) {
+func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) {
 	class(self).SetCustomDraw(gd.Int(column), obj, gd.NewStringName(callback))
 }
 
@@ -765,11 +767,11 @@ func (self Instance) MoveAfter(item [1]gdclass.TreeItem) {
 type Advanced = class
 type class [1]gdclass.TreeItem
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1347,10 +1349,10 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 //go:nosplit
-func (self class) SetCustomDraw(column gd.Int, obj gd.Object, callback gd.StringName) {
+func (self class) SetCustomDraw(column gd.Int, obj [1]gd.Object, callback gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -2055,7 +2057,7 @@ Adds a previously unparented [TreeItem] as a direct child of this one. The [para
 //go:nosplit
 func (self class) AddChild(child [1]gdclass.TreeItem) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -2284,14 +2286,14 @@ func (self Instance) AsTreeItem() Instance { return *((*Instance)(unsafe.Pointer
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
 func init() {

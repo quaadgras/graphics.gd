@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Popup"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -588,11 +590,11 @@ func (self Instance) IsSystemMenu() bool {
 type Advanced = class
 type class [1]gdclass.PopupMenu
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -968,7 +970,7 @@ An [param id] can optionally be provided. If no [param id] is provided, one will
 func (self class) AddSubmenuNodeItem(label gd.String, submenu [1]gdclass.PopupMenu, id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
 	callframe.Arg(frame, id)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_add_submenu_node_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1139,7 +1141,7 @@ Sets the submenu of the item at the given [param index]. The submenu is a [Popup
 func (self class) SetItemSubmenuNode(index gd.Int, submenu [1]gdclass.PopupMenu) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_set_item_submenu_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -1836,19 +1838,19 @@ func (self class) GetSystemMenu() gdclass.NativeMenuSystemMenus {
 	return ret
 }
 func (self Instance) OnIdPressed(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnIdFocused(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnIndexPressed(cb func(index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMenuChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsPopupMenu() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1869,14 +1871,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsPopup(), name)
+		return gd.VirtualByName(Popup.Advanced(self.AsPopup()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsPopup(), name)
+		return gd.VirtualByName(Popup.Instance(self.AsPopup()), name)
 	}
 }
 func init() {

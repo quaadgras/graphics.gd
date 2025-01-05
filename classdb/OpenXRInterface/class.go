@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Array"
@@ -15,6 +16,7 @@ import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -157,11 +159,11 @@ func (self Instance) IsEyeGazeInteractionSupported() bool {
 type Advanced = class
 type class [1]gdclass.OpenXRInterface
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -572,35 +574,35 @@ func (self class) SetVrsStrength(strength gd.Float) {
 	frame.Free()
 }
 func (self Instance) OnSessionBegun(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_begun"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_begun"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionStopping(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_stopping"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_stopping"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionFocussed(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_focussed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_focussed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionVisible(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_visible"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_visible"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionLossPending(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_loss_pending"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_loss_pending"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnInstanceExiting(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("instance_exiting"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("instance_exiting"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPoseRecentered(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X)) {
-	self[0].AsObject().Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsOpenXRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -611,20 +613,24 @@ func (self class) AsXRInterface() XRInterface.Advanced {
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRInterface(), name)
+		return gd.VirtualByName(XRInterface.Advanced(self.AsXRInterface()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRInterface(), name)
+		return gd.VirtualByName(XRInterface.Instance(self.AsXRInterface()), name)
 	}
 }
 func init() {

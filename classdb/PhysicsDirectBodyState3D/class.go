@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Basis"
@@ -15,6 +16,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -209,8 +211,8 @@ func (self Instance) GetContactColliderId(contact_idx int) int {
 /*
 Returns the collider object.
 */
-func (self Instance) GetContactColliderObject(contact_idx int) gd.Object {
-	return gd.Object(class(self).GetContactColliderObject(gd.Int(contact_idx)))
+func (self Instance) GetContactColliderObject(contact_idx int) Object.Instance {
+	return Object.Instance(class(self).GetContactColliderObject(gd.Int(contact_idx)))
 }
 
 /*
@@ -245,11 +247,11 @@ func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D {
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -816,12 +818,12 @@ func (self class) GetContactColliderId(contact_idx gd.Int) gd.Int {
 Returns the collider object.
 */
 //go:nosplit
-func (self class) GetContactColliderObject(contact_idx gd.Int) gd.Object {
+func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -895,14 +897,14 @@ func (self Instance) AsPhysicsDirectBodyState3D() Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
 func init() {

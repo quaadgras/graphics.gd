@@ -18,10 +18,10 @@ import (
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/StringName"
 
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
 )
 
@@ -52,12 +52,12 @@ func (class *Extension[T, S]) Super() S {
 	return *class.Class.Super()
 }
 
-func (class Extension[T, S]) getObject() gd.Object {
-	return *(*gd.Object)(unsafe.Pointer(class.Class.Super()))
+func (class Extension[T, S]) getObject() [1]gd.Object {
+	return *(*[1]gd.Object)(unsafe.Pointer(class.Class.Super()))
 }
 
-func (class *Extension[T, S]) setObject(obj gd.Object) {
-	*(*gd.Object)(unsafe.Pointer(class.Class.Super())) = obj
+func (class *Extension[T, S]) setObject(obj [1]gd.Object) {
+	*(*[1]gd.Object)(unsafe.Pointer(class.Class.Super())) = obj
 }
 
 func (class Extension[T, S]) superType() reflect.Type {
@@ -67,31 +67,32 @@ func (class Extension[T, S]) superType() reflect.Type {
 type isClass interface {
 	gd.IsClass
 
-	getObject() gd.Object
-	setObject(gd.Object)
+	getObject() [1]gd.Object
+	setObject([1]gd.Object)
 
 	superType() reflect.Type
 }
 
 type Class interface {
 	superType() reflect.Type
-	getObject() gd.Object
+	getObject() [1]gd.Object
 	Virtual(string) reflect.Value
 }
 
-func (class *Extension[T, S]) AsObject() gd.Object {
+func (class *Extension[T, S]) AsObject() [1]gd.Object {
 	obj := class.getObject()
-	if obj == (gd.Object{}) {
+	if obj == ([1]gd.Object{}) {
 		impl, ok := registered.Load(reflect.TypeFor[T]())
 		if !ok {
 			Register[T]()
 		}
 		if ok {
 			instancer := impl.(*classImplementation)
-			obj = instancer.CreateInstance()
+			obj = instancer.createInstance(reflect.NewAt(reflect.TypeFor[T](), unsafe.Pointer(class)))
 			class.setObject(obj)
 		}
 	}
+	pointers.Get(obj[0])
 	return obj
 }
 
@@ -129,6 +130,16 @@ be called on a temporary instance when the class is registered.
 */
 func Register[T Class]() {
 	var classType = reflect.TypeFor[T]()
+	var base = classType
+	for base.Field(0).Anonymous {
+		if base.Field(0).Name == "Class" {
+			break
+		}
+		base = base.Field(0).Type
+	}
+	if !base.Implements(reflect.TypeFor[Class]()) {
+		panic("gdextension.RegisterClass: Class type must embed a gd.Extension field as the first field")
+	}
 	var superType = ([1]T{})[0].superType()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
@@ -227,26 +238,32 @@ func (class classImplementation) IsExposed() bool {
 	return true // TODO return false if the Go type is not exported.
 }
 
-func (class classImplementation) CreateInstance() gd.Object {
+func (class classImplementation) CreateInstance() [1]gd.Object {
+	return class.createInstance(reflect.Value{})
+}
+
+func (class classImplementation) createInstance(reuse reflect.Value) [1]gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
-	super = pointers.Pin(super)
-	instance := class.reloadInstance(super)
+	super = [1]gd.Object{pointers.Pin(super[0])}
+	instance := class.reloadInstance(reuse, super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
 	instance.OnCreate()
 	return super
 }
 
-func (class classImplementation) ReloadInstance(super gd.Object) gd.ObjectInterface {
-	return class.reloadInstance(super)
+func (class classImplementation) ReloadInstance(super [1]gd.Object) gd.ObjectInterface {
+	return class.reloadInstance(reflect.Value{}, super)
 }
 
-func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterface {
-	var value = reflect.New(class.Type)
+func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) gd.ObjectInterface {
+	if !value.IsValid() {
+		value = reflect.New(class.Type)
+	}
 	extensionClass := value.Interface().(isClass)
 	extensionClass.setObject(super)
 
-	gd.ExtensionInstances.Store(pointers.Get(super)[0], extensionClass)
+	gd.ExtensionInstances.Store(pointers.Get(super[0])[0], extensionClass)
 
 	value = value.Elem()
 
@@ -276,10 +293,10 @@ func (class classImplementation) reloadInstance(super gd.Object) gd.ObjectInterf
 		}
 	}
 	if len(signals) > 0 {
-		go manageSignals(super.AsObject().GetInstanceId(), signals)
+		go manageSignals(super[0].AsObject()[0].GetInstanceId(), signals)
 	}
 	return &instanceImplementation{
-		object:   pointers.Get(super)[0],
+		object:   pointers.Get(super[0])[0],
 		Value:    value.Addr().Interface().(isClass),
 		signals:  signals,
 		isEditor: !class.Tool && EngineClass.IsEditorHint(),
@@ -307,7 +324,9 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 		panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
 	}
 	for i := 1; i < method.Type.NumIn(); i++ {
-		if method.Type.In(i) != vtype.In(i) {
+		atype := method.Type.In(i)
+		btype := vtype.In(i)
+		if atype != btype && !(atype.ConvertibleTo(btype) && atype.Kind() == btype.Kind()) {
 			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
 		}
 	}
@@ -398,13 +417,13 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			field.Interface().(interface{ Free() }).Free()
 		}
 		obj := converted.Interface().(interface {
-			AsObject() gd.Object
+			AsObject() [1]gd.Object
 		})
-		ref, ok := gd.As[gd.RefCounted](obj.AsObject())
+		ref, ok := gd.As[gd.RefCounted](obj.AsObject()[0])
 		if ok {
 			ref.Reference()
 		}
-		pointers.Pin(obj.AsObject())
+		pointers.Pin(obj.AsObject()[0])
 	}
 	field.Set(converted)
 	if impl, ok := instance.Value.(interface {
@@ -608,7 +627,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := As[NodeClass.Instance](instance.Value.getObject())
+	parent, ok := As[NodeClass.Instance](Object.Instance(instance.Value.getObject()))
 	if !ok {
 		return
 	}
@@ -665,7 +684,8 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	path := gd.NewString(name).NodePath()
 	if !NodeClass.Advanced(parent).HasNode(path) {
 		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(nameOf(field.Type)))
-		native, ok := gd.ExtensionInstances.Load(pointers.Get(child)[0])
+		defer pointers.End(child[0])
+		native, ok := gd.ExtensionInstances.Load(pointers.Get(child[0])[0])
 		if ok {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
@@ -673,21 +693,19 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 			type isUnsafe interface {
 				UnsafePointer() unsafe.Pointer
 			}
-			*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(child))
-			defer pointers.End(child)
+			*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(child[0]))
 		}
 		var mode NodeClass.InternalMode = NodeClass.InternalModeDisabled
 		if !field.IsExported() {
 			mode = NodeClass.InternalModeFront
 		}
 		NodeClass.Advanced(class.AsNode()).SetName(gd.NewString(field.Name))
-		var adding Node = Node{pointers.Raw[gdclass.Node](pointers.Get(class.AsNode()[0]))}
-		NodeClass.Advanced(parent).AddChild(adding, true, mode)
+		NodeClass.Advanced(parent).AddChild(class.AsNode(), true, mode)
 		NodeClass.Advanced(class.AsNode()).SetOwner(owner)
 		return
 	}
 	var node = NodeClass.Advanced(parent).GetNode(path)
-	if name := node[0].AsObject().GetClass().String(); name != nameOf(field.Type) {
+	if name := node[0].AsObject()[0].GetClass().String(); name != nameOf(field.Type) {
 		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 	}
 	ref, native := gd.ExtensionInstances.Load(pointers.Get(node[0])[0])

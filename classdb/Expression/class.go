@@ -8,9 +8,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -86,7 +88,7 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Instance) Execute() any {
-	return any(class(self).Execute([1]Array.Any{}[0], [1]gd.Object{}[0], true, false).Interface())
+	return any(class(self).Execute([1]Array.Any{}[0], [1]Object.Instance{}[0], true, false).Interface())
 }
 
 /*
@@ -107,11 +109,11 @@ func (self Instance) GetErrorText() string {
 type Advanced = class
 type class [1]gdclass.Expression
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -141,10 +143,10 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 //go:nosplit
-func (self class) Execute(inputs gd.Array, base_instance gd.Object, show_error bool, const_calls_only bool) gd.Variant {
+func (self class) Execute(inputs gd.Array, base_instance [1]gd.Object, show_error bool, const_calls_only bool) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(inputs))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(base_instance))
+	callframe.Arg(frame, pointers.Get(base_instance[0])[0])
 	callframe.Arg(frame, show_error)
 	callframe.Arg(frame, const_calls_only)
 	var r_ret = callframe.Ret[[3]uintptr](frame)
@@ -179,22 +181,26 @@ func (self class) GetErrorText() gd.String {
 	frame.Free()
 	return ret
 }
-func (self class) AsExpression() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsExpression() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsExpression() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsExpression() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

@@ -8,9 +8,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -69,7 +71,7 @@ func (self Instance) Poll() error {
 Sends an RPC to the target [param peer]. The given [param method] will be called on the remote [param object] with the provided [param arguments]. The RPC may also be called locally depending on the implementation and RPC configuration. See [method Node.rpc] and [method Node.rpc_config].
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
-func (self Instance) Rpc(peer int, obj gd.Object, method string) error {
+func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
 	return error(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), [1]Array.Any{}[0]))
 }
 
@@ -77,7 +79,7 @@ func (self Instance) Rpc(peer int, obj gd.Object, method string) error {
 Notifies the MultiplayerAPI of a new [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and a valid [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationAdd(obj gd.Object, configuration any) error {
+func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration any) error {
 	return error(class(self).ObjectConfigurationAdd(obj, gd.NewVariant(configuration)))
 }
 
@@ -85,7 +87,7 @@ func (self Instance) ObjectConfigurationAdd(obj gd.Object, configuration any) er
 Notifies the MultiplayerAPI to remove a [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and an empty [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationRemove(obj gd.Object, configuration any) error {
+func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuration any) error {
 	return error(class(self).ObjectConfigurationRemove(obj, gd.NewVariant(configuration)))
 }
 
@@ -124,11 +126,11 @@ func CreateDefaultInterface() [1]gdclass.MultiplayerAPI {
 type Advanced = class
 type class [1]gdclass.MultiplayerAPI
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -236,10 +238,10 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 //go:nosplit
-func (self class) Rpc(peer gd.Int, obj gd.Object, method gd.StringName, arguments gd.Array) error {
+func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments gd.Array) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[error](frame)
@@ -254,9 +256,9 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationAdd(obj gd.Object, configuration gd.Variant) error {
+func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration gd.Variant) error {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(configuration))
 	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_add, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -270,9 +272,9 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationRemove(obj gd.Object, configuration gd.Variant) error {
+func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.Variant) error {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(configuration))
 	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -332,41 +334,45 @@ func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI {
 	return ret
 }
 func (self Instance) OnPeerConnected(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPeerDisconnected(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectedToServer(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnConnectionFailed(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnServerDisconnected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsMultiplayerAPI() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMultiplayerAPI() Instance  { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsMultiplayerAPI() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiplayerAPI() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -73,15 +75,15 @@ func (self Instance) GetDepth() Float.X {
 /*
 Returns the moving object's colliding shape.
 */
-func (self Instance) GetLocalShape() gd.Object {
-	return gd.Object(class(self).GetLocalShape())
+func (self Instance) GetLocalShape() Object.Instance {
+	return Object.Instance(class(self).GetLocalShape())
 }
 
 /*
 Returns the colliding body's attached [Object].
 */
-func (self Instance) GetCollider() gd.Object {
-	return gd.Object(class(self).GetCollider())
+func (self Instance) GetCollider() Object.Instance {
+	return Object.Instance(class(self).GetCollider())
 }
 
 /*
@@ -101,8 +103,8 @@ func (self Instance) GetColliderRid() Resource.ID {
 /*
 Returns the colliding body's shape.
 */
-func (self Instance) GetColliderShape() gd.Object {
-	return gd.Object(class(self).GetColliderShape())
+func (self Instance) GetColliderShape() Object.Instance {
+	return Object.Instance(class(self).GetColliderShape())
 }
 
 /*
@@ -123,11 +125,11 @@ func (self Instance) GetColliderVelocity() Vector2.XY {
 type Advanced = class
 type class [1]gdclass.KinematicCollision2D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -219,11 +221,11 @@ func (self class) GetDepth() gd.Float {
 Returns the moving object's colliding shape.
 */
 //go:nosplit
-func (self class) GetLocalShape() gd.Object {
+func (self class) GetLocalShape() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -232,11 +234,11 @@ func (self class) GetLocalShape() gd.Object {
 Returns the colliding body's attached [Object].
 */
 //go:nosplit
-func (self class) GetCollider() gd.Object {
+func (self class) GetCollider() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -271,11 +273,11 @@ func (self class) GetColliderRid() gd.RID {
 Returns the colliding body's shape.
 */
 //go:nosplit
-func (self class) GetColliderShape() gd.Object {
+func (self class) GetColliderShape() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -307,20 +309,24 @@ func (self class) GetColliderVelocity() gd.Vector2 {
 }
 func (self class) AsKinematicCollision2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsKinematicCollision2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted         { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted      { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

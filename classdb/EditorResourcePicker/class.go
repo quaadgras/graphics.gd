@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -16,6 +17,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -29,7 +31,7 @@ This [Control] node is used in the editor's Inspector dock to allow editing of [
 	type EditorResourcePicker interface {
 		//This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 		//[b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
-		SetCreateOptions(menu_node gd.Object)
+		SetCreateOptions(menu_node Object.Instance)
 		//This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 		HandleMenuSelected(id int) bool
 	}
@@ -44,10 +46,10 @@ type Any interface {
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
-func (Instance) _set_create_options(impl func(ptr unsafe.Pointer, menu_node gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_create_options(impl func(ptr unsafe.Pointer, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var menu_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(menu_node)
+		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(menu_node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, menu_node)
 	}
@@ -83,11 +85,11 @@ func (self Instance) SetTogglePressed(pressed bool) {
 type Advanced = class
 type class [1]gdclass.EditorResourcePicker
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -132,10 +134,10 @@ func (self Instance) SetToggleMode(value bool) {
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
-func (class) _set_create_options(impl func(ptr unsafe.Pointer, menu_node gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_create_options(impl func(ptr unsafe.Pointer, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var menu_node = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(menu_node)
+		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(menu_node[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, menu_node)
 	}
@@ -254,11 +256,11 @@ func (self class) IsEditable() bool {
 	return ret
 }
 func (self Instance) OnResourceSelected(cb func(resource [1]gdclass.Resource, inspect bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourceChanged(cb func(resource [1]gdclass.Resource)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorResourcePicker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -301,7 +303,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_handle_menu_selected":
 		return reflect.ValueOf(self._handle_menu_selected)
 	default:
-		return gd.VirtualByName(self.AsHBoxContainer(), name)
+		return gd.VirtualByName(HBoxContainer.Advanced(self.AsHBoxContainer()), name)
 	}
 }
 
@@ -312,7 +314,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_handle_menu_selected":
 		return reflect.ValueOf(self._handle_menu_selected)
 	default:
-		return gd.VirtualByName(self.AsHBoxContainer(), name)
+		return gd.VirtualByName(HBoxContainer.Instance(self.AsHBoxContainer()), name)
 	}
 }
 func init() {

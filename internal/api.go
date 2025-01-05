@@ -131,29 +131,29 @@ type API struct {
 		SetIndex func(dict Dictionary, key, val Variant)
 	}
 	Object struct {
-		MethodBindCall        func(method MethodBind, obj Object, arg ...Variant) (Variant, error)
-		MethodBindPointerCall func(method MethodBind, obj Object, arg callframe.Args, ret uintptr)
-		Destroy               func(Object)
-		GetSingleton          func(name StringName) Object
-		GetInstanceBinding    func(Object, ExtensionToken, InstanceBindingType) any
-		SetInstanceBinding    func(Object, ExtensionToken, any, InstanceBindingType)
-		FreeInstanceBinding   func(Object, ExtensionToken)
-		SetInstance           func(Object, StringName, ObjectInterface)
-		GetClassName          func(Object, ExtensionToken) String
-		CastTo                func(Object, ClassTag) Object
-		GetInstanceID         func(Object) ObjectID
-		GetInstanceFromID     func(ObjectID) Object
+		MethodBindCall        func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
+		MethodBindPointerCall func(method MethodBind, obj [1]Object, arg callframe.Args, ret uintptr)
+		Destroy               func([1]Object)
+		GetSingleton          func(name StringName) [1]Object
+		GetInstanceBinding    func([1]Object, ExtensionToken, InstanceBindingType) any
+		SetInstanceBinding    func([1]Object, ExtensionToken, any, InstanceBindingType)
+		FreeInstanceBinding   func([1]Object, ExtensionToken)
+		SetInstance           func([1]Object, StringName, ObjectInterface)
+		GetClassName          func([1]Object, ExtensionToken) String
+		CastTo                func([1]Object, ClassTag) [1]Object
+		GetInstanceID         func([1]Object) ObjectID
+		GetInstanceFromID     func(ObjectID) [1]Object
 	}
 	RefCounted struct {
-		GetObject func(Object) Object
-		SetObject func(Object, Object)
+		GetObject func([1]Object) [1]Object
+		SetObject func([1]Object, [1]Object)
 	}
 	Callables struct {
 		Create func(fn func(...Variant) (Variant, error)) Callable
 		Get    func(Callable) (func(...Variant) (Variant, error), bool)
 	}
 	ClassDB struct {
-		ConstructObject func(StringName) Object
+		ConstructObject func(StringName) [1]Object
 		GetClassTag     func(StringName) ClassTag
 		GetMethodBind   func(class, method StringName, hash Int) MethodBind
 
@@ -330,11 +330,11 @@ type ClassInterface interface {
 	IsAbstract() bool
 	IsExposed() bool
 
-	CreateInstance() Object
+	CreateInstance() [1]Object
 
 	// ReloadInstance is used to reload an existing object instance
 	// when the Go shared library is reloaded from the editor.
-	ReloadInstance(Object) ObjectInterface
+	ReloadInstance([1]Object) ObjectInterface
 
 	GetVirtual(StringName) any
 }

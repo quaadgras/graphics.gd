@@ -100,10 +100,10 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 		signal := signals[chosen]
 		gd.NewCallable(func() {
 			lookup := gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance))
-			if lookup == (gd.Object{}) {
+			if lookup == ([1]gd.Object{}) {
 				panic("manageSignals: object freed")
 			}
-			pointers.End(lookup)
+			pointers.End(lookup[0])
 			rtype := value.Type()
 			if rtype.Kind() == reflect.Struct && rtype.NumField() == 0 {
 				signal.signal.Emit()

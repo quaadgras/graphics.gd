@@ -11972,7 +11972,7 @@ func (self Object) CancelFree() {
 func (self Object) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 //go:nosplit
-func (self RefCounted) AsObject() Object { return (*(*Object)(unsafe.Pointer(&self))) }
+func (self RefCounted) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 /*
 Initializes the internal reference counter. Use this only if you really know what you are doing.

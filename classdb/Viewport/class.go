@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Rect2"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -260,11 +262,11 @@ func (self Instance) GetCamera3d() [1]gdclass.Camera3D {
 type Advanced = class
 type class [1]gdclass.Viewport
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1843,11 +1845,11 @@ func (self class) GetVrsTexture() [1]gdclass.Texture2D {
 	return ret
 }
 func (self Instance) OnSizeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGuiFocusChanged(cb func(node [1]gdclass.Control)) {
-	self[0].AsObject().Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsViewport() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1858,14 +1860,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

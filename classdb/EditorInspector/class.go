@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/ScrollContainer"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -15,6 +16,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -44,19 +46,19 @@ func (self Instance) GetSelectedPath() string {
 /*
 Returns the object currently selected in this inspector.
 */
-func (self Instance) GetEditedObject() gd.Object {
-	return gd.Object(class(self).GetEditedObject())
+func (self Instance) GetEditedObject() Object.Instance {
+	return Object.Instance(class(self).GetEditedObject())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorInspector
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -82,48 +84,48 @@ func (self class) GetSelectedPath() gd.String {
 Returns the object currently selected in this inspector.
 */
 //go:nosplit
-func (self class) GetEditedObject() gd.Object {
+func (self class) GetEditedObject() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
 func (self Instance) OnPropertySelected(cb func(property string)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyDeleted(cb func(property string)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourceSelected(cb func(resource [1]gdclass.Resource, path string)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnObjectIdSelected(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyEdited(cb func(property string)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyToggled(cb func(property string, checked bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEditedObjectChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRestartRequested(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorInspector() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -156,14 +158,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsScrollContainer(), name)
+		return gd.VirtualByName(ScrollContainer.Advanced(self.AsScrollContainer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsScrollContainer(), name)
+		return gd.VirtualByName(ScrollContainer.Instance(self.AsScrollContainer()), name)
 	}
 }
 func init() {

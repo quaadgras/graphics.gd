@@ -8,9 +8,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -24,7 +26,7 @@ To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.a
 	type EditorSceneFormatImporter interface {
 		GetImportFlags() int
 		GetExtensions() []string
-		ImportScene(path string, flags int, options Dictionary.Any) gd.Object
+		ImportScene(path string, flags int, options Dictionary.Any) Object.Instance
 		GetImportOptions(path string)
 		GetOptionVisibility(path string, for_animation bool, option string) any
 	}
@@ -53,7 +55,7 @@ func (Instance) _get_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options Dictionary.Any) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options Dictionary.Any) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(path)
@@ -62,7 +64,7 @@ func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags i
 		defer pointers.End(options)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), int(flags), options)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -98,11 +100,11 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 type Advanced = class
 type class [1]gdclass.EditorSceneFormatImporter
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -131,14 +133,14 @@ func (class) _get_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray)
 	}
 }
 
-func (class) _import_scene(impl func(ptr unsafe.Pointer, path gd.String, flags gd.Int, options gd.Dictionary) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import_scene(impl func(ptr unsafe.Pointer, path gd.String, flags gd.Int, options gd.Dictionary) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		var flags = gd.UnsafeGet[gd.Int](p_args, 1)
 		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, flags, options)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -175,8 +177,12 @@ func (self class) AsEditorSceneFormatImporter() Advanced {
 func (self Instance) AsEditorSceneFormatImporter() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -191,7 +197,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_get_option_visibility":
 		return reflect.ValueOf(self._get_option_visibility)
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
@@ -208,7 +214,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_get_option_visibility":
 		return reflect.ValueOf(self._get_option_visibility)
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

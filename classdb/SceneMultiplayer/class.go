@@ -8,12 +8,14 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -79,11 +81,11 @@ func (self Instance) SendBytes(bytes []byte) error {
 type Advanced = class
 type class [1]gdclass.SceneMultiplayer
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -391,15 +393,15 @@ func (self class) SetMaxDeltaPacketSize(size gd.Int) {
 	frame.Free()
 }
 func (self Instance) OnPeerAuthenticating(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("peer_authenticating"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_authenticating"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPeerAuthenticationFailed(cb func(id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("peer_authentication_failed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_authentication_failed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPeerPacket(cb func(id int, packet []byte)) {
-	self[0].AsObject().Connect(gd.NewStringName("peer_packet"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_packet"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsSceneMultiplayer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -410,20 +412,24 @@ func (self class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
 func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
 	return *((*MultiplayerAPI.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsMultiplayerAPI(), name)
+		return gd.VirtualByName(MultiplayerAPI.Advanced(self.AsMultiplayerAPI()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsMultiplayerAPI(), name)
+		return gd.VirtualByName(MultiplayerAPI.Instance(self.AsMultiplayerAPI()), name)
 	}
 }
 func init() {

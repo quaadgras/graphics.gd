@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -82,11 +84,11 @@ func (self Instance) GetDrawMode() gdclass.BaseButtonDrawMode {
 type Advanced = class
 type class [1]gdclass.BaseButton
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -425,19 +427,19 @@ func (self class) GetButtonGroup() [1]gdclass.ButtonGroup {
 	return ret
 }
 func (self Instance) OnPressed(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnButtonUp(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnButtonDown(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnToggled(cb func(toggled_on bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsBaseButton() Advanced      { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -462,7 +464,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_toggled":
 		return reflect.ValueOf(self._toggled)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
 }
 
@@ -473,7 +475,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_toggled":
 		return reflect.ValueOf(self._toggled)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}
 }
 func init() {

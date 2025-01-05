@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -224,10 +226,10 @@ Plugins are used by the editor to extend functionality. The most common types of
 		MakeVisible(visible bool)
 		//This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 		//[param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
-		Edit(obj gd.Object)
+		Edit(obj Object.Instance)
 		//Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 		//[b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
-		Handles(obj gd.Object) bool
+		Handles(obj Object.Instance) bool
 		//Override this method to provide a state data you want to be saved, like view position, grid settings, folding, etc. This is used when saving the scene (so state is kept when opening it again) and for switching tabs (so state can be restored when the tab returns). This data is automatically saved for each scene in an [code]editstate[/code] file in the editor metadata folder. If you want to store global (scene-independent) editor data for your plugin, you can use [method _get_window_layout] instead.
 		//Use [method _set_state] to restore your saved state.
 		//[b]Note:[/b] This method should not be used to save important settings that should persist with the project.
@@ -656,10 +658,10 @@ func (Instance) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb g
 This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 [param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
 */
-func (Instance) _edit(impl func(ptr unsafe.Pointer, obj gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _edit(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj)
 	}
@@ -669,10 +671,10 @@ func (Instance) _edit(impl func(ptr unsafe.Pointer, obj gd.Object)) (cb gd.Exten
 Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 [b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
 */
-func (Instance) _handles(impl func(ptr unsafe.Pointer, obj gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handles(impl func(ptr unsafe.Pointer, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -1032,7 +1034,7 @@ func (self Instance) GetUndoRedo() [1]gdclass.EditorUndoRedoManager {
 Hooks a callback into the undo/redo action creation when a property is modified in the inspector. This allows, for example, to save other properties that may be lost when a given property is modified.
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
-func (self Instance) AddUndoRedoInspectorHookCallback(callable func(undo_redo gd.Object, modified_object gd.Object, property string, new_value any)) {
+func (self Instance) AddUndoRedoInspectorHookCallback(callable func(undo_redo Object.Instance, modified_object Object.Instance, property string, new_value any)) {
 	class(self).AddUndoRedoInspectorHookCallback(gd.NewCallable(callable))
 }
 
@@ -1241,11 +1243,11 @@ func (self Instance) GetPluginVersion() string {
 type Advanced = class
 type class [1]gdclass.EditorPlugin
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1602,10 +1604,10 @@ func (class) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.E
 This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 [param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
 */
-func (class) _edit(impl func(ptr unsafe.Pointer, obj gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _edit(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj)
 	}
@@ -1615,10 +1617,10 @@ func (class) _edit(impl func(ptr unsafe.Pointer, obj gd.Object)) (cb gd.Extensio
 Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 [b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
 */
-func (class) _handles(impl func(ptr unsafe.Pointer, obj gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})
-		defer pointers.End(obj)
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
@@ -1837,7 +1839,7 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 func (self class) AddControlToContainer(container gdclass.EditorPluginCustomControlContainer, control [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -1850,7 +1852,7 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 //go:nosplit
 func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title gd.String, shortcut [1]gdclass.Shortcut) [1]gdclass.Button {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
@@ -1870,7 +1872,7 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 func (self class) AddControlToDock(slot gdclass.EditorPluginDockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot)
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1947,7 +1949,7 @@ Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. U
 func (self class) AddToolSubmenuItem(name gd.String, submenu [1]gdclass.PopupMenu) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -2423,27 +2425,27 @@ func (self class) GetPluginVersion() gd.String {
 	return ret
 }
 func (self Instance) OnSceneChanged(cb func(scene_root [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSceneClosed(cb func(filepath string)) {
-	self[0].AsObject().Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMainScreenChanged(cb func(screen_name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourceSaved(cb func(resource [1]gdclass.Resource)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSceneSaved(cb func(filepath string)) {
-	self[0].AsObject().Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnProjectSettingsChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -2502,7 +2504,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_disable_plugin":
 		return reflect.ValueOf(self._disable_plugin)
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
@@ -2557,7 +2559,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_disable_plugin":
 		return reflect.ValueOf(self._disable_plugin)
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -1106,11 +1108,11 @@ func (self Instance) NotifyThreadSafe(what int) {
 type Advanced = class
 type class [1]gdclass.Node
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1408,7 +1410,7 @@ Use [method add_child] instead of this method if you don't need the child node t
 //go:nosplit
 func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -1461,7 +1463,7 @@ If you need the child node to be added below a specific node in the list of chil
 //go:nosplit
 func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
 	callframe.Arg(frame, internal_)
 	var r_ret callframe.Nil
@@ -2656,7 +2658,7 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 //go:nosplit
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, keep_groups)
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -2975,43 +2977,43 @@ func (self class) NotifyThreadSafe(what gd.Int) {
 	frame.Free()
 }
 func (self Instance) OnReady(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("ready"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRenamed(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTreeEntered(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTreeExiting(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTreeExited(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnChildEnteredTree(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnChildExitingTree(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnChildOrderChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnReplacingBy(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEditorDescriptionChanged(cb func(node [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -3040,7 +3042,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_unhandled_key_input":
 		return reflect.ValueOf(self._unhandled_key_input)
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 
@@ -3067,7 +3069,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_unhandled_key_input":
 		return reflect.ValueOf(self._unhandled_key_input)
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
 }
 func init() {

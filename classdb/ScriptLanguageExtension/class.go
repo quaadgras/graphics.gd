@@ -8,10 +8,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -190,11 +192,11 @@ func (Instance) _validate_path(impl func(ptr unsafe.Pointer, path string) string
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _create_script(impl func(ptr unsafe.Pointer) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_script(impl func(ptr unsafe.Pointer) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -293,14 +295,14 @@ func (Instance) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclas
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path string, owner gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path string, owner Object.Instance) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(code)
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
 		defer pointers.End(path)
-		var owner = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})
-		defer pointers.End(owner)
+		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), path.String(), owner)
 		ptr, ok := pointers.End(ret)
@@ -310,7 +312,7 @@ func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path s
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner gd.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner Object.Instance) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(code)
@@ -318,8 +320,8 @@ func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol s
 		defer pointers.End(symbol)
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 2))
 		defer pointers.End(path)
-		var owner = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 3)})
-		defer pointers.End(owner)
+		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 3)})}
+		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), symbol.String(), path.String(), owner)
 		ptr, ok := pointers.End(ret)
@@ -643,11 +645,11 @@ func (Instance) _get_global_class_name(impl func(ptr unsafe.Pointer, path string
 type Advanced = class
 type class [1]gdclass.ScriptLanguageExtension
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -830,11 +832,11 @@ func (class) _validate_path(impl func(ptr unsafe.Pointer, path gd.String) gd.Str
 	}
 }
 
-func (class) _create_script(impl func(ptr unsafe.Pointer) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_script(impl func(ptr unsafe.Pointer) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -938,12 +940,12 @@ func (class) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclass.S
 	}
 }
 
-func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path gd.String, owner gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path gd.String, owner [1]gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
-		var owner = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})
-		defer pointers.End(owner)
+		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, path, owner)
 		ptr, ok := pointers.End(ret)
@@ -954,13 +956,13 @@ func (class) _complete_code(impl func(ptr unsafe.Pointer, code gd.String, path g
 	}
 }
 
-func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol gd.String, path gd.String, owner gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _lookup_code(impl func(ptr unsafe.Pointer, code gd.String, symbol gd.String, path gd.String, owner [1]gd.Object) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		var symbol = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 2))
-		var owner = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 3)})
-		defer pointers.End(owner)
+		var owner = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 3)})}
+		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, symbol, path, owner)
 		ptr, ok := pointers.End(ret)
@@ -1433,7 +1435,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_get_global_class_name":
 		return reflect.ValueOf(self._get_global_class_name)
 	default:
-		return gd.VirtualByName(self.AsScriptLanguage(), name)
+		return gd.VirtualByName(ScriptLanguage.Advanced(self.AsScriptLanguage()), name)
 	}
 }
 
@@ -1558,7 +1560,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_get_global_class_name":
 		return reflect.ValueOf(self._get_global_class_name)
 	default:
-		return gd.VirtualByName(self.AsScriptLanguage(), name)
+		return gd.VirtualByName(ScriptLanguage.Instance(self.AsScriptLanguage()), name)
 	}
 }
 func init() {

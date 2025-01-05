@@ -44,13 +44,27 @@ func NewVariant(v any) Variant {
 			Y: FloatType.X(imag(value.Complex())),
 		})
 		Global.variant.FromType[TypeVector2](ret, arg.Uintptr())
+	case reflect.Pointer:
+		if value.IsNil() {
+			return Global.Variants.NewNil()
+		}
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			obj := value.Interface().(IsClass).AsObject()
+			if pointers.Get(obj[0]) == ([3]uintptr{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(obj[0]))
+			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
+		} else {
+			return NewVariant(value.Elem().Interface())
+		}
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			obj := value.Index(0).Interface().(IsClass).AsObject()
-			if pointers.Get(obj) == ([3]uintptr{}) {
+			if pointers.Get(obj[0]) == ([3]uintptr{}) {
 				return Global.Variants.NewNil()
 			}
-			var arg = callframe.Arg(frame, pointers.Get(obj))
+			var arg = callframe.Arg(frame, pointers.Get(obj[0]))
 			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
 		} else {
 			var arg = callframe.Arg(frame, pointers.Get(newArray(value)))

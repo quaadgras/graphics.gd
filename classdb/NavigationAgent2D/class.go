@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -170,11 +172,11 @@ func (self Instance) GetAvoidanceMaskValue(mask_number int) bool {
 type Advanced = class
 type class [1]gdclass.NavigationAgent2D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1134,27 +1136,27 @@ func (self class) GetDebugPathCustomLineWidth() gd.Float {
 	return ret
 }
 func (self Instance) OnPathChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTargetReached(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnWaypointReached(cb func(details Dictionary.Any)) {
-	self[0].AsObject().Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnLinkReached(cb func(details Dictionary.Any)) {
-	self[0].AsObject().Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNavigationFinished(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsNavigationAgent2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1165,14 +1167,14 @@ func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

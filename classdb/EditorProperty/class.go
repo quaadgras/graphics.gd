@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -15,6 +16,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -68,8 +70,8 @@ func (self Instance) GetEditedProperty() string {
 /*
 Gets the edited object.
 */
-func (self Instance) GetEditedObject() gd.Object {
-	return gd.Object(class(self).GetEditedObject())
+func (self Instance) GetEditedObject() Object.Instance {
+	return Object.Instance(class(self).GetEditedObject())
 }
 
 /*
@@ -104,11 +106,11 @@ func (self Instance) EmitChanged(property string, value any) {
 type Advanced = class
 type class [1]gdclass.EditorProperty
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -340,11 +342,11 @@ func (self class) GetEditedProperty() gd.StringName {
 Gets the edited object.
 */
 //go:nosplit
-func (self class) GetEditedObject() gd.Object {
+func (self class) GetEditedObject() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -366,7 +368,7 @@ If any of the controls added can gain keyboard focus, add it here. This ensures 
 //go:nosplit
 func (self class) AddFocusable(control [1]gdclass.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_add_focusable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -378,7 +380,7 @@ Puts the [param editor] control below the property label. The control must be pr
 //go:nosplit
 func (self class) SetBottomEditor(editor [1]gdclass.Control) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_bottom_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -399,47 +401,47 @@ func (self class) EmitChanged(property gd.StringName, value gd.Variant, field gd
 	frame.Free()
 }
 func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value Array.Any)) {
-	self[0].AsObject().Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyKeyed(cb func(property string)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyDeleted(cb func(property string)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyChecked(cb func(property string, checked bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyPinned(cb func(property string, pinned bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_pinned"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_pinned"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourceSelected(cb func(path string, resource [1]gdclass.Resource)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnObjectIdSelected(cb func(property string, id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSelected(cb func(path string, focusable_idx int)) {
-	self[0].AsObject().Connect(gd.NewStringName("selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("selected"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorProperty() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -470,7 +472,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_set_read_only":
 		return reflect.ValueOf(self._set_read_only)
 	default:
-		return gd.VirtualByName(self.AsContainer(), name)
+		return gd.VirtualByName(Container.Advanced(self.AsContainer()), name)
 	}
 }
 
@@ -481,7 +483,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_set_read_only":
 		return reflect.ValueOf(self._set_read_only)
 	default:
-		return gd.VirtualByName(self.AsContainer(), name)
+		return gd.VirtualByName(Container.Instance(self.AsContainer()), name)
 	}
 }
 func init() {

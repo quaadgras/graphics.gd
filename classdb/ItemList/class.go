@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -363,11 +365,11 @@ func (self Instance) ForceUpdateListSize() {
 type Advanced = class
 type class [1]gdclass.ItemList
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1359,23 +1361,23 @@ func (self class) ForceUpdateListSize() {
 	frame.Free()
 }
 func (self Instance) OnItemSelected(cb func(index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMultiSelected(cb func(index int, selected bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemActivated(cb func(index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsItemList() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1396,14 +1398,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}
 }
 func init() {

@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/PhysicsBody2D"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
@@ -18,6 +19,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -155,11 +157,11 @@ func (self Instance) GetCollidingBodies() gd.Array {
 type Advanced = class
 type class [1]gdclass.RigidBody2D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -963,23 +965,23 @@ func (self class) GetCollidingBodies() gd.Array {
 	return ret
 }
 func (self Instance) OnBodyShapeEntered(cb func(body_rid Resource.ID, body [1]gdclass.Node, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyShapeExited(cb func(body_rid Resource.ID, body [1]gdclass.Node, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyEntered(cb func(body [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyExited(cb func(body [1]gdclass.Node)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSleepingStateChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsRigidBody2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1012,7 +1014,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_integrate_forces":
 		return reflect.ValueOf(self._integrate_forces)
 	default:
-		return gd.VirtualByName(self.AsPhysicsBody2D(), name)
+		return gd.VirtualByName(PhysicsBody2D.Advanced(self.AsPhysicsBody2D()), name)
 	}
 }
 
@@ -1021,7 +1023,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_integrate_forces":
 		return reflect.ValueOf(self._integrate_forces)
 	default:
-		return gd.VirtualByName(self.AsPhysicsBody2D(), name)
+		return gd.VirtualByName(PhysicsBody2D.Instance(self.AsPhysicsBody2D()), name)
 	}
 }
 func init() {

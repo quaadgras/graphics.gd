@@ -1684,19 +1684,19 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	object_get_instance_from_id := dlsymGD("object_get_instance_from_id")
-	API.Object.GetInstanceFromID = func(id gd.ObjectID) gd.Object {
+	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
 		var ret = C.object_get_instance_from_id(
 			C.uintptr_t(uintptr(object_get_instance_from_id)),
 			C.uintptr_t(id),
 		)
 		if ret == 0 {
-			return gd.Object{}
+			return [1]gd.Object{}
 		}
-		return gd.PointerMustAssertInstanceID[gd.Object]([1]uintptr{uintptr(ret)})
+		return [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object]([1]uintptr{uintptr(ret)})}
 	}
 	object_method_bind_call := dlsymGD("object_method_bind_call")
-	API.Object.MethodBindCall = func(method gd.MethodBind, obj gd.Object, arg ...gd.Variant) (gd.Variant, error) {
-		var self = pointers.Get(obj)
+	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+		var self = pointers.Get(obj[0])
 		if self[0] == 0 {
 			return gd.Variant{}, errors.New("nil gd.Object dereference")
 		}
@@ -1737,8 +1737,8 @@ func linkCGO(API *gd.API) {
 		return ret, nil
 	}
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
-	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj gd.Object, arg callframe.Args, ret uintptr) {
-		if obj == (gd.Object{}) {
+	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret uintptr) {
+		if obj == ([1]gd.Object{}) {
 			C.object_method_bind_ptrcall(
 				C.uintptr_t(uintptr(object_method_bind_ptrcall)),
 				C.uintptr_t(method),
@@ -1748,7 +1748,7 @@ func linkCGO(API *gd.API) {
 			)
 			return
 		}
-		var self = pointers.Get(obj)
+		var self = pointers.Get(obj[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1770,8 +1770,8 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	object_destroy := dlsymGD("object_destroy")
-	API.Object.Destroy = func(o gd.Object) {
-		var self = pointers.Get(o)
+	API.Object.Destroy = func(o [1]gd.Object) {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1790,7 +1790,7 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	global_get_singleton := dlsymGD("global_get_singleton")
-	API.Object.GetSingleton = func(name gd.StringName) gd.Object {
+	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
 		var frame = callframe.New()
 		var p_name = callframe.Arg(frame, pointers.Get(name))
 		var ret = C.global_get_singleton(
@@ -1798,11 +1798,11 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_name.Uintptr()),
 		)
 		frame.Free()
-		return pointers.Raw[gd.Object]([3]uintptr{uintptr(ret)})
+		return [1]gd.Object{pointers.Raw[gd.Object]([3]uintptr{uintptr(ret)})}
 	}
 	object_get_instance_binding := dlsymGD("object_get_instance_binding")
-	API.Object.GetInstanceBinding = func(o gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
-		var self = pointers.Get(o)
+	API.Object.GetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1824,8 +1824,8 @@ func linkCGO(API *gd.API) {
 		return cgo.Handle(ret).Value()
 	}
 	object_set_instance_binding := dlsymGD("object_set_instance_binding")
-	API.Object.SetInstanceBinding = func(o gd.Object, et gd.ExtensionToken, val any, ibt gd.InstanceBindingType) {
-		var self = pointers.Get(o)
+	API.Object.SetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, val any, ibt gd.InstanceBindingType) {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1854,8 +1854,8 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	object_free_instance_binding := dlsymGD("object_free_instance_binding")
-	API.Object.FreeInstanceBinding = func(o gd.Object, et gd.ExtensionToken) {
-		var self = pointers.Get(o)
+	API.Object.FreeInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken) {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1875,8 +1875,8 @@ func linkCGO(API *gd.API) {
 		)
 	}
 	object_set_instance := dlsymGD("object_set_instance")
-	API.Object.SetInstance = func(o gd.Object, sn gd.StringName, a gd.ObjectInterface) {
-		var self = pointers.Get(o)
+	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, a gd.ObjectInterface) {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1901,8 +1901,8 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 	}
 	object_get_class_name := dlsymGD("object_get_class_name")
-	API.Object.GetClassName = func(o gd.Object, token gd.ExtensionToken) gd.String {
-		var self = pointers.Get(o)
+	API.Object.GetClassName = func(o [1]gd.Object, token gd.ExtensionToken) gd.String {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1928,8 +1928,8 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	object_cast_to := dlsymGD("object_cast_to")
-	API.Object.CastTo = func(o gd.Object, ct gd.ClassTag) gd.Object {
-		var self = pointers.Get(o)
+	API.Object.CastTo = func(o [1]gd.Object, ct gd.ClassTag) [1]gd.Object {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1948,13 +1948,13 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(ct),
 		)
 		if ret == 0 {
-			return gd.Object{}
+			return [1]gd.Object{}
 		}
 		return o // Let?
 	}
 	object_get_instance_id := dlsymGD("object_get_instance_id")
-	API.Object.GetInstanceID = func(o gd.Object) gd.ObjectID {
-		var self = pointers.Get(o)
+	API.Object.GetInstanceID = func(o [1]gd.Object) gd.ObjectID {
+		var self = pointers.Get(o[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1973,8 +1973,8 @@ func linkCGO(API *gd.API) {
 		))
 	}
 	ref_get_object := dlsymGD("ref_get_object")
-	API.RefCounted.GetObject = func(rc gd.Object) gd.Object {
-		var self = pointers.Get(rc)
+	API.RefCounted.GetObject = func(rc [1]gd.Object) [1]gd.Object {
+		var self = pointers.Get(rc[0])
 		if self[0] == 0 {
 			panic("nil gd.Object dereference")
 		}
@@ -1991,24 +1991,24 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(uintptr(ref_get_object)),
 			C.uintptr_t(self[0]),
 		)
-		return pointers.New[gd.Object]([3]uintptr{uintptr(ret)})
+		return [1]gd.Object{pointers.New[gd.Object]([3]uintptr{uintptr(ret)})}
 	}
 	ref_set_object := dlsymGD("ref_set_object")
-	API.RefCounted.SetObject = func(rc gd.Object, o gd.Object) {
+	API.RefCounted.SetObject = func(rc [1]gd.Object, o [1]gd.Object) {
 		C.ref_set_object(
 			C.uintptr_t(uintptr(ref_set_object)),
-			C.uintptr_t(pointers.Get(rc)[0]),
-			C.uintptr_t(pointers.Get(o)[0]),
+			C.uintptr_t(pointers.Get(rc[0])[0]),
+			C.uintptr_t(pointers.Get(o[0])[0]),
 		)
 	}
 	classdb_construct_object := dlsymGD("classdb_construct_object")
-	API.ClassDB.ConstructObject = func(name gd.StringName) gd.Object {
+	API.ClassDB.ConstructObject = func(name gd.StringName) [1]gd.Object {
 		var frame = callframe.New()
 		defer frame.Free()
-		return pointers.New[gd.Object]([3]uintptr{uintptr(C.classdb_construct_object(
+		return [1]gd.Object{pointers.New[gd.Object]([3]uintptr{uintptr(C.classdb_construct_object(
 			C.uintptr_t(uintptr(classdb_construct_object)),
 			C.uintptr_t(callframe.Arg(frame, pointers.Get(name)).Uintptr()),
-		))})
+		))})}
 	}
 	classdb_get_class_tag := dlsymGD("classdb_get_class_tag")
 	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
@@ -2512,7 +2512,7 @@ func unreference_func(p_instance uintptr) {
 
 //export create_instance_func
 func create_instance_func(p_class uintptr) uintptr {
-	return pointers.Get(cgo.Handle(p_class).Value().(gd.ClassInterface).CreateInstance())[0]
+	return pointers.Get(cgo.Handle(p_class).Value().(gd.ClassInterface).CreateInstance()[0])[0]
 }
 
 //export free_instance_func
@@ -2522,7 +2522,7 @@ func free_instance_func(_, p_instance uintptr) {
 
 //export recreate_instance_func
 func recreate_instance_func(p_class, p_super uintptr) uintptr {
-	var super gd.Object = pointers.Let[gd.Object]([3]uintptr{p_super})
+	var super [1]gd.Object = [1]gd.Object{pointers.Let[gd.Object]([3]uintptr{p_super})}
 	return uintptr(cgo.NewHandle(cgo.Handle(p_class).Value().(gd.ClassInterface).ReloadInstance(super)))
 }
 

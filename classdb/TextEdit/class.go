@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -20,6 +21,7 @@ import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Color"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -1293,11 +1295,11 @@ func (self Instance) GetSelectionColumn() int {
 type Advanced = class
 type class [1]gdclass.TextEdit
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -4589,31 +4591,31 @@ func (self class) GetSelectionColumn(caret_index gd.Int) gd.Int {
 	return ret
 }
 func (self Instance) OnTextSet(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnTextChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int)) {
-	self[0].AsObject().Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCaretChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGutterClicked(cb func(line int, gutter int)) {
-	self[0].AsObject().Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGutterAdded(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGutterRemoved(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsTextEdit() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -4646,7 +4648,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_paste_primary_clipboard":
 		return reflect.ValueOf(self._paste_primary_clipboard)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
 }
 
@@ -4665,7 +4667,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_paste_primary_clipboard":
 		return reflect.ValueOf(self._paste_primary_clipboard)
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}
 }
 func init() {

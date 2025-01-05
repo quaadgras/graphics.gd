@@ -9,11 +9,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -152,7 +154,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.XRServer
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -423,33 +425,33 @@ func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) {
 	frame.Free()
 }
 func OnReferenceFrameChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)
 }
 
 func OnInterfaceAdded(cb func(interface_name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), 0)
 }
 
 func OnInterfaceRemoved(cb func(interface_name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), 0)
 }
 
 func OnTrackerAdded(cb func(tracker_name string, atype int)) {
-	self[0].AsObject().Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), 0)
 }
 
 func OnTrackerUpdated(cb func(tracker_name string, atype int)) {
-	self[0].AsObject().Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), 0)
 }
 
 func OnTrackerRemoved(cb func(tracker_name string, atype int)) {
-	self[0].AsObject().Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

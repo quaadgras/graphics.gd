@@ -8,10 +8,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -151,7 +153,7 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenProperty(obj gd.Object, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener {
+func (self Instance) TweenProperty(obj Object.Instance, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener {
 	return [1]gdclass.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(string(property)).NodePath(), gd.NewVariant(final_val), gd.Float(duration)))
 }
 
@@ -475,11 +477,11 @@ func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, 
 type Advanced = class
 type class [1]gdclass.Tween
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -520,9 +522,9 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenProperty(obj gd.Object, property gd.NodePath, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener {
+func (self class) TweenProperty(obj [1]gd.Object, property gd.NodePath, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(final_val))
 	callframe.Arg(frame, duration)
@@ -993,33 +995,37 @@ func (self class) InterpolateValue(initial_value gd.Variant, delta_value gd.Vari
 	return ret
 }
 func (self Instance) OnStepFinished(cb func(idx int)) {
-	self[0].AsObject().Connect(gd.NewStringName("step_finished"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("step_finished"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnLoopFinished(cb func(loop_count int)) {
-	self[0].AsObject().Connect(gd.NewStringName("loop_finished"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("loop_finished"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFinished(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsTween() Advanced              { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTween() Instance           { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsTween() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTween() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

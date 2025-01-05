@@ -23,6 +23,10 @@ type Map[K comparable, V any] struct {
 
 type Any = gd.Dictionary
 
+func Empty() Any {
+	return gd.NewDictionary()
+}
+
 func New[K comparable, V any]() Map[K, V] {
 	return Map[K, V]{
 		value: make(map[K]V),

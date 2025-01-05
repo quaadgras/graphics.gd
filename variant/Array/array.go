@@ -24,11 +24,24 @@ type Of[T any] struct {
 
 type Any = gd.Array
 
+func Empty() Any {
+	return gd.NewArray()
+}
+
 // New creates a new array with the given elements.
 func New[T any](elements ...T) *Of[T] {
 	return &Of[T]{
 		slice: elements,
 	}
+}
+
+func (a Of[T]) Any() Any {
+	converted := gd.NewArray()
+	converted.Resize(gd.Int(a.Size()))
+	for i, v := range a.Iter() {
+		converted.SetIndex(gd.Int(i), variant.New(v))
+	}
+	return converted
 }
 
 // Size returns the number of elements in the array.
@@ -76,10 +89,10 @@ func (a *Of[T]) All(fn func(T) bool) bool { //gd:Array.all
 	return true
 }
 
-// Any calls the given function on each element in the array and returns true if the function
+// IfAny calls the given function on each element in the array and returns true if the function
 // returns true for one or more elements in the array. If the function returns false for all
 // elements in the array, this method returns false. See also [Any], [Filter], [Map], and [Reduce].
-func (a *Of[T]) Any(fn func(T) bool) bool { //gd:Array.any
+func (a *Of[T]) IfAny(fn func(T) bool) bool { //gd:Array.any
 	if a.array != (gd.Array{}) {
 		return false
 	}

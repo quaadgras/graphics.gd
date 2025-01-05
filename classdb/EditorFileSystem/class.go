@@ -8,10 +8,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -97,11 +99,11 @@ func (self Instance) ReimportFiles(files []string) {
 type Advanced = class
 type class [1]gdclass.EditorFileSystem
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -226,27 +228,27 @@ func (self class) ReimportFiles(files gd.PackedStringArray) {
 	frame.Free()
 }
 func (self Instance) OnFilesystemChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnScriptClassesUpdated(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("script_classes_updated"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("script_classes_updated"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSourcesChanged(cb func(exist bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("sources_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("sources_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourcesReimporting(cb func(resources []string)) {
-	self[0].AsObject().Connect(gd.NewStringName("resources_reimporting"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimporting"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourcesReimported(cb func(resources []string)) {
-	self[0].AsObject().Connect(gd.NewStringName("resources_reimported"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimported"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourcesReload(cb func(resources []string)) {
-	self[0].AsObject().Connect(gd.NewStringName("resources_reload"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reload"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorFileSystem() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -257,14 +259,14 @@ func (self Instance) AsNode() Node.Instance        { return *((*Node.Instance)(u
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

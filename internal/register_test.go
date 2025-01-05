@@ -29,7 +29,7 @@ func TestRegister(t *testing.T) {
 	}
 
 	class := new(TestingSimpleClass)
-	if name := class.AsObject().GetClass().String(); name != "TestingSimpleClass" {
+	if name := class.AsObject()[0].GetClass().String(); name != "TestingSimpleClass" {
 		t.Fatal(name)
 	}
 	class.Super().AsNode().SetName(String.New("SimpleClass"))

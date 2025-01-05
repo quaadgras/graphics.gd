@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -510,11 +512,11 @@ func (self Instance) GetVisibilityLayerBit(layer int) bool {
 type Advanced = class
 type class [1]gdclass.CanvasItem
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1822,19 +1824,19 @@ func (self class) GetClipChildrenMode() gdclass.CanvasItemClipChildrenMode {
 	return ret
 }
 func (self Instance) OnDraw(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("draw"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnVisibilityChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnHidden(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemRectChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsCanvasItem() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1847,7 +1849,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_draw":
 		return reflect.ValueOf(self._draw)
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
@@ -1856,7 +1858,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_draw":
 		return reflect.ValueOf(self._draw)
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

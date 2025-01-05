@@ -8,8 +8,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -74,7 +76,7 @@ public partial class NodeRenamer : EditorScenePostImport
 	// EditorScenePostImport methods that can be overridden by a [Class] that extends it.
 	type EditorScenePostImport interface {
 		//Called after the scene was imported. This method must return the modified version of the scene.
-		PostImport(scene [1]gdclass.Node) gd.Object
+		PostImport(scene [1]gdclass.Node) Object.Instance
 	}
 */
 type Instance [1]gdclass.EditorScenePostImport
@@ -86,13 +88,13 @@ type Any interface {
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
 */
-func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -111,11 +113,11 @@ func (self Instance) GetSourceFile() string {
 type Advanced = class
 type class [1]gdclass.EditorScenePostImport
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -127,13 +129,13 @@ func New() Instance {
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
 */
-func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -155,15 +157,19 @@ func (self class) GetSourceFile() gd.String {
 }
 func (self class) AsEditorScenePostImport() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorScenePostImport() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsRefCounted() gd.RefCounted          { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted       { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_post_import":
 		return reflect.ValueOf(self._post_import)
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
 }
 
@@ -172,7 +178,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_post_import":
 		return reflect.ValueOf(self._post_import)
 	default:
-		return gd.VirtualByName(self.AsRefCounted(), name)
+		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
 }
 func init() {

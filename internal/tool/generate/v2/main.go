@@ -135,6 +135,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Object"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/RefCounted"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -183,6 +184,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	}
 	fmt.Fprintln(file)
 	fmt.Fprintln(file, "var _ Object.ID")
+	fmt.Fprintln(file, "var _ RefCounted.Instance")
 	fmt.Fprintln(file, "var _ unsafe.Pointer")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
@@ -262,10 +264,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "\ntype Advanced = class\n")
 	}
 	fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
-	fmt.Fprintln(file, "func (self class) AsObject() gd.Object { return self[0].AsObject() }")
+	fmt.Fprintln(file, "func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }")
 	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	if !singleton {
-		fmt.Fprintln(file, "func (self Instance) AsObject() gd.Object { return self[0].AsObject() }")
+		fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
 		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	}
 	if !singleton {
@@ -292,9 +294,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 				continue
 			}
 			if super.Name == "RefCounted" {
-				fmt.Fprintf(file, "func (self class) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }\n")
+				fmt.Fprintf(file, "func (self class) AsRefCounted() [1]gd.RefCounted { return *((*[1]gd.RefCounted)(unsafe.Pointer(&self))) }\n")
 				if !singleton {
-					fmt.Fprintf(file, "func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }\n")
+					fmt.Fprintf(file, "func (self Instance) AsRefCounted() [1]gd.RefCounted { return *((*[1]gd.RefCounted)(unsafe.Pointer(&self))) }\n")
 				}
 			} else {
 				fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return *((*%[2]v.Advanced)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
@@ -318,7 +320,11 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			}
 		}
 		if class.Inherits != "" && !classDB[class.Inherits].IsSingleton {
-			fmt.Fprintf(file, "\tdefault: return gd.VirtualByName(self.As%s(), name)\n", super.Name)
+			var name = "Instance"
+			if self != "Instance" {
+				name = "Advanced"
+			}
+			fmt.Fprintf(file, "\tdefault: return gd.VirtualByName(%s.%s(self.As%[1]s()), name)\n", super.Name, name)
 		} else {
 			fmt.Fprintf(file, "\tdefault: return reflect.Value{}\n")
 		}

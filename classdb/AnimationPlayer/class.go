@@ -8,12 +8,14 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -201,11 +203,11 @@ func (self Instance) GetRoot() NodePath.String {
 type Advanced = class
 type class [1]gdclass.AnimationPlayer
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -807,11 +809,11 @@ func (self class) GetRoot() gd.NodePath {
 	return ret
 }
 func (self Instance) OnCurrentAnimationChanged(cb func(name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("current_animation_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("current_animation_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsAnimationPlayer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -828,14 +830,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsAnimationMixer(), name)
+		return gd.VirtualByName(AnimationMixer.Advanced(self.AsAnimationMixer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsAnimationMixer(), name)
+		return gd.VirtualByName(AnimationMixer.Instance(self.AsAnimationMixer()), name)
 	}
 }
 func init() {

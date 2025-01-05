@@ -9,10 +9,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -298,15 +300,15 @@ func HasSingleton(name string) bool {
 Returns the global singleton with the given [param name], or [code]null[/code] if it does not exist. Often used for plugins. See also [method has_singleton] and [method get_singleton_list].
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
-func GetSingleton(name string) gd.Object {
+func GetSingleton(name string) Object.Instance {
 	once.Do(singleton)
-	return gd.Object(class(self).GetSingleton(gd.NewStringName(name)))
+	return Object.Instance(class(self).GetSingleton(gd.NewStringName(name)))
 }
 
 /*
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
-func RegisterSingleton(name string, instance gd.Object) {
+func RegisterSingleton(name string, instance Object.Instance) {
 	once.Do(singleton)
 	class(self).RegisterSingleton(gd.NewStringName(name), instance)
 }
@@ -411,7 +413,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Engine
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -877,12 +879,12 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 //go:nosplit
-func (self class) GetSingleton(name gd.StringName) gd.Object {
+func (self class) GetSingleton(name gd.StringName) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())
+	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -891,10 +893,10 @@ func (self class) GetSingleton(name gd.StringName) gd.Object {
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
 //go:nosplit
-func (self class) RegisterSingleton(name gd.StringName, instance gd.Object) {
+func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(instance))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(instance[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -935,7 +937,7 @@ Returns:
 //go:nosplit
 func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))
 	var r_ret = callframe.Ret[error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_script_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
@@ -1050,7 +1052,7 @@ func (self class) IsPrintingErrorMessages() bool {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

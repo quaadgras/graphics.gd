@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -17,6 +18,7 @@ import "graphics.gd/variant/NodePath"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -87,11 +89,11 @@ func (self Instance) OverlapsArea(area [1]gdclass.Node) bool {
 type Advanced = class
 type class [1]gdclass.Area3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -781,35 +783,35 @@ func (self class) GetReverbUniformity() gd.Float {
 	return ret
 }
 func (self Instance) OnBodyShapeEntered(cb func(body_rid Resource.ID, body [1]gdclass.Node3D, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyShapeExited(cb func(body_rid Resource.ID, body [1]gdclass.Node3D, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyEntered(cb func(body [1]gdclass.Node3D)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnBodyExited(cb func(body [1]gdclass.Node3D)) {
-	self[0].AsObject().Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnAreaShapeEntered(cb func(area_rid Resource.ID, area [1]gdclass.Area3D, area_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnAreaShapeExited(cb func(area_rid Resource.ID, area [1]gdclass.Area3D, area_shape_index int, local_shape_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnAreaEntered(cb func(area [1]gdclass.Area3D)) {
-	self[0].AsObject().Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnAreaExited(cb func(area [1]gdclass.Area3D)) {
-	self[0].AsObject().Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsArea3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -828,14 +830,14 @@ func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsa
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsCollisionObject3D(), name)
+		return gd.VirtualByName(CollisionObject3D.Advanced(self.AsCollisionObject3D()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsCollisionObject3D(), name)
+		return gd.VirtualByName(CollisionObject3D.Instance(self.AsCollisionObject3D()), name)
 	}
 }
 func init() {

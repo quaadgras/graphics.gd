@@ -9,9 +9,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -119,7 +121,7 @@ func ClassGetPropertyList(class_ string) gd.Array {
 /*
 Returns the value of [param property] of [param object] or its ancestry.
 */
-func ClassGetProperty(obj gd.Object, property string) any {
+func ClassGetProperty(obj Object.Instance, property string) any {
 	once.Do(singleton)
 	return any(class(self).ClassGetProperty(obj, gd.NewStringName(property)).Interface())
 }
@@ -127,7 +129,7 @@ func ClassGetProperty(obj gd.Object, property string) any {
 /*
 Sets [param property] value of [param object] to [param value].
 */
-func ClassSetProperty(obj gd.Object, property string, value any) error {
+func ClassSetProperty(obj Object.Instance, property string, value any) error {
 	once.Do(singleton)
 	return error(class(self).ClassSetProperty(obj, gd.NewStringName(property), gd.NewVariant(value)))
 }
@@ -242,7 +244,7 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.ClassDB
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -409,9 +411,9 @@ func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool
 Returns the value of [param property] of [param object] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetProperty(obj gd.Object, property gd.StringName) gd.Variant {
+func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Ret[[3]uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
@@ -424,9 +426,9 @@ func (self class) ClassGetProperty(obj gd.Object, property gd.StringName) gd.Var
 Sets [param property] value of [param object] to [param value].
 */
 //go:nosplit
-func (self class) ClassSetProperty(obj gd.Object, property gd.StringName, value gd.Variant) error {
+func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) error {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj))
+	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[error](frame)
@@ -639,7 +641,7 @@ func (self class) IsClassEnabled(class_ gd.StringName) bool {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsObject(), name)
+		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
 }
 func init() {

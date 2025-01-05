@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -15,6 +16,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -33,11 +35,11 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.GraphElement
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -181,35 +183,35 @@ func (self class) GetPositionOffset() gd.Vector2 {
 	return ret
 }
 func (self Instance) OnNodeSelected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNodeDeselected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRaiseRequest(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("raise_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("raise_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDeleteRequest(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnPositionOffsetChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("position_offset_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("position_offset_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsGraphElement() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -236,14 +238,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsContainer(), name)
+		return gd.VirtualByName(Container.Advanced(self.AsContainer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsContainer(), name)
+		return gd.VirtualByName(Container.Instance(self.AsContainer()), name)
 	}
 }
 func init() {

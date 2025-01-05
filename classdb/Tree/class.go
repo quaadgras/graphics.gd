@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -15,6 +16,7 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -362,11 +364,11 @@ func (self Instance) ScrollToItem(item [1]gdclass.TreeItem) {
 type Advanced = class
 type class [1]gdclass.Tree
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1226,63 +1228,63 @@ func (self class) GetAllowSearch() bool {
 	return ret
 }
 func (self Instance) OnItemSelected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCellSelected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnMultiSelected(cb func(item [1]gdclass.TreeItem, column int, selected bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemEdited(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemIconDoubleClicked(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemCollapsed(cb func(item [1]gdclass.TreeItem)) {
-	self[0].AsObject().Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCheckPropagatedToItem(cb func(item [1]gdclass.TreeItem, column int)) {
-	self[0].AsObject().Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnButtonClicked(cb func(item [1]gdclass.TreeItem, column int, id int, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnItemActivated(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int)) {
-	self[0].AsObject().Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnNothingSelected(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsTree() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -1303,14 +1305,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsControl(), name)
+		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}
 }
 func init() {

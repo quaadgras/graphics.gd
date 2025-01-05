@@ -30,7 +30,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, ")) {\n\t")
-	fmt.Fprintf(w, `self[0].AsObject().Connect(gd.NewStringName("%s"), gd.NewCallable(cb), 0)`, signal.Name)
+	fmt.Fprintf(w, `self[0].AsObject()[0].Connect(gd.NewStringName("%s"), gd.NewCallable(cb), 0)`, signal.Name)
 	fmt.Fprint(w, "\n}\n\n")
 }
 
@@ -148,8 +148,8 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		var expert = classDB.convertType(class.Name, arg.Meta, arg.Type)
 
 		if arg.Type == "Object" {
-			fmt.Fprintf(w, "\t\tvar %v = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
-			fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
+			fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), i)
+			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 			continue
 		}
 
@@ -183,9 +183,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			name := strings.TrimPrefix(resultExpert, "classdb.")
 			name = strings.TrimPrefix(name, "[1]gdclass.")
 			_, ok := classDB[name]
-			if resultExpert == "gd.Object" {
-				ret = fmt.Sprintf("pointers.End(%s)", ret)
-			} else if ok {
+			if ok || resultExpert == "[1]gd.Object" {
 				ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 			} else {
 				ret = fmt.Sprintf("pointers.End(%s)", ret)
@@ -243,8 +241,8 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			var argType = classDB.convertType(class.Name, arg.Meta, arg.Type)
 
 			if arg.Type == "Object" {
-				fmt.Fprintf(w, "\t\tvar %v = pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})\n", fixReserved(arg.Name), i)
-				fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), i)
+				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
 			}
 
@@ -278,7 +276,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			ret := gdtype.Name(result).ToUnderlying("ret")
 			if isPtr {
 				_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
-				if ok {
+				if ok || result == "[1]gd.Object" {
 					ret = fmt.Sprintf("pointers.End(%s[0])", ret)
 				} else {
 					ret = fmt.Sprintf("pointers.End(%s)", ret)
@@ -326,17 +324,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]
 		if ok {
-			if arg.Type == "Object" {
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(%v))\n", fixReserved(arg.Name))
-			} else {
-				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
-				case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tcallframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()))\n", fixReserved(arg.Name))
-				case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-					fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v[0])[0])\n", fixReserved(arg.Name))
-				default:
-					panic("unknown ownership: " + fmt.Sprint(semantics))
-				}
+			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
+			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))\n", fixReserved(arg.Name))
+			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
+				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v[0])[0])\n", fixReserved(arg.Name))
+			default:
+				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}
 			continue
 		}
@@ -402,6 +396,8 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 				fmt.Fprint(w, "\tvar ret = pointers.New[Array](r_ret.Get())\n")
 			} else if strings.HasPrefix(result, "gd.ArrayOf") {
 				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
+			} else if result == "[1]gd.Object" {
+				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}\n")
 			} else {
 				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}

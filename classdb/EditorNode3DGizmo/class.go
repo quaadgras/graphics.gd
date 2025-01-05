@@ -8,12 +8,14 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -333,11 +335,11 @@ func (self Instance) GetSubgizmoSelection() []int32 {
 type Advanced = class
 type class [1]gdclass.EditorNode3DGizmo
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -609,7 +611,7 @@ Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [
 //go:nosplit
 func (self class) SetNode3d(node [1]gdclass.Node) {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_set_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	frame.Free()
@@ -698,8 +700,12 @@ func (self class) AsNode3DGizmo() Node3DGizmo.Advanced {
 func (self Instance) AsNode3DGizmo() Node3DGizmo.Instance {
 	return *((*Node3DGizmo.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -728,7 +734,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_commit_subgizmos":
 		return reflect.ValueOf(self._commit_subgizmos)
 	default:
-		return gd.VirtualByName(self.AsNode3DGizmo(), name)
+		return gd.VirtualByName(Node3DGizmo.Advanced(self.AsNode3DGizmo()), name)
 	}
 }
 
@@ -759,7 +765,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_commit_subgizmos":
 		return reflect.ValueOf(self._commit_subgizmos)
 	default:
-		return gd.VirtualByName(self.AsNode3DGizmo(), name)
+		return gd.VirtualByName(Node3DGizmo.Instance(self.AsNode3DGizmo()), name)
 	}
 }
 func init() {

@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Array"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -185,11 +187,11 @@ func (self Instance) GetAvailableDisplayRefreshRates() Array.Any {
 type Advanced = class
 type class [1]gdclass.WebXRInterface
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -451,55 +453,55 @@ func (self class) GetAvailableDisplayRefreshRates() gd.Array {
 	return ret
 }
 func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool)) {
-	self[0].AsObject().Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionStarted(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionEnded(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSessionFailed(cb func(message string)) {
-	self[0].AsObject().Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSelectstart(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSelect(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("select"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSelectend(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSqueezestart(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSqueeze(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSqueezeend(cb func(input_source_id int)) {
-	self[0].AsObject().Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnVisibilityStateChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnReferenceSpaceReset(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDisplayRefreshRateChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsWebXRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -510,20 +512,24 @@ func (self class) AsXRInterface() XRInterface.Advanced {
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRInterface(), name)
+		return gd.VirtualByName(XRInterface.Advanced(self.AsXRInterface()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRInterface(), name)
+		return gd.VirtualByName(XRInterface.Instance(self.AsXRInterface()), name)
 	}
 }
 func init() {

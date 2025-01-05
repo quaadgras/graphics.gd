@@ -8,11 +8,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -78,11 +80,11 @@ func (self Instance) RegisterTextEnter(line_edit [1]gdclass.LineEdit) {
 type Advanced = class
 type class [1]gdclass.AcceptDialog
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -311,15 +313,15 @@ func (self class) GetOkButtonText() gd.String {
 	return ret
 }
 func (self Instance) OnConfirmed(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCanceled(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnCustomAction(cb func(action string)) {
-	self[0].AsObject().Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsAcceptDialog() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -338,14 +340,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsWindow(), name)
+		return gd.VirtualByName(Window.Advanced(self.AsWindow()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsWindow(), name)
+		return gd.VirtualByName(Window.Instance(self.AsWindow()), name)
 	}
 }
 func init() {

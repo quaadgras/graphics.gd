@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/XRNode3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -15,6 +16,7 @@ import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -71,11 +73,11 @@ func (self Instance) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
 type Advanced = class
 type class [1]gdclass.XRController3D
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -153,23 +155,23 @@ func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
 	return ret
 }
 func (self Instance) OnButtonPressed(cb func(name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnButtonReleased(cb func(name string)) {
-	self[0].AsObject().Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X)) {
-	self[0].AsObject().Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY)) {
-	self[0].AsObject().Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnProfileChanged(cb func(role string)) {
-	self[0].AsObject().Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsXRController3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -188,14 +190,14 @@ func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsa
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRNode3D(), name)
+		return gd.VirtualByName(XRNode3D.Advanced(self.AsXRNode3D()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsXRNode3D(), name)
+		return gd.VirtualByName(XRNode3D.Instance(self.AsXRNode3D()), name)
 	}
 }
 func init() {

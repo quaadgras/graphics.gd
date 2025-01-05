@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -17,6 +18,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -49,11 +51,11 @@ func (self Instance) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHig
 type Advanced = class
 type class [1]gdclass.ScriptEditorBase
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -87,43 +89,43 @@ func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighli
 	frame.Free()
 }
 func (self Instance) OnNameChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnEditedScriptChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRequestHelp(cb func(topic string)) {
-	self[0].AsObject().Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnRequestOpenScriptAtLine(cb func(script gd.Object, line int)) {
-	self[0].AsObject().Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), 0)
+func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRequestSaveHistory(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnRequestSavePreviousState(cb func(state Dictionary.Any)) {
-	self[0].AsObject().Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnGoToHelp(cb func(what string)) {
-	self[0].AsObject().Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnSearchInFilesRequested(cb func(text string)) {
-	self[0].AsObject().Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnReplaceInFilesRequested(cb func(text string)) {
-	self[0].AsObject().Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnGoToMethod(cb func(script gd.Object, method string)) {
-	self[0].AsObject().Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), 0)
+func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string)) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsScriptEditorBase() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -162,14 +164,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsVBoxContainer(), name)
+		return gd.VirtualByName(VBoxContainer.Advanced(self.AsVBoxContainer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsVBoxContainer(), name)
+		return gd.VirtualByName(VBoxContainer.Instance(self.AsVBoxContainer()), name)
 	}
 }
 func init() {

@@ -8,10 +8,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -38,7 +40,7 @@ func (self Instance) CanInstantiate() bool {
 /*
 Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
-func (self Instance) InstanceHas(base_object gd.Object) bool {
+func (self Instance) InstanceHas(base_object Object.Instance) bool {
 	return bool(class(self).InstanceHas(base_object))
 }
 
@@ -153,11 +155,11 @@ func (self Instance) IsAbstract() bool {
 type Advanced = class
 type class [1]gdclass.Script
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -191,9 +193,9 @@ func (self class) CanInstantiate() bool {
 Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 //go:nosplit
-func (self class) InstanceHas(base_object gd.Object) bool {
+func (self class) InstanceHas(base_object [1]gd.Object) bool {
 	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(base_object))
+	callframe.Arg(frame, pointers.Get(base_object[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_instance_has, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = r_ret.Get()
@@ -415,20 +417,24 @@ func (self class) AsResource() Resource.Advanced {
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsRefCounted() gd.RefCounted    { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
-func (self Instance) AsRefCounted() gd.RefCounted { return *((*gd.RefCounted)(unsafe.Pointer(&self))) }
+func (self class) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self Instance) AsRefCounted() [1]gd.RefCounted {
+	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsResource(), name)
+		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsResource(), name)
+		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}
 }
 func init() {

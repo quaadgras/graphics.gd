@@ -45,6 +45,80 @@ const (
 )
 
 var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
+	"CollisionObject2D": {
+		"create_shape_owner": {
+			"owner": MustAssertInstanceID,
+		},
+		"shape_owner_get_owner": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"CollisionObject3D": {
+		"create_shape_owner": {
+			"owner": MustAssertInstanceID,
+		},
+		"shape_owner_get_owner": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"ClassDB": {
+		"class_get_property": {
+			"object": IsTemporaryReference,
+		},
+		"class_set_property": {
+			"object": IsTemporaryReference,
+		},
+	},
+	"DisplayServer": {
+		"register_additional_output": {
+			"object": LifetimeBoundToClass,
+		},
+		"unregister_additional_output": {
+			"object": ReversesTheOwnership,
+		},
+	},
+	"EditorResourcePreview": {
+		"queue_resource_preview": {
+			"receiver": LifetimeBoundToClass,
+		},
+		"queue_edited_resource_preview": {
+			"receiver": LifetimeBoundToClass,
+		},
+	},
+	"KinematicCollision2D": {
+		"get_local_shape": {
+			"return value": MustAssertInstanceID,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
+		},
+		"get_collider_shape": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"KinematicCollision3D": {
+		"get_local_shape": {
+			"return value": MustAssertInstanceID,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
+		},
+		"get_collider_shape": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"MultiplayerAPI": {
+		"rpc": {
+			"object": IsTemporaryReference,
+		},
+		"object_configuration_add": {
+			"object": LifetimeBoundToClass,
+		},
+		"object_configuration_remove": {
+			"object": ReversesTheOwnership,
+		},
+	},
+
 	"AcceptDialog": {
 		"get_ok_button": {
 			"return value": LifetimeBoundToClass,
@@ -201,6 +275,21 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"return value": MustAssertInstanceID,
 		},
 	},
+	"JSONRPC": {
+		"set_scope": {
+			"target": MustAssertInstanceID,
+		},
+	},
+	"Expression": {
+		"execute": {
+			"base_instance": IsTemporaryReference,
+		},
+	},
+	"EditorInspector": {
+		"get_edited_object": {
+			"return value": MustAssertInstanceID,
+		},
+	},
 	"EditorInspectorPlugin": {
 		"add_custom_control": {
 			"control": OwnershipTransferred,
@@ -263,6 +352,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"popup_dialog_centered_clamped": {
 			"dialog": IsTemporaryReference,
+		},
+		"popup_property_selector": {
+			"object": MustAssertInstanceID,
+		},
+		"inspect_object": {
+			"object": MustAssertInstanceID,
 		},
 		"edit_node": {
 			"node": MustAssertInstanceID,
@@ -330,6 +425,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"set_bottom_editor": {
 			"editor": LifetimeBoundToClass,
 		},
+		"get_edited_object": {
+			"return value": MustAssertInstanceID,
+		},
 	},
 	"EditorResourceTooltipPlugin": {
 		"request_thumbnail": {
@@ -367,10 +465,40 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_history_undo_redo": {
 			"return value": LifetimeBoundToClass,
 		},
+		"create_action": {
+			"custom_context": LifetimeBoundToClass,
+		},
+		"add_do_method": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_undo_method": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_do_property": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_undo_property": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_do_reference": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_undo_reference": {
+			"object": LifetimeBoundToClass,
+		},
+		"get_object_history_id": {
+			"object": IsTemporaryReference,
+		},
 	},
 	"Engine": {
 		"get_main_loop": {
 			"return value": LifetimeBoundToClass,
+		},
+		"get_singleton": {
+			"return value": MustAssertInstanceID,
+		},
+		"register_singleton": {
+			"instance": OwnershipTransferred,
 		},
 		"register_script_language": {
 			"language": OwnershipTransferred,
@@ -669,9 +797,25 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_space_state": {
 			"return value": MustAssertInstanceID,
 		},
+		"get_contact_collider_object": {
+			"return value": MustAssertInstanceID,
+		},
 	},
 	"PhysicsDirectBodyState3D": {
 		"get_space_state": {
+			"return value": MustAssertInstanceID,
+		},
+		"get_contact_collider_object": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"PhysicsTestMotionResult2D": {
+		"get_collider": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"PhysicsTestMotionResult3D": {
+		"get_collider": {
 			"return value": MustAssertInstanceID,
 		},
 	},
@@ -706,18 +850,24 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"RayCast2D": {
 		"add_exception": {
-			"node": IsTemporaryReference,
+			"node": OwnershipTransferred,
 		},
 		"remove_exception": {
-			"node": IsTemporaryReference,
+			"node": ReversesTheOwnership,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"RayCast3D": {
 		"add_exception": {
-			"node": IsTemporaryReference,
+			"node": OwnershipTransferred,
 		},
 		"remove_exception": {
-			"node": IsTemporaryReference,
+			"node": ReversesTheOwnership,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"RenderingDevice": {
@@ -765,10 +915,18 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_current_scene": {
 			"return value": MustAssertInstanceID,
 		},
+		"queue_delete": {
+			"obj": OwnershipTransferred,
+		},
 	},
 	"SkeletonModifier3D": {
 		"get_skeleton": {
 			"return value": MustAssertInstanceID,
+		},
+	},
+	"Script": {
+		"instance_has": {
+			"base_object": IsTemporaryReference,
 		},
 	},
 	"ScriptEditor": {
@@ -794,18 +952,24 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	},
 	"ShapeCast2D": {
 		"add_exception": {
-			"node": IsTemporaryReference,
+			"node": OwnershipTransferred,
 		},
 		"remove_exception": {
-			"node": IsTemporaryReference,
+			"node": ReversesTheOwnership,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"ShapeCast3D": {
 		"add_exception": {
-			"node": IsTemporaryReference,
+			"node": OwnershipTransferred,
 		},
 		"remove_exception": {
-			"node": IsTemporaryReference,
+			"node": ReversesTheOwnership,
+		},
+		"get_collider": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"Skeleton2D": {
@@ -969,10 +1133,16 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"move_after": {
 			"item": IsTemporaryReference,
 		},
+		"set_custom_draw": {
+			"object": MustAssertInstanceID,
+		},
 	},
 	"Tween": {
 		"bind_node": {
 			"node": MustAssertInstanceID,
+		},
+		"tween_property": {
+			"object": IsTemporaryReference,
 		},
 	},
 	"VehicleWheel3D": {
@@ -1040,6 +1210,20 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"get_layer_viewport": {
 			"return value": MustAssertInstanceID,
+		},
+	},
+	"UndoRedo": {
+		"add_do_property": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_undo_property": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_do_reference": {
+			"object": LifetimeBoundToClass,
+		},
+		"add_undo_reference": {
+			"object": LifetimeBoundToClass,
 		},
 	},
 }

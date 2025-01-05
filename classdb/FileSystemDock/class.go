@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -16,6 +17,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -56,11 +58,11 @@ func (self Instance) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourc
 type Advanced = class
 type class [1]gdclass.FileSystemDock
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -105,39 +107,39 @@ func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTo
 	frame.Free()
 }
 func (self Instance) OnInherit(cb func(file string)) {
-	self[0].AsObject().Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnInstantiate(cb func(files []string)) {
-	self[0].AsObject().Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnResourceRemoved(cb func(resource [1]gdclass.Resource)) {
-	self[0].AsObject().Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFileRemoved(cb func(file string)) {
-	self[0].AsObject().Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFolderRemoved(cb func(folder string)) {
-	self[0].AsObject().Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFilesMoved(cb func(old_file string, new_file string)) {
-	self[0].AsObject().Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string)) {
-	self[0].AsObject().Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFolderColorChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDisplayModeChanged(cb func()) {
-	self[0].AsObject().Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsFileSystemDock() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -176,14 +178,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsVBoxContainer(), name)
+		return gd.VirtualByName(VBoxContainer.Advanced(self.AsVBoxContainer()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsVBoxContainer(), name)
+		return gd.VirtualByName(VBoxContainer.Instance(self.AsVBoxContainer()), name)
 	}
 }
 func init() {

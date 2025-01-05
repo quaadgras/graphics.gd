@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -16,6 +17,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -139,11 +141,11 @@ func (self Instance) Invalidate() {
 type Advanced = class
 type class [1]gdclass.FileDialog
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -636,15 +638,15 @@ func (self class) Invalidate() {
 	frame.Free()
 }
 func (self Instance) OnFileSelected(cb func(path string)) {
-	self[0].AsObject().Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnFilesSelected(cb func(paths []string)) {
-	self[0].AsObject().Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self Instance) OnDirSelected(cb func(dir string)) {
-	self[0].AsObject().Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsFileDialog() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -675,14 +677,14 @@ func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.P
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsConfirmationDialog(), name)
+		return gd.VirtualByName(ConfirmationDialog.Advanced(self.AsConfirmationDialog()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsConfirmationDialog(), name)
+		return gd.VirtualByName(ConfirmationDialog.Instance(self.AsConfirmationDialog()), name)
 	}
 }
 func init() {

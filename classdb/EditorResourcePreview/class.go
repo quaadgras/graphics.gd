@@ -8,9 +8,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -30,7 +32,7 @@ type Any interface {
 Queue a resource file located at [param path] for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueResourcePreview(path string, receiver gd.Object, receiver_func string, userdata any) {
+func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) {
 	class(self).QueueResourcePreview(gd.NewString(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
@@ -38,7 +40,7 @@ func (self Instance) QueueResourcePreview(path string, receiver gd.Object, recei
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver gd.Object, receiver_func string, userdata any) {
+func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) {
 	class(self).QueueEditedResourcePreview(resource, receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
@@ -67,11 +69,11 @@ func (self Instance) CheckForInvalidation(path string) {
 type Advanced = class
 type class [1]gdclass.EditorResourcePreview
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -85,10 +87,10 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueResourcePreview(path gd.String, receiver gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
+func (self class) QueueResourcePreview(path gd.String, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(receiver_func))
 	callframe.Arg(frame, pointers.Get(userdata))
 	var r_ret callframe.Nil
@@ -101,10 +103,10 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
+func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver))
+	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(receiver_func))
 	callframe.Arg(frame, pointers.Get(userdata))
 	var r_ret callframe.Nil
@@ -148,7 +150,7 @@ func (self class) CheckForInvalidation(path gd.String) {
 	frame.Free()
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string)) {
-	self[0].AsObject().Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), 0)
+	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), 0)
 }
 
 func (self class) AsEditorResourcePreview() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
@@ -159,14 +161,14 @@ func (self Instance) AsNode() Node.Instance             { return *((*Node.Instan
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(self.AsNode(), name)
+		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}
 }
 func init() {

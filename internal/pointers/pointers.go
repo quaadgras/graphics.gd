@@ -36,6 +36,7 @@
 package pointers
 
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"unsafe"
@@ -345,7 +346,7 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 		checksum P
 	})(ptr)
 	if p.revision == 0 && p.sentinal == 0 {
-		panic("cannot set a raw pointer")
+		return
 	}
 	if p.revision == 0 {
 		for i := 0; i < len(val); i++ {
@@ -432,6 +433,28 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 	return ptr
 }
 
+// Debug prints the current state of the pointer.
+func Debug[T Generic[T, P], P Size](ptr T) {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uintptr
+		revision revision
+		checksum P
+	})(ptr)
+	if p.revision == 0 && p.sentinal == 0 {
+		fmt.Printf("pointer raw\n", p.sentinal)
+	}
+	if p.revision == 0 {
+		fmt.Printf("pointer static %d\n", p.sentinal)
+	}
+	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	rev := revision(arr[addr+offsetRevision].Load())
+	free := arr[addr+offsetFreeFunc].Load()
+	fmt.Printf("pointer %d active %v closed %v freefunc %v\n", p.sentinal, rev.isActive(), rev.isClosed(), free != 0)
+}
+
 // Lay the pointer, preventing the free operation from being called on it (it can still expire).
 func Lay[T Generic[T, P], P Size](ptr T) T {
 	p := (struct {
@@ -441,6 +464,9 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 		revision revision
 		checksum P
 	})(ptr)
+	if p.revision == 0 && p.sentinal == 0 {
+		return ptr
+	}
 	if p.revision == 0 {
 		panic("cannot let a nil pointer")
 	}

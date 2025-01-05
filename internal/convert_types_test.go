@@ -168,7 +168,7 @@ func (c Converter) ValidStringName(s StringName.Advanced) bool {
 func (c Converter) ValidNodePath(n NodePath.String) bool { return n == c.NodePath() }
 func (c Converter) ValidRID(r Resource.ID) bool          { return r == c.RID() }
 func (c Converter) ValidObject(o Object.Instance) bool {
-	return o.AsObject().GetClass().String() == "Object"
+	return o.AsObject()[0].GetClass().String() == "Object"
 }
 func (c Converter) ValidCallable(cc Callable.Any) bool {
 	return cc.Call().Interface().(String.Advanced).String() == c.Callable().Call().Interface().(String.Advanced).String()
@@ -219,7 +219,7 @@ func TestConversions(t *testing.T) {
 		var script = GDScript.New().AsScript()
 		script.SetSourceCode(convert_types_test)
 		script.Reload()
-		Object.Instance{converter.AsObject()}.SetScript(script)
+		Object.Instance(converter.AsObject()).SetScript(script)
 		SceneTree.Add(converter)
 	}).CallDeferred()
 	if err := <-doneConversionsTest; err != nil {

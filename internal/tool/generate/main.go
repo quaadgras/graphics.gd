@@ -467,7 +467,6 @@ func generate() error {
 	fmt.Fprintln(all, `import "reflect"`)
 	fmt.Fprintln(all, `import "unsafe"`)
 	fmt.Fprintln(all, `import "graphics.gd/internal/pointers"`)
-	fmt.Fprintln(all, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(all)
 
 	var singletons = make(map[string]bool)
@@ -654,11 +653,6 @@ func generate() error {
 		}
 		pkg := class.Package
 
-		prefix := ""
-		if pkg != "internal" {
-			prefix = "gd."
-		}
-
 		for _, enum := range class.Enums {
 			genEnum(pkg, w, nil, class.Name, enum)
 		}
@@ -667,7 +661,7 @@ func generate() error {
 			fmt.Fprintf(w, "func (self %[1]v) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }\n", class.Name)
 		}
 		if class.Inherits != "" {
-			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() "+prefix+"Object { return (*(*Object)(unsafe.Pointer(&self))) }\n", class.Name)
+			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }\n", class.Name)
 		}
 		if class.Name == "Object" || class.Name == "RefCounted" {
 			for _, method := range class.Methods {

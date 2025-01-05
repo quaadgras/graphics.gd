@@ -8,6 +8,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
+import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/PhysicsDirectBodyState3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -16,6 +17,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
+var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
@@ -67,7 +69,7 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 		GetContactCollider(contact_idx int) Resource.ID
 		GetContactColliderPosition(contact_idx int) Vector3.XYZ
 		GetContactColliderId(contact_idx int) int
-		GetContactColliderObject(contact_idx int) gd.Object
+		GetContactColliderObject(contact_idx int) Object.Instance
 		GetContactColliderShape(contact_idx int) int
 		GetContactColliderVelocityAtPosition(contact_idx int) Vector3.XYZ
 		GetStep() Float.X
@@ -373,12 +375,12 @@ func (Instance) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_i
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
-func (Instance) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx int) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx int) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -430,11 +432,11 @@ func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) [1]gdclass.Physic
 type Advanced = class
 type class [1]gdclass.PhysicsDirectBodyState3DExtension
 
-func (self class) AsObject() gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Instance) AsObject() gd.Object         { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -775,12 +777,12 @@ func (class) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_idx 
 	}
 }
 
-func (class) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx gd.Int) gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx gd.Int) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var contact_idx = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return
 		}
@@ -941,7 +943,7 @@ func (self class) Virtual(name string) reflect.Value {
 	case "_get_space_state":
 		return reflect.ValueOf(self._get_space_state)
 	default:
-		return gd.VirtualByName(self.AsPhysicsDirectBodyState3D(), name)
+		return gd.VirtualByName(PhysicsDirectBodyState3D.Advanced(self.AsPhysicsDirectBodyState3D()), name)
 	}
 }
 
@@ -1040,7 +1042,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	case "_get_space_state":
 		return reflect.ValueOf(self._get_space_state)
 	default:
-		return gd.VirtualByName(self.AsPhysicsDirectBodyState3D(), name)
+		return gd.VirtualByName(PhysicsDirectBodyState3D.Instance(self.AsPhysicsDirectBodyState3D()), name)
 	}
 }
 func init() {
