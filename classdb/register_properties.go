@@ -57,7 +57,7 @@ func variantTypeOf(rtype reflect.Type) (vtype gd.VariantType, ok bool) {
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return gd.TypeBool, true
-	case reflect.Int32, reflect.Int64, reflect.Int, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint:
+	case reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint:
 		return gd.TypeInt, true
 	case reflect.Uint64:
 		return gd.TypeRID, true
