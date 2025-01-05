@@ -880,8 +880,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else {
 				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
 			}
-			fmt.Fprintf(w, "\tpointers.End(*selfPtr)\n")
-			fmt.Fprintf(w, "\t*selfPtr = pointers.New[%s](p_self.Get())\n", class.Name)
+			fmt.Fprintf(w, "\tpointers.Set(*selfPtr, p_self.Get())\n")
 		} else {
 			if !method.IsStatic {
 				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")

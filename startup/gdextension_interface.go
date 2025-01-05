@@ -2384,7 +2384,7 @@ func makePackedFunctions[T gd.Packed[T], V comparable](prefix string) gd.PackedF
 			C.uintptr_t(p_self.Uintptr()),
 			C.GDExtensionInt(0),
 		)
-		var slice []V
+		var slice = make([]V, size)
 		copy(slice, unsafe.Slice((*V)(unsafe.Pointer(uintptr(ret))), size))
 		frame.Free()
 		return slice

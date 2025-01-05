@@ -69,7 +69,7 @@ func (c Converter) Uint64() uint64         { return 64 }
 func (c Converter) Float32() float32       { return 2.0 }
 func (c Converter) Float64() float64       { return 2.2 }
 func (c Converter) Complex64() complex64   { return 2 + 2i }
-func (c Converter) Complex128() complex128 { return 2.2 + 2.2i }
+func (c Converter) Complex128() complex128 { return 2 + 2i }
 
 func (c Converter) Float() gd.Float                      { return 2.2 }
 func (c Converter) String() String.Advanced              { return String.New("testing") }
@@ -128,15 +128,100 @@ func (c Converter) PackedVector4Array() []Vector4.XYZW {
 	return []Vector4.XYZW{{1, 2, 3, 4}, {5, 6, 7, 8}}
 }
 
-func TestConversions(t *testing.T) {
-	//fmt.Println(variant.New(Resource.ID(22)).Interface())
+func (c Converter) ValidInt(i int) bool               { return i == c.Int() }
+func (c Converter) ValidBool(b bool) bool             { return b == c.Bool() }
+func (c Converter) ValidInt8(i int8) bool             { return i == c.Int8() }
+func (c Converter) ValidInt16(i int16) bool           { return i == c.Int16() }
+func (c Converter) ValidInt32(i int32) bool           { return i == c.Int32() }
+func (c Converter) ValidInt64(i int64) bool           { return i == c.Int64() }
+func (c Converter) ValidUint(i uint) bool             { return i == c.Uint() }
+func (c Converter) ValidUint8(i uint8) bool           { return i == c.Uint8() }
+func (c Converter) ValidUint16(i uint16) bool         { return i == c.Uint16() }
+func (c Converter) ValidUint32(i uint32) bool         { return i == c.Uint32() }
+func (c Converter) ValidUint64(i uint64) bool         { return i == c.Uint64() }
+func (c Converter) ValidFloat32(f float32) bool       { return f == c.Float32() }
+func (c Converter) ValidFloat64(f float64) bool       { return f == c.Float64() }
+func (c Converter) ValidComplex64(f complex64) bool   { return f == c.Complex64() }
+func (c Converter) ValidComplex128(f complex128) bool { return f == c.Complex128() }
 
-	converter := &Converter{}
-	var script = GDScript.New().AsScript()
-	script.SetSourceCode(convert_types_test)
-	script.Reload()
-	Object.Instance{converter.AsObject()}.SetScript(script)
-	SceneTree.Add(converter)
+func (c Converter) ValidFloat(f gd.Float) bool                      { return f == c.Float() }
+func (c Converter) ValidString(s String.Advanced) bool              { return s.String() == c.String().String() }
+func (c Converter) ValidVector2(v Vector2.XY) bool                  { return v == c.Vector2() }
+func (c Converter) ValidVector2i(v Vector2i.XY) bool                { return v == c.Vector2i() }
+func (c Converter) ValidRect2(r Rect2.PositionSize) bool            { return r == c.Rect2() }
+func (c Converter) ValidRect2i(r Rect2i.PositionSize) bool          { return r == c.Rect2i() }
+func (c Converter) ValidVector3(v Vector3.XYZ) bool                 { return v == c.Vector3() }
+func (c Converter) ValidVector3i(v Vector3i.XYZ) bool               { return v == c.Vector3i() }
+func (c Converter) ValidTransform2D(t Transform2D.OriginXY) bool    { return t == c.GetTransform2D() }
+func (c Converter) ValidVector4(v Vector4.XYZW) bool                { return v == c.Vector4() }
+func (c Converter) ValidVector4i(v Vector4i.XYZW) bool              { return v == c.Vector4i() }
+func (c Converter) ValidPlane(p Plane.NormalD) bool                 { return p == c.Plane() }
+func (c Converter) ValidQuaternion(q Quaternion.IJKX) bool          { return q == c.GetQuaternion() }
+func (c Converter) ValidAABB(a AABB.PositionSize) bool              { return a == c.AABB() }
+func (c Converter) ValidBasis(b Basis.XYZ) bool                     { return b == c.GetBasis() }
+func (c Converter) ValidTransform3D(t Transform3D.BasisOrigin) bool { return t == c.GetTransform3D() }
+func (c Converter) ValidProjection(p Projection.XYZW) bool          { return p == c.GetProjection() }
+func (c Converter) ValidColor(cc Color.RGBA) bool                   { return cc == c.Color() }
+func (c Converter) ValidStringName(s StringName.Advanced) bool {
+	return s.String() == c.StringName().String()
+}
+func (c Converter) ValidNodePath(n NodePath.String) bool { return n == c.NodePath() }
+func (c Converter) ValidRID(r Resource.ID) bool          { return r == c.RID() }
+func (c Converter) ValidObject(o Object.Instance) bool {
+	return o.AsObject().GetClass().String() == "Object"
+}
+func (c Converter) ValidCallable(cc Callable.Any) bool {
+	return cc.Call().Interface().(String.Advanced).String() == c.Callable().Call().Interface().(String.Advanced).String()
+}
+func (c Converter) ValidSignal(s Signal.Any) bool {
+	return s.GetName().String() == c.Signal().GetName().String()
+}
+func (c Converter) ValidDictionary(d Dictionary.Any) bool {
+	return d.Index(variant.New("hello")).Interface().(gd.String).String() == "world"
+}
+func (c Converter) ValidArray(a []int) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedByteArray(a []byte) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedInt32Array(a []int32) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedInt64Array(a []int64) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedFloat32Array(a []float32) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedFloat64Array(a []float64) bool {
+	return len(a) == 3 && a[0] == 1 && a[1] == 2 && a[2] == 3
+}
+func (c Converter) ValidPackedStringArray(a []string) bool {
+	return len(a) == 2 && a[0] == "hello" && a[1] == "world"
+}
+func (c Converter) ValidPackedVector2Array(a []Vector2.XY) bool {
+	return len(a) == 2 && a[0] == Vector2.New(1, 2) && a[1] == Vector2.New(3, 4)
+}
+func (c Converter) ValidPackedVector3Array(a []Vector3.XYZ) bool {
+	return len(a) == 2 && a[0] == Vector3.New(1, 2, 3) && a[1] == Vector3.New(4, 5, 6)
+}
+func (c Converter) ValidPackedColorArray(a []Color.RGBA) bool {
+	return len(a) == 2 && a[0] == Color.RGBA{1, 2, 3, 4} && a[1] == Color.RGBA{5, 6, 7, 8}
+}
+func (c Converter) ValidPackedVector4Array(a []Vector4.XYZW) bool {
+	return len(a) == 2 && a[0] == Vector4.New(1, 2, 3, 4) && a[1] == Vector4.New(5, 6, 7, 8)
+}
+
+func TestConversions(t *testing.T) {
+	Callable.New(func() {
+		converter := &Converter{}
+		var script = GDScript.New().AsScript()
+		script.SetSourceCode(convert_types_test)
+		script.Reload()
+		Object.Instance{converter.AsObject()}.SetScript(script)
+		SceneTree.Add(converter)
+	}).CallDeferred()
 	if err := <-doneConversionsTest; err != nil {
 		t.Fatal(err)
 	}

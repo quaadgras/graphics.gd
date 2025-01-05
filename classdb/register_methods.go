@@ -143,19 +143,16 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			case gd.TypeStringName:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.StringName](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeNodePath:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.NodePath](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeRID:
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gd.TypeObject:
 				ptr := gd.UnsafeGet[[3]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.Object](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
@@ -165,67 +162,54 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			case gd.TypeSignal:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.Signal](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeDictionary:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.Dictionary](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeArray:
 				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedByteArray:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedByteArray](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedInt32Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt32Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedInt64Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt64Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedFloat32Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat32Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedFloat64Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat64Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedStringArray:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedStringArray](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedVector2Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector2Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedVector3Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector3Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedColorArray:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedColorArray](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypePackedVector4Array:
 				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector4Array](ptr)
-				defer val.Free()
 				value = val
 			case gd.TypeNil:
 				value = nil

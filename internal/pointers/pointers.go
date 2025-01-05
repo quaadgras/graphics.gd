@@ -95,7 +95,7 @@ func (r revision) active() revision {
 	return r | 1<<62
 }
 
-func (r revision) isClosed() bool  { return r&(1<<61) != 0 }
+func (r revision) isClosed() bool  { return r == 0 || r&(1<<61) != 0 }
 func (r revision) close() revision { return r | 1<<61 }
 func (r revision) reset() revision { return r &^ (1 << 61) }
 
@@ -222,7 +222,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 		if rev == 0 {
 			nxt = idx + offsetPointers + uintptr(len(ptr))
 		}
-		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && rev.isClosed() && arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
 			var current struct {
 				_ [0]*T
 
@@ -306,6 +306,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	}
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
+		//fmt.Printf("%b != %b\b", rev, p.revision)
 		panic("expired pointer")
 	}
 	if !rev.isActive() {

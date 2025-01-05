@@ -62,7 +62,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = reflect.ValueOf(value).Index(0).Interface().(IsClass).AsObject()
+			*(*Object)(obj.UnsafePointer()) = reflect.ValueOf(value).Interface().(IsClass).AsObject()
 			return obj.Elem(), nil
 		}
 		return convertToGoArrayOf(rtype.Elem(), value)
@@ -92,6 +92,8 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		case String:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		case StringName:
+			return reflect.ValueOf(value.String()).Convert(rtype), nil
+		case NodePath:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
@@ -263,31 +265,37 @@ func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
 		if !ok {
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(packed.Bytes()).Convert(rtype), nil
+		return reflect.ValueOf(packed.Bytes()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Int32:
 		packed, ok := value.(PackedInt32Array)
 		if !ok {
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
+	case reflect.Int64:
+		packed, ok := value.(PackedInt64Array)
+		if !ok {
+			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
+		}
+		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Float32:
 		packed, ok := value.(PackedFloat32Array)
 		if !ok {
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Float64:
 		packed, ok := value.(PackedFloat64Array)
 		if !ok {
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+		return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.String:
 		packed, ok := value.(PackedStringArray)
 		if !ok {
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
-		return reflect.ValueOf(packed.Strings()).Convert(rtype), nil
+		return reflect.ValueOf(packed.Strings()).Convert(reflect.SliceOf(rtype)), nil
 	case reflect.Struct:
 		switch rtype {
 		case reflect.TypeFor[Vector2]():
@@ -295,25 +303,25 @@ func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
 			if !ok {
 				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Vector3]():
 			packed, ok := value.(PackedVector3Array)
 			if !ok {
 				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Color]():
 			packed, ok := value.(PackedColorArray)
 			if !ok {
 				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 		case reflect.TypeFor[Vector4]():
 			packed, ok := value.(PackedVector4Array)
 			if !ok {
 				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 			}
-			return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
+			return reflect.ValueOf(packed.AsSlice()).Convert(reflect.SliceOf(rtype)), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 		}
