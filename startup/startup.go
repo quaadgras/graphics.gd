@@ -14,6 +14,8 @@ import (
 	"graphics.gd/variant/Float"
 )
 
+var doneInit = make(chan struct{}, 1)
+
 var mainloop MainLoopClass.Interface
 
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising

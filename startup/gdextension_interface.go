@@ -1,3 +1,5 @@
+//go:build cgo
+
 package startup
 
 /*
@@ -451,8 +453,6 @@ type initializationLevel = C.GDExtensionInitializationLevel
 func doInitialization(init *initialization) {
 	C.initialization(init)
 }
-
-var doneInit = make(chan struct{}, 1)
 
 //export initialize
 func initialize(_ unsafe.Pointer, level initializationLevel) {
