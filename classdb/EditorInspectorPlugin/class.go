@@ -26,27 +26,41 @@ Finally, [method _parse_end] will be called.
 On each of these calls, the "add" functions can be called.
 To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_inspector_plugin] method first.
 
-	// EditorInspectorPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorInspectorPlugin interface {
-		//Returns [code]true[/code] if this object can be handled by this plugin.
-		CanHandle(obj Object.Instance) bool
-		//Called to allow adding controls at the beginning of the property list for [param object].
-		ParseBegin(obj Object.Instance)
-		//Called to allow adding controls at the beginning of a category in the property list for [param object].
-		ParseCategory(obj Object.Instance, category string)
-		//Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
-		ParseGroup(obj Object.Instance, group string)
-		//Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
-		ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool
-		//Called to allow adding controls at the end of the property list for [param object].
-		ParseEnd(obj Object.Instance)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorInspectorPlugin)
 */
 type Instance [1]gdclass.EditorInspectorPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorInspectorPlugin() Instance
 }
+type Interface interface {
+	//Returns [code]true[/code] if this object can be handled by this plugin.
+	CanHandle(obj Object.Instance) bool
+	//Called to allow adding controls at the beginning of the property list for [param object].
+	ParseBegin(obj Object.Instance)
+	//Called to allow adding controls at the beginning of a category in the property list for [param object].
+	ParseCategory(obj Object.Instance, category string)
+	//Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
+	ParseGroup(obj Object.Instance, group string)
+	//Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
+	ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool
+	//Called to allow adding controls at the end of the property list for [param object].
+	ParseEnd(obj Object.Instance)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) CanHandle(obj Object.Instance) (_ bool)             { return }
+func (self Implementation) ParseBegin(obj Object.Instance)                     { return }
+func (self Implementation) ParseCategory(obj Object.Instance, category string) { return }
+func (self Implementation) ParseGroup(obj Object.Instance, group string)       { return }
+func (self Implementation) ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) (_ bool) {
+	return
+}
+func (self Implementation) ParseEnd(obj Object.Instance) { return }
 
 /*
 Returns [code]true[/code] if this object can be handled by this plugin.
@@ -171,7 +185,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorInspectorPlugin"))
-	return Instance{*(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

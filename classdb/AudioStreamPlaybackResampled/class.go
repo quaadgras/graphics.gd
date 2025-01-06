@@ -24,7 +24,16 @@ type Any interface {
 	gd.IsClass
 	AsAudioStreamPlaybackResampled() Instance
 }
+type Interface interface {
+	MixResampled(dst_buffer *AudioFrame, frame_count int) int
+	GetStreamSamplingRate() Float.X
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) { return }
+func (self Implementation) GetStreamSamplingRate() (_ Float.X)                           { return }
 func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
@@ -59,7 +68,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackResampled"))
-	return Instance{*(*gdclass.AudioStreamPlaybackResampled)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioStreamPlaybackResampled)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {

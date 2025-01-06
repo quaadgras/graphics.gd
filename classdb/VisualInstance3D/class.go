@@ -25,17 +25,23 @@ var _ = pointers.Cycle
 /*
 The [VisualInstance3D] is used to connect a resource to a visual representation. All visual 3D nodes inherit from the [VisualInstance3D]. In general, you should not access the [VisualInstance3D] properties directly as they are accessed and managed by the nodes that inherit from [VisualInstance3D]. [VisualInstance3D] is the node representation of the [RenderingServer] instance.
 
-	// VisualInstance3D methods that can be overridden by a [Class] that extends it.
-	type VisualInstance3D interface {
-		GetAabb() AABB.PositionSize
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=VisualInstance3D)
 */
 type Instance [1]gdclass.VisualInstance3D
 type Any interface {
 	gd.IsClass
 	AsVisualInstance3D() Instance
 }
+type Interface interface {
+	GetAabb() AABB.PositionSize
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetAabb() (_ AABB.PositionSize) { return }
 func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -100,7 +106,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualInstance3D"))
-	return Instance{*(*gdclass.VisualInstance3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.VisualInstance3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Layers() int {

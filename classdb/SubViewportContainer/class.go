@@ -26,17 +26,24 @@ A container that displays the contents of underlying [SubViewport] child nodes. 
 [b]Note:[/b] Changing a [SubViewportContainer]'s [member Control.scale] will cause its contents to appear distorted. To change its visual size without causing distortion, adjust the node's margins instead (if it's not already in a container).
 [b]Note:[/b] The [SubViewportContainer] forwards mouse-enter and mouse-exit notifications to its sub-viewports.
 
-	// SubViewportContainer methods that can be overridden by a [Class] that extends it.
-	type SubViewportContainer interface {
-		//Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.
-		PropagateInputEvent(event [1]gdclass.InputEvent) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=SubViewportContainer)
 */
 type Instance [1]gdclass.SubViewportContainer
 type Any interface {
 	gd.IsClass
 	AsSubViewportContainer() Instance
 }
+type Interface interface {
+	//Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.
+	PropagateInputEvent(event [1]gdclass.InputEvent) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) PropagateInputEvent(event [1]gdclass.InputEvent) (_ bool) { return }
 
 /*
 Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.
@@ -65,7 +72,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SubViewportContainer"))
-	return Instance{*(*gdclass.SubViewportContainer)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.SubViewportContainer)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Stretch() bool {

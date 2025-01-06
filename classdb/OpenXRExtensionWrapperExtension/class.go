@@ -21,88 +21,140 @@ var _ = pointers.Cycle
 /*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
 
-	// OpenXRExtensionWrapperExtension methods that can be overridden by a [Class] that extends it.
-	type OpenXRExtensionWrapperExtension interface {
-		//Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
-		//- If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
-		//- If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
-		GetRequestedExtensions() Dictionary.Any
-		//Adds additional data structures when interogating OpenXR system abilities.
-		SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) int
-		//Adds additional data structures when the OpenXR instance is created.
-		SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
-		//Adds additional data structures when the OpenXR session is created.
-		SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) int
-		//Adds additional data structures when creating OpenXR swapchains.
-		SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
-		//Adds additional data structures when each hand tracker is created.
-		SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) int
-		//Returns the number of composition layers this extension wrapper provides via [method _get_composition_layer].
-		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
-		GetCompositionLayerCount() int
-		//Returns a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct to provide the given composition layer.
-		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
-		GetCompositionLayer(index int) int
-		//Returns an integer that will be used to sort the given composition layer provided via [method _get_composition_layer]. Lower numbers will move the layer to the front of the list, and higher numbers to the end. The default projection layer has an order of [code]0[/code], so layers provided by this method should probably be above or below (but not exactly) [code]0[/code].
-		//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
-		GetCompositionLayerOrder(index int) int
-		//Returns a [PackedStringArray] of positional tracker names that are used within the extension wrapper.
-		GetSuggestedTrackerNames() []string
-		//Allows extensions to register additional controller metadata. This function is called even when the OpenXR API is not constructed as the metadata needs to be available to the editor.
-		//Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
-		OnRegisterMetadata()
-		//Called before the OpenXR instance is created.
-		OnBeforeInstanceCreated()
-		//Called right after the OpenXR instance is created.
-		OnInstanceCreated(instance int)
-		//Called right before the OpenXR instance is destroyed.
-		OnInstanceDestroyed()
-		//Called right after the OpenXR session is created.
-		OnSessionCreated(session int)
-		//Called as part of the OpenXR process handling. This happens right before general and physics processing steps of the main loop. During this step controller data is queried and made available to game logic.
-		OnProcess()
-		//Called right before the XR viewports begin their rendering step.
-		OnPreRender()
-		//Called right after the main swapchains are (re)created.
-		OnMainSwapchainsCreated()
-		//Called right before the OpenXR session is destroyed.
-		OnSessionDestroyed()
-		//Called when the OpenXR session state is changed to idle.
-		OnStateIdle()
-		//Called when the OpenXR session state is changed to ready. This means OpenXR is ready to set up the session.
-		OnStateReady()
-		//Called when the OpenXR session state is changed to synchronized. OpenXR also returns to this state when the application loses focus.
-		OnStateSynchronized()
-		//Called when the OpenXR session state is changed to visible. This means OpenXR is now ready to receive frames.
-		OnStateVisible()
-		//Called when the OpenXR session state is changed to focused. This state is the active state when the game runs.
-		OnStateFocused()
-		//Called when the OpenXR session state is changed to stopping.
-		OnStateStopping()
-		//Called when the OpenXR session state is changed to loss pending.
-		OnStateLossPending()
-		//Called when the OpenXR session state is changed to exiting.
-		OnStateExiting()
-		//Called when there is an OpenXR event to process. When implementing, return [code]true[/code] if the event was handled, return [code]false[/code] otherwise.
-		OnEventPolled(event unsafe.Pointer) bool
-		//Adds additional data structures to composition layers created by [OpenXRCompositionLayer].
-		//[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
-		//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
-		SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int
-		//Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
-		GetViewportCompositionLayerExtensionProperties() gd.Array
-		//Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
-		GetViewportCompositionLayerExtensionPropertyDefaults() Dictionary.Any
-		//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
-		//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
-		OnViewportCompositionLayerDestroyed(layer unsafe.Pointer)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=OpenXRExtensionWrapperExtension)
 */
 type Instance [1]gdclass.OpenXRExtensionWrapperExtension
 type Any interface {
 	gd.IsClass
 	AsOpenXRExtensionWrapperExtension() Instance
 }
+type Interface interface {
+	//Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
+	//- If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
+	//- If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
+	GetRequestedExtensions() Dictionary.Any
+	//Adds additional data structures when interogating OpenXR system abilities.
+	SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) int
+	//Adds additional data structures when the OpenXR instance is created.
+	SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
+	//Adds additional data structures when the OpenXR session is created.
+	SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) int
+	//Adds additional data structures when creating OpenXR swapchains.
+	SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) int
+	//Adds additional data structures when each hand tracker is created.
+	SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) int
+	//Returns the number of composition layers this extension wrapper provides via [method _get_composition_layer].
+	//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+	GetCompositionLayerCount() int
+	//Returns a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct to provide the given composition layer.
+	//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+	GetCompositionLayer(index int) int
+	//Returns an integer that will be used to sort the given composition layer provided via [method _get_composition_layer]. Lower numbers will move the layer to the front of the list, and higher numbers to the end. The default projection layer has an order of [code]0[/code], so layers provided by this method should probably be above or below (but not exactly) [code]0[/code].
+	//This will only be called if the extension previously registered itself with [method OpenXRAPIExtension.register_composition_layer_provider].
+	GetCompositionLayerOrder(index int) int
+	//Returns a [PackedStringArray] of positional tracker names that are used within the extension wrapper.
+	GetSuggestedTrackerNames() []string
+	//Allows extensions to register additional controller metadata. This function is called even when the OpenXR API is not constructed as the metadata needs to be available to the editor.
+	//Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
+	OnRegisterMetadata()
+	//Called before the OpenXR instance is created.
+	OnBeforeInstanceCreated()
+	//Called right after the OpenXR instance is created.
+	OnInstanceCreated(instance int)
+	//Called right before the OpenXR instance is destroyed.
+	OnInstanceDestroyed()
+	//Called right after the OpenXR session is created.
+	OnSessionCreated(session int)
+	//Called as part of the OpenXR process handling. This happens right before general and physics processing steps of the main loop. During this step controller data is queried and made available to game logic.
+	OnProcess()
+	//Called right before the XR viewports begin their rendering step.
+	OnPreRender()
+	//Called right after the main swapchains are (re)created.
+	OnMainSwapchainsCreated()
+	//Called right before the OpenXR session is destroyed.
+	OnSessionDestroyed()
+	//Called when the OpenXR session state is changed to idle.
+	OnStateIdle()
+	//Called when the OpenXR session state is changed to ready. This means OpenXR is ready to set up the session.
+	OnStateReady()
+	//Called when the OpenXR session state is changed to synchronized. OpenXR also returns to this state when the application loses focus.
+	OnStateSynchronized()
+	//Called when the OpenXR session state is changed to visible. This means OpenXR is now ready to receive frames.
+	OnStateVisible()
+	//Called when the OpenXR session state is changed to focused. This state is the active state when the game runs.
+	OnStateFocused()
+	//Called when the OpenXR session state is changed to stopping.
+	OnStateStopping()
+	//Called when the OpenXR session state is changed to loss pending.
+	OnStateLossPending()
+	//Called when the OpenXR session state is changed to exiting.
+	OnStateExiting()
+	//Called when there is an OpenXR event to process. When implementing, return [code]true[/code] if the event was handled, return [code]false[/code] otherwise.
+	OnEventPolled(event unsafe.Pointer) bool
+	//Adds additional data structures to composition layers created by [OpenXRCompositionLayer].
+	//[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
+	//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
+	SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int
+	//Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
+	GetViewportCompositionLayerExtensionProperties() gd.Array
+	//Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
+	GetViewportCompositionLayerExtensionPropertyDefaults() Dictionary.Any
+	//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
+	//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
+	OnViewportCompositionLayerDestroyed(layer unsafe.Pointer)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetRequestedExtensions() (_ Dictionary.Any) { return }
+func (self Implementation) SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) GetCompositionLayerCount() (_ int)           { return }
+func (self Implementation) GetCompositionLayer(index int) (_ int)       { return }
+func (self Implementation) GetCompositionLayerOrder(index int) (_ int)  { return }
+func (self Implementation) GetSuggestedTrackerNames() (_ []string)      { return }
+func (self Implementation) OnRegisterMetadata()                         { return }
+func (self Implementation) OnBeforeInstanceCreated()                    { return }
+func (self Implementation) OnInstanceCreated(instance int)              { return }
+func (self Implementation) OnInstanceDestroyed()                        { return }
+func (self Implementation) OnSessionCreated(session int)                { return }
+func (self Implementation) OnProcess()                                  { return }
+func (self Implementation) OnPreRender()                                { return }
+func (self Implementation) OnMainSwapchainsCreated()                    { return }
+func (self Implementation) OnSessionDestroyed()                         { return }
+func (self Implementation) OnStateIdle()                                { return }
+func (self Implementation) OnStateReady()                               { return }
+func (self Implementation) OnStateSynchronized()                        { return }
+func (self Implementation) OnStateVisible()                             { return }
+func (self Implementation) OnStateFocused()                             { return }
+func (self Implementation) OnStateStopping()                            { return }
+func (self Implementation) OnStateLossPending()                         { return }
+func (self Implementation) OnStateExiting()                             { return }
+func (self Implementation) OnEventPolled(event unsafe.Pointer) (_ bool) { return }
+func (self Implementation) SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) (_ int) {
+	return
+}
+func (self Implementation) GetViewportCompositionLayerExtensionProperties() (_ gd.Array) { return }
+func (self Implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) OnViewportCompositionLayerDestroyed(layer unsafe.Pointer) { return }
 
 /*
 Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
@@ -507,7 +559,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRExtensionWrapperExtension"))
-	return Instance{*(*gdclass.OpenXRExtensionWrapperExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.OpenXRExtensionWrapperExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

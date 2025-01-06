@@ -161,11 +161,22 @@ func Register[T Class]() {
 	var className = pointers.Pin(StringName.New(rename))
 	var superName = pointers.Pin(StringName.New(nameOf(superType)))
 
+	var isMainLoop = false
+	if _, ok := any(super).(interface {
+		AsMainLoop() MainLoopClass.Instance
+	}); ok {
+		main_loop_type := gd.NewString("application/run/main_loop_type")
+		ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
+		ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
+		isMainLoop = true
+	}
+
 	var impl = &classImplementation{
 		Name:           className,
 		Super:          superName,
 		Type:           classType,
 		Tool:           tool,
+		IsMainLoop:     isMainLoop,
 		VirtualMethods: reference.Virtual,
 	}
 	registered.Store(classType, impl)
@@ -185,13 +196,7 @@ func Register[T Class]() {
 		registerSignals(className, classType)
 		registerMethods(className, classType)
 	}
-	if _, ok := any(super).(interface {
-		AsMainLoop() MainLoopClass.Instance
-	}); ok {
-		main_loop_type := gd.NewString("application/run/main_loop_type")
-		ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
-		ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
-	}
+
 	if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 		registrator.OnRegister()
 	}
@@ -217,7 +222,8 @@ type classImplementation struct {
 	Name  gd.StringName
 	Super gd.StringName
 
-	Tool bool
+	Tool       bool
+	IsMainLoop bool
 
 	Type reflect.Type
 
@@ -244,7 +250,7 @@ func (class classImplementation) CreateInstance() [1]gd.Object {
 
 func (class classImplementation) createInstance(reuse reflect.Value) [1]gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
-	super = [1]gd.Object{pointers.Pin(super[0])}
+	super = [1]gd.Object{pointers.Pin(pointers.Lay(super[0]))}
 	instance := class.reloadInstance(reuse, super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
@@ -337,26 +343,21 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 }
 
 type instanceImplementation struct {
-	object   uintptr
-	Value    isClass
-	signals  []signalChan
-	isEditor bool
+	object  uintptr
+	Value   isClass
+	signals []signalChan
+
+	// FIXME use a bitfield for these booleans.
+	isEditor   bool
+	isMainLoop bool
 }
 
 var lastGC int
-
-func (instance *instanceImplementation) setupForCall() func() {
-	if frame := EngineClass.GetFramesDrawn(); frame > lastGC {
-		pointers.Cycle()
-	}
-	return func() {}
-}
 
 func (instance *instanceImplementation) OnCreate() {
 	if impl, ok := instance.Value.(interface {
 		OnCreate()
 	}); ok {
-		defer instance.setupForCall()()
 		impl.OnCreate()
 	}
 }
@@ -365,7 +366,6 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if impl, ok := instance.Value.(interface {
 		Set(gd.StringName, gd.Variant) gd.Bool
 	}); ok {
-		defer instance.setupForCall()()
 		ok := bool(impl.Set(name, value))
 		if ok {
 			if impl, ok := instance.Value.(interface {
@@ -429,7 +429,6 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if impl, ok := instance.Value.(interface {
 		OnSet(gd.StringName, gd.Variant)
 	}); ok {
-		defer instance.setupForCall()()
 		impl.OnSet(name, value)
 	}
 	return true
@@ -439,7 +438,6 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	if impl, ok := instance.Value.(interface {
 		Get(gd.StringName) gd.Variant
 	}); ok {
-		defer instance.setupForCall()()
 		return impl.Get(name), true
 	}
 	sname := name.String()
@@ -464,7 +462,6 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 	if impl, ok := instance.Value.(interface {
 		GetPropertyList() []gd.PropertyInfo
 	}); ok {
-		defer instance.setupForCall()()
 		return impl.GetPropertyList()
 	}
 	rtype := reflect.ValueOf(instance.Value).Elem().Type()
@@ -489,7 +486,6 @@ func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bo
 	if impl, ok := instance.Value.(interface {
 		PropertyCanRevert(gd.StringName) gd.Bool
 	}); ok {
-		defer instance.setupForCall()()
 		return bool(impl.PropertyCanRevert(name))
 	}
 	sname := name.String()
@@ -514,7 +510,6 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 	if impl, ok := instance.Value.(interface {
 		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
 	}); ok {
-		defer instance.setupForCall()()
 		return impl.PropertyGetRevert(name)
 	}
 	sname := name.String()
@@ -543,7 +538,6 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 }
 
 func (instance *instanceImplementation) ValidateProperty(name gd.StringName, info *gd.PropertyInfo) bool {
-	defer instance.setupForCall()()
 	switch validate := instance.Value.(type) {
 	case interface {
 		ValidateProperty(gd.StringName, *gd.PropertyInfo) gd.Bool
@@ -558,7 +552,6 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 		instance.ready()
 	}
 	if !instance.isEditor {
-		defer instance.setupForCall()()
 		switch notify := instance.Value.(type) {
 		case interface{ Notification(gd.NotificationType) }:
 			notify.Notification(gd.NotificationType(what))
@@ -568,7 +561,6 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 }
 
 func (instance *instanceImplementation) ToString() (gd.String, bool) {
-	defer instance.setupForCall()()
 	switch onfree := instance.Value.(type) {
 	case interface{ ToString() gd.String }:
 		return onfree.ToString(), true
@@ -580,7 +572,6 @@ func (instance *instanceImplementation) Reference()   {}
 func (instance *instanceImplementation) Unreference() {}
 
 func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.UnsafeArgs, back gd.UnsafeBack) {
-	defer instance.setupForCall()()
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 
@@ -614,7 +605,6 @@ func (instance *instanceImplementation) Free() {
 		}
 	}
 	gd.ExtensionInstances.Delete(instance.object)
-	defer instance.setupForCall()()
 	switch onfree := instance.Value.(type) {
 	case interface{ OnFree() }:
 		onfree.OnFree()
@@ -641,7 +631,6 @@ func (instance *instanceImplementation) ready() {
 		instance.assertChild(rvalue.Field(i).Addr().Interface(), field, parent, parent)
 	}
 	if !instance.isEditor {
-		defer instance.setupForCall()()
 		switch ready := instance.Value.(type) {
 		case interface{ Ready() }:
 			ready.Ready()

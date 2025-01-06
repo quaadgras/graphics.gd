@@ -145,66 +145,89 @@ public partial class MySpecialPlugin : EditorImportPlugin
 [/codeblocks]
 To use [EditorImportPlugin], register it using the [method EditorPlugin.add_import_plugin] method first.
 
-	// EditorImportPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorImportPlugin interface {
-		//Gets the unique name of the importer.
-		GetImporterName() string
-		//Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
-		GetVisibleName() string
-		//Gets the number of initial presets defined by the plugin. Use [method _get_import_options] to get the default options for the preset and [method _get_preset_name] to get the name of the preset.
-		GetPresetCount() int
-		//Gets the name of the options preset at this index.
-		GetPresetName(preset_index int) string
-		//Gets the list of file extensions to associate with this loader (case-insensitive). e.g. [code]["obj"][/code].
-		GetRecognizedExtensions() []string
-		//Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
-		GetImportOptions(path string, preset_index int) gd.Array
-		//Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
-		GetSaveExtension() string
-		//Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
-		GetResourceType() string
-		//Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
-		GetPriority() Float.X
-		//Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
-		GetImportOrder() int
-		//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
-		//[codeblocks]
-		//[gdscript]
-		//func _get_option_visibility(option, options):
-		//    # Only show the lossy quality setting if the compression mode is set to "Lossy".
-		//    if option == "compress/lossy_quality" and options.has("compress/mode"):
-		//        return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
-		//
-		//    return true
-		//[/gdscript]
-		//[csharp]
-		//public void _GetOptionVisibility(string option, Godot.Collections.Dictionary options)
-		//{
-		//    // Only show the lossy quality setting if the compression mode is set to "Lossy".
-		//    if (option == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
-		//    {
-		//        return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
-		//    }
-		//
-		//    return true;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		//Returns [code]true[/code] to make all options always visible.
-		GetOptionVisibility(path string, option_name string, options Dictionary.Any) bool
-		//Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
-		//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
-		Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) error
-		//Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
-		//If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
-		CanImportThreaded() bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorImportPlugin)
 */
 type Instance [1]gdclass.EditorImportPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorImportPlugin() Instance
 }
+type Interface interface {
+	//Gets the unique name of the importer.
+	GetImporterName() string
+	//Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
+	GetVisibleName() string
+	//Gets the number of initial presets defined by the plugin. Use [method _get_import_options] to get the default options for the preset and [method _get_preset_name] to get the name of the preset.
+	GetPresetCount() int
+	//Gets the name of the options preset at this index.
+	GetPresetName(preset_index int) string
+	//Gets the list of file extensions to associate with this loader (case-insensitive). e.g. [code]["obj"][/code].
+	GetRecognizedExtensions() []string
+	//Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
+	GetImportOptions(path string, preset_index int) gd.Array
+	//Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
+	GetSaveExtension() string
+	//Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
+	GetResourceType() string
+	//Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
+	GetPriority() Float.X
+	//Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
+	GetImportOrder() int
+	//This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled. For example:
+	//[codeblocks]
+	//[gdscript]
+	//func _get_option_visibility(option, options):
+	//    # Only show the lossy quality setting if the compression mode is set to "Lossy".
+	//    if option == "compress/lossy_quality" and options.has("compress/mode"):
+	//        return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
+	//
+	//    return true
+	//[/gdscript]
+	//[csharp]
+	//public void _GetOptionVisibility(string option, Godot.Collections.Dictionary options)
+	//{
+	//    // Only show the lossy quality setting if the compression mode is set to "Lossy".
+	//    if (option == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
+	//    {
+	//        return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
+	//    }
+	//
+	//    return true;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	//Returns [code]true[/code] to make all options always visible.
+	GetOptionVisibility(path string, option_name string, options Dictionary.Any) bool
+	//Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
+	//This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
+	Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) error
+	//Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
+	//If this method is not overridden, it will return [code]true[/code] by default (i.e., safe for parallel importing).
+	CanImportThreaded() bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetImporterName() (_ string)                                 { return }
+func (self Implementation) GetVisibleName() (_ string)                                  { return }
+func (self Implementation) GetPresetCount() (_ int)                                     { return }
+func (self Implementation) GetPresetName(preset_index int) (_ string)                   { return }
+func (self Implementation) GetRecognizedExtensions() (_ []string)                       { return }
+func (self Implementation) GetImportOptions(path string, preset_index int) (_ gd.Array) { return }
+func (self Implementation) GetSaveExtension() (_ string)                                { return }
+func (self Implementation) GetResourceType() (_ string)                                 { return }
+func (self Implementation) GetPriority() (_ Float.X)                                    { return }
+func (self Implementation) GetImportOrder() (_ int)                                     { return }
+func (self Implementation) GetOptionVisibility(path string, option_name string, options Dictionary.Any) (_ bool) {
+	return
+}
+func (self Implementation) Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) (_ error) {
+	return
+}
+func (self Implementation) CanImportThreaded() (_ bool) { return }
 
 /*
 Gets the unique name of the importer.
@@ -447,7 +470,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorImportPlugin"))
-	return Instance{*(*gdclass.EditorImportPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorImportPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

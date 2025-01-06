@@ -11,7 +11,11 @@ import (
 func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	fmt.Fprintf(file, "func New() Instance {\n")
 	fmt.Fprintf(file, "\tobject := gd.Global.ClassDB.ConstructObject(gd.NewStringName(%q))\n", class.Name)
-	fmt.Fprintf(file, "\treturn Instance{*(*gdclass.%v)(unsafe.Pointer(&object))}\n", class.Name)
+	fmt.Fprintf(file, "\tcasted := Instance{*(*gdclass.%v)(unsafe.Pointer(&object))}\n", class.Name)
+	if class.IsRefcounted {
+		fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].Reference()\n")
+	}
+	fmt.Fprintf(file, "\treturn casted\n")
 	fmt.Fprintf(file, "}\n")
 }
 

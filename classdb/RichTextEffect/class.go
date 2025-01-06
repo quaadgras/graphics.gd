@@ -33,17 +33,24 @@ string bbcode = "example";
 [/codeblocks]
 [b]Note:[/b] As soon as a [RichTextLabel] contains at least one [RichTextEffect], it will continuously process the effect unless the project is paused. This may impact battery life negatively.
 
-	// RichTextEffect methods that can be overridden by a [Class] that extends it.
-	type RichTextEffect interface {
-		//Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
-		ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=RichTextEffect)
 */
 type Instance [1]gdclass.RichTextEffect
 type Any interface {
 	gd.IsClass
 	AsRichTextEffect() Instance
 }
+type Interface interface {
+	//Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
+	ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) (_ bool) { return }
 
 /*
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
@@ -72,7 +79,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RichTextEffect"))
-	return Instance{*(*gdclass.RichTextEffect)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.RichTextEffect)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

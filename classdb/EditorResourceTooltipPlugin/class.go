@@ -22,29 +22,39 @@ var _ = pointers.Cycle
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
 A plugin must be first registered with [method FileSystemDock.add_resource_tooltip_plugin]. When the user hovers a resource in filesystem dock which is handled by the plugin, [method _make_tooltip_for_path] is called to create the tooltip. It works similarly to [method Control._make_custom_tooltip].
 
-	// EditorResourceTooltipPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorResourceTooltipPlugin interface {
-		//Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
-		Handles(atype string) bool
-		//Create and return a tooltip that will be displayed when the user hovers a resource under the given [param path] in filesystem dock.
-		//The [param metadata] dictionary is provided by preview generator (see [method EditorResourcePreviewGenerator._generate]).
-		//[param base] is the base default tooltip, which is a [VBoxContainer] with a file name, type and size labels. If another plugin handled the same file type, [param base] will be output from the previous plugin. For best result, make sure the base tooltip is part of the returned [Control].
-		//[b]Note:[/b] It's unadvised to use [method ResourceLoader.load], especially with heavy resources like models or textures, because it will make the editor unresponsive when creating the tooltip. You can use [method request_thumbnail] if you want to display a preview in your tooltip.
-		//[b]Note:[/b] If you decide to discard the [param base], make sure to call [method Node.queue_free], because it's not freed automatically.
-		//[codeblock]
-		//func _make_tooltip_for_path(path, metadata, base):
-		//    var t_rect = TextureRect.new()
-		//    request_thumbnail(path, t_rect)
-		//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
-		//    return base
-		//[/codeblock]
-		MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorResourceTooltipPlugin)
 */
 type Instance [1]gdclass.EditorResourceTooltipPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorResourceTooltipPlugin() Instance
+}
+type Interface interface {
+	//Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
+	Handles(atype string) bool
+	//Create and return a tooltip that will be displayed when the user hovers a resource under the given [param path] in filesystem dock.
+	//The [param metadata] dictionary is provided by preview generator (see [method EditorResourcePreviewGenerator._generate]).
+	//[param base] is the base default tooltip, which is a [VBoxContainer] with a file name, type and size labels. If another plugin handled the same file type, [param base] will be output from the previous plugin. For best result, make sure the base tooltip is part of the returned [Control].
+	//[b]Note:[/b] It's unadvised to use [method ResourceLoader.load], especially with heavy resources like models or textures, because it will make the editor unresponsive when creating the tooltip. You can use [method request_thumbnail] if you want to display a preview in your tooltip.
+	//[b]Note:[/b] If you decide to discard the [param base], make sure to call [method Node.queue_free], because it's not freed automatically.
+	//[codeblock]
+	//func _make_tooltip_for_path(path, metadata, base):
+	//    var t_rect = TextureRect.new()
+	//    request_thumbnail(path, t_rect)
+	//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
+	//    return base
+	//[/codeblock]
+	MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Handles(atype string) (_ bool) { return }
+func (self Implementation) MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
+	return
 }
 
 /*
@@ -115,7 +125,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourceTooltipPlugin"))
-	return Instance{*(*gdclass.EditorResourceTooltipPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorResourceTooltipPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

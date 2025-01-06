@@ -124,7 +124,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node2D"))
-	return Instance{*(*gdclass.Node2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Node2D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Position() Vector2.XY {

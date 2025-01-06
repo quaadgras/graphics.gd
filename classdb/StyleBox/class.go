@@ -25,21 +25,30 @@ var _ = pointers.Cycle
 [StyleBox] is an abstract base class for drawing stylized boxes for UI elements. It is used for panels, buttons, [LineEdit] backgrounds, [Tree] backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a [StyleBox] assigned as mask to a control, clicks and motion signals will go through it to the one below.
 [b]Note:[/b] For control nodes that have [i]Theme Properties[/i], the [code]focus[/code] [StyleBox] is displayed over the [code]normal[/code], [code]hover[/code] or [code]pressed[/code] [StyleBox]. This makes the [code]focus[/code] [StyleBox] more reusable across different nodes.
 
-	// StyleBox methods that can be overridden by a [Class] that extends it.
-	type StyleBox interface {
-		Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)
-		GetDrawRect(rect Rect2.PositionSize) Rect2.PositionSize
-		//Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
-		GetMinimumSize() Vector2.XY
-		TestMask(point Vector2.XY, rect Rect2.PositionSize) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=StyleBox)
 */
 type Instance [1]gdclass.StyleBox
 type Any interface {
 	gd.IsClass
 	AsStyleBox() Instance
 }
+type Interface interface {
+	Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)
+	GetDrawRect(rect Rect2.PositionSize) Rect2.PositionSize
+	//Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
+	GetMinimumSize() Vector2.XY
+	TestMask(point Vector2.XY, rect Rect2.PositionSize) bool
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)    { return }
+func (self Implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
+func (self Implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
+func (self Implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
 func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
@@ -142,7 +151,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBox"))
-	return Instance{*(*gdclass.StyleBox)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.StyleBox)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) ContentMarginLeft() Float.X {

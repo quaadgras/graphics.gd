@@ -51,7 +51,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Joint3D"))
-	return Instance{*(*gdclass.Joint3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Joint3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) NodeA() NodePath.String {

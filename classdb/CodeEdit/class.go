@@ -27,22 +27,31 @@ var _ = pointers.Cycle
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
 [b]Note:[/b] Regardless of locale, [CodeEdit] will by default always use left-to-right text direction to correctly display source code.
 
-	// CodeEdit methods that can be overridden by a [Class] that extends it.
-	type CodeEdit interface {
-		//Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
-		ConfirmCodeCompletion(replace bool)
-		//Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
-		RequestCodeCompletion(force bool)
-		//Override this method to define what items in [param candidates] should be displayed.
-		//Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
-		FilterCodeCompletionCandidates(candidates gd.Array) gd.Array
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CodeEdit)
 */
 type Instance [1]gdclass.CodeEdit
 type Any interface {
 	gd.IsClass
 	AsCodeEdit() Instance
 }
+type Interface interface {
+	//Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
+	ConfirmCodeCompletion(replace bool)
+	//Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
+	RequestCodeCompletion(force bool)
+	//Override this method to define what items in [param candidates] should be displayed.
+	//Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
+	FilterCodeCompletionCandidates(candidates gd.Array) gd.Array
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ConfirmCodeCompletion(replace bool)                              { return }
+func (self Implementation) RequestCodeCompletion(force bool)                                { return }
+func (self Implementation) FilterCodeCompletionCandidates(candidates gd.Array) (_ gd.Array) { return }
 
 /*
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
@@ -597,7 +606,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CodeEdit"))
-	return Instance{*(*gdclass.CodeEdit)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.CodeEdit)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) SymbolLookupOnClick() bool {

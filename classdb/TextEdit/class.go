@@ -32,28 +32,40 @@ A multiline text editor. It also has limited facilities for editing code, such a
 [b]Note:[/b] Most viewport, caret, and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets in the order they were created.
 [b]Note:[/b] When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
 
-	// TextEdit methods that can be overridden by a [Class] that extends it.
-	type TextEdit interface {
-		//Override this method to define what happens when the user types in the provided key [param unicode_char].
-		HandleUnicodeInput(unicode_char int, caret_index int)
-		//Override this method to define what happens when the user presses the backspace key.
-		Backspace(caret_index int)
-		//Override this method to define what happens when the user performs a cut operation.
-		Cut(caret_index int)
-		//Override this method to define what happens when the user performs a copy operation.
-		Copy(caret_index int)
-		//Override this method to define what happens when the user performs a paste operation.
-		Paste(caret_index int)
-		//Override this method to define what happens when the user performs a paste operation with middle mouse button.
-		//[b]Note:[/b] This method is only implemented on Linux.
-		PastePrimaryClipboard(caret_index int)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=TextEdit)
 */
 type Instance [1]gdclass.TextEdit
 type Any interface {
 	gd.IsClass
 	AsTextEdit() Instance
 }
+type Interface interface {
+	//Override this method to define what happens when the user types in the provided key [param unicode_char].
+	HandleUnicodeInput(unicode_char int, caret_index int)
+	//Override this method to define what happens when the user presses the backspace key.
+	Backspace(caret_index int)
+	//Override this method to define what happens when the user performs a cut operation.
+	Cut(caret_index int)
+	//Override this method to define what happens when the user performs a copy operation.
+	Copy(caret_index int)
+	//Override this method to define what happens when the user performs a paste operation.
+	Paste(caret_index int)
+	//Override this method to define what happens when the user performs a paste operation with middle mouse button.
+	//[b]Note:[/b] This method is only implemented on Linux.
+	PastePrimaryClipboard(caret_index int)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) HandleUnicodeInput(unicode_char int, caret_index int) { return }
+func (self Implementation) Backspace(caret_index int)                            { return }
+func (self Implementation) Cut(caret_index int)                                  { return }
+func (self Implementation) Copy(caret_index int)                                 { return }
+func (self Implementation) Paste(caret_index int)                                { return }
+func (self Implementation) PastePrimaryClipboard(caret_index int)                { return }
 
 /*
 Override this method to define what happens when the user types in the provided key [param unicode_char].
@@ -1305,7 +1317,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextEdit"))
-	return Instance{*(*gdclass.TextEdit)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.TextEdit)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Text() string {

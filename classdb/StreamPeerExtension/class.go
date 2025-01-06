@@ -23,7 +23,30 @@ type Any interface {
 	gd.IsClass
 	AsStreamPeerExtension() Instance
 }
+type Interface interface {
+	GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error
+	GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error
+	PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) error
+	PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) error
+	GetAvailableBytes() int
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+	return
+}
+func (self Implementation) GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+	return
+}
+func (self Implementation) PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+	return
+}
+func (self Implementation) PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+	return
+}
+func (self Implementation) GetAvailableBytes() (_ int) { return }
 func (Instance) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
@@ -86,7 +109,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerExtension"))
-	return Instance{*(*gdclass.StreamPeerExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.StreamPeerExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {

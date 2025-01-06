@@ -23,26 +23,33 @@ In GDScript, resources can loaded from disk by their [member resource_path] usin
 The engine keeps a global cache of all loaded resources, referenced by paths (see [method ResourceLoader.has_cached]). A resource will be cached when loaded for the first time and removed from cache once all references are released. When a resource is cached, subsequent loads using its path will return the cached reference.
 [b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will remain in memory for a while before being removed.
 
-	// Resource methods that can be overridden by a [Class] that extends it.
-	type Resource interface {
-		//Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
-		//[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene.
-		//[codeblock]
-		//extends Resource
-		//
-		//var damage = 0
-		//
-		//func _setup_local_to_scene():
-		//    damage = randi_range(10, 40)
-		//[/codeblock]
-		SetupLocalToScene()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Resource)
 */
 type Instance [1]gdclass.Resource
 type Any interface {
 	gd.IsClass
 	AsResource() Instance
 }
+type Interface interface {
+	//Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
+	//[b]Example:[/b] Set a random [code]damage[/code] value to every local resource from an instantiated scene.
+	//[codeblock]
+	//extends Resource
+	//
+	//var damage = 0
+	//
+	//func _setup_local_to_scene():
+	//    damage = randi_range(10, 40)
+	//[/codeblock]
+	SetupLocalToScene()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) SetupLocalToScene() { return }
 
 /*
 Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].
@@ -145,7 +152,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Resource"))
-	return Instance{*(*gdclass.Resource)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Resource)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) ResourceLocalToScene() bool {

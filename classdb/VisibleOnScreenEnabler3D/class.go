@@ -47,7 +47,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenEnabler3D"))
-	return Instance{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) EnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode {

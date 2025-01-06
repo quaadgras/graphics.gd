@@ -44,21 +44,29 @@ GD.Print(astarGrid.GetPointPath(Vector2I.Zero, new Vector2I(3, 4))); // prints (
 [/codeblocks]
 To remove a point from the pathfinding grid, it must be set as "solid" with [method set_point_solid].
 
-	// AStarGrid2D methods that can be overridden by a [Class] that extends it.
-	type AStarGrid2D interface {
-		//Called when estimating the cost between a point and the path's ending point.
-		//Note that this function is hidden in the default [AStarGrid2D] class.
-		EstimateCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
-		//Called when computing the cost between two connected points.
-		//Note that this function is hidden in the default [AStarGrid2D] class.
-		ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AStarGrid2D)
 */
 type Instance [1]gdclass.AStarGrid2D
 type Any interface {
 	gd.IsClass
 	AsAStarGrid2D() Instance
 }
+type Interface interface {
+	//Called when estimating the cost between a point and the path's ending point.
+	//Note that this function is hidden in the default [AStarGrid2D] class.
+	EstimateCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
+	//Called when computing the cost between two connected points.
+	//Note that this function is hidden in the default [AStarGrid2D] class.
+	ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) EstimateCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X) { return }
+func (self Implementation) ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X)  { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -208,7 +216,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStarGrid2D"))
-	return Instance{*(*gdclass.AStarGrid2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AStarGrid2D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) Region() Rect2i.PositionSize {

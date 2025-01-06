@@ -105,7 +105,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamGenerator"))
-	return Instance{*(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) MixRate() Float.X {

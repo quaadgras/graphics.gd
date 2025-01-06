@@ -32,17 +32,24 @@ A rigid body will always maintain its shape and size, even when forces are appli
 If you need to override the default physics behavior, you can write a custom force integration function. See [member custom_integrator].
 [b]Note:[/b] Changing the 2D transform or [member linear_velocity] of a [RigidBody2D] very often may lead to some unpredictable behaviors. If you need to directly affect the body, prefer [method _integrate_forces] as it allows you to directly access the physics state.
 
-	// RigidBody2D methods that can be overridden by a [Class] that extends it.
-	type RigidBody2D interface {
-		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
-		IntegrateForces(state [1]gdclass.PhysicsDirectBodyState2D)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=RigidBody2D)
 */
 type Instance [1]gdclass.RigidBody2D
 type Any interface {
 	gd.IsClass
 	AsRigidBody2D() Instance
 }
+type Interface interface {
+	//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
+	IntegrateForces(state [1]gdclass.PhysicsDirectBodyState2D)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState2D) { return }
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
@@ -167,7 +174,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RigidBody2D"))
-	return Instance{*(*gdclass.RigidBody2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.RigidBody2D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Mass() Float.X {

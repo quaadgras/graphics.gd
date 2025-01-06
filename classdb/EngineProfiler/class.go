@@ -23,20 +23,31 @@ var _ = pointers.Cycle
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
 See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
 
-	// EngineProfiler methods that can be overridden by a [Class] that extends it.
-	type EngineProfiler interface {
-		//Called when the profiler is enabled/disabled, along with a set of [param options].
-		Toggle(enable bool, options Array.Any)
-		//Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
-		AddFrame(data Array.Any)
-		//Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
-		Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EngineProfiler)
 */
 type Instance [1]gdclass.EngineProfiler
 type Any interface {
 	gd.IsClass
 	AsEngineProfiler() Instance
+}
+type Interface interface {
+	//Called when the profiler is enabled/disabled, along with a set of [param options].
+	Toggle(enable bool, options Array.Any)
+	//Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
+	AddFrame(data Array.Any)
+	//Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
+	Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Toggle(enable bool, options Array.Any) { return }
+func (self Implementation) AddFrame(data Array.Any)               { return }
+func (self Implementation) Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X) {
+	return
 }
 
 /*
@@ -92,7 +103,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EngineProfiler"))
-	return Instance{*(*gdclass.EngineProfiler)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EngineProfiler)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

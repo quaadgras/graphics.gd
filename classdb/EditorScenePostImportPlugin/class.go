@@ -20,31 +20,53 @@ var _ = pointers.Cycle
 /*
 This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
 
-	// EditorScenePostImportPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorScenePostImportPlugin interface {
-		//Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
-		GetInternalImportOptions(category int)
-		//Return true or false whether a given option should be visible. Return null to ignore.
-		GetInternalOptionVisibility(category int, for_animation bool, option string) any
-		//Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
-		GetInternalOptionUpdateViewRequired(category int, option string) any
-		//Process a specific node or resource for a given category.
-		InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)
-		//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
-		GetImportOptions(path string)
-		//Return true or false whether a given option should be visible. Return null to ignore.
-		GetOptionVisibility(path string, for_animation bool, option string) any
-		//Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
-		PreProcess(scene [1]gdclass.Node)
-		//Post process the scene. This function is called after the final scene has been configured.
-		PostProcess(scene [1]gdclass.Node)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorScenePostImportPlugin)
 */
 type Instance [1]gdclass.EditorScenePostImportPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorScenePostImportPlugin() Instance
 }
+type Interface interface {
+	//Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
+	GetInternalImportOptions(category int)
+	//Return true or false whether a given option should be visible. Return null to ignore.
+	GetInternalOptionVisibility(category int, for_animation bool, option string) any
+	//Return true whether updating the 3D view of the import dialog needs to be updated if an option has changed.
+	GetInternalOptionUpdateViewRequired(category int, option string) any
+	//Process a specific node or resource for a given category.
+	InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)
+	//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
+	GetImportOptions(path string)
+	//Return true or false whether a given option should be visible. Return null to ignore.
+	GetOptionVisibility(path string, for_animation bool, option string) any
+	//Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+	PreProcess(scene [1]gdclass.Node)
+	//Post process the scene. This function is called after the final scene has been configured.
+	PostProcess(scene [1]gdclass.Node)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetInternalImportOptions(category int) { return }
+func (self Implementation) GetInternalOptionVisibility(category int, for_animation bool, option string) (_ any) {
+	return
+}
+func (self Implementation) GetInternalOptionUpdateViewRequired(category int, option string) (_ any) {
+	return
+}
+func (self Implementation) InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource) {
+	return
+}
+func (self Implementation) GetImportOptions(path string) { return }
+func (self Implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
+	return
+}
+func (self Implementation) PreProcess(scene [1]gdclass.Node)  { return }
+func (self Implementation) PostProcess(scene [1]gdclass.Node) { return }
 
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
@@ -202,7 +224,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImportPlugin"))
-	return Instance{*(*gdclass.EditorScenePostImportPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorScenePostImportPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -26,22 +26,45 @@ var _ = pointers.Cycle
 This class extends [PhysicsDirectSpaceState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsDirectSpaceState2D].
 
-	// PhysicsDirectSpaceState2DExtension methods that can be overridden by a [Class] that extends it.
-	type PhysicsDirectSpaceState2DExtension interface {
-		IntersectRay(from Vector2.XY, to Vector2.XY, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool
-		IntersectPoint(position Vector2.XY, canvas_instance_id int, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results int) int
-		IntersectShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results int) int
-		CastMotion(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool
-		CollideShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) bool
-		RestInfo(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicsDirectSpaceState2DExtension)
 */
 type Instance [1]gdclass.PhysicsDirectSpaceState2DExtension
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectSpaceState2DExtension() Instance
 }
+type Interface interface {
+	IntersectRay(from Vector2.XY, to Vector2.XY, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool
+	IntersectPoint(position Vector2.XY, canvas_instance_id int, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results int) int
+	IntersectShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results int) int
+	CastMotion(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool
+	CollideShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) bool
+	RestInfo(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) IntersectRay(from Vector2.XY, to Vector2.XY, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) (_ bool) {
+	return
+}
+func (self Implementation) IntersectPoint(position Vector2.XY, canvas_instance_id int, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results int) (_ int) {
+	return
+}
+func (self Implementation) IntersectShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results int) (_ int) {
+	return
+}
+func (self Implementation) CastMotion(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) (_ bool) {
+	return
+}
+func (self Implementation) CollideShape(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) (_ bool) {
+	return
+}
+func (self Implementation) RestInfo(shape_rid Resource.ID, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) (_ bool) {
+	return
+}
 func (Instance) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector2.XY, to Vector2.XY, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var from = gd.UnsafeGet[gd.Vector2](p_args, 0)
@@ -152,7 +175,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState2DExtension"))
-	return Instance{*(*gdclass.PhysicsDirectSpaceState2DExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsDirectSpaceState2DExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (class) _intersect_ray(impl func(ptr unsafe.Pointer, from gd.Vector2, to gd.Vector2, collision_mask gd.Int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {

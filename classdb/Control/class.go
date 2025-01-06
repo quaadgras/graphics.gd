@@ -37,159 +37,174 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 [Theme] resources change the Control's appearance. If you change the [Theme] on a [Control] node, it affects all of its children. To override some of the theme's parameters, call one of the [code]add_theme_*_override[/code] methods, like [method add_theme_font_override]. You can override the theme with the Inspector.
 [b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use the [code]get_theme_*[/code] and [code]add_theme_*_override[/code] methods provided by this class.
 
-	// Control methods that can be overridden by a [Class] that extends it.
-	type Control interface {
-		//Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
-		//If not overridden, default behavior is checking if the point is within control's Rect.
-		//[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
-		HasPoint(point Vector2.XY) bool
-		//User defined BiDi algorithm override function.
-		//Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
-		StructuredTextParser(args Array.Any, text string) gd.Array
-		//Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [member custom_minimum_size] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
-		//If not overridden, defaults to [constant Vector2.ZERO].
-		//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
-		GetMinimumSize() Vector2.XY
-		//Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
-		//[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
-		GetTooltip(at_position Vector2.XY) string
-		//Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns [code]null[/code] if there is no data to drag. Controls that want to receive drop data should implement [method _can_drop_data] and [method _drop_data]. [param at_position] is local to this control. Drag may be forced with [method force_drag].
-		//A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
-		//[codeblocks]
-		//[gdscript]
-		//func _get_drag_data(position):
-		//    var mydata = make_data() # This is your custom method generating the drag data.
-		//    set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
-		//    return mydata
-		//[/gdscript]
-		//[csharp]
-		//public override Variant _GetDragData(Vector2 atPosition)
-		//{
-		//    var myData = MakeData(); // This is your custom method generating the drag data.
-		//    SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
-		//    return myData;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		GetDragData(at_position Vector2.XY) any
-		//Godot calls this method to test if [param data] from a control's [method _get_drag_data] can be dropped at [param at_position]. [param at_position] is local to this control.
-		//This method should only be used to test the data. Process the data in [method _drop_data].
-		//[codeblocks]
-		//[gdscript]
-		//func _can_drop_data(position, data):
-		//    # Check position if it is relevant to you
-		//    # Otherwise, just check data
-		//    return typeof(data) == TYPE_DICTIONARY and data.has("expected")
-		//[/gdscript]
-		//[csharp]
-		//public override bool _CanDropData(Vector2 atPosition, Variant data)
-		//{
-		//    // Check position if it is relevant to you
-		//    // Otherwise, just check data
-		//    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		CanDropData(at_position Vector2.XY, data any) bool
-		//Godot calls this method to pass you the [param data] from a control's [method _get_drag_data] result. Godot first calls [method _can_drop_data] to test if [param data] is allowed to drop at [param at_position] where [param at_position] is local to this control.
-		//[codeblocks]
-		//[gdscript]
-		//func _can_drop_data(position, data):
-		//    return typeof(data) == TYPE_DICTIONARY and data.has("color")
-		//
-		//func _drop_data(position, data):
-		//    var color = data["color"]
-		//[/gdscript]
-		//[csharp]
-		//public override bool _CanDropData(Vector2 atPosition, Variant data)
-		//{
-		//    return data.VariantType == Variant.Type.Dictionary && dict.AsGodotDictionary().ContainsKey("color");
-		//}
-		//
-		//public override void _DropData(Vector2 atPosition, Variant data)
-		//{
-		//    Color color = data.AsGodotDictionary()["color"].AsColor();
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		DropData(at_position Vector2.XY, data any)
-		//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
-		//The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
-		//The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
-		//[b]Note:[/b] The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [member custom_minimum_size] to some non-zero value.
-		//[b]Note:[/b] The node (and any relevant children) should be [member CanvasItem.visible] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
-		//[b]Example of usage with a custom-constructed node:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//func _make_custom_tooltip(for_text):
-		//    var label = Label.new()
-		//    label.text = for_text
-		//    return label
-		//[/gdscript]
-		//[csharp]
-		//public override Control _MakeCustomTooltip(string forText)
-		//{
-		//    var label = new Label();
-		//    label.Text = forText;
-		//    return label;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		//[b]Example of usage with a custom scene instance:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//func _make_custom_tooltip(for_text):
-		//    var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
-		//    tooltip.get_node("Label").text = for_text
-		//    return tooltip
-		//[/gdscript]
-		//[csharp]
-		//public override Control _MakeCustomTooltip(string forText)
-		//{
-		//    Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
-		//    tooltip.GetNode<Label>("Label").Text = forText;
-		//    return tooltip;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		MakeCustomTooltip(for_text string) Object.Instance
-		//Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
-		//[b]Example usage for clicking a control:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//func _gui_input(event):
-		//    if event is InputEventMouseButton:
-		//        if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		//            print("I've been clicked D:")
-		//[/gdscript]
-		//[csharp]
-		//public override void _GuiInput(InputEvent @event)
-		//{
-		//    if (@event is InputEventMouseButton mb)
-		//    {
-		//        if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
-		//        {
-		//            GD.Print("I've been clicked D:");
-		//        }
-		//    }
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		//The event won't trigger if:
-		//* clicking outside the control (see [method _has_point]);
-		//* control has [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-		//* control is obstructed by another [Control] on top of it, which doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
-		//* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
-		//* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
-		//[b]Note:[/b] Event position is relative to the control origin.
-		GuiInput(event [1]gdclass.InputEvent)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Control)
 */
 type Instance [1]gdclass.Control
 type Any interface {
 	gd.IsClass
 	AsControl() Instance
 }
+type Interface interface {
+	//Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
+	//If not overridden, default behavior is checking if the point is within control's Rect.
+	//[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
+	HasPoint(point Vector2.XY) bool
+	//User defined BiDi algorithm override function.
+	//Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
+	StructuredTextParser(args Array.Any, text string) gd.Array
+	//Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [member custom_minimum_size] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
+	//If not overridden, defaults to [constant Vector2.ZERO].
+	//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
+	GetMinimumSize() Vector2.XY
+	//Virtual method to be implemented by the user. Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. See [method get_tooltip].
+	//[b]Note:[/b] If this method returns an empty [String], no tooltip is displayed.
+	GetTooltip(at_position Vector2.XY) string
+	//Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns [code]null[/code] if there is no data to drag. Controls that want to receive drop data should implement [method _can_drop_data] and [method _drop_data]. [param at_position] is local to this control. Drag may be forced with [method force_drag].
+	//A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
+	//[codeblocks]
+	//[gdscript]
+	//func _get_drag_data(position):
+	//    var mydata = make_data() # This is your custom method generating the drag data.
+	//    set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
+	//    return mydata
+	//[/gdscript]
+	//[csharp]
+	//public override Variant _GetDragData(Vector2 atPosition)
+	//{
+	//    var myData = MakeData(); // This is your custom method generating the drag data.
+	//    SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
+	//    return myData;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	GetDragData(at_position Vector2.XY) any
+	//Godot calls this method to test if [param data] from a control's [method _get_drag_data] can be dropped at [param at_position]. [param at_position] is local to this control.
+	//This method should only be used to test the data. Process the data in [method _drop_data].
+	//[codeblocks]
+	//[gdscript]
+	//func _can_drop_data(position, data):
+	//    # Check position if it is relevant to you
+	//    # Otherwise, just check data
+	//    return typeof(data) == TYPE_DICTIONARY and data.has("expected")
+	//[/gdscript]
+	//[csharp]
+	//public override bool _CanDropData(Vector2 atPosition, Variant data)
+	//{
+	//    // Check position if it is relevant to you
+	//    // Otherwise, just check data
+	//    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	CanDropData(at_position Vector2.XY, data any) bool
+	//Godot calls this method to pass you the [param data] from a control's [method _get_drag_data] result. Godot first calls [method _can_drop_data] to test if [param data] is allowed to drop at [param at_position] where [param at_position] is local to this control.
+	//[codeblocks]
+	//[gdscript]
+	//func _can_drop_data(position, data):
+	//    return typeof(data) == TYPE_DICTIONARY and data.has("color")
+	//
+	//func _drop_data(position, data):
+	//    var color = data["color"]
+	//[/gdscript]
+	//[csharp]
+	//public override bool _CanDropData(Vector2 atPosition, Variant data)
+	//{
+	//    return data.VariantType == Variant.Type.Dictionary && dict.AsGodotDictionary().ContainsKey("color");
+	//}
+	//
+	//public override void _DropData(Vector2 atPosition, Variant data)
+	//{
+	//    Color color = data.AsGodotDictionary()["color"].AsColor();
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	DropData(at_position Vector2.XY, data any)
+	//Virtual method to be implemented by the user. Returns a [Control] node that should be used as a tooltip instead of the default one. The [param for_text] includes the contents of the [member tooltip_text] property.
+	//The returned node must be of type [Control] or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When [code]null[/code] or a non-Control node is returned, the default tooltip will be used instead.
+	//The returned node will be added as child to a [PopupPanel], so you should only provide the contents of that panel. That [PopupPanel] can be themed using [method Theme.set_stylebox] for the type [code]"TooltipPanel"[/code] (see [member tooltip_text] for an example).
+	//[b]Note:[/b] The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its [member custom_minimum_size] to some non-zero value.
+	//[b]Note:[/b] The node (and any relevant children) should be [member CanvasItem.visible] when returned, otherwise, the viewport that instantiates it will not be able to calculate its minimum size reliably.
+	//[b]Example of usage with a custom-constructed node:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//func _make_custom_tooltip(for_text):
+	//    var label = Label.new()
+	//    label.text = for_text
+	//    return label
+	//[/gdscript]
+	//[csharp]
+	//public override Control _MakeCustomTooltip(string forText)
+	//{
+	//    var label = new Label();
+	//    label.Text = forText;
+	//    return label;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	//[b]Example of usage with a custom scene instance:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//func _make_custom_tooltip(for_text):
+	//    var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
+	//    tooltip.get_node("Label").text = for_text
+	//    return tooltip
+	//[/gdscript]
+	//[csharp]
+	//public override Control _MakeCustomTooltip(string forText)
+	//{
+	//    Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
+	//    tooltip.GetNode<Label>("Label").Text = forText;
+	//    return tooltip;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	MakeCustomTooltip(for_text string) Object.Instance
+	//Virtual method to be implemented by the user. Use this method to process and accept inputs on UI elements. See [method accept_event].
+	//[b]Example usage for clicking a control:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//func _gui_input(event):
+	//    if event is InputEventMouseButton:
+	//        if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	//            print("I've been clicked D:")
+	//[/gdscript]
+	//[csharp]
+	//public override void _GuiInput(InputEvent @event)
+	//{
+	//    if (@event is InputEventMouseButton mb)
+	//    {
+	//        if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
+	//        {
+	//            GD.Print("I've been clicked D:");
+	//        }
+	//    }
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	//The event won't trigger if:
+	//* clicking outside the control (see [method _has_point]);
+	//* control has [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
+	//* control is obstructed by another [Control] on top of it, which doesn't have [member mouse_filter] set to [constant MOUSE_FILTER_IGNORE];
+	//* control's parent has [member mouse_filter] set to [constant MOUSE_FILTER_STOP] or has accepted the event;
+	//* it happens outside the parent's rectangle and the parent has either [member clip_contents] enabled.
+	//[b]Note:[/b] Event position is relative to the control origin.
+	GuiInput(event [1]gdclass.InputEvent)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) HasPoint(point Vector2.XY) (_ bool)                            { return }
+func (self Implementation) StructuredTextParser(args Array.Any, text string) (_ gd.Array) { return }
+func (self Implementation) GetMinimumSize() (_ Vector2.XY)                                { return }
+func (self Implementation) GetTooltip(at_position Vector2.XY) (_ string)                  { return }
+func (self Implementation) GetDragData(at_position Vector2.XY) (_ any)                    { return }
+func (self Implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)         { return }
+func (self Implementation) DropData(at_position Vector2.XY, data any)                     { return }
+func (self Implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)         { return }
+func (self Implementation) GuiInput(event [1]gdclass.InputEvent)                          { return }
 
 /*
 Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
@@ -1160,7 +1175,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Control"))
-	return Instance{*(*gdclass.Control)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Control)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) ClipContents() bool {

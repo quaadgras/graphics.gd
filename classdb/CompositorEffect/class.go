@@ -21,16 +21,25 @@ var _ = pointers.Cycle
 /*
 This resource defines a custom rendering effect that can be applied to [Viewport]s through the viewports' [Environment]. You can implement a callback that is called during rendering at a given stage of the rendering pipeline and allows you to insert additional passes. Note that this callback happens on the rendering thread. CompositorEffect is an abstract base class and must be extended to implement specific rendering logic.
 
-	// CompositorEffect methods that can be overridden by a [Class] that extends it.
-	type CompositorEffect interface {
-		//Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
-		RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CompositorEffect)
 */
 type Instance [1]gdclass.CompositorEffect
 type Any interface {
 	gd.IsClass
 	AsCompositorEffect() Instance
+}
+type Interface interface {
+	//Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
+	RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData) {
+	return
 }
 
 /*
@@ -60,7 +69,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompositorEffect"))
-	return Instance{*(*gdclass.CompositorEffect)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.CompositorEffect)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) Enabled() bool {

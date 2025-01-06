@@ -22,100 +22,163 @@ var _ = pointers.Cycle
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
 To use [EditorExportPlugin], register it using the [method EditorPlugin.add_export_plugin] method first.
 
-	// EditorExportPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorExportPlugin interface {
-		//Virtual method to be overridden by the user. Called for each exported file before [method _customize_resource] and [method _customize_scene]. The arguments can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]), and [param features] is the list of features for the export.
-		//Calling [method skip] inside this callback will make the file not included in the export.
-		ExportFile(path string, atype string, features []string)
-		//Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
-		ExportBegin(features []string, is_debug bool, path string, flags int)
-		//Virtual method to be overridden by the user. Called when the export is finished.
-		ExportEnd()
-		//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
-		//When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
-		BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) bool
-		//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
-		//The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
-		//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
-		CustomizeResource(resource [1]gdclass.Resource, path string) [1]gdclass.Resource
-		//Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
-		//When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
-		BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) bool
-		//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
-		//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
-		CustomizeScene(scene [1]gdclass.Node, path string) [1]gdclass.Node
-		//Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
-		//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
-		GetCustomizationConfigurationHash() int
-		//This is called when the customization process for scenes ends.
-		EndCustomizeScenes()
-		//This is called when the customization process for resources ends.
-		EndCustomizeResources()
-		//Return a list of export options that can be configured for this export plugin.
-		//Each element in the return value is a [Dictionary] with the following keys:
-		//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
-		//- [code]default_value[/code]: The default value for this option.
-		//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
-		GetExportOptions(platform [1]gdclass.EditorExportPlatform) gd.Array
-		//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
-		//[codeblock]
-		//class MyExportPlugin extends EditorExportPlugin:
-		//    func _get_name() -> String:
-		//        return "MyExportPlugin"
-		//
-		//    func _supports_platform(platform) -> bool:
-		//        if platform is EditorExportPlatformPC:
-		//            # Run on all desktop platforms including Windows, MacOS and Linux.
-		//            return true
-		//        return false
-		//
-		//    func _get_export_options_overrides(platform) -> Dictionary:
-		//        # Override "Embed PCK" to always be enabled.
-		//        return {
-		//            "binary_format/embed_pck": true,
-		//        }
-		//[/codeblock]
-		GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) Dictionary.Any
-		//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
-		ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) bool
-		//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
-		//[b]Note:[/b] Use [method get_option] to check the value of the export options.
-		GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) string
-		//Return a [PackedStringArray] of additional features this preset, for the given [param platform], should have.
-		GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) []string
-		//Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
-		//Implementing this method is required.
-		GetName() string
-		//Return [code]true[/code] if the plugin supports the given [param platform].
-		SupportsPlatform(platform [1]gdclass.EditorExportPlatform) bool
-		//Virtual method to be overridden by the user. This is called to retrieve the set of Android dependencies provided by this plugin. Each returned Android dependency should have the format of an Android remote binary dependency: [code]org.godot.example:my-plugin:0.0.0[/code]
-		//For more information see [url=https://developer.android.com/build/dependencies?agpversion=4.1#dependency-types]Android documentation on dependencies[/url].
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) []string
-		//Virtual method to be overridden by the user. This is called to retrieve the URLs of Maven repositories for the set of Android dependencies provided by this plugin.
-		//For more information see [url=https://docs.gradle.org/current/userguide/dependency_management.html#sec:maven_repo]Gradle documentation on dependency management[/url].
-		//[b]Note:[/b] Google's Maven repo and the Maven Central repo are already included by default.
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) []string
-		//Virtual method to be overridden by the user. This is called to retrieve the local paths of the Android libraries archive (AAR) files provided by this plugin.
-		//[b]Note:[/b] Relative paths [b]must[/b] be relative to Godot's [code]res://addons/[/code] directory. For example, an AAR file located under [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] can be returned as an absolute path using [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] or a relative path using [code]hello_world_plugin/HelloWorld.release.aar[/code].
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) []string
-		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
-		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
-		//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
-		//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-		GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorExportPlugin)
 */
 type Instance [1]gdclass.EditorExportPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorExportPlugin() Instance
+}
+type Interface interface {
+	//Virtual method to be overridden by the user. Called for each exported file before [method _customize_resource] and [method _customize_scene]. The arguments can be used to identify the file. [param path] is the path of the file, [param type] is the [Resource] represented by the file (e.g. [PackedScene]), and [param features] is the list of features for the export.
+	//Calling [method skip] inside this callback will make the file not included in the export.
+	ExportFile(path string, atype string, features []string)
+	//Virtual method to be overridden by the user. It is called when the export starts and provides all information about the export. [param features] is the list of features for the export, [param is_debug] is [code]true[/code] for debug builds, [param path] is the target path for the exported project. [param flags] is only used when running a runnable profile, e.g. when using native run on Android.
+	ExportBegin(features []string, is_debug bool, path string, flags int)
+	//Virtual method to be overridden by the user. Called when the export is finished.
+	ExportEnd()
+	//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
+	//When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
+	BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) bool
+	//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code].
+	//The [i]path[/i] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
+	//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
+	CustomizeResource(resource [1]gdclass.Resource, path string) [1]gdclass.Resource
+	//Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
+	//When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
+	BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) bool
+	//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
+	//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
+	CustomizeScene(scene [1]gdclass.Node, path string) [1]gdclass.Node
+	//Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
+	//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
+	GetCustomizationConfigurationHash() int
+	//This is called when the customization process for scenes ends.
+	EndCustomizeScenes()
+	//This is called when the customization process for resources ends.
+	EndCustomizeResources()
+	//Return a list of export options that can be configured for this export plugin.
+	//Each element in the return value is a [Dictionary] with the following keys:
+	//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
+	//- [code]default_value[/code]: The default value for this option.
+	//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
+	GetExportOptions(platform [1]gdclass.EditorExportPlatform) gd.Array
+	//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
+	//[codeblock]
+	//class MyExportPlugin extends EditorExportPlugin:
+	//    func _get_name() -> String:
+	//        return "MyExportPlugin"
+	//
+	//    func _supports_platform(platform) -> bool:
+	//        if platform is EditorExportPlatformPC:
+	//            # Run on all desktop platforms including Windows, MacOS and Linux.
+	//            return true
+	//        return false
+	//
+	//    func _get_export_options_overrides(platform) -> Dictionary:
+	//        # Override "Embed PCK" to always be enabled.
+	//        return {
+	//            "binary_format/embed_pck": true,
+	//        }
+	//[/codeblock]
+	GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) Dictionary.Any
+	//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
+	ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) bool
+	//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
+	//[b]Note:[/b] Use [method get_option] to check the value of the export options.
+	GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) string
+	//Return a [PackedStringArray] of additional features this preset, for the given [param platform], should have.
+	GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	//Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
+	//Implementing this method is required.
+	GetName() string
+	//Return [code]true[/code] if the plugin supports the given [param platform].
+	SupportsPlatform(platform [1]gdclass.EditorExportPlatform) bool
+	//Virtual method to be overridden by the user. This is called to retrieve the set of Android dependencies provided by this plugin. Each returned Android dependency should have the format of an Android remote binary dependency: [code]org.godot.example:my-plugin:0.0.0[/code]
+	//For more information see [url=https://developer.android.com/build/dependencies?agpversion=4.1#dependency-types]Android documentation on dependencies[/url].
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	//Virtual method to be overridden by the user. This is called to retrieve the URLs of Maven repositories for the set of Android dependencies provided by this plugin.
+	//For more information see [url=https://docs.gradle.org/current/userguide/dependency_management.html#sec:maven_repo]Gradle documentation on dependency management[/url].
+	//[b]Note:[/b] Google's Maven repo and the Maven Central repo are already included by default.
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	//Virtual method to be overridden by the user. This is called to retrieve the local paths of the Android libraries archive (AAR) files provided by this plugin.
+	//[b]Note:[/b] Relative paths [b]must[/b] be relative to Godot's [code]res://addons/[/code] directory. For example, an AAR file located under [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] can be returned as an absolute path using [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] or a relative path using [code]hello_world_plugin/HelloWorld.release.aar[/code].
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
+	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
+	GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ExportFile(path string, atype string, features []string) { return }
+func (self Implementation) ExportBegin(features []string, is_debug bool, path string, flags int) {
+	return
+}
+func (self Implementation) ExportEnd() { return }
+func (self Implementation) BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+	return
+}
+func (self Implementation) CustomizeResource(resource [1]gdclass.Resource, path string) (_ [1]gdclass.Resource) {
+	return
+}
+func (self Implementation) BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+	return
+}
+func (self Implementation) CustomizeScene(scene [1]gdclass.Node, path string) (_ [1]gdclass.Node) {
+	return
+}
+func (self Implementation) GetCustomizationConfigurationHash() (_ int) { return }
+func (self Implementation) EndCustomizeScenes()                        { return }
+func (self Implementation) EndCustomizeResources()                     { return }
+func (self Implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ gd.Array) {
+	return
+}
+func (self Implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+	return
+}
+func (self Implementation) GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) (_ string) {
+	return
+}
+func (self Implementation) GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+	return
+}
+func (self Implementation) GetName() (_ string) { return }
+func (self Implementation) SupportsPlatform(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+	return
+}
+func (self Implementation) GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+	return
+}
+func (self Implementation) GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+	return
+}
+func (self Implementation) GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+	return
+}
+func (self Implementation) GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+	return
+}
+func (self Implementation) GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+	return
+}
+func (self Implementation) GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+	return
 }
 
 /*
@@ -626,7 +689,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlugin"))
-	return Instance{*(*gdclass.EditorExportPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorExportPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -24,7 +24,158 @@ type Any interface {
 	gd.IsClass
 	AsScriptLanguageExtension() Instance
 }
+type Interface interface {
+	GetName() string
+	Init()
+	GetType() string
+	GetExtension() string
+	Finish()
+	GetReservedWords() []string
+	IsControlFlowKeyword(keyword string) bool
+	GetCommentDelimiters() []string
+	GetDocCommentDelimiters() []string
+	GetStringDelimiters() []string
+	MakeTemplate(template string, class_name string, base_class_name string) [1]gdclass.Script
+	GetBuiltInTemplates(obj string) gd.Array
+	IsUsingTemplates() bool
+	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any
+	ValidatePath(path string) string
+	CreateScript() Object.Instance
+	HasNamedClasses() bool
+	SupportsBuiltinMode() bool
+	SupportsDocumentation() bool
+	CanInheritFromFile() bool
+	//Returns the line where the function is defined in the code, or [code]-1[/code] if the function is not present.
+	FindFunction(function string, code string) int
+	MakeFunction(class_name string, function_name string, function_args []string) string
+	CanMakeFunction() bool
+	OpenInExternalEditor(script [1]gdclass.Script, line int, column int) error
+	OverridesExternalEditor() bool
+	PreferredFileNameCasing() gdclass.ScriptLanguageScriptNameCasing
+	CompleteCode(code string, path string, owner Object.Instance) Dictionary.Any
+	LookupCode(code string, symbol string, path string, owner Object.Instance) Dictionary.Any
+	AutoIndentCode(code string, from_line int, to_line int) string
+	AddGlobalConstant(name string, value any)
+	AddNamedGlobalConstant(name string, value any)
+	RemoveNamedGlobalConstant(name string)
+	ThreadEnter()
+	ThreadExit()
+	DebugGetError() string
+	DebugGetStackLevelCount() int
+	DebugGetStackLevelLine(level int) int
+	DebugGetStackLevelFunction(level int) string
+	//Returns the source associated with a given debug stack position.
+	DebugGetStackLevelSource(level int) string
+	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) Dictionary.Any
+	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) Dictionary.Any
+	DebugGetStackLevelInstance(level int) unsafe.Pointer
+	DebugGetGlobals(max_subitems int, max_depth int) Dictionary.Any
+	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
+	DebugGetCurrentStackInfo() gd.Array
+	ReloadAllScripts()
+	ReloadToolScript(script [1]gdclass.Script, soft_reload bool)
+	GetRecognizedExtensions() []string
+	GetPublicFunctions() gd.Array
+	GetPublicConstants() Dictionary.Any
+	GetPublicAnnotations() gd.Array
+	ProfilingStart()
+	ProfilingStop()
+	ProfilingSetSaveNativeCalls(enable bool)
+	ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) int
+	ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) int
+	Frame()
+	HandlesGlobalClassType(atype string) bool
+	GetGlobalClassName(path string) Dictionary.Any
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetName() (_ string)                          { return }
+func (self Implementation) Init()                                        { return }
+func (self Implementation) GetType() (_ string)                          { return }
+func (self Implementation) GetExtension() (_ string)                     { return }
+func (self Implementation) Finish()                                      { return }
+func (self Implementation) GetReservedWords() (_ []string)               { return }
+func (self Implementation) IsControlFlowKeyword(keyword string) (_ bool) { return }
+func (self Implementation) GetCommentDelimiters() (_ []string)           { return }
+func (self Implementation) GetDocCommentDelimiters() (_ []string)        { return }
+func (self Implementation) GetStringDelimiters() (_ []string)            { return }
+func (self Implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ [1]gdclass.Script) {
+	return
+}
+func (self Implementation) GetBuiltInTemplates(obj string) (_ gd.Array) { return }
+func (self Implementation) IsUsingTemplates() (_ bool)                  { return }
+func (self Implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) ValidatePath(path string) (_ string)               { return }
+func (self Implementation) CreateScript() (_ Object.Instance)                 { return }
+func (self Implementation) HasNamedClasses() (_ bool)                         { return }
+func (self Implementation) SupportsBuiltinMode() (_ bool)                     { return }
+func (self Implementation) SupportsDocumentation() (_ bool)                   { return }
+func (self Implementation) CanInheritFromFile() (_ bool)                      { return }
+func (self Implementation) FindFunction(function string, code string) (_ int) { return }
+func (self Implementation) MakeFunction(class_name string, function_name string, function_args []string) (_ string) {
+	return
+}
+func (self Implementation) CanMakeFunction() (_ bool) { return }
+func (self Implementation) OpenInExternalEditor(script [1]gdclass.Script, line int, column int) (_ error) {
+	return
+}
+func (self Implementation) OverridesExternalEditor() (_ bool) { return }
+func (self Implementation) PreferredFileNameCasing() (_ gdclass.ScriptLanguageScriptNameCasing) {
+	return
+}
+func (self Implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
+func (self Implementation) AddGlobalConstant(name string, value any)                          { return }
+func (self Implementation) AddNamedGlobalConstant(name string, value any)                     { return }
+func (self Implementation) RemoveNamedGlobalConstant(name string)                             { return }
+func (self Implementation) ThreadEnter()                                                      { return }
+func (self Implementation) ThreadExit()                                                       { return }
+func (self Implementation) DebugGetError() (_ string)                                         { return }
+func (self Implementation) DebugGetStackLevelCount() (_ int)                                  { return }
+func (self Implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
+func (self Implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
+func (self Implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
+func (self Implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) DebugGetStackLevelInstance(level int) (_ unsafe.Pointer) { return }
+func (self Implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
+	return
+}
+func (self Implementation) DebugGetCurrentStackInfo() (_ gd.Array)                      { return }
+func (self Implementation) ReloadAllScripts()                                           { return }
+func (self Implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
+func (self Implementation) GetRecognizedExtensions() (_ []string)                       { return }
+func (self Implementation) GetPublicFunctions() (_ gd.Array)                            { return }
+func (self Implementation) GetPublicConstants() (_ Dictionary.Any)                      { return }
+func (self Implementation) GetPublicAnnotations() (_ gd.Array)                          { return }
+func (self Implementation) ProfilingStart()                                             { return }
+func (self Implementation) ProfilingStop()                                              { return }
+func (self Implementation) ProfilingSetSaveNativeCalls(enable bool)                     { return }
+func (self Implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
+	return
+}
+func (self Implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
+	return
+}
+func (self Implementation) Frame()                                            { return }
+func (self Implementation) HandlesGlobalClassType(atype string) (_ bool)      { return }
+func (self Implementation) GetGlobalClassName(path string) (_ Dictionary.Any) { return }
 func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -655,7 +806,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptLanguageExtension"))
-	return Instance{*(*gdclass.ScriptLanguageExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.ScriptLanguageExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {

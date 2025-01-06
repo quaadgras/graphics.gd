@@ -44,7 +44,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiMeshInstance2D"))
-	return Instance{*(*gdclass.MultiMeshInstance2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.MultiMeshInstance2D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Multimesh() [1]gdclass.MultiMesh {

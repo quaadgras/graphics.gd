@@ -25,18 +25,25 @@ var _ = pointers.Cycle
 If there is [AnimationMixer], modification always performs after playback process of the [AnimationMixer].
 This node should be used to implement custom IK solvers, constraints, or skeleton physics.
 
-	// SkeletonModifier3D methods that can be overridden by a [Class] that extends it.
-	type SkeletonModifier3D interface {
-		//Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
-		//[method _process_modification] must not apply [member influence] to bone poses because the [Skeleton3D] automatically applies influence to all bone poses set by the modifier.
-		ProcessModification()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=SkeletonModifier3D)
 */
 type Instance [1]gdclass.SkeletonModifier3D
 type Any interface {
 	gd.IsClass
 	AsSkeletonModifier3D() Instance
 }
+type Interface interface {
+	//Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
+	//[method _process_modification] must not apply [member influence] to bone poses because the [Skeleton3D] automatically applies influence to all bone poses set by the modifier.
+	ProcessModification()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ProcessModification() { return }
 
 /*
 Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.
@@ -70,7 +77,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModifier3D"))
-	return Instance{*(*gdclass.SkeletonModifier3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.SkeletonModifier3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Active() bool {

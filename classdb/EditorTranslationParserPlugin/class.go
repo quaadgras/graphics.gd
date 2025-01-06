@@ -122,19 +122,29 @@ public override string[] _GetRecognizedExtensions()
 [/codeblocks]
 To use [EditorTranslationParserPlugin], register it using the [method EditorPlugin.add_translation_parser_plugin] method first.
 
-	// EditorTranslationParserPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorTranslationParserPlugin interface {
-		//Override this method to define a custom parsing logic to extract the translatable strings.
-		ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array)
-		//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
-		GetRecognizedExtensions() []string
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorTranslationParserPlugin)
 */
 type Instance [1]gdclass.EditorTranslationParserPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorTranslationParserPlugin() Instance
 }
+type Interface interface {
+	//Override this method to define a custom parsing logic to extract the translatable strings.
+	ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array)
+	//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
+	GetRecognizedExtensions() []string
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array) {
+	return
+}
+func (self Implementation) GetRecognizedExtensions() (_ []string) { return }
 
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
@@ -181,7 +191,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorTranslationParserPlugin"))
-	return Instance{*(*gdclass.EditorTranslationParserPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorTranslationParserPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

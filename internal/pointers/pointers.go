@@ -307,7 +307,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	}
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
-		//fmt.Printf("%b != %b\b", rev, p.revision)
+		fmt.Printf("%b != %b\b", rev, p.revision)
 		panic("expired pointer")
 	}
 	if !rev.isActive() {

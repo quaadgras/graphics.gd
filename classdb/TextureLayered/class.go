@@ -26,29 +26,42 @@ All images need to have the same width, height and number of mipmap levels.
 A [TextureLayered] can be loaded with [method ResourceLoader.load].
 Internally, Godot maps these files to their respective counterparts in the target rendering driver (Vulkan, OpenGL3).
 
-	// TextureLayered methods that can be overridden by a [Class] that extends it.
-	type TextureLayered interface {
-		//Called when the [TextureLayered]'s format is queried.
-		GetFormat() gdclass.ImageFormat
-		//Called when the layers' type in the [TextureLayered] is queried.
-		GetLayeredType() int
-		//Called when the [TextureLayered]'s width queried.
-		GetWidth() int
-		//Called when the [TextureLayered]'s height is queried.
-		GetHeight() int
-		//Called when the number of layers in the [TextureLayered] is queried.
-		GetLayers() int
-		//Called when the presence of mipmaps in the [TextureLayered] is queried.
-		HasMipmaps() bool
-		//Called when the data for a layer in the [TextureLayered] is queried.
-		GetLayerData(layer_index int) [1]gdclass.Image
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=TextureLayered)
 */
 type Instance [1]gdclass.TextureLayered
 type Any interface {
 	gd.IsClass
 	AsTextureLayered() Instance
 }
+type Interface interface {
+	//Called when the [TextureLayered]'s format is queried.
+	GetFormat() gdclass.ImageFormat
+	//Called when the layers' type in the [TextureLayered] is queried.
+	GetLayeredType() int
+	//Called when the [TextureLayered]'s width queried.
+	GetWidth() int
+	//Called when the [TextureLayered]'s height is queried.
+	GetHeight() int
+	//Called when the number of layers in the [TextureLayered] is queried.
+	GetLayers() int
+	//Called when the presence of mipmaps in the [TextureLayered] is queried.
+	HasMipmaps() bool
+	//Called when the data for a layer in the [TextureLayered] is queried.
+	GetLayerData(layer_index int) [1]gdclass.Image
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetFormat() (_ gdclass.ImageFormat)                { return }
+func (self Implementation) GetLayeredType() (_ int)                           { return }
+func (self Implementation) GetWidth() (_ int)                                 { return }
+func (self Implementation) GetHeight() (_ int)                                { return }
+func (self Implementation) GetLayers() (_ int)                                { return }
+func (self Implementation) HasMipmaps() (_ bool)                              { return }
+func (self Implementation) GetLayerData(layer_index int) (_ [1]gdclass.Image) { return }
 
 /*
 Called when the [TextureLayered]'s format is queried.
@@ -195,7 +208,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextureLayered"))
-	return Instance{*(*gdclass.TextureLayered)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.TextureLayered)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

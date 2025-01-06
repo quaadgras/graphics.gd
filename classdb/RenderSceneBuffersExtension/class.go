@@ -22,23 +22,33 @@ var _ = pointers.Cycle
 /*
 This class allows for a RenderSceneBuffer implementation to be made in GDExtension.
 
-	// RenderSceneBuffersExtension methods that can be overridden by a [Class] that extends it.
-	type RenderSceneBuffersExtension interface {
-		//Implement this in GDExtension to handle the (re)sizing of a viewport.
-		Configure(config [1]gdclass.RenderSceneBuffersConfiguration)
-		//Implement this in GDExtension to record a new FSR sharpness value.
-		SetFsrSharpness(fsr_sharpness Float.X)
-		//Implement this in GDExtension to change the texture mipmap bias.
-		SetTextureMipmapBias(texture_mipmap_bias Float.X)
-		//Implement this in GDExtension to react to the debanding flag changing.
-		SetUseDebanding(use_debanding bool)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=RenderSceneBuffersExtension)
 */
 type Instance [1]gdclass.RenderSceneBuffersExtension
 type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffersExtension() Instance
 }
+type Interface interface {
+	//Implement this in GDExtension to handle the (re)sizing of a viewport.
+	Configure(config [1]gdclass.RenderSceneBuffersConfiguration)
+	//Implement this in GDExtension to record a new FSR sharpness value.
+	SetFsrSharpness(fsr_sharpness Float.X)
+	//Implement this in GDExtension to change the texture mipmap bias.
+	SetTextureMipmapBias(texture_mipmap_bias Float.X)
+	//Implement this in GDExtension to react to the debanding flag changing.
+	SetUseDebanding(use_debanding bool)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { return }
+func (self Implementation) SetFsrSharpness(fsr_sharpness Float.X)                       { return }
+func (self Implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)            { return }
+func (self Implementation) SetUseDebanding(use_debanding bool)                          { return }
 
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.
@@ -99,7 +109,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffersExtension"))
-	return Instance{*(*gdclass.RenderSceneBuffersExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.RenderSceneBuffersExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

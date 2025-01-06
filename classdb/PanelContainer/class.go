@@ -44,7 +44,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PanelContainer"))
-	return Instance{*(*gdclass.PanelContainer)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PanelContainer)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self class) AsPanelContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

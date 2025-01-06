@@ -73,17 +73,24 @@ public partial class NodeRenamer : EditorScenePostImport
 [/csharp]
 [/codeblocks]
 
-	// EditorScenePostImport methods that can be overridden by a [Class] that extends it.
-	type EditorScenePostImport interface {
-		//Called after the scene was imported. This method must return the modified version of the scene.
-		PostImport(scene [1]gdclass.Node) Object.Instance
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorScenePostImport)
 */
 type Instance [1]gdclass.EditorScenePostImport
 type Any interface {
 	gd.IsClass
 	AsEditorScenePostImport() Instance
 }
+type Interface interface {
+	//Called after the scene was imported. This method must return the modified version of the scene.
+	PostImport(scene [1]gdclass.Node) Object.Instance
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) PostImport(scene [1]gdclass.Node) (_ Object.Instance) { return }
 
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
@@ -123,7 +130,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImport"))
-	return Instance{*(*gdclass.EditorScenePostImport)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorScenePostImport)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

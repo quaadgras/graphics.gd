@@ -49,17 +49,24 @@ public partial class HelloEditor : EditorScript
 [b]Note:[/b] The script is run in the Editor context, which means the output is visible in the console window started with the Editor (stdout) instead of the usual Godot [b]Output[/b] dock.
 [b]Note:[/b] EditorScript is [RefCounted], meaning it is destroyed when nothing references it. This can cause errors during asynchronous operations if there are no references to the script.
 
-	// EditorScript methods that can be overridden by a [Class] that extends it.
-	type EditorScript interface {
-		//This method is executed by the Editor when [b]File > Run[/b] is used.
-		Run()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorScript)
 */
 type Instance [1]gdclass.EditorScript
 type Any interface {
 	gd.IsClass
 	AsEditorScript() Instance
 }
+type Interface interface {
+	//This method is executed by the Editor when [b]File > Run[/b] is used.
+	Run()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Run() { return }
 
 /*
 This method is executed by the Editor when [b]File > Run[/b] is used.
@@ -106,7 +113,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScript"))
-	return Instance{*(*gdclass.EditorScript)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorScript)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

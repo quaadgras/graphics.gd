@@ -23,18 +23,28 @@ var _ = pointers.Cycle
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
 Be sure to respect the documented return types and values. You should create an instance of it, and call [method add_format_loader] to register that loader during the initialization phase.
 
-	// ImageFormatLoaderExtension methods that can be overridden by a [Class] that extends it.
-	type ImageFormatLoaderExtension interface {
-		//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
-		GetRecognizedExtensions() []string
-		//Loads the content of [param fileaccess] into the provided [param image].
-		LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=ImageFormatLoaderExtension)
 */
 type Instance [1]gdclass.ImageFormatLoaderExtension
 type Any interface {
 	gd.IsClass
 	AsImageFormatLoaderExtension() Instance
+}
+type Interface interface {
+	//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
+	GetRecognizedExtensions() []string
+	//Loads the content of [param fileaccess] into the provided [param image].
+	LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetRecognizedExtensions() (_ []string) { return }
+func (self Implementation) LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) (_ error) {
+	return
 }
 
 /*
@@ -97,7 +107,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageFormatLoaderExtension"))
-	return Instance{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

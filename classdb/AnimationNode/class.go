@@ -33,33 +33,49 @@ var current_position = $AnimationTree[parameters/AnimationNodeName/current_posit
 var current_delta = $AnimationTree[parameters/AnimationNodeName/current_delta]
 [/codeblock]
 
-	// AnimationNode methods that can be overridden by a [Class] that extends it.
-	type AnimationNode interface {
-		//When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
-		GetChildNodes() Dictionary.Any
-		//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
-		GetParameterList() Array.Any
-		//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
-		GetChildByName(name string) [1]gdclass.AnimationNode
-		//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-		GetParameterDefaultValue(parameter string) any
-		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-		IsParameterReadOnly(parameter string) bool
-		//When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute.
-		//Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
-		//This function should return the delta.
-		Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X
-		//When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
-		GetCaption() string
-		//When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
-		HasFilter() bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AnimationNode)
 */
 type Instance [1]gdclass.AnimationNode
 type Any interface {
 	gd.IsClass
 	AsAnimationNode() Instance
 }
+type Interface interface {
+	//When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
+	GetChildNodes() Dictionary.Any
+	//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
+	GetParameterList() Array.Any
+	//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
+	GetChildByName(name string) [1]gdclass.AnimationNode
+	//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
+	GetParameterDefaultValue(parameter string) any
+	//When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
+	IsParameterReadOnly(parameter string) bool
+	//When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute.
+	//Here, call the [method blend_input], [method blend_node] or [method blend_animation] functions. You can also use [method get_parameter] and [method set_parameter] to modify local memory.
+	//This function should return the delta.
+	Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X
+	//When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
+	GetCaption() string
+	//When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
+	HasFilter() bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetChildNodes() (_ Dictionary.Any)                       { return }
+func (self Implementation) GetParameterList() (_ Array.Any)                         { return }
+func (self Implementation) GetChildByName(name string) (_ [1]gdclass.AnimationNode) { return }
+func (self Implementation) GetParameterDefaultValue(parameter string) (_ any)       { return }
+func (self Implementation) IsParameterReadOnly(parameter string) (_ bool)           { return }
+func (self Implementation) Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) (_ Float.X) {
+	return
+}
+func (self Implementation) GetCaption() (_ string) { return }
+func (self Implementation) HasFilter() (_ bool)    { return }
 
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
@@ -287,7 +303,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNode"))
-	return Instance{*(*gdclass.AnimationNode)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AnimationNode)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) FilterEnabled() bool {

@@ -22,31 +22,44 @@ var _ = pointers.Cycle
 /*
 Base class for audio streams. Audio streams are used for sound effects and music playback, and support WAV (via [AudioStreamWAV]) and Ogg (via [AudioStreamOggVorbis]) file formats.
 
-	// AudioStream methods that can be overridden by a [Class] that extends it.
-	type AudioStream interface {
-		//Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
-		InstantiatePlayback() [1]gdclass.AudioStreamPlayback
-		//Override this method to customize the name assigned to this audio stream. Unused by the engine.
-		GetStreamName() string
-		//Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
-		GetLength() Float.X
-		//Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
-		IsMonophonic() bool
-		//Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
-		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
-		GetBpm() Float.X
-		//Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
-		//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
-		GetBeatCount() int
-		//Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
-		GetParameterList() gd.Array
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AudioStream)
 */
 type Instance [1]gdclass.AudioStream
 type Any interface {
 	gd.IsClass
 	AsAudioStream() Instance
 }
+type Interface interface {
+	//Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
+	InstantiatePlayback() [1]gdclass.AudioStreamPlayback
+	//Override this method to customize the name assigned to this audio stream. Unused by the engine.
+	GetStreamName() string
+	//Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
+	GetLength() Float.X
+	//Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
+	IsMonophonic() bool
+	//Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
+	//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
+	GetBpm() Float.X
+	//Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
+	//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
+	GetBeatCount() int
+	//Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
+	GetParameterList() gd.Array
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) InstantiatePlayback() (_ [1]gdclass.AudioStreamPlayback) { return }
+func (self Implementation) GetStreamName() (_ string)                               { return }
+func (self Implementation) GetLength() (_ Float.X)                                  { return }
+func (self Implementation) IsMonophonic() (_ bool)                                  { return }
+func (self Implementation) GetBpm() (_ Float.X)                                     { return }
+func (self Implementation) GetBeatCount() (_ int)                                   { return }
+func (self Implementation) GetParameterList() (_ gd.Array)                          { return }
 
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
@@ -195,7 +208,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStream"))
-	return Instance{*(*gdclass.AudioStream)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioStream)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

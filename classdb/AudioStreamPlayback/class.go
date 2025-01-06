@@ -21,36 +21,52 @@ var _ = pointers.Cycle
 /*
 Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOggVorbis] for usage.
 
-	// AudioStreamPlayback methods that can be overridden by a [Class] that extends it.
-	type AudioStreamPlayback interface {
-		//Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
-		Start(from_pos Float.X)
-		//Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
-		Stop()
-		//Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
-		IsPlaying() bool
-		//Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
-		GetLoopCount() int
-		//Overridable method. Should return the current progress along the audio stream, in seconds.
-		GetPlaybackPosition() Float.X
-		//Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
-		Seek(position Float.X)
-		//Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
-		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Mix(buffer *AudioFrame, rate_scale Float.X, frames int) int
-		//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
-		TagUsedStreams()
-		//Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
-		SetParameter(name string, value any)
-		//Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
-		GetParameter(name string) any
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AudioStreamPlayback)
 */
 type Instance [1]gdclass.AudioStreamPlayback
 type Any interface {
 	gd.IsClass
 	AsAudioStreamPlayback() Instance
 }
+type Interface interface {
+	//Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
+	Start(from_pos Float.X)
+	//Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
+	Stop()
+	//Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
+	IsPlaying() bool
+	//Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
+	GetLoopCount() int
+	//Overridable method. Should return the current progress along the audio stream, in seconds.
+	GetPlaybackPosition() Float.X
+	//Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
+	Seek(position Float.X)
+	//Override this method to customize how the audio stream is mixed. This method is called even if the playback is not active.
+	//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
+	Mix(buffer *AudioFrame, rate_scale Float.X, frames int) int
+	//Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
+	TagUsedStreams()
+	//Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
+	SetParameter(name string, value any)
+	//Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
+	GetParameter(name string) any
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Start(from_pos Float.X)                                         { return }
+func (self Implementation) Stop()                                                          { return }
+func (self Implementation) IsPlaying() (_ bool)                                            { return }
+func (self Implementation) GetLoopCount() (_ int)                                          { return }
+func (self Implementation) GetPlaybackPosition() (_ Float.X)                               { return }
+func (self Implementation) Seek(position Float.X)                                          { return }
+func (self Implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) { return }
+func (self Implementation) TagUsedStreams()                                                { return }
+func (self Implementation) SetParameter(name string, value any)                            { return }
+func (self Implementation) GetParameter(name string) (_ any)                               { return }
 
 /*
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
@@ -201,7 +217,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlayback"))
-	return Instance{*(*gdclass.AudioStreamPlayback)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioStreamPlayback)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

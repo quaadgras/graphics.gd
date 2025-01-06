@@ -102,32 +102,53 @@ get_tree().set_multiplayer(LogMultiplayer.new())
 [/codeblocks]
 Native extensions can alternatively use the [method MultiplayerAPI.set_default_interface] method during initialization to configure themselves as the default implementation.
 
-	// MultiplayerAPIExtension methods that can be overridden by a [Class] that extends it.
-	type MultiplayerAPIExtension interface {
-		//Callback for [method MultiplayerAPI.poll].
-		Poll() error
-		//Called when the [member MultiplayerAPI.multiplayer_peer] is set.
-		SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer)
-		//Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
-		GetMultiplayerPeer() [1]gdclass.MultiplayerPeer
-		//Callback for [method MultiplayerAPI.get_unique_id].
-		GetUniqueId() int
-		//Callback for [method MultiplayerAPI.get_peers].
-		GetPeerIds() []int32
-		//Callback for [method MultiplayerAPI.rpc].
-		Rpc(peer int, obj Object.Instance, method string, args Array.Any) error
-		//Callback for [method MultiplayerAPI.get_remote_sender_id].
-		GetRemoteSenderId() int
-		//Callback for [method MultiplayerAPI.object_configuration_add].
-		ObjectConfigurationAdd(obj Object.Instance, configuration any) error
-		//Callback for [method MultiplayerAPI.object_configuration_remove].
-		ObjectConfigurationRemove(obj Object.Instance, configuration any) error
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=MultiplayerAPIExtension)
 */
 type Instance [1]gdclass.MultiplayerAPIExtension
 type Any interface {
 	gd.IsClass
 	AsMultiplayerAPIExtension() Instance
+}
+type Interface interface {
+	//Callback for [method MultiplayerAPI.poll].
+	Poll() error
+	//Called when the [member MultiplayerAPI.multiplayer_peer] is set.
+	SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer)
+	//Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
+	GetMultiplayerPeer() [1]gdclass.MultiplayerPeer
+	//Callback for [method MultiplayerAPI.get_unique_id].
+	GetUniqueId() int
+	//Callback for [method MultiplayerAPI.get_peers].
+	GetPeerIds() []int32
+	//Callback for [method MultiplayerAPI.rpc].
+	Rpc(peer int, obj Object.Instance, method string, args Array.Any) error
+	//Callback for [method MultiplayerAPI.get_remote_sender_id].
+	GetRemoteSenderId() int
+	//Callback for [method MultiplayerAPI.object_configuration_add].
+	ObjectConfigurationAdd(obj Object.Instance, configuration any) error
+	//Callback for [method MultiplayerAPI.object_configuration_remove].
+	ObjectConfigurationRemove(obj Object.Instance, configuration any) error
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Poll() (_ error)                                                { return }
+func (self Implementation) SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer) { return }
+func (self Implementation) GetMultiplayerPeer() (_ [1]gdclass.MultiplayerPeer)             { return }
+func (self Implementation) GetUniqueId() (_ int)                                           { return }
+func (self Implementation) GetPeerIds() (_ []int32)                                        { return }
+func (self Implementation) Rpc(peer int, obj Object.Instance, method string, args Array.Any) (_ error) {
+	return
+}
+func (self Implementation) GetRemoteSenderId() (_ int) { return }
+func (self Implementation) ObjectConfigurationAdd(obj Object.Instance, configuration any) (_ error) {
+	return
+}
+func (self Implementation) ObjectConfigurationRemove(obj Object.Instance, configuration any) (_ error) {
+	return
 }
 
 /*
@@ -267,7 +288,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPIExtension"))
-	return Instance{*(*gdclass.MultiplayerAPIExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.MultiplayerAPIExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -466,6 +466,9 @@ func initialize(_ unsafe.Pointer, level initializationLevel) {
 			doneInit <- struct{}{}
 		}()
 		<-doneInit
+		for _, fn := range internal.PostStartupFunctions {
+			fn()
+		}
 	}
 }
 

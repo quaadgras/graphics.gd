@@ -26,16 +26,25 @@ var _ = pointers.Cycle
 Base class for [AnimationPlayer] and [AnimationTree] to manage animation lists. It also has general properties and methods for playback and blending.
 After instantiating the playback information data within the extended class, the blending is processed by the [AnimationMixer].
 
-	// AnimationMixer methods that can be overridden by a [Class] that extends it.
-	type AnimationMixer interface {
-		//A virtual function for processing after getting a key during playback.
-		PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AnimationMixer)
 */
 type Instance [1]gdclass.AnimationMixer
 type Any interface {
 	gd.IsClass
 	AsAnimationMixer() Instance
+}
+type Interface interface {
+	//A virtual function for processing after getting a key during playback.
+	PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) (_ any) {
+	return
 }
 
 /*
@@ -342,7 +351,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationMixer"))
-	return Instance{*(*gdclass.AnimationMixer)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AnimationMixer)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Active() bool {

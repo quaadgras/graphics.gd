@@ -24,27 +24,39 @@ Base class for [ImageTexture3D] and [CompressedTexture3D]. Cannot be used direct
 All images need to have the same width, height and number of mipmap levels.
 To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
 
-	// Texture3D methods that can be overridden by a [Class] that extends it.
-	type Texture3D interface {
-		//Called when the [Texture3D]'s format is queried.
-		GetFormat() gdclass.ImageFormat
-		//Called when the [Texture3D]'s width is queried.
-		GetWidth() int
-		//Called when the [Texture3D]'s height is queried.
-		GetHeight() int
-		//Called when the [Texture3D]'s depth is queried.
-		GetDepth() int
-		//Called when the presence of mipmaps in the [Texture3D] is queried.
-		HasMipmaps() bool
-		//Called when the [Texture3D]'s data is queried.
-		GetData() gd.Array
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Texture3D)
 */
 type Instance [1]gdclass.Texture3D
 type Any interface {
 	gd.IsClass
 	AsTexture3D() Instance
 }
+type Interface interface {
+	//Called when the [Texture3D]'s format is queried.
+	GetFormat() gdclass.ImageFormat
+	//Called when the [Texture3D]'s width is queried.
+	GetWidth() int
+	//Called when the [Texture3D]'s height is queried.
+	GetHeight() int
+	//Called when the [Texture3D]'s depth is queried.
+	GetDepth() int
+	//Called when the presence of mipmaps in the [Texture3D] is queried.
+	HasMipmaps() bool
+	//Called when the [Texture3D]'s data is queried.
+	GetData() gd.Array
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetFormat() (_ gdclass.ImageFormat) { return }
+func (self Implementation) GetWidth() (_ int)                  { return }
+func (self Implementation) GetHeight() (_ int)                 { return }
+func (self Implementation) GetDepth() (_ int)                  { return }
+func (self Implementation) HasMipmaps() (_ bool)               { return }
+func (self Implementation) GetData() (_ gd.Array)              { return }
 
 /*
 Called when the [Texture3D]'s format is queried.
@@ -179,7 +191,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture3D"))
-	return Instance{*(*gdclass.Texture3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Texture3D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

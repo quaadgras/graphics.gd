@@ -26,310 +26,552 @@ var _ = pointers.Cycle
 This class extends [PhysicsServer2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsServer2D].
 
-	// PhysicsServer2DExtension methods that can be overridden by a [Class] that extends it.
-	type PhysicsServer2DExtension interface {
-		//Overridable version of [method PhysicsServer2D.world_boundary_shape_create].
-		WorldBoundaryShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.separation_ray_shape_create].
-		SeparationRayShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.segment_shape_create].
-		SegmentShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.circle_shape_create].
-		CircleShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.rectangle_shape_create].
-		RectangleShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.capsule_shape_create].
-		CapsuleShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.convex_polygon_shape_create].
-		ConvexPolygonShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.concave_polygon_shape_create].
-		ConcavePolygonShapeCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.shape_set_data].
-		ShapeSetData(shape Resource.ID, data any)
-		//Should set the custom solver bias for the given [param shape]. It defines how much bodies are forced to separate on contact.
-		//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
-		ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X)
-		//Overridable version of [method PhysicsServer2D.shape_get_type].
-		ShapeGetType(shape Resource.ID) gdclass.PhysicsServer2DShapeType
-		//Overridable version of [method PhysicsServer2D.shape_get_data].
-		ShapeGetData(shape Resource.ID) any
-		//Should return the custom solver bias of the given [param shape], which defines how much bodies are forced to separate on contact when this shape is involved.
-		//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
-		ShapeGetCustomSolverBias(shape Resource.ID) Float.X
-		//Given two shapes and their parameters, should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
-		//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
-		ShapeCollide(shape_A Resource.ID, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B Resource.ID, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool
-		//Overridable version of [method PhysicsServer2D.space_create].
-		SpaceCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.space_set_active].
-		SpaceSetActive(space Resource.ID, active bool)
-		//Overridable version of [method PhysicsServer2D.space_is_active].
-		SpaceIsActive(space Resource.ID) bool
-		//Overridable version of [method PhysicsServer2D.space_set_param].
-		SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter, value Float.X)
-		//Overridable version of [method PhysicsServer2D.space_get_param].
-		SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter) Float.X
-		//Overridable version of [method PhysicsServer2D.space_get_direct_state].
-		SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState2D
-		//Used internally to allow the given [param space] to store contact points, up to [param max_contacts]. This is automatically set for the main [World2D]'s space when [member SceneTree.debug_collisions_hint] is [code]true[/code], or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
-		//Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contacts[/code] method.
-		SpaceSetDebugContacts(space Resource.ID, max_contacts int)
-		//Should return the positions of all contacts that have occurred during the last physics step in the given [param space]. See also [method _space_get_contact_count] and [method _space_set_debug_contacts].
-		//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/code] method.
-		SpaceGetContacts(space Resource.ID) []Vector2.XY
-		//Should return how many contacts have occurred during the last physics step in the given [param space]. See also [method _space_get_contacts] and [method _space_set_debug_contacts].
-		//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contact_count[/code] method.
-		SpaceGetContactCount(space Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_create].
-		AreaCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.area_set_space].
-		AreaSetSpace(area Resource.ID, space Resource.ID)
-		//Overridable version of [method PhysicsServer2D.area_get_space].
-		AreaGetSpace(area Resource.ID) Resource.ID
-		//Overridable version of [method PhysicsServer2D.area_add_shape].
-		AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool)
-		//Overridable version of [method PhysicsServer2D.area_set_shape].
-		AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID)
-		//Overridable version of [method PhysicsServer2D.area_set_shape_transform].
-		AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY)
-		//Overridable version of [method PhysicsServer2D.area_set_shape_disabled].
-		AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool)
-		//Overridable version of [method PhysicsServer2D.area_get_shape_count].
-		AreaGetShapeCount(area Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_get_shape].
-		AreaGetShape(area Resource.ID, shape_idx int) Resource.ID
-		//Overridable version of [method PhysicsServer2D.area_get_shape_transform].
-		AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform2D.OriginXY
-		//Overridable version of [method PhysicsServer2D.area_remove_shape].
-		AreaRemoveShape(area Resource.ID, shape_idx int)
-		//Overridable version of [method PhysicsServer2D.area_clear_shapes].
-		AreaClearShapes(area Resource.ID)
-		//Overridable version of [method PhysicsServer2D.area_attach_object_instance_id].
-		AreaAttachObjectInstanceId(area Resource.ID, id int)
-		//Overridable version of [method PhysicsServer2D.area_get_object_instance_id].
-		AreaGetObjectInstanceId(area Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_attach_canvas_instance_id].
-		AreaAttachCanvasInstanceId(area Resource.ID, id int)
-		//Overridable version of [method PhysicsServer2D.area_get_canvas_instance_id].
-		AreaGetCanvasInstanceId(area Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_set_param].
-		AreaSetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter, value any)
-		//Overridable version of [method PhysicsServer2D.area_set_transform].
-		AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY)
-		//Overridable version of [method PhysicsServer2D.area_get_param].
-		AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) any
-		//Overridable version of [method PhysicsServer2D.area_get_transform].
-		AreaGetTransform(area Resource.ID) Transform2D.OriginXY
-		//Overridable version of [method PhysicsServer2D.area_set_collision_layer].
-		AreaSetCollisionLayer(area Resource.ID, layer int)
-		//Overridable version of [method PhysicsServer2D.area_get_collision_layer].
-		AreaGetCollisionLayer(area Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_set_collision_mask].
-		AreaSetCollisionMask(area Resource.ID, mask int)
-		//Overridable version of [method PhysicsServer2D.area_get_collision_mask].
-		AreaGetCollisionMask(area Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.area_set_monitorable].
-		AreaSetMonitorable(area Resource.ID, monitorable bool)
-		//If set to [code]true[/code], allows the area with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
-		//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
-		AreaSetPickable(area Resource.ID, pickable bool)
-		//Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
-		AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
-		//Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
-		AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
-		//Overridable version of [method PhysicsServer2D.body_create].
-		BodyCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.body_set_space].
-		BodySetSpace(body Resource.ID, space Resource.ID)
-		//Overridable version of [method PhysicsServer2D.body_get_space].
-		BodyGetSpace(body Resource.ID) Resource.ID
-		//Overridable version of [method PhysicsServer2D.body_set_mode].
-		BodySetMode(body Resource.ID, mode gdclass.PhysicsServer2DBodyMode)
-		//Overridable version of [method PhysicsServer2D.body_get_mode].
-		BodyGetMode(body Resource.ID) gdclass.PhysicsServer2DBodyMode
-		//Overridable version of [method PhysicsServer2D.body_add_shape].
-		BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool)
-		//Overridable version of [method PhysicsServer2D.body_set_shape].
-		BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID)
-		//Overridable version of [method PhysicsServer2D.body_set_shape_transform].
-		BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY)
-		//Overridable version of [method PhysicsServer2D.body_get_shape_count].
-		BodyGetShapeCount(body Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.body_get_shape].
-		BodyGetShape(body Resource.ID, shape_idx int) Resource.ID
-		//Overridable version of [method PhysicsServer2D.body_get_shape_transform].
-		BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform2D.OriginXY
-		//Overridable version of [method PhysicsServer2D.body_set_shape_disabled].
-		BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool)
-		//Overridable version of [method PhysicsServer2D.body_set_shape_as_one_way_collision].
-		BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X)
-		//Overridable version of [method PhysicsServer2D.body_remove_shape].
-		BodyRemoveShape(body Resource.ID, shape_idx int)
-		//Overridable version of [method PhysicsServer2D.body_clear_shapes].
-		BodyClearShapes(body Resource.ID)
-		//Overridable version of [method PhysicsServer2D.body_attach_object_instance_id].
-		BodyAttachObjectInstanceId(body Resource.ID, id int)
-		//Overridable version of [method PhysicsServer2D.body_get_object_instance_id].
-		BodyGetObjectInstanceId(body Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.body_attach_canvas_instance_id].
-		BodyAttachCanvasInstanceId(body Resource.ID, id int)
-		//Overridable version of [method PhysicsServer2D.body_get_canvas_instance_id].
-		BodyGetCanvasInstanceId(body Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.body_set_continuous_collision_detection_mode].
-		BodySetContinuousCollisionDetectionMode(body Resource.ID, mode gdclass.PhysicsServer2DCCDMode)
-		//Overridable version of [method PhysicsServer2D.body_get_continuous_collision_detection_mode].
-		BodyGetContinuousCollisionDetectionMode(body Resource.ID) gdclass.PhysicsServer2DCCDMode
-		//Overridable version of [method PhysicsServer2D.body_set_collision_layer].
-		BodySetCollisionLayer(body Resource.ID, layer int)
-		//Overridable version of [method PhysicsServer2D.body_get_collision_layer].
-		BodyGetCollisionLayer(body Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.body_set_collision_mask].
-		BodySetCollisionMask(body Resource.ID, mask int)
-		//Overridable version of [method PhysicsServer2D.body_get_collision_mask].
-		BodyGetCollisionMask(body Resource.ID) int
-		//Overridable version of [method PhysicsServer2D.body_set_collision_priority].
-		BodySetCollisionPriority(body Resource.ID, priority Float.X)
-		//Overridable version of [method PhysicsServer2D.body_get_collision_priority].
-		BodyGetCollisionPriority(body Resource.ID) Float.X
-		//Overridable version of [method PhysicsServer2D.body_set_param].
-		BodySetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter, value any)
-		//Overridable version of [method PhysicsServer2D.body_get_param].
-		BodyGetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter) any
-		//Overridable version of [method PhysicsServer2D.body_reset_mass_properties].
-		BodyResetMassProperties(body Resource.ID)
-		//Overridable version of [method PhysicsServer2D.body_set_state].
-		BodySetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState, value any)
-		//Overridable version of [method PhysicsServer2D.body_get_state].
-		BodyGetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState) any
-		//Overridable version of [method PhysicsServer2D.body_apply_central_impulse].
-		BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_apply_torque_impulse].
-		BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X)
-		//Overridable version of [method PhysicsServer2D.body_apply_impulse].
-		BodyApplyImpulse(body Resource.ID, impulse Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_apply_central_force].
-		BodyApplyCentralForce(body Resource.ID, force Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_apply_force].
-		BodyApplyForce(body Resource.ID, force Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_apply_torque].
-		BodyApplyTorque(body Resource.ID, torque Float.X)
-		//Overridable version of [method PhysicsServer2D.body_add_constant_central_force].
-		BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_add_constant_force].
-		BodyAddConstantForce(body Resource.ID, force Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_add_constant_torque].
-		BodyAddConstantTorque(body Resource.ID, torque Float.X)
-		//Overridable version of [method PhysicsServer2D.body_set_constant_force].
-		BodySetConstantForce(body Resource.ID, force Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_get_constant_force].
-		BodyGetConstantForce(body Resource.ID) Vector2.XY
-		//Overridable version of [method PhysicsServer2D.body_set_constant_torque].
-		BodySetConstantTorque(body Resource.ID, torque Float.X)
-		//Overridable version of [method PhysicsServer2D.body_get_constant_torque].
-		BodyGetConstantTorque(body Resource.ID) Float.X
-		//Overridable version of [method PhysicsServer2D.body_set_axis_velocity].
-		BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY)
-		//Overridable version of [method PhysicsServer2D.body_add_collision_exception].
-		BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID)
-		//Overridable version of [method PhysicsServer2D.body_remove_collision_exception].
-		BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
-		//Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
-		BodyGetCollisionExceptions(body Resource.ID) gd.Array
-		//Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
-		BodySetMaxContactsReported(body Resource.ID, amount int)
-		//Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
-		BodyGetMaxContactsReported(body Resource.ID) int
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_contacts_reported_depth_threshold[/code] method.
-		//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
-		BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X)
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_get_contacts_reported_depth_threshold[/code] method.
-		//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
-		BodyGetContactsReportedDepthThreshold(body Resource.ID) Float.X
-		//Overridable version of [method PhysicsServer2D.body_set_omit_force_integration].
-		BodySetOmitForceIntegration(body Resource.ID, enable bool)
-		//Overridable version of [method PhysicsServer2D.body_is_omitting_force_integration].
-		BodyIsOmittingForceIntegration(body Resource.ID) bool
-		//Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
-		//Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
-		BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
-		//Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
-		BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
-		//Given a [param body], a [param shape], and their respective parameters, this method should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
-		//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
-		BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool
-		//If set to [code]true[/code], allows the body with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
-		//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
-		BodySetPickable(body Resource.ID, pickable bool)
-		//Overridable version of [method PhysicsServer2D.body_get_direct_state].
-		BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState2D
-		//Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
-		BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
-		//Overridable version of [method PhysicsServer2D.joint_create].
-		JointCreate() Resource.ID
-		//Overridable version of [method PhysicsServer2D.joint_clear].
-		JointClear(joint Resource.ID)
-		//Overridable version of [method PhysicsServer2D.joint_set_param].
-		JointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam, value Float.X)
-		//Overridable version of [method PhysicsServer2D.joint_get_param].
-		JointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam) Float.X
-		//Overridable version of [method PhysicsServer2D.joint_disable_collisions_between_bodies].
-		JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool)
-		//Overridable version of [method PhysicsServer2D.joint_is_disabled_collisions_between_bodies].
-		JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool
-		//Overridable version of [method PhysicsServer2D.joint_make_pin].
-		JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID)
-		//Overridable version of [method PhysicsServer2D.joint_make_groove].
-		JointMakeGroove(joint Resource.ID, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID)
-		//Overridable version of [method PhysicsServer2D.joint_make_damped_spring].
-		JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID, body_b Resource.ID)
-		//Overridable version of [method PhysicsServer2D.pin_joint_set_flag].
-		PinJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool)
-		//Overridable version of [method PhysicsServer2D.pin_joint_get_flag].
-		PinJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag) bool
-		//Overridable version of [method PhysicsServer2D.pin_joint_set_param].
-		PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam, value Float.X)
-		//Overridable version of [method PhysicsServer2D.pin_joint_get_param].
-		PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam) Float.X
-		//Overridable version of [method PhysicsServer2D.damped_spring_joint_set_param].
-		DampedSpringJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X)
-		//Overridable version of [method PhysicsServer2D.damped_spring_joint_get_param].
-		DampedSpringJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam) Float.X
-		//Overridable version of [method PhysicsServer2D.joint_get_type].
-		JointGetType(joint Resource.ID) gdclass.PhysicsServer2DJointType
-		//Overridable version of [method PhysicsServer2D.free_rid].
-		FreeRid(rid Resource.ID)
-		//Overridable version of [method PhysicsServer2D.set_active].
-		SetActive(active bool)
-		//Called when the main loop is initialized and creates a new instance of this physics server. See also [method MainLoop._initialize] and [method _finish].
-		//Overridable version of [PhysicsServer2D]'s internal [code]init[/code] method.
-		Init()
-		//Called every physics step to process the physics simulation. [param step] is the time elapsed since the last physics step, in seconds. It is usually the same as [method Node.get_physics_process_delta_time].
-		//Overridable version of [PhysicsServer2D]'s internal [code skip-lint]step[/code] method.
-		Step(step Float.X)
-		//Called to indicate that the physics server is synchronizing and cannot access physics states if running on a separate thread. See also [method _end_sync].
-		//Overridable version of [PhysicsServer2D]'s internal [code]sync[/code] method.
-		Sync()
-		//Called every physics step before [method _step] to process all remaining queries.
-		//Overridable version of [PhysicsServer2D]'s internal [code]flush_queries[/code] method.
-		FlushQueries()
-		//Called to indicate that the physics server has stopped synchronizing. It is in the loop's iteration/physics phase, and can access physics objects even if running on a separate thread. See also [method _sync].
-		//Overridable version of [PhysicsServer2D]'s internal [code]end_sync[/code] method.
-		EndSync()
-		//Called when the main loop finalizes to shut down the physics server. See also [method MainLoop._finalize] and [method _init].
-		//Overridable version of [PhysicsServer2D]'s internal [code]finish[/code] method.
-		Finish()
-		//Overridable method that should return [code]true[/code] when the physics server is processing queries. See also [method _flush_queries].
-		//Overridable version of [PhysicsServer2D]'s internal [code]is_flushing_queries[/code] method.
-		IsFlushingQueries() bool
-		//Overridable version of [method PhysicsServer2D.get_process_info].
-		GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) int
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicsServer2DExtension)
 */
 type Instance [1]gdclass.PhysicsServer2DExtension
 type Any interface {
 	gd.IsClass
 	AsPhysicsServer2DExtension() Instance
+}
+type Interface interface {
+	//Overridable version of [method PhysicsServer2D.world_boundary_shape_create].
+	WorldBoundaryShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.separation_ray_shape_create].
+	SeparationRayShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.segment_shape_create].
+	SegmentShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.circle_shape_create].
+	CircleShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.rectangle_shape_create].
+	RectangleShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.capsule_shape_create].
+	CapsuleShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.convex_polygon_shape_create].
+	ConvexPolygonShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.concave_polygon_shape_create].
+	ConcavePolygonShapeCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.shape_set_data].
+	ShapeSetData(shape Resource.ID, data any)
+	//Should set the custom solver bias for the given [param shape]. It defines how much bodies are forced to separate on contact.
+	//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
+	ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X)
+	//Overridable version of [method PhysicsServer2D.shape_get_type].
+	ShapeGetType(shape Resource.ID) gdclass.PhysicsServer2DShapeType
+	//Overridable version of [method PhysicsServer2D.shape_get_data].
+	ShapeGetData(shape Resource.ID) any
+	//Should return the custom solver bias of the given [param shape], which defines how much bodies are forced to separate on contact when this shape is involved.
+	//Overridable version of [PhysicsServer2D]'s internal [code]shape_get_custom_solver_bias[/code] method. Corresponds to [member Shape2D.custom_solver_bias].
+	ShapeGetCustomSolverBias(shape Resource.ID) Float.X
+	//Given two shapes and their parameters, should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
+	//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
+	ShapeCollide(shape_A Resource.ID, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B Resource.ID, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool
+	//Overridable version of [method PhysicsServer2D.space_create].
+	SpaceCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.space_set_active].
+	SpaceSetActive(space Resource.ID, active bool)
+	//Overridable version of [method PhysicsServer2D.space_is_active].
+	SpaceIsActive(space Resource.ID) bool
+	//Overridable version of [method PhysicsServer2D.space_set_param].
+	SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter, value Float.X)
+	//Overridable version of [method PhysicsServer2D.space_get_param].
+	SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter) Float.X
+	//Overridable version of [method PhysicsServer2D.space_get_direct_state].
+	SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState2D
+	//Used internally to allow the given [param space] to store contact points, up to [param max_contacts]. This is automatically set for the main [World2D]'s space when [member SceneTree.debug_collisions_hint] is [code]true[/code], or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
+	//Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contacts[/code] method.
+	SpaceSetDebugContacts(space Resource.ID, max_contacts int)
+	//Should return the positions of all contacts that have occurred during the last physics step in the given [param space]. See also [method _space_get_contact_count] and [method _space_set_debug_contacts].
+	//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contacts[/code] method.
+	SpaceGetContacts(space Resource.ID) []Vector2.XY
+	//Should return how many contacts have occurred during the last physics step in the given [param space]. See also [method _space_get_contacts] and [method _space_set_debug_contacts].
+	//Overridable version of [PhysicsServer2D]'s internal [code]space_get_contact_count[/code] method.
+	SpaceGetContactCount(space Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_create].
+	AreaCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.area_set_space].
+	AreaSetSpace(area Resource.ID, space Resource.ID)
+	//Overridable version of [method PhysicsServer2D.area_get_space].
+	AreaGetSpace(area Resource.ID) Resource.ID
+	//Overridable version of [method PhysicsServer2D.area_add_shape].
+	AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool)
+	//Overridable version of [method PhysicsServer2D.area_set_shape].
+	AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID)
+	//Overridable version of [method PhysicsServer2D.area_set_shape_transform].
+	AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY)
+	//Overridable version of [method PhysicsServer2D.area_set_shape_disabled].
+	AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool)
+	//Overridable version of [method PhysicsServer2D.area_get_shape_count].
+	AreaGetShapeCount(area Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_get_shape].
+	AreaGetShape(area Resource.ID, shape_idx int) Resource.ID
+	//Overridable version of [method PhysicsServer2D.area_get_shape_transform].
+	AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform2D.OriginXY
+	//Overridable version of [method PhysicsServer2D.area_remove_shape].
+	AreaRemoveShape(area Resource.ID, shape_idx int)
+	//Overridable version of [method PhysicsServer2D.area_clear_shapes].
+	AreaClearShapes(area Resource.ID)
+	//Overridable version of [method PhysicsServer2D.area_attach_object_instance_id].
+	AreaAttachObjectInstanceId(area Resource.ID, id int)
+	//Overridable version of [method PhysicsServer2D.area_get_object_instance_id].
+	AreaGetObjectInstanceId(area Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_attach_canvas_instance_id].
+	AreaAttachCanvasInstanceId(area Resource.ID, id int)
+	//Overridable version of [method PhysicsServer2D.area_get_canvas_instance_id].
+	AreaGetCanvasInstanceId(area Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_set_param].
+	AreaSetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter, value any)
+	//Overridable version of [method PhysicsServer2D.area_set_transform].
+	AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY)
+	//Overridable version of [method PhysicsServer2D.area_get_param].
+	AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) any
+	//Overridable version of [method PhysicsServer2D.area_get_transform].
+	AreaGetTransform(area Resource.ID) Transform2D.OriginXY
+	//Overridable version of [method PhysicsServer2D.area_set_collision_layer].
+	AreaSetCollisionLayer(area Resource.ID, layer int)
+	//Overridable version of [method PhysicsServer2D.area_get_collision_layer].
+	AreaGetCollisionLayer(area Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_set_collision_mask].
+	AreaSetCollisionMask(area Resource.ID, mask int)
+	//Overridable version of [method PhysicsServer2D.area_get_collision_mask].
+	AreaGetCollisionMask(area Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.area_set_monitorable].
+	AreaSetMonitorable(area Resource.ID, monitorable bool)
+	//If set to [code]true[/code], allows the area with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
+	//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
+	AreaSetPickable(area Resource.ID, pickable bool)
+	//Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
+	AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
+	//Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
+	AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
+	//Overridable version of [method PhysicsServer2D.body_create].
+	BodyCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.body_set_space].
+	BodySetSpace(body Resource.ID, space Resource.ID)
+	//Overridable version of [method PhysicsServer2D.body_get_space].
+	BodyGetSpace(body Resource.ID) Resource.ID
+	//Overridable version of [method PhysicsServer2D.body_set_mode].
+	BodySetMode(body Resource.ID, mode gdclass.PhysicsServer2DBodyMode)
+	//Overridable version of [method PhysicsServer2D.body_get_mode].
+	BodyGetMode(body Resource.ID) gdclass.PhysicsServer2DBodyMode
+	//Overridable version of [method PhysicsServer2D.body_add_shape].
+	BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool)
+	//Overridable version of [method PhysicsServer2D.body_set_shape].
+	BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID)
+	//Overridable version of [method PhysicsServer2D.body_set_shape_transform].
+	BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY)
+	//Overridable version of [method PhysicsServer2D.body_get_shape_count].
+	BodyGetShapeCount(body Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.body_get_shape].
+	BodyGetShape(body Resource.ID, shape_idx int) Resource.ID
+	//Overridable version of [method PhysicsServer2D.body_get_shape_transform].
+	BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform2D.OriginXY
+	//Overridable version of [method PhysicsServer2D.body_set_shape_disabled].
+	BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool)
+	//Overridable version of [method PhysicsServer2D.body_set_shape_as_one_way_collision].
+	BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X)
+	//Overridable version of [method PhysicsServer2D.body_remove_shape].
+	BodyRemoveShape(body Resource.ID, shape_idx int)
+	//Overridable version of [method PhysicsServer2D.body_clear_shapes].
+	BodyClearShapes(body Resource.ID)
+	//Overridable version of [method PhysicsServer2D.body_attach_object_instance_id].
+	BodyAttachObjectInstanceId(body Resource.ID, id int)
+	//Overridable version of [method PhysicsServer2D.body_get_object_instance_id].
+	BodyGetObjectInstanceId(body Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.body_attach_canvas_instance_id].
+	BodyAttachCanvasInstanceId(body Resource.ID, id int)
+	//Overridable version of [method PhysicsServer2D.body_get_canvas_instance_id].
+	BodyGetCanvasInstanceId(body Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.body_set_continuous_collision_detection_mode].
+	BodySetContinuousCollisionDetectionMode(body Resource.ID, mode gdclass.PhysicsServer2DCCDMode)
+	//Overridable version of [method PhysicsServer2D.body_get_continuous_collision_detection_mode].
+	BodyGetContinuousCollisionDetectionMode(body Resource.ID) gdclass.PhysicsServer2DCCDMode
+	//Overridable version of [method PhysicsServer2D.body_set_collision_layer].
+	BodySetCollisionLayer(body Resource.ID, layer int)
+	//Overridable version of [method PhysicsServer2D.body_get_collision_layer].
+	BodyGetCollisionLayer(body Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.body_set_collision_mask].
+	BodySetCollisionMask(body Resource.ID, mask int)
+	//Overridable version of [method PhysicsServer2D.body_get_collision_mask].
+	BodyGetCollisionMask(body Resource.ID) int
+	//Overridable version of [method PhysicsServer2D.body_set_collision_priority].
+	BodySetCollisionPriority(body Resource.ID, priority Float.X)
+	//Overridable version of [method PhysicsServer2D.body_get_collision_priority].
+	BodyGetCollisionPriority(body Resource.ID) Float.X
+	//Overridable version of [method PhysicsServer2D.body_set_param].
+	BodySetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter, value any)
+	//Overridable version of [method PhysicsServer2D.body_get_param].
+	BodyGetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter) any
+	//Overridable version of [method PhysicsServer2D.body_reset_mass_properties].
+	BodyResetMassProperties(body Resource.ID)
+	//Overridable version of [method PhysicsServer2D.body_set_state].
+	BodySetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState, value any)
+	//Overridable version of [method PhysicsServer2D.body_get_state].
+	BodyGetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState) any
+	//Overridable version of [method PhysicsServer2D.body_apply_central_impulse].
+	BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_apply_torque_impulse].
+	BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X)
+	//Overridable version of [method PhysicsServer2D.body_apply_impulse].
+	BodyApplyImpulse(body Resource.ID, impulse Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_apply_central_force].
+	BodyApplyCentralForce(body Resource.ID, force Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_apply_force].
+	BodyApplyForce(body Resource.ID, force Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_apply_torque].
+	BodyApplyTorque(body Resource.ID, torque Float.X)
+	//Overridable version of [method PhysicsServer2D.body_add_constant_central_force].
+	BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_add_constant_force].
+	BodyAddConstantForce(body Resource.ID, force Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_add_constant_torque].
+	BodyAddConstantTorque(body Resource.ID, torque Float.X)
+	//Overridable version of [method PhysicsServer2D.body_set_constant_force].
+	BodySetConstantForce(body Resource.ID, force Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_get_constant_force].
+	BodyGetConstantForce(body Resource.ID) Vector2.XY
+	//Overridable version of [method PhysicsServer2D.body_set_constant_torque].
+	BodySetConstantTorque(body Resource.ID, torque Float.X)
+	//Overridable version of [method PhysicsServer2D.body_get_constant_torque].
+	BodyGetConstantTorque(body Resource.ID) Float.X
+	//Overridable version of [method PhysicsServer2D.body_set_axis_velocity].
+	BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY)
+	//Overridable version of [method PhysicsServer2D.body_add_collision_exception].
+	BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID)
+	//Overridable version of [method PhysicsServer2D.body_remove_collision_exception].
+	BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
+	//Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
+	//Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
+	BodyGetCollisionExceptions(body Resource.ID) gd.Array
+	//Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
+	BodySetMaxContactsReported(body Resource.ID, amount int)
+	//Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
+	BodyGetMaxContactsReported(body Resource.ID) int
+	//Overridable version of [PhysicsServer2D]'s internal [code]body_set_contacts_reported_depth_threshold[/code] method.
+	//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
+	BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X)
+	//Overridable version of [PhysicsServer2D]'s internal [code]body_get_contacts_reported_depth_threshold[/code] method.
+	//[b]Note:[/b] This method is currently unused by Godot's default physics implementation.
+	BodyGetContactsReportedDepthThreshold(body Resource.ID) Float.X
+	//Overridable version of [method PhysicsServer2D.body_set_omit_force_integration].
+	BodySetOmitForceIntegration(body Resource.ID, enable bool)
+	//Overridable version of [method PhysicsServer2D.body_is_omitting_force_integration].
+	BodyIsOmittingForceIntegration(body Resource.ID) bool
+	//Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
+	//Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
+	BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
+	//Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
+	BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
+	//Given a [param body], a [param shape], and their respective parameters, this method should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
+	//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
+	BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool
+	//If set to [code]true[/code], allows the body with the given [RID] to detect mouse inputs when the mouse cursor is hovering on it.
+	//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
+	BodySetPickable(body Resource.ID, pickable bool)
+	//Overridable version of [method PhysicsServer2D.body_get_direct_state].
+	BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState2D
+	//Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
+	BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
+	//Overridable version of [method PhysicsServer2D.joint_create].
+	JointCreate() Resource.ID
+	//Overridable version of [method PhysicsServer2D.joint_clear].
+	JointClear(joint Resource.ID)
+	//Overridable version of [method PhysicsServer2D.joint_set_param].
+	JointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam, value Float.X)
+	//Overridable version of [method PhysicsServer2D.joint_get_param].
+	JointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam) Float.X
+	//Overridable version of [method PhysicsServer2D.joint_disable_collisions_between_bodies].
+	JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool)
+	//Overridable version of [method PhysicsServer2D.joint_is_disabled_collisions_between_bodies].
+	JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool
+	//Overridable version of [method PhysicsServer2D.joint_make_pin].
+	JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID)
+	//Overridable version of [method PhysicsServer2D.joint_make_groove].
+	JointMakeGroove(joint Resource.ID, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID)
+	//Overridable version of [method PhysicsServer2D.joint_make_damped_spring].
+	JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID, body_b Resource.ID)
+	//Overridable version of [method PhysicsServer2D.pin_joint_set_flag].
+	PinJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool)
+	//Overridable version of [method PhysicsServer2D.pin_joint_get_flag].
+	PinJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag) bool
+	//Overridable version of [method PhysicsServer2D.pin_joint_set_param].
+	PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam, value Float.X)
+	//Overridable version of [method PhysicsServer2D.pin_joint_get_param].
+	PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam) Float.X
+	//Overridable version of [method PhysicsServer2D.damped_spring_joint_set_param].
+	DampedSpringJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X)
+	//Overridable version of [method PhysicsServer2D.damped_spring_joint_get_param].
+	DampedSpringJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam) Float.X
+	//Overridable version of [method PhysicsServer2D.joint_get_type].
+	JointGetType(joint Resource.ID) gdclass.PhysicsServer2DJointType
+	//Overridable version of [method PhysicsServer2D.free_rid].
+	FreeRid(rid Resource.ID)
+	//Overridable version of [method PhysicsServer2D.set_active].
+	SetActive(active bool)
+	//Called when the main loop is initialized and creates a new instance of this physics server. See also [method MainLoop._initialize] and [method _finish].
+	//Overridable version of [PhysicsServer2D]'s internal [code]init[/code] method.
+	Init()
+	//Called every physics step to process the physics simulation. [param step] is the time elapsed since the last physics step, in seconds. It is usually the same as [method Node.get_physics_process_delta_time].
+	//Overridable version of [PhysicsServer2D]'s internal [code skip-lint]step[/code] method.
+	Step(step Float.X)
+	//Called to indicate that the physics server is synchronizing and cannot access physics states if running on a separate thread. See also [method _end_sync].
+	//Overridable version of [PhysicsServer2D]'s internal [code]sync[/code] method.
+	Sync()
+	//Called every physics step before [method _step] to process all remaining queries.
+	//Overridable version of [PhysicsServer2D]'s internal [code]flush_queries[/code] method.
+	FlushQueries()
+	//Called to indicate that the physics server has stopped synchronizing. It is in the loop's iteration/physics phase, and can access physics objects even if running on a separate thread. See also [method _sync].
+	//Overridable version of [PhysicsServer2D]'s internal [code]end_sync[/code] method.
+	EndSync()
+	//Called when the main loop finalizes to shut down the physics server. See also [method MainLoop._finalize] and [method _init].
+	//Overridable version of [PhysicsServer2D]'s internal [code]finish[/code] method.
+	Finish()
+	//Overridable method that should return [code]true[/code] when the physics server is processing queries. See also [method _flush_queries].
+	//Overridable version of [PhysicsServer2D]'s internal [code]is_flushing_queries[/code] method.
+	IsFlushingQueries() bool
+	//Overridable version of [method PhysicsServer2D.get_process_info].
+	GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) int
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) WorldBoundaryShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) SeparationRayShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) SegmentShapeCreate() (_ Resource.ID)                      { return }
+func (self Implementation) CircleShapeCreate() (_ Resource.ID)                       { return }
+func (self Implementation) RectangleShapeCreate() (_ Resource.ID)                    { return }
+func (self Implementation) CapsuleShapeCreate() (_ Resource.ID)                      { return }
+func (self Implementation) ConvexPolygonShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) ConcavePolygonShapeCreate() (_ Resource.ID)               { return }
+func (self Implementation) ShapeSetData(shape Resource.ID, data any)                 { return }
+func (self Implementation) ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X) { return }
+func (self Implementation) ShapeGetType(shape Resource.ID) (_ gdclass.PhysicsServer2DShapeType) {
+	return
+}
+func (self Implementation) ShapeGetData(shape Resource.ID) (_ any)                 { return }
+func (self Implementation) ShapeGetCustomSolverBias(shape Resource.ID) (_ Float.X) { return }
+func (self Implementation) ShapeCollide(shape_A Resource.ID, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B Resource.ID, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
+	return
+}
+func (self Implementation) SpaceCreate() (_ Resource.ID)                  { return }
+func (self Implementation) SpaceSetActive(space Resource.ID, active bool) { return }
+func (self Implementation) SpaceIsActive(space Resource.ID) (_ bool)      { return }
+func (self Implementation) SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter, value Float.X) {
+	return
+}
+func (self Implementation) SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter) (_ Float.X) {
+	return
+}
+func (self Implementation) SpaceGetDirectState(space Resource.ID) (_ [1]gdclass.PhysicsDirectSpaceState2D) {
+	return
+}
+func (self Implementation) SpaceSetDebugContacts(space Resource.ID, max_contacts int) { return }
+func (self Implementation) SpaceGetContacts(space Resource.ID) (_ []Vector2.XY)       { return }
+func (self Implementation) SpaceGetContactCount(space Resource.ID) (_ int)            { return }
+func (self Implementation) AreaCreate() (_ Resource.ID)                               { return }
+func (self Implementation) AreaSetSpace(area Resource.ID, space Resource.ID)          { return }
+func (self Implementation) AreaGetSpace(area Resource.ID) (_ Resource.ID)             { return }
+func (self Implementation) AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
+	return
+}
+func (self Implementation) AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self Implementation) AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
+	return
+}
+func (self Implementation) AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
+	return
+}
+func (self Implementation) AreaGetShapeCount(area Resource.ID) (_ int)                   { return }
+func (self Implementation) AreaGetShape(area Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self Implementation) AreaGetShapeTransform(area Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
+	return
+}
+func (self Implementation) AreaRemoveShape(area Resource.ID, shape_idx int)     { return }
+func (self Implementation) AreaClearShapes(area Resource.ID)                    { return }
+func (self Implementation) AreaAttachObjectInstanceId(area Resource.ID, id int) { return }
+func (self Implementation) AreaGetObjectInstanceId(area Resource.ID) (_ int)    { return }
+func (self Implementation) AreaAttachCanvasInstanceId(area Resource.ID, id int) { return }
+func (self Implementation) AreaGetCanvasInstanceId(area Resource.ID) (_ int)    { return }
+func (self Implementation) AreaSetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter, value any) {
+	return
+}
+func (self Implementation) AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY) { return }
+func (self Implementation) AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) (_ any) {
+	return
+}
+func (self Implementation) AreaGetTransform(area Resource.ID) (_ Transform2D.OriginXY)     { return }
+func (self Implementation) AreaSetCollisionLayer(area Resource.ID, layer int)              { return }
+func (self Implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)                 { return }
+func (self Implementation) AreaSetCollisionMask(area Resource.ID, mask int)                { return }
+func (self Implementation) AreaGetCollisionMask(area Resource.ID) (_ int)                  { return }
+func (self Implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)          { return }
+func (self Implementation) AreaSetPickable(area Resource.ID, pickable bool)                { return }
+func (self Implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Any) { return }
+func (self Implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any) {
+	return
+}
+func (self Implementation) BodyCreate() (_ Resource.ID)                      { return }
+func (self Implementation) BodySetSpace(body Resource.ID, space Resource.ID) { return }
+func (self Implementation) BodyGetSpace(body Resource.ID) (_ Resource.ID)    { return }
+func (self Implementation) BodySetMode(body Resource.ID, mode gdclass.PhysicsServer2DBodyMode) {
+	return
+}
+func (self Implementation) BodyGetMode(body Resource.ID) (_ gdclass.PhysicsServer2DBodyMode) { return }
+func (self Implementation) BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
+	return
+}
+func (self Implementation) BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self Implementation) BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
+	return
+}
+func (self Implementation) BodyGetShapeCount(body Resource.ID) (_ int)                   { return }
+func (self Implementation) BodyGetShape(body Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self Implementation) BodyGetShapeTransform(body Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
+	return
+}
+func (self Implementation) BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
+	return
+}
+func (self Implementation) BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X) {
+	return
+}
+func (self Implementation) BodyRemoveShape(body Resource.ID, shape_idx int)     { return }
+func (self Implementation) BodyClearShapes(body Resource.ID)                    { return }
+func (self Implementation) BodyAttachObjectInstanceId(body Resource.ID, id int) { return }
+func (self Implementation) BodyGetObjectInstanceId(body Resource.ID) (_ int)    { return }
+func (self Implementation) BodyAttachCanvasInstanceId(body Resource.ID, id int) { return }
+func (self Implementation) BodyGetCanvasInstanceId(body Resource.ID) (_ int)    { return }
+func (self Implementation) BodySetContinuousCollisionDetectionMode(body Resource.ID, mode gdclass.PhysicsServer2DCCDMode) {
+	return
+}
+func (self Implementation) BodyGetContinuousCollisionDetectionMode(body Resource.ID) (_ gdclass.PhysicsServer2DCCDMode) {
+	return
+}
+func (self Implementation) BodySetCollisionLayer(body Resource.ID, layer int)           { return }
+func (self Implementation) BodyGetCollisionLayer(body Resource.ID) (_ int)              { return }
+func (self Implementation) BodySetCollisionMask(body Resource.ID, mask int)             { return }
+func (self Implementation) BodyGetCollisionMask(body Resource.ID) (_ int)               { return }
+func (self Implementation) BodySetCollisionPriority(body Resource.ID, priority Float.X) { return }
+func (self Implementation) BodyGetCollisionPriority(body Resource.ID) (_ Float.X)       { return }
+func (self Implementation) BodySetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter, value any) {
+	return
+}
+func (self Implementation) BodyGetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter) (_ any) {
+	return
+}
+func (self Implementation) BodyResetMassProperties(body Resource.ID) { return }
+func (self Implementation) BodySetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState, value any) {
+	return
+}
+func (self Implementation) BodyGetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState) (_ any) {
+	return
+}
+func (self Implementation) BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY) { return }
+func (self Implementation) BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X)     { return }
+func (self Implementation) BodyApplyImpulse(body Resource.ID, impulse Vector2.XY, position Vector2.XY) {
+	return
+}
+func (self Implementation) BodyApplyCentralForce(body Resource.ID, force Vector2.XY) { return }
+func (self Implementation) BodyApplyForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
+	return
+}
+func (self Implementation) BodyApplyTorque(body Resource.ID, torque Float.X)               { return }
+func (self Implementation) BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY) { return }
+func (self Implementation) BodyAddConstantForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
+	return
+}
+func (self Implementation) BodyAddConstantTorque(body Resource.ID, torque Float.X)         { return }
+func (self Implementation) BodySetConstantForce(body Resource.ID, force Vector2.XY)        { return }
+func (self Implementation) BodyGetConstantForce(body Resource.ID) (_ Vector2.XY)           { return }
+func (self Implementation) BodySetConstantTorque(body Resource.ID, torque Float.X)         { return }
+func (self Implementation) BodyGetConstantTorque(body Resource.ID) (_ Float.X)             { return }
+func (self Implementation) BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY) { return }
+func (self Implementation) BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
+	return
+}
+func (self Implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
+	return
+}
+func (self Implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
+func (self Implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
+func (self Implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
+func (self Implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
+	return
+}
+func (self Implementation) BodyGetContactsReportedDepthThreshold(body Resource.ID) (_ Float.X) {
+	return
+}
+func (self Implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool)        { return }
+func (self Implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)         { return }
+func (self Implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Any) { return }
+func (self Implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any) {
+	return
+}
+func (self Implementation) BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
+	return
+}
+func (self Implementation) BodySetPickable(body Resource.ID, pickable bool) { return }
+func (self Implementation) BodyGetDirectState(body Resource.ID) (_ [1]gdclass.PhysicsDirectBodyState2D) {
+	return
+}
+func (self Implementation) BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
+	return
+}
+func (self Implementation) JointCreate() (_ Resource.ID) { return }
+func (self Implementation) JointClear(joint Resource.ID) { return }
+func (self Implementation) JointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam, value Float.X) {
+	return
+}
+func (self Implementation) JointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
+	return
+}
+func (self Implementation) JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) (_ bool) { return }
+func (self Implementation) JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+	return
+}
+func (self Implementation) JointMakeGroove(joint Resource.ID, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+	return
+}
+func (self Implementation) JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+	return
+}
+func (self Implementation) PinJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) {
+	return
+}
+func (self Implementation) PinJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag) (_ bool) {
+	return
+}
+func (self Implementation) PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam, value Float.X) {
+	return
+}
+func (self Implementation) PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) DampedSpringJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X) {
+	return
+}
+func (self Implementation) DampedSpringJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam) (_ Float.X) {
+	return
+}
+func (self Implementation) JointGetType(joint Resource.ID) (_ gdclass.PhysicsServer2DJointType) {
+	return
+}
+func (self Implementation) FreeRid(rid Resource.ID)     { return }
+func (self Implementation) SetActive(active bool)       { return }
+func (self Implementation) Init()                       { return }
+func (self Implementation) Step(step Float.X)           { return }
+func (self Implementation) Sync()                       { return }
+func (self Implementation) FlushQueries()               { return }
+func (self Implementation) EndSync()                    { return }
+func (self Implementation) Finish()                     { return }
+func (self Implementation) IsFlushingQueries() (_ bool) { return }
+func (self Implementation) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) (_ int) {
+	return
 }
 
 /*
@@ -2113,7 +2355,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsServer2DExtension"))
-	return Instance{*(*gdclass.PhysicsServer2DExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsServer2DExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

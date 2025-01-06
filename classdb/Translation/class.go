@@ -21,19 +21,29 @@ var _ = pointers.Cycle
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
 
-	// Translation methods that can be overridden by a [Class] that extends it.
-	type Translation interface {
-		//Virtual method to override [method get_plural_message].
-		GetPluralMessage(src_message string, src_plural_message string, n int, context string) string
-		//Virtual method to override [method get_message].
-		GetMessage(src_message string, context string) string
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Translation)
 */
 type Instance [1]gdclass.Translation
 type Any interface {
 	gd.IsClass
 	AsTranslation() Instance
 }
+type Interface interface {
+	//Virtual method to override [method get_plural_message].
+	GetPluralMessage(src_message string, src_plural_message string, n int, context string) string
+	//Virtual method to override [method get_message].
+	GetMessage(src_message string, context string) string
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetPluralMessage(src_message string, src_plural_message string, n int, context string) (_ string) {
+	return
+}
+func (self Implementation) GetMessage(src_message string, context string) (_ string) { return }
 
 /*
 Virtual method to override [method get_plural_message].
@@ -149,7 +159,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Translation"))
-	return Instance{*(*gdclass.Translation)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Translation)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) Locale() string {

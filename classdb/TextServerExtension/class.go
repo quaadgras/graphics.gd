@@ -30,660 +30,1074 @@ var _ = pointers.Cycle
 /*
 External [TextServer] implementations should inherit from this class.
 
-	// TextServerExtension methods that can be overridden by a [Class] that extends it.
-	type TextServerExtension interface {
-		//[b]Required.[/b]
-		//Returns [code]true[/code] if the server supports a feature.
-		HasFeature(feature gdclass.TextServerFeature) bool
-		//[b]Required.[/b]
-		//Returns the name of the server interface.
-		GetName() string
-		//[b]Required.[/b]
-		//Returns text server features, see [enum TextServer.Feature].
-		GetFeatures() int
-		//[b]Required.[/b]
-		//Frees an object created by this [TextServer].
-		FreeRid(rid Resource.ID)
-		//[b]Required.[/b]
-		//Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
-		Has(rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
-		LoadSupportData(filename string) bool
-		//[b]Optional.[/b]
-		//Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
-		GetSupportDataFilename() string
-		//[b]Optional.[/b]
-		//Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
-		GetSupportDataInfo() string
-		//[b]Optional.[/b]
-		//Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
-		SaveSupportData(filename string) bool
-		//[b]Required.[/b]
-		//Returns [code]true[/code] if locale is right-to-left.
-		IsLocaleRightToLeft(locale string) bool
-		//[b]Optional.[/b]
-		//Converts readable feature, variation, script, or language name to OpenType tag.
-		NameToTag(name string) int
-		//[b]Optional.[/b]
-		//Converts OpenType tag to readable feature, variation, script, or language name.
-		TagToName(tag int) string
-		//[b]Required.[/b]
-		//Creates a new, empty font cache entry resource.
-		CreateFont() Resource.ID
-		//Optional, implement if font supports extra spacing or baseline offset.
-		//Creates a new variation existing font which is reusing the same glyph cache and font data.
-		CreateFontLinkedVariation(font_rid Resource.ID) Resource.ID
-		//[b]Optional.[/b]
-		//Sets font source data, e.g contents of the dynamic font source file.
-		FontSetData(font_rid Resource.ID, data []byte)
-		//[b]Optional.[/b]
-		//Sets pointer to the font source data, e.g contents of the dynamic font source file.
-		FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int)
-		//[b]Optional.[/b]
-		//Sets an active face index in the TrueType / OpenType collection.
-		FontSetFaceIndex(font_rid Resource.ID, face_index int)
-		//[b]Optional.[/b]
-		//Returns an active face index in the TrueType / OpenType collection.
-		FontGetFaceIndex(font_rid Resource.ID) int
-		//[b]Optional.[/b]
-		//Returns number of faces in the TrueType / OpenType collection.
-		FontGetFaceCount(font_rid Resource.ID) int
-		//[b]Optional.[/b]
-		//Sets the font style flags, see [enum TextServer.FontStyle].
-		FontSetStyle(font_rid Resource.ID, style gdclass.TextServerFontStyle)
-		//[b]Optional.[/b]
-		//Returns font style flags, see [enum TextServer.FontStyle].
-		FontGetStyle(font_rid Resource.ID) gdclass.TextServerFontStyle
-		//[b]Optional.[/b]
-		//Sets the font family name.
-		FontSetName(font_rid Resource.ID, name string)
-		//[b]Optional.[/b]
-		//Returns font family name.
-		FontGetName(font_rid Resource.ID) string
-		//[b]Optional.[/b]
-		//Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
-		FontGetOtNameStrings(font_rid Resource.ID) Dictionary.Any
-		//[b]Optional.[/b]
-		//Sets the font style name.
-		FontSetStyleName(font_rid Resource.ID, name_style string)
-		//[b]Optional.[/b]
-		//Returns font style name.
-		FontGetStyleName(font_rid Resource.ID) string
-		//[b]Optional.[/b]
-		//Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
-		FontSetWeight(font_rid Resource.ID, weight int)
-		//[b]Optional.[/b]
-		//Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
-		FontGetWeight(font_rid Resource.ID) int
-		//[b]Optional.[/b]
-		//Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
-		FontSetStretch(font_rid Resource.ID, stretch int)
-		//[b]Optional.[/b]
-		//Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
-		FontGetStretch(font_rid Resource.ID) int
-		//[b]Optional.[/b]
-		//Sets font anti-aliasing mode.
-		FontSetAntialiasing(font_rid Resource.ID, antialiasing gdclass.TextServerFontAntialiasing)
-		//[b]Optional.[/b]
-		//Returns font anti-aliasing mode.
-		FontGetAntialiasing(font_rid Resource.ID) gdclass.TextServerFontAntialiasing
-		//[b]Optional.[/b]
-		//If set to [code]true[/code], embedded font bitmap loading is disabled.
-		FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool)
-		//[b]Optional.[/b]
-		//Returns whether the font's embedded bitmap loading is disabled.
-		FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//If set to [code]true[/code] font texture mipmap generation is enabled.
-		FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if font texture mipmap generation is enabled.
-		FontGetGenerateMipmaps(font_rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
-		FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
-		FontIsMultichannelSignedDistanceField(font_rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//Sets the width of the range around the shape between the minimum and maximum representable signed distance.
-		FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int)
-		//[b]Optional.[/b]
-		//Returns the width of the range around the shape between the minimum and maximum representable signed distance.
-		FontGetMsdfPixelRange(font_rid Resource.ID) int
-		//[b]Optional.[/b]
-		//Sets source font size used to generate MSDF textures.
-		FontSetMsdfSize(font_rid Resource.ID, msdf_size int)
-		//[b]Optional.[/b]
-		//Returns source font size used to generate MSDF textures.
-		FontGetMsdfSize(font_rid Resource.ID) int
-		//[b]Required.[/b]
-		//Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
-		FontSetFixedSize(font_rid Resource.ID, fixed_size int)
-		//[b]Required.[/b]
-		//Returns bitmap font fixed size.
-		FontGetFixedSize(font_rid Resource.ID) int
-		//[b]Required.[/b]
-		//Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
-		FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode)
-		//[b]Required.[/b]
-		//Returns bitmap font scaling mode.
-		FontGetFixedSizeScaleMode(font_rid Resource.ID) gdclass.TextServerFixedSizeScaleMode
-		//[b]Optional.[/b]
-		//If set to [code]true[/code], system fonts can be automatically used as fallbacks.
-		FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
-		FontIsAllowSystemFallback(font_rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
-		FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
-		FontIsForceAutohinter(font_rid Resource.ID) bool
-		//[b]Optional.[/b]
-		//Sets font hinting mode. Used by dynamic fonts only.
-		FontSetHinting(font_rid Resource.ID, hinting gdclass.TextServerHinting)
-		//[b]Optional.[/b]
-		//Returns the font hinting mode. Used by dynamic fonts only.
-		FontGetHinting(font_rid Resource.ID) gdclass.TextServerHinting
-		//[b]Optional.[/b]
-		//Sets font subpixel glyph positioning mode.
-		FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning gdclass.TextServerSubpixelPositioning)
-		//[b]Optional.[/b]
-		//Returns font subpixel glyph positioning mode.
-		FontGetSubpixelPositioning(font_rid Resource.ID) gdclass.TextServerSubpixelPositioning
-		//Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
-		FontSetEmbolden(font_rid Resource.ID, strength Float.X)
-		//[b]Optional.[/b]
-		//Returns font embolden strength.
-		FontGetEmbolden(font_rid Resource.ID) Float.X
-		//[b]Optional.[/b]
-		//Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
-		FontSetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType, value int)
-		//[b]Optional.[/b]
-		//Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
-		FontGetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType) int
-		//[b]Optional.[/b]
-		//Sets extra baseline offset (as a fraction of font height).
-		FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X)
-		//[b]Optional.[/b]
-		//Returns extra baseline offset (as a fraction of font height).
-		FontGetBaselineOffset(font_rid Resource.ID) Float.X
-		//[b]Optional.[/b]
-		//Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
-		FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY)
-		//[b]Optional.[/b]
-		//Returns 2D transform applied to the font outlines.
-		FontGetTransform(font_rid Resource.ID) Transform2D.OriginXY
-		//[b]Optional.[/b]
-		//Sets variation coordinates for the specified font cache entry.
-		FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any)
-		//[b]Optional.[/b]
-		//Returns variation coordinates for the specified font cache entry.
-		FontGetVariationCoordinates(font_rid Resource.ID) Dictionary.Any
-		//[b]Optional.[/b]
-		//Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
-		FontSetOversampling(font_rid Resource.ID, oversampling Float.X)
-		//[b]Optional.[/b]
-		//Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
-		FontGetOversampling(font_rid Resource.ID) Float.X
-		//[b]Required.[/b]
-		//Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
-		FontGetSizeCacheList(font_rid Resource.ID) gd.Array
-		//[b]Required.[/b]
-		//Removes all font sizes from the cache entry.
-		FontClearSizeCache(font_rid Resource.ID)
-		//[b]Required.[/b]
-		//Removes specified font size from the cache entry.
-		FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)
-		//[b]Required.[/b]
-		//Sets the font ascent (number of pixels above the baseline).
-		FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)
-		//[b]Required.[/b]
-		//Returns the font ascent (number of pixels above the baseline).
-		FontGetAscent(font_rid Resource.ID, size int) Float.X
-		//[b]Required.[/b]
-		//Sets the font descent (number of pixels below the baseline).
-		FontSetDescent(font_rid Resource.ID, size int, descent Float.X)
-		//[b]Required.[/b]
-		//Returns the font descent (number of pixels below the baseline).
-		FontGetDescent(font_rid Resource.ID, size int) Float.X
-		//[b]Required.[/b]
-		//Sets pixel offset of the underline below the baseline.
-		FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X)
-		//[b]Required.[/b]
-		//Returns pixel offset of the underline below the baseline.
-		FontGetUnderlinePosition(font_rid Resource.ID, size int) Float.X
-		//[b]Required.[/b]
-		//Sets thickness of the underline in pixels.
-		FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X)
-		//[b]Required.[/b]
-		//Returns thickness of the underline in pixels.
-		FontGetUnderlineThickness(font_rid Resource.ID, size int) Float.X
-		//[b]Required.[/b]
-		//Sets scaling factor of the color bitmap font.
-		FontSetScale(font_rid Resource.ID, size int, scale Float.X)
-		//[b]Required.[/b]
-		//Returns scaling factor of the color bitmap font.
-		FontGetScale(font_rid Resource.ID, size int) Float.X
-		//[b]Required.[/b]
-		//Returns number of textures used by font cache entry.
-		FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) int
-		//[b]Required.[/b]
-		//Removes all textures from font cache entry.
-		FontClearTextures(font_rid Resource.ID, size Vector2i.XY)
-		//[b]Required.[/b]
-		//Removes specified texture from the cache entry.
-		FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int)
-		//[b]Required.[/b]
-		//Sets font cache texture image data.
-		FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image [1]gdclass.Image)
-		//[b]Required.[/b]
-		//Returns font cache texture image data.
-		FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) [1]gdclass.Image
-		//[b]Optional.[/b]
-		//Sets array containing glyph packing data.
-		FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32)
-		//[b]Optional.[/b]
-		//Returns array containing glyph packing data.
-		FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) []int32
-		//[b]Required.[/b]
-		//Returns list of rendered glyphs in the cache entry.
-		FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) []int32
-		//[b]Required.[/b]
-		//Removes all rendered glyph information from the cache entry.
-		FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)
-		//[b]Required.[/b]
-		//Removes specified rendered glyph information from the cache entry.
-		FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int)
-		//[b]Required.[/b]
-		//Returns glyph advance (offset of the next glyph).
-		FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) Vector2.XY
-		//[b]Required.[/b]
-		//Sets glyph advance (offset of the next glyph).
-		FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY)
-		//[b]Required.[/b]
-		//Returns glyph offset from the baseline.
-		FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
-		//[b]Required.[/b]
-		//Sets glyph offset from the baseline.
-		FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY)
-		//[b]Required.[/b]
-		//Returns size of the glyph.
-		FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
-		//[b]Required.[/b]
-		//Sets size of the glyph.
-		FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY)
-		//[b]Required.[/b]
-		//Returns rectangle in the cache texture containing the glyph.
-		FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) Rect2.PositionSize
-		//[b]Required.[/b]
-		//Sets rectangle in the cache texture containing the glyph.
-		FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)
-		//[b]Required.[/b]
-		//Returns index of the cache texture containing the glyph.
-		FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) int
-		//[b]Required.[/b]
-		//Sets index of the cache texture containing the glyph.
-		FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int)
-		//[b]Required.[/b]
-		//Returns resource ID of the cache texture containing the glyph.
-		FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) Resource.ID
-		//[b]Required.[/b]
-		//Returns size of the cache texture containing the glyph.
-		FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
-		//[b]Optional.[/b]
-		//Returns outline contours of the glyph.
-		FontGetGlyphContours(font_rid Resource.ID, size int, index int) Dictionary.Any
-		//[b]Optional.[/b]
-		//Returns list of the kerning overrides.
-		FontGetKerningList(font_rid Resource.ID, size int) gd.Array
-		//[b]Optional.[/b]
-		//Removes all kerning overrides.
-		FontClearKerningMap(font_rid Resource.ID, size int)
-		//[b]Optional.[/b]
-		//Removes kerning override for the pair of glyphs.
-		FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY)
-		//[b]Optional.[/b]
-		//Sets kerning for the pair of glyphs.
-		FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)
-		//[b]Optional.[/b]
-		//Returns kerning for the pair of glyphs.
-		FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) Vector2.XY
-		//[b]Required.[/b]
-		//Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
-		FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) int
-		//[b]Required.[/b]
-		//Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
-		FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) int
-		//[b]Required.[/b]
-		//Returns [code]true[/code] if a Unicode [param char] is available in the font.
-		FontHasChar(font_rid Resource.ID, char int) bool
-		//[b]Required.[/b]
-		//Returns a string containing all the characters available in the font.
-		FontGetSupportedChars(font_rid Resource.ID) string
-		//[b]Optional.[/b]
-		//Renders the range of characters to the font cache texture.
-		FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int)
-		//[b]Optional.[/b]
-		//Renders specified glyph to the font cache texture.
-		FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int)
-		//[b]Required.[/b]
-		//Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
-		FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
-		//[b]Required.[/b]
-		//Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
-		FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
-		FontIsLanguageSupported(font_rid Resource.ID, language string) bool
-		//[b]Optional.[/b]
-		//Adds override for [method _font_is_language_supported].
-		FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if support override is enabled for the [param language].
-		FontGetLanguageSupportOverride(font_rid Resource.ID, language string) bool
-		//[b]Optional.[/b]
-		//Remove language support override.
-		FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string)
-		//[b]Optional.[/b]
-		//Returns list of language support overrides.
-		FontGetLanguageSupportOverrides(font_rid Resource.ID) []string
-		//[b]Optional.[/b]
-		//Returns [code]true[/code], if font supports given script (ISO 15924 code).
-		FontIsScriptSupported(font_rid Resource.ID, script string) bool
-		//[b]Optional.[/b]
-		//Adds override for [method _font_is_script_supported].
-		FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if support override is enabled for the [param script].
-		FontGetScriptSupportOverride(font_rid Resource.ID, script string) bool
-		//[b]Optional.[/b]
-		//Removes script support override.
-		FontRemoveScriptSupportOverride(font_rid Resource.ID, script string)
-		//[b]Optional.[/b]
-		//Returns list of script support overrides.
-		FontGetScriptSupportOverrides(font_rid Resource.ID) []string
-		//[b]Optional.[/b]
-		//Sets font OpenType feature set override.
-		FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any)
-		//[b]Optional.[/b]
-		//Returns font OpenType feature set override.
-		FontGetOpentypeFeatureOverrides(font_rid Resource.ID) Dictionary.Any
-		//[b]Optional.[/b]
-		//Returns the dictionary of the supported OpenType features.
-		FontSupportedFeatureList(font_rid Resource.ID) Dictionary.Any
-		//[b]Optional.[/b]
-		//Returns the dictionary of the supported OpenType variation coordinates.
-		FontSupportedVariationList(font_rid Resource.ID) Dictionary.Any
-		//[b]Optional.[/b]
-		//Returns the font oversampling factor, shared by all fonts in the TextServer.
-		FontGetGlobalOversampling() Float.X
-		//[b]Optional.[/b]
-		//Sets oversampling factor, shared by all font in the TextServer.
-		FontSetGlobalOversampling(oversampling Float.X)
-		//[b]Optional.[/b]
-		//Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
-		GetHexCodeBoxSize(size int, index int) Vector2.XY
-		//[b]Optional.[/b]
-		//Draws box displaying character hexadecimal code.
-		DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
-		//[b]Required.[/b]
-		//Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
-		CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Resource.ID
-		//[b]Required.[/b]
-		//Clears text buffer (removes text and inline objects).
-		ShapedTextClear(shaped Resource.ID)
-		//[b]Optional.[/b]
-		//Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
-		ShapedTextSetDirection(shaped Resource.ID, direction gdclass.TextServerDirection)
-		//[b]Optional.[/b]
-		//Returns direction of the text.
-		ShapedTextGetDirection(shaped Resource.ID) gdclass.TextServerDirection
-		//[b]Optional.[/b]
-		//Returns direction of the text, inferred by the BiDi algorithm.
-		ShapedTextGetInferredDirection(shaped Resource.ID) gdclass.TextServerDirection
-		//[b]Optional.[/b]
-		//Overrides BiDi for the structured text.
-		ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any)
-		//[b]Optional.[/b]
-		//Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
-		ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)
-		//[b]Optional.[/b]
-		//Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
-		ShapedTextGetCustomPunctuation(shaped Resource.ID) string
-		//[b]Optional.[/b]
-		//Sets ellipsis character used for text clipping.
-		ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)
-		//[b]Optional.[/b]
-		//Returns ellipsis character used for text clipping.
-		ShapedTextGetCustomEllipsis(shaped Resource.ID) int
-		//[b]Optional.[/b]
-		//Sets desired text orientation.
-		ShapedTextSetOrientation(shaped Resource.ID, orientation gdclass.TextServerOrientation)
-		//[b]Optional.[/b]
-		//Returns text orientation.
-		ShapedTextGetOrientation(shaped Resource.ID) gdclass.TextServerOrientation
-		//[b]Optional.[/b]
-		//If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
-		ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
-		ShapedTextGetPreserveInvalid(shaped Resource.ID) bool
-		//[b]Optional.[/b]
-		//If set to [code]true[/code] text buffer will display control characters.
-		ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool)
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if text buffer is configured to display control characters.
-		ShapedTextGetPreserveControl(shaped Resource.ID) bool
-		//[b]Optional.[/b]
-		//Sets extra spacing added between glyphs or lines in pixels.
-		ShapedTextSetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType, value int)
-		//[b]Optional.[/b]
-		//Returns extra spacing added between glyphs or lines in pixels.
-		ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType) int
-		//[b]Required.[/b]
-		//Adds text span and font to draw it to the text buffer.
-		ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) bool
-		//[b]Required.[/b]
-		//Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
-		ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool
-		//[b]Required.[/b]
-		//Sets new size and alignment of embedded object.
-		ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool
-		//[b]Required.[/b]
-		//Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
-		ShapedGetSpanCount(shaped Resource.ID) int
-		//[b]Required.[/b]
-		//Returns text span metadata.
-		ShapedGetSpanMeta(shaped Resource.ID, index int) any
-		//[b]Required.[/b]
-		//Changes text span font, font size, and OpenType features, without changing the text.
-		ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any)
-		//[b]Required.[/b]
-		//Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
-		ShapedTextSubstr(shaped Resource.ID, start int, length int) Resource.ID
-		//[b]Required.[/b]
-		//Returns the parent buffer from which the substring originates.
-		ShapedTextGetParent(shaped Resource.ID) Resource.ID
-		//[b]Optional.[/b]
-		//Adjusts text width to fit to specified width, returns new text width.
-		ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags gdclass.TextServerJustificationFlag) Float.X
-		//[b]Optional.[/b]
-		//Aligns shaped text to the given tab-stops.
-		ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) Float.X
-		//[b]Required.[/b]
-		//Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
-		ShapedTextShape(shaped Resource.ID) bool
-		//[b]Optional.[/b]
-		//Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
-		ShapedTextUpdateBreaks(shaped Resource.ID) bool
-		//[b]Optional.[/b]
-		//Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
-		ShapedTextUpdateJustificationOps(shaped Resource.ID) bool
-		//[b]Required.[/b]
-		//Returns [code]true[/code] if buffer is successfully shaped.
-		ShapedTextIsReady(shaped Resource.ID) bool
-		//[b]Required.[/b]
-		//Returns an array of glyphs in the visual order.
-		ShapedTextGetGlyphs(shaped Resource.ID) * Glyph
-		//[b]Required.[/b]
-		//Returns text glyphs in the logical order.
-		ShapedTextSortLogical(shaped Resource.ID) * Glyph
-		//[b]Required.[/b]
-		//Returns number of glyphs in the buffer.
-		ShapedTextGetGlyphCount(shaped Resource.ID) int
-		//[b]Required.[/b]
-		//Returns substring buffer character range in the parent buffer.
-		ShapedTextGetRange(shaped Resource.ID) Vector2i.XY
-		//[b]Optional.[/b]
-		//Breaks text to the lines and columns. Returns character ranges for each segment.
-		ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) []int32
-		//[b]Optional.[/b]
-		//Breaks text to the lines and returns character ranges for each line.
-		ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) []int32
-		//[b]Optional.[/b]
-		//Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
-		ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) []int32
-		//[b]Required.[/b]
-		//Returns the position of the overrun trim.
-		ShapedTextGetTrimPos(shaped Resource.ID) int
-		//[b]Required.[/b]
-		//Returns position of the ellipsis.
-		ShapedTextGetEllipsisPos(shaped Resource.ID) int
-		//[b]Required.[/b]
-		//Returns number of glyphs in the ellipsis.
-		ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) int
-		//[b]Required.[/b]
-		//Returns array of the glyphs in the ellipsis.
-		ShapedTextGetEllipsisGlyphs(shaped Resource.ID) * Glyph
-		//[b]Optional.[/b]
-		//Trims text if it exceeds the given width.
-		ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag)
-		//[b]Required.[/b]
-		//Returns array of inline objects.
-		ShapedTextGetObjects(shaped Resource.ID) Array.Any
-		//[b]Required.[/b]
-		//Returns bounding rectangle of the inline object.
-		ShapedTextGetObjectRect(shaped Resource.ID, key any) Rect2.PositionSize
-		//[b]Required.[/b]
-		//Returns the character range of the inline object.
-		ShapedTextGetObjectRange(shaped Resource.ID, key any) Vector2i.XY
-		//[b]Required.[/b]
-		//Returns the glyph index of the inline object.
-		ShapedTextGetObjectGlyph(shaped Resource.ID, key any) int
-		//[b]Required.[/b]
-		//Returns size of the text.
-		ShapedTextGetSize(shaped Resource.ID) Vector2.XY
-		//[b]Required.[/b]
-		//Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
-		ShapedTextGetAscent(shaped Resource.ID) Float.X
-		//[b]Required.[/b]
-		//Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
-		ShapedTextGetDescent(shaped Resource.ID) Float.X
-		//[b]Required.[/b]
-		//Returns width (for horizontal layout) or height (for vertical) of the text.
-		ShapedTextGetWidth(shaped Resource.ID) Float.X
-		//[b]Required.[/b]
-		//Returns pixel offset of the underline below the baseline.
-		ShapedTextGetUnderlinePosition(shaped Resource.ID) Float.X
-		//[b]Required.[/b]
-		//Returns thickness of the underline.
-		ShapedTextGetUnderlineThickness(shaped Resource.ID) Float.X
-		//[b]Optional.[/b]
-		//Returns dominant direction of in the range of text.
-		ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) int
-		//[b]Optional.[/b]
-		//Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
-		ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo)
-		//[b]Optional.[/b]
-		//Returns selection rectangles for the specified character range.
-		ShapedTextGetSelection(shaped Resource.ID, start int, end int) []Vector2.XY
-		//[b]Optional.[/b]
-		//Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
-		ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) int
-		//[b]Optional.[/b]
-		//Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
-		ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) int
-		//[b]Optional.[/b]
-		//Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
-		ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)
-		//[b]Optional.[/b]
-		//Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
-		ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)
-		//[b]Optional.[/b]
-		//Returns composite character's bounds as offsets from the start of the line.
-		ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) Vector2.XY
-		//[b]Optional.[/b]
-		//Returns grapheme end position closest to the [param pos].
-		ShapedTextNextGraphemePos(shaped Resource.ID, pos int) int
-		//[b]Optional.[/b]
-		//Returns grapheme start position closest to the [param pos].
-		ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) int
-		//[b]Optional.[/b]
-		//Returns array of the composite character boundaries.
-		ShapedTextGetCharacterBreaks(shaped Resource.ID) []int32
-		//[b]Optional.[/b]
-		//Returns composite character end position closest to the [param pos].
-		ShapedTextNextCharacterPos(shaped Resource.ID, pos int) int
-		//[b]Optional.[/b]
-		//Returns composite character start position closest to the [param pos].
-		ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) int
-		//[b]Optional.[/b]
-		//Returns composite character position closest to the [param pos].
-		ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) int
-		//[b]Optional.[/b]
-		//Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
-		FormatNumber(number string, language string) string
-		//[b]Optional.[/b]
-		//Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
-		ParseNumber(number string, language string) string
-		//[b]Optional.[/b]
-		//Returns percent sign used in the [param language].
-		PercentSign(language string) string
-		//[b]Optional.[/b]
-		//Strips diacritics from the string.
-		StripDiacritics(s string) string
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if [param string] is a valid identifier.
-		IsValidIdentifier(s string) bool
-		IsValidLetter(unicode int) bool
-		//[b]Optional.[/b]
-		//Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
-		StringGetWordBreaks(s string, language string, chars_per_line int) []int32
-		//[b]Optional.[/b]
-		//Returns array of the composite character boundaries.
-		StringGetCharacterBreaks(s string, language string) []int32
-		//[b]Optional.[/b]
-		//Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
-		IsConfusable(s string, dict []string) int
-		//[b]Optional.[/b]
-		//Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
-		SpoofCheck(s string) bool
-		//[b]Optional.[/b]
-		//Returns the string converted to uppercase.
-		StringToUpper(s string, language string) string
-		//[b]Optional.[/b]
-		//Returns the string converted to lowercase.
-		StringToLower(s string, language string) string
-		//[b]Optional.[/b]
-		//Returns the string converted to title case.
-		StringToTitle(s string, language string) string
-		//[b]Optional.[/b]
-		//Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
-		ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) gd.Array
-		//[b]Optional.[/b]
-		//This method is called before text server is unregistered.
-		Cleanup()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=TextServerExtension)
 */
 type Instance [1]gdclass.TextServerExtension
 type Any interface {
 	gd.IsClass
 	AsTextServerExtension() Instance
 }
+type Interface interface {
+	//[b]Required.[/b]
+	//Returns [code]true[/code] if the server supports a feature.
+	HasFeature(feature gdclass.TextServerFeature) bool
+	//[b]Required.[/b]
+	//Returns the name of the server interface.
+	GetName() string
+	//[b]Required.[/b]
+	//Returns text server features, see [enum TextServer.Feature].
+	GetFeatures() int
+	//[b]Required.[/b]
+	//Frees an object created by this [TextServer].
+	FreeRid(rid Resource.ID)
+	//[b]Required.[/b]
+	//Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
+	Has(rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
+	LoadSupportData(filename string) bool
+	//[b]Optional.[/b]
+	//Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
+	GetSupportDataFilename() string
+	//[b]Optional.[/b]
+	//Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
+	GetSupportDataInfo() string
+	//[b]Optional.[/b]
+	//Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
+	SaveSupportData(filename string) bool
+	//[b]Required.[/b]
+	//Returns [code]true[/code] if locale is right-to-left.
+	IsLocaleRightToLeft(locale string) bool
+	//[b]Optional.[/b]
+	//Converts readable feature, variation, script, or language name to OpenType tag.
+	NameToTag(name string) int
+	//[b]Optional.[/b]
+	//Converts OpenType tag to readable feature, variation, script, or language name.
+	TagToName(tag int) string
+	//[b]Required.[/b]
+	//Creates a new, empty font cache entry resource.
+	CreateFont() Resource.ID
+	//Optional, implement if font supports extra spacing or baseline offset.
+	//Creates a new variation existing font which is reusing the same glyph cache and font data.
+	CreateFontLinkedVariation(font_rid Resource.ID) Resource.ID
+	//[b]Optional.[/b]
+	//Sets font source data, e.g contents of the dynamic font source file.
+	FontSetData(font_rid Resource.ID, data []byte)
+	//[b]Optional.[/b]
+	//Sets pointer to the font source data, e.g contents of the dynamic font source file.
+	FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int)
+	//[b]Optional.[/b]
+	//Sets an active face index in the TrueType / OpenType collection.
+	FontSetFaceIndex(font_rid Resource.ID, face_index int)
+	//[b]Optional.[/b]
+	//Returns an active face index in the TrueType / OpenType collection.
+	FontGetFaceIndex(font_rid Resource.ID) int
+	//[b]Optional.[/b]
+	//Returns number of faces in the TrueType / OpenType collection.
+	FontGetFaceCount(font_rid Resource.ID) int
+	//[b]Optional.[/b]
+	//Sets the font style flags, see [enum TextServer.FontStyle].
+	FontSetStyle(font_rid Resource.ID, style gdclass.TextServerFontStyle)
+	//[b]Optional.[/b]
+	//Returns font style flags, see [enum TextServer.FontStyle].
+	FontGetStyle(font_rid Resource.ID) gdclass.TextServerFontStyle
+	//[b]Optional.[/b]
+	//Sets the font family name.
+	FontSetName(font_rid Resource.ID, name string)
+	//[b]Optional.[/b]
+	//Returns font family name.
+	FontGetName(font_rid Resource.ID) string
+	//[b]Optional.[/b]
+	//Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
+	FontGetOtNameStrings(font_rid Resource.ID) Dictionary.Any
+	//[b]Optional.[/b]
+	//Sets the font style name.
+	FontSetStyleName(font_rid Resource.ID, name_style string)
+	//[b]Optional.[/b]
+	//Returns font style name.
+	FontGetStyleName(font_rid Resource.ID) string
+	//[b]Optional.[/b]
+	//Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
+	FontSetWeight(font_rid Resource.ID, weight int)
+	//[b]Optional.[/b]
+	//Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
+	FontGetWeight(font_rid Resource.ID) int
+	//[b]Optional.[/b]
+	//Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
+	FontSetStretch(font_rid Resource.ID, stretch int)
+	//[b]Optional.[/b]
+	//Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
+	FontGetStretch(font_rid Resource.ID) int
+	//[b]Optional.[/b]
+	//Sets font anti-aliasing mode.
+	FontSetAntialiasing(font_rid Resource.ID, antialiasing gdclass.TextServerFontAntialiasing)
+	//[b]Optional.[/b]
+	//Returns font anti-aliasing mode.
+	FontGetAntialiasing(font_rid Resource.ID) gdclass.TextServerFontAntialiasing
+	//[b]Optional.[/b]
+	//If set to [code]true[/code], embedded font bitmap loading is disabled.
+	FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool)
+	//[b]Optional.[/b]
+	//Returns whether the font's embedded bitmap loading is disabled.
+	FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//If set to [code]true[/code] font texture mipmap generation is enabled.
+	FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if font texture mipmap generation is enabled.
+	FontGetGenerateMipmaps(font_rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
+	FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
+	FontIsMultichannelSignedDistanceField(font_rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//Sets the width of the range around the shape between the minimum and maximum representable signed distance.
+	FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int)
+	//[b]Optional.[/b]
+	//Returns the width of the range around the shape between the minimum and maximum representable signed distance.
+	FontGetMsdfPixelRange(font_rid Resource.ID) int
+	//[b]Optional.[/b]
+	//Sets source font size used to generate MSDF textures.
+	FontSetMsdfSize(font_rid Resource.ID, msdf_size int)
+	//[b]Optional.[/b]
+	//Returns source font size used to generate MSDF textures.
+	FontGetMsdfSize(font_rid Resource.ID) int
+	//[b]Required.[/b]
+	//Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
+	FontSetFixedSize(font_rid Resource.ID, fixed_size int)
+	//[b]Required.[/b]
+	//Returns bitmap font fixed size.
+	FontGetFixedSize(font_rid Resource.ID) int
+	//[b]Required.[/b]
+	//Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
+	FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode)
+	//[b]Required.[/b]
+	//Returns bitmap font scaling mode.
+	FontGetFixedSizeScaleMode(font_rid Resource.ID) gdclass.TextServerFixedSizeScaleMode
+	//[b]Optional.[/b]
+	//If set to [code]true[/code], system fonts can be automatically used as fallbacks.
+	FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
+	FontIsAllowSystemFallback(font_rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
+	FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
+	FontIsForceAutohinter(font_rid Resource.ID) bool
+	//[b]Optional.[/b]
+	//Sets font hinting mode. Used by dynamic fonts only.
+	FontSetHinting(font_rid Resource.ID, hinting gdclass.TextServerHinting)
+	//[b]Optional.[/b]
+	//Returns the font hinting mode. Used by dynamic fonts only.
+	FontGetHinting(font_rid Resource.ID) gdclass.TextServerHinting
+	//[b]Optional.[/b]
+	//Sets font subpixel glyph positioning mode.
+	FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning gdclass.TextServerSubpixelPositioning)
+	//[b]Optional.[/b]
+	//Returns font subpixel glyph positioning mode.
+	FontGetSubpixelPositioning(font_rid Resource.ID) gdclass.TextServerSubpixelPositioning
+	//Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+	FontSetEmbolden(font_rid Resource.ID, strength Float.X)
+	//[b]Optional.[/b]
+	//Returns font embolden strength.
+	FontGetEmbolden(font_rid Resource.ID) Float.X
+	//[b]Optional.[/b]
+	//Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
+	FontSetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType, value int)
+	//[b]Optional.[/b]
+	//Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
+	FontGetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType) int
+	//[b]Optional.[/b]
+	//Sets extra baseline offset (as a fraction of font height).
+	FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X)
+	//[b]Optional.[/b]
+	//Returns extra baseline offset (as a fraction of font height).
+	FontGetBaselineOffset(font_rid Resource.ID) Float.X
+	//[b]Optional.[/b]
+	//Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
+	FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY)
+	//[b]Optional.[/b]
+	//Returns 2D transform applied to the font outlines.
+	FontGetTransform(font_rid Resource.ID) Transform2D.OriginXY
+	//[b]Optional.[/b]
+	//Sets variation coordinates for the specified font cache entry.
+	FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any)
+	//[b]Optional.[/b]
+	//Returns variation coordinates for the specified font cache entry.
+	FontGetVariationCoordinates(font_rid Resource.ID) Dictionary.Any
+	//[b]Optional.[/b]
+	//Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
+	FontSetOversampling(font_rid Resource.ID, oversampling Float.X)
+	//[b]Optional.[/b]
+	//Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
+	FontGetOversampling(font_rid Resource.ID) Float.X
+	//[b]Required.[/b]
+	//Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
+	FontGetSizeCacheList(font_rid Resource.ID) gd.Array
+	//[b]Required.[/b]
+	//Removes all font sizes from the cache entry.
+	FontClearSizeCache(font_rid Resource.ID)
+	//[b]Required.[/b]
+	//Removes specified font size from the cache entry.
+	FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)
+	//[b]Required.[/b]
+	//Sets the font ascent (number of pixels above the baseline).
+	FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)
+	//[b]Required.[/b]
+	//Returns the font ascent (number of pixels above the baseline).
+	FontGetAscent(font_rid Resource.ID, size int) Float.X
+	//[b]Required.[/b]
+	//Sets the font descent (number of pixels below the baseline).
+	FontSetDescent(font_rid Resource.ID, size int, descent Float.X)
+	//[b]Required.[/b]
+	//Returns the font descent (number of pixels below the baseline).
+	FontGetDescent(font_rid Resource.ID, size int) Float.X
+	//[b]Required.[/b]
+	//Sets pixel offset of the underline below the baseline.
+	FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X)
+	//[b]Required.[/b]
+	//Returns pixel offset of the underline below the baseline.
+	FontGetUnderlinePosition(font_rid Resource.ID, size int) Float.X
+	//[b]Required.[/b]
+	//Sets thickness of the underline in pixels.
+	FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X)
+	//[b]Required.[/b]
+	//Returns thickness of the underline in pixels.
+	FontGetUnderlineThickness(font_rid Resource.ID, size int) Float.X
+	//[b]Required.[/b]
+	//Sets scaling factor of the color bitmap font.
+	FontSetScale(font_rid Resource.ID, size int, scale Float.X)
+	//[b]Required.[/b]
+	//Returns scaling factor of the color bitmap font.
+	FontGetScale(font_rid Resource.ID, size int) Float.X
+	//[b]Required.[/b]
+	//Returns number of textures used by font cache entry.
+	FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) int
+	//[b]Required.[/b]
+	//Removes all textures from font cache entry.
+	FontClearTextures(font_rid Resource.ID, size Vector2i.XY)
+	//[b]Required.[/b]
+	//Removes specified texture from the cache entry.
+	FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int)
+	//[b]Required.[/b]
+	//Sets font cache texture image data.
+	FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image [1]gdclass.Image)
+	//[b]Required.[/b]
+	//Returns font cache texture image data.
+	FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) [1]gdclass.Image
+	//[b]Optional.[/b]
+	//Sets array containing glyph packing data.
+	FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32)
+	//[b]Optional.[/b]
+	//Returns array containing glyph packing data.
+	FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) []int32
+	//[b]Required.[/b]
+	//Returns list of rendered glyphs in the cache entry.
+	FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) []int32
+	//[b]Required.[/b]
+	//Removes all rendered glyph information from the cache entry.
+	FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)
+	//[b]Required.[/b]
+	//Removes specified rendered glyph information from the cache entry.
+	FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int)
+	//[b]Required.[/b]
+	//Returns glyph advance (offset of the next glyph).
+	FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) Vector2.XY
+	//[b]Required.[/b]
+	//Sets glyph advance (offset of the next glyph).
+	FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY)
+	//[b]Required.[/b]
+	//Returns glyph offset from the baseline.
+	FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
+	//[b]Required.[/b]
+	//Sets glyph offset from the baseline.
+	FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY)
+	//[b]Required.[/b]
+	//Returns size of the glyph.
+	FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
+	//[b]Required.[/b]
+	//Sets size of the glyph.
+	FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY)
+	//[b]Required.[/b]
+	//Returns rectangle in the cache texture containing the glyph.
+	FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) Rect2.PositionSize
+	//[b]Required.[/b]
+	//Sets rectangle in the cache texture containing the glyph.
+	FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)
+	//[b]Required.[/b]
+	//Returns index of the cache texture containing the glyph.
+	FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) int
+	//[b]Required.[/b]
+	//Sets index of the cache texture containing the glyph.
+	FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int)
+	//[b]Required.[/b]
+	//Returns resource ID of the cache texture containing the glyph.
+	FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) Resource.ID
+	//[b]Required.[/b]
+	//Returns size of the cache texture containing the glyph.
+	FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) Vector2.XY
+	//[b]Optional.[/b]
+	//Returns outline contours of the glyph.
+	FontGetGlyphContours(font_rid Resource.ID, size int, index int) Dictionary.Any
+	//[b]Optional.[/b]
+	//Returns list of the kerning overrides.
+	FontGetKerningList(font_rid Resource.ID, size int) gd.Array
+	//[b]Optional.[/b]
+	//Removes all kerning overrides.
+	FontClearKerningMap(font_rid Resource.ID, size int)
+	//[b]Optional.[/b]
+	//Removes kerning override for the pair of glyphs.
+	FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY)
+	//[b]Optional.[/b]
+	//Sets kerning for the pair of glyphs.
+	FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)
+	//[b]Optional.[/b]
+	//Returns kerning for the pair of glyphs.
+	FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) Vector2.XY
+	//[b]Required.[/b]
+	//Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
+	FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) int
+	//[b]Required.[/b]
+	//Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
+	FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) int
+	//[b]Required.[/b]
+	//Returns [code]true[/code] if a Unicode [param char] is available in the font.
+	FontHasChar(font_rid Resource.ID, char int) bool
+	//[b]Required.[/b]
+	//Returns a string containing all the characters available in the font.
+	FontGetSupportedChars(font_rid Resource.ID) string
+	//[b]Optional.[/b]
+	//Renders the range of characters to the font cache texture.
+	FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int)
+	//[b]Optional.[/b]
+	//Renders specified glyph to the font cache texture.
+	FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int)
+	//[b]Required.[/b]
+	//Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
+	FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
+	//[b]Required.[/b]
+	//Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
+	FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
+	FontIsLanguageSupported(font_rid Resource.ID, language string) bool
+	//[b]Optional.[/b]
+	//Adds override for [method _font_is_language_supported].
+	FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if support override is enabled for the [param language].
+	FontGetLanguageSupportOverride(font_rid Resource.ID, language string) bool
+	//[b]Optional.[/b]
+	//Remove language support override.
+	FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string)
+	//[b]Optional.[/b]
+	//Returns list of language support overrides.
+	FontGetLanguageSupportOverrides(font_rid Resource.ID) []string
+	//[b]Optional.[/b]
+	//Returns [code]true[/code], if font supports given script (ISO 15924 code).
+	FontIsScriptSupported(font_rid Resource.ID, script string) bool
+	//[b]Optional.[/b]
+	//Adds override for [method _font_is_script_supported].
+	FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if support override is enabled for the [param script].
+	FontGetScriptSupportOverride(font_rid Resource.ID, script string) bool
+	//[b]Optional.[/b]
+	//Removes script support override.
+	FontRemoveScriptSupportOverride(font_rid Resource.ID, script string)
+	//[b]Optional.[/b]
+	//Returns list of script support overrides.
+	FontGetScriptSupportOverrides(font_rid Resource.ID) []string
+	//[b]Optional.[/b]
+	//Sets font OpenType feature set override.
+	FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any)
+	//[b]Optional.[/b]
+	//Returns font OpenType feature set override.
+	FontGetOpentypeFeatureOverrides(font_rid Resource.ID) Dictionary.Any
+	//[b]Optional.[/b]
+	//Returns the dictionary of the supported OpenType features.
+	FontSupportedFeatureList(font_rid Resource.ID) Dictionary.Any
+	//[b]Optional.[/b]
+	//Returns the dictionary of the supported OpenType variation coordinates.
+	FontSupportedVariationList(font_rid Resource.ID) Dictionary.Any
+	//[b]Optional.[/b]
+	//Returns the font oversampling factor, shared by all fonts in the TextServer.
+	FontGetGlobalOversampling() Float.X
+	//[b]Optional.[/b]
+	//Sets oversampling factor, shared by all font in the TextServer.
+	FontSetGlobalOversampling(oversampling Float.X)
+	//[b]Optional.[/b]
+	//Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
+	GetHexCodeBoxSize(size int, index int) Vector2.XY
+	//[b]Optional.[/b]
+	//Draws box displaying character hexadecimal code.
+	DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA)
+	//[b]Required.[/b]
+	//Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
+	CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Resource.ID
+	//[b]Required.[/b]
+	//Clears text buffer (removes text and inline objects).
+	ShapedTextClear(shaped Resource.ID)
+	//[b]Optional.[/b]
+	//Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
+	ShapedTextSetDirection(shaped Resource.ID, direction gdclass.TextServerDirection)
+	//[b]Optional.[/b]
+	//Returns direction of the text.
+	ShapedTextGetDirection(shaped Resource.ID) gdclass.TextServerDirection
+	//[b]Optional.[/b]
+	//Returns direction of the text, inferred by the BiDi algorithm.
+	ShapedTextGetInferredDirection(shaped Resource.ID) gdclass.TextServerDirection
+	//[b]Optional.[/b]
+	//Overrides BiDi for the structured text.
+	ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any)
+	//[b]Optional.[/b]
+	//Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
+	ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)
+	//[b]Optional.[/b]
+	//Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
+	ShapedTextGetCustomPunctuation(shaped Resource.ID) string
+	//[b]Optional.[/b]
+	//Sets ellipsis character used for text clipping.
+	ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)
+	//[b]Optional.[/b]
+	//Returns ellipsis character used for text clipping.
+	ShapedTextGetCustomEllipsis(shaped Resource.ID) int
+	//[b]Optional.[/b]
+	//Sets desired text orientation.
+	ShapedTextSetOrientation(shaped Resource.ID, orientation gdclass.TextServerOrientation)
+	//[b]Optional.[/b]
+	//Returns text orientation.
+	ShapedTextGetOrientation(shaped Resource.ID) gdclass.TextServerOrientation
+	//[b]Optional.[/b]
+	//If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
+	ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
+	ShapedTextGetPreserveInvalid(shaped Resource.ID) bool
+	//[b]Optional.[/b]
+	//If set to [code]true[/code] text buffer will display control characters.
+	ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool)
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if text buffer is configured to display control characters.
+	ShapedTextGetPreserveControl(shaped Resource.ID) bool
+	//[b]Optional.[/b]
+	//Sets extra spacing added between glyphs or lines in pixels.
+	ShapedTextSetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType, value int)
+	//[b]Optional.[/b]
+	//Returns extra spacing added between glyphs or lines in pixels.
+	ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType) int
+	//[b]Required.[/b]
+	//Adds text span and font to draw it to the text buffer.
+	ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) bool
+	//[b]Required.[/b]
+	//Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
+	ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool
+	//[b]Required.[/b]
+	//Sets new size and alignment of embedded object.
+	ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool
+	//[b]Required.[/b]
+	//Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
+	ShapedGetSpanCount(shaped Resource.ID) int
+	//[b]Required.[/b]
+	//Returns text span metadata.
+	ShapedGetSpanMeta(shaped Resource.ID, index int) any
+	//[b]Required.[/b]
+	//Changes text span font, font size, and OpenType features, without changing the text.
+	ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any)
+	//[b]Required.[/b]
+	//Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
+	ShapedTextSubstr(shaped Resource.ID, start int, length int) Resource.ID
+	//[b]Required.[/b]
+	//Returns the parent buffer from which the substring originates.
+	ShapedTextGetParent(shaped Resource.ID) Resource.ID
+	//[b]Optional.[/b]
+	//Adjusts text width to fit to specified width, returns new text width.
+	ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags gdclass.TextServerJustificationFlag) Float.X
+	//[b]Optional.[/b]
+	//Aligns shaped text to the given tab-stops.
+	ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) Float.X
+	//[b]Required.[/b]
+	//Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
+	ShapedTextShape(shaped Resource.ID) bool
+	//[b]Optional.[/b]
+	//Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
+	ShapedTextUpdateBreaks(shaped Resource.ID) bool
+	//[b]Optional.[/b]
+	//Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
+	ShapedTextUpdateJustificationOps(shaped Resource.ID) bool
+	//[b]Required.[/b]
+	//Returns [code]true[/code] if buffer is successfully shaped.
+	ShapedTextIsReady(shaped Resource.ID) bool
+	//[b]Required.[/b]
+	//Returns an array of glyphs in the visual order.
+	ShapedTextGetGlyphs(shaped Resource.ID) *Glyph
+	//[b]Required.[/b]
+	//Returns text glyphs in the logical order.
+	ShapedTextSortLogical(shaped Resource.ID) *Glyph
+	//[b]Required.[/b]
+	//Returns number of glyphs in the buffer.
+	ShapedTextGetGlyphCount(shaped Resource.ID) int
+	//[b]Required.[/b]
+	//Returns substring buffer character range in the parent buffer.
+	ShapedTextGetRange(shaped Resource.ID) Vector2i.XY
+	//[b]Optional.[/b]
+	//Breaks text to the lines and columns. Returns character ranges for each segment.
+	ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) []int32
+	//[b]Optional.[/b]
+	//Breaks text to the lines and returns character ranges for each line.
+	ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) []int32
+	//[b]Optional.[/b]
+	//Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
+	ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) []int32
+	//[b]Required.[/b]
+	//Returns the position of the overrun trim.
+	ShapedTextGetTrimPos(shaped Resource.ID) int
+	//[b]Required.[/b]
+	//Returns position of the ellipsis.
+	ShapedTextGetEllipsisPos(shaped Resource.ID) int
+	//[b]Required.[/b]
+	//Returns number of glyphs in the ellipsis.
+	ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) int
+	//[b]Required.[/b]
+	//Returns array of the glyphs in the ellipsis.
+	ShapedTextGetEllipsisGlyphs(shaped Resource.ID) *Glyph
+	//[b]Optional.[/b]
+	//Trims text if it exceeds the given width.
+	ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag)
+	//[b]Required.[/b]
+	//Returns array of inline objects.
+	ShapedTextGetObjects(shaped Resource.ID) Array.Any
+	//[b]Required.[/b]
+	//Returns bounding rectangle of the inline object.
+	ShapedTextGetObjectRect(shaped Resource.ID, key any) Rect2.PositionSize
+	//[b]Required.[/b]
+	//Returns the character range of the inline object.
+	ShapedTextGetObjectRange(shaped Resource.ID, key any) Vector2i.XY
+	//[b]Required.[/b]
+	//Returns the glyph index of the inline object.
+	ShapedTextGetObjectGlyph(shaped Resource.ID, key any) int
+	//[b]Required.[/b]
+	//Returns size of the text.
+	ShapedTextGetSize(shaped Resource.ID) Vector2.XY
+	//[b]Required.[/b]
+	//Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
+	ShapedTextGetAscent(shaped Resource.ID) Float.X
+	//[b]Required.[/b]
+	//Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
+	ShapedTextGetDescent(shaped Resource.ID) Float.X
+	//[b]Required.[/b]
+	//Returns width (for horizontal layout) or height (for vertical) of the text.
+	ShapedTextGetWidth(shaped Resource.ID) Float.X
+	//[b]Required.[/b]
+	//Returns pixel offset of the underline below the baseline.
+	ShapedTextGetUnderlinePosition(shaped Resource.ID) Float.X
+	//[b]Required.[/b]
+	//Returns thickness of the underline.
+	ShapedTextGetUnderlineThickness(shaped Resource.ID) Float.X
+	//[b]Optional.[/b]
+	//Returns dominant direction of in the range of text.
+	ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) int
+	//[b]Optional.[/b]
+	//Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
+	ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo)
+	//[b]Optional.[/b]
+	//Returns selection rectangles for the specified character range.
+	ShapedTextGetSelection(shaped Resource.ID, start int, end int) []Vector2.XY
+	//[b]Optional.[/b]
+	//Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
+	ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) int
+	//[b]Optional.[/b]
+	//Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
+	ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) int
+	//[b]Optional.[/b]
+	//Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+	ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)
+	//[b]Optional.[/b]
+	//Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+	ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)
+	//[b]Optional.[/b]
+	//Returns composite character's bounds as offsets from the start of the line.
+	ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) Vector2.XY
+	//[b]Optional.[/b]
+	//Returns grapheme end position closest to the [param pos].
+	ShapedTextNextGraphemePos(shaped Resource.ID, pos int) int
+	//[b]Optional.[/b]
+	//Returns grapheme start position closest to the [param pos].
+	ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) int
+	//[b]Optional.[/b]
+	//Returns array of the composite character boundaries.
+	ShapedTextGetCharacterBreaks(shaped Resource.ID) []int32
+	//[b]Optional.[/b]
+	//Returns composite character end position closest to the [param pos].
+	ShapedTextNextCharacterPos(shaped Resource.ID, pos int) int
+	//[b]Optional.[/b]
+	//Returns composite character start position closest to the [param pos].
+	ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) int
+	//[b]Optional.[/b]
+	//Returns composite character position closest to the [param pos].
+	ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) int
+	//[b]Optional.[/b]
+	//Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
+	FormatNumber(number string, language string) string
+	//[b]Optional.[/b]
+	//Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
+	ParseNumber(number string, language string) string
+	//[b]Optional.[/b]
+	//Returns percent sign used in the [param language].
+	PercentSign(language string) string
+	//[b]Optional.[/b]
+	//Strips diacritics from the string.
+	StripDiacritics(s string) string
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if [param string] is a valid identifier.
+	IsValidIdentifier(s string) bool
+	IsValidLetter(unicode int) bool
+	//[b]Optional.[/b]
+	//Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
+	StringGetWordBreaks(s string, language string, chars_per_line int) []int32
+	//[b]Optional.[/b]
+	//Returns array of the composite character boundaries.
+	StringGetCharacterBreaks(s string, language string) []int32
+	//[b]Optional.[/b]
+	//Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
+	IsConfusable(s string, dict []string) int
+	//[b]Optional.[/b]
+	//Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
+	SpoofCheck(s string) bool
+	//[b]Optional.[/b]
+	//Returns the string converted to uppercase.
+	StringToUpper(s string, language string) string
+	//[b]Optional.[/b]
+	//Returns the string converted to lowercase.
+	StringToLower(s string, language string) string
+	//[b]Optional.[/b]
+	//Returns the string converted to title case.
+	StringToTitle(s string, language string) string
+	//[b]Optional.[/b]
+	//Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
+	ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) gd.Array
+	//[b]Optional.[/b]
+	//This method is called before text server is unregistered.
+	Cleanup()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) HasFeature(feature gdclass.TextServerFeature) (_ bool)          { return }
+func (self Implementation) GetName() (_ string)                                            { return }
+func (self Implementation) GetFeatures() (_ int)                                           { return }
+func (self Implementation) FreeRid(rid Resource.ID)                                        { return }
+func (self Implementation) Has(rid Resource.ID) (_ bool)                                   { return }
+func (self Implementation) LoadSupportData(filename string) (_ bool)                       { return }
+func (self Implementation) GetSupportDataFilename() (_ string)                             { return }
+func (self Implementation) GetSupportDataInfo() (_ string)                                 { return }
+func (self Implementation) SaveSupportData(filename string) (_ bool)                       { return }
+func (self Implementation) IsLocaleRightToLeft(locale string) (_ bool)                     { return }
+func (self Implementation) NameToTag(name string) (_ int)                                  { return }
+func (self Implementation) TagToName(tag int) (_ string)                                   { return }
+func (self Implementation) CreateFont() (_ Resource.ID)                                    { return }
+func (self Implementation) CreateFontLinkedVariation(font_rid Resource.ID) (_ Resource.ID) { return }
+func (self Implementation) FontSetData(font_rid Resource.ID, data []byte)                  { return }
+func (self Implementation) FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int) {
+	return
+}
+func (self Implementation) FontSetFaceIndex(font_rid Resource.ID, face_index int) { return }
+func (self Implementation) FontGetFaceIndex(font_rid Resource.ID) (_ int)         { return }
+func (self Implementation) FontGetFaceCount(font_rid Resource.ID) (_ int)         { return }
+func (self Implementation) FontSetStyle(font_rid Resource.ID, style gdclass.TextServerFontStyle) {
+	return
+}
+func (self Implementation) FontGetStyle(font_rid Resource.ID) (_ gdclass.TextServerFontStyle) { return }
+func (self Implementation) FontSetName(font_rid Resource.ID, name string)                     { return }
+func (self Implementation) FontGetName(font_rid Resource.ID) (_ string)                       { return }
+func (self Implementation) FontGetOtNameStrings(font_rid Resource.ID) (_ Dictionary.Any)      { return }
+func (self Implementation) FontSetStyleName(font_rid Resource.ID, name_style string)          { return }
+func (self Implementation) FontGetStyleName(font_rid Resource.ID) (_ string)                  { return }
+func (self Implementation) FontSetWeight(font_rid Resource.ID, weight int)                    { return }
+func (self Implementation) FontGetWeight(font_rid Resource.ID) (_ int)                        { return }
+func (self Implementation) FontSetStretch(font_rid Resource.ID, stretch int)                  { return }
+func (self Implementation) FontGetStretch(font_rid Resource.ID) (_ int)                       { return }
+func (self Implementation) FontSetAntialiasing(font_rid Resource.ID, antialiasing gdclass.TextServerFontAntialiasing) {
+	return
+}
+func (self Implementation) FontGetAntialiasing(font_rid Resource.ID) (_ gdclass.TextServerFontAntialiasing) {
+	return
+}
+func (self Implementation) FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool) {
+	return
+}
+func (self Implementation) FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) (_ bool) { return }
+func (self Implementation) FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool) {
+	return
+}
+func (self Implementation) FontGetGenerateMipmaps(font_rid Resource.ID) (_ bool) { return }
+func (self Implementation) FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool) {
+	return
+}
+func (self Implementation) FontIsMultichannelSignedDistanceField(font_rid Resource.ID) (_ bool) {
+	return
+}
+func (self Implementation) FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int) { return }
+func (self Implementation) FontGetMsdfPixelRange(font_rid Resource.ID) (_ int)               { return }
+func (self Implementation) FontSetMsdfSize(font_rid Resource.ID, msdf_size int)              { return }
+func (self Implementation) FontGetMsdfSize(font_rid Resource.ID) (_ int)                     { return }
+func (self Implementation) FontSetFixedSize(font_rid Resource.ID, fixed_size int)            { return }
+func (self Implementation) FontGetFixedSize(font_rid Resource.ID) (_ int)                    { return }
+func (self Implementation) FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) {
+	return
+}
+func (self Implementation) FontGetFixedSizeScaleMode(font_rid Resource.ID) (_ gdclass.TextServerFixedSizeScaleMode) {
+	return
+}
+func (self Implementation) FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool) {
+	return
+}
+func (self Implementation) FontIsAllowSystemFallback(font_rid Resource.ID) (_ bool) { return }
+func (self Implementation) FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool) {
+	return
+}
+func (self Implementation) FontIsForceAutohinter(font_rid Resource.ID) (_ bool) { return }
+func (self Implementation) FontSetHinting(font_rid Resource.ID, hinting gdclass.TextServerHinting) {
+	return
+}
+func (self Implementation) FontGetHinting(font_rid Resource.ID) (_ gdclass.TextServerHinting) { return }
+func (self Implementation) FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning gdclass.TextServerSubpixelPositioning) {
+	return
+}
+func (self Implementation) FontGetSubpixelPositioning(font_rid Resource.ID) (_ gdclass.TextServerSubpixelPositioning) {
+	return
+}
+func (self Implementation) FontSetEmbolden(font_rid Resource.ID, strength Float.X) { return }
+func (self Implementation) FontGetEmbolden(font_rid Resource.ID) (_ Float.X)       { return }
+func (self Implementation) FontSetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
+	return
+}
+func (self Implementation) FontGetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
+	return
+}
+func (self Implementation) FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X) {
+	return
+}
+func (self Implementation) FontGetBaselineOffset(font_rid Resource.ID) (_ Float.X) { return }
+func (self Implementation) FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY) {
+	return
+}
+func (self Implementation) FontGetTransform(font_rid Resource.ID) (_ Transform2D.OriginXY) { return }
+func (self Implementation) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any) {
+	return
+}
+func (self Implementation) FontGetVariationCoordinates(font_rid Resource.ID) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) FontSetOversampling(font_rid Resource.ID, oversampling Float.X) { return }
+func (self Implementation) FontGetOversampling(font_rid Resource.ID) (_ Float.X)           { return }
+func (self Implementation) FontGetSizeCacheList(font_rid Resource.ID) (_ gd.Array)         { return }
+func (self Implementation) FontClearSizeCache(font_rid Resource.ID)                        { return }
+func (self Implementation) FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)     { return }
+func (self Implementation) FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)   { return }
+func (self Implementation) FontGetAscent(font_rid Resource.ID, size int) (_ Float.X)       { return }
+func (self Implementation) FontSetDescent(font_rid Resource.ID, size int, descent Float.X) { return }
+func (self Implementation) FontGetDescent(font_rid Resource.ID, size int) (_ Float.X)      { return }
+func (self Implementation) FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X) {
+	return
+}
+func (self Implementation) FontGetUnderlinePosition(font_rid Resource.ID, size int) (_ Float.X) {
+	return
+}
+func (self Implementation) FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X) {
+	return
+}
+func (self Implementation) FontGetUnderlineThickness(font_rid Resource.ID, size int) (_ Float.X) {
+	return
+}
+func (self Implementation) FontSetScale(font_rid Resource.ID, size int, scale Float.X) { return }
+func (self Implementation) FontGetScale(font_rid Resource.ID, size int) (_ Float.X)    { return }
+func (self Implementation) FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) (_ int) {
+	return
+}
+func (self Implementation) FontClearTextures(font_rid Resource.ID, size Vector2i.XY) { return }
+func (self Implementation) FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int) {
+	return
+}
+func (self Implementation) FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image [1]gdclass.Image) {
+	return
+}
+func (self Implementation) FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ [1]gdclass.Image) {
+	return
+}
+func (self Implementation) FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32) {
+	return
+}
+func (self Implementation) FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ []int32) {
+	return
+}
+func (self Implementation) FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) (_ []int32) {
+	return
+}
+func (self Implementation) FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)            { return }
+func (self Implementation) FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int) { return }
+func (self Implementation) FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Rect2.PositionSize) {
+	return
+}
+func (self Implementation) FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) {
+	return
+}
+func (self Implementation) FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ int) {
+	return
+}
+func (self Implementation) FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int) {
+	return
+}
+func (self Implementation) FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Resource.ID) {
+	return
+}
+func (self Implementation) FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetGlyphContours(font_rid Resource.ID, size int, index int) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) FontGetKerningList(font_rid Resource.ID, size int) (_ gd.Array) { return }
+func (self Implementation) FontClearKerningMap(font_rid Resource.ID, size int)             { return }
+func (self Implementation) FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) {
+	return
+}
+func (self Implementation) FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) (_ int) {
+	return
+}
+func (self Implementation) FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) (_ int) {
+	return
+}
+func (self Implementation) FontHasChar(font_rid Resource.ID, char int) (_ bool)   { return }
+func (self Implementation) FontGetSupportedChars(font_rid Resource.ID) (_ string) { return }
+func (self Implementation) FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int) {
+	return
+}
+func (self Implementation) FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int) { return }
+func (self Implementation) FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
+	return
+}
+func (self Implementation) FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA) {
+	return
+}
+func (self Implementation) FontIsLanguageSupported(font_rid Resource.ID, language string) (_ bool) {
+	return
+}
+func (self Implementation) FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool) {
+	return
+}
+func (self Implementation) FontGetLanguageSupportOverride(font_rid Resource.ID, language string) (_ bool) {
+	return
+}
+func (self Implementation) FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string) {
+	return
+}
+func (self Implementation) FontGetLanguageSupportOverrides(font_rid Resource.ID) (_ []string) { return }
+func (self Implementation) FontIsScriptSupported(font_rid Resource.ID, script string) (_ bool) {
+	return
+}
+func (self Implementation) FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool) {
+	return
+}
+func (self Implementation) FontGetScriptSupportOverride(font_rid Resource.ID, script string) (_ bool) {
+	return
+}
+func (self Implementation) FontRemoveScriptSupportOverride(font_rid Resource.ID, script string) {
+	return
+}
+func (self Implementation) FontGetScriptSupportOverrides(font_rid Resource.ID) (_ []string) { return }
+func (self Implementation) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any) {
+	return
+}
+func (self Implementation) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) FontSupportedFeatureList(font_rid Resource.ID) (_ Dictionary.Any) { return }
+func (self Implementation) FontSupportedVariationList(font_rid Resource.ID) (_ Dictionary.Any) {
+	return
+}
+func (self Implementation) FontGetGlobalOversampling() (_ Float.X)               { return }
+func (self Implementation) FontSetGlobalOversampling(oversampling Float.X)       { return }
+func (self Implementation) GetHexCodeBoxSize(size int, index int) (_ Vector2.XY) { return }
+func (self Implementation) DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
+	return
+}
+func (self Implementation) CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) (_ Resource.ID) {
+	return
+}
+func (self Implementation) ShapedTextClear(shaped Resource.ID) { return }
+func (self Implementation) ShapedTextSetDirection(shaped Resource.ID, direction gdclass.TextServerDirection) {
+	return
+}
+func (self Implementation) ShapedTextGetDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
+	return
+}
+func (self Implementation) ShapedTextGetInferredDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
+	return
+}
+func (self Implementation) ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any) { return }
+func (self Implementation) ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)  { return }
+func (self Implementation) ShapedTextGetCustomPunctuation(shaped Resource.ID) (_ string)     { return }
+func (self Implementation) ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)         { return }
+func (self Implementation) ShapedTextGetCustomEllipsis(shaped Resource.ID) (_ int)           { return }
+func (self Implementation) ShapedTextSetOrientation(shaped Resource.ID, orientation gdclass.TextServerOrientation) {
+	return
+}
+func (self Implementation) ShapedTextGetOrientation(shaped Resource.ID) (_ gdclass.TextServerOrientation) {
+	return
+}
+func (self Implementation) ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool) { return }
+func (self Implementation) ShapedTextGetPreserveInvalid(shaped Resource.ID) (_ bool)      { return }
+func (self Implementation) ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool) { return }
+func (self Implementation) ShapedTextGetPreserveControl(shaped Resource.ID) (_ bool)      { return }
+func (self Implementation) ShapedTextSetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
+	return
+}
+func (self Implementation) ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
+	return
+}
+func (self Implementation) ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) (_ bool) {
+	return
+}
+func (self Implementation) ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) (_ bool) {
+	return
+}
+func (self Implementation) ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) (_ bool) {
+	return
+}
+func (self Implementation) ShapedGetSpanCount(shaped Resource.ID) (_ int)           { return }
+func (self Implementation) ShapedGetSpanMeta(shaped Resource.ID, index int) (_ any) { return }
+func (self Implementation) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any) {
+	return
+}
+func (self Implementation) ShapedTextSubstr(shaped Resource.ID, start int, length int) (_ Resource.ID) {
+	return
+}
+func (self Implementation) ShapedTextGetParent(shaped Resource.ID) (_ Resource.ID) { return }
+func (self Implementation) ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags gdclass.TextServerJustificationFlag) (_ Float.X) {
+	return
+}
+func (self Implementation) ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) (_ Float.X) {
+	return
+}
+func (self Implementation) ShapedTextShape(shaped Resource.ID) (_ bool)                  { return }
+func (self Implementation) ShapedTextUpdateBreaks(shaped Resource.ID) (_ bool)           { return }
+func (self Implementation) ShapedTextUpdateJustificationOps(shaped Resource.ID) (_ bool) { return }
+func (self Implementation) ShapedTextIsReady(shaped Resource.ID) (_ bool)                { return }
+func (self Implementation) ShapedTextGetGlyphs(shaped Resource.ID) (_ *Glyph)            { return }
+func (self Implementation) ShapedTextSortLogical(shaped Resource.ID) (_ *Glyph)          { return }
+func (self Implementation) ShapedTextGetGlyphCount(shaped Resource.ID) (_ int)           { return }
+func (self Implementation) ShapedTextGetRange(shaped Resource.ID) (_ Vector2i.XY)        { return }
+func (self Implementation) ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
+	return
+}
+func (self Implementation) ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
+	return
+}
+func (self Implementation) ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) (_ []int32) {
+	return
+}
+func (self Implementation) ShapedTextGetTrimPos(shaped Resource.ID) (_ int)            { return }
+func (self Implementation) ShapedTextGetEllipsisPos(shaped Resource.ID) (_ int)        { return }
+func (self Implementation) ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) (_ int) { return }
+func (self Implementation) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) (_ *Glyph)  { return }
+func (self Implementation) ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag) {
+	return
+}
+func (self Implementation) ShapedTextGetObjects(shaped Resource.ID) (_ Array.Any) { return }
+func (self Implementation) ShapedTextGetObjectRect(shaped Resource.ID, key any) (_ Rect2.PositionSize) {
+	return
+}
+func (self Implementation) ShapedTextGetObjectRange(shaped Resource.ID, key any) (_ Vector2i.XY) {
+	return
+}
+func (self Implementation) ShapedTextGetObjectGlyph(shaped Resource.ID, key any) (_ int)   { return }
+func (self Implementation) ShapedTextGetSize(shaped Resource.ID) (_ Vector2.XY)            { return }
+func (self Implementation) ShapedTextGetAscent(shaped Resource.ID) (_ Float.X)             { return }
+func (self Implementation) ShapedTextGetDescent(shaped Resource.ID) (_ Float.X)            { return }
+func (self Implementation) ShapedTextGetWidth(shaped Resource.ID) (_ Float.X)              { return }
+func (self Implementation) ShapedTextGetUnderlinePosition(shaped Resource.ID) (_ Float.X)  { return }
+func (self Implementation) ShapedTextGetUnderlineThickness(shaped Resource.ID) (_ Float.X) { return }
+func (self Implementation) ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) (_ int) {
+	return
+}
+func (self Implementation) ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo) {
+	return
+}
+func (self Implementation) ShapedTextGetSelection(shaped Resource.ID, start int, end int) (_ []Vector2.XY) {
+	return
+}
+func (self Implementation) ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) (_ int) {
+	return
+}
+func (self Implementation) ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) (_ int) {
+	return
+}
+func (self Implementation) ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA) {
+	return
+}
+func (self Implementation) ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA) {
+	return
+}
+func (self Implementation) ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) ShapedTextNextGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
+func (self Implementation) ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
+func (self Implementation) ShapedTextGetCharacterBreaks(shaped Resource.ID) (_ []int32)       { return }
+func (self Implementation) ShapedTextNextCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
+func (self Implementation) ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
+func (self Implementation) ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) (_ int) { return }
+func (self Implementation) FormatNumber(number string, language string) (_ string)            { return }
+func (self Implementation) ParseNumber(number string, language string) (_ string)             { return }
+func (self Implementation) PercentSign(language string) (_ string)                            { return }
+func (self Implementation) StripDiacritics(s string) (_ string)                               { return }
+func (self Implementation) IsValidIdentifier(s string) (_ bool)                               { return }
+func (self Implementation) IsValidLetter(unicode int) (_ bool)                                { return }
+func (self Implementation) StringGetWordBreaks(s string, language string, chars_per_line int) (_ []int32) {
+	return
+}
+func (self Implementation) StringGetCharacterBreaks(s string, language string) (_ []int32) { return }
+func (self Implementation) IsConfusable(s string, dict []string) (_ int)                   { return }
+func (self Implementation) SpoofCheck(s string) (_ bool)                                   { return }
+func (self Implementation) StringToUpper(s string, language string) (_ string)             { return }
+func (self Implementation) StringToLower(s string, language string) (_ string)             { return }
+func (self Implementation) StringToTitle(s string, language string) (_ string)             { return }
+func (self Implementation) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) (_ gd.Array) {
+	return
+}
+func (self Implementation) Cleanup() { return }
 
 /*
 [b]Required.[/b]
@@ -3856,7 +4270,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServerExtension"))
-	return Instance{*(*gdclass.TextServerExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.TextServerExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -27,204 +27,539 @@ var _ = pointers.Cycle
 This class extends [PhysicsServer3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsServer3D].
 
-	// PhysicsServer3DExtension methods that can be overridden by a [Class] that extends it.
-	type PhysicsServer3DExtension interface {
-		WorldBoundaryShapeCreate() Resource.ID
-		SeparationRayShapeCreate() Resource.ID
-		SphereShapeCreate() Resource.ID
-		BoxShapeCreate() Resource.ID
-		CapsuleShapeCreate() Resource.ID
-		CylinderShapeCreate() Resource.ID
-		ConvexPolygonShapeCreate() Resource.ID
-		ConcavePolygonShapeCreate() Resource.ID
-		HeightmapShapeCreate() Resource.ID
-		CustomShapeCreate() Resource.ID
-		ShapeSetData(shape Resource.ID, data any)
-		ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X)
-		ShapeSetMargin(shape Resource.ID, margin Float.X)
-		ShapeGetMargin(shape Resource.ID) Float.X
-		ShapeGetType(shape Resource.ID) gdclass.PhysicsServer3DShapeType
-		ShapeGetData(shape Resource.ID) any
-		ShapeGetCustomSolverBias(shape Resource.ID) Float.X
-		SpaceCreate() Resource.ID
-		SpaceSetActive(space Resource.ID, active bool)
-		SpaceIsActive(space Resource.ID) bool
-		SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter, value Float.X)
-		SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter) Float.X
-		SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState3D
-		SpaceSetDebugContacts(space Resource.ID, max_contacts int)
-		SpaceGetContacts(space Resource.ID) []Vector3.XYZ
-		SpaceGetContactCount(space Resource.ID) int
-		AreaCreate() Resource.ID
-		AreaSetSpace(area Resource.ID, space Resource.ID)
-		AreaGetSpace(area Resource.ID) Resource.ID
-		AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool)
-		AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID)
-		AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin)
-		AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool)
-		AreaGetShapeCount(area Resource.ID) int
-		AreaGetShape(area Resource.ID, shape_idx int) Resource.ID
-		AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOrigin
-		AreaRemoveShape(area Resource.ID, shape_idx int)
-		AreaClearShapes(area Resource.ID)
-		AreaAttachObjectInstanceId(area Resource.ID, id int)
-		AreaGetObjectInstanceId(area Resource.ID) int
-		AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, value any)
-		AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin)
-		AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) any
-		AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin
-		AreaSetCollisionLayer(area Resource.ID, layer int)
-		AreaGetCollisionLayer(area Resource.ID) int
-		AreaSetCollisionMask(area Resource.ID, mask int)
-		AreaGetCollisionMask(area Resource.ID) int
-		AreaSetMonitorable(area Resource.ID, monitorable bool)
-		AreaSetRayPickable(area Resource.ID, enable bool)
-		AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
-		AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
-		BodyCreate() Resource.ID
-		BodySetSpace(body Resource.ID, space Resource.ID)
-		BodyGetSpace(body Resource.ID) Resource.ID
-		BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode)
-		BodyGetMode(body Resource.ID) gdclass.PhysicsServer3DBodyMode
-		BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool)
-		BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID)
-		BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin)
-		BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool)
-		BodyGetShapeCount(body Resource.ID) int
-		BodyGetShape(body Resource.ID, shape_idx int) Resource.ID
-		BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOrigin
-		BodyRemoveShape(body Resource.ID, shape_idx int)
-		BodyClearShapes(body Resource.ID)
-		BodyAttachObjectInstanceId(body Resource.ID, id int)
-		BodyGetObjectInstanceId(body Resource.ID) int
-		BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool)
-		BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool
-		BodySetCollisionLayer(body Resource.ID, layer int)
-		BodyGetCollisionLayer(body Resource.ID) int
-		BodySetCollisionMask(body Resource.ID, mask int)
-		BodyGetCollisionMask(body Resource.ID) int
-		BodySetCollisionPriority(body Resource.ID, priority Float.X)
-		BodyGetCollisionPriority(body Resource.ID) Float.X
-		BodySetUserFlags(body Resource.ID, flags int)
-		BodyGetUserFlags(body Resource.ID) int
-		BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, value any)
-		BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) any
-		BodyResetMassProperties(body Resource.ID)
-		BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, value any)
-		BodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any
-		BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ)
-		BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ, position Vector3.XYZ)
-		BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ)
-		BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ)
-		BodyApplyForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ)
-		BodyApplyTorque(body Resource.ID, torque Vector3.XYZ)
-		BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ)
-		BodyAddConstantForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ)
-		BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ)
-		BodySetConstantForce(body Resource.ID, force Vector3.XYZ)
-		BodyGetConstantForce(body Resource.ID) Vector3.XYZ
-		BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ)
-		BodyGetConstantTorque(body Resource.ID) Vector3.XYZ
-		BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ)
-		BodySetAxisLock(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis, lock bool)
-		BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bool
-		BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID)
-		BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
-		BodyGetCollisionExceptions(body Resource.ID) gd.Array
-		BodySetMaxContactsReported(body Resource.ID, amount int)
-		BodyGetMaxContactsReported(body Resource.ID) int
-		BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X)
-		BodyGetContactsReportedDepthThreshold(body Resource.ID) Float.X
-		BodySetOmitForceIntegration(body Resource.ID, enable bool)
-		BodyIsOmittingForceIntegration(body Resource.ID) bool
-		BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
-		BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
-		BodySetRayPickable(body Resource.ID, enable bool)
-		BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
-		BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D
-		SoftBodyCreate() Resource.ID
-		SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)
-		SoftBodySetSpace(body Resource.ID, space Resource.ID)
-		SoftBodyGetSpace(body Resource.ID) Resource.ID
-		SoftBodySetRayPickable(body Resource.ID, enable bool)
-		SoftBodySetCollisionLayer(body Resource.ID, layer int)
-		SoftBodyGetCollisionLayer(body Resource.ID) int
-		SoftBodySetCollisionMask(body Resource.ID, mask int)
-		SoftBodyGetCollisionMask(body Resource.ID) int
-		SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID)
-		SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID)
-		SoftBodyGetCollisionExceptions(body Resource.ID) gd.Array
-		SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any)
-		SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any
-		SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin)
-		SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int)
-		SoftBodyGetSimulationPrecision(body Resource.ID) int
-		SoftBodySetTotalMass(body Resource.ID, total_mass Float.X)
-		SoftBodyGetTotalMass(body Resource.ID) Float.X
-		SoftBodySetLinearStiffness(body Resource.ID, linear_stiffness Float.X)
-		SoftBodyGetLinearStiffness(body Resource.ID) Float.X
-		SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X)
-		SoftBodyGetPressureCoefficient(body Resource.ID) Float.X
-		SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X)
-		SoftBodyGetDampingCoefficient(body Resource.ID) Float.X
-		SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X)
-		SoftBodyGetDragCoefficient(body Resource.ID) Float.X
-		SoftBodySetMesh(body Resource.ID, mesh Resource.ID)
-		SoftBodyGetBounds(body Resource.ID) AABB.PositionSize
-		SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ)
-		SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.XYZ
-		SoftBodyRemoveAllPinnedPoints(body Resource.ID)
-		SoftBodyPinPoint(body Resource.ID, point_index int, pin bool)
-		SoftBodyIsPointPinned(body Resource.ID, point_index int) bool
-		JointCreate() Resource.ID
-		JointClear(joint Resource.ID)
-		JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ)
-		PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam, value Float.X)
-		PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam) Float.X
-		PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ)
-		PinJointGetLocalA(joint Resource.ID) Vector3.XYZ
-		PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ)
-		PinJointGetLocalB(joint Resource.ID) Vector3.XYZ
-		JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin)
-		JointMakeHingeSimple(joint Resource.ID, body_A Resource.ID, pivot_A Vector3.XYZ, axis_A Vector3.XYZ, body_B Resource.ID, pivot_B Vector3.XYZ, axis_B Vector3.XYZ)
-		HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam, value Float.X)
-		HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam) Float.X
-		HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool)
-		HingeJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag) bool
-		JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
-		SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam, value Float.X)
-		SliderJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam) Float.X
-		JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
-		ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X)
-		ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam) Float.X
-		JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
-		Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X)
-		Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) Float.X
-		Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool)
-		Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool
-		JointGetType(joint Resource.ID) gdclass.PhysicsServer3DJointType
-		JointSetSolverPriority(joint Resource.ID, priority int)
-		JointGetSolverPriority(joint Resource.ID) int
-		JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool)
-		JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool
-		FreeRid(rid Resource.ID)
-		SetActive(active bool)
-		Init()
-		Step(step Float.X)
-		Sync()
-		FlushQueries()
-		EndSync()
-		Finish()
-		IsFlushingQueries() bool
-		GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicsServer3DExtension)
 */
 type Instance [1]gdclass.PhysicsServer3DExtension
 type Any interface {
 	gd.IsClass
 	AsPhysicsServer3DExtension() Instance
 }
+type Interface interface {
+	WorldBoundaryShapeCreate() Resource.ID
+	SeparationRayShapeCreate() Resource.ID
+	SphereShapeCreate() Resource.ID
+	BoxShapeCreate() Resource.ID
+	CapsuleShapeCreate() Resource.ID
+	CylinderShapeCreate() Resource.ID
+	ConvexPolygonShapeCreate() Resource.ID
+	ConcavePolygonShapeCreate() Resource.ID
+	HeightmapShapeCreate() Resource.ID
+	CustomShapeCreate() Resource.ID
+	ShapeSetData(shape Resource.ID, data any)
+	ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X)
+	ShapeSetMargin(shape Resource.ID, margin Float.X)
+	ShapeGetMargin(shape Resource.ID) Float.X
+	ShapeGetType(shape Resource.ID) gdclass.PhysicsServer3DShapeType
+	ShapeGetData(shape Resource.ID) any
+	ShapeGetCustomSolverBias(shape Resource.ID) Float.X
+	SpaceCreate() Resource.ID
+	SpaceSetActive(space Resource.ID, active bool)
+	SpaceIsActive(space Resource.ID) bool
+	SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter, value Float.X)
+	SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter) Float.X
+	SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState3D
+	SpaceSetDebugContacts(space Resource.ID, max_contacts int)
+	SpaceGetContacts(space Resource.ID) []Vector3.XYZ
+	SpaceGetContactCount(space Resource.ID) int
+	AreaCreate() Resource.ID
+	AreaSetSpace(area Resource.ID, space Resource.ID)
+	AreaGetSpace(area Resource.ID) Resource.ID
+	AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool)
+	AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID)
+	AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin)
+	AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool)
+	AreaGetShapeCount(area Resource.ID) int
+	AreaGetShape(area Resource.ID, shape_idx int) Resource.ID
+	AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOrigin
+	AreaRemoveShape(area Resource.ID, shape_idx int)
+	AreaClearShapes(area Resource.ID)
+	AreaAttachObjectInstanceId(area Resource.ID, id int)
+	AreaGetObjectInstanceId(area Resource.ID) int
+	AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, value any)
+	AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin)
+	AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) any
+	AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin
+	AreaSetCollisionLayer(area Resource.ID, layer int)
+	AreaGetCollisionLayer(area Resource.ID) int
+	AreaSetCollisionMask(area Resource.ID, mask int)
+	AreaGetCollisionMask(area Resource.ID) int
+	AreaSetMonitorable(area Resource.ID, monitorable bool)
+	AreaSetRayPickable(area Resource.ID, enable bool)
+	AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
+	AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
+	BodyCreate() Resource.ID
+	BodySetSpace(body Resource.ID, space Resource.ID)
+	BodyGetSpace(body Resource.ID) Resource.ID
+	BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode)
+	BodyGetMode(body Resource.ID) gdclass.PhysicsServer3DBodyMode
+	BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool)
+	BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID)
+	BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin)
+	BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool)
+	BodyGetShapeCount(body Resource.ID) int
+	BodyGetShape(body Resource.ID, shape_idx int) Resource.ID
+	BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOrigin
+	BodyRemoveShape(body Resource.ID, shape_idx int)
+	BodyClearShapes(body Resource.ID)
+	BodyAttachObjectInstanceId(body Resource.ID, id int)
+	BodyGetObjectInstanceId(body Resource.ID) int
+	BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool)
+	BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool
+	BodySetCollisionLayer(body Resource.ID, layer int)
+	BodyGetCollisionLayer(body Resource.ID) int
+	BodySetCollisionMask(body Resource.ID, mask int)
+	BodyGetCollisionMask(body Resource.ID) int
+	BodySetCollisionPriority(body Resource.ID, priority Float.X)
+	BodyGetCollisionPriority(body Resource.ID) Float.X
+	BodySetUserFlags(body Resource.ID, flags int)
+	BodyGetUserFlags(body Resource.ID) int
+	BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, value any)
+	BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) any
+	BodyResetMassProperties(body Resource.ID)
+	BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, value any)
+	BodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any
+	BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ)
+	BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ, position Vector3.XYZ)
+	BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ)
+	BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ)
+	BodyApplyForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ)
+	BodyApplyTorque(body Resource.ID, torque Vector3.XYZ)
+	BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ)
+	BodyAddConstantForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ)
+	BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ)
+	BodySetConstantForce(body Resource.ID, force Vector3.XYZ)
+	BodyGetConstantForce(body Resource.ID) Vector3.XYZ
+	BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ)
+	BodyGetConstantTorque(body Resource.ID) Vector3.XYZ
+	BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ)
+	BodySetAxisLock(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis, lock bool)
+	BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bool
+	BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID)
+	BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
+	BodyGetCollisionExceptions(body Resource.ID) gd.Array
+	BodySetMaxContactsReported(body Resource.ID, amount int)
+	BodyGetMaxContactsReported(body Resource.ID) int
+	BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X)
+	BodyGetContactsReportedDepthThreshold(body Resource.ID) Float.X
+	BodySetOmitForceIntegration(body Resource.ID, enable bool)
+	BodyIsOmittingForceIntegration(body Resource.ID) bool
+	BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
+	BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
+	BodySetRayPickable(body Resource.ID, enable bool)
+	BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
+	BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D
+	SoftBodyCreate() Resource.ID
+	SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)
+	SoftBodySetSpace(body Resource.ID, space Resource.ID)
+	SoftBodyGetSpace(body Resource.ID) Resource.ID
+	SoftBodySetRayPickable(body Resource.ID, enable bool)
+	SoftBodySetCollisionLayer(body Resource.ID, layer int)
+	SoftBodyGetCollisionLayer(body Resource.ID) int
+	SoftBodySetCollisionMask(body Resource.ID, mask int)
+	SoftBodyGetCollisionMask(body Resource.ID) int
+	SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID)
+	SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID)
+	SoftBodyGetCollisionExceptions(body Resource.ID) gd.Array
+	SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any)
+	SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any
+	SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin)
+	SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int)
+	SoftBodyGetSimulationPrecision(body Resource.ID) int
+	SoftBodySetTotalMass(body Resource.ID, total_mass Float.X)
+	SoftBodyGetTotalMass(body Resource.ID) Float.X
+	SoftBodySetLinearStiffness(body Resource.ID, linear_stiffness Float.X)
+	SoftBodyGetLinearStiffness(body Resource.ID) Float.X
+	SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X)
+	SoftBodyGetPressureCoefficient(body Resource.ID) Float.X
+	SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X)
+	SoftBodyGetDampingCoefficient(body Resource.ID) Float.X
+	SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X)
+	SoftBodyGetDragCoefficient(body Resource.ID) Float.X
+	SoftBodySetMesh(body Resource.ID, mesh Resource.ID)
+	SoftBodyGetBounds(body Resource.ID) AABB.PositionSize
+	SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ)
+	SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.XYZ
+	SoftBodyRemoveAllPinnedPoints(body Resource.ID)
+	SoftBodyPinPoint(body Resource.ID, point_index int, pin bool)
+	SoftBodyIsPointPinned(body Resource.ID, point_index int) bool
+	JointCreate() Resource.ID
+	JointClear(joint Resource.ID)
+	JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ)
+	PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam, value Float.X)
+	PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam) Float.X
+	PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ)
+	PinJointGetLocalA(joint Resource.ID) Vector3.XYZ
+	PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ)
+	PinJointGetLocalB(joint Resource.ID) Vector3.XYZ
+	JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin)
+	JointMakeHingeSimple(joint Resource.ID, body_A Resource.ID, pivot_A Vector3.XYZ, axis_A Vector3.XYZ, body_B Resource.ID, pivot_B Vector3.XYZ, axis_B Vector3.XYZ)
+	HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam, value Float.X)
+	HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam) Float.X
+	HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool)
+	HingeJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag) bool
+	JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
+	SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam, value Float.X)
+	SliderJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam) Float.X
+	JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
+	ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X)
+	ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam) Float.X
+	JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin)
+	Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X)
+	Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) Float.X
+	Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool)
+	Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool
+	JointGetType(joint Resource.ID) gdclass.PhysicsServer3DJointType
+	JointSetSolverPriority(joint Resource.ID, priority int)
+	JointGetSolverPriority(joint Resource.ID) int
+	JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool)
+	JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool
+	FreeRid(rid Resource.ID)
+	SetActive(active bool)
+	Init()
+	Step(step Float.X)
+	Sync()
+	FlushQueries()
+	EndSync()
+	Finish()
+	IsFlushingQueries() bool
+	GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) WorldBoundaryShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) SeparationRayShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) SphereShapeCreate() (_ Resource.ID)                       { return }
+func (self Implementation) BoxShapeCreate() (_ Resource.ID)                          { return }
+func (self Implementation) CapsuleShapeCreate() (_ Resource.ID)                      { return }
+func (self Implementation) CylinderShapeCreate() (_ Resource.ID)                     { return }
+func (self Implementation) ConvexPolygonShapeCreate() (_ Resource.ID)                { return }
+func (self Implementation) ConcavePolygonShapeCreate() (_ Resource.ID)               { return }
+func (self Implementation) HeightmapShapeCreate() (_ Resource.ID)                    { return }
+func (self Implementation) CustomShapeCreate() (_ Resource.ID)                       { return }
+func (self Implementation) ShapeSetData(shape Resource.ID, data any)                 { return }
+func (self Implementation) ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X) { return }
+func (self Implementation) ShapeSetMargin(shape Resource.ID, margin Float.X)         { return }
+func (self Implementation) ShapeGetMargin(shape Resource.ID) (_ Float.X)             { return }
+func (self Implementation) ShapeGetType(shape Resource.ID) (_ gdclass.PhysicsServer3DShapeType) {
+	return
+}
+func (self Implementation) ShapeGetData(shape Resource.ID) (_ any)                 { return }
+func (self Implementation) ShapeGetCustomSolverBias(shape Resource.ID) (_ Float.X) { return }
+func (self Implementation) SpaceCreate() (_ Resource.ID)                           { return }
+func (self Implementation) SpaceSetActive(space Resource.ID, active bool)          { return }
+func (self Implementation) SpaceIsActive(space Resource.ID) (_ bool)               { return }
+func (self Implementation) SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter, value Float.X) {
+	return
+}
+func (self Implementation) SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter) (_ Float.X) {
+	return
+}
+func (self Implementation) SpaceGetDirectState(space Resource.ID) (_ [1]gdclass.PhysicsDirectSpaceState3D) {
+	return
+}
+func (self Implementation) SpaceSetDebugContacts(space Resource.ID, max_contacts int) { return }
+func (self Implementation) SpaceGetContacts(space Resource.ID) (_ []Vector3.XYZ)      { return }
+func (self Implementation) SpaceGetContactCount(space Resource.ID) (_ int)            { return }
+func (self Implementation) AreaCreate() (_ Resource.ID)                               { return }
+func (self Implementation) AreaSetSpace(area Resource.ID, space Resource.ID)          { return }
+func (self Implementation) AreaGetSpace(area Resource.ID) (_ Resource.ID)             { return }
+func (self Implementation) AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool) {
+	return
+}
+func (self Implementation) AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self Implementation) AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
+	return
+}
+func (self Implementation) AreaGetShapeCount(area Resource.ID) (_ int)                   { return }
+func (self Implementation) AreaGetShape(area Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self Implementation) AreaGetShapeTransform(area Resource.ID, shape_idx int) (_ Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) AreaRemoveShape(area Resource.ID, shape_idx int)     { return }
+func (self Implementation) AreaClearShapes(area Resource.ID)                    { return }
+func (self Implementation) AreaAttachObjectInstanceId(area Resource.ID, id int) { return }
+func (self Implementation) AreaGetObjectInstanceId(area Resource.ID) (_ int)    { return }
+func (self Implementation) AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, value any) {
+	return
+}
+func (self Implementation) AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) (_ any) {
+	return
+}
+func (self Implementation) AreaGetTransform(area Resource.ID) (_ Transform3D.BasisOrigin)  { return }
+func (self Implementation) AreaSetCollisionLayer(area Resource.ID, layer int)              { return }
+func (self Implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)                 { return }
+func (self Implementation) AreaSetCollisionMask(area Resource.ID, mask int)                { return }
+func (self Implementation) AreaGetCollisionMask(area Resource.ID) (_ int)                  { return }
+func (self Implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)          { return }
+func (self Implementation) AreaSetRayPickable(area Resource.ID, enable bool)               { return }
+func (self Implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Any) { return }
+func (self Implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any) {
+	return
+}
+func (self Implementation) BodyCreate() (_ Resource.ID)                      { return }
+func (self Implementation) BodySetSpace(body Resource.ID, space Resource.ID) { return }
+func (self Implementation) BodyGetSpace(body Resource.ID) (_ Resource.ID)    { return }
+func (self Implementation) BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode) {
+	return
+}
+func (self Implementation) BodyGetMode(body Resource.ID) (_ gdclass.PhysicsServer3DBodyMode) { return }
+func (self Implementation) BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform3D.BasisOrigin, disabled bool) {
+	return
+}
+func (self Implementation) BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self Implementation) BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
+	return
+}
+func (self Implementation) BodyGetShapeCount(body Resource.ID) (_ int)                   { return }
+func (self Implementation) BodyGetShape(body Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self Implementation) BodyGetShapeTransform(body Resource.ID, shape_idx int) (_ Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) BodyRemoveShape(body Resource.ID, shape_idx int)     { return }
+func (self Implementation) BodyClearShapes(body Resource.ID)                    { return }
+func (self Implementation) BodyAttachObjectInstanceId(body Resource.ID, id int) { return }
+func (self Implementation) BodyGetObjectInstanceId(body Resource.ID) (_ int)    { return }
+func (self Implementation) BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool) {
+	return
+}
+func (self Implementation) BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) (_ bool) {
+	return
+}
+func (self Implementation) BodySetCollisionLayer(body Resource.ID, layer int)           { return }
+func (self Implementation) BodyGetCollisionLayer(body Resource.ID) (_ int)              { return }
+func (self Implementation) BodySetCollisionMask(body Resource.ID, mask int)             { return }
+func (self Implementation) BodyGetCollisionMask(body Resource.ID) (_ int)               { return }
+func (self Implementation) BodySetCollisionPriority(body Resource.ID, priority Float.X) { return }
+func (self Implementation) BodyGetCollisionPriority(body Resource.ID) (_ Float.X)       { return }
+func (self Implementation) BodySetUserFlags(body Resource.ID, flags int)                { return }
+func (self Implementation) BodyGetUserFlags(body Resource.ID) (_ int)                   { return }
+func (self Implementation) BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, value any) {
+	return
+}
+func (self Implementation) BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) (_ any) {
+	return
+}
+func (self Implementation) BodyResetMassProperties(body Resource.ID) { return }
+func (self Implementation) BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, value any) {
+	return
+}
+func (self Implementation) BodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) (_ any) {
+	return
+}
+func (self Implementation) BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ) { return }
+func (self Implementation) BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ, position Vector3.XYZ) {
+	return
+}
+func (self Implementation) BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ) { return }
+func (self Implementation) BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ)    { return }
+func (self Implementation) BodyApplyForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ) {
+	return
+}
+func (self Implementation) BodyApplyTorque(body Resource.ID, torque Vector3.XYZ)            { return }
+func (self Implementation) BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ) { return }
+func (self Implementation) BodyAddConstantForce(body Resource.ID, force Vector3.XYZ, position Vector3.XYZ) {
+	return
+}
+func (self Implementation) BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ)      { return }
+func (self Implementation) BodySetConstantForce(body Resource.ID, force Vector3.XYZ)        { return }
+func (self Implementation) BodyGetConstantForce(body Resource.ID) (_ Vector3.XYZ)           { return }
+func (self Implementation) BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ)      { return }
+func (self Implementation) BodyGetConstantTorque(body Resource.ID) (_ Vector3.XYZ)          { return }
+func (self Implementation) BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ) { return }
+func (self Implementation) BodySetAxisLock(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
+	return
+}
+func (self Implementation) BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) (_ bool) {
+	return
+}
+func (self Implementation) BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
+	return
+}
+func (self Implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
+	return
+}
+func (self Implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
+func (self Implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
+func (self Implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
+func (self Implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
+	return
+}
+func (self Implementation) BodyGetContactsReportedDepthThreshold(body Resource.ID) (_ Float.X) {
+	return
+}
+func (self Implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool)        { return }
+func (self Implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)         { return }
+func (self Implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Any) { return }
+func (self Implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any) {
+	return
+}
+func (self Implementation) BodySetRayPickable(body Resource.ID, enable bool) { return }
+func (self Implementation) BodyTestMotion(body Resource.ID, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
+	return
+}
+func (self Implementation) BodyGetDirectState(body Resource.ID) (_ [1]gdclass.PhysicsDirectBodyState3D) {
+	return
+}
+func (self Implementation) SoftBodyCreate() (_ Resource.ID) { return }
+func (self Implementation) SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) {
+	return
+}
+func (self Implementation) SoftBodySetSpace(body Resource.ID, space Resource.ID)  { return }
+func (self Implementation) SoftBodyGetSpace(body Resource.ID) (_ Resource.ID)     { return }
+func (self Implementation) SoftBodySetRayPickable(body Resource.ID, enable bool)  { return }
+func (self Implementation) SoftBodySetCollisionLayer(body Resource.ID, layer int) { return }
+func (self Implementation) SoftBodyGetCollisionLayer(body Resource.ID) (_ int)    { return }
+func (self Implementation) SoftBodySetCollisionMask(body Resource.ID, mask int)   { return }
+func (self Implementation) SoftBodyGetCollisionMask(body Resource.ID) (_ int)     { return }
+func (self Implementation) SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID) {
+	return
+}
+func (self Implementation) SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) {
+	return
+}
+func (self Implementation) SoftBodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
+func (self Implementation) SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any) {
+	return
+}
+func (self Implementation) SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) (_ any) {
+	return
+}
+func (self Implementation) SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int) {
+	return
+}
+func (self Implementation) SoftBodyGetSimulationPrecision(body Resource.ID) (_ int)   { return }
+func (self Implementation) SoftBodySetTotalMass(body Resource.ID, total_mass Float.X) { return }
+func (self Implementation) SoftBodyGetTotalMass(body Resource.ID) (_ Float.X)         { return }
+func (self Implementation) SoftBodySetLinearStiffness(body Resource.ID, linear_stiffness Float.X) {
+	return
+}
+func (self Implementation) SoftBodyGetLinearStiffness(body Resource.ID) (_ Float.X) { return }
+func (self Implementation) SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X) {
+	return
+}
+func (self Implementation) SoftBodyGetPressureCoefficient(body Resource.ID) (_ Float.X) { return }
+func (self Implementation) SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X) {
+	return
+}
+func (self Implementation) SoftBodyGetDampingCoefficient(body Resource.ID) (_ Float.X) { return }
+func (self Implementation) SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X) {
+	return
+}
+func (self Implementation) SoftBodyGetDragCoefficient(body Resource.ID) (_ Float.X)  { return }
+func (self Implementation) SoftBodySetMesh(body Resource.ID, mesh Resource.ID)       { return }
+func (self Implementation) SoftBodyGetBounds(body Resource.ID) (_ AABB.PositionSize) { return }
+func (self Implementation) SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ) {
+	return
+}
+func (self Implementation) SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) (_ Vector3.XYZ) {
+	return
+}
+func (self Implementation) SoftBodyRemoveAllPinnedPoints(body Resource.ID)                   { return }
+func (self Implementation) SoftBodyPinPoint(body Resource.ID, point_index int, pin bool)     { return }
+func (self Implementation) SoftBodyIsPointPinned(body Resource.ID, point_index int) (_ bool) { return }
+func (self Implementation) JointCreate() (_ Resource.ID)                                     { return }
+func (self Implementation) JointClear(joint Resource.ID)                                     { return }
+func (self Implementation) JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ) {
+	return
+}
+func (self Implementation) PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam, value Float.X) {
+	return
+}
+func (self Implementation) PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ) { return }
+func (self Implementation) PinJointGetLocalA(joint Resource.ID) (_ Vector3.XYZ)      { return }
+func (self Implementation) PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ) { return }
+func (self Implementation) PinJointGetLocalB(joint Resource.ID) (_ Vector3.XYZ)      { return }
+func (self Implementation) JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) JointMakeHingeSimple(joint Resource.ID, body_A Resource.ID, pivot_A Vector3.XYZ, axis_A Vector3.XYZ, body_B Resource.ID, pivot_B Vector3.XYZ, axis_B Vector3.XYZ) {
+	return
+}
+func (self Implementation) HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam, value Float.X) {
+	return
+}
+func (self Implementation) HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) {
+	return
+}
+func (self Implementation) HingeJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag) (_ bool) {
+	return
+}
+func (self Implementation) JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam, value Float.X) {
+	return
+}
+func (self Implementation) SliderJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X) {
+	return
+}
+func (self Implementation) ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam) (_ Float.X) {
+	return
+}
+func (self Implementation) JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X) {
+	return
+}
+func (self Implementation) Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) (_ Float.X) {
+	return
+}
+func (self Implementation) Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
+	return
+}
+func (self Implementation) Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) (_ bool) {
+	return
+}
+func (self Implementation) JointGetType(joint Resource.ID) (_ gdclass.PhysicsServer3DJointType) {
+	return
+}
+func (self Implementation) JointSetSolverPriority(joint Resource.ID, priority int) { return }
+func (self Implementation) JointGetSolverPriority(joint Resource.ID) (_ int)       { return }
+func (self Implementation) JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
+	return
+}
+func (self Implementation) JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) (_ bool) { return }
+func (self Implementation) FreeRid(rid Resource.ID)                                           { return }
+func (self Implementation) SetActive(active bool)                                             { return }
+func (self Implementation) Init()                                                             { return }
+func (self Implementation) Step(step Float.X)                                                 { return }
+func (self Implementation) Sync()                                                             { return }
+func (self Implementation) FlushQueries()                                                     { return }
+func (self Implementation) EndSync()                                                          { return }
+func (self Implementation) Finish()                                                           { return }
+func (self Implementation) IsFlushingQueries() (_ bool)                                       { return }
+func (self Implementation) GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) (_ int) {
+	return
+}
 func (Instance) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1846,7 +2181,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsServer3DExtension"))
-	return Instance{*(*gdclass.PhysicsServer3DExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsServer3DExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (class) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.ExtensionClassCallVirtualFunc) {

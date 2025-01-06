@@ -22,29 +22,36 @@ var _ = pointers.Cycle
 The base [Resource] for every audio effect. In the editor, an audio effect can be added to the current bus layout through the Audio panel. At run-time, it is also possible to manipulate audio effects through [method AudioServer.add_bus_effect], [method AudioServer.remove_bus_effect], and [method AudioServer.get_bus_effect].
 When applied on a bus, an audio effect creates a corresponding [AudioEffectInstance]. The instance is directly responsible for manipulating the sound, based on the original audio effect's properties.
 
-	// AudioEffect methods that can be overridden by a [Class] that extends it.
-	type AudioEffect interface {
-		//Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].
-		//[codeblock]
-		//extends AudioEffect
-		//
-		//@export var strength = 4.0
-		//
-		//func _instantiate():
-		//    var effect = CustomAudioEffectInstance.new()
-		//    effect.base = self
-		//
-		//    return effect
-		//[/codeblock]
-		//[b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
-		Instantiate() [1]gdclass.AudioEffectInstance
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AudioEffect)
 */
 type Instance [1]gdclass.AudioEffect
 type Any interface {
 	gd.IsClass
 	AsAudioEffect() Instance
 }
+type Interface interface {
+	//Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].
+	//[codeblock]
+	//extends AudioEffect
+	//
+	//@export var strength = 4.0
+	//
+	//func _instantiate():
+	//    var effect = CustomAudioEffectInstance.new()
+	//    effect.base = self
+	//
+	//    return effect
+	//[/codeblock]
+	//[b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
+	Instantiate() [1]gdclass.AudioEffectInstance
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Instantiate() (_ [1]gdclass.AudioEffectInstance) { return }
 
 /*
 Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].
@@ -89,7 +96,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffect"))
-	return Instance{*(*gdclass.AudioEffect)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioEffect)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

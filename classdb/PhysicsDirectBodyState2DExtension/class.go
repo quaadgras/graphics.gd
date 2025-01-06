@@ -26,103 +26,157 @@ var _ = pointers.Cycle
 This class extends [PhysicsDirectBodyState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsDirectBodyState2D].
 
-	// PhysicsDirectBodyState2DExtension methods that can be overridden by a [Class] that extends it.
-	type PhysicsDirectBodyState2DExtension interface {
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
-		GetTotalGravity() Vector2.XY
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_linear_damp] and its respective getter.
-		GetTotalLinearDamp() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_angular_damp] and its respective getter.
-		GetTotalAngularDamp() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass] and its respective getter.
-		GetCenterOfMass() Vector2.XY
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass_local] and its respective getter.
-		GetCenterOfMassLocal() Vector2.XY
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_mass] and its respective getter.
-		GetInverseMass() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_inertia] and its respective getter.
-		GetInverseInertia() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective setter.
-		SetLinearVelocity(velocity Vector2.XY)
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective getter.
-		GetLinearVelocity() Vector2.XY
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective setter.
-		SetAngularVelocity(velocity Float.X)
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective getter.
-		GetAngularVelocity() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective setter.
-		SetTransform(transform Transform2D.OriginXY)
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective getter.
-		GetTransform() Transform2D.OriginXY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_velocity_at_local_position].
-		GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_impulse].
-		ApplyCentralImpulse(impulse Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_impulse].
-		ApplyImpulse(impulse Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque_impulse].
-		ApplyTorqueImpulse(impulse Float.X)
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_central_force].
-		ApplyCentralForce(force Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_force].
-		ApplyForce(force Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.apply_torque].
-		ApplyTorque(torque Float.X)
-		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_central_force].
-		AddConstantCentralForce(force Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_force].
-		AddConstantForce(force Vector2.XY, position Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.add_constant_torque].
-		AddConstantTorque(torque Float.X)
-		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_force].
-		SetConstantForce(force Vector2.XY)
-		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_force].
-		GetConstantForce() Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.set_constant_torque].
-		SetConstantTorque(torque Float.X)
-		//Overridable version of [method PhysicsDirectBodyState2D.get_constant_torque].
-		GetConstantTorque() Float.X
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective setter.
-		SetSleepState(enabled bool)
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective getter.
-		IsSleeping() bool
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_count].
-		GetContactCount() int
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_position].
-		GetContactLocalPosition(contact_idx int) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_normal].
-		GetContactLocalNormal(contact_idx int) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_shape].
-		GetContactLocalShape(contact_idx int) int
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
-		GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
-		GetContactCollider(contact_idx int) Resource.ID
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
-		GetContactColliderPosition(contact_idx int) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_id].
-		GetContactColliderId(contact_idx int) int
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_object].
-		GetContactColliderObject(contact_idx int) Object.Instance
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_shape].
-		GetContactColliderShape(contact_idx int) int
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position].
-		GetContactColliderVelocityAtPosition(contact_idx int) Vector2.XY
-		//Overridable version of [method PhysicsDirectBodyState2D.get_contact_impulse].
-		GetContactImpulse(contact_idx int) Vector2.XY
-		//Implement to override the behavior of [member PhysicsDirectBodyState2D.step] and its respective getter.
-		GetStep() Float.X
-		//Overridable version of [method PhysicsDirectBodyState2D.integrate_forces].
-		IntegrateForces()
-		//Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
-		GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicsDirectBodyState2DExtension)
 */
 type Instance [1]gdclass.PhysicsDirectBodyState2DExtension
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectBodyState2DExtension() Instance
 }
+type Interface interface {
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
+	GetTotalGravity() Vector2.XY
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_linear_damp] and its respective getter.
+	GetTotalLinearDamp() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.total_angular_damp] and its respective getter.
+	GetTotalAngularDamp() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass] and its respective getter.
+	GetCenterOfMass() Vector2.XY
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.center_of_mass_local] and its respective getter.
+	GetCenterOfMassLocal() Vector2.XY
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_mass] and its respective getter.
+	GetInverseMass() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.inverse_inertia] and its respective getter.
+	GetInverseInertia() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective setter.
+	SetLinearVelocity(velocity Vector2.XY)
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.linear_velocity] and its respective getter.
+	GetLinearVelocity() Vector2.XY
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective setter.
+	SetAngularVelocity(velocity Float.X)
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.angular_velocity] and its respective getter.
+	GetAngularVelocity() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective setter.
+	SetTransform(transform Transform2D.OriginXY)
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.transform] and its respective getter.
+	GetTransform() Transform2D.OriginXY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_velocity_at_local_position].
+	GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_central_impulse].
+	ApplyCentralImpulse(impulse Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_impulse].
+	ApplyImpulse(impulse Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_torque_impulse].
+	ApplyTorqueImpulse(impulse Float.X)
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_central_force].
+	ApplyCentralForce(force Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_force].
+	ApplyForce(force Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.apply_torque].
+	ApplyTorque(torque Float.X)
+	//Overridable version of [method PhysicsDirectBodyState2D.add_constant_central_force].
+	AddConstantCentralForce(force Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.add_constant_force].
+	AddConstantForce(force Vector2.XY, position Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.add_constant_torque].
+	AddConstantTorque(torque Float.X)
+	//Overridable version of [method PhysicsDirectBodyState2D.set_constant_force].
+	SetConstantForce(force Vector2.XY)
+	//Overridable version of [method PhysicsDirectBodyState2D.get_constant_force].
+	GetConstantForce() Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.set_constant_torque].
+	SetConstantTorque(torque Float.X)
+	//Overridable version of [method PhysicsDirectBodyState2D.get_constant_torque].
+	GetConstantTorque() Float.X
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective setter.
+	SetSleepState(enabled bool)
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.sleeping] and its respective getter.
+	IsSleeping() bool
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_count].
+	GetContactCount() int
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_position].
+	GetContactLocalPosition(contact_idx int) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_normal].
+	GetContactLocalNormal(contact_idx int) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_shape].
+	GetContactLocalShape(contact_idx int) int
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_local_velocity_at_position].
+	GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider].
+	GetContactCollider(contact_idx int) Resource.ID
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_position].
+	GetContactColliderPosition(contact_idx int) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_id].
+	GetContactColliderId(contact_idx int) int
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_object].
+	GetContactColliderObject(contact_idx int) Object.Instance
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_shape].
+	GetContactColliderShape(contact_idx int) int
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position].
+	GetContactColliderVelocityAtPosition(contact_idx int) Vector2.XY
+	//Overridable version of [method PhysicsDirectBodyState2D.get_contact_impulse].
+	GetContactImpulse(contact_idx int) Vector2.XY
+	//Implement to override the behavior of [member PhysicsDirectBodyState2D.step] and its respective getter.
+	GetStep() Float.X
+	//Overridable version of [method PhysicsDirectBodyState2D.integrate_forces].
+	IntegrateForces()
+	//Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
+	GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetTotalGravity() (_ Vector2.XY)             { return }
+func (self Implementation) GetTotalLinearDamp() (_ Float.X)             { return }
+func (self Implementation) GetTotalAngularDamp() (_ Float.X)            { return }
+func (self Implementation) GetCenterOfMass() (_ Vector2.XY)             { return }
+func (self Implementation) GetCenterOfMassLocal() (_ Vector2.XY)        { return }
+func (self Implementation) GetInverseMass() (_ Float.X)                 { return }
+func (self Implementation) GetInverseInertia() (_ Float.X)              { return }
+func (self Implementation) SetLinearVelocity(velocity Vector2.XY)       { return }
+func (self Implementation) GetLinearVelocity() (_ Vector2.XY)           { return }
+func (self Implementation) SetAngularVelocity(velocity Float.X)         { return }
+func (self Implementation) GetAngularVelocity() (_ Float.X)             { return }
+func (self Implementation) SetTransform(transform Transform2D.OriginXY) { return }
+func (self Implementation) GetTransform() (_ Transform2D.OriginXY)      { return }
+func (self Implementation) GetVelocityAtLocalPosition(local_position Vector2.XY) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) ApplyCentralImpulse(impulse Vector2.XY)                           { return }
+func (self Implementation) ApplyImpulse(impulse Vector2.XY, position Vector2.XY)             { return }
+func (self Implementation) ApplyTorqueImpulse(impulse Float.X)                               { return }
+func (self Implementation) ApplyCentralForce(force Vector2.XY)                               { return }
+func (self Implementation) ApplyForce(force Vector2.XY, position Vector2.XY)                 { return }
+func (self Implementation) ApplyTorque(torque Float.X)                                       { return }
+func (self Implementation) AddConstantCentralForce(force Vector2.XY)                         { return }
+func (self Implementation) AddConstantForce(force Vector2.XY, position Vector2.XY)           { return }
+func (self Implementation) AddConstantTorque(torque Float.X)                                 { return }
+func (self Implementation) SetConstantForce(force Vector2.XY)                                { return }
+func (self Implementation) GetConstantForce() (_ Vector2.XY)                                 { return }
+func (self Implementation) SetConstantTorque(torque Float.X)                                 { return }
+func (self Implementation) GetConstantTorque() (_ Float.X)                                   { return }
+func (self Implementation) SetSleepState(enabled bool)                                       { return }
+func (self Implementation) IsSleeping() (_ bool)                                             { return }
+func (self Implementation) GetContactCount() (_ int)                                         { return }
+func (self Implementation) GetContactLocalPosition(contact_idx int) (_ Vector2.XY)           { return }
+func (self Implementation) GetContactLocalNormal(contact_idx int) (_ Vector2.XY)             { return }
+func (self Implementation) GetContactLocalShape(contact_idx int) (_ int)                     { return }
+func (self Implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector2.XY) { return }
+func (self Implementation) GetContactCollider(contact_idx int) (_ Resource.ID)               { return }
+func (self Implementation) GetContactColliderPosition(contact_idx int) (_ Vector2.XY)        { return }
+func (self Implementation) GetContactColliderId(contact_idx int) (_ int)                     { return }
+func (self Implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance)     { return }
+func (self Implementation) GetContactColliderShape(contact_idx int) (_ int)                  { return }
+func (self Implementation) GetContactColliderVelocityAtPosition(contact_idx int) (_ Vector2.XY) {
+	return
+}
+func (self Implementation) GetContactImpulse(contact_idx int) (_ Vector2.XY)        { return }
+func (self Implementation) GetStep() (_ Float.X)                                    { return }
+func (self Implementation) IntegrateForces()                                        { return }
+func (self Implementation) GetSpaceState() (_ [1]gdclass.PhysicsDirectSpaceState2D) { return }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
@@ -644,7 +698,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState2DExtension"))
-	return Instance{*(*gdclass.PhysicsDirectBodyState2DExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsDirectBodyState2DExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

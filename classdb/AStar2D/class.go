@@ -23,21 +23,29 @@ var _ = pointers.Cycle
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
 See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D] is a wrapper for [AStar3D] that enforces 2D coordinates.
 
-	// AStar2D methods that can be overridden by a [Class] that extends it.
-	type AStar2D interface {
-		//Called when estimating the cost between a point and the path's ending point.
-		//Note that this function is hidden in the default [AStar2D] class.
-		EstimateCost(from_id int, to_id int) Float.X
-		//Called when computing the cost between two connected points.
-		//Note that this function is hidden in the default [AStar2D] class.
-		ComputeCost(from_id int, to_id int) Float.X
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AStar2D)
 */
 type Instance [1]gdclass.AStar2D
 type Any interface {
 	gd.IsClass
 	AsAStar2D() Instance
 }
+type Interface interface {
+	//Called when estimating the cost between a point and the path's ending point.
+	//Note that this function is hidden in the default [AStar2D] class.
+	EstimateCost(from_id int, to_id int) Float.X
+	//Called when computing the cost between two connected points.
+	//Note that this function is hidden in the default [AStar2D] class.
+	ComputeCost(from_id int, to_id int) Float.X
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) EstimateCost(from_id int, to_id int) (_ Float.X) { return }
+func (self Implementation) ComputeCost(from_id int, to_id int) (_ Float.X)  { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -345,7 +353,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStar2D"))
-	return Instance{*(*gdclass.AStar2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AStar2D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

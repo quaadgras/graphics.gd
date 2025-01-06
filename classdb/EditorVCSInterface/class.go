@@ -21,61 +21,92 @@ var _ = pointers.Cycle
 /*
 Defines the API that the editor uses to extract information from the underlying VCS. The implementation of this API is included in VCS plugins, which are GDExtension plugins that inherit [EditorVCSInterface] and are attached (on demand) to the singleton instance of [EditorVCSInterface]. Instead of performing the task themselves, all the virtual functions listed below are calling the internally overridden functions in the VCS plugins to provide a plug-n-play experience. A custom VCS plugin is supposed to inherit from [EditorVCSInterface] and override each of these virtual functions.
 
-	// EditorVCSInterface methods that can be overridden by a [Class] that extends it.
-	type EditorVCSInterface interface {
-		//Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
-		Initialize(project_path string) bool
-		//Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
-		SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string)
-		//Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
-		GetModifiedFilesData() gd.Array
-		//Stages the file present at [param file_path] to the staged area.
-		StageFile(file_path string)
-		//Unstages the file present at [param file_path] from the staged area to the unstaged area.
-		UnstageFile(file_path string)
-		//Discards the changes made in a file present at [param file_path].
-		DiscardFile(file_path string)
-		//Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
-		Commit(msg string)
-		//Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
-		GetDiff(identifier string, area int) gd.Array
-		//Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
-		ShutDown() bool
-		//Returns the name of the underlying VCS provider.
-		GetVcsName() string
-		//Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
-		GetPreviousCommits(max_commits int) gd.Array
-		//Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
-		GetBranchList() gd.Array
-		//Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
-		GetRemotes() gd.Array
-		//Creates a new branch named [param branch_name] in the VCS.
-		CreateBranch(branch_name string)
-		//Remove a branch from the local VCS.
-		RemoveBranch(branch_name string)
-		//Creates a new remote destination with name [param remote_name] and points it to [param remote_url]. This can be an HTTPS remote or an SSH remote.
-		CreateRemote(remote_name string, remote_url string)
-		//Remove a remote from the local VCS.
-		RemoveRemote(remote_name string)
-		//Gets the current branch name defined in the VCS.
-		GetCurrentBranchName() string
-		//Checks out a [param branch_name] in the VCS.
-		CheckoutBranch(branch_name string) bool
-		//Pulls changes from the remote. This can give rise to merge conflicts.
-		Pull(remote string)
-		//Pushes changes to the [param remote]. If [param force] is [code]true[/code], a force push will override the change history already present on the remote.
-		Push(remote string, force bool)
-		//Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
-		Fetch(remote string)
-		//Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
-		GetLineDiff(file_path string, text string) gd.Array
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorVCSInterface)
 */
 type Instance [1]gdclass.EditorVCSInterface
 type Any interface {
 	gd.IsClass
 	AsEditorVCSInterface() Instance
 }
+type Interface interface {
+	//Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
+	Initialize(project_path string) bool
+	//Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
+	SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string)
+	//Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
+	GetModifiedFilesData() gd.Array
+	//Stages the file present at [param file_path] to the staged area.
+	StageFile(file_path string)
+	//Unstages the file present at [param file_path] from the staged area to the unstaged area.
+	UnstageFile(file_path string)
+	//Discards the changes made in a file present at [param file_path].
+	DiscardFile(file_path string)
+	//Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
+	Commit(msg string)
+	//Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
+	GetDiff(identifier string, area int) gd.Array
+	//Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
+	ShutDown() bool
+	//Returns the name of the underlying VCS provider.
+	GetVcsName() string
+	//Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
+	GetPreviousCommits(max_commits int) gd.Array
+	//Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
+	GetBranchList() gd.Array
+	//Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
+	GetRemotes() gd.Array
+	//Creates a new branch named [param branch_name] in the VCS.
+	CreateBranch(branch_name string)
+	//Remove a branch from the local VCS.
+	RemoveBranch(branch_name string)
+	//Creates a new remote destination with name [param remote_name] and points it to [param remote_url]. This can be an HTTPS remote or an SSH remote.
+	CreateRemote(remote_name string, remote_url string)
+	//Remove a remote from the local VCS.
+	RemoveRemote(remote_name string)
+	//Gets the current branch name defined in the VCS.
+	GetCurrentBranchName() string
+	//Checks out a [param branch_name] in the VCS.
+	CheckoutBranch(branch_name string) bool
+	//Pulls changes from the remote. This can give rise to merge conflicts.
+	Pull(remote string)
+	//Pushes changes to the [param remote]. If [param force] is [code]true[/code], a force push will override the change history already present on the remote.
+	Push(remote string, force bool)
+	//Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
+	Fetch(remote string)
+	//Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
+	GetLineDiff(file_path string, text string) gd.Array
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Initialize(project_path string) (_ bool) { return }
+func (self Implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
+	return
+}
+func (self Implementation) GetModifiedFilesData() (_ gd.Array)                     { return }
+func (self Implementation) StageFile(file_path string)                             { return }
+func (self Implementation) UnstageFile(file_path string)                           { return }
+func (self Implementation) DiscardFile(file_path string)                           { return }
+func (self Implementation) Commit(msg string)                                      { return }
+func (self Implementation) GetDiff(identifier string, area int) (_ gd.Array)       { return }
+func (self Implementation) ShutDown() (_ bool)                                     { return }
+func (self Implementation) GetVcsName() (_ string)                                 { return }
+func (self Implementation) GetPreviousCommits(max_commits int) (_ gd.Array)        { return }
+func (self Implementation) GetBranchList() (_ gd.Array)                            { return }
+func (self Implementation) GetRemotes() (_ gd.Array)                               { return }
+func (self Implementation) CreateBranch(branch_name string)                        { return }
+func (self Implementation) RemoveBranch(branch_name string)                        { return }
+func (self Implementation) CreateRemote(remote_name string, remote_url string)     { return }
+func (self Implementation) RemoveRemote(remote_name string)                        { return }
+func (self Implementation) GetCurrentBranchName() (_ string)                       { return }
+func (self Implementation) CheckoutBranch(branch_name string) (_ bool)             { return }
+func (self Implementation) Pull(remote string)                                     { return }
+func (self Implementation) Push(remote string, force bool)                         { return }
+func (self Implementation) Fetch(remote string)                                    { return }
+func (self Implementation) GetLineDiff(file_path string, text string) (_ gd.Array) { return }
 
 /*
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
@@ -467,7 +498,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorVCSInterface"))
-	return Instance{*(*gdclass.EditorVCSInterface)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorVCSInterface)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

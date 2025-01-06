@@ -23,19 +23,27 @@ var _ = pointers.Cycle
 /*
 [BaseButton] is an abstract base class for GUI buttons. It doesn't display anything by itself.
 
-	// BaseButton methods that can be overridden by a [Class] that extends it.
-	type BaseButton interface {
-		//Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
-		Pressed()
-		//Called when the button is toggled (only if [member toggle_mode] is active).
-		Toggled(toggled_on bool)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=BaseButton)
 */
 type Instance [1]gdclass.BaseButton
 type Any interface {
 	gd.IsClass
 	AsBaseButton() Instance
 }
+type Interface interface {
+	//Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
+	Pressed()
+	//Called when the button is toggled (only if [member toggle_mode] is active).
+	Toggled(toggled_on bool)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Pressed()                { return }
+func (self Implementation) Toggled(toggled_on bool) { return }
 
 /*
 Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
@@ -94,7 +102,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BaseButton"))
-	return Instance{*(*gdclass.BaseButton)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.BaseButton)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Disabled() bool {

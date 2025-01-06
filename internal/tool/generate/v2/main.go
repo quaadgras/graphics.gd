@@ -191,40 +191,19 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ = pointers.Cycle")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
+	var hasVirtual bool
+	for _, method := range class.Methods {
+		if method.IsVirtual {
+			hasVirtual = true
+			break
+		}
+	}
 	if class.Description != "" {
 		fmt.Fprintln(file, "/*")
 		fmt.Fprint(file, strings.Replace(class.Description, "*/", "", -1))
 		fmt.Fprintln(file)
-		var hasVirtual bool
-		for _, method := range class.Methods {
-			if method.IsVirtual {
-				hasVirtual = true
-				break
-			}
-		}
 		if hasVirtual {
-			fmt.Fprintf(file, "\t// %s methods that can be overridden by a [Class] that extends it.\n", class.Name)
-			fmt.Fprintf(file, "\ttype %s interface {\n", class.Name)
-			for _, method := range class.Methods {
-				if method.IsVirtual {
-					if method.Description != "" {
-						description := strings.Replace(method.Description, "*/", "", -1)
-						description = strings.TrimSpace(description)
-						description = strings.Replace(description, "\n", "\n\t\t//", -1)
-						fmt.Fprintln(file, "\t\t//"+description)
-					}
-					fmt.Fprintf(file, "\t\t%s(", convertName(method.Name))
-					for i, arg := range method.Arguments {
-						if i > 0 {
-							fmt.Fprint(file, ", ")
-						}
-						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
-					}
-					fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
-					fmt.Fprintln(file)
-				}
-			}
-			fmt.Fprintln(file, "\t}")
+			fmt.Fprintf(file, "\t See [Interface] for methods that can be overridden by a [Class] that extends it.\n", class.Name)
 		}
 		fmt.Fprintln(file, "\n*/")
 	}
@@ -241,6 +220,49 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "\tgd.IsClass\n")
 		fmt.Fprintf(file, "\tAs%s() Instance\n", class.Name)
 		fmt.Fprintf(file, "}\n")
+		if hasVirtual {
+			fmt.Fprintf(file, "type Interface interface {\n")
+			for _, method := range class.Methods {
+				if method.IsVirtual {
+					if method.Description != "" {
+						description := strings.Replace(method.Description, "*/", "", -1)
+						description = strings.TrimSpace(description)
+						description = strings.Replace(description, "\n", "\n\t\t//", -1)
+						fmt.Fprintln(file, "\t\t//"+description)
+					}
+					fmt.Fprintf(file, "\t%s(", convertName(method.Name))
+					for i, arg := range method.Arguments {
+						if i > 0 {
+							fmt.Fprint(file, ", ")
+						}
+						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+					}
+					fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
+					fmt.Fprintln(file)
+				}
+			}
+			fmt.Fprintf(file, "}\n")
+
+			fmt.Fprintf(file, "// Implementation implements [Interface] with empty methods.\n")
+			fmt.Fprintf(file, "type Implementation struct{}\n\n")
+
+			for _, method := range class.Methods {
+				if method.IsVirtual {
+					fmt.Fprintf(file, "func (self Implementation) %[1]v(", convertName(method.Name))
+					for i, arg := range method.Arguments {
+						if i > 0 {
+							fmt.Fprint(file, ", ")
+						}
+						fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+					}
+					fmt.Fprint(file, ")")
+					if method.ReturnValue.Type != "" {
+						fmt.Fprintf(file, "(_ %s)", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
+					}
+					fmt.Fprintln(file, " { return }")
+				}
+			}
+		}
 	}
 	var getter_setters = make(map[string]bool)
 	for _, property := range class.Properties {

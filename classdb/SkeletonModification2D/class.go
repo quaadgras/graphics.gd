@@ -23,22 +23,33 @@ var _ = pointers.Cycle
 This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
 This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
 
-	// SkeletonModification2D methods that can be overridden by a [Class] that extends it.
-	type SkeletonModification2D interface {
-		//Executes the given modification. This is where the modification performs whatever function it is designed to do.
-		Execute(delta Float.X)
-		//Called when the modification is setup. This is where the modification performs initialization.
-		SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D)
-		//Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
-		//[b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
-		DrawEditorGizmo()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=SkeletonModification2D)
 */
 type Instance [1]gdclass.SkeletonModification2D
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2D() Instance
 }
+type Interface interface {
+	//Executes the given modification. This is where the modification performs whatever function it is designed to do.
+	Execute(delta Float.X)
+	//Called when the modification is setup. This is where the modification performs initialization.
+	SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D)
+	//Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
+	//[b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
+	DrawEditorGizmo()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Execute(delta Float.X) { return }
+func (self Implementation) SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D) {
+	return
+}
+func (self Implementation) DrawEditorGizmo() { return }
 
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
@@ -130,7 +141,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2D"))
-	return Instance{*(*gdclass.SkeletonModification2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.SkeletonModification2D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) Enabled() bool {

@@ -21,27 +21,40 @@ var _ = pointers.Cycle
 The engine can save resources when you do it from the editor, or when you use the [ResourceSaver] singleton. This is accomplished thanks to multiple [ResourceFormatSaver]s, each handling its own format and called automatically by the engine.
 By default, Godot saves resources as [code].tres[/code] (text-based), [code].res[/code] (binary) or another built-in format, but you can choose to create your own format by extending this class. Be sure to respect the documented return types and values. You should give it a global class name with [code]class_name[/code] for it to be registered. Like built-in ResourceFormatSavers, it will be called automatically when saving resources of its recognized type(s). You may also implement a [ResourceFormatLoader].
 
-	// ResourceFormatSaver methods that can be overridden by a [Class] that extends it.
-	type ResourceFormatSaver interface {
-		//Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
-		//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		Save(resource [1]gdclass.Resource, path string, flags int) error
-		//Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-		SetUid(path string, uid int) error
-		//Returns whether the given resource object can be saved by this saver.
-		Recognize(resource [1]gdclass.Resource) bool
-		//Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
-		GetRecognizedExtensions(resource [1]gdclass.Resource) []string
-		//Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
-		//If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
-		RecognizePath(resource [1]gdclass.Resource, path string) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=ResourceFormatSaver)
 */
 type Instance [1]gdclass.ResourceFormatSaver
 type Any interface {
 	gd.IsClass
 	AsResourceFormatSaver() Instance
 }
+type Interface interface {
+	//Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
+	//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
+	Save(resource [1]gdclass.Resource, path string, flags int) error
+	//Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
+	SetUid(path string, uid int) error
+	//Returns whether the given resource object can be saved by this saver.
+	Recognize(resource [1]gdclass.Resource) bool
+	//Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
+	GetRecognizedExtensions(resource [1]gdclass.Resource) []string
+	//Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
+	//If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
+	RecognizePath(resource [1]gdclass.Resource, path string) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Save(resource [1]gdclass.Resource, path string, flags int) (_ error) {
+	return
+}
+func (self Implementation) SetUid(path string, uid int) (_ error)                             { return }
+func (self Implementation) Recognize(resource [1]gdclass.Resource) (_ bool)                   { return }
+func (self Implementation) GetRecognizedExtensions(resource [1]gdclass.Resource) (_ []string) { return }
+func (self Implementation) RecognizePath(resource [1]gdclass.Resource, path string) (_ bool)  { return }
 
 /*
 Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
@@ -134,7 +147,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatSaver"))
-	return Instance{*(*gdclass.ResourceFormatSaver)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.ResourceFormatSaver)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

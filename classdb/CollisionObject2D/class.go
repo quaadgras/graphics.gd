@@ -27,26 +27,39 @@ var _ = pointers.Cycle
 Abstract base class for 2D physics objects. [CollisionObject2D] can hold any number of [Shape2D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
 [b]Note:[/b] Only collisions between objects within the same canvas ([Viewport] canvas or [CanvasLayer]) are supported. The behavior of collisions between objects in different canvases is undefined.
 
-	// CollisionObject2D methods that can be overridden by a [Class] that extends it.
-	type CollisionObject2D interface {
-		//Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
-		//[b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)
-		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
-		MouseEnter()
-		//Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
-		MouseExit()
-		//Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
-		MouseShapeEnter(shape_idx int)
-		//Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
-		MouseShapeExit(shape_idx int)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CollisionObject2D)
 */
 type Instance [1]gdclass.CollisionObject2D
 type Any interface {
 	gd.IsClass
 	AsCollisionObject2D() Instance
 }
+type Interface interface {
+	//Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
+	//[b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
+	InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)
+	//Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
+	MouseEnter()
+	//Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
+	MouseExit()
+	//Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
+	MouseShapeEnter(shape_idx int)
+	//Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
+	MouseShapeExit(shape_idx int)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int) {
+	return
+}
+func (self Implementation) MouseEnter()                   { return }
+func (self Implementation) MouseExit()                    { return }
+func (self Implementation) MouseShapeEnter(shape_idx int) { return }
+func (self Implementation) MouseShapeExit(shape_idx int)  { return }
 
 /*
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
@@ -288,7 +301,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CollisionObject2D"))
-	return Instance{*(*gdclass.CollisionObject2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.CollisionObject2D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) DisableMode() gdclass.CollisionObject2DDisableMode {

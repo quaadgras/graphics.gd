@@ -10,22 +10,25 @@ import (
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/ProjectSettings"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
 )
 
-// MainLoop designates the given struct embedding classdb.Extension[T, MainLoop.Instance]
-// as the main loop entrypoint. After the graphics engine has started up, it will use
-// the given struct to execute as the main loop. Blocks until the engine shuts down.
-func MainLoop[T classdb.ExtensionTo[M], M MainLoopClass.Any]() {
+var mainloop MainLoopClass.Interface
+
+// MainLoop uses the given struct as the main loop implementation. This will take care of initialising
+// the Go runtime correctly, blocks until the main loop has shutdown.
+func MainLoop(loop MainLoopClass.Interface) {
 	if EngineClass.IsEditorHint() {
 		doneInit <- struct{}{}
 		runtime.Goexit()
 	}
 	startupEngine = true
-	classdb.Register[T]()
-	className := classdb.NameFor[T]()
+	classdb.Register[goMainLoop]()
+	className := classdb.NameFor[goMainLoop]()
 	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
 	ProjectSettings.SetSetting("application/run/main_loop_type", className)
+	mainloop = loop
 	doneInit <- struct{}{}
 	<-done
 }
@@ -69,26 +72,41 @@ var finish = make(chan struct{})
 var starts = make(chan struct{})
 
 // Called once during initialization.
-func (goMainLoop) Initialize() {
-	close(starts)
+func (loop goMainLoop) Initialize() {
+	if mainloop != nil {
+		mainloop.Initialize()
+	} else {
+		close(starts)
+	}
 }
 
 // Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-func (goMainLoop) PhysicsProcess(delta Float.X) bool {
+func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
+	if mainloop != nil {
+		return mainloop.PhysicsProcess(delta)
+	}
 	return false
 }
 
 // Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-func (goMainLoop) Process(delta Float.X) bool {
+func (loop goMainLoop) Process(delta Float.X) bool {
+	defer pointers.Cycle()
+	if mainloop != nil {
+		return mainloop.Process(delta)
+	}
 	frames <- delta
 	return <-breaks
 }
 
 // Called before the program exits.
-func (goMainLoop) Finalize() {
-	close(finish)
+func (loop goMainLoop) Finalize() {
+	if mainloop != nil {
+		mainloop.Finalize()
+	} else {
+		close(finish)
+	}
 }
 
 // Rendering waits for the engine to startup and returns a frame iterator for the primary viewport that is

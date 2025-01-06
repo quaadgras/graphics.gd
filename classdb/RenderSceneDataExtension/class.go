@@ -25,27 +25,39 @@ var _ = pointers.Cycle
 /*
 This class allows for a RenderSceneData implementation to be made in GDExtension.
 
-	// RenderSceneDataExtension methods that can be overridden by a [Class] that extends it.
-	type RenderSceneDataExtension interface {
-		//Implement this in GDExtension to return the camera [Transform3D].
-		GetCamTransform() Transform3D.BasisOrigin
-		//Implement this in GDExtension to return the camera [Projection].
-		GetCamProjection() Projection.XYZW
-		//Implement this in GDExtension to return the view count.
-		GetViewCount() int
-		//Implement this in GDExtension to return the eye offset for the given [param view].
-		GetViewEyeOffset(view int) Vector3.XYZ
-		//Implement this in GDExtension to return the view [Projection] for the given [param view].
-		GetViewProjection(view int) Projection.XYZW
-		//Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
-		GetUniformBuffer() Resource.ID
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=RenderSceneDataExtension)
 */
 type Instance [1]gdclass.RenderSceneDataExtension
 type Any interface {
 	gd.IsClass
 	AsRenderSceneDataExtension() Instance
 }
+type Interface interface {
+	//Implement this in GDExtension to return the camera [Transform3D].
+	GetCamTransform() Transform3D.BasisOrigin
+	//Implement this in GDExtension to return the camera [Projection].
+	GetCamProjection() Projection.XYZW
+	//Implement this in GDExtension to return the view count.
+	GetViewCount() int
+	//Implement this in GDExtension to return the eye offset for the given [param view].
+	GetViewEyeOffset(view int) Vector3.XYZ
+	//Implement this in GDExtension to return the view [Projection] for the given [param view].
+	GetViewProjection(view int) Projection.XYZW
+	//Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
+	GetUniformBuffer() Resource.ID
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetCamTransform() (_ Transform3D.BasisOrigin)   { return }
+func (self Implementation) GetCamProjection() (_ Projection.XYZW)          { return }
+func (self Implementation) GetViewCount() (_ int)                          { return }
+func (self Implementation) GetViewEyeOffset(view int) (_ Vector3.XYZ)      { return }
+func (self Implementation) GetViewProjection(view int) (_ Projection.XYZW) { return }
+func (self Implementation) GetUniformBuffer() (_ Resource.ID)              { return }
 
 /*
 Implement this in GDExtension to return the camera [Transform3D].
@@ -129,7 +141,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneDataExtension"))
-	return Instance{*(*gdclass.RenderSceneDataExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.RenderSceneDataExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

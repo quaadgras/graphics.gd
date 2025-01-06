@@ -22,41 +22,60 @@ var _ = pointers.Cycle
 /*
 This class is intended to be overridden by video decoder extensions with custom implementations of [VideoStream].
 
-	// VideoStreamPlayback methods that can be overridden by a [Class] that extends it.
-	type VideoStreamPlayback interface {
-		//Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
-		Stop()
-		//Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
-		Play()
-		//Returns the playback state, as determined by calls to [method _play] and [method _stop].
-		IsPlaying() bool
-		//Set the paused status of video playback. [method _is_paused] must return [param paused]. Called in response to the [member VideoStreamPlayer.paused] setter.
-		SetPaused(paused bool)
-		//Returns the paused status, as set by [method _set_paused].
-		IsPaused() bool
-		//Returns the video duration in seconds, if known, or 0 if unknown.
-		GetLength() Float.X
-		//Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
-		GetPlaybackPosition() Float.X
-		//Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
-		Seek(time Float.X)
-		//Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
-		SetAudioTrack(idx int)
-		//Allocates a [Texture2D] in which decoded video frames will be drawn.
-		GetTexture() [1]gdclass.Texture2D
-		//Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
-		Update(delta Float.X)
-		//Returns the number of audio channels.
-		GetChannels() int
-		//Returns the audio sample rate used for mixing.
-		GetMixRate() int
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=VideoStreamPlayback)
 */
 type Instance [1]gdclass.VideoStreamPlayback
 type Any interface {
 	gd.IsClass
 	AsVideoStreamPlayback() Instance
 }
+type Interface interface {
+	//Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
+	Stop()
+	//Called in response to [member VideoStreamPlayer.autoplay] or [method VideoStreamPlayer.play]. Note that manual playback may also invoke [method _stop] multiple times before this method is called. [method _is_playing] should return true once playing.
+	Play()
+	//Returns the playback state, as determined by calls to [method _play] and [method _stop].
+	IsPlaying() bool
+	//Set the paused status of video playback. [method _is_paused] must return [param paused]. Called in response to the [member VideoStreamPlayer.paused] setter.
+	SetPaused(paused bool)
+	//Returns the paused status, as set by [method _set_paused].
+	IsPaused() bool
+	//Returns the video duration in seconds, if known, or 0 if unknown.
+	GetLength() Float.X
+	//Return the current playback timestamp. Called in response to the [member VideoStreamPlayer.stream_position] getter.
+	GetPlaybackPosition() Float.X
+	//Seeks to [param time] seconds. Called in response to the [member VideoStreamPlayer.stream_position] setter.
+	Seek(time Float.X)
+	//Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
+	SetAudioTrack(idx int)
+	//Allocates a [Texture2D] in which decoded video frames will be drawn.
+	GetTexture() [1]gdclass.Texture2D
+	//Ticks video playback for [param delta] seconds. Called every frame as long as [method _is_paused] and [method _is_playing] return true.
+	Update(delta Float.X)
+	//Returns the number of audio channels.
+	GetChannels() int
+	//Returns the audio sample rate used for mixing.
+	GetMixRate() int
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Stop()                                { return }
+func (self Implementation) Play()                                { return }
+func (self Implementation) IsPlaying() (_ bool)                  { return }
+func (self Implementation) SetPaused(paused bool)                { return }
+func (self Implementation) IsPaused() (_ bool)                   { return }
+func (self Implementation) GetLength() (_ Float.X)               { return }
+func (self Implementation) GetPlaybackPosition() (_ Float.X)     { return }
+func (self Implementation) Seek(time Float.X)                    { return }
+func (self Implementation) SetAudioTrack(idx int)                { return }
+func (self Implementation) GetTexture() (_ [1]gdclass.Texture2D) { return }
+func (self Implementation) Update(delta Float.X)                 { return }
+func (self Implementation) GetChannels() (_ int)                 { return }
+func (self Implementation) GetMixRate() (_ int)                  { return }
 
 /*
 Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.
@@ -224,7 +243,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamPlayback"))
-	return Instance{*(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

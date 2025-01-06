@@ -27,43 +27,63 @@ var _ = pointers.Cycle
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
 
-	// Mesh methods that can be overridden by a [Class] that extends it.
-	type Mesh interface {
-		//Virtual method to override the surface count for a custom class extending [Mesh].
-		GetSurfaceCount() int
-		//Virtual method to override the surface array length for a custom class extending [Mesh].
-		SurfaceGetArrayLen(index int) int
-		//Virtual method to override the surface array index length for a custom class extending [Mesh].
-		SurfaceGetArrayIndexLen(index int) int
-		//Virtual method to override the surface arrays for a custom class extending [Mesh].
-		SurfaceGetArrays(index int) Array.Any
-		//Virtual method to override the blend shape arrays for a custom class extending [Mesh].
-		SurfaceGetBlendShapeArrays(index int) gd.Array
-		//Virtual method to override the surface LODs for a custom class extending [Mesh].
-		SurfaceGetLods(index int) Dictionary.Any
-		//Virtual method to override the surface format for a custom class extending [Mesh].
-		SurfaceGetFormat(index int) int
-		//Virtual method to override the surface primitive type for a custom class extending [Mesh].
-		SurfaceGetPrimitiveType(index int) int
-		//Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
-		SurfaceSetMaterial(index int, material [1]gdclass.Material)
-		//Virtual method to override the surface material for a custom class extending [Mesh].
-		SurfaceGetMaterial(index int) [1]gdclass.Material
-		//Virtual method to override the number of blend shapes for a custom class extending [Mesh].
-		GetBlendShapeCount() int
-		//Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
-		GetBlendShapeName(index int) string
-		//Virtual method to override the names of blend shapes for a custom class extending [Mesh].
-		SetBlendShapeName(index int, name string)
-		//Virtual method to override the [AABB] for a custom class extending [Mesh].
-		GetAabb() AABB.PositionSize
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Mesh)
 */
 type Instance [1]gdclass.Mesh
 type Any interface {
 	gd.IsClass
 	AsMesh() Instance
 }
+type Interface interface {
+	//Virtual method to override the surface count for a custom class extending [Mesh].
+	GetSurfaceCount() int
+	//Virtual method to override the surface array length for a custom class extending [Mesh].
+	SurfaceGetArrayLen(index int) int
+	//Virtual method to override the surface array index length for a custom class extending [Mesh].
+	SurfaceGetArrayIndexLen(index int) int
+	//Virtual method to override the surface arrays for a custom class extending [Mesh].
+	SurfaceGetArrays(index int) Array.Any
+	//Virtual method to override the blend shape arrays for a custom class extending [Mesh].
+	SurfaceGetBlendShapeArrays(index int) gd.Array
+	//Virtual method to override the surface LODs for a custom class extending [Mesh].
+	SurfaceGetLods(index int) Dictionary.Any
+	//Virtual method to override the surface format for a custom class extending [Mesh].
+	SurfaceGetFormat(index int) int
+	//Virtual method to override the surface primitive type for a custom class extending [Mesh].
+	SurfaceGetPrimitiveType(index int) int
+	//Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
+	SurfaceSetMaterial(index int, material [1]gdclass.Material)
+	//Virtual method to override the surface material for a custom class extending [Mesh].
+	SurfaceGetMaterial(index int) [1]gdclass.Material
+	//Virtual method to override the number of blend shapes for a custom class extending [Mesh].
+	GetBlendShapeCount() int
+	//Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
+	GetBlendShapeName(index int) string
+	//Virtual method to override the names of blend shapes for a custom class extending [Mesh].
+	SetBlendShapeName(index int, name string)
+	//Virtual method to override the [AABB] for a custom class extending [Mesh].
+	GetAabb() AABB.PositionSize
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetSurfaceCount() (_ int)                                   { return }
+func (self Implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
+func (self Implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
+func (self Implementation) SurfaceGetArrays(index int) (_ Array.Any)                   { return }
+func (self Implementation) SurfaceGetBlendShapeArrays(index int) (_ gd.Array)          { return }
+func (self Implementation) SurfaceGetLods(index int) (_ Dictionary.Any)                { return }
+func (self Implementation) SurfaceGetFormat(index int) (_ int)                         { return }
+func (self Implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
+func (self Implementation) SurfaceSetMaterial(index int, material [1]gdclass.Material) { return }
+func (self Implementation) SurfaceGetMaterial(index int) (_ [1]gdclass.Material)       { return }
+func (self Implementation) GetBlendShapeCount() (_ int)                                { return }
+func (self Implementation) GetBlendShapeName(index int) (_ string)                     { return }
+func (self Implementation) SetBlendShapeName(index int, name string)                   { return }
+func (self Implementation) GetAabb() (_ AABB.PositionSize)                             { return }
 
 /*
 Virtual method to override the surface count for a custom class extending [Mesh].
@@ -356,7 +376,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Mesh"))
-	return Instance{*(*gdclass.Mesh)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Mesh)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) LightmapSizeHint() Vector2i.XY {

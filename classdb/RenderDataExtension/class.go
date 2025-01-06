@@ -22,23 +22,33 @@ var _ = pointers.Cycle
 /*
 This class allows for a RenderData implementation to be made in GDExtension.
 
-	// RenderDataExtension methods that can be overridden by a [Class] that extends it.
-	type RenderDataExtension interface {
-		//Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
-		GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers
-		//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
-		GetRenderSceneData() [1]gdclass.RenderSceneData
-		//Implement this in GDExtension to return the [RID] of the implementation's environment object.
-		GetEnvironment() Resource.ID
-		//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
-		GetCameraAttributes() Resource.ID
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=RenderDataExtension)
 */
 type Instance [1]gdclass.RenderDataExtension
 type Any interface {
 	gd.IsClass
 	AsRenderDataExtension() Instance
 }
+type Interface interface {
+	//Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
+	GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers
+	//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
+	GetRenderSceneData() [1]gdclass.RenderSceneData
+	//Implement this in GDExtension to return the [RID] of the implementation's environment object.
+	GetEnvironment() Resource.ID
+	//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
+	GetCameraAttributes() Resource.ID
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetRenderSceneBuffers() (_ [1]gdclass.RenderSceneBuffers) { return }
+func (self Implementation) GetRenderSceneData() (_ [1]gdclass.RenderSceneData)       { return }
+func (self Implementation) GetEnvironment() (_ Resource.ID)                          { return }
+func (self Implementation) GetCameraAttributes() (_ Resource.ID)                     { return }
 
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
@@ -106,7 +116,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderDataExtension"))
-	return Instance{*(*gdclass.RenderDataExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.RenderDataExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

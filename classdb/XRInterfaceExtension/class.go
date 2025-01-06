@@ -29,76 +29,123 @@ var _ = pointers.Cycle
 /*
 External XR interface plugins should inherit from this class.
 
-	// XRInterfaceExtension methods that can be overridden by a [Class] that extends it.
-	type XRInterfaceExtension interface {
-		//Returns the name of this interface.
-		GetName() string
-		//Returns the capabilities of this interface.
-		GetCapabilities() int
-		//Returns [code]true[/code] if this interface has been initialized.
-		IsInitialized() bool
-		//Initializes the interface, returns [code]true[/code] on success.
-		Initialize() bool
-		//Uninitialize the interface.
-		Uninitialize()
-		//Returns a [Dictionary] with system information related to this interface.
-		GetSystemInfo() Dictionary.Any
-		//Returns [code]true[/code] if this interface supports this play area mode.
-		SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
-		//Returns the play area mode that sets up our play area.
-		GetPlayAreaMode() gdclass.XRInterfacePlayAreaMode
-		//Set the play area mode for this interface.
-		SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
-		//Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
-		GetPlayArea() []Vector3.XYZ
-		//Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
-		GetRenderTargetSize() Vector2.XY
-		//Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
-		GetViewCount() int
-		//Returns the [Transform3D] that positions the [XRCamera3D] in the world.
-		GetCameraTransform() Transform3D.BasisOrigin
-		//Returns a [Transform3D] for a given view.
-		GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin
-		//Returns the projection matrix for the given view as a [PackedFloat64Array].
-		GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64
-		GetVrsTexture() Resource.ID
-		//Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
-		Process()
-		//Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
-		PreRender()
-		//Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
-		PreDrawViewport(render_target Resource.ID) bool
-		//Called after the XR [Viewport] draw logic has completed.
-		PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize)
-		//Called if interface is active and queues have been submitted.
-		EndFrame()
-		//Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
-		GetSuggestedTrackerNames() []string
-		//Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
-		GetSuggestedPoseNames(tracker_name string) []string
-		//Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
-		GetTrackingStatus() gdclass.XRInterfaceTrackingStatus
-		//Triggers a haptic pulse to be emitted on the specified tracker.
-		TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)
-		//Return [code]true[/code] if anchor detection is enabled for this interface.
-		GetAnchorDetectionIsEnabled() bool
-		//Enables anchor detection on this interface if supported.
-		SetAnchorDetectionIsEnabled(enabled bool)
-		//Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
-		GetCameraFeedId() int
-		//Return color texture into which to render (if applicable).
-		GetColorTexture() Resource.ID
-		//Return depth texture into which to render (if applicable).
-		GetDepthTexture() Resource.ID
-		//Return velocity texture into which to render (if applicable).
-		GetVelocityTexture() Resource.ID
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=XRInterfaceExtension)
 */
 type Instance [1]gdclass.XRInterfaceExtension
 type Any interface {
 	gd.IsClass
 	AsXRInterfaceExtension() Instance
 }
+type Interface interface {
+	//Returns the name of this interface.
+	GetName() string
+	//Returns the capabilities of this interface.
+	GetCapabilities() int
+	//Returns [code]true[/code] if this interface has been initialized.
+	IsInitialized() bool
+	//Initializes the interface, returns [code]true[/code] on success.
+	Initialize() bool
+	//Uninitialize the interface.
+	Uninitialize()
+	//Returns a [Dictionary] with system information related to this interface.
+	GetSystemInfo() Dictionary.Any
+	//Returns [code]true[/code] if this interface supports this play area mode.
+	SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
+	//Returns the play area mode that sets up our play area.
+	GetPlayAreaMode() gdclass.XRInterfacePlayAreaMode
+	//Set the play area mode for this interface.
+	SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
+	//Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
+	GetPlayArea() []Vector3.XYZ
+	//Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
+	GetRenderTargetSize() Vector2.XY
+	//Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
+	GetViewCount() int
+	//Returns the [Transform3D] that positions the [XRCamera3D] in the world.
+	GetCameraTransform() Transform3D.BasisOrigin
+	//Returns a [Transform3D] for a given view.
+	GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin
+	//Returns the projection matrix for the given view as a [PackedFloat64Array].
+	GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64
+	GetVrsTexture() Resource.ID
+	//Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
+	Process()
+	//Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+	PreRender()
+	//Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
+	PreDrawViewport(render_target Resource.ID) bool
+	//Called after the XR [Viewport] draw logic has completed.
+	PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize)
+	//Called if interface is active and queues have been submitted.
+	EndFrame()
+	//Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
+	GetSuggestedTrackerNames() []string
+	//Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
+	GetSuggestedPoseNames(tracker_name string) []string
+	//Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
+	GetTrackingStatus() gdclass.XRInterfaceTrackingStatus
+	//Triggers a haptic pulse to be emitted on the specified tracker.
+	TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)
+	//Return [code]true[/code] if anchor detection is enabled for this interface.
+	GetAnchorDetectionIsEnabled() bool
+	//Enables anchor detection on this interface if supported.
+	SetAnchorDetectionIsEnabled(enabled bool)
+	//Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
+	GetCameraFeedId() int
+	//Return color texture into which to render (if applicable).
+	GetColorTexture() Resource.ID
+	//Return depth texture into which to render (if applicable).
+	GetDepthTexture() Resource.ID
+	//Return velocity texture into which to render (if applicable).
+	GetVelocityTexture() Resource.ID
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetName() (_ string)               { return }
+func (self Implementation) GetCapabilities() (_ int)          { return }
+func (self Implementation) IsInitialized() (_ bool)           { return }
+func (self Implementation) Initialize() (_ bool)              { return }
+func (self Implementation) Uninitialize()                     { return }
+func (self Implementation) GetSystemInfo() (_ Dictionary.Any) { return }
+func (self Implementation) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) {
+	return
+}
+func (self Implementation) GetPlayAreaMode() (_ gdclass.XRInterfacePlayAreaMode)          { return }
+func (self Implementation) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) { return }
+func (self Implementation) GetPlayArea() (_ []Vector3.XYZ)                                { return }
+func (self Implementation) GetRenderTargetSize() (_ Vector2.XY)                           { return }
+func (self Implementation) GetViewCount() (_ int)                                         { return }
+func (self Implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)               { return }
+func (self Implementation) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) (_ Transform3D.BasisOrigin) {
+	return
+}
+func (self Implementation) GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) (_ []float64) {
+	return
+}
+func (self Implementation) GetVrsTexture() (_ Resource.ID)                     { return }
+func (self Implementation) Process()                                           { return }
+func (self Implementation) PreRender()                                         { return }
+func (self Implementation) PreDrawViewport(render_target Resource.ID) (_ bool) { return }
+func (self Implementation) PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize) {
+	return
+}
+func (self Implementation) EndFrame()                                                { return }
+func (self Implementation) GetSuggestedTrackerNames() (_ []string)                   { return }
+func (self Implementation) GetSuggestedPoseNames(tracker_name string) (_ []string)   { return }
+func (self Implementation) GetTrackingStatus() (_ gdclass.XRInterfaceTrackingStatus) { return }
+func (self Implementation) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
+	return
+}
+func (self Implementation) GetAnchorDetectionIsEnabled() (_ bool)    { return }
+func (self Implementation) SetAnchorDetectionIsEnabled(enabled bool) { return }
+func (self Implementation) GetCameraFeedId() (_ int)                 { return }
+func (self Implementation) GetColorTexture() (_ Resource.ID)         { return }
+func (self Implementation) GetDepthTexture() (_ Resource.ID)         { return }
+func (self Implementation) GetVelocityTexture() (_ Resource.ID)      { return }
 
 /*
 Returns the name of this interface.
@@ -513,7 +560,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterfaceExtension"))
-	return Instance{*(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

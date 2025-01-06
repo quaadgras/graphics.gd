@@ -25,7 +25,88 @@ type Any interface {
 	gd.IsClass
 	AsScriptExtension() Instance
 }
+type Interface interface {
+	EditorCanReloadFromFile() bool
+	PlaceholderErased(placeholder unsafe.Pointer)
+	CanInstantiate() bool
+	GetBaseScript() [1]gdclass.Script
+	GetGlobalName() string
+	InheritsScript(script [1]gdclass.Script) bool
+	GetInstanceBaseType() string
+	InstanceCreate(for_object Object.Instance) unsafe.Pointer
+	PlaceholderInstanceCreate(for_object Object.Instance) unsafe.Pointer
+	InstanceHas(obj Object.Instance) bool
+	HasSourceCode() bool
+	GetSourceCode() string
+	SetSourceCode(code string)
+	Reload(keep_state bool) error
+	GetDocumentation() gd.Array
+	GetClassIconPath() string
+	HasMethod(method string) bool
+	HasStaticMethod(method string) bool
+	//Return the expected argument count for the given [param method], or [code]null[/code] if it can't be determined (which will then fall back to the default behavior).
+	GetScriptMethodArgumentCount(method string) any
+	GetMethodInfo(method string) Dictionary.Any
+	IsTool() bool
+	IsValid() bool
+	//Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
+	IsAbstract() bool
+	GetLanguage() [1]gdclass.ScriptLanguage
+	HasScriptSignal(signal string) bool
+	GetScriptSignalList() gd.Array
+	HasPropertyDefaultValue(property string) bool
+	GetPropertyDefaultValue(property string) any
+	UpdateExports()
+	GetScriptMethodList() gd.Array
+	GetScriptPropertyList() gd.Array
+	GetMemberLine(member string) int
+	GetConstants() Dictionary.Any
+	GetMembers() gd.Array
+	IsPlaceholderFallbackEnabled() bool
+	GetRpcConfig() any
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) EditorCanReloadFromFile() (_ bool)                            { return }
+func (self Implementation) PlaceholderErased(placeholder unsafe.Pointer)                 { return }
+func (self Implementation) CanInstantiate() (_ bool)                                     { return }
+func (self Implementation) GetBaseScript() (_ [1]gdclass.Script)                         { return }
+func (self Implementation) GetGlobalName() (_ string)                                    { return }
+func (self Implementation) InheritsScript(script [1]gdclass.Script) (_ bool)             { return }
+func (self Implementation) GetInstanceBaseType() (_ string)                              { return }
+func (self Implementation) InstanceCreate(for_object Object.Instance) (_ unsafe.Pointer) { return }
+func (self Implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ unsafe.Pointer) {
+	return
+}
+func (self Implementation) InstanceHas(obj Object.Instance) (_ bool)           { return }
+func (self Implementation) HasSourceCode() (_ bool)                            { return }
+func (self Implementation) GetSourceCode() (_ string)                          { return }
+func (self Implementation) SetSourceCode(code string)                          { return }
+func (self Implementation) Reload(keep_state bool) (_ error)                   { return }
+func (self Implementation) GetDocumentation() (_ gd.Array)                     { return }
+func (self Implementation) GetClassIconPath() (_ string)                       { return }
+func (self Implementation) HasMethod(method string) (_ bool)                   { return }
+func (self Implementation) HasStaticMethod(method string) (_ bool)             { return }
+func (self Implementation) GetScriptMethodArgumentCount(method string) (_ any) { return }
+func (self Implementation) GetMethodInfo(method string) (_ Dictionary.Any)     { return }
+func (self Implementation) IsTool() (_ bool)                                   { return }
+func (self Implementation) IsValid() (_ bool)                                  { return }
+func (self Implementation) IsAbstract() (_ bool)                               { return }
+func (self Implementation) GetLanguage() (_ [1]gdclass.ScriptLanguage)         { return }
+func (self Implementation) HasScriptSignal(signal string) (_ bool)             { return }
+func (self Implementation) GetScriptSignalList() (_ gd.Array)                  { return }
+func (self Implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
+func (self Implementation) GetPropertyDefaultValue(property string) (_ any)    { return }
+func (self Implementation) UpdateExports()                                     { return }
+func (self Implementation) GetScriptMethodList() (_ gd.Array)                  { return }
+func (self Implementation) GetScriptPropertyList() (_ gd.Array)                { return }
+func (self Implementation) GetMemberLine(member string) (_ int)                { return }
+func (self Implementation) GetConstants() (_ Dictionary.Any)                   { return }
+func (self Implementation) GetMembers() (_ gd.Array)                           { return }
+func (self Implementation) IsPlaceholderFallbackEnabled() (_ bool)             { return }
+func (self Implementation) GetRpcConfig() (_ any)                              { return }
 func (Instance) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -390,7 +471,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptExtension"))
-	return Instance{*(*gdclass.ScriptExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.ScriptExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {

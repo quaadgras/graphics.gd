@@ -27,62 +27,117 @@ var _ = pointers.Cycle
 This class extends [PhysicsDirectBodyState3D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsDirectBodyState3D].
 
-	// PhysicsDirectBodyState3DExtension methods that can be overridden by a [Class] that extends it.
-	type PhysicsDirectBodyState3DExtension interface {
-		GetTotalGravity() Vector3.XYZ
-		GetTotalLinearDamp() Float.X
-		GetTotalAngularDamp() Float.X
-		GetCenterOfMass() Vector3.XYZ
-		GetCenterOfMassLocal() Vector3.XYZ
-		GetPrincipalInertiaAxes() Basis.XYZ
-		GetInverseMass() Float.X
-		GetInverseInertia() Vector3.XYZ
-		GetInverseInertiaTensor() Basis.XYZ
-		SetLinearVelocity(velocity Vector3.XYZ)
-		GetLinearVelocity() Vector3.XYZ
-		SetAngularVelocity(velocity Vector3.XYZ)
-		GetAngularVelocity() Vector3.XYZ
-		SetTransform(transform Transform3D.BasisOrigin)
-		GetTransform() Transform3D.BasisOrigin
-		GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ
-		ApplyCentralImpulse(impulse Vector3.XYZ)
-		ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ)
-		ApplyTorqueImpulse(impulse Vector3.XYZ)
-		ApplyCentralForce(force Vector3.XYZ)
-		ApplyForce(force Vector3.XYZ, position Vector3.XYZ)
-		ApplyTorque(torque Vector3.XYZ)
-		AddConstantCentralForce(force Vector3.XYZ)
-		AddConstantForce(force Vector3.XYZ, position Vector3.XYZ)
-		AddConstantTorque(torque Vector3.XYZ)
-		SetConstantForce(force Vector3.XYZ)
-		GetConstantForce() Vector3.XYZ
-		SetConstantTorque(torque Vector3.XYZ)
-		GetConstantTorque() Vector3.XYZ
-		SetSleepState(enabled bool)
-		IsSleeping() bool
-		GetContactCount() int
-		GetContactLocalPosition(contact_idx int) Vector3.XYZ
-		GetContactLocalNormal(contact_idx int) Vector3.XYZ
-		GetContactImpulse(contact_idx int) Vector3.XYZ
-		GetContactLocalShape(contact_idx int) int
-		GetContactLocalVelocityAtPosition(contact_idx int) Vector3.XYZ
-		GetContactCollider(contact_idx int) Resource.ID
-		GetContactColliderPosition(contact_idx int) Vector3.XYZ
-		GetContactColliderId(contact_idx int) int
-		GetContactColliderObject(contact_idx int) Object.Instance
-		GetContactColliderShape(contact_idx int) int
-		GetContactColliderVelocityAtPosition(contact_idx int) Vector3.XYZ
-		GetStep() Float.X
-		IntegrateForces()
-		GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicsDirectBodyState3DExtension)
 */
 type Instance [1]gdclass.PhysicsDirectBodyState3DExtension
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectBodyState3DExtension() Instance
 }
+type Interface interface {
+	GetTotalGravity() Vector3.XYZ
+	GetTotalLinearDamp() Float.X
+	GetTotalAngularDamp() Float.X
+	GetCenterOfMass() Vector3.XYZ
+	GetCenterOfMassLocal() Vector3.XYZ
+	GetPrincipalInertiaAxes() Basis.XYZ
+	GetInverseMass() Float.X
+	GetInverseInertia() Vector3.XYZ
+	GetInverseInertiaTensor() Basis.XYZ
+	SetLinearVelocity(velocity Vector3.XYZ)
+	GetLinearVelocity() Vector3.XYZ
+	SetAngularVelocity(velocity Vector3.XYZ)
+	GetAngularVelocity() Vector3.XYZ
+	SetTransform(transform Transform3D.BasisOrigin)
+	GetTransform() Transform3D.BasisOrigin
+	GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ
+	ApplyCentralImpulse(impulse Vector3.XYZ)
+	ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ)
+	ApplyTorqueImpulse(impulse Vector3.XYZ)
+	ApplyCentralForce(force Vector3.XYZ)
+	ApplyForce(force Vector3.XYZ, position Vector3.XYZ)
+	ApplyTorque(torque Vector3.XYZ)
+	AddConstantCentralForce(force Vector3.XYZ)
+	AddConstantForce(force Vector3.XYZ, position Vector3.XYZ)
+	AddConstantTorque(torque Vector3.XYZ)
+	SetConstantForce(force Vector3.XYZ)
+	GetConstantForce() Vector3.XYZ
+	SetConstantTorque(torque Vector3.XYZ)
+	GetConstantTorque() Vector3.XYZ
+	SetSleepState(enabled bool)
+	IsSleeping() bool
+	GetContactCount() int
+	GetContactLocalPosition(contact_idx int) Vector3.XYZ
+	GetContactLocalNormal(contact_idx int) Vector3.XYZ
+	GetContactImpulse(contact_idx int) Vector3.XYZ
+	GetContactLocalShape(contact_idx int) int
+	GetContactLocalVelocityAtPosition(contact_idx int) Vector3.XYZ
+	GetContactCollider(contact_idx int) Resource.ID
+	GetContactColliderPosition(contact_idx int) Vector3.XYZ
+	GetContactColliderId(contact_idx int) int
+	GetContactColliderObject(contact_idx int) Object.Instance
+	GetContactColliderShape(contact_idx int) int
+	GetContactColliderVelocityAtPosition(contact_idx int) Vector3.XYZ
+	GetStep() Float.X
+	IntegrateForces()
+	GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetTotalGravity() (_ Vector3.XYZ)               { return }
+func (self Implementation) GetTotalLinearDamp() (_ Float.X)                { return }
+func (self Implementation) GetTotalAngularDamp() (_ Float.X)               { return }
+func (self Implementation) GetCenterOfMass() (_ Vector3.XYZ)               { return }
+func (self Implementation) GetCenterOfMassLocal() (_ Vector3.XYZ)          { return }
+func (self Implementation) GetPrincipalInertiaAxes() (_ Basis.XYZ)         { return }
+func (self Implementation) GetInverseMass() (_ Float.X)                    { return }
+func (self Implementation) GetInverseInertia() (_ Vector3.XYZ)             { return }
+func (self Implementation) GetInverseInertiaTensor() (_ Basis.XYZ)         { return }
+func (self Implementation) SetLinearVelocity(velocity Vector3.XYZ)         { return }
+func (self Implementation) GetLinearVelocity() (_ Vector3.XYZ)             { return }
+func (self Implementation) SetAngularVelocity(velocity Vector3.XYZ)        { return }
+func (self Implementation) GetAngularVelocity() (_ Vector3.XYZ)            { return }
+func (self Implementation) SetTransform(transform Transform3D.BasisOrigin) { return }
+func (self Implementation) GetTransform() (_ Transform3D.BasisOrigin)      { return }
+func (self Implementation) GetVelocityAtLocalPosition(local_position Vector3.XYZ) (_ Vector3.XYZ) {
+	return
+}
+func (self Implementation) ApplyCentralImpulse(impulse Vector3.XYZ)                           { return }
+func (self Implementation) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ)            { return }
+func (self Implementation) ApplyTorqueImpulse(impulse Vector3.XYZ)                            { return }
+func (self Implementation) ApplyCentralForce(force Vector3.XYZ)                               { return }
+func (self Implementation) ApplyForce(force Vector3.XYZ, position Vector3.XYZ)                { return }
+func (self Implementation) ApplyTorque(torque Vector3.XYZ)                                    { return }
+func (self Implementation) AddConstantCentralForce(force Vector3.XYZ)                         { return }
+func (self Implementation) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ)          { return }
+func (self Implementation) AddConstantTorque(torque Vector3.XYZ)                              { return }
+func (self Implementation) SetConstantForce(force Vector3.XYZ)                                { return }
+func (self Implementation) GetConstantForce() (_ Vector3.XYZ)                                 { return }
+func (self Implementation) SetConstantTorque(torque Vector3.XYZ)                              { return }
+func (self Implementation) GetConstantTorque() (_ Vector3.XYZ)                                { return }
+func (self Implementation) SetSleepState(enabled bool)                                        { return }
+func (self Implementation) IsSleeping() (_ bool)                                              { return }
+func (self Implementation) GetContactCount() (_ int)                                          { return }
+func (self Implementation) GetContactLocalPosition(contact_idx int) (_ Vector3.XYZ)           { return }
+func (self Implementation) GetContactLocalNormal(contact_idx int) (_ Vector3.XYZ)             { return }
+func (self Implementation) GetContactImpulse(contact_idx int) (_ Vector3.XYZ)                 { return }
+func (self Implementation) GetContactLocalShape(contact_idx int) (_ int)                      { return }
+func (self Implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) { return }
+func (self Implementation) GetContactCollider(contact_idx int) (_ Resource.ID)                { return }
+func (self Implementation) GetContactColliderPosition(contact_idx int) (_ Vector3.XYZ)        { return }
+func (self Implementation) GetContactColliderId(contact_idx int) (_ int)                      { return }
+func (self Implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance)      { return }
+func (self Implementation) GetContactColliderShape(contact_idx int) (_ int)                   { return }
+func (self Implementation) GetContactColliderVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) {
+	return
+}
+func (self Implementation) GetStep() (_ Float.X)                                    { return }
+func (self Implementation) IntegrateForces()                                        { return }
+func (self Implementation) GetSpaceState() (_ [1]gdclass.PhysicsDirectSpaceState3D) { return }
 func (Instance) _get_total_gravity(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -442,7 +497,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState3DExtension"))
-	return Instance{*(*gdclass.PhysicsDirectBodyState3DExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsDirectBodyState3DExtension)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (class) _get_total_gravity(impl func(ptr unsafe.Pointer) gd.Vector3) (cb gd.ExtensionClassCallVirtualFunc) {

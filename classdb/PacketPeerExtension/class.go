@@ -23,7 +23,20 @@ type Any interface {
 	gd.IsClass
 	AsPacketPeerExtension() Instance
 }
+type Interface interface {
+	GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) error
+	PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) error
+	GetAvailablePacketCount() int
+	GetMaxPacketSize() int
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
+func (self Implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
+func (self Implementation) GetAvailablePacketCount() (_ int)                                  { return }
+func (self Implementation) GetMaxPacketSize() (_ int)                                         { return }
 func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
@@ -71,7 +84,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeerExtension"))
-	return Instance{*(*gdclass.PacketPeerExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PacketPeerExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {

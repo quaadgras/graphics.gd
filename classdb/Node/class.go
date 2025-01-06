@@ -34,77 +34,93 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 [b]Networking with nodes:[/b] After connecting to a server (or making one, see [ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [method rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its [NodePath] (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
 [b]Note:[/b] The [code]script[/code] property is part of the [Object] class, not [Node]. It isn't exposed like most properties but does have a setter and getter (see [method Object.set_script] and [method Object.get_script]).
 
-	// Node methods that can be overridden by a [Class] that extends it.
-	type Node interface {
-		//Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
-		//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
-		//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Process(delta Float.X)
-		//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
-		//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
-		//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		PhysicsProcess(delta Float.X)
-		//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
-		//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
-		EnterTree()
-		//Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [method remove_child] in a script). If the node has children, its [method _exit_tree] callback will be called last, after all its children have left the tree.
-		//Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
-		ExitTree()
-		//Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [method _ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
-		//Corresponds to the [constant NOTIFICATION_READY] notification in [method Object._notification]. See also the [code]@onready[/code] annotation for variables.
-		//Usually used for initialization. For even earlier initialization, [method Object._init] may be used. See also [method _enter_tree].
-		//[b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
-		Ready()
-		//The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a [code]tool[/code] script.
-		//Returning an empty array produces no warnings.
-		//Call [method update_configuration_warnings] when the warnings need to be updated for this node.
-		//[codeblock]
-		//@export var energy = 0:
-		//    set(value):
-		//        energy = value
-		//        update_configuration_warnings()
-		//
-		//func _get_configuration_warnings():
-		//    if energy < 0:
-		//        return ["Energy must be 0 or greater."]
-		//    else:
-		//        return []
-		//[/codeblock]
-		GetConfigurationWarnings() []string
-		//Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
-		//It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_input].
-		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-		//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		Input(event [1]gdclass.InputEvent)
-		//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
-		//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
-		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-		//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
-		ShortcutInput(event [1]gdclass.InputEvent)
-		//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
-		//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
-		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-		//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledInput(event [1]gdclass.InputEvent)
-		//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
-		//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
-		//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-		//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
-		//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
-		//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-		UnhandledKeyInput(event [1]gdclass.InputEvent)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Node)
 */
 type Instance [1]gdclass.Node
 type Any interface {
 	gd.IsClass
 	AsNode() Instance
 }
+type Interface interface {
+	//Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
+	//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
+	//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	Process(delta Float.X)
+	//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] variable should be constant. [param delta] is in seconds.
+	//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
+	//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	PhysicsProcess(delta Float.X)
+	//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
+	//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
+	EnterTree()
+	//Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [method remove_child] in a script). If the node has children, its [method _exit_tree] callback will be called last, after all its children have left the tree.
+	//Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
+	ExitTree()
+	//Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [method _ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+	//Corresponds to the [constant NOTIFICATION_READY] notification in [method Object._notification]. See also the [code]@onready[/code] annotation for variables.
+	//Usually used for initialization. For even earlier initialization, [method Object._init] may be used. See also [method _enter_tree].
+	//[b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
+	Ready()
+	//The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a [code]tool[/code] script.
+	//Returning an empty array produces no warnings.
+	//Call [method update_configuration_warnings] when the warnings need to be updated for this node.
+	//[codeblock]
+	//@export var energy = 0:
+	//    set(value):
+	//        energy = value
+	//        update_configuration_warnings()
+	//
+	//func _get_configuration_warnings():
+	//    if energy < 0:
+	//        return ["Energy must be 0 or greater."]
+	//    else:
+	//        return []
+	//[/codeblock]
+	GetConfigurationWarnings() []string
+	//Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
+	//It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_input].
+	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
+	//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	Input(event [1]gdclass.InputEvent)
+	//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
+	//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
+	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
+	//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
+	ShortcutInput(event [1]gdclass.InputEvent)
+	//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
+	//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
+	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
+	//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	UnhandledInput(event [1]gdclass.InputEvent)
+	//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
+	//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
+	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
+	//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
+	//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
+	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	UnhandledKeyInput(event [1]gdclass.InputEvent)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Process(delta Float.X)                         { return }
+func (self Implementation) PhysicsProcess(delta Float.X)                  { return }
+func (self Implementation) EnterTree()                                    { return }
+func (self Implementation) ExitTree()                                     { return }
+func (self Implementation) Ready()                                        { return }
+func (self Implementation) GetConfigurationWarnings() (_ []string)        { return }
+func (self Implementation) Input(event [1]gdclass.InputEvent)             { return }
+func (self Implementation) ShortcutInput(event [1]gdclass.InputEvent)     { return }
+func (self Implementation) UnhandledInput(event [1]gdclass.InputEvent)    { return }
+func (self Implementation) UnhandledKeyInput(event [1]gdclass.InputEvent) { return }
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
@@ -1118,7 +1134,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
-	return Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Name() string {

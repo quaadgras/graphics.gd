@@ -44,7 +44,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2DArrayRD"))
-	return Instance{*(*gdclass.Texture2DArrayRD)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Texture2DArrayRD)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self class) AsTexture2DArrayRD() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

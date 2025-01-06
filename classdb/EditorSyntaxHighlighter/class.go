@@ -23,19 +23,27 @@ var _ = pointers.Cycle
 Base class that all [SyntaxHighlighter]s used by the [ScriptEditor] extend from.
 Add a syntax highlighter to an individual script by calling [method ScriptEditorBase.add_syntax_highlighter]. To apply to all scripts on open, call [method ScriptEditor.register_syntax_highlighter].
 
-	// EditorSyntaxHighlighter methods that can be overridden by a [Class] that extends it.
-	type EditorSyntaxHighlighter interface {
-		//Virtual method which can be overridden to return the syntax highlighter name.
-		GetName() string
-		//Virtual method which can be overridden to return the supported language names.
-		GetSupportedLanguages() []string
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorSyntaxHighlighter)
 */
 type Instance [1]gdclass.EditorSyntaxHighlighter
 type Any interface {
 	gd.IsClass
 	AsEditorSyntaxHighlighter() Instance
 }
+type Interface interface {
+	//Virtual method which can be overridden to return the syntax highlighter name.
+	GetName() string
+	//Virtual method which can be overridden to return the supported language names.
+	GetSupportedLanguages() []string
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetName() (_ string)                 { return }
+func (self Implementation) GetSupportedLanguages() (_ []string) { return }
 
 /*
 Virtual method which can be overridden to return the syntax highlighter name.
@@ -81,7 +89,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSyntaxHighlighter"))
-	return Instance{*(*gdclass.EditorSyntaxHighlighter)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorSyntaxHighlighter)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

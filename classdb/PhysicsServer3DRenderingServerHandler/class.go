@@ -24,6 +24,23 @@ type Any interface {
 	gd.IsClass
 	AsPhysicsServer3DRenderingServerHandler() Instance
 }
+type Interface interface {
+	//Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].
+	//[b]Note:[/b] The [param vertex] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
+	SetVertex(vertex_id int, vertex Vector3.XYZ)
+	//Called by the [PhysicsServer3D] to set the normal for the [SoftBody3D] vertex at the index specified by [param vertex_id].
+	//[b]Note:[/b] The [param normal] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
+	SetNormal(vertex_id int, normal Vector3.XYZ)
+	//Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
+	SetAabb(aabb AABB.PositionSize)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) SetVertex(vertex_id int, vertex Vector3.XYZ) { return }
+func (self Implementation) SetNormal(vertex_id int, normal Vector3.XYZ) { return }
+func (self Implementation) SetAabb(aabb AABB.PositionSize)              { return }
 
 /*
 Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].
@@ -97,7 +114,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsServer3DRenderingServerHandler"))
-	return Instance{*(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

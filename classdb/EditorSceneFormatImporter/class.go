@@ -22,21 +22,35 @@ var _ = pointers.Cycle
 [EditorSceneFormatImporter] allows to define an importer script for a third-party 3D format.
 To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.add_scene_format_importer_plugin] method first.
 
-	// EditorSceneFormatImporter methods that can be overridden by a [Class] that extends it.
-	type EditorSceneFormatImporter interface {
-		GetImportFlags() int
-		GetExtensions() []string
-		ImportScene(path string, flags int, options Dictionary.Any) Object.Instance
-		GetImportOptions(path string)
-		GetOptionVisibility(path string, for_animation bool, option string) any
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorSceneFormatImporter)
 */
 type Instance [1]gdclass.EditorSceneFormatImporter
 type Any interface {
 	gd.IsClass
 	AsEditorSceneFormatImporter() Instance
 }
+type Interface interface {
+	GetImportFlags() int
+	GetExtensions() []string
+	ImportScene(path string, flags int, options Dictionary.Any) Object.Instance
+	GetImportOptions(path string)
+	GetOptionVisibility(path string, for_animation bool, option string) any
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetImportFlags() (_ int)     { return }
+func (self Implementation) GetExtensions() (_ []string) { return }
+func (self Implementation) ImportScene(path string, flags int, options Dictionary.Any) (_ Object.Instance) {
+	return
+}
+func (self Implementation) GetImportOptions(path string) { return }
+func (self Implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
+	return
+}
 func (Instance) _get_import_flags(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -110,7 +124,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporter"))
-	return Instance{*(*gdclass.EditorSceneFormatImporter)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorSceneFormatImporter)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _get_import_flags(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {

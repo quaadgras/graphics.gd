@@ -56,21 +56,29 @@ public partial class MyAStar : AStar3D
 [method _estimate_cost] should return a lower bound of the distance, i.e. [code]_estimate_cost(u, v) <= _compute_cost(u, v)[/code]. This serves as a hint to the algorithm because the custom [method _compute_cost] might be computation-heavy. If this is not the case, make [method _estimate_cost] return the same value as [method _compute_cost] to provide the algorithm with the most accurate information.
 If the default [method _estimate_cost] and [method _compute_cost] methods are used, or if the supplied [method _estimate_cost] method returns a lower bound of the cost, then the paths returned by A* will be the lowest-cost paths. Here, the cost of a path equals the sum of the [method _compute_cost] results of all segments in the path multiplied by the [code]weight_scale[/code]s of the endpoints of the respective segments. If the default methods are used and the [code]weight_scale[/code]s of all points are set to [code]1.0[/code], then this equals the sum of Euclidean distances of all segments in the path.
 
-	// AStar3D methods that can be overridden by a [Class] that extends it.
-	type AStar3D interface {
-		//Called when estimating the cost between a point and the path's ending point.
-		//Note that this function is hidden in the default [AStar3D] class.
-		EstimateCost(from_id int, to_id int) Float.X
-		//Called when computing the cost between two connected points.
-		//Note that this function is hidden in the default [AStar3D] class.
-		ComputeCost(from_id int, to_id int) Float.X
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AStar3D)
 */
 type Instance [1]gdclass.AStar3D
 type Any interface {
 	gd.IsClass
 	AsAStar3D() Instance
 }
+type Interface interface {
+	//Called when estimating the cost between a point and the path's ending point.
+	//Note that this function is hidden in the default [AStar3D] class.
+	EstimateCost(from_id int, to_id int) Float.X
+	//Called when computing the cost between two connected points.
+	//Note that this function is hidden in the default [AStar3D] class.
+	ComputeCost(from_id int, to_id int) Float.X
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) EstimateCost(from_id int, to_id int) (_ Float.X) { return }
+func (self Implementation) ComputeCost(from_id int, to_id int) (_ Float.X)  { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -376,7 +384,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStar3D"))
-	return Instance{*(*gdclass.AStar3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AStar3D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

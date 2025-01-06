@@ -78,25 +78,35 @@ public partial class CustomMainLoop : MainLoop
 [/csharp]
 [/codeblocks]
 
-	// MainLoop methods that can be overridden by a [Class] that extends it.
-	type MainLoop interface {
-		//Called once during initialization.
-		Initialize()
-		//Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
-		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		PhysicsProcess(delta Float.X) bool
-		//Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
-		//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
-		Process(delta Float.X) bool
-		//Called before the program exits.
-		Finalize()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=MainLoop)
 */
 type Instance [1]gdclass.MainLoop
 type Any interface {
 	gd.IsClass
 	AsMainLoop() Instance
 }
+type Interface interface {
+	//Called once during initialization.
+	Initialize()
+	//Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
+	//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
+	PhysicsProcess(delta Float.X) bool
+	//Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
+	//If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
+	Process(delta Float.X) bool
+	//Called before the program exits.
+	Finalize()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Initialize()                           { return }
+func (self Implementation) PhysicsProcess(delta Float.X) (_ bool) { return }
+func (self Implementation) Process(delta Float.X) (_ bool)        { return }
+func (self Implementation) Finalize()                             { return }
 
 /*
 Called once during initialization.
@@ -158,7 +168,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MainLoop"))
-	return Instance{*(*gdclass.MainLoop)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.MainLoop)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

@@ -62,26 +62,40 @@ func _exit_tree():
 [/gdscript]
 [/codeblocks]
 
-	// EditorDebuggerPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorDebuggerPlugin interface {
-		//Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
-		SetupSession(session_id int)
-		//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
-		HasCapture(capture string) bool
-		//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
-		Capture(message string, data Array.Any, session_id int) bool
-		//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
-		GotoScriptLine(script [1]gdclass.Script, line int)
-		//Override this method to be notified when all breakpoints are cleared in the editor.
-		BreakpointsClearedInTree()
-		//Override this method to be notified when a breakpoint is set in the editor.
-		BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorDebuggerPlugin)
 */
 type Instance [1]gdclass.EditorDebuggerPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorDebuggerPlugin() Instance
+}
+type Interface interface {
+	//Override this method to be notified whenever a new [EditorDebuggerSession] is created (the session may be inactive during this stage).
+	SetupSession(session_id int)
+	//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
+	HasCapture(capture string) bool
+	//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
+	Capture(message string, data Array.Any, session_id int) bool
+	//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
+	GotoScriptLine(script [1]gdclass.Script, line int)
+	//Override this method to be notified when all breakpoints are cleared in the editor.
+	BreakpointsClearedInTree()
+	//Override this method to be notified when a breakpoint is set in the editor.
+	BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) SetupSession(session_id int)                                     { return }
+func (self Implementation) HasCapture(capture string) (_ bool)                              { return }
+func (self Implementation) Capture(message string, data Array.Any, session_id int) (_ bool) { return }
+func (self Implementation) GotoScriptLine(script [1]gdclass.Script, line int)               { return }
+func (self Implementation) BreakpointsClearedInTree()                                       { return }
+func (self Implementation) BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool) {
+	return
 }
 
 /*
@@ -190,7 +204,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorDebuggerPlugin"))
-	return Instance{*(*gdclass.EditorDebuggerPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorDebuggerPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

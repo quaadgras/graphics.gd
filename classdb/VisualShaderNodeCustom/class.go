@@ -28,84 +28,119 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeNoise
 [/codeblock]
 
-	// VisualShaderNodeCustom methods that can be overridden by a [Class] that extends it.
-	type VisualShaderNodeCustom interface {
-		//Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.
-		//Defining this method is [b]optional[/b], but recommended. If not overridden, the node will be named as "Unnamed".
-		GetName() string
-		//Override this method to define the description of the associated custom node in the Visual Shader Editor's members dialog.
-		//Defining this method is [b]optional[/b].
-		GetDescription() string
-		//Override this method to define the path to the associated custom node in the Visual Shader Editor's members dialog. The path may look like [code]"MyGame/MyFunctions/Noise"[/code].
-		//Defining this method is [b]optional[/b]. If not overridden, the node will be filed under the "Addons" category.
-		GetCategory() string
-		//Override this method to define the return icon of the associated custom node in the Visual Shader Editor's members dialog.
-		//Defining this method is [b]optional[/b]. If not overridden, no return icon is shown.
-		GetReturnIconType() gdclass.VisualShaderNodePortType
-		//Override this method to define the number of input ports of the associated custom node.
-		//Defining this method is [b]required[/b]. If not overridden, the node has no input ports.
-		GetInputPortCount() int
-		//Override this method to define the returned type of each input port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
-		//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
-		GetInputPortType(port int) gdclass.VisualShaderNodePortType
-		//Override this method to define the names of input ports of the associated custom node. The names are used both for the input slots in the editor and as identifiers in the shader code, and are passed in the [code]input_vars[/code] array in [method _get_code].
-		//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports are named as [code]"in" + str(port)[/code].
-		GetInputPortName(port int) string
-		//Override this method to define the default value for the specified input port. Prefer use this over [method VisualShaderNode.set_input_port_default_value].
-		//Defining this method is [b]required[/b]. If not overridden, the node has no default values for their input ports.
-		GetInputPortDefaultValue(port int) any
-		//Override this method to define the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
-		//Defining this method is [b]optional[/b]. If not overridden, the connection will be created to the first valid port.
-		GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) int
-		//Override this method to define the number of output ports of the associated custom node.
-		//Defining this method is [b]required[/b]. If not overridden, the node has no output ports.
-		GetOutputPortCount() int
-		//Override this method to define the returned type of each output port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
-		//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
-		GetOutputPortType(port int) gdclass.VisualShaderNodePortType
-		//Override this method to define the names of output ports of the associated custom node. The names are used both for the output slots in the editor and as identifiers in the shader code, and are passed in the [code]output_vars[/code] array in [method _get_code].
-		//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports are named as [code]"out" + str(port)[/code].
-		GetOutputPortName(port int) string
-		//Override this method to define the number of the properties.
-		//Defining this method is [b]optional[/b].
-		GetPropertyCount() int
-		//Override this method to define the names of the property of the associated custom node.
-		//Defining this method is [b]optional[/b].
-		GetPropertyName(index int) string
-		//Override this method to define the default index of the property of the associated custom node.
-		//Defining this method is [b]optional[/b].
-		GetPropertyDefaultIndex(index int) int
-		//Override this method to define the options inside the drop-down list property of the associated custom node.
-		//Defining this method is [b]optional[/b].
-		GetPropertyOptions(index int) []string
-		//Override this method to define the actual shader code of the associated custom node. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
-		//The [param input_vars] and [param output_vars] arrays contain the string names of the various input and output variables, as defined by [code]_get_input_*[/code] and [code]_get_output_*[/code] virtual methods in this class.
-		//The output ports can be assigned values in the shader code. For example, [code]return output_vars[0] + " = " + input_vars[0] + ";"[/code].
-		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
-		//Defining this method is [b]required[/b].
-		GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
-		//Override this method to add a shader code to the beginning of each shader function (once). The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
-		//If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
-		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
-		//Defining this method is [b]optional[/b].
-		GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
-		//Override this method to add shader code on top of the global shader, to define your own standard library of reusable methods, varyings, constants, uniforms, etc. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
-		//Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
-		//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]).
-		//Defining this method is [b]optional[/b].
-		GetGlobalCode(mode gdclass.ShaderMode) string
-		//Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
-		//Defining this method is [b]optional[/b]. If not overridden, it's [code]false[/code].
-		IsHighend() bool
-		//Override this method to prevent the node to be visible in the member dialog for the certain [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
-		//Defining this method is [b]optional[/b]. If not overridden, it's [code]true[/code].
-		IsAvailable(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=VisualShaderNodeCustom)
 */
 type Instance [1]gdclass.VisualShaderNodeCustom
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCustom() Instance
+}
+type Interface interface {
+	//Override this method to define the name of the associated custom node in the Visual Shader Editor's members dialog and graph.
+	//Defining this method is [b]optional[/b], but recommended. If not overridden, the node will be named as "Unnamed".
+	GetName() string
+	//Override this method to define the description of the associated custom node in the Visual Shader Editor's members dialog.
+	//Defining this method is [b]optional[/b].
+	GetDescription() string
+	//Override this method to define the path to the associated custom node in the Visual Shader Editor's members dialog. The path may look like [code]"MyGame/MyFunctions/Noise"[/code].
+	//Defining this method is [b]optional[/b]. If not overridden, the node will be filed under the "Addons" category.
+	GetCategory() string
+	//Override this method to define the return icon of the associated custom node in the Visual Shader Editor's members dialog.
+	//Defining this method is [b]optional[/b]. If not overridden, no return icon is shown.
+	GetReturnIconType() gdclass.VisualShaderNodePortType
+	//Override this method to define the number of input ports of the associated custom node.
+	//Defining this method is [b]required[/b]. If not overridden, the node has no input ports.
+	GetInputPortCount() int
+	//Override this method to define the returned type of each input port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
+	//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
+	GetInputPortType(port int) gdclass.VisualShaderNodePortType
+	//Override this method to define the names of input ports of the associated custom node. The names are used both for the input slots in the editor and as identifiers in the shader code, and are passed in the [code]input_vars[/code] array in [method _get_code].
+	//Defining this method is [b]optional[/b], but recommended. If not overridden, input ports are named as [code]"in" + str(port)[/code].
+	GetInputPortName(port int) string
+	//Override this method to define the default value for the specified input port. Prefer use this over [method VisualShaderNode.set_input_port_default_value].
+	//Defining this method is [b]required[/b]. If not overridden, the node has no default values for their input ports.
+	GetInputPortDefaultValue(port int) any
+	//Override this method to define the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
+	//Defining this method is [b]optional[/b]. If not overridden, the connection will be created to the first valid port.
+	GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) int
+	//Override this method to define the number of output ports of the associated custom node.
+	//Defining this method is [b]required[/b]. If not overridden, the node has no output ports.
+	GetOutputPortCount() int
+	//Override this method to define the returned type of each output port of the associated custom node (see [enum VisualShaderNode.PortType] for possible types).
+	//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports will return the [constant VisualShaderNode.PORT_TYPE_SCALAR] type.
+	GetOutputPortType(port int) gdclass.VisualShaderNodePortType
+	//Override this method to define the names of output ports of the associated custom node. The names are used both for the output slots in the editor and as identifiers in the shader code, and are passed in the [code]output_vars[/code] array in [method _get_code].
+	//Defining this method is [b]optional[/b], but recommended. If not overridden, output ports are named as [code]"out" + str(port)[/code].
+	GetOutputPortName(port int) string
+	//Override this method to define the number of the properties.
+	//Defining this method is [b]optional[/b].
+	GetPropertyCount() int
+	//Override this method to define the names of the property of the associated custom node.
+	//Defining this method is [b]optional[/b].
+	GetPropertyName(index int) string
+	//Override this method to define the default index of the property of the associated custom node.
+	//Defining this method is [b]optional[/b].
+	GetPropertyDefaultIndex(index int) int
+	//Override this method to define the options inside the drop-down list property of the associated custom node.
+	//Defining this method is [b]optional[/b].
+	GetPropertyOptions(index int) []string
+	//Override this method to define the actual shader code of the associated custom node. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
+	//The [param input_vars] and [param output_vars] arrays contain the string names of the various input and output variables, as defined by [code]_get_input_*[/code] and [code]_get_output_*[/code] virtual methods in this class.
+	//The output ports can be assigned values in the shader code. For example, [code]return output_vars[0] + " = " + input_vars[0] + ";"[/code].
+	//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
+	//Defining this method is [b]required[/b].
+	GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
+	//Override this method to add a shader code to the beginning of each shader function (once). The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
+	//If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
+	//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
+	//Defining this method is [b]optional[/b].
+	GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
+	//Override this method to add shader code on top of the global shader, to define your own standard library of reusable methods, varyings, constants, uniforms, etc. The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
+	//Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
+	//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]).
+	//Defining this method is [b]optional[/b].
+	GetGlobalCode(mode gdclass.ShaderMode) string
+	//Override this method to enable high-end mark in the Visual Shader Editor's members dialog.
+	//Defining this method is [b]optional[/b]. If not overridden, it's [code]false[/code].
+	IsHighend() bool
+	//Override this method to prevent the node to be visible in the member dialog for the certain [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
+	//Defining this method is [b]optional[/b]. If not overridden, it's [code]true[/code].
+	IsAvailable(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetName() (_ string)                                            { return }
+func (self Implementation) GetDescription() (_ string)                                     { return }
+func (self Implementation) GetCategory() (_ string)                                        { return }
+func (self Implementation) GetReturnIconType() (_ gdclass.VisualShaderNodePortType)        { return }
+func (self Implementation) GetInputPortCount() (_ int)                                     { return }
+func (self Implementation) GetInputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
+func (self Implementation) GetInputPortName(port int) (_ string)                           { return }
+func (self Implementation) GetInputPortDefaultValue(port int) (_ any)                      { return }
+func (self Implementation) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) (_ int) {
+	return
+}
+func (self Implementation) GetOutputPortCount() (_ int)                                     { return }
+func (self Implementation) GetOutputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
+func (self Implementation) GetOutputPortName(port int) (_ string)                           { return }
+func (self Implementation) GetPropertyCount() (_ int)                                       { return }
+func (self Implementation) GetPropertyName(index int) (_ string)                            { return }
+func (self Implementation) GetPropertyDefaultIndex(index int) (_ int)                       { return }
+func (self Implementation) GetPropertyOptions(index int) (_ []string)                       { return }
+func (self Implementation) GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
+	return
+}
+func (self Implementation) GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
+	return
+}
+func (self Implementation) GetGlobalCode(mode gdclass.ShaderMode) (_ string) { return }
+func (self Implementation) IsHighend() (_ bool)                              { return }
+func (self Implementation) IsAvailable(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ bool) {
+	return
 }
 
 /*
@@ -452,7 +487,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCustom"))
-	return Instance{*(*gdclass.VisualShaderNodeCustom)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.VisualShaderNodeCustom)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -24,17 +24,24 @@ var _ = pointers.Cycle
 /*
 Range is an abstract base class for controls that represent a number within a range, using a configured [member step] and [member page] size. See e.g. [ScrollBar] and [Slider] for examples of higher-level nodes using Range.
 
-	// Range methods that can be overridden by a [Class] that extends it.
-	type Range interface {
-		//Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
-		ValueChanged(new_value Float.X)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Range)
 */
 type Instance [1]gdclass.Range
 type Any interface {
 	gd.IsClass
 	AsRange() Instance
 }
+type Interface interface {
+	//Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
+	ValueChanged(new_value Float.X)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ValueChanged(new_value Float.X) { return }
 
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
@@ -82,7 +89,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Range"))
-	return Instance{*(*gdclass.Range)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Range)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) MinValue() Float.X {

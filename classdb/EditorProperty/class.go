@@ -25,19 +25,27 @@ var _ = pointers.Cycle
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
 
-	// EditorProperty methods that can be overridden by a [Class] that extends it.
-	type EditorProperty interface {
-		//When this virtual function is called, you must update your editor.
-		UpdateProperty()
-		//Called when the read-only status of the property is changed. It may be used to change custom controls into a read-only or modifiable state.
-		SetReadOnly(read_only bool)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorProperty)
 */
 type Instance [1]gdclass.EditorProperty
 type Any interface {
 	gd.IsClass
 	AsEditorProperty() Instance
 }
+type Interface interface {
+	//When this virtual function is called, you must update your editor.
+	UpdateProperty()
+	//Called when the read-only status of the property is changed. It may be used to change custom controls into a read-only or modifiable state.
+	SetReadOnly(read_only bool)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) UpdateProperty()            { return }
+func (self Implementation) SetReadOnly(read_only bool) { return }
 
 /*
 When this virtual function is called, you must update your editor.
@@ -116,7 +124,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorProperty"))
-	return Instance{*(*gdclass.EditorProperty)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorProperty)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Label() string {

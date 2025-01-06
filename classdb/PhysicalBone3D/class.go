@@ -28,17 +28,24 @@ var _ = pointers.Cycle
 The [PhysicalBone3D] node is a physics body that can be used to make bones in a [Skeleton3D] react to physics.
 [b]Note:[/b] In order to detect physical bones with raycasts, the [member SkeletonModifier3D.active] property of the parent [PhysicalBoneSimulator3D] must be [code]true[/code] and the [Skeleton3D]'s bone must be assigned to [PhysicalBone3D] correctly; it means that [method get_bone_id] should return a valid id ([code]>= 0[/code]).
 
-	// PhysicalBone3D methods that can be overridden by a [Class] that extends it.
-	type PhysicalBone3D interface {
-		//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
-		IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PhysicalBone3D)
 */
 type Instance [1]gdclass.PhysicalBone3D
 type Any interface {
 	gd.IsClass
 	AsPhysicalBone3D() Instance
 }
+type Interface interface {
+	//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
+	IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D) { return }
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
@@ -81,7 +88,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicalBone3D"))
-	return Instance{*(*gdclass.PhysicalBone3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PhysicalBone3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) JointType() gdclass.PhysicalBone3DJointType {

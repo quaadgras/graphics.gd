@@ -27,20 +27,28 @@ var _ = pointers.Cycle
 This [Control] node is used in the editor's Inspector dock to allow editing of [Resource] type properties. It provides options for creating, loading, saving and converting resources. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
 [b]Note:[/b] This [Control] does not include any editor for the resource, as editing is controlled by the Inspector dock itself or sub-Inspectors.
 
-	// EditorResourcePicker methods that can be overridden by a [Class] that extends it.
-	type EditorResourcePicker interface {
-		//This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
-		//[b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
-		SetCreateOptions(menu_node Object.Instance)
-		//This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
-		HandleMenuSelected(id int) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorResourcePicker)
 */
 type Instance [1]gdclass.EditorResourcePicker
 type Any interface {
 	gd.IsClass
 	AsEditorResourcePicker() Instance
 }
+type Interface interface {
+	//This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
+	//[b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
+	SetCreateOptions(menu_node Object.Instance)
+	//This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
+	HandleMenuSelected(id int) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) SetCreateOptions(menu_node Object.Instance) { return }
+func (self Implementation) HandleMenuSelected(id int) (_ bool)         { return }
 
 /*
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
@@ -95,7 +103,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourcePicker"))
-	return Instance{*(*gdclass.EditorResourcePicker)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorResourcePicker)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) BaseType() string {

@@ -28,31 +28,50 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 [Texture2D] is a base for other resources. It cannot be used directly.
 [b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations. Larger textures may fail to import.
 
-	// Texture2D methods that can be overridden by a [Class] that extends it.
-	type Texture2D interface {
-		//Called when the [Texture2D]'s width is queried.
-		GetWidth() int
-		//Called when the [Texture2D]'s height is queried.
-		GetHeight() int
-		//Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
-		IsPixelOpaque(x int, y int) bool
-		//Called when the presence of an alpha channel in the [Texture2D] is queried.
-		HasAlpha() bool
-		//Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool)
-		//Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
-		//Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
-		//[b]Note:[/b] This is only used in 2D rendering, not 3D.
-		DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Texture2D)
 */
 type Instance [1]gdclass.Texture2D
 type Any interface {
 	gd.IsClass
 	AsTexture2D() Instance
+}
+type Interface interface {
+	//Called when the [Texture2D]'s width is queried.
+	GetWidth() int
+	//Called when the [Texture2D]'s height is queried.
+	GetHeight() int
+	//Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
+	IsPixelOpaque(x int, y int) bool
+	//Called when the presence of an alpha channel in the [Texture2D] is queried.
+	HasAlpha() bool
+	//Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
+	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
+	Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool)
+	//Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
+	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
+	DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
+	//Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
+	//[b]Note:[/b] This is only used in 2D rendering, not 3D.
+	DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetWidth() (_ int)                   { return }
+func (self Implementation) GetHeight() (_ int)                  { return }
+func (self Implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
+func (self Implementation) HasAlpha() (_ bool)                  { return }
+func (self Implementation) Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
+	return
+}
+func (self Implementation) DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
+	return
+}
+func (self Implementation) DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
+	return
 }
 
 /*
@@ -228,7 +247,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2D"))
-	return Instance{*(*gdclass.Texture2D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Texture2D)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

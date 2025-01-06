@@ -28,17 +28,24 @@ var _ = pointers.Cycle
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
 At runtime, [Window]s will not close automatically when requested. You need to handle it manually using the [signal close_requested] signal (this applies both to pressing the close button and clicking outside of a popup).
 
-	// Window methods that can be overridden by a [Class] that extends it.
-	type Window interface {
-		//Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
-		GetContentsMinimumSize() Vector2.XY
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Window)
 */
 type Instance [1]gdclass.Window
 type Any interface {
 	gd.IsClass
 	AsWindow() Instance
 }
+type Interface interface {
+	//Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
+	GetContentsMinimumSize() Vector2.XY
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetContentsMinimumSize() (_ Vector2.XY) { return }
 
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].
@@ -590,7 +597,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Window"))
-	return Instance{*(*gdclass.Window)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Window)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Mode() gdclass.WindowMode {

@@ -25,17 +25,24 @@ var _ = pointers.Cycle
 /*
 Base class for all primitive meshes. Handles applying a [Material] to a primitive mesh. Examples include [BoxMesh], [CapsuleMesh], [CylinderMesh], [PlaneMesh], [PrismMesh], and [SphereMesh].
 
-	// PrimitiveMesh methods that can be overridden by a [Class] that extends it.
-	type PrimitiveMesh interface {
-		//Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
-		CreateMeshArray() Array.Any
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=PrimitiveMesh)
 */
 type Instance [1]gdclass.PrimitiveMesh
 type Any interface {
 	gd.IsClass
 	AsPrimitiveMesh() Instance
 }
+type Interface interface {
+	//Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
+	CreateMeshArray() Array.Any
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) CreateMeshArray() (_ Array.Any) { return }
 
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
@@ -92,7 +99,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PrimitiveMesh"))
-	return Instance{*(*gdclass.PrimitiveMesh)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.PrimitiveMesh)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) Material() [1]gdclass.Material {

@@ -41,7 +41,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMeshInstance3D"))
-	return Instance{*(*gdclass.ImporterMeshInstance3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.ImporterMeshInstance3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Mesh() [1]gdclass.ImporterMesh {

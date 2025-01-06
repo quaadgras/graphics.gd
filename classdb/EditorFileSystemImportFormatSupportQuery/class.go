@@ -20,21 +20,30 @@ var _ = pointers.Cycle
 /*
 This class is used to query and configure a certain import format. It is used in conjunction with asset format import plugins.
 
-	// EditorFileSystemImportFormatSupportQuery methods that can be overridden by a [Class] that extends it.
-	type EditorFileSystemImportFormatSupportQuery interface {
-		//Return whether this importer is active.
-		IsActive() bool
-		//Return the file extensions supported.
-		GetFileExtensions() []string
-		//Query support. Return false if import must not continue.
-		Query() bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorFileSystemImportFormatSupportQuery)
 */
 type Instance [1]gdclass.EditorFileSystemImportFormatSupportQuery
 type Any interface {
 	gd.IsClass
 	AsEditorFileSystemImportFormatSupportQuery() Instance
 }
+type Interface interface {
+	//Return whether this importer is active.
+	IsActive() bool
+	//Return the file extensions supported.
+	GetFileExtensions() []string
+	//Query support. Return false if import must not continue.
+	Query() bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) IsActive() (_ bool)              { return }
+func (self Implementation) GetFileExtensions() (_ []string) { return }
+func (self Implementation) Query() (_ bool)                 { return }
 
 /*
 Return whether this importer is active.
@@ -87,7 +96,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorFileSystemImportFormatSupportQuery"))
-	return Instance{*(*gdclass.EditorFileSystemImportFormatSupportQuery)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorFileSystemImportFormatSupportQuery)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

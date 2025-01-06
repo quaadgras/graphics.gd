@@ -24,21 +24,29 @@ var _ = pointers.Cycle
 /*
 Base class for all GUI containers. A [Container] automatically arranges its child controls in a certain way. This class can be inherited to make custom container types.
 
-	// Container methods that can be overridden by a [Class] that extends it.
-	type Container interface {
-		//Implement to return a list of allowed horizontal [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
-		//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
-		GetAllowedSizeFlagsHorizontal() []int32
-		//Implement to return a list of allowed vertical [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
-		//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
-		GetAllowedSizeFlagsVertical() []int32
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Container)
 */
 type Instance [1]gdclass.Container
 type Any interface {
 	gd.IsClass
 	AsContainer() Instance
 }
+type Interface interface {
+	//Implement to return a list of allowed horizontal [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
+	//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
+	GetAllowedSizeFlagsHorizontal() []int32
+	//Implement to return a list of allowed vertical [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
+	//[b]Note:[/b] Having no size flags is equal to having [constant Control.SIZE_SHRINK_BEGIN]. As such, this value is always implicitly allowed.
+	GetAllowedSizeFlagsVertical() []int32
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetAllowedSizeFlagsHorizontal() (_ []int32) { return }
+func (self Implementation) GetAllowedSizeFlagsVertical() (_ []int32)   { return }
 
 /*
 Implement to return a list of allowed horizontal [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
@@ -100,7 +108,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Container"))
-	return Instance{*(*gdclass.Container)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Container)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

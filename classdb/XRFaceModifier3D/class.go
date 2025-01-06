@@ -45,7 +45,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRFaceModifier3D"))
-	return Instance{*(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) FaceTracker() string {

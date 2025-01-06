@@ -48,7 +48,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeAdd3"))
-	return Instance{*(*gdclass.AnimationNodeAdd3)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AnimationNodeAdd3)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self class) AsAnimationNodeAdd3() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

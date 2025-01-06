@@ -27,22 +27,33 @@ var _ = pointers.Cycle
 Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
 [b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
 
-	// CollisionObject3D methods that can be overridden by a [Class] that extends it.
-	type CollisionObject3D interface {
-		//Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
-		//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-		InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)
-		//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
-		MouseEnter()
-		//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
-		MouseExit()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CollisionObject3D)
 */
 type Instance [1]gdclass.CollisionObject3D
 type Any interface {
 	gd.IsClass
 	AsCollisionObject3D() Instance
 }
+type Interface interface {
+	//Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
+	//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
+	InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)
+	//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
+	MouseEnter()
+	//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
+	MouseExit()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
+	return
+}
+func (self Implementation) MouseEnter() { return }
+func (self Implementation) MouseExit()  { return }
 
 /*
 Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
@@ -236,7 +247,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CollisionObject3D"))
-	return Instance{*(*gdclass.CollisionObject3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.CollisionObject3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) DisableMode() gdclass.CollisionObject3DDisableMode {

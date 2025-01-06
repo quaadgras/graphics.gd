@@ -31,18 +31,25 @@ Canvas items are drawn in tree order on their canvas layer. By default, children
 A [CanvasItem] can be hidden, which will also hide its children. By adjusting various other properties of a [CanvasItem], you can also modulate its color (via [member modulate] or [member self_modulate]), change its Z-index, blend mode, and more.
 Note that properties like transform, modulation, and visibility are only propagated to [i]direct[/i] [CanvasItem] child nodes. If there is a non-[CanvasItem] node in between, like [Node] or [AnimationPlayer], the [CanvasItem] nodes below will have an independent position and [member modulate] chain. See also [member top_level].
 
-	// CanvasItem methods that can be overridden by a [Class] that extends it.
-	type CanvasItem interface {
-		//Called when [CanvasItem] has been requested to redraw (after [method queue_redraw] is called, either manually or by the engine).
-		//Corresponds to the [constant NOTIFICATION_DRAW] notification in [method Object._notification].
-		Draw()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=CanvasItem)
 */
 type Instance [1]gdclass.CanvasItem
 type Any interface {
 	gd.IsClass
 	AsCanvasItem() Instance
 }
+type Interface interface {
+	//Called when [CanvasItem] has been requested to redraw (after [method queue_redraw] is called, either manually or by the engine).
+	//Corresponds to the [constant NOTIFICATION_DRAW] notification in [method Object._notification].
+	Draw()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Draw() { return }
 
 /*
 Called when [CanvasItem] has been requested to redraw (after [method queue_redraw] is called, either manually or by the engine).
@@ -522,7 +529,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CanvasItem"))
-	return Instance{*(*gdclass.CanvasItem)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.CanvasItem)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Visible() bool {

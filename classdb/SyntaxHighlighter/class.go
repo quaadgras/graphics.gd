@@ -23,22 +23,31 @@ var _ = pointers.Cycle
 Base class for syntax highlighters. Provides syntax highlighting data to a [TextEdit]. The associated [TextEdit] will call into the [SyntaxHighlighter] on an as-needed basis.
 [b]Note:[/b] A [SyntaxHighlighter] instance should not be used across multiple [TextEdit] nodes.
 
-	// SyntaxHighlighter methods that can be overridden by a [Class] that extends it.
-	type SyntaxHighlighter interface {
-		//Virtual method which can be overridden to return syntax highlighting data.
-		//See [method get_line_syntax_highlighting] for more details.
-		GetLineSyntaxHighlighting(line int) Dictionary.Any
-		//Virtual method which can be overridden to clear any local caches.
-		ClearHighlightingCache()
-		//Virtual method which can be overridden to update any local caches.
-		UpdateCache()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=SyntaxHighlighter)
 */
 type Instance [1]gdclass.SyntaxHighlighter
 type Any interface {
 	gd.IsClass
 	AsSyntaxHighlighter() Instance
 }
+type Interface interface {
+	//Virtual method which can be overridden to return syntax highlighting data.
+	//See [method get_line_syntax_highlighting] for more details.
+	GetLineSyntaxHighlighting(line int) Dictionary.Any
+	//Virtual method which can be overridden to clear any local caches.
+	ClearHighlightingCache()
+	//Virtual method which can be overridden to update any local caches.
+	UpdateCache()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetLineSyntaxHighlighting(line int) (_ Dictionary.Any) { return }
+func (self Implementation) ClearHighlightingCache()                               { return }
+func (self Implementation) UpdateCache()                                          { return }
 
 /*
 Virtual method which can be overridden to return syntax highlighting data.
@@ -136,7 +145,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SyntaxHighlighter"))
-	return Instance{*(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

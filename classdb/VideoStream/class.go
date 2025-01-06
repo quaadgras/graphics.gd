@@ -21,17 +21,24 @@ var _ = pointers.Cycle
 /*
 Base resource type for all video streams. Classes that derive from [VideoStream] can all be used as resource types to play back videos in [VideoStreamPlayer].
 
-	// VideoStream methods that can be overridden by a [Class] that extends it.
-	type VideoStream interface {
-		//Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
-		InstantiatePlayback() [1]gdclass.VideoStreamPlayback
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=VideoStream)
 */
 type Instance [1]gdclass.VideoStream
 type Any interface {
 	gd.IsClass
 	AsVideoStream() Instance
 }
+type Interface interface {
+	//Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
+	InstantiatePlayback() [1]gdclass.VideoStreamPlayback
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) InstantiatePlayback() (_ [1]gdclass.VideoStreamPlayback) { return }
 
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
@@ -62,7 +69,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStream"))
-	return Instance{*(*gdclass.VideoStream)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.VideoStream)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) File() string {

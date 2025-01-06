@@ -31,17 +31,25 @@ Each [GraphNode] slot is defined by its index and can provide the node with up t
 Slots can be configured in the Inspector dock once you add at least one child [Control]. The properties are grouped by each slot's index in the "Slot" section.
 [b]Note:[/b] While GraphNode is set up using slots and slot indices, connections are made between the ports which are enabled. Because of that [GraphEdit] uses the port's index and not the slot's index. You can use [method get_input_port_slot] and [method get_output_port_slot] to get the slot index from the port index.
 
-	// GraphNode methods that can be overridden by a [Class] that extends it.
-	type GraphNode interface {
-		DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=GraphNode)
 */
 type Instance [1]gdclass.GraphNode
 type Any interface {
 	gd.IsClass
 	AsGraphNode() Instance
 }
+type Interface interface {
+	DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA)
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA) {
+	return
+}
 func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var slot_index = gd.UnsafeGet[gd.Int](p_args, 0)
@@ -297,7 +305,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphNode"))
-	return Instance{*(*gdclass.GraphNode)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.GraphNode)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Title() string {

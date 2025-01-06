@@ -27,34 +27,50 @@ If you need to encode to a different format or pipe a stream through third-party
 [b]Editor usage:[/b] A default movie file path can be specified in [member ProjectSettings.editor/movie_writer/movie_file]. Alternatively, for running single scenes, a [code]movie_file[/code] metadata can be added to the root node, specifying the path to a movie file that will be used when recording that scene. Once a path is set, click the video reel icon in the top-right corner of the editor to enable Movie Maker mode, then run any scene as usual. The engine will start recording as soon as the splash screen is finished, and it will only stop recording when the engine quits. Click the video reel icon again to disable Movie Maker mode. Note that toggling Movie Maker mode does not affect project instances that are already running.
 [b]Note:[/b] MovieWriter is available for use in both the editor and exported projects, but it is [i]not[/i] designed for use by end users to record videos while playing. Players wishing to record gameplay videos should install tools such as [url=https://obsproject.com/]OBS Studio[/url] or [url=https://www.maartenbaert.be/simplescreenrecorder/]SimpleScreenRecorder[/url] instead.
 
-	// MovieWriter methods that can be overridden by a [Class] that extends it.
-	type MovieWriter interface {
-		//Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
-		GetAudioMixRate() int
-		//Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
-		GetAudioSpeakerMode() gdclass.AudioServerSpeakerMode
-		//Called when the engine determines whether this [MovieWriter] is able to handle the file at [param path]. Must return [code]true[/code] if this [MovieWriter] is able to handle the given file path, [code]false[/code] otherwise. Typically, [method _handles_file] is overridden as follows to allow the user to record a file at any path with a given file extension:
-		//[codeblock]
-		//func _handles_file(path):
-		//    # Allows specifying an output file with a `.mkv` file extension (case-insensitive),
-		//    # either in the Project Settings or with the `--write-movie <path>` command line argument.
-		//    return path.get_extension().to_lower() == "mkv"
-		//[/codeblock]
-		HandlesFile(path string) bool
-		//Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-		WriteBegin(movie_size Vector2i.XY, fps int, base_path string) error
-		//Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
-		WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error
-		//Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [method SceneTree.quit] is called.
-		//[b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
-		WriteEnd()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=MovieWriter)
 */
 type Instance [1]gdclass.MovieWriter
 type Any interface {
 	gd.IsClass
 	AsMovieWriter() Instance
 }
+type Interface interface {
+	//Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
+	GetAudioMixRate() int
+	//Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
+	GetAudioSpeakerMode() gdclass.AudioServerSpeakerMode
+	//Called when the engine determines whether this [MovieWriter] is able to handle the file at [param path]. Must return [code]true[/code] if this [MovieWriter] is able to handle the given file path, [code]false[/code] otherwise. Typically, [method _handles_file] is overridden as follows to allow the user to record a file at any path with a given file extension:
+	//[codeblock]
+	//func _handles_file(path):
+	//    # Allows specifying an output file with a `.mkv` file extension (case-insensitive),
+	//    # either in the Project Settings or with the `--write-movie <path>` command line argument.
+	//    return path.get_extension().to_lower() == "mkv"
+	//[/codeblock]
+	HandlesFile(path string) bool
+	//Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
+	WriteBegin(movie_size Vector2i.XY, fps int, base_path string) error
+	//Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
+	WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error
+	//Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [method SceneTree.quit] is called.
+	//[b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
+	WriteEnd()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetAudioMixRate() (_ int)                                { return }
+func (self Implementation) GetAudioSpeakerMode() (_ gdclass.AudioServerSpeakerMode) { return }
+func (self Implementation) HandlesFile(path string) (_ bool)                        { return }
+func (self Implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
+	return
+}
+func (self Implementation) WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) (_ error) {
+	return
+}
+func (self Implementation) WriteEnd() { return }
 
 /*
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
@@ -162,7 +178,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MovieWriter"))
-	return Instance{*(*gdclass.MovieWriter)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.MovieWriter)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

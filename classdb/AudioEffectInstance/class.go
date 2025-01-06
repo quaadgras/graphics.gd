@@ -20,21 +20,31 @@ var _ = pointers.Cycle
 /*
 An audio effect instance manipulates the audio it receives for a given effect. This instance is automatically created by an [AudioEffect] when it is added to a bus, and should usually not be created directly. If necessary, it can be fetched at run-time with [method AudioServer.get_bus_effect_instance].
 
-	// AudioEffectInstance methods that can be overridden by a [Class] that extends it.
-	type AudioEffectInstance interface {
-		//Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
-		//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-		Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)
-		//Override this method to customize the processing behavior of this effect instance.
-		//Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
-		ProcessSilence() bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=AudioEffectInstance)
 */
 type Instance [1]gdclass.AudioEffectInstance
 type Any interface {
 	gd.IsClass
 	AsAudioEffectInstance() Instance
 }
+type Interface interface {
+	//Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
+	//[b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
+	Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)
+	//Override this method to customize the processing behavior of this effect instance.
+	//Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
+	ProcessSilence() bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) {
+	return
+}
+func (self Implementation) ProcessSilence() (_ bool) { return }
 
 /*
 Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.
@@ -76,7 +86,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectInstance"))
-	return Instance{*(*gdclass.AudioEffectInstance)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.AudioEffectInstance)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

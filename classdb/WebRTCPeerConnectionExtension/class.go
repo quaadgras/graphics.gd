@@ -24,7 +24,40 @@ type Any interface {
 	gd.IsClass
 	AsWebRTCPeerConnectionExtension() Instance
 }
+type Interface interface {
+	GetConnectionState() gdclass.WebRTCPeerConnectionConnectionState
+	GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState
+	GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState
+	Initialize(p_config Dictionary.Any) error
+	CreateDataChannel(p_label string, p_config Dictionary.Any) [1]gdclass.WebRTCDataChannel
+	CreateOffer() error
+	SetRemoteDescription(p_type string, p_sdp string) error
+	SetLocalDescription(p_type string, p_sdp string) error
+	AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) error
+	Poll() error
+	Close()
+}
 
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetConnectionState() (_ gdclass.WebRTCPeerConnectionConnectionState) {
+	return
+}
+func (self Implementation) GetGatheringState() (_ gdclass.WebRTCPeerConnectionGatheringState) { return }
+func (self Implementation) GetSignalingState() (_ gdclass.WebRTCPeerConnectionSignalingState) { return }
+func (self Implementation) Initialize(p_config Dictionary.Any) (_ error)                      { return }
+func (self Implementation) CreateDataChannel(p_label string, p_config Dictionary.Any) (_ [1]gdclass.WebRTCDataChannel) {
+	return
+}
+func (self Implementation) CreateOffer() (_ error)                                     { return }
+func (self Implementation) SetRemoteDescription(p_type string, p_sdp string) (_ error) { return }
+func (self Implementation) SetLocalDescription(p_type string, p_sdp string) (_ error)  { return }
+func (self Implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) (_ error) {
+	return
+}
+func (self Implementation) Poll() (_ error) { return }
+func (self Implementation) Close()          { return }
 func (Instance) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -139,7 +172,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCPeerConnectionExtension"))
-	return Instance{*(*gdclass.WebRTCPeerConnectionExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.WebRTCPeerConnectionExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (class) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {

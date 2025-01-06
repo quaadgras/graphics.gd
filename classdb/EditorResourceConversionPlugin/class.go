@@ -42,21 +42,30 @@ func _convert(itex: Resource):
 [/codeblocks]
 To use an [EditorResourceConversionPlugin], register it using the [method EditorPlugin.add_resource_conversion_plugin] method first.
 
-	// EditorResourceConversionPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorResourceConversionPlugin interface {
-		//Returns the class name of the target type of [Resource] that this plugin converts source resources to.
-		ConvertsTo() string
-		//Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
-		Handles(resource [1]gdclass.Resource) bool
-		//Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
-		Convert(resource [1]gdclass.Resource) [1]gdclass.Resource
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorResourceConversionPlugin)
 */
 type Instance [1]gdclass.EditorResourceConversionPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorResourceConversionPlugin() Instance
 }
+type Interface interface {
+	//Returns the class name of the target type of [Resource] that this plugin converts source resources to.
+	ConvertsTo() string
+	//Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
+	Handles(resource [1]gdclass.Resource) bool
+	//Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
+	Convert(resource [1]gdclass.Resource) [1]gdclass.Resource
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ConvertsTo() (_ string)                                       { return }
+func (self Implementation) Handles(resource [1]gdclass.Resource) (_ bool)                { return }
+func (self Implementation) Convert(resource [1]gdclass.Resource) (_ [1]gdclass.Resource) { return }
 
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
@@ -117,7 +126,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourceConversionPlugin"))
-	return Instance{*(*gdclass.EditorResourceConversionPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorResourceConversionPlugin)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

@@ -48,7 +48,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesCollisionBox3D"))
-	return Instance{*(*gdclass.GPUParticlesCollisionBox3D)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.GPUParticlesCollisionBox3D)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) Size() Vector3.XYZ {

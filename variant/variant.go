@@ -398,3 +398,7 @@ const (
 func Use[T pointers.Generic[T, S], S pointers.Size](ptr T) {
 	pointers.Get(ptr)
 }
+
+func Debug[T pointers.Generic[T, S], S pointers.Size](ptr T) {
+	pointers.Debug(ptr)
+}

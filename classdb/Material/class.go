@@ -22,23 +22,33 @@ var _ = pointers.Cycle
 [Material] is a base resource used for coloring and shading geometry. All materials inherit from it and almost all [VisualInstance3D] derived nodes carry a [Material]. A few flags and parameters are shared between all material types and are configured here.
 Importantly, you can inherit from [Material] to create your own custom material type in script or in GDExtension.
 
-	// Material methods that can be overridden by a [Class] that extends it.
-	type Material interface {
-		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
-		GetShaderRid() Resource.ID
-		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
-		GetShaderMode() gdclass.ShaderMode
-		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
-		CanDoNextPass() bool
-		//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member render_priority] should be shown in the editor or not.
-		CanUseRenderPriority() bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=Material)
 */
 type Instance [1]gdclass.Material
 type Any interface {
 	gd.IsClass
 	AsMaterial() Instance
 }
+type Interface interface {
+	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
+	GetShaderRid() Resource.ID
+	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
+	GetShaderMode() gdclass.ShaderMode
+	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
+	CanDoNextPass() bool
+	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member render_priority] should be shown in the editor or not.
+	CanUseRenderPriority() bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetShaderRid() (_ Resource.ID)         { return }
+func (self Implementation) GetShaderMode() (_ gdclass.ShaderMode) { return }
+func (self Implementation) CanDoNextPass() (_ bool)               { return }
+func (self Implementation) CanUseRenderPriority() (_ bool)        { return }
 
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
@@ -112,7 +122,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Material"))
-	return Instance{*(*gdclass.Material)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.Material)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 func (self Instance) RenderPriority() int {

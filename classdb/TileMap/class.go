@@ -30,23 +30,33 @@ Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of ti
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
 To force an update earlier on, call [method update_internals].
 
-	// TileMap methods that can be overridden by a [Class] that extends it.
-	type TileMap interface {
-		//Should return [code]true[/code] if the tile at coordinates [param coords] on layer [param layer] requires a runtime update.
-		//[b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
-		//[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) bool
-		//Called with a TileData object about to be used internally by the TileMap, allowing its modification at runtime.
-		//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
-		//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
-		//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-		TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData)
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=TileMap)
 */
 type Instance [1]gdclass.TileMap
 type Any interface {
 	gd.IsClass
 	AsTileMap() Instance
+}
+type Interface interface {
+	//Should return [code]true[/code] if the tile at coordinates [param coords] on layer [param layer] requires a runtime update.
+	//[b]Warning:[/b] Make sure this function only return [code]true[/code] when needed. Any tile processed at runtime without a need for it will imply a significant performance penalty.
+	//[b]Note:[/b] If the result of this function should changed, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
+	UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) bool
+	//Called with a TileData object about to be used internally by the TileMap, allowing its modification at runtime.
+	//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
+	//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
+	//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
+	TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData)
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) { return }
+func (self Implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData) {
+	return
 }
 
 /*
@@ -495,7 +505,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileMap"))
-	return Instance{*(*gdclass.TileMap)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.TileMap)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) TileSet() [1]gdclass.TileSet {

@@ -22,61 +22,90 @@ var _ = pointers.Cycle
 /*
 This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
 
-	// MultiplayerPeerExtension methods that can be overridden by a [Class] that extends it.
-	type MultiplayerPeerExtension interface {
-		//Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
-		GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) error
-		//Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
-		PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) error
-		//Called when the available packet count is internally requested by the [MultiplayerAPI].
-		GetAvailablePacketCount() int
-		//Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
-		GetMaxPacketSize() int
-		//Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
-		GetPacketScript() []byte
-		//Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
-		PutPacketScript(p_buffer []byte) error
-		//Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
-		GetPacketChannel() int
-		//Called to get the transfer mode the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
-		GetPacketMode() gdclass.MultiplayerPeerTransferMode
-		//Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
-		SetTransferChannel(p_channel int)
-		//Called when the transfer channel to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
-		GetTransferChannel() int
-		//Called when the transfer mode is set on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
-		SetTransferMode(p_mode gdclass.MultiplayerPeerTransferMode)
-		//Called when the transfer mode to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
-		GetTransferMode() gdclass.MultiplayerPeerTransferMode
-		//Called when the target peer to use is set for this [MultiplayerPeer] (see [method MultiplayerPeer.set_target_peer]).
-		SetTargetPeer(p_peer int)
-		//Called when the ID of the [MultiplayerPeer] who sent the most recent packet is requested (see [method MultiplayerPeer.get_packet_peer]).
-		GetPacketPeer() int
-		//Called when the "is server" status is requested on the [MultiplayerAPI]. See [method MultiplayerAPI.is_server].
-		IsServer() bool
-		//Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
-		Poll()
-		//Called when the multiplayer peer should be immediately closed (see [method MultiplayerPeer.close]).
-		Close()
-		//Called when the connected [param p_peer] should be forcibly disconnected (see [method MultiplayerPeer.disconnect_peer]).
-		DisconnectPeer(p_peer int, p_force bool)
-		//Called when the unique ID of this [MultiplayerPeer] is requested (see [method MultiplayerPeer.get_unique_id]). The value must be between [code]1[/code] and [code]2147483647[/code].
-		GetUniqueId() int
-		//Called when the "refuse new connections" status is set on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
-		SetRefuseNewConnections(p_enable bool)
-		//Called when the "refuse new connections" status is requested on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
-		IsRefusingNewConnections() bool
-		//Called to check if the server can act as a relay in the current configuration. See [method MultiplayerPeer.is_server_relay_supported].
-		IsServerRelaySupported() bool
-		//Called when the connection status is requested on the [MultiplayerPeer] (see [method MultiplayerPeer.get_connection_status]).
-		GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=MultiplayerPeerExtension)
 */
 type Instance [1]gdclass.MultiplayerPeerExtension
 type Any interface {
 	gd.IsClass
 	AsMultiplayerPeerExtension() Instance
 }
+type Interface interface {
+	//Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
+	GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) error
+	//Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
+	PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) error
+	//Called when the available packet count is internally requested by the [MultiplayerAPI].
+	GetAvailablePacketCount() int
+	//Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
+	GetMaxPacketSize() int
+	//Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
+	GetPacketScript() []byte
+	//Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
+	PutPacketScript(p_buffer []byte) error
+	//Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
+	GetPacketChannel() int
+	//Called to get the transfer mode the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
+	GetPacketMode() gdclass.MultiplayerPeerTransferMode
+	//Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
+	SetTransferChannel(p_channel int)
+	//Called when the transfer channel to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
+	GetTransferChannel() int
+	//Called when the transfer mode is set on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
+	SetTransferMode(p_mode gdclass.MultiplayerPeerTransferMode)
+	//Called when the transfer mode to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
+	GetTransferMode() gdclass.MultiplayerPeerTransferMode
+	//Called when the target peer to use is set for this [MultiplayerPeer] (see [method MultiplayerPeer.set_target_peer]).
+	SetTargetPeer(p_peer int)
+	//Called when the ID of the [MultiplayerPeer] who sent the most recent packet is requested (see [method MultiplayerPeer.get_packet_peer]).
+	GetPacketPeer() int
+	//Called when the "is server" status is requested on the [MultiplayerAPI]. See [method MultiplayerAPI.is_server].
+	IsServer() bool
+	//Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
+	Poll()
+	//Called when the multiplayer peer should be immediately closed (see [method MultiplayerPeer.close]).
+	Close()
+	//Called when the connected [param p_peer] should be forcibly disconnected (see [method MultiplayerPeer.disconnect_peer]).
+	DisconnectPeer(p_peer int, p_force bool)
+	//Called when the unique ID of this [MultiplayerPeer] is requested (see [method MultiplayerPeer.get_unique_id]). The value must be between [code]1[/code] and [code]2147483647[/code].
+	GetUniqueId() int
+	//Called when the "refuse new connections" status is set on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
+	SetRefuseNewConnections(p_enable bool)
+	//Called when the "refuse new connections" status is requested on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
+	IsRefusingNewConnections() bool
+	//Called to check if the server can act as a relay in the current configuration. See [method MultiplayerPeer.is_server_relay_supported].
+	IsServerRelaySupported() bool
+	//Called when the connection status is requested on the [MultiplayerPeer] (see [method MultiplayerPeer.get_connection_status]).
+	GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
+func (self Implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
+func (self Implementation) GetAvailablePacketCount() (_ int)                                  { return }
+func (self Implementation) GetMaxPacketSize() (_ int)                                         { return }
+func (self Implementation) GetPacketScript() (_ []byte)                                       { return }
+func (self Implementation) PutPacketScript(p_buffer []byte) (_ error)                         { return }
+func (self Implementation) GetPacketChannel() (_ int)                                         { return }
+func (self Implementation) GetPacketMode() (_ gdclass.MultiplayerPeerTransferMode)            { return }
+func (self Implementation) SetTransferChannel(p_channel int)                                  { return }
+func (self Implementation) GetTransferChannel() (_ int)                                       { return }
+func (self Implementation) SetTransferMode(p_mode gdclass.MultiplayerPeerTransferMode)        { return }
+func (self Implementation) GetTransferMode() (_ gdclass.MultiplayerPeerTransferMode)          { return }
+func (self Implementation) SetTargetPeer(p_peer int)                                          { return }
+func (self Implementation) GetPacketPeer() (_ int)                                            { return }
+func (self Implementation) IsServer() (_ bool)                                                { return }
+func (self Implementation) Poll()                                                             { return }
+func (self Implementation) Close()                                                            { return }
+func (self Implementation) DisconnectPeer(p_peer int, p_force bool)                           { return }
+func (self Implementation) GetUniqueId() (_ int)                                              { return }
+func (self Implementation) SetRefuseNewConnections(p_enable bool)                             { return }
+func (self Implementation) IsRefusingNewConnections() (_ bool)                                { return }
+func (self Implementation) IsServerRelaySupported() (_ bool)                                  { return }
+func (self Implementation) GetConnectionStatus() (_ gdclass.MultiplayerPeerConnectionStatus)  { return }
 
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
@@ -354,7 +383,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerPeerExtension"))
-	return Instance{*(*gdclass.MultiplayerPeerExtension)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.MultiplayerPeerExtension)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].Reference()
+	return casted
 }
 
 /*

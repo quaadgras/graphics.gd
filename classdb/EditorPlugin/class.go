@@ -24,291 +24,327 @@ var _ = pointers.Cycle
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
 [b]Note:[/b] Some names in this class contain "left" or "right" (e.g. [constant DOCK_SLOT_LEFT_UL]). These APIs assume left-to-right layout, and would be backwards when using right-to-left layout. These names are kept for compatibility reasons.
 
-	// EditorPlugin methods that can be overridden by a [Class] that extends it.
-	type EditorPlugin interface {
-		//Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
-		//[b]Example:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//# Prevents the InputEvent from reaching other Editor classes.
-		//func _forward_canvas_gui_input(event):
-		//    return true
-		//[/gdscript]
-		//[csharp]
-		//// Prevents the InputEvent from reaching other Editor classes.
-		//public override bool ForwardCanvasGuiInput(InputEvent @event)
-		//{
-		//    return true;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		//Must [code]return false[/code] in order to forward the [InputEvent] to other Editor classes.
-		//[b]Example:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//# Consumes InputEventMouseMotion and forwards other InputEvent types.
-		//func _forward_canvas_gui_input(event):
-		//    if (event is InputEventMouseMotion):
-		//        return true
-		//    return false
-		//[/gdscript]
-		//[csharp]
-		//// Consumes InputEventMouseMotion and forwards other InputEvent types.
-		//public override bool _ForwardCanvasGuiInput(InputEvent @event)
-		//{
-		//    if (@event is InputEventMouseMotion)
-		//    {
-		//        return true;
-		//    }
-		//    return false;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		ForwardCanvasGuiInput(event [1]gdclass.InputEvent) bool
-		//Called by the engine when the 2D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
-		//[codeblocks]
-		//[gdscript]
-		//func _forward_canvas_draw_over_viewport(overlay):
-		//    # Draw a circle at cursor position.
-		//    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
-		//
-		//func _forward_canvas_gui_input(event):
-		//    if event is InputEventMouseMotion:
-		//        # Redraw viewport when cursor is moved.
-		//        update_overlays()
-		//        return true
-		//    return false
-		//[/gdscript]
-		//[csharp]
-		//public override void _ForwardCanvasDrawOverViewport(Control viewportControl)
-		//{
-		//    // Draw a circle at cursor position.
-		//    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
-		//}
-		//
-		//public override bool _ForwardCanvasGuiInput(InputEvent @event)
-		//{
-		//    if (@event is InputEventMouseMotion)
-		//    {
-		//        // Redraw viewport when cursor is moved.
-		//        UpdateOverlays();
-		//        return true;
-		//    }
-		//    return false;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		ForwardCanvasDrawOverViewport(viewport_control [1]gdclass.Control)
-		//This method is the same as [method _forward_canvas_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
-		//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
-		ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control)
-		//Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
-		//[b]Example:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//# Prevents the InputEvent from reaching other Editor classes.
-		//func _forward_3d_gui_input(camera, event):
-		//    return EditorPlugin.AFTER_GUI_INPUT_STOP
-		//[/gdscript]
-		//[csharp]
-		//// Prevents the InputEvent from reaching other Editor classes.
-		//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, InputEvent @event)
-		//{
-		//    return EditorPlugin.AfterGuiInput.Stop;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		//Must [code]return EditorPlugin.AFTER_GUI_INPUT_PASS[/code] in order to forward the [InputEvent] to other Editor classes.
-		//[b]Example:[/b]
-		//[codeblocks]
-		//[gdscript]
-		//# Consumes InputEventMouseMotion and forwards other InputEvent types.
-		//func _forward_3d_gui_input(camera, event):
-		//    return EditorPlugin.AFTER_GUI_INPUT_STOP if event is InputEventMouseMotion else EditorPlugin.AFTER_GUI_INPUT_PASS
-		//[/gdscript]
-		//[csharp]
-		//// Consumes InputEventMouseMotion and forwards other InputEvent types.
-		//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, InputEvent @event)
-		//{
-		//    return @event is InputEventMouseMotion ? EditorPlugin.AfterGuiInput.Stop : EditorPlugin.AfterGuiInput.Pass;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		Forward3dGuiInput(viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int
-		//Called by the engine when the 3D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
-		//[codeblocks]
-		//[gdscript]
-		//func _forward_3d_draw_over_viewport(overlay):
-		//    # Draw a circle at cursor position.
-		//    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
-		//
-		//func _forward_3d_gui_input(camera, event):
-		//    if event is InputEventMouseMotion:
-		//        # Redraw viewport when cursor is moved.
-		//        update_overlays()
-		//        return EditorPlugin.AFTER_GUI_INPUT_STOP
-		//    return EditorPlugin.AFTER_GUI_INPUT_PASS
-		//[/gdscript]
-		//[csharp]
-		//public override void _Forward3DDrawOverViewport(Control viewportControl)
-		//{
-		//    // Draw a circle at cursor position.
-		//    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
-		//}
-		//
-		//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportCamera, InputEvent @event)
-		//{
-		//    if (@event is InputEventMouseMotion)
-		//    {
-		//        // Redraw viewport when cursor is moved.
-		//        UpdateOverlays();
-		//        return EditorPlugin.AfterGuiInput.Stop;
-		//    }
-		//    return EditorPlugin.AfterGuiInput.Pass;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		Forward3dDrawOverViewport(viewport_control [1]gdclass.Control)
-		//This method is the same as [method _forward_3d_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
-		//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
-		Forward3dForceDrawOverViewport(viewport_control [1]gdclass.Control)
-		//Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
-		//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
-		GetPluginName() string
-		//Override this method in your plugin to return a [Texture2D] in order to give it an icon.
-		//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
-		//Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
-		//[codeblocks]
-		//[gdscript]
-		//func _get_plugin_icon():
-		//    # You can use a custom icon:
-		//    return preload("res://addons/my_plugin/my_plugin_icon.svg")
-		//    # Or use a built-in icon:
-		//    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
-		//[/gdscript]
-		//[csharp]
-		//public override Texture2D _GetPluginIcon()
-		//{
-		//    // You can use a custom icon:
-		//    return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
-		//    // Or use a built-in icon:
-		//    return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		GetPluginIcon() [1]gdclass.Texture2D
-		//Returns [code]true[/code] if this is a main screen editor plugin (it goes in the workspace selector together with [b]2D[/b], [b]3D[/b], [b]Script[/b] and [b]AssetLib[/b]).
-		//When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [method EditorInterface.get_editor_main_screen] and made visible inside [method _make_visible].
-		//Use [method _get_plugin_name] and [method _get_plugin_icon] to customize the plugin button's appearance.
-		//[codeblock]
-		//var plugin_control
-		//
-		//func _enter_tree():
-		//    plugin_control = preload("my_plugin_control.tscn").instantiate()
-		//    EditorInterface.get_editor_main_screen().add_child(plugin_control)
-		//    plugin_control.hide()
-		//
-		//func _has_main_screen():
-		//    return true
-		//
-		//func _make_visible(visible):
-		//    plugin_control.visible = visible
-		//
-		//func _get_plugin_name():
-		//    return "My Super Cool Plugin 3000"
-		//
-		//func _get_plugin_icon():
-		//    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
-		//[/codeblock]
-		HasMainScreen() bool
-		//This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
-		//Remember that you have to manage the visibility of all your editor controls manually.
-		MakeVisible(visible bool)
-		//This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
-		//[param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
-		Edit(obj Object.Instance)
-		//Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
-		//[b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
-		Handles(obj Object.Instance) bool
-		//Override this method to provide a state data you want to be saved, like view position, grid settings, folding, etc. This is used when saving the scene (so state is kept when opening it again) and for switching tabs (so state can be restored when the tab returns). This data is automatically saved for each scene in an [code]editstate[/code] file in the editor metadata folder. If you want to store global (scene-independent) editor data for your plugin, you can use [method _get_window_layout] instead.
-		//Use [method _set_state] to restore your saved state.
-		//[b]Note:[/b] This method should not be used to save important settings that should persist with the project.
-		//[b]Note:[/b] You must implement [method _get_plugin_name] for the state to be stored and restored correctly.
-		//[codeblock]
-		//func _get_state():
-		//    var state = {"zoom": zoom, "preferred_color": my_color}
-		//    return state
-		//[/codeblock]
-		GetState() Dictionary.Any
-		//Restore the state saved by [method _get_state]. This method is called when the current scene tab is changed in the editor.
-		//[b]Note:[/b] Your plugin must implement [method _get_plugin_name], otherwise it will not be recognized and this method will not be called.
-		//[codeblock]
-		//func _set_state(data):
-		//    zoom = data.get("zoom", 1.0)
-		//    preferred_color = data.get("my_color", Color.WHITE)
-		//[/codeblock]
-		SetState(state Dictionary.Any)
-		//Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
-		Clear()
-		//Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
-		//When closing a scene, [param for_scene] is the path to the scene being closed. You can use it to handle built-in resources in that scene.
-		//If the user confirms saving, [method _save_external_data] will be called, before closing the editor.
-		//[codeblock]
-		//func _get_unsaved_status(for_scene):
-		//    if not unsaved:
-		//        return ""
-		//
-		//    if for_scene.is_empty():
-		//        return "Save changes in MyCustomPlugin before closing?"
-		//    else:
-		//        return "Scene %s has changes from MyCustomPlugin. Save before closing?" % for_scene.get_file()
-		//
-		//func _save_external_data():
-		//    unsaved = false
-		//[/codeblock]
-		//If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
-		//[codeblock]
-		//func _get_unsaved_status(for_scene):
-		//    if not for_scene.is_empty():
-		//        return ""
-		//[/codeblock]
-		GetUnsavedStatus(for_scene string) string
-		//This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
-		SaveExternalData()
-		//This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
-		//This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
-		ApplyChanges()
-		//This is for editors that edit script-based objects. You can return a list of breakpoints in the format ([code]script:line[/code]), for example: [code]res://path_to_script.gd:25[/code].
-		GetBreakpoints() []string
-		//Restore the plugin GUI layout and data saved by [method _get_window_layout]. This method is called for every plugin on editor startup. Use the provided [param configuration] file to read your saved data.
-		//[codeblock]
-		//func _set_window_layout(configuration):
-		//    $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
-		//    $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
-		//[/codeblock]
-		SetWindowLayout(configuration [1]gdclass.ConfigFile)
-		//Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [method queue_save_layout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the [code]editor_layout.cfg[/code] file in the editor metadata directory.
-		//Use [method _set_window_layout] to restore your saved layout.
-		//[codeblock]
-		//func _get_window_layout(configuration):
-		//    configuration.set_value("MyPlugin", "window_position", $Window.position)
-		//    configuration.set_value("MyPlugin", "icon_color", $Icon.modulate)
-		//[/codeblock]
-		GetWindowLayout(configuration [1]gdclass.ConfigFile)
-		//This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
-		//This method must return a boolean. If this method returns [code]false[/code], the project will not run. The run is aborted immediately, so this also prevents all other plugins' [method _build] methods from running.
-		Build() bool
-		//Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
-		EnablePlugin()
-		//Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
-		DisablePlugin()
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=EditorPlugin)
 */
 type Instance [1]gdclass.EditorPlugin
 type Any interface {
 	gd.IsClass
 	AsEditorPlugin() Instance
 }
+type Interface interface {
+	//Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
+	//[b]Example:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//# Prevents the InputEvent from reaching other Editor classes.
+	//func _forward_canvas_gui_input(event):
+	//    return true
+	//[/gdscript]
+	//[csharp]
+	//// Prevents the InputEvent from reaching other Editor classes.
+	//public override bool ForwardCanvasGuiInput(InputEvent @event)
+	//{
+	//    return true;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	//Must [code]return false[/code] in order to forward the [InputEvent] to other Editor classes.
+	//[b]Example:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//# Consumes InputEventMouseMotion and forwards other InputEvent types.
+	//func _forward_canvas_gui_input(event):
+	//    if (event is InputEventMouseMotion):
+	//        return true
+	//    return false
+	//[/gdscript]
+	//[csharp]
+	//// Consumes InputEventMouseMotion and forwards other InputEvent types.
+	//public override bool _ForwardCanvasGuiInput(InputEvent @event)
+	//{
+	//    if (@event is InputEventMouseMotion)
+	//    {
+	//        return true;
+	//    }
+	//    return false;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	ForwardCanvasGuiInput(event [1]gdclass.InputEvent) bool
+	//Called by the engine when the 2D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
+	//[codeblocks]
+	//[gdscript]
+	//func _forward_canvas_draw_over_viewport(overlay):
+	//    # Draw a circle at cursor position.
+	//    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	//
+	//func _forward_canvas_gui_input(event):
+	//    if event is InputEventMouseMotion:
+	//        # Redraw viewport when cursor is moved.
+	//        update_overlays()
+	//        return true
+	//    return false
+	//[/gdscript]
+	//[csharp]
+	//public override void _ForwardCanvasDrawOverViewport(Control viewportControl)
+	//{
+	//    // Draw a circle at cursor position.
+	//    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	//}
+	//
+	//public override bool _ForwardCanvasGuiInput(InputEvent @event)
+	//{
+	//    if (@event is InputEventMouseMotion)
+	//    {
+	//        // Redraw viewport when cursor is moved.
+	//        UpdateOverlays();
+	//        return true;
+	//    }
+	//    return false;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	ForwardCanvasDrawOverViewport(viewport_control [1]gdclass.Control)
+	//This method is the same as [method _forward_canvas_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
+	//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
+	ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control)
+	//Called when there is a root node in the current edited scene, [method _handles] is implemented, and an [InputEvent] happens in the 3D viewport. The return value decides whether the [InputEvent] is consumed or forwarded to other [EditorPlugin]s. See [enum AfterGUIInput] for options.
+	//[b]Example:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//# Prevents the InputEvent from reaching other Editor classes.
+	//func _forward_3d_gui_input(camera, event):
+	//    return EditorPlugin.AFTER_GUI_INPUT_STOP
+	//[/gdscript]
+	//[csharp]
+	//// Prevents the InputEvent from reaching other Editor classes.
+	//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, InputEvent @event)
+	//{
+	//    return EditorPlugin.AfterGuiInput.Stop;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	//Must [code]return EditorPlugin.AFTER_GUI_INPUT_PASS[/code] in order to forward the [InputEvent] to other Editor classes.
+	//[b]Example:[/b]
+	//[codeblocks]
+	//[gdscript]
+	//# Consumes InputEventMouseMotion and forwards other InputEvent types.
+	//func _forward_3d_gui_input(camera, event):
+	//    return EditorPlugin.AFTER_GUI_INPUT_STOP if event is InputEventMouseMotion else EditorPlugin.AFTER_GUI_INPUT_PASS
+	//[/gdscript]
+	//[csharp]
+	//// Consumes InputEventMouseMotion and forwards other InputEvent types.
+	//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, InputEvent @event)
+	//{
+	//    return @event is InputEventMouseMotion ? EditorPlugin.AfterGuiInput.Stop : EditorPlugin.AfterGuiInput.Pass;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	Forward3dGuiInput(viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int
+	//Called by the engine when the 3D editor's viewport is updated. Use the [code]overlay[/code] [Control] for drawing. You can update the viewport manually by calling [method update_overlays].
+	//[codeblocks]
+	//[gdscript]
+	//func _forward_3d_draw_over_viewport(overlay):
+	//    # Draw a circle at cursor position.
+	//    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	//
+	//func _forward_3d_gui_input(camera, event):
+	//    if event is InputEventMouseMotion:
+	//        # Redraw viewport when cursor is moved.
+	//        update_overlays()
+	//        return EditorPlugin.AFTER_GUI_INPUT_STOP
+	//    return EditorPlugin.AFTER_GUI_INPUT_PASS
+	//[/gdscript]
+	//[csharp]
+	//public override void _Forward3DDrawOverViewport(Control viewportControl)
+	//{
+	//    // Draw a circle at cursor position.
+	//    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	//}
+	//
+	//public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportCamera, InputEvent @event)
+	//{
+	//    if (@event is InputEventMouseMotion)
+	//    {
+	//        // Redraw viewport when cursor is moved.
+	//        UpdateOverlays();
+	//        return EditorPlugin.AfterGuiInput.Stop;
+	//    }
+	//    return EditorPlugin.AfterGuiInput.Pass;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	Forward3dDrawOverViewport(viewport_control [1]gdclass.Control)
+	//This method is the same as [method _forward_3d_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
+	//You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
+	Forward3dForceDrawOverViewport(viewport_control [1]gdclass.Control)
+	//Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
+	//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+	GetPluginName() string
+	//Override this method in your plugin to return a [Texture2D] in order to give it an icon.
+	//For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+	//Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
+	//[codeblocks]
+	//[gdscript]
+	//func _get_plugin_icon():
+	//    # You can use a custom icon:
+	//    return preload("res://addons/my_plugin/my_plugin_icon.svg")
+	//    # Or use a built-in icon:
+	//    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	//[/gdscript]
+	//[csharp]
+	//public override Texture2D _GetPluginIcon()
+	//{
+	//    // You can use a custom icon:
+	//    return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
+	//    // Or use a built-in icon:
+	//    return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	GetPluginIcon() [1]gdclass.Texture2D
+	//Returns [code]true[/code] if this is a main screen editor plugin (it goes in the workspace selector together with [b]2D[/b], [b]3D[/b], [b]Script[/b] and [b]AssetLib[/b]).
+	//When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [method EditorInterface.get_editor_main_screen] and made visible inside [method _make_visible].
+	//Use [method _get_plugin_name] and [method _get_plugin_icon] to customize the plugin button's appearance.
+	//[codeblock]
+	//var plugin_control
+	//
+	//func _enter_tree():
+	//    plugin_control = preload("my_plugin_control.tscn").instantiate()
+	//    EditorInterface.get_editor_main_screen().add_child(plugin_control)
+	//    plugin_control.hide()
+	//
+	//func _has_main_screen():
+	//    return true
+	//
+	//func _make_visible(visible):
+	//    plugin_control.visible = visible
+	//
+	//func _get_plugin_name():
+	//    return "My Super Cool Plugin 3000"
+	//
+	//func _get_plugin_icon():
+	//    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	//[/codeblock]
+	HasMainScreen() bool
+	//This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
+	//Remember that you have to manage the visibility of all your editor controls manually.
+	MakeVisible(visible bool)
+	//This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
+	//[param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
+	Edit(obj Object.Instance)
+	//Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
+	//[b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
+	Handles(obj Object.Instance) bool
+	//Override this method to provide a state data you want to be saved, like view position, grid settings, folding, etc. This is used when saving the scene (so state is kept when opening it again) and for switching tabs (so state can be restored when the tab returns). This data is automatically saved for each scene in an [code]editstate[/code] file in the editor metadata folder. If you want to store global (scene-independent) editor data for your plugin, you can use [method _get_window_layout] instead.
+	//Use [method _set_state] to restore your saved state.
+	//[b]Note:[/b] This method should not be used to save important settings that should persist with the project.
+	//[b]Note:[/b] You must implement [method _get_plugin_name] for the state to be stored and restored correctly.
+	//[codeblock]
+	//func _get_state():
+	//    var state = {"zoom": zoom, "preferred_color": my_color}
+	//    return state
+	//[/codeblock]
+	GetState() Dictionary.Any
+	//Restore the state saved by [method _get_state]. This method is called when the current scene tab is changed in the editor.
+	//[b]Note:[/b] Your plugin must implement [method _get_plugin_name], otherwise it will not be recognized and this method will not be called.
+	//[codeblock]
+	//func _set_state(data):
+	//    zoom = data.get("zoom", 1.0)
+	//    preferred_color = data.get("my_color", Color.WHITE)
+	//[/codeblock]
+	SetState(state Dictionary.Any)
+	//Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
+	Clear()
+	//Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
+	//When closing a scene, [param for_scene] is the path to the scene being closed. You can use it to handle built-in resources in that scene.
+	//If the user confirms saving, [method _save_external_data] will be called, before closing the editor.
+	//[codeblock]
+	//func _get_unsaved_status(for_scene):
+	//    if not unsaved:
+	//        return ""
+	//
+	//    if for_scene.is_empty():
+	//        return "Save changes in MyCustomPlugin before closing?"
+	//    else:
+	//        return "Scene %s has changes from MyCustomPlugin. Save before closing?" % for_scene.get_file()
+	//
+	//func _save_external_data():
+	//    unsaved = false
+	//[/codeblock]
+	//If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
+	//[codeblock]
+	//func _get_unsaved_status(for_scene):
+	//    if not for_scene.is_empty():
+	//        return ""
+	//[/codeblock]
+	GetUnsavedStatus(for_scene string) string
+	//This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
+	SaveExternalData()
+	//This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
+	//This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
+	ApplyChanges()
+	//This is for editors that edit script-based objects. You can return a list of breakpoints in the format ([code]script:line[/code]), for example: [code]res://path_to_script.gd:25[/code].
+	GetBreakpoints() []string
+	//Restore the plugin GUI layout and data saved by [method _get_window_layout]. This method is called for every plugin on editor startup. Use the provided [param configuration] file to read your saved data.
+	//[codeblock]
+	//func _set_window_layout(configuration):
+	//    $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
+	//    $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
+	//[/codeblock]
+	SetWindowLayout(configuration [1]gdclass.ConfigFile)
+	//Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [method queue_save_layout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the [code]editor_layout.cfg[/code] file in the editor metadata directory.
+	//Use [method _set_window_layout] to restore your saved layout.
+	//[codeblock]
+	//func _get_window_layout(configuration):
+	//    configuration.set_value("MyPlugin", "window_position", $Window.position)
+	//    configuration.set_value("MyPlugin", "icon_color", $Icon.modulate)
+	//[/codeblock]
+	GetWindowLayout(configuration [1]gdclass.ConfigFile)
+	//This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
+	//This method must return a boolean. If this method returns [code]false[/code], the project will not run. The run is aborted immediately, so this also prevents all other plugins' [method _build] methods from running.
+	Build() bool
+	//Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
+	EnablePlugin()
+	//Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
+	DisablePlugin()
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) ForwardCanvasGuiInput(event [1]gdclass.InputEvent) (_ bool)        { return }
+func (self Implementation) ForwardCanvasDrawOverViewport(viewport_control [1]gdclass.Control) { return }
+func (self Implementation) ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control) {
+	return
+}
+func (self Implementation) Forward3dGuiInput(viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) (_ int) {
+	return
+}
+func (self Implementation) Forward3dDrawOverViewport(viewport_control [1]gdclass.Control) { return }
+func (self Implementation) Forward3dForceDrawOverViewport(viewport_control [1]gdclass.Control) {
+	return
+}
+func (self Implementation) GetPluginName() (_ string)                           { return }
+func (self Implementation) GetPluginIcon() (_ [1]gdclass.Texture2D)             { return }
+func (self Implementation) HasMainScreen() (_ bool)                             { return }
+func (self Implementation) MakeVisible(visible bool)                            { return }
+func (self Implementation) Edit(obj Object.Instance)                            { return }
+func (self Implementation) Handles(obj Object.Instance) (_ bool)                { return }
+func (self Implementation) GetState() (_ Dictionary.Any)                        { return }
+func (self Implementation) SetState(state Dictionary.Any)                       { return }
+func (self Implementation) Clear()                                              { return }
+func (self Implementation) GetUnsavedStatus(for_scene string) (_ string)        { return }
+func (self Implementation) SaveExternalData()                                   { return }
+func (self Implementation) ApplyChanges()                                       { return }
+func (self Implementation) GetBreakpoints() (_ []string)                        { return }
+func (self Implementation) SetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
+func (self Implementation) GetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
+func (self Implementation) Build() (_ bool)                                     { return }
+func (self Implementation) EnablePlugin()                                       { return }
+func (self Implementation) DisablePlugin()                                      { return }
 
 /*
 Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.
@@ -1253,7 +1289,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPlugin"))
-	return Instance{*(*gdclass.EditorPlugin)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.EditorPlugin)(unsafe.Pointer(&object))}
+	return casted
 }
 
 /*

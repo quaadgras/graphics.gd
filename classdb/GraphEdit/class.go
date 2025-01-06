@@ -31,55 +31,73 @@ var _ = pointers.Cycle
 [b]Performance:[/b] It is greatly advised to enable low-processor usage mode (see [member OS.low_processor_usage_mode]) when using GraphEdits.
 [b]Note:[/b] Keep in mind that [method Node.get_children] will also return the connection layer node named [code]_connection_layer[/code] due to technical limitations. This behavior may change in future releases.
 
-	// GraphEdit methods that can be overridden by a [Class] that extends it.
-	type GraphEdit interface {
-		//Returns whether the [param mouse_position] is in the input hot zone.
-		//By default, a hot zone is a [Rect2] positioned such that its center is at [param in_node].[method GraphNode.get_input_port_position]([param in_port]) (For output's case, call [method GraphNode.get_output_port_position] instead). The hot zone's width is twice the Theme Property [code]port_grab_distance_horizontal[/code], and its height is twice the [code]port_grab_distance_vertical[/code].
-		//Below is a sample code to help get started:
-		//[codeblock]
-		//func _is_in_input_hotzone(in_node, in_port, mouse_position):
-		//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-		//    var port_pos: Vector2 = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
-		//    var rect = Rect2(port_pos, port_size)
-		//
-		//    return rect.has_point(mouse_position)
-		//[/codeblock]
-		IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
-		//Returns whether the [param mouse_position] is in the output hot zone. For more information on hot zones, see [method _is_in_input_hotzone].
-		//Below is a sample code to help get started:
-		//[codeblock]
-		//func _is_in_output_hotzone(in_node, in_port, mouse_position):
-		//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-		//    var port_pos: Vector2 = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
-		//    var rect = Rect2(port_pos, port_size)
-		//
-		//    return rect.has_point(mouse_position)
-		//[/codeblock]
-		IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
-		//Virtual method which can be overridden to customize how connections are drawn.
-		GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY
-		//This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
-		//Return [code]true[/code] if the connection is indeed valid or return [code]false[/code] if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
-		//In this example a connection to same node is suppressed:
-		//[codeblocks]
-		//[gdscript]
-		//func _is_node_hover_valid(from, from_port, to, to_port):
-		//    return from != to
-		//[/gdscript]
-		//[csharp]
-		//public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, StringName toNode, int toPort)
-		//{
-		//    return fromNode != toNode;
-		//}
-		//[/csharp]
-		//[/codeblocks]
-		IsNodeHoverValid(from_node string, from_port int, to_node string, to_port int) bool
-	}
+	See [Interface] for methods that can be overridden by a [Class] that extends it.
+
+%!(EXTRA string=GraphEdit)
 */
 type Instance [1]gdclass.GraphEdit
 type Any interface {
 	gd.IsClass
 	AsGraphEdit() Instance
+}
+type Interface interface {
+	//Returns whether the [param mouse_position] is in the input hot zone.
+	//By default, a hot zone is a [Rect2] positioned such that its center is at [param in_node].[method GraphNode.get_input_port_position]([param in_port]) (For output's case, call [method GraphNode.get_output_port_position] instead). The hot zone's width is twice the Theme Property [code]port_grab_distance_horizontal[/code], and its height is twice the [code]port_grab_distance_vertical[/code].
+	//Below is a sample code to help get started:
+	//[codeblock]
+	//func _is_in_input_hotzone(in_node, in_port, mouse_position):
+	//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	//    var port_pos: Vector2 = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	//    var rect = Rect2(port_pos, port_size)
+	//
+	//    return rect.has_point(mouse_position)
+	//[/codeblock]
+	IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
+	//Returns whether the [param mouse_position] is in the output hot zone. For more information on hot zones, see [method _is_in_input_hotzone].
+	//Below is a sample code to help get started:
+	//[codeblock]
+	//func _is_in_output_hotzone(in_node, in_port, mouse_position):
+	//    var port_size: Vector2 = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	//    var port_pos: Vector2 = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	//    var rect = Rect2(port_pos, port_size)
+	//
+	//    return rect.has_point(mouse_position)
+	//[/codeblock]
+	IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
+	//Virtual method which can be overridden to customize how connections are drawn.
+	GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY
+	//This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
+	//Return [code]true[/code] if the connection is indeed valid or return [code]false[/code] if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
+	//In this example a connection to same node is suppressed:
+	//[codeblocks]
+	//[gdscript]
+	//func _is_node_hover_valid(from, from_port, to, to_port):
+	//    return from != to
+	//[/gdscript]
+	//[csharp]
+	//public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, StringName toNode, int toPort)
+	//{
+	//    return fromNode != toNode;
+	//}
+	//[/csharp]
+	//[/codeblocks]
+	IsNodeHoverValid(from_node string, from_port int, to_node string, to_port int) bool
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation struct{}
+
+func (self Implementation) IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
+	return
+}
+func (self Implementation) IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
+	return
+}
+func (self Implementation) GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) (_ []Vector2.XY) {
+	return
+}
+func (self Implementation) IsNodeHoverValid(from_node string, from_port int, to_node string, to_port int) (_ bool) {
+	return
 }
 
 /*
@@ -382,7 +400,8 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphEdit"))
-	return Instance{*(*gdclass.GraphEdit)(unsafe.Pointer(&object))}
+	casted := Instance{*(*gdclass.GraphEdit)(unsafe.Pointer(&object))}
+	return casted
 }
 
 func (self Instance) ScrollOffset() Vector2.XY {
