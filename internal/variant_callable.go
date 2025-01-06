@@ -10,11 +10,14 @@ import (
 // godot-compatible types and return up to one godot-compatible type.
 func NewCallable(fn any) Callable {
 	rvalue := reflect.ValueOf(fn)
-	var offset = 0
-	return Global.Callables.Create(func(args ...Variant) (Variant, error) {
-		var vargs = make([]reflect.Value, 0, len(args)+offset)
+	ftype := rvalue.Type()
+	return Global.Callables.Create(func(args ...Variant) (_ Variant, err error) {
+		var vargs = make([]reflect.Value, 0, len(args))
 		for i, arg := range args {
-			vargs = append(vargs, reflect.ValueOf(arg.Interface()).Convert(rvalue.Type().In(i+offset)))
+			vargs[i], err = ConvertToDesiredGoType(arg, ftype.In(i))
+			if err != nil {
+				panic(err)
+			}
 		}
 		results := rvalue.Call(vargs)
 		if len(results) == 0 {
