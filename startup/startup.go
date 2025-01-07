@@ -39,26 +39,22 @@ var done = make(chan struct{})
 
 // Wait until the engine has been fully started up.
 func Wait() {
-	if EngineClass.IsEditorHint() {
-		doneInit <- struct{}{}
-		runtime.Goexit()
-	}
 	wait := make(chan struct{})
 	doneInit <- struct{}{}
 	gd.NewCallable(func() {
 		close(wait)
 	}).CallDeferred()
 	<-wait
+	if EngineClass.IsEditorHint() {
+		doneInit <- struct{}{}
+		runtime.Goexit()
+	}
 }
 
 var startupEngine = false
 
 // Engine starts up the engine and blocks until it shuts down.
 func Engine() {
-	if EngineClass.IsEditorHint() {
-		doneInit <- struct{}{}
-		runtime.Goexit()
-	}
 	startupEngine = true
 	doneInit <- struct{}{}
 	<-done

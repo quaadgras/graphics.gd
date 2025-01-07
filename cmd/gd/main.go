@@ -25,6 +25,8 @@ import (
 	"strings"
 
 	_ "embed"
+
+	"graphics.gd/cmd/gd/internal/golang"
 )
 
 const version = "4.3"
@@ -45,6 +47,9 @@ var (
 
 	//go:embed graphics/.godot/extension_list.cfg
 	extension_list_cfg string
+
+	//go:embed graphics/export_presets.cfg
+	export_presets_cfg string
 )
 
 func setupFile(force bool, name, embed string, args ...any) error {
@@ -118,6 +123,16 @@ func installGodot(gobin string) (string, error) {
 	}
 }
 
+type WebServer struct {
+	http.Handler
+}
+
+func (s WebServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
+	w.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
+	s.Handler.ServeHTTP(w, r)
+}
+
 func useGodot() (string, error) {
 	gopath := os.Getenv("GOPATH")
 	if gopath == "" {
@@ -167,8 +182,8 @@ func wrap() error {
 	if os.Getenv("GOARCH") != "" {
 		GOARCH = os.Getenv("GOARCH")
 	}
-	if GOARCH != "amd64" && GOARCH != "arm64" {
-		return errors.New("gd requires an amd64, or an arm64 system")
+	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
+		return errors.New("gd requires an amd64, wasm, or arm64 system")
 	}
 	godot, err := useGodot()
 	if err != nil {
@@ -197,8 +212,27 @@ func wrap() error {
 		graphics = "/sdcard/gd/" + filepath.Base(wd)
 	}
 	setup := func() error {
-		if err := os.MkdirAll(graphics+"/.godot", 0755); err != nil {
-			return err
+		if GOOS == "js" {
+			if err := os.MkdirAll(graphics+"/.godot/public", 0755); err != nil {
+				return err
+			}
+			path := filepath.Join(graphics, ".godot", "public", "wasm_exec.js")
+			if _, err := os.Stat(path); os.IsNotExist(err) {
+				GOROOT := golang.CMD.Env.GOROOT()
+				wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
+				if err != nil {
+					return err
+				}
+				defer wasm_exec.Close()
+				out, err := os.Create(path)
+				if err != nil {
+					return err
+				}
+				defer out.Close()
+				if _, err := io.Copy(out, wasm_exec); err != nil {
+					return err
+				}
+			}
 		}
 		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
 			return err
@@ -206,10 +240,10 @@ func wrap() error {
 		if err := setupFile(false, graphics+"/project.godot", project_godot, filepath.Base(wd)); err != nil {
 			return err
 		}
-		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension); err != nil {
+		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg); err != nil {
 			return err
 		}
-		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
+		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension); err != nil {
 			return err
 		}
 		_, err := os.Stat(graphics + "/.godot")
@@ -221,49 +255,49 @@ func wrap() error {
 			godot.Stdin = os.Stdin
 			return godot.Run()
 		}
+		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
+			return err
+		}
 		return nil
 	}
-	var libraryName = fmt.Sprintf("%v_%v", GOOS, GOARCH)
+	var runGodotArgs []string
+	var libraryPath = graphics + "/" + fmt.Sprintf("%v_%v", GOOS, GOARCH)
 	switch GOOS {
 	case "windows":
-		libraryName += ".dll"
+		libraryPath += ".dll"
 	case "darwin":
-		libraryName += ".dylib"
+		libraryPath += ".dylib"
+	case "js":
+		libraryPath = filepath.Join(graphics, ".godot", "public", "library.wasm")
+		runGodotArgs = []string{"--headless", "--export-debug", "Web"}
 	default:
-		libraryName += ".so"
+		libraryPath += ".so"
 	}
 	if len(os.Args) == 1 {
-		golang := exec.Command("go", "build", "-buildmode=c-shared", "-o", graphics+"/"+libraryName)
-		golang.Env = append(os.Environ(), "CGO_ENABLED=1")
-		golang.Stderr = os.Stderr
-		golang.Stdout = os.Stdout
-		golang.Stdin = os.Stdin
-		if err := golang.Run(); err != nil {
-			return err
-		}
-		if err := setup(); err != nil {
-			return err
-		}
-		godot := exec.Command(godot, "-e")
-		godot.Dir = graphics
-		godot.Stderr = os.Stderr
-		godot.Stdout = os.Stdout
-		godot.Stdin = os.Stdin
-		return godot.Run()
+		os.Args = append(os.Args, "run")
+		runGodotArgs = []string{"-e"}
 	}
 	var args = make([]string, len(os.Args)-1)
 	switch os.Args[1] {
 	case "run", "build":
 		copy(args, os.Args[1:])
 		args[0] = "build"
-		args = append(args, "-buildmode=c-shared", "-o", graphics+"/"+libraryName)
+		args = append(args, "-o", libraryPath)
+		if GOOS != "js" {
+			args = append(args, "-buildmode=c-shared")
+		}
 	case "test":
-		args = []string{"test", "-buildmode=c-shared", "-c", "-o", graphics + "/" + libraryName}
+		args = []string{"test", "-c", "-o", libraryPath}
+		if GOOS != "js" {
+			args = append(args, "-buildmode=c-shared")
+		}
 	default:
 		copy(args, os.Args[1:])
 	}
 	golang := exec.Command("go", args...)
-	golang.Env = append(os.Environ(), "CGO_ENABLED=1")
+	if GOOS != "js" {
+		golang.Env = append(os.Environ(), "CGO_ENABLED=1")
+	}
 	golang.Stderr = os.Stderr
 	golang.Stdout = os.Stdout
 	golang.Stdin = os.Stdin
@@ -275,12 +309,19 @@ func wrap() error {
 	}
 	switch os.Args[1] {
 	case "run":
-		godot := exec.Command(godot)
+		godot := exec.Command(godot, runGodotArgs...)
 		godot.Dir = graphics
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
-		return godot.Run()
+		if err := godot.Run(); err != nil {
+			return err
+		}
+		if GOOS == "js" {
+			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics, ".godot/public")))})
+			return http.ListenAndServe(":8080", nil)
+		}
+		return nil
 	case "test":
 		var args = []string{"--headless"}
 		for _, arg := range os.Args[2:] {
