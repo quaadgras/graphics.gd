@@ -24,6 +24,9 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 	case reflect.Func:
 		return TypeCallable, true
 	case reflect.Array:
+		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			return TypeObject, true
+		}
 		return TypeArray, true
 	case reflect.String:
 		if rtype == reflect.TypeFor[NodePathType.String]() {
