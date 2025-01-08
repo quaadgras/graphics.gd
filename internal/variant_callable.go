@@ -12,7 +12,7 @@ func NewCallable(fn any) Callable {
 	rvalue := reflect.ValueOf(fn)
 	ftype := rvalue.Type()
 	return Global.Callables.Create(func(args ...Variant) (_ Variant, err error) {
-		var vargs = make([]reflect.Value, 0, len(args))
+		var vargs = make([]reflect.Value, len(args))
 		for i, arg := range args {
 			vargs[i], err = ConvertToDesiredGoType(arg, ftype.In(i))
 			if err != nil {
