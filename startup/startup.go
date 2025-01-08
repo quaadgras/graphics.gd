@@ -3,7 +3,6 @@ package startup
 
 import (
 	"iter"
-	"runtime"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -14,67 +13,52 @@ import (
 	"graphics.gd/variant/Float"
 )
 
-var doneInit = make(chan struct{}, 1)
-
 var mainloop MainLoopClass.Interface
 
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
 func MainLoop(loop MainLoopClass.Interface) {
 	if EngineClass.IsEditorHint() {
-		doneInit <- struct{}{}
-		runtime.Goexit()
+		stop_main()
 	}
-	startupEngine = true
+	theMainFunctionIsWaitingForTheEngineToShutDown = true
 	classdb.Register[goMainLoop]()
 	className := classdb.NameFor[goMainLoop]()
 	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
 	ProjectSettings.SetSetting("application/run/main_loop_type", className)
 	mainloop = loop
-	doneInit <- struct{}{}
-	<-done
+	pause_main(false) // We pause here until the engine has fully started up.
 }
-
-var done = make(chan struct{})
 
 // Wait until the engine has been fully started up.
 func Wait() {
-	wait := make(chan struct{})
-	doneInit <- struct{}{}
 	gd.NewCallable(func() {
-		close(wait)
+		resume_main()
 	}).CallDeferred()
-	<-wait
+	pause_main(false)
 	if EngineClass.IsEditorHint() {
-		doneInit <- struct{}{}
-		runtime.Goexit()
+		stop_main()
 	}
 }
 
-var startupEngine = false
+var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
 // Engine starts up the engine and blocks until it shuts down.
 func Engine() {
-	startupEngine = true
-	doneInit <- struct{}{}
-	<-done
+	theMainFunctionIsWaitingForTheEngineToShutDown = true
+	pause_main(false)
 }
 
 type goMainLoop struct {
 	classdb.Extension[goMainLoop, MainLoopClass.Instance] `gd:"GoMainLoop"`
 }
 
-var frames = make(chan Float.X)
-var breaks = make(chan bool)
-var finish = make(chan struct{})
-var starts = make(chan struct{})
-
 // Called once during initialization.
 func (loop goMainLoop) Initialize() {
 	if mainloop != nil {
 		mainloop.Initialize()
 	} else {
-		close(starts)
+		resume_main()
 	}
 }
 
@@ -87,6 +71,8 @@ func (loop goMainLoop) PhysicsProcess(delta Float.X) bool {
 	return false
 }
 
+var dt Float.X
+
 // Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) Process(delta Float.X) bool {
@@ -94,8 +80,9 @@ func (loop goMainLoop) Process(delta Float.X) bool {
 	if mainloop != nil {
 		return mainloop.Process(delta)
 	}
-	frames <- delta
-	return <-breaks
+	dt = delta
+	close, _ := resume_main()
+	return close
 }
 
 // Called before the program exits.
@@ -103,7 +90,7 @@ func (loop goMainLoop) Finalize() {
 	if mainloop != nil {
 		mainloop.Finalize()
 	} else {
-		close(finish)
+		resume_main()
 	}
 }
 
@@ -120,23 +107,37 @@ func (loop goMainLoop) Finalize() {
 //		}
 func Rendering() iter.Seq[Float.X] {
 	if EngineClass.IsEditorHint() {
-		doneInit <- struct{}{}
-		runtime.Goexit()
+		stop_main()
 	}
 	classdb.Register[goMainLoop]()
 	className := classdb.NameFor[goMainLoop]()
 	ProjectSettings.SetInitialValue("application/run/main_loop_type", className)
 	ProjectSettings.SetSetting("application/run/main_loop_type", className)
-	doneInit <- struct{}{}
-	<-starts
+	pause_main(false) // We pause here until the engine has fully started up.
 	return func(yield func(Float.X) bool) {
-		for frame := range frames {
-			if !yield(frame) {
-				breaks <- true
+		pause_main(false) // we pause here until the MainLoop initialize function is called.
+		for {
+			pause_main(false) // we pause here until the next frame is ready (next Process callback).
+			if !yield(dt) {
 				break
 			}
-			breaks <- false
 		}
-		<-finish
+		pause_main(true) // we pause here until the engine has fully shut down.
+	}
+}
+
+var (
+	pause_main  func(bool) bool
+	resume_main func() (bool, bool)
+	stop_main   func()
+)
+
+// call_main_in_steps calls the main function on the main thread in steps,
+// so that we can yield control back to the engine every frame and before
+// and after startup.
+func call_main_in_steps() iter.Seq[bool] {
+	return func(yield func(bool) bool) {
+		pause_main = yield
+		main()
 	}
 }

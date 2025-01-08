@@ -28,6 +28,8 @@ func init() {
 		Register[goRuntime]()
 	})
 	gd.PostStartupFunctions = append(gd.PostStartupFunctions, func() {
-		SceneTreeClass.Add(new(goRuntime))
+		Callable.New(func() {
+			SceneTreeClass.Add(new(goRuntime))
+		}).CallDeferred()
 	})
 }
