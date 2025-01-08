@@ -29,6 +29,10 @@ This physics body implements all the physics logic needed to simulate a car. It 
 [b]Note:[/b] This class has known issues and isn't designed to provide realistic 3D vehicle physics. If you want advanced vehicle physics, you may have to write your own physics integration using [CharacterBody3D] or [RigidBody3D].
 */
 type Instance [1]gdclass.VehicleBody3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVehicleBody3D() Instance

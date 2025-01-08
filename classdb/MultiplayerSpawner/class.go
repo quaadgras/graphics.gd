@@ -26,6 +26,10 @@ Also supports custom node spawns through [method spawn], calling [member spawn_f
 Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuration_add] to notify spawns passing the spawned node as the [code]object[/code] and itself as the [code]configuration[/code], and [method MultiplayerAPI.object_configuration_remove] to notify despawns in a similar way.
 */
 type Instance [1]gdclass.MultiplayerSpawner
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiplayerSpawner() Instance

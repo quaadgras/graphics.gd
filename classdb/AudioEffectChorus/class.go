@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Adds a chorus audio effect. The effect applies a filter with voices to duplicate the audio source and manipulate it through the filter.
 */
 type Instance [1]gdclass.AudioEffectChorus
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectChorus() Instance

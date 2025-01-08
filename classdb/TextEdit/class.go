@@ -37,6 +37,10 @@ A multiline text editor. It also has limited facilities for editing code, such a
 %!(EXTRA string=TextEdit)
 */
 type Instance [1]gdclass.TextEdit
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextEdit() Instance

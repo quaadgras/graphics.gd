@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Holds physics-related properties of a surface, namely its roughness and bounciness. This class is used to apply these properties to a physics body.
 */
 type Instance [1]gdclass.PhysicsMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsMaterial() Instance

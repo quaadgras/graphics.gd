@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A horizontal menu bar that creates a [MenuButton] for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node.
 */
 type Instance [1]gdclass.MenuBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMenuBar() Instance

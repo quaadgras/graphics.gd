@@ -28,6 +28,10 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 %!(EXTRA string=SkeletonModification2D)
 */
 type Instance [1]gdclass.SkeletonModification2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2D() Instance

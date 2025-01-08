@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Determines how much of an audio signal is sent to the left and right buses.
 */
 type Instance [1]gdclass.AudioEffectPanner
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectPanner() Instance

@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 The base class for the desktop platform exporters. These include Windows and Linux/BSD, but not macOS. See the classes inheriting this one for more details.
 */
 type Instance [1]gdclass.EditorExportPlatformPC
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorExportPlatformPC() Instance

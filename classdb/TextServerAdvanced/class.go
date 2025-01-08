@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 An implementation of [TextServer] that uses HarfBuzz, ICU and SIL Graphite to support BiDi, complex text layouts and contextual OpenType features. This is Godot's default primary [TextServer] interface.
 */
 type Instance [1]gdclass.TextServerAdvanced
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextServerAdvanced() Instance

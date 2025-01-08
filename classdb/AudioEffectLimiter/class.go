@@ -25,6 +25,10 @@ A limiter is similar to a compressor, but it's less flexible and designed to dis
 Soft clipping starts to reduce the peaks a little below the threshold level and progressively increases its effect as the input level increases such that the threshold is never exceeded.
 */
 type Instance [1]gdclass.AudioEffectLimiter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectLimiter() Instance

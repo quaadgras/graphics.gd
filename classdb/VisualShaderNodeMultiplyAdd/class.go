@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Uses three operands to compute [code](a * b + c)[/code] expression.
 */
 type Instance [1]gdclass.VisualShaderNodeMultiplyAdd
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeMultiplyAdd() Instance

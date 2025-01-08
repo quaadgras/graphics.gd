@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
 */
 type Instance [1]gdclass.GLTFLight
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFLight() Instance

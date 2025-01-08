@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Returns the boolean result of the comparison between [code]INF[/code] or [code]NaN[/code] and a scalar parameter.
 */
 type Instance [1]gdclass.VisualShaderNodeIs
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeIs() Instance

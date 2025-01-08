@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
 */
 type Instance [1]gdclass.RegExMatch
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRegExMatch() Instance

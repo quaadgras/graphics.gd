@@ -35,6 +35,10 @@ External [TextServer] implementations should inherit from this class.
 %!(EXTRA string=TextServerExtension)
 */
 type Instance [1]gdclass.TextServerExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextServerExtension() Instance

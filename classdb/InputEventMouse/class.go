@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Stores general information about mouse events.
 */
 type Instance [1]gdclass.InputEventMouse
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventMouse() Instance

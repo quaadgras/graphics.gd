@@ -30,6 +30,10 @@ Base class for all primitive meshes. Handles applying a [Material] to a primitiv
 %!(EXTRA string=PrimitiveMesh)
 */
 type Instance [1]gdclass.PrimitiveMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPrimitiveMesh() Instance

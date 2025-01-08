@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 InputEventGestures are sent when a user performs a supported gesture on a touch screen. Gestures can't be emulated using mouse, because they typically require multi-touch.
 */
 type Instance [1]gdclass.InputEventGesture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventGesture() Instance

@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Occludes light cast by a Light2D, casting shadows. The LightOccluder2D must be provided with an [OccluderPolygon2D] in order for the shadow to be computed.
 */
 type Instance [1]gdclass.LightOccluder2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightOccluder2D() Instance

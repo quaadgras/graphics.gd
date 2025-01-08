@@ -28,6 +28,10 @@ Stores the factor of a magnifying touch gesture. This is usually performed when 
 [b]Note:[/b] On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
 */
 type Instance [1]gdclass.InputEventMagnifyGesture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventMagnifyGesture() Instance

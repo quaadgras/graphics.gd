@@ -36,6 +36,10 @@ Slots can be configured in the Inspector dock once you add at least one child [C
 %!(EXTRA string=GraphNode)
 */
 type Instance [1]gdclass.GraphNode
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGraphNode() Instance

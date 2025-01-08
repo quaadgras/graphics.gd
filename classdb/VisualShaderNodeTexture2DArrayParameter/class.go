@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 This parameter allows to provide a collection of textures for the shader. You can use [VisualShaderNodeTexture2DArray] to extract the textures from array.
 */
 type Instance [1]gdclass.VisualShaderNodeTexture2DArrayParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTexture2DArrayParameter() Instance

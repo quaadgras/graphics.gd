@@ -31,6 +31,10 @@ The cost of traveling distances inside this region can be controlled with the [m
 [b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer3D], they will not be reflected in this node's properties.
 */
 type Instance [1]gdclass.NavigationRegion3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNavigationRegion3D() Instance

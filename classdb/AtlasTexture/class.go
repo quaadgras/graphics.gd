@@ -27,6 +27,10 @@ Multiple [AtlasTexture] resources can be cropped from the same [member atlas]. P
 [b]Note:[/b] [AtlasTexture] cannot be used in an [AnimatedTexture], and may not tile properly in nodes such as [TextureRect], when inside other [AtlasTexture] resources.
 */
 type Instance [1]gdclass.AtlasTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAtlasTexture() Instance

@@ -29,6 +29,10 @@ Base class for all GUI containers. A [Container] automatically arranges its chil
 %!(EXTRA string=Container)
 */
 type Instance [1]gdclass.Container
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsContainer() Instance

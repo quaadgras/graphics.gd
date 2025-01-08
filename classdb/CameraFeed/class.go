@@ -23,6 +23,10 @@ A camera feed gives you access to a single physical camera attached to your devi
 [b]Note:[/b] Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
 */
 type Instance [1]gdclass.CameraFeed
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCameraFeed() Instance

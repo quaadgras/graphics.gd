@@ -24,6 +24,10 @@ AudioStreamWAV stores sound samples loaded from WAV files. To play the stored so
 This class can also be used to store dynamically-generated PCM audio data. See also [AudioStreamGenerator] for procedural audio generation.
 */
 type Instance [1]gdclass.AudioStreamWAV
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamWAV() Instance

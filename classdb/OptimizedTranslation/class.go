@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 An optimized translation, used by default for CSV Translations. Uses real-time compressed translations, which results in very small dictionaries.
 */
 type Instance [1]gdclass.OptimizedTranslation
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOptimizedTranslation() Instance

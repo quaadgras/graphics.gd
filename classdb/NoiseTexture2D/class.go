@@ -33,6 +33,10 @@ var data = image.get_data()
 [/codeblock]
 */
 type Instance [1]gdclass.NoiseTexture2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNoiseTexture2D() Instance

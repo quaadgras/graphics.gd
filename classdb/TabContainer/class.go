@@ -27,6 +27,10 @@ Arranges child controls into a tabbed view, creating a tab for each one. The act
 [b]Note:[/b] The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
 */
 type Instance [1]gdclass.TabContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTabContainer() Instance

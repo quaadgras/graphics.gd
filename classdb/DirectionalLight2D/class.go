@@ -27,6 +27,10 @@ A directional light is a type of [Light2D] node that models an infinite number o
 [b]Note:[/b] [DirectionalLight2D] does not support light cull masks (but it supports shadow cull masks). It will always light up 2D nodes, regardless of the 2D node's [member CanvasItem.light_mask].
 */
 type Instance [1]gdclass.DirectionalLight2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsDirectionalLight2D() Instance

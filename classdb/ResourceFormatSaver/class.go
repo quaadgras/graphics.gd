@@ -26,6 +26,10 @@ By default, Godot saves resources as [code].tres[/code] (text-based), [code].res
 %!(EXTRA string=ResourceFormatSaver)
 */
 type Instance [1]gdclass.ResourceFormatSaver
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceFormatSaver() Instance

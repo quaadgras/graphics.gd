@@ -27,6 +27,10 @@ This node's children will be affected by its scroll offset.
 [b]Note:[/b] Any changes to this node's position and scale made after it enters the scene will be ignored.
 */
 type Instance [1]gdclass.ParallaxLayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsParallaxLayer() Instance

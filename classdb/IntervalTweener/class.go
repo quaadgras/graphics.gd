@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 [b]Note:[/b] [method Tween.tween_interval] is the only correct way to create [IntervalTweener]. Any [IntervalTweener] created manually will not function correctly.
 */
 type Instance [1]gdclass.IntervalTweener
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsIntervalTweener() Instance

@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Simulates the sound of acoustic environments such as rooms, concert halls, caverns, or an open spaces.
 */
 type Instance [1]gdclass.AudioEffectReverb
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectReverb() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 InputEventFromWindow represents events specifically received by windows. This includes mouse events, keyboard events in focused windows or touch screen actions.
 */
 type Instance [1]gdclass.InputEventFromWindow
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventFromWindow() Instance

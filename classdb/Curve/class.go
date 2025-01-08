@@ -25,6 +25,10 @@ This resource describes a mathematical curve by defining a set of points and tan
 See also [Gradient] which is designed for color interpolation. See also [Curve2D] and [Curve3D].
 */
 type Instance [1]gdclass.Curve
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCurve() Instance

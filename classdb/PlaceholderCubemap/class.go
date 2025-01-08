@@ -28,6 +28,10 @@ This class replaces a [Cubemap] or a [Cubemap]-derived class in 2 conditions:
 [b]Note:[/b] This class is not intended for rendering or for use in shaders. Operations like calculating UV are not guaranteed to work.
 */
 type Instance [1]gdclass.PlaceholderCubemap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPlaceholderCubemap() Instance

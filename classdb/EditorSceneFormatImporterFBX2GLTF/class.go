@@ -24,6 +24,10 @@ The location of the FBX2glTF binary is set via the [member EditorSettings.filesy
 This importer is only used if [member ProjectSettings.filesystem/import/fbx2gltf/enabled] is set to [code]true[/code].
 */
 type Instance [1]gdclass.EditorSceneFormatImporterFBX2GLTF
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSceneFormatImporterFBX2GLTF() Instance

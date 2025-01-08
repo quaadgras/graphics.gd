@@ -26,6 +26,10 @@ A node that provides a thickened polygon shape (a prism) to a [CollisionObject3D
 [b]Warning:[/b] A non-uniformly scaled [CollisionShape3D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its shape resource instead.
 */
 type Instance [1]gdclass.CollisionPolygon3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCollisionPolygon3D() Instance

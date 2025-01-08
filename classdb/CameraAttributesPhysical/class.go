@@ -27,6 +27,10 @@ The default settings are intended for use in an outdoor environment, tips for se
 [b]Note:[/b] Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
 type Instance [1]gdclass.CameraAttributesPhysical
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCameraAttributesPhysical() Instance

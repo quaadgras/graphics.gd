@@ -28,6 +28,10 @@ The primary benefit of [CubemapArray]s is that they can be accessed in shader co
 [b]Note:[/b] [CubemapArray] is not supported in the OpenGL 3 rendering backend.
 */
 type Instance [1]gdclass.CubemapArray
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCubemapArray() Instance

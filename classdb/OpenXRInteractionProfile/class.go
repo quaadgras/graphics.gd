@@ -24,6 +24,10 @@ This object stores suggested bindings for an interaction profile. Interaction pr
 For more information see the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-interaction-profiles]interaction profiles info in the OpenXR specification[/url].
 */
 type Instance [1]gdclass.OpenXRInteractionProfile
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRInteractionProfile() Instance

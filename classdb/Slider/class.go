@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Abstract base class for sliders, used to adjust a value by moving a grabber along a horizontal or vertical axis. Sliders are [Range]-based controls.
 */
 type Instance [1]gdclass.Slider
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSlider() Instance

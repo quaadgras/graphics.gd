@@ -23,6 +23,10 @@ This class cannot be directly instantiated and must be retrieved via a [EditorDe
 You can add tabs to the session UI via [method add_session_tab], send messages via [method send_message], and toggle [EngineProfiler]s via [method toggle_profiler].
 */
 type Instance [1]gdclass.EditorDebuggerSession
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorDebuggerSession() Instance

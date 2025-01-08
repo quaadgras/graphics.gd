@@ -32,6 +32,10 @@ Use the [member process_material] property to add a [ParticleProcessMaterial] to
 2D particles can optionally collide with [LightOccluder2D], but they don't collide with [PhysicsBody2D] nodes.
 */
 type Instance [1]gdclass.GPUParticles2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticles2D() Instance

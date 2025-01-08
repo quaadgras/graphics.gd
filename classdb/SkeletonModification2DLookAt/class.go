@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
 */
 type Instance [1]gdclass.SkeletonModification2DLookAt
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DLookAt() Instance

@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Comes with a built-in editor for texture's curves.
 */
 type Instance [1]gdclass.VisualShaderNodeCurveXYZTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCurveXYZTexture() Instance

@@ -25,6 +25,10 @@ Typically, [LightmapGI] probes are placed automatically by setting [member Light
 [b]Note:[/b] [LightmapProbe] nodes that are placed after baking lightmaps are ignored by dynamic objects. You must bake lightmaps again after creating or modifying [LightmapProbe]s for the probes to be effective.
 */
 type Instance [1]gdclass.LightmapProbe
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightmapProbe() Instance

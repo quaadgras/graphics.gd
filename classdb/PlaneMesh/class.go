@@ -27,6 +27,10 @@ Class representing a planar [PrimitiveMesh]. This flat mesh does not have a thic
 [b]Note:[/b] When using a large textured [PlaneMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth] and [member subdivide_width] until you no longer notice UV jittering.
 */
 type Instance [1]gdclass.PlaneMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPlaneMesh() Instance

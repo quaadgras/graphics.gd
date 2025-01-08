@@ -24,6 +24,10 @@ This resource holds a set of cells to help bulk manipulations of [TileMap].
 A pattern always start at the [code](0,0)[/code] coordinates and cannot have cells with negative coordinates.
 */
 type Instance [1]gdclass.TileMapPattern
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTileMapPattern() Instance

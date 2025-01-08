@@ -23,6 +23,10 @@ Compiled shader file in SPIR-V form.
 See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
 */
 type Instance [1]gdclass.RDShaderFile
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDShaderFile() Instance

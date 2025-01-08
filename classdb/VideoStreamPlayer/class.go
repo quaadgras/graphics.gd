@@ -27,6 +27,10 @@ Supported video formats are [url=https://www.theora.org/]Ogg Theora[/url] ([code
 [b]Warning:[/b] On Web, video playback [i]will[/i] perform poorly due to missing architecture-specific assembly optimizations.
 */
 type Instance [1]gdclass.VideoStreamPlayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVideoStreamPlayer() Instance

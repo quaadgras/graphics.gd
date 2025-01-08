@@ -26,6 +26,10 @@ This resource defines a custom rendering effect that can be applied to [Viewport
 %!(EXTRA string=CompositorEffect)
 */
 type Instance [1]gdclass.CompositorEffect
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompositorEffect() Instance

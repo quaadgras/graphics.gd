@@ -26,6 +26,10 @@ The [Generic6DOFJoint3D] (6 Degrees Of Freedom) joint allows for implementing cu
 The first 3 DOF represent the linear motion of the physics bodies and the last 3 DOF represent the angular motion of the physics bodies. Each axis can be either locked, or limited.
 */
 type Instance [1]gdclass.Generic6DOFJoint3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGeneric6DOFJoint3D() Instance

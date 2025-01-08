@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A 2D line segment shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape2D].
 */
 type Instance [1]gdclass.SegmentShape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSegmentShape2D() Instance

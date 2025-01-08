@@ -31,6 +31,10 @@ Also, viewports can be assigned to different screens in case the devices have mu
 Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
 */
 type Instance [1]gdclass.Viewport
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsViewport() Instance

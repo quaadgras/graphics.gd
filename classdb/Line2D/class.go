@@ -29,6 +29,10 @@ This node draws a 2D polyline, i.e. a shape consisting of several points connect
 [b]Note:[/b] [Line2D] is drawn using a 2D mesh.
 */
 type Instance [1]gdclass.Line2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLine2D() Instance

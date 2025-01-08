@@ -27,6 +27,10 @@ A plugin must be first registered with [method FileSystemDock.add_resource_toolt
 %!(EXTRA string=EditorResourceTooltipPlugin)
 */
 type Instance [1]gdclass.EditorResourceTooltipPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorResourceTooltipPlugin() Instance

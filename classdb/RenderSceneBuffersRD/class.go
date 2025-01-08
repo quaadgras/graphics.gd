@@ -28,6 +28,10 @@ Buffers are only guaranteed to exist during rendering of the viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]gdclass.RenderSceneBuffersRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffersRD() Instance

@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Simple texture that uses a mesh to draw itself. It's limited because flags can't be changed and region drawing is not supported.
 */
 type Instance [1]gdclass.MeshTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMeshTexture() Instance

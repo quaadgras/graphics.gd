@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Translates to [code]mix(a, b, weight)[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeMix
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeMix() Instance

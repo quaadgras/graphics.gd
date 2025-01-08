@@ -30,6 +30,10 @@ For example, adding a physics layer allows giving collision shapes to your tiles
 See the functions to add new layers for more information.
 */
 type Instance [1]gdclass.TileSet
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTileSet() Instance

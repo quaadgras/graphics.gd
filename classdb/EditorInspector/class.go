@@ -31,6 +31,10 @@ If a property has [constant PROPERTY_USAGE_SUBGROUP] usage, a subgroup will be c
 [b]Note:[/b] Unlike sections created from path-like property names, [EditorInspector] won't capitalize the name for sections created from groups. So properties with group usage usually use capitalized names instead of snake_cased names.
 */
 type Instance [1]gdclass.EditorInspector
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorInspector() Instance

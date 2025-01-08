@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Returns an associated value of the [member op_type] type if the provided boolean value is [code]true[/code] or [code]false[/code].
 */
 type Instance [1]gdclass.VisualShaderNodeSwitch
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeSwitch() Instance

@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDTextureFormat
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDTextureFormat() Instance

@@ -29,6 +29,10 @@ The playback of the animation is controlled by the [member speed_scale] property
 [b]Warning:[/b] The current implementation is not efficient for the modern renderers.
 */
 type Instance [1]gdclass.AnimatedTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimatedTexture() Instance

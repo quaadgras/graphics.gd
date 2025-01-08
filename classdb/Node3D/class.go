@@ -31,6 +31,10 @@ Affine operations (rotate, scale, translate) happen in parent's local coordinate
 [b]Note:[/b] Be aware that "Spatial" nodes are now called "Node3D" starting with Godot 4. Any Godot 3.x references to "Spatial" nodes refer to "Node3D" in Godot 4.
 */
 type Instance [1]gdclass.Node3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNode3D() Instance

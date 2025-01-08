@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Increases or decreases the volume being routed through the audio bus.
 */
 type Instance [1]gdclass.AudioEffectAmplify
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectAmplify() Instance

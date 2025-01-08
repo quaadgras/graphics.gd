@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
 */
 type Instance [1]gdclass.ENetConnection
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsENetConnection() Instance

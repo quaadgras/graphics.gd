@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [VisualShaderNodeParticleEmitter] that makes the particles emitted in a shape of the assigned [member mesh]. It will emit from the mesh's surfaces, either all or only the specified one.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleMeshEmitter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleMeshEmitter() Instance

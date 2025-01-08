@@ -27,6 +27,10 @@ This class allows for a RenderSceneBuffer implementation to be made in GDExtensi
 %!(EXTRA string=RenderSceneBuffersExtension)
 */
 type Instance [1]gdclass.RenderSceneBuffersExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffersExtension() Instance

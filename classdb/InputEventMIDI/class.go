@@ -84,6 +84,10 @@ private void PrintMIDIInfo(InputEventMidi midiEvent)
 [b]Note:[/b] Godot does not support MIDI output, so there is no way to emit MIDI messages from Godot. Only MIDI input is supported.
 */
 type Instance [1]gdclass.InputEventMIDI
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventMIDI() Instance

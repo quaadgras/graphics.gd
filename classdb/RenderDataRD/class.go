@@ -23,6 +23,10 @@ This object manages all render data for the rendering device based renderers.
 [b]Note:[/b] This is an internal rendering server object only exposed for GDExtension plugins.
 */
 type Instance [1]gdclass.RenderDataRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderDataRD() Instance

@@ -29,6 +29,10 @@ Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is comput
 [b]Note:[/b] After setting the [member target_position] property, the [method get_next_path_position] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
 */
 type Instance [1]gdclass.NavigationAgent2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNavigationAgent2D() Instance

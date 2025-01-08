@@ -27,6 +27,10 @@ If you want a node to be enabled automatically when this region is visible on sc
 [b]Note:[/b] [VisibleOnScreenNotifier2D] uses the render culling code to determine whether it's visible on screen, so it won't function unless [member CanvasItem.visible] is set to [code]true[/code].
 */
 type Instance [1]gdclass.VisibleOnScreenNotifier2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisibleOnScreenNotifier2D() Instance

@@ -24,6 +24,10 @@ Similar to how a [WorldEnvironment] node can be used to override the environment
 [b]Note:[/b] All [ShaderGlobalsOverride] nodes are made part of a [code]"shader_overrides_group"[/code] group when they are added to the scene tree. The currently active [ShaderGlobalsOverride] node also has a [code]"shader_overrides_group_active"[/code] group added to it. You can use this to check which [ShaderGlobalsOverride] node is currently active.
 */
 type Instance [1]gdclass.ShaderGlobalsOverride
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShaderGlobalsOverride() Instance

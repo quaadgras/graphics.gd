@@ -27,6 +27,10 @@ This class is intended to be overridden by video decoder extensions with custom 
 %!(EXTRA string=VideoStreamPlayback)
 */
 type Instance [1]gdclass.VideoStreamPlayback
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVideoStreamPlayback() Instance

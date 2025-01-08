@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Once added to the scene tree and enabled using [method make_current], this node will override the location sounds are heard from. This can be used to listen from a location different from the [Camera3D].
 */
 type Instance [1]gdclass.AudioListener3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioListener3D() Instance

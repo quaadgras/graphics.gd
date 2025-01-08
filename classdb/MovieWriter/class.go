@@ -32,6 +32,10 @@ If you need to encode to a different format or pipe a stream through third-party
 %!(EXTRA string=MovieWriter)
 */
 type Instance [1]gdclass.MovieWriter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMovieWriter() Instance

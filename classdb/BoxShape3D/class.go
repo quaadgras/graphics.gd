@@ -25,6 +25,10 @@ A 3D box shape, intended for use in physics. Usually used to provide a shape for
 [b]Performance:[/b] [BoxShape3D] is fast to check collisions against. It is faster than [CapsuleShape3D] and [CylinderShape3D], but slower than [SphereShape3D].
 */
 type Instance [1]gdclass.BoxShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBoxShape3D() Instance

@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 This texture class allows you to use a cubemap array texture created directly on the [RenderingDevice] as a texture for materials, meshes, etc.
 */
 type Instance [1]gdclass.TextureCubemapArrayRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextureCubemapArrayRD() Instance

@@ -29,6 +29,10 @@ For portable, self contained 3D textures that work on both desktop and mobile, B
 This resource is intended to be created from code.
 */
 type Instance [1]gdclass.PortableCompressedTexture2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPortableCompressedTexture2D() Instance

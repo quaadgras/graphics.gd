@@ -28,6 +28,10 @@ This modification is useful for adding additional motion to things like hair, th
 [b]Note:[/b] The Jiggle modifier has [code]jiggle_joints[/code], which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [Bone2D] nodes! Jiggle joints hold the data needed for each [Bone2D] in the bone chain used by the Jiggle modification.
 */
 type Instance [1]gdclass.SkeletonModification2DJiggle
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DJiggle() Instance

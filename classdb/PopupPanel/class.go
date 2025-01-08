@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A popup with a configurable panel background. Any child controls added to this node will be stretched to fit the panel's size (similar to how [PanelContainer] works). If you are making windows, see [Window].
 */
 type Instance [1]gdclass.PopupPanel
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPopupPanel() Instance

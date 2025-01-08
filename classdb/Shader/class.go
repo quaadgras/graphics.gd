@@ -24,6 +24,10 @@ A custom shader program implemented in the Godot shading language, saved with th
 This class is used by a [ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
 */
 type Instance [1]gdclass.Shader
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShader() Instance

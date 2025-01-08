@@ -26,6 +26,10 @@ Node for back-buffering the currently-displayed screen. The region defined in th
 [b]Note:[/b] Since this node inherits from [Node2D] (and not [Control]), anchors and margins won't apply to child [Control]-derived nodes. This can be problematic when resizing the window. To avoid this, add [Control]-derived nodes as [i]siblings[/i] to the [BackBufferCopy] node instead of adding them as children.
 */
 type Instance [1]gdclass.BackBufferCopy
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBackBufferCopy() Instance

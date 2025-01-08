@@ -29,6 +29,10 @@ On startup, Godot creates a global [RenderingDevice] which can be retrieved usin
 [b]Note:[/b] [RenderingDevice] is not available when running in headless mode or when using the Compatibility rendering method.
 */
 type Instance [1]gdclass.RenderingDevice
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderingDevice() Instance

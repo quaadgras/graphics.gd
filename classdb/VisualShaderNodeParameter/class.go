@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 A parameter represents a variable in the shader which is set externally, i.e. from the [ShaderMaterial]. Parameters are exposed as properties in the [ShaderMaterial] and can be assigned from the Inspector or from a script.
 */
 type Instance [1]gdclass.VisualShaderNodeParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParameter() Instance

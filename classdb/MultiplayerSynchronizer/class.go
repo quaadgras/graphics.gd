@@ -29,6 +29,10 @@ Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configu
 [b]Note:[/b] Synchronization is not supported for [Object] type properties, like [Resource]. Properties that are unique to each peer, like the instance IDs of [Object]s (see [method Object.get_instance_id]) or [RID]s, will also not work in synchronization.
 */
 type Instance [1]gdclass.MultiplayerSynchronizer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiplayerSynchronizer() Instance

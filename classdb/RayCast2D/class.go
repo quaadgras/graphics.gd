@@ -29,6 +29,10 @@ A raycast represents a ray from its origin to its [member target_position] that 
 To sweep over a region of 2D space, you can approximate the region with multiple [RayCast2D]s or use [ShapeCast2D].
 */
 type Instance [1]gdclass.RayCast2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRayCast2D() Instance

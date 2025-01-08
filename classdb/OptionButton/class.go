@@ -29,6 +29,10 @@ See also [BaseButton] which contains common properties and methods associated wi
 [b]Note:[/b] The [member Button.text] and [member Button.icon] properties are set automatically based on the selected item. They shouldn't be changed manually.
 */
 type Instance [1]gdclass.OptionButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOptionButton() Instance

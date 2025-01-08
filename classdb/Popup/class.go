@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [Popup] is a base class for contextual windows and panels with fixed position. It's a modal by default (see [member Window.popup_window]) and provides methods for implementing custom popup behavior.
 */
 type Instance [1]gdclass.Popup
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPopup() Instance

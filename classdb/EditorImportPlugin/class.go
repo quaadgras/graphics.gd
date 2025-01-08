@@ -150,6 +150,10 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 %!(EXTRA string=EditorImportPlugin)
 */
 type Instance [1]gdclass.EditorImportPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorImportPlugin() Instance

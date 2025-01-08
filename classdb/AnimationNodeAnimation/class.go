@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A resource to add to an [AnimationNodeBlendTree]. Only has one output port using the [member animation] property. Used as an input for [AnimationNode]s that blend animations together.
 */
 type Instance [1]gdclass.AnimationNodeAnimation
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeAnimation() Instance

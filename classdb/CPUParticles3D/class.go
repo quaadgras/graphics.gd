@@ -30,6 +30,10 @@ CPU-based 3D particle node used to create a variety of particle systems and effe
 See also [GPUParticles3D], which provides the same functionality with hardware acceleration, but may not run on older devices.
 */
 type Instance [1]gdclass.CPUParticles3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCPUParticles3D() Instance

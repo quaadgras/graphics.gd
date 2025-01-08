@@ -60,6 +60,10 @@ See also [BaseButton] which contains common properties and methods associated wi
 [b]Note:[/b] Buttons do not interpret touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use [TouchScreenButton] for buttons that trigger gameplay movement or actions.
 */
 type Instance [1]gdclass.Button
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsButton() Instance

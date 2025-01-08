@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Stores information about mouse, keyboard, and touch gesture input events. This includes information about which modifier keys are pressed, such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See [method Node._input].
 */
 type Instance [1]gdclass.InputEventWithModifiers
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventWithModifiers() Instance

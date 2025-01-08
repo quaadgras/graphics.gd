@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A control used for visual representation of a percentage. Shows fill percentage from right to left.
 */
 type Instance [1]gdclass.ProgressBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsProgressBar() Instance

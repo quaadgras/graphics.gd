@@ -28,6 +28,10 @@ var _ = pointers.Cycle
 TextureProgressBar works like [ProgressBar], but uses up to 3 textures instead of Godot's [Theme] resource. It can be used to create horizontal, vertical and radial progress bars.
 */
 type Instance [1]gdclass.TextureProgressBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextureProgressBar() Instance

@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Resizable nodes have a handle that allows the user to adjust their size as needed.
 */
 type Instance [1]gdclass.VisualShaderNodeResizableBase
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeResizableBase() Instance

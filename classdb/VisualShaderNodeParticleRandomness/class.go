@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Randomness node will output pseudo-random values of the given type based on the specified minimum and maximum values.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleRandomness
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleRandomness() Instance

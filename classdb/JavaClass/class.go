@@ -23,6 +23,10 @@ Represents an object from the Java Native Interface. It is returned from [method
 [b]Note:[/b] This class is not to be confused with [JavaScriptObject].
 */
 type Instance [1]gdclass.JavaClass
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsJavaClass() Instance

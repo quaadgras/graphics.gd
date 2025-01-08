@@ -50,6 +50,10 @@ fv.variation_opentype = { ts.name_to_tag("wght"): 900, ts.name_to_tag("custom_hg
 [/codeblock]
 */
 type Instance [1]gdclass.FontVariation
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFontVariation() Instance

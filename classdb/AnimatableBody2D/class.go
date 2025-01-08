@@ -28,6 +28,10 @@ An animatable 2D physics body. It can't be moved by external forces or contacts,
 When [AnimatableBody2D] is moved, its linear and angular velocity are estimated and used to affect other physics bodies in its path. This makes it useful for moving platforms, doors, and other moving objects.
 */
 type Instance [1]gdclass.AnimatableBody2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimatableBody2D() Instance

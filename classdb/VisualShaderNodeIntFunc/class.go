@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Accept an integer scalar ([code]x[/code]) to the input port and transform it according to [member function].
 */
 type Instance [1]gdclass.VisualShaderNodeIntFunc
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeIntFunc() Instance

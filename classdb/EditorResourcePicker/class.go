@@ -32,6 +32,10 @@ This [Control] node is used in the editor's Inspector dock to allow editing of [
 %!(EXTRA string=EditorResourcePicker)
 */
 type Instance [1]gdclass.EditorResourcePicker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorResourcePicker() Instance

@@ -25,6 +25,10 @@ Multiple [ShaderMaterial]s can use the same shader and configure different value
 [b]Note:[/b] For performance reasons, the [signal Resource.changed] signal is only emitted when the [member Resource.resource_name] changes. Only in editor, it is also emitted for [member shader] changes.
 */
 type Instance [1]gdclass.ShaderMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShaderMaterial() Instance

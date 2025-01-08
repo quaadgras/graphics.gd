@@ -33,6 +33,10 @@ Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed tex
 See [Texture2DArray] for a general description of texture arrays.
 */
 type Instance [1]gdclass.CompressedTexture2DArray
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompressedTexture2DArray() Instance

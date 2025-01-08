@@ -26,6 +26,10 @@ See also [Environment] for general 3D environment settings.
 This is a pure virtual class that is inherited by [CameraAttributesPhysical] and [CameraAttributesPractical].
 */
 type Instance [1]gdclass.CameraAttributes
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCameraAttributes() Instance

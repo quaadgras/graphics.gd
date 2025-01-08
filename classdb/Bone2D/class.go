@@ -29,6 +29,10 @@ Each bone has a [member rest] transform that you can reset to with [method apply
 If in the editor, you can set the rest pose of an entire skeleton using a menu option, from the code, you need to iterate over the bones to set their individual rest poses.
 */
 type Instance [1]gdclass.Bone2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBone2D() Instance

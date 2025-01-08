@@ -36,6 +36,10 @@ var _ = pointers.Cycle
 %!(EXTRA string=GraphEdit)
 */
 type Instance [1]gdclass.GraphEdit
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGraphEdit() Instance

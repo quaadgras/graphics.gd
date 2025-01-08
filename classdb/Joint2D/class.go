@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 Abstract base class for all joints in 2D physics. 2D joints bind together two physics bodies ([member node_a] and [member node_b]) and apply a constraint.
 */
 type Instance [1]gdclass.Joint2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsJoint2D() Instance

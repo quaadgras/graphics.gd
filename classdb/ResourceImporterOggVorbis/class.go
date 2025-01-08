@@ -24,6 +24,10 @@ In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're u
 Ogg Vorbis requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
 */
 type Instance [1]gdclass.ResourceImporterOggVorbis
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterOggVorbis() Instance

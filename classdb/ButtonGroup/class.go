@@ -23,6 +23,10 @@ A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are trea
 Every member of a [ButtonGroup] should have [member BaseButton.toggle_mode] set to [code]true[/code].
 */
 type Instance [1]gdclass.ButtonGroup
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsButtonGroup() Instance

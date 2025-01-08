@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Reduces all frequencies below the [member AudioEffectFilter.cutoff_hz].
 */
 type Instance [1]gdclass.AudioEffectLowShelfFilter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectLowShelfFilter() Instance

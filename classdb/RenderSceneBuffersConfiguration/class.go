@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This configuration object is created and populated by the render engine on a viewport change and used to (re)configure a [RenderSceneBuffers] object.
 */
 type Instance [1]gdclass.RenderSceneBuffersConfiguration
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffersConfiguration() Instance

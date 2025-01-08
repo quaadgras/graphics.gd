@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Particle emitter nodes can be used in "start" step of particle shaders and they define the starting position of the particles. Connect them to the Position output port.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleEmitter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleEmitter() Instance

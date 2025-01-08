@@ -47,6 +47,10 @@ On macOS, some extra keyboard shortcuts are available:
 - [kbd]Cmd + Right Arrow[/kbd]: Same as [kbd]End[/kbd], move the caret to the end of the line
 */
 type Instance [1]gdclass.LineEdit
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLineEdit() Instance

@@ -24,6 +24,10 @@ Action sets in OpenXR define a collection of actions that can be activated in un
 Action sets can contain the same action with the same name, if such action sets are active at the same time the action set with the highest priority defines which binding is active.
 */
 type Instance [1]gdclass.OpenXRActionSet
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRActionSet() Instance

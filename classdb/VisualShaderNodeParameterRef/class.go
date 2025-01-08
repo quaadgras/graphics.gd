@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Creating a reference to a [VisualShaderNodeParameter] allows you to reuse this parameter in different shaders or shader stages easily.
 */
 type Instance [1]gdclass.VisualShaderNodeParameterRef
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParameterRef() Instance

@@ -25,6 +25,10 @@ Another important distinction is that OpenXR offers no control over these bindin
 The action map therefore needs to be loaded at startup and can't be changed afterwards. This resource is a container for the entire action map.
 */
 type Instance [1]gdclass.OpenXRActionMap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRActionMap() Instance

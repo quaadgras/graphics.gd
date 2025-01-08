@@ -25,6 +25,10 @@ All of the data in a GLTF scene is stored in the [GLTFState] class. GLTFDocument
 GLTFDocument can be extended with arbitrary functionality by extending the [GLTFDocumentExtension] class and registering it with GLTFDocument via [method register_gltf_document_extension]. This allows for custom data to be imported and exported.
 */
 type Instance [1]gdclass.GLTFDocument
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFDocument() Instance

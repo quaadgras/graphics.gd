@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Attenuates the frequencies inside of a range around the [member AudioEffectFilter.cutoff_hz] and cuts frequencies outside of this band.
 */
 type Instance [1]gdclass.AudioEffectBandPassFilter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectBandPassFilter() Instance

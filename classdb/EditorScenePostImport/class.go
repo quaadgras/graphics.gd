@@ -78,6 +78,10 @@ public partial class NodeRenamer : EditorScenePostImport
 %!(EXTRA string=EditorScenePostImport)
 */
 type Instance [1]gdclass.EditorScenePostImport
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorScenePostImport() Instance

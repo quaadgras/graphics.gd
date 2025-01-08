@@ -25,6 +25,10 @@ Calculates distance from point represented by vector [code]p0[/code] to vector [
 Translated to [code]distance(p0, p1)[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeVectorDistance
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorDistance() Instance

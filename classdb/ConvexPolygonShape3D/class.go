@@ -27,6 +27,10 @@ A 3D convex polyhedron shape, intended for use in physics. Usually used to provi
 [b]Performance:[/b] [ConvexPolygonShape3D] is faster to check collisions against compared to [ConcavePolygonShape3D], but it is slower than primitive collision shapes such as [SphereShape3D] and [BoxShape3D]. Its use should generally be limited to medium-sized objects that cannot have their collision accurately represented by primitive shapes.
 */
 type Instance [1]gdclass.ConvexPolygonShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsConvexPolygonShape3D() Instance

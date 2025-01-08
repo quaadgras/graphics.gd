@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 The distance fade effect fades out each pixel based on its distance to another object.
 */
 type Instance [1]gdclass.VisualShaderNodeDistanceFade
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeDistanceFade() Instance

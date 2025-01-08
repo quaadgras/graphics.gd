@@ -29,6 +29,10 @@ This node is intended to be a simple helper to get things going quickly, but mor
 Note that the [Camera2D] node's [code]position[/code] doesn't represent the actual position of the screen, which may differ due to applied smoothing or limits. You can use [method get_screen_center_position] to get the real position.
 */
 type Instance [1]gdclass.Camera2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCamera2D() Instance

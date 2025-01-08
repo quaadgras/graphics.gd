@@ -45,6 +45,10 @@ The timer will be dereferenced after its time elapses. To preserve the timer, yo
 [b]Note:[/b] The timer is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the timer (or [method Node._physics_process] if [code]process_in_physics[/code] in [method SceneTree.create_timer] has been set to [code]true[/code]).
 */
 type Instance [1]gdclass.SceneTreeTimer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSceneTreeTimer() Instance

@@ -23,6 +23,10 @@ GLTFBufferView is a data structure representing GLTF a [code]bufferView[/code] t
 Most custom uses of buffers only need to use the [member buffer], [member byte_length], and [member byte_offset]. The [member byte_stride] and [member indices] properties are for more advanced use cases such as interleaved mesh data encoded for the GPU.
 */
 type Instance [1]gdclass.GLTFBufferView
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFBufferView() Instance

@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A visual shader node for use of vector operators. Operates on vector [code]a[/code] and vector [code]b[/code].
 */
 type Instance [1]gdclass.VisualShaderNodeVectorOp
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorOp() Instance

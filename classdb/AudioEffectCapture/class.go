@@ -27,6 +27,10 @@ Application code should consume these audio frames from this ring buffer using [
 Unlike [AudioEffectRecord], this effect only returns the raw audio samples instead of encoding them into an [AudioStream].
 */
 type Instance [1]gdclass.AudioEffectCapture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectCapture() Instance

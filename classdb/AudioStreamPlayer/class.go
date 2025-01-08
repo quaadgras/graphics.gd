@@ -25,6 +25,10 @@ To use this node, [member stream] needs to be set to a valid [AudioStream] resou
 If you need to play audio at a specific position, use [AudioStreamPlayer2D] or [AudioStreamPlayer3D] instead.
 */
 type Instance [1]gdclass.AudioStreamPlayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamPlayer() Instance

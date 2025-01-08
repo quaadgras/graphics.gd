@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 [CanvasItemMaterial]s provide a means of modifying the textures associated with a CanvasItem. They specialize in describing blend and lighting behaviors for textures. Use a [ShaderMaterial] to more fully customize a material's interactions with a [CanvasItem].
 */
 type Instance [1]gdclass.CanvasItemMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCanvasItemMaterial() Instance

@@ -32,6 +32,10 @@ Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [m
 [b]Note:[/b] There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
 */
 type Instance [1]gdclass.SoftBody3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSoftBody3D() Instance

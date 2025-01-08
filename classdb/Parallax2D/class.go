@@ -26,6 +26,10 @@ A [Parallax2D] is used to create a parallax effect. It can move at a different s
 [b]Note:[/b] Any changes to this node's position made after it enters the scene tree will be overridden if [member ignore_camera_scroll] is [code]false[/code] or [member screen_offset] is modified.
 */
 type Instance [1]gdclass.Parallax2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsParallax2D() Instance

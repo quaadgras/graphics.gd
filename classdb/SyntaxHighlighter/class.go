@@ -28,6 +28,10 @@ Base class for syntax highlighters. Provides syntax highlighting data to a [Text
 %!(EXTRA string=SyntaxHighlighter)
 */
 type Instance [1]gdclass.SyntaxHighlighter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSyntaxHighlighter() Instance

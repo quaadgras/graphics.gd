@@ -32,6 +32,10 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 %!(EXTRA string=Mesh)
 */
 type Instance [1]gdclass.Mesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMesh() Instance

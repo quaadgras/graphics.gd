@@ -28,6 +28,10 @@ var _ = pointers.Cycle
 By setting various properties on this object, you can control how individual characters will be displayed in a [RichTextEffect].
 */
 type Instance [1]gdclass.CharFXTransform
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCharFXTransform() Instance

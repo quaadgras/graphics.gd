@@ -29,6 +29,10 @@ See also [BaseButton] which contains common properties and methods associated wi
 [b]Note:[/b] By default, the button may not be wide enough for the color preview swatch to be visible. Make sure to set [member Control.custom_minimum_size] to a big enough value to give the button enough space.
 */
 type Instance [1]gdclass.ColorPickerButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsColorPickerButton() Instance

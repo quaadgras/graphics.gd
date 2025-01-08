@@ -31,6 +31,10 @@ After instantiating the playback information data within the extended class, the
 %!(EXTRA string=AnimationMixer)
 */
 type Instance [1]gdclass.AnimationMixer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationMixer() Instance

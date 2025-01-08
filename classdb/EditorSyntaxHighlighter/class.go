@@ -28,6 +28,10 @@ Add a syntax highlighter to an individual script by calling [method ScriptEditor
 %!(EXTRA string=EditorSyntaxHighlighter)
 */
 type Instance [1]gdclass.EditorSyntaxHighlighter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSyntaxHighlighter() Instance

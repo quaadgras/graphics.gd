@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Stores information about joystick motions. One [InputEventJoypadMotion] represents one axis at a time. For gamepad buttons, see [InputEventJoypadButton].
 */
 type Instance [1]gdclass.InputEventJoypadMotion
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventJoypadMotion() Instance

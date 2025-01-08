@@ -26,6 +26,10 @@ The [PhysicalSkyMaterial] uses the Preetham analytic daylight model to draw a sk
 The [PhysicalSkyMaterial] only supports one sun. The color, energy, and direction of the sun are taken from the first [DirectionalLight3D] in the scene tree.
 */
 type Instance [1]gdclass.PhysicalSkyMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicalSkyMaterial() Instance

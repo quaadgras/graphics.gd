@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [Panel] is a GUI control that displays a [StyleBox]. See also [PanelContainer].
 */
 type Instance [1]gdclass.Panel
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPanel() Instance

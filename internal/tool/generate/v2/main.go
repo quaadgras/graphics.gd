@@ -216,6 +216,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "}\n")
 	} else {
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
+		fmt.Fprintf(file, "// Nil is a nil/null instance of the class. Equivalent to the zero value.\n")
+		fmt.Fprintf(file, "var Nil Instance\n")
 		fmt.Fprintf(file, "type Any interface {\n")
 		fmt.Fprintf(file, "\tgd.IsClass\n")
 		fmt.Fprintf(file, "\tAs%s() Instance\n", class.Name)

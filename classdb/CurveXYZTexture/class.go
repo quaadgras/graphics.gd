@@ -25,6 +25,10 @@ A 1D texture where the red, green, and blue color channels correspond to points 
 If you only need to store one curve within a single texture, use [CurveTexture] instead. See also [GradientTexture1D] and [GradientTexture2D].
 */
 type Instance [1]gdclass.CurveXYZTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCurveXYZTexture() Instance

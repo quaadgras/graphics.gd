@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 The compositor resource stores attributes used to customize how a [Viewport] is rendered.
 */
 type Instance [1]gdclass.Compositor
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompositor() Instance

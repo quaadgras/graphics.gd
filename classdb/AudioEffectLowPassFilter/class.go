@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Cuts frequencies higher than the [member AudioEffectFilter.cutoff_hz] and allows lower frequencies to pass.
 */
 type Instance [1]gdclass.AudioEffectLowPassFilter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectLowPassFilter() Instance

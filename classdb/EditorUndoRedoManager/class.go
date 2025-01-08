@@ -28,6 +28,10 @@ This guessing can sometimes yield false results, so you can provide a custom con
 The manager's API is mostly the same as in [UndoRedo], so you can refer to its documentation for more examples. The main difference is that [EditorUndoRedoManager] uses object + method name for actions, instead of [Callable].
 */
 type Instance [1]gdclass.EditorUndoRedoManager
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorUndoRedoManager() Instance

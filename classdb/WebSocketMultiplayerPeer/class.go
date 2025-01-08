@@ -25,6 +25,10 @@ Base class for WebSocket server and client, allowing them to be used as multipla
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.WebSocketMultiplayerPeer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWebSocketMultiplayerPeer() Instance

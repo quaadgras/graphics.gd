@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 This node internally calls [code]emit_subparticle[/code] shader method. It will emit a particle from the configured sub-emitter and also allows to customize how its emitted. Requires a sub-emitter assigned to the particles node with this shader.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleEmit
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleEmit() Instance

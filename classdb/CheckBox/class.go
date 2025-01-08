@@ -28,6 +28,10 @@ See also [BaseButton] which contains common properties and methods associated wi
 When [member BaseButton.button_group] specifies a [ButtonGroup], [CheckBox] changes its appearance to that of a radio button and uses the various [code]radio_*[/code] theme properties.
 */
 type Instance [1]gdclass.CheckBox
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCheckBox() Instance

@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 This imports a 3-dimensional texture, which can then be used in custom shaders, as a [FogMaterial] density map or as a [GPUParticlesAttractorVectorField3D]. See also [ResourceImporterTexture] and [ResourceImporterTextureAtlas].
 */
 type Instance [1]gdclass.ResourceImporterLayeredTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterLayeredTexture() Instance

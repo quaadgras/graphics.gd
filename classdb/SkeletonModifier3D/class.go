@@ -30,6 +30,10 @@ This node should be used to implement custom IK solvers, constraints, or skeleto
 %!(EXTRA string=SkeletonModifier3D)
 */
 type Instance [1]gdclass.SkeletonModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModifier3D() Instance

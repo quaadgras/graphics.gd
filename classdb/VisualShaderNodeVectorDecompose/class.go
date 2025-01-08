@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Takes a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] and decomposes it into scalar values that can be used as separate outputs.
 */
 type Instance [1]gdclass.VisualShaderNodeVectorDecompose
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorDecompose() Instance

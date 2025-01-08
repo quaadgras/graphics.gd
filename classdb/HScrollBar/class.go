@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A horizontal scrollbar, typically used to navigate through content that extends beyond the visible width of a control. It is a [Range]-based control and goes from left (min) to right (max).
 */
 type Instance [1]gdclass.HScrollBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHScrollBar() Instance

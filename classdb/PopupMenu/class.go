@@ -31,6 +31,10 @@ All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code]
 [b]Note:[/b] The ID values used for items are limited to 32 bits, not full 64 bits of [int]. This has a range of [code]-2^32[/code] to [code]2^32 - 1[/code], i.e. [code]-2147483648[/code] to [code]2147483647[/code].
 */
 type Instance [1]gdclass.PopupMenu
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPopupMenu() Instance

@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Translated to [code]uniform samplerCube[/code] in the shader language. The output value can be used as port for [VisualShaderNodeCubemap].
 */
 type Instance [1]gdclass.VisualShaderNodeCubemapParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCubemapParameter() Instance

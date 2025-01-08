@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Base node for geometry-based visual instances. Shares some common functionality like visibility and custom materials.
 */
 type Instance [1]gdclass.GeometryInstance3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGeometryInstance3D() Instance

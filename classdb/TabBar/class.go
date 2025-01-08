@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A control that provides a horizontal bar with tabs. Similar to [TabContainer] but is only in charge of drawing tabs, not interacting with children.
 */
 type Instance [1]gdclass.TabBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTabBar() Instance

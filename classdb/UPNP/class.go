@@ -75,6 +75,10 @@ func _exit_tree():
 [b]Further reading:[/b] If you want to know more about UPnP (and the Internet Gateway Device (IGD) and Port Control Protocol (PCP) specifically), [url=https://en.wikipedia.org/wiki/Universal_Plug_and_Play]Wikipedia[/url] is a good first stop, the specification can be found at the [url=https://openconnectivity.org/developer/specifications/upnp-resources/upnp/]Open Connectivity Foundation[/url] and Godot's implementation is based on the [url=https://github.com/miniupnp/miniupnp]MiniUPnP client[/url].
 */
 type Instance [1]gdclass.UPNP
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsUPNP() Instance

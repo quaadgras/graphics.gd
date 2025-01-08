@@ -30,6 +30,10 @@ This class allows for a RenderSceneData implementation to be made in GDExtension
 %!(EXTRA string=RenderSceneDataExtension)
 */
 type Instance [1]gdclass.RenderSceneDataExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneDataExtension() Instance

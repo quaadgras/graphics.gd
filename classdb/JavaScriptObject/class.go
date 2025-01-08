@@ -51,6 +51,10 @@ func myCallback(args):
 [b]Note:[/b] Only available in the Web platform.
 */
 type Instance [1]gdclass.JavaScriptObject
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsJavaScriptObject() Instance

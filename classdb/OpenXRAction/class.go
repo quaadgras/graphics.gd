@@ -25,6 +25,10 @@ Actions are not directly bound to specific devices, instead OpenXR recognizes a 
 Note that the name of the resource is used to register the action with.
 */
 type Instance [1]gdclass.OpenXRAction
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRAction() Instance

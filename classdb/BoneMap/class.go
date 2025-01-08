@@ -23,6 +23,10 @@ This class contains a dictionary that uses a list of bone names in [SkeletonProf
 By assigning the actual [Skeleton3D] bone name as the key value, it maps the [Skeleton3D] to the [SkeletonProfile].
 */
 type Instance [1]gdclass.BoneMap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBoneMap() Instance

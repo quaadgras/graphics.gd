@@ -27,6 +27,10 @@ A Texture2DArray is also different from an [AtlasTexture]: In a Texture2DArray, 
 To create such a texture file yourself, reimport your image files using the Godot Editor import presets.
 */
 type Instance [1]gdclass.Texture2DArray
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTexture2DArray() Instance

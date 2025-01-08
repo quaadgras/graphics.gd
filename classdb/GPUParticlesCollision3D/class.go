@@ -29,6 +29,10 @@ Particle collision shapes can be temporarily disabled by hiding them.
 [b]Note:[/b] Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [member GPUParticles3D.fixed_fps] to [code]0[/code] or a value that matches or exceeds the target framerate.
 */
 type Instance [1]gdclass.GPUParticlesCollision3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticlesCollision3D() Instance

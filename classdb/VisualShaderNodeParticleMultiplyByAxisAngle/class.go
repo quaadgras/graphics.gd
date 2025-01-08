@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 This node helps to multiply a position input vector by rotation using specific axis. Intended to work with emitters.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleMultiplyByAxisAngle
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleMultiplyByAxisAngle() Instance

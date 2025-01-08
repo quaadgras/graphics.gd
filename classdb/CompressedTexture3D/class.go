@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 See [Texture3D] for a general description of 3D textures.
 */
 type Instance [1]gdclass.CompressedTexture3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompressedTexture3D() Instance

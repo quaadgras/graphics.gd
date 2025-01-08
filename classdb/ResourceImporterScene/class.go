@@ -24,6 +24,10 @@ Additional options (such as extracting individual meshes or materials to files) 
 [b]Note:[/b] [ResourceImporterScene] is [i]not[/i] used for [PackedScene]s, such as [code].tscn[/code] and [code].scn[/code] files.
 */
 type Instance [1]gdclass.ResourceImporterScene
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterScene() Instance

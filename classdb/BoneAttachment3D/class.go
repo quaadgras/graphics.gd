@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This node selects a bone in a [Skeleton3D] and attaches to it. This means that the [BoneAttachment3D] node will either dynamically copy or override the 3D transform of the selected bone.
 */
 type Instance [1]gdclass.BoneAttachment3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBoneAttachment3D() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 UV functions are similar to [Vector2] functions, but the input port of this node uses the shader's UV value by default.
 */
 type Instance [1]gdclass.VisualShaderNodeUVFunc
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeUVFunc() Instance

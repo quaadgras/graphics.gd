@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Class that has everything pertaining to a 2D world: A physics space, a canvas, and a sound space. 2D nodes register their resources into the current 2D world.
 */
 type Instance [1]gdclass.World2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWorld2D() Instance

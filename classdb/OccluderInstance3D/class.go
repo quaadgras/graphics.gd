@@ -30,6 +30,10 @@ The occlusion culling system works by rendering the occluders on the CPU in para
 [b]Note:[/b] Due to memory constraints, occlusion culling is not supported by default in Web export templates. It can be enabled by compiling custom Web export templates with [code]module_raycast_enabled=yes[/code].
 */
 type Instance [1]gdclass.OccluderInstance3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOccluderInstance3D() Instance

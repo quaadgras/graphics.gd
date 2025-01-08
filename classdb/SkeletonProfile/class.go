@@ -25,6 +25,10 @@ This resource is used in [EditorScenePostImport]. Some parameters are referring 
 [b]Note:[/b] These parameters need to be set only when creating a custom profile. In [SkeletonProfileHumanoid], they are defined internally as read-only values.
 */
 type Instance [1]gdclass.SkeletonProfile
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonProfile() Instance

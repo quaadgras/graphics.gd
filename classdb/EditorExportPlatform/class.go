@@ -22,6 +22,10 @@ Base resource that provides the functionality of exporting a release build of a 
 Used in scripting by [EditorExportPlugin] to configure platform-specific customization of scenes and resources. See [method EditorExportPlugin._begin_customize_scenes] and [method EditorExportPlugin._begin_customize_resources] for more details.
 */
 type Instance [1]gdclass.EditorExportPlatform
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorExportPlatform() Instance

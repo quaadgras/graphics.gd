@@ -28,6 +28,10 @@ CCDIK works by rotating a set of bones, typically called a "bone chain", on a si
 CCDIK also fully supports angle constraints, allowing for more control over how a solution is met.
 */
 type Instance [1]gdclass.SkeletonModification2DCCDIK
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DCCDIK() Instance

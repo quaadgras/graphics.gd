@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 The output port of this node needs to be connected to [code]Model View Matrix[/code] port of [VisualShaderNodeOutput].
 */
 type Instance [1]gdclass.VisualShaderNodeBillboard
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeBillboard() Instance

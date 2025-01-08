@@ -23,6 +23,10 @@ Multipass framebuffers can optimize some configurations in mobile. On desktop, t
 This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDFramebufferPass
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDFramebufferPass() Instance

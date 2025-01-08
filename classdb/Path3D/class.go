@@ -24,6 +24,10 @@ Can have [PathFollow3D] child nodes moving along the [Curve3D]. See [PathFollow3
 Note that the path is considered as relative to the moved nodes (children of [PathFollow3D]). As such, the curve should usually start with a zero vector [code](0, 0, 0)[/code].
 */
 type Instance [1]gdclass.Path3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPath3D() Instance

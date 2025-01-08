@@ -32,6 +32,10 @@ Signed distance fields (SDF) allow for efficiently representing approximate coll
 [b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
 */
 type Instance [1]gdclass.GPUParticlesCollisionSDF3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticlesCollisionSDF3D() Instance

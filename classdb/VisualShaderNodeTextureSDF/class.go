@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Translates to [code]texture_sdf(sdf_pos)[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeTextureSDF
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTextureSDF() Instance

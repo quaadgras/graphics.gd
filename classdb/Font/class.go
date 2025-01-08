@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Abstract base class for different font types. It has methods for drawing text and font character introspection.
 */
 type Instance [1]gdclass.Font
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFont() Instance

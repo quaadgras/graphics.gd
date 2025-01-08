@@ -25,6 +25,10 @@ Holds collision data from the movement of a [PhysicsBody3D], usually from [metho
 The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
 */
 type Instance [1]gdclass.KinematicCollision3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsKinematicCollision3D() Instance

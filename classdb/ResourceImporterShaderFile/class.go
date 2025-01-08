@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 This imports native GLSL shaders as [RDShaderFile] resources, for use with low-level [RenderingDevice] operations. This importer does [i]not[/i] handle [code].gdshader[/code] files.
 */
 type Instance [1]gdclass.ResourceImporterShaderFile
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterShaderFile() Instance

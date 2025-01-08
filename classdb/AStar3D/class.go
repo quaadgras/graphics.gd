@@ -61,6 +61,10 @@ If the default [method _estimate_cost] and [method _compute_cost] methods are us
 %!(EXTRA string=AStar3D)
 */
 type Instance [1]gdclass.AStar3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAStar3D() Instance

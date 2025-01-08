@@ -22,6 +22,10 @@ An editor feature profile can be used to disable specific features of the Godot 
 To manage editor feature profiles visually, use [b]Editor > Manage Feature Profiles...[/b] at the top of the editor window.
 */
 type Instance [1]gdclass.EditorFeatureProfile
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorFeatureProfile() Instance

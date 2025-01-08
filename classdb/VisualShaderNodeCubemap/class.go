@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Translated to [code]texture(cubemap, vec3)[/code] in the shader language. Returns a color vector and alpha channel as scalar.
 */
 type Instance [1]gdclass.VisualShaderNodeCubemap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCubemap() Instance

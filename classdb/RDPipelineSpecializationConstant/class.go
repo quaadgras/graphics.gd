@@ -22,6 +22,10 @@ A [i]specialization constant[/i] is a way to create additional variants of shade
 This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDPipelineSpecializationConstant
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDPipelineSpecializationConstant() Instance

@@ -44,6 +44,10 @@ Godot.Collections.Array<Godot.Collections.Dictionary> listOfSettings = settings.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_editor_settings].
 */
 type Instance [1]gdclass.EditorSettings
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSettings() Instance

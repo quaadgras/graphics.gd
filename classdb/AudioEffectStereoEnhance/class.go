@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 An audio effect that can be used to adjust the intensity of stereo panning.
 */
 type Instance [1]gdclass.AudioEffectStereoEnhance
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectStereoEnhance() Instance

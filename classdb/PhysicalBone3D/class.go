@@ -33,6 +33,10 @@ The [PhysicalBone3D] node is a physics body that can be used to make bones in a 
 %!(EXTRA string=PhysicalBone3D)
 */
 type Instance [1]gdclass.PhysicalBone3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicalBone3D() Instance

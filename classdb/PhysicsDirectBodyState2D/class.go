@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Provides direct access to a physics body in the [PhysicsServer2D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody2D], and is intended for changing the direct state of that body. See [method RigidBody2D._integrate_forces].
 */
 type Instance [1]gdclass.PhysicsDirectBodyState2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectBodyState2D() Instance

@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A horizontal slider, used to adjust a value by moving a grabber along a horizontal axis. It is a [Range]-based control and goes from left (min) to right (max).
 */
 type Instance [1]gdclass.HSlider
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHSlider() Instance

@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A physics joint that restricts the rotation of a 3D physics body around an axis relative to another physics body. For example, Body A can be a [StaticBody3D] representing a door hinge that a [RigidBody3D] rotates around.
 */
 type Instance [1]gdclass.HingeJoint3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHingeJoint3D() Instance

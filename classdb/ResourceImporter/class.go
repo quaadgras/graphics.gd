@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 This is the base class for Godot's resource importers. To implement your own resource importers using editor plugins, see [EditorImportPlugin].
 */
 type Instance [1]gdclass.ResourceImporter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporter() Instance

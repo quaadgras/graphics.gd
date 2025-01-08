@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 [Texture] is the base class for all texture types. Common texture types are [Texture2D] and [ImageTexture]. See also [Image].
 */
 type Instance [1]gdclass.Texture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTexture() Instance

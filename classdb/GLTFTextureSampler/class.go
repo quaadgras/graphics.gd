@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Represents a texture sampler as defined by the base GLTF spec. Texture samplers in GLTF specify how to sample data from the texture's base image, when rendering the texture on an object.
 */
 type Instance [1]gdclass.GLTFTextureSampler
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFTextureSampler() Instance

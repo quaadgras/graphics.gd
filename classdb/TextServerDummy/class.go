@@ -37,6 +37,10 @@ if dummy_text_server != null:
 The command line argument [code]--text-driver Dummy[/code] (case-sensitive) can be used to force the "Dummy" [TextServer] on any project.
 */
 type Instance [1]gdclass.TextServerDummy
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextServerDummy() Instance

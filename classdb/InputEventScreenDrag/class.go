@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Stores information about screen drag events. See [method Node._input].
 */
 type Instance [1]gdclass.InputEventScreenDrag
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventScreenDrag() Instance

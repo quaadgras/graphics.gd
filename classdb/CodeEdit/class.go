@@ -32,6 +32,10 @@ CodeEdit is a specialized [TextEdit] designed for editing plain text code files.
 %!(EXTRA string=CodeEdit)
 */
 type Instance [1]gdclass.CodeEdit
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCodeEdit() Instance

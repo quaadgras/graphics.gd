@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [b]Note:[/b] [method Tween.tween_property] is the only correct way to create [PropertyTweener]. Any [PropertyTweener] created manually will not function correctly.
 */
 type Instance [1]gdclass.PropertyTweener
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPropertyTweener() Instance

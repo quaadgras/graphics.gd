@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This class is used by various XR interfaces to generate VRS textures that can be used to speed up rendering.
 */
 type Instance [1]gdclass.XRVRS
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRVRS() Instance

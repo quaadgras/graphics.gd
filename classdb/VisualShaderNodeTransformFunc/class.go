@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Computes an inverse or transpose function on the provided [Transform3D].
 */
 type Instance [1]gdclass.VisualShaderNodeTransformFunc
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTransformFunc() Instance

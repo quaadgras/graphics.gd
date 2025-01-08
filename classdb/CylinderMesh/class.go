@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Class representing a cylindrical [PrimitiveMesh]. This class can be used to create cones by setting either the [member top_radius] or [member bottom_radius] properties to [code]0.0[/code].
 */
 type Instance [1]gdclass.CylinderMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCylinderMesh() Instance

@@ -30,6 +30,10 @@ This node can also locally alter or override physics parameters (gravity, dampin
 [b]Note:[/b] Areas and bodies created with [PhysicsServer2D] might not interact as expected with [Area2D]s, and might not emit signals or track objects correctly.
 */
 type Instance [1]gdclass.Area2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsArea2D() Instance

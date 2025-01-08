@@ -25,6 +25,10 @@ A 2D circle shape, intended for use in physics. Usually used to provide a shape 
 [b]Performance:[/b] [CircleShape2D] is fast to check collisions against. It is faster than [RectangleShape2D] and [CapsuleShape2D].
 */
 type Instance [1]gdclass.CircleShape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCircleShape2D() Instance

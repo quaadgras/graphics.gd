@@ -24,6 +24,10 @@ This [SkeletonModification2D] holds a reference to a [SkeletonModificationStack2
 [b]Note:[/b] The modifications in the held [SkeletonModificationStack2D] will only be executed if their execution mode matches the execution mode of the SkeletonModification2DStackHolder.
 */
 type Instance [1]gdclass.SkeletonModification2DStackHolder
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DStackHolder() Instance

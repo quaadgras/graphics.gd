@@ -22,6 +22,10 @@ Utility class which holds a reference to the internal identifier of an [Object] 
 This class is used internally by the editor inspector and script debugger, but can also be used in plugins to pass and display objects as their IDs.
 */
 type Instance [1]gdclass.EncodedObjectAsID
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEncodedObjectAsID() Instance

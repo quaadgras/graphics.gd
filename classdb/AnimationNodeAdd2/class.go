@@ -26,6 +26,10 @@ If the amount is greater than [code]1.0[/code], the animation connected to "in" 
 If the amount is less than [code]0.0[/code], the animation connected to "in" port is blended with the inverted animation connected to "add" port.
 */
 type Instance [1]gdclass.AnimationNodeAdd2
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeAdd2() Instance

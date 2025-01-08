@@ -42,6 +42,10 @@ commandPalette.AddCommand("command", "test/command", commandCallable)
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_command_palette].
 */
 type Instance [1]gdclass.EditorCommandPalette
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorCommandPalette() Instance

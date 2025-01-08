@@ -26,6 +26,10 @@ This [SkeletonModification2D] uses an algorithm typically called TwoBoneIK. This
 TwoBoneIK is great for arms, legs, and really any joints that can be represented by just two bones that bend to reach a target. This solver is more lightweight than [SkeletonModification2DFABRIK], but gives similar, natural looking results.
 */
 type Instance [1]gdclass.SkeletonModification2DTwoBoneIK
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DTwoBoneIK() Instance

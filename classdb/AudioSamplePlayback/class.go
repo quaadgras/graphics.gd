@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 Meta class for playing back audio samples.
 */
 type Instance [1]gdclass.AudioSamplePlayback
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioSamplePlayback() Instance

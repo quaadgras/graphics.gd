@@ -26,6 +26,10 @@ In particular, a [Skeleton3D] node with no [MeshInstance3D] children may be unkn
 On the other hand, a [Skeleton3D] with multiple [MeshInstance3D] nodes which each have different [member MeshInstance3D.skin] objects may have multiple SkinReference instances (and hence, multiple skeleton [RID]s).
 */
 type Instance [1]gdclass.SkinReference
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkinReference() Instance

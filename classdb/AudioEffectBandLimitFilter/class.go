@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Limits the frequencies in a range around the [member AudioEffectFilter.cutoff_hz] and allows frequencies outside of this range to pass.
 */
 type Instance [1]gdclass.AudioEffectBandLimitFilter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectBandLimitFilter() Instance

@@ -30,6 +30,10 @@ When [StaticBody2D] is moved, it is teleported to its new position without affec
 [StaticBody2D] is useful for completely static objects like floors and walls, as well as moving surfaces like conveyor belts and circular revolving platforms (by using [member constant_linear_velocity] and [member constant_angular_velocity]).
 */
 type Instance [1]gdclass.StaticBody2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsStaticBody2D() Instance

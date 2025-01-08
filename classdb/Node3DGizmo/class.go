@@ -22,6 +22,10 @@ This abstract class helps connect the [Node3D] scene with the editor-specific [E
 [Node3DGizmo] by itself has no exposed API, refer to [method Node3D.add_gizmo] and pass it an [EditorNode3DGizmo] instance.
 */
 type Instance [1]gdclass.Node3DGizmo
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNode3DGizmo() Instance

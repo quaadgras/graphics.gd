@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 Casts light in a 2D environment. This light's shape is defined by a (usually grayscale) texture.
 */
 type Instance [1]gdclass.PointLight2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPointLight2D() Instance

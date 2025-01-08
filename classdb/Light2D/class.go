@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Casts light in a 2D environment. A light is defined as a color, an energy value, a mode (see constants), and various other parameters (range and shadows-related).
 */
 type Instance [1]gdclass.Light2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLight2D() Instance

@@ -29,6 +29,10 @@ Plugins are used by the editor to extend functionality. The most common types of
 %!(EXTRA string=EditorPlugin)
 */
 type Instance [1]gdclass.EditorPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorPlugin() Instance

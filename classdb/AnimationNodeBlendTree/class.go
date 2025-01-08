@@ -26,6 +26,10 @@ This animation node may contain a sub-tree of any other type animation nodes, su
 An [AnimationNodeOutput] node named [code]output[/code] is created by default.
 */
 type Instance [1]gdclass.AnimationNodeBlendTree
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeBlendTree() Instance

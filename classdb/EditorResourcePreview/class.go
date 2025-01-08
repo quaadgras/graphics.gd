@@ -23,6 +23,10 @@ This node is used to generate previews for resources or files.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_resource_previewer].
 */
 type Instance [1]gdclass.EditorResourcePreview
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorResourcePreview() Instance

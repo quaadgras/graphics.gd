@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Displays a rectangle filled with a solid [member color]. If you need to display the border alone, consider using a [Panel] instead.
 */
 type Instance [1]gdclass.ColorRect
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsColorRect() Instance

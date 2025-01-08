@@ -30,6 +30,10 @@ A custom control for editing properties that can be added to the [EditorInspecto
 %!(EXTRA string=EditorProperty)
 */
 type Instance [1]gdclass.EditorProperty
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorProperty() Instance

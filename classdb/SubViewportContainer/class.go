@@ -31,6 +31,10 @@ A container that displays the contents of underlying [SubViewport] child nodes. 
 %!(EXTRA string=SubViewportContainer)
 */
 type Instance [1]gdclass.SubViewportContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSubViewportContainer() Instance

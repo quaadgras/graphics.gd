@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 %!(EXTRA string=Translation)
 */
 type Instance [1]gdclass.Translation
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTranslation() Instance

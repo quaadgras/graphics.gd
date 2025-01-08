@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 This node can be used in fragment shaders.
 */
 type Instance [1]gdclass.VisualShaderNodeLinearSceneDepth
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeLinearSceneDepth() Instance

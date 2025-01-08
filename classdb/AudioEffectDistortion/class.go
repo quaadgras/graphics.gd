@@ -25,6 +25,10 @@ Different types are available: clip, tan, lo-fi (bit crushing), overdrive, or wa
 By distorting the waveform the frequency content changes, which will often make the sound "crunchy" or "abrasive". For games, it can simulate sound coming from some saturated device or speaker very efficiently.
 */
 type Instance [1]gdclass.AudioEffectDistortion
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectDistortion() Instance

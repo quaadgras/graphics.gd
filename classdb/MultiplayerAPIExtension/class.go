@@ -107,6 +107,10 @@ Native extensions can alternatively use the [method MultiplayerAPI.set_default_i
 %!(EXTRA string=MultiplayerAPIExtension)
 */
 type Instance [1]gdclass.MultiplayerAPIExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiplayerAPIExtension() Instance

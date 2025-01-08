@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Translated to [code]uniform float[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeFloatParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeFloatParameter() Instance

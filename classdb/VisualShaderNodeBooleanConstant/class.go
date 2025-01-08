@@ -25,6 +25,10 @@ Has only one output port and no inputs.
 Translated to [code skip-lint]bool[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeBooleanConstant
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeBooleanConstant() Instance

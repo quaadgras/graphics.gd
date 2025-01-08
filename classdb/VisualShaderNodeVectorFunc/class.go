@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A visual shader node able to perform different functions using vectors.
 */
 type Instance [1]gdclass.VisualShaderNodeVectorFunc
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorFunc() Instance

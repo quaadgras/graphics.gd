@@ -26,6 +26,10 @@ Use [member ProjectSettings.gui/theme/custom] to set up a project-scope theme th
 Use [member Control.theme] of any control node to set up a theme that will be available to that control and all of its direct and indirect children.
 */
 type Instance [1]gdclass.Theme
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTheme() Instance

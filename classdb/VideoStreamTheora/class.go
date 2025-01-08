@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [b]Note:[/b] While Ogg Theora videos can also have an [code].ogg[/code] extension, you will have to rename the extension to [code].ogv[/code] to use those videos within Godot.
 */
 type Instance [1]gdclass.VideoStreamTheora
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVideoStreamTheora() Instance

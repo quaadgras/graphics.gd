@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 [b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
 */
 type Instance [1]gdclass.PhysicsBody3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsBody3D() Instance

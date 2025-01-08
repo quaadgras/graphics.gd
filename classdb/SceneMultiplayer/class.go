@@ -29,6 +29,10 @@ This implementation additionally provide [SceneTree] replication via the [Multip
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.SceneMultiplayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSceneMultiplayer() Instance

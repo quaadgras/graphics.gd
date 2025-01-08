@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 It also provides methods for querying the status of OpenXR initialization, and helper methods for ease of use of the API with GDExtension.
 */
 type Instance [1]gdclass.OpenXRAPIExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRAPIExtension() Instance

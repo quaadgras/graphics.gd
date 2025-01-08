@@ -23,6 +23,10 @@ A data buffer stream peer that uses a byte array as the stream. This object can 
 A [StreamPeerBuffer] object keeps an internal cursor which is the offset in bytes to the start of the buffer. Get and put operations are performed at the cursor position and will move the cursor accordingly.
 */
 type Instance [1]gdclass.StreamPeerBuffer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsStreamPeerBuffer() Instance

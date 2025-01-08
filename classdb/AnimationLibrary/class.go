@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 An animation library stores a set of animations accessible through [StringName] keys, for use with [AnimationPlayer] nodes.
 */
 type Instance [1]gdclass.AnimationLibrary
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationLibrary() Instance

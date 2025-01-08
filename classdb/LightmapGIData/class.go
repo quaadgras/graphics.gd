@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [LightmapGIData] contains baked lightmap and dynamic object probe data for [LightmapGI]. It is replaced every time lightmaps are baked in [LightmapGI].
 */
 type Instance [1]gdclass.LightmapGIData
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightmapGIData() Instance

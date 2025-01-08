@@ -27,6 +27,10 @@ If you want a node to be enabled automatically when this region is visible on sc
 [b]Note:[/b] [VisibleOnScreenNotifier3D] uses an approximate heuristic that doesn't take walls and other occlusion into account, unless occlusion culling is used. It also won't function unless [member Node3D.visible] is set to [code]true[/code].
 */
 type Instance [1]gdclass.VisibleOnScreenNotifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisibleOnScreenNotifier3D() Instance

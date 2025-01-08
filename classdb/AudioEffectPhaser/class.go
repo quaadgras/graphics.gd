@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Combines phase-shifted signals with the original signal. The movement of the phase-shifted signals is controlled using a low-frequency oscillator.
 */
 type Instance [1]gdclass.AudioEffectPhaser
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectPhaser() Instance

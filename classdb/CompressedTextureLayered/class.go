@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Base class for [CompressedTexture2DArray] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [TextureLayered].
 */
 type Instance [1]gdclass.CompressedTextureLayered
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompressedTextureLayered() Instance

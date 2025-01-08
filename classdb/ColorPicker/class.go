@@ -29,6 +29,10 @@ A widget that provides an interface for selecting or modifying a color. It can o
 [b]Note:[/b] This control is the color picker widget itself. You can use a [ColorPickerButton] instead if you need a button that brings up a [ColorPicker] in a popup.
 */
 type Instance [1]gdclass.ColorPicker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsColorPicker() Instance

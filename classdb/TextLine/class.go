@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Abstraction over [TextServer] for handling a single line of text.
 */
 type Instance [1]gdclass.TextLine
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextLine() Instance

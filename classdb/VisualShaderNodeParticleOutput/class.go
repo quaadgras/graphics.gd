@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This node defines how particles are emitted. It allows to customize e.g. position and velocity. Available ports are different depending on which function this node is inside (start, process, collision) and whether custom data is enabled.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleOutput
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleOutput() Instance

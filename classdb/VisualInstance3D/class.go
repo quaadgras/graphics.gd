@@ -30,6 +30,10 @@ The [VisualInstance3D] is used to connect a resource to a visual representation.
 %!(EXTRA string=VisualInstance3D)
 */
 type Instance [1]gdclass.VisualInstance3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualInstance3D() Instance

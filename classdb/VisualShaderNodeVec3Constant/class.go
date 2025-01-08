@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A constant [Vector3], which can be used as an input node.
 */
 type Instance [1]gdclass.VisualShaderNodeVec3Constant
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVec3Constant() Instance

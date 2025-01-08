@@ -118,6 +118,10 @@ There are a couple ways to handle "controller" input:
 You can use both methods to allow your game or app to support a wider or narrower set of devices and input methods, or to allow more advanced interactions with more advanced devices.
 */
 type Instance [1]gdclass.WebXRInterface
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWebXRInterface() Instance

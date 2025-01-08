@@ -26,6 +26,10 @@ RemoteTransform2D pushes its own [Transform2D] to another [Node2D] derived node 
 It can be set to update another node's position, rotation and/or scale. It can use either global or local coordinates.
 */
 type Instance [1]gdclass.RemoteTransform2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRemoteTransform2D() Instance

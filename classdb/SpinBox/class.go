@@ -48,6 +48,10 @@ See [Range] class for more options over the [SpinBox].
 [b]Note:[/b] If you want to implement drag and drop for the underlying [LineEdit], you can use [method Control.set_drag_forwarding] on the node returned by [method get_line_edit].
 */
 type Instance [1]gdclass.SpinBox
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSpinBox() Instance

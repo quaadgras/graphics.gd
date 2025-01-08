@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Translated to [code]uniform sampler2DArray[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeTexture2DArray
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTexture2DArray() Instance

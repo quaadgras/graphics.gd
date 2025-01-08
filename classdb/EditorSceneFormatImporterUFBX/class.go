@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 EditorSceneFormatImporterUFBX is designed to load FBX files and supports both binary and ASCII FBX files from version 3000 onward. This class supports various 3D object types like meshes, skins, blend shapes, materials, and rigging information. The class aims for feature parity with the official FBX SDK and supports FBX 7.4 specifications.
 */
 type Instance [1]gdclass.EditorSceneFormatImporterUFBX
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSceneFormatImporterUFBX() Instance

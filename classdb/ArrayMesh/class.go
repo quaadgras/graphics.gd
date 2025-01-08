@@ -71,6 +71,10 @@ See also [ImmediateMesh], [MeshDataTool] and [SurfaceTool] for procedural geomet
 [b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
 */
 type Instance [1]gdclass.ArrayMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsArrayMesh() Instance

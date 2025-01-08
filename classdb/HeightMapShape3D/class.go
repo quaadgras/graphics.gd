@@ -38,6 +38,10 @@ update_map_data_from_image(heightmap_image, height_min, height_max)
 [/codeblocks]
 */
 type Instance [1]gdclass.HeightMapShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHeightMapShape3D() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Takes a 4×4 transform matrix and decomposes it into four [code]vec3[/code] values, one from each row of the matrix.
 */
 type Instance [1]gdclass.VisualShaderNodeTransformDecompose
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTransformDecompose() Instance

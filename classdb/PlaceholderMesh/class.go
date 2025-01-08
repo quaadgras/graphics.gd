@@ -26,6 +26,10 @@ This class is used when loading a project that uses a [Mesh] subclass in 2 condi
 - When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
 */
 type Instance [1]gdclass.PlaceholderMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPlaceholderMesh() Instance

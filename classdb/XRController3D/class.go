@@ -29,6 +29,10 @@ The position of the controller node is automatically updated by the [XRServer]. 
 As many XR runtimes now use a configurable action map all inputs are named.
 */
 type Instance [1]gdclass.XRController3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRController3D() Instance

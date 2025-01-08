@@ -31,6 +31,10 @@ For more information on HTTP, see [url=https://developer.mozilla.org/en-US/docs/
 [b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 */
 type Instance [1]gdclass.HTTPClient
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHTTPClient() Instance

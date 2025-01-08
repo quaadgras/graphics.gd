@@ -26,6 +26,10 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 %!(EXTRA string=AudioStreamPlayback)
 */
 type Instance [1]gdclass.AudioStreamPlayback
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamPlayback() Instance

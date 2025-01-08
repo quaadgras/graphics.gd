@@ -23,6 +23,10 @@ This imports a collection of textures from a PNG image into an [AtlasTexture] or
 [b]Note:[/b] [ResourceImporterTextureAtlas] does not handle importing [TileSetAtlasSource], which is created using the [TileSet] editor instead.
 */
 type Instance [1]gdclass.ResourceImporterTextureAtlas
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterTextureAtlas() Instance

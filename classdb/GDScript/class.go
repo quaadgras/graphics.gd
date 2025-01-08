@@ -25,6 +25,10 @@ Calling [method new] creates a new instance of the script. [method Object.set_sc
 If you are looking for GDScript's built-in functions, see [@GDScript] instead.
 */
 type Instance [1]gdclass.GDScript
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGDScript() Instance

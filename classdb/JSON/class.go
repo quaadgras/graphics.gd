@@ -55,6 +55,10 @@ var data = JSON.parse_string(json_string) # Returns null if parsing failed.
 - Certain errors, such as invalid Unicode sequences, do not cause a parser error. Instead, the string is cleansed and an error is logged to the console.
 */
 type Instance [1]gdclass.JSON
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsJSON() Instance

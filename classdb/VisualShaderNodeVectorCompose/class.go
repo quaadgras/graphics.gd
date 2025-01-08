@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Creates a [code]vec2[/code], [code]vec3[/code] or [code]vec4[/code] using scalar values that can be provided from separate inputs.
 */
 type Instance [1]gdclass.VisualShaderNodeVectorCompose
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorCompose() Instance

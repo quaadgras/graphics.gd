@@ -29,6 +29,10 @@ var _ = pointers.Cycle
 A node that displays 2D texture information in a 3D environment. See also [Sprite3D] where many other properties are defined.
 */
 type Instance [1]gdclass.SpriteBase3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSpriteBase3D() Instance

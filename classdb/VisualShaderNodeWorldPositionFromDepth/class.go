@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 The WorldPositionFromDepth node reconstructs the depth position of the pixel in world space. This can be used to obtain world space UVs for projection mapping like Caustics.
 */
 type Instance [1]gdclass.VisualShaderNodeWorldPositionFromDepth
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeWorldPositionFromDepth() Instance

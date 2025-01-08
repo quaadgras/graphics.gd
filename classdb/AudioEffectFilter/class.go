@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Allows frequencies other than the [member cutoff_hz] to pass.
 */
 type Instance [1]gdclass.AudioEffectFilter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectFilter() Instance

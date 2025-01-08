@@ -25,6 +25,10 @@ A 2D rectangle shape, intended for use in physics. Usually used to provide a sha
 [b]Performance:[/b] [RectangleShape2D] is fast to check collisions against. It is faster than [CapsuleShape2D], but slower than [CircleShape2D].
 */
 type Instance [1]gdclass.RectangleShape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRectangleShape2D() Instance

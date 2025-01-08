@@ -26,6 +26,10 @@ This node takes its parent [Path3D], and returns the coordinates of a point with
 It is useful for making other nodes follow a path, without coding the movement pattern. For that, the nodes must be children of this node. The descendant nodes will then move accordingly when setting the [member progress] in this node.
 */
 type Instance [1]gdclass.PathFollow3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPathFollow3D() Instance

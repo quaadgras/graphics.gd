@@ -28,6 +28,10 @@ This class is used when loading a project that uses a [Texture2D] subclass in 2 
 [b]Note:[/b] This is not intended to be used as an actual texture for rendering. It is not guaranteed to work like one in shaders or materials (for example when calculating UV).
 */
 type Instance [1]gdclass.PlaceholderTexture2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPlaceholderTexture2D() Instance

@@ -44,6 +44,10 @@ animationTree.Set("parameters/TimeSeek/seek_request", 12.0);
 [/codeblocks]
 */
 type Instance [1]gdclass.AnimationNodeTimeSeek
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeTimeSeek() Instance

@@ -27,6 +27,10 @@ ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains verte
 Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [method clear], followed by [method add_surface] for each surface.
 */
 type Instance [1]gdclass.ImporterMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImporterMesh() Instance

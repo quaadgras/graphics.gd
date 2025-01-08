@@ -29,6 +29,10 @@ Immediate collision overlaps can be done with the [member target_position] set t
 [b]Note:[/b] Shape casting is more computationally expensive than ray casting.
 */
 type Instance [1]gdclass.ShapeCast3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShapeCast3D() Instance

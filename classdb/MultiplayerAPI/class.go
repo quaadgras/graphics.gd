@@ -25,6 +25,10 @@ It is possible to override the MultiplayerAPI instance used by specific tree bra
 It is also possible to extend or replace the default implementation via scripting or native extensions. See [MultiplayerAPIExtension] for details about extensions, [SceneMultiplayer] for the details about the default implementation.
 */
 type Instance [1]gdclass.MultiplayerAPI
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiplayerAPI() Instance

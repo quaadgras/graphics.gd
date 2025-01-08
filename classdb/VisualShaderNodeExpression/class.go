@@ -26,6 +26,10 @@ Custom Godot Shading Language expression, with a custom number of input and outp
 The provided code is directly injected into the graph's matching shader function ([code]vertex[/code], [code]fragment[/code], or [code]light[/code]), so it cannot be used to declare functions, varyings, uniforms, or global constants. See [VisualShaderNodeGlobalExpression] for such global definitions.
 */
 type Instance [1]gdclass.VisualShaderNodeExpression
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeExpression() Instance

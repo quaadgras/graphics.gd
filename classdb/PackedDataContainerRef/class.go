@@ -43,6 +43,10 @@ for element in packed:
 [/codeblock]
 */
 type Instance [1]gdclass.PackedDataContainerRef
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPackedDataContainerRef() Instance

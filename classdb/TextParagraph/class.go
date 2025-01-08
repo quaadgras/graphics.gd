@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 Abstraction over [TextServer] for handling a single paragraph of text.
 */
 type Instance [1]gdclass.TextParagraph
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextParagraph() Instance

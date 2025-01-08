@@ -27,6 +27,10 @@ A button that represents a link. This type of button is primarily used for inter
 See also [BaseButton] which contains common properties and methods associated with this node.
 */
 type Instance [1]gdclass.LinkButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLinkButton() Instance

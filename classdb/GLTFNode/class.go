@@ -26,6 +26,10 @@ Represents a GLTF node. GLTF nodes may have names, transforms, children (other G
 GLTF nodes generally exist inside of [GLTFState] which represents all data of a GLTF file. Most of GLTFNode's properties are indices of other data in the GLTF file. You can extend a GLTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
 */
 type Instance [1]gdclass.GLTFNode
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFNode() Instance

@@ -23,6 +23,10 @@ The CryptoKey class represents a cryptographic key. Keys can be loaded and saved
 They can be used to generate a self-signed [X509Certificate] via [method Crypto.generate_self_signed_certificate] and as private key in [method StreamPeerTLS.accept_stream] along with the appropriate certificate.
 */
 type Instance [1]gdclass.CryptoKey
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCryptoKey() Instance

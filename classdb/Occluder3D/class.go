@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
 */
 type Instance [1]gdclass.Occluder3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOccluder3D() Instance

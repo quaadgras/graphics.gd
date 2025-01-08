@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Usage is the same as [MultiMeshInstance3D].
 */
 type Instance [1]gdclass.MultiMeshInstance2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiMeshInstance2D() Instance

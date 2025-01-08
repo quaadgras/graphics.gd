@@ -24,6 +24,10 @@ Shortcuts are commonly used for interacting with a [Control] element from an [In
 One shortcut can contain multiple [InputEvent]'s, allowing the possibility of triggering one action with multiple different inputs.
 */
 type Instance [1]gdclass.Shortcut
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShortcut() Instance

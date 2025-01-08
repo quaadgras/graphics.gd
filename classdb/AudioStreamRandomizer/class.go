@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Picks a random AudioStream from the pool, depending on the playback mode, and applies random pitch shifting and volume shifting during playback.
 */
 type Instance [1]gdclass.AudioStreamRandomizer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamRandomizer() Instance

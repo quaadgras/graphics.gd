@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A control that displays a texture, for example an icon inside a GUI. The texture's placement can be controlled with the [member stretch_mode] property. It can scale, tile, or stay centered inside its bounding rectangle.
 */
 type Instance [1]gdclass.TextureRect
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextureRect() Instance

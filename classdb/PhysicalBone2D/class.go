@@ -30,6 +30,10 @@ The [PhysicalBone2D] node is a [RigidBody2D]-based node that can be used to make
 [b]Note:[/b] The [PhysicalBone2D] node does not automatically create a [Joint2D] node to keep [PhysicalBone2D] nodes together. They must be created manually. For most cases, you want to use a [PinJoint2D] node. The [PhysicalBone2D] node will automatically configure the [Joint2D] node once it's been added as a child node.
 */
 type Instance [1]gdclass.PhysicalBone2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicalBone2D() Instance

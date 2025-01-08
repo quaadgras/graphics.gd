@@ -25,6 +25,10 @@ This class is used when loading a project that uses a [Material] subclass in 2 c
 - When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
 */
 type Instance [1]gdclass.PlaceholderMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPlaceholderMaterial() Instance

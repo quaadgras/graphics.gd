@@ -22,6 +22,10 @@ Abstract scene buffers object, created for each viewport for which 3D rendering 
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]gdclass.RenderSceneBuffers
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffers() Instance

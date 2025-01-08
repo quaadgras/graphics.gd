@@ -24,6 +24,10 @@ When used directly in an [AudioStreamPlayer] node, [AudioStreamMicrophone] plays
 [b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
 type Instance [1]gdclass.AudioStreamMicrophone
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamMicrophone() Instance

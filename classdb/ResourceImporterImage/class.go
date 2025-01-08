@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 This importer imports [Image] resources, as opposed to [CompressedTexture2D]. If you need to render the image in 2D or 3D, use [ResourceImporterTexture] instead.
 */
 type Instance [1]gdclass.ResourceImporterImage
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterImage() Instance

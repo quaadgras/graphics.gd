@@ -28,6 +28,10 @@ GraphFrame is a special [GraphElement] to which other [GraphElement]s can be att
 A GraphFrame is always kept behind the connection layer and other [GraphElement]s inside a [GraphEdit].
 */
 type Instance [1]gdclass.GraphFrame
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGraphFrame() Instance

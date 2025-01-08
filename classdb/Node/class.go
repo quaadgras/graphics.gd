@@ -39,6 +39,10 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 %!(EXTRA string=Node)
 */
 type Instance [1]gdclass.Node
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNode() Instance

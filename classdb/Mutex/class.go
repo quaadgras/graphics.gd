@@ -26,6 +26,10 @@ This is a reentrant mutex, meaning that it can be locked multiple times by one t
 - When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not have any mutex locked.
 */
 type Instance [1]gdclass.Mutex
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMutex() Instance

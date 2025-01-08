@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Generic 3D position hint for editing. It's just like a plain [Node3D], but it displays as a cross in the 3D editor at all times.
 */
 type Instance [1]gdclass.Marker3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMarker3D() Instance

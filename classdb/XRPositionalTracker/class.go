@@ -28,6 +28,10 @@ As controllers are turned on and the [XRInterface] detects them, instances of th
 The [XRNode3D] and [XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
 */
 type Instance [1]gdclass.XRPositionalTracker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRPositionalTracker() Instance

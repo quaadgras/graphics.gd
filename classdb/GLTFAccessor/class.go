@@ -23,6 +23,10 @@ GLTFAccessor is a data structure representing GLTF a [code]accessor[/code] that 
 Most custom data stored in GLTF does not need accessors, only buffer views (see [GLTFBufferView]). Accessors are for more advanced use cases such as interleaved mesh data encoded for the GPU.
 */
 type Instance [1]gdclass.GLTFAccessor
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFAccessor() Instance

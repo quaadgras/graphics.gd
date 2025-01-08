@@ -28,6 +28,10 @@ var _ = pointers.Cycle
 [b]Note:[/b] [RootMotionView] is only visible in the editor. It will be hidden automatically in the running project.
 */
 type Instance [1]gdclass.RootMotionView
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRootMotionView() Instance

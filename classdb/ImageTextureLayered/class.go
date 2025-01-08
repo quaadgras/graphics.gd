@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
 */
 type Instance [1]gdclass.ImageTextureLayered
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImageTextureLayered() Instance

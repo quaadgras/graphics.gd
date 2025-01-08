@@ -27,6 +27,10 @@ See also [AudioStreamPlayer] to play a sound non-positionally.
 [b]Note:[/b] Hiding an [AudioStreamPlayer3D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer3D]'s audio output, set [member volume_db] to a very low value like [code]-100[/code] (which isn't audible to human hearing).
 */
 type Instance [1]gdclass.AudioStreamPlayer3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamPlayer3D() Instance

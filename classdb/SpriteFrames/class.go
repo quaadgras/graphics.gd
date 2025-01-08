@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Contains frames and animation data for playback.
 */
 type Instance [1]gdclass.SpriteFrames
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSpriteFrames() Instance

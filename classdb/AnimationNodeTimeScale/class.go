@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Allows to scale the speed of the animation (or reverse it) in any child [AnimationNode]s. Setting it to [code]0.0[/code] will pause the animation.
 */
 type Instance [1]gdclass.AnimationNodeTimeScale
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeTimeScale() Instance

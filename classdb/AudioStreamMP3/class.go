@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 MP3 audio stream driver. See [member data] if you want to load an MP3 file at run-time.
 */
 type Instance [1]gdclass.AudioStreamMP3
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamMP3() Instance

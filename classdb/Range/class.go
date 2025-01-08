@@ -29,6 +29,10 @@ Range is an abstract base class for controls that represent a number within a ra
 %!(EXTRA string=Range)
 */
 type Instance [1]gdclass.Range
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRange() Instance

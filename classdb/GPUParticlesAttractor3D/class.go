@@ -28,6 +28,10 @@ Attractors can be temporarily disabled by hiding them, or by setting their [memb
 [b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
 */
 type Instance [1]gdclass.GPUParticlesAttractor3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticlesAttractor3D() Instance

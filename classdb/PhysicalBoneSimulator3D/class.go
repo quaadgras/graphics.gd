@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Node that can be the parent of [PhysicalBone3D] and can apply the simulation results to [Skeleton3D].
 */
 type Instance [1]gdclass.PhysicalBoneSimulator3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicalBoneSimulator3D() Instance

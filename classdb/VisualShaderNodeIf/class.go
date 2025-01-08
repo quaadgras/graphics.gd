@@ -26,6 +26,10 @@ This visual shader node has six input ports:
 - Ports [b]4[/b], [b]5[/b], and [b]6[/b] are the possible outputs, returned if [code]a == b[/code], [code]a > b[/code], or [code]a < b[/code] respectively.
 */
 type Instance [1]gdclass.VisualShaderNodeIf
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeIf() Instance

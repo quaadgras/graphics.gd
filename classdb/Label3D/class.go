@@ -29,6 +29,10 @@ var _ = pointers.Cycle
 A node for displaying plain text in 3D space. By adjusting various properties of this node, you can configure things such as the text's appearance and whether it always faces the camera.
 */
 type Instance [1]gdclass.Label3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLabel3D() Instance

@@ -47,6 +47,10 @@ skeleton_ik_node.set_influence(0.0)
 [/codeblock]
 */
 type Instance [1]gdclass.SkeletonIK3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonIK3D() Instance

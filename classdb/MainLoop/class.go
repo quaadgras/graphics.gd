@@ -83,6 +83,10 @@ public partial class CustomMainLoop : MainLoop
 %!(EXTRA string=MainLoop)
 */
 type Instance [1]gdclass.MainLoop
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMainLoop() Instance

@@ -34,6 +34,10 @@ To force an update earlier on, call [method update_internals].
 %!(EXTRA string=TileMapLayer)
 */
 type Instance [1]gdclass.TileMapLayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTileMapLayer() Instance

@@ -25,6 +25,10 @@ RemoteTransform3D pushes its own [Transform3D] to another [Node3D] derived Node 
 It can be set to update another Node's position, rotation and/or scale. It can use either global or local coordinates.
 */
 type Instance [1]gdclass.RemoteTransform3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRemoteTransform3D() Instance

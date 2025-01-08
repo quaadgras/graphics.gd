@@ -24,6 +24,10 @@ An instance of this object represents a tracked face and its corresponding blend
 As face trackers are turned on they are registered with the [XRServer].
 */
 type Instance [1]gdclass.XRFaceTracker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRFaceTracker() Instance

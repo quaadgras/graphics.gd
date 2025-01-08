@@ -28,6 +28,10 @@ Stores information about pan gestures. A pan gesture is performed when the user 
 [b]Note:[/b] On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
 */
 type Instance [1]gdclass.InputEventPanGesture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventPanGesture() Instance

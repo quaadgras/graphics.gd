@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A physics joint that attaches two 2D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody2D] can be attached to a [StaticBody2D] to create a pendulum or a seesaw.
 */
 type Instance [1]gdclass.PinJoint2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPinJoint2D() Instance

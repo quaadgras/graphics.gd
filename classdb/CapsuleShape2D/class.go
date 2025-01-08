@@ -25,6 +25,10 @@ A 2D capsule shape, intended for use in physics. Usually used to provide a shape
 [b]Performance:[/b] [CapsuleShape2D] is fast to check collisions against, but it is slower than [RectangleShape2D] and [CircleShape2D].
 */
 type Instance [1]gdclass.CapsuleShape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCapsuleShape2D() Instance

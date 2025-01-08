@@ -25,6 +25,10 @@ A 3D capsule shape, intended for use in physics. Usually used to provide a shape
 [b]Performance:[/b] [CapsuleShape3D] is fast to check collisions against. It is faster than [CylinderShape3D], but slower than [SphereShape3D] and [BoxShape3D].
 */
 type Instance [1]gdclass.CapsuleShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCapsuleShape3D() Instance

@@ -53,6 +53,10 @@ func _process(delta):
 To use the peer as part of a WebSocket server refer to [method accept_stream] and the online tutorial.
 */
 type Instance [1]gdclass.WebSocketPeer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWebSocketPeer() Instance

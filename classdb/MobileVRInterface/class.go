@@ -33,6 +33,10 @@ if interface and interface.initialize():
 [/codeblock]
 */
 type Instance [1]gdclass.MobileVRInterface
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMobileVRInterface() Instance

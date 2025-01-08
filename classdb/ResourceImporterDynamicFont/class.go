@@ -24,6 +24,10 @@ While WOFF and especially WOFF2 tend to result in smaller file sizes, there is n
 See also [ResourceImporterBMFont] and [ResourceImporterImageFont].
 */
 type Instance [1]gdclass.ResourceImporterDynamicFont
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterDynamicFont() Instance

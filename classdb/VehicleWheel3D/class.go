@@ -25,6 +25,10 @@ A node used as a child of a [VehicleBody3D] parent to simulate the behavior of o
 [b]Note:[/b] This class has known issues and isn't designed to provide realistic 3D vehicle physics. If you want advanced vehicle physics, you may need to write your own physics integration using another [PhysicsBody3D] class.
 */
 type Instance [1]gdclass.VehicleWheel3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVehicleWheel3D() Instance

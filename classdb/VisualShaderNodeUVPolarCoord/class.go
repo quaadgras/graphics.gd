@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 UV polar coord node will transform UV values into polar coordinates, with specified scale, zoom strength and repeat parameters. It can be used to create various swirl distortions.
 */
 type Instance [1]gdclass.VisualShaderNodeUVPolarCoord
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeUVPolarCoord() Instance

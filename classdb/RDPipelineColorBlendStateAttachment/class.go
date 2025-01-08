@@ -77,6 +77,10 @@ attachment.dst_alpha_blend_factor = RenderingDevice.BLEND_FACTOR_ONE_MINUS_SRC_A
 [/codeblock]
 */
 type Instance [1]gdclass.RDPipelineColorBlendStateAttachment
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDPipelineColorBlendStateAttachment() Instance

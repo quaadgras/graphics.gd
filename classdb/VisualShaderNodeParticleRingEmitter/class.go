@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 [VisualShaderNodeParticleEmitter] that makes the particles emitted in ring shape with the specified inner and outer radii and height.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleRingEmitter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleRingEmitter() Instance

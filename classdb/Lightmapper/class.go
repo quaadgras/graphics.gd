@@ -22,6 +22,10 @@ This class should be extended by custom lightmapper classes. Lightmappers can th
 Godot contains a built-in GPU-based lightmapper [LightmapperRD] that uses compute shaders, but custom lightmappers can be implemented by C++ modules.
 */
 type Instance [1]gdclass.Lightmapper
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightmapper() Instance

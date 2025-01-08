@@ -31,6 +31,10 @@ Internally, Godot maps these files to their respective counterparts in the targe
 %!(EXTRA string=TextureLayered)
 */
 type Instance [1]gdclass.TextureLayered
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextureLayered() Instance

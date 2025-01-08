@@ -31,6 +31,10 @@ Intended for use with GDExtension to create custom implementations of [PhysicsSe
 %!(EXTRA string=PhysicsServer2DExtension)
 */
 type Instance [1]gdclass.PhysicsServer2DExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsServer2DExtension() Instance

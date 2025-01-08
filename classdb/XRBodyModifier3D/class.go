@@ -26,6 +26,10 @@ Positioning of the body is performed by creating an [XRNode3D] ancestor of the b
 The body tracking position-data is scaled by [member Skeleton3D.motion_scale] when applied to the skeleton, which can be used to adjust the tracked body to match the scale of the body model.
 */
 type Instance [1]gdclass.XRBodyModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRBodyModifier3D() Instance

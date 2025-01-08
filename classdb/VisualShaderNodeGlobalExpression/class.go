@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Custom Godot Shader Language expression, which is placed on top of the generated shader. You can place various function definitions inside to call later in [VisualShaderNodeExpression]s (which are injected in the main shader functions). You can also declare varyings, uniforms and global constants.
 */
 type Instance [1]gdclass.VisualShaderNodeGlobalExpression
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeGlobalExpression() Instance

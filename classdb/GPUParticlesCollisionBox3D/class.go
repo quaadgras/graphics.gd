@@ -29,6 +29,10 @@ Particle collision shapes work in real-time and can be moved, rotated and scaled
 [b]Note:[/b] Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
 */
 type Instance [1]gdclass.GPUParticlesCollisionBox3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticlesCollisionBox3D() Instance

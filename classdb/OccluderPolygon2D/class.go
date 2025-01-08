@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Editor facility that helps you draw a 2D polygon used as resource for [LightOccluder2D].
 */
 type Instance [1]gdclass.OccluderPolygon2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOccluderPolygon2D() Instance

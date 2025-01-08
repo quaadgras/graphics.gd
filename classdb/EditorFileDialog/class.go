@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
 */
 type Instance [1]gdclass.EditorFileDialog
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorFileDialog() Instance

@@ -24,6 +24,10 @@ Maintains a list of resources, nodes, exported and overridden properties, and bu
 This class cannot be instantiated directly, it is retrieved for a given scene as the result of [method PackedScene.get_state].
 */
 type Instance [1]gdclass.SceneState
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSceneState() Instance

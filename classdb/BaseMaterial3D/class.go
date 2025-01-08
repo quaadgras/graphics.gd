@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 This class serves as a default material with a wide variety of rendering features and properties without the need to write shader code. See the tutorial below for details.
 */
 type Instance [1]gdclass.BaseMaterial3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBaseMaterial3D() Instance

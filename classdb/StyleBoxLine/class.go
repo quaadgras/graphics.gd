@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A [StyleBox] that displays a single line of a given color and thickness. The line can be either horizontal or vertical. Useful for separators.
 */
 type Instance [1]gdclass.StyleBoxLine
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsStyleBoxLine() Instance

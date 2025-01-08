@@ -29,6 +29,10 @@ This class needs to be implemented to make an AR or VR platform available to God
 Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
 */
 type Instance [1]gdclass.XRInterface
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRInterface() Instance

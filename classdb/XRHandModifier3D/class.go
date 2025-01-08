@@ -26,6 +26,10 @@ Positioning of hands is performed by creating an [XRNode3D] ancestor of the hand
 The hand tracking position-data is scaled by [member Skeleton3D.motion_scale] when applied to the skeleton, which can be used to adjust the tracked hand to match the scale of the hand model.
 */
 type Instance [1]gdclass.XRHandModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRHandModifier3D() Instance

@@ -29,6 +29,10 @@ Similar to [EditorResourcePicker] this [Control] node is used in the editor's In
 [b]Note:[/b] You must set the [member script_owner] for the custom context menu items to work.
 */
 type Instance [1]gdclass.EditorScriptPicker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorScriptPicker() Instance

@@ -24,6 +24,10 @@ A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI
 [b]Note:[/b] ENet only uses UDP, not TCP. When forwarding the server port to make your server accessible on the public Internet, you only need to forward the server port in UDP. You can use the [UPNP] class to try to forward the server port automatically when starting the server.
 */
 type Instance [1]gdclass.ENetMultiplayerPeer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsENetMultiplayerPeer() Instance

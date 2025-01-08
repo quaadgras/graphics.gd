@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Compares [code]a[/code] and [code]b[/code] of [member type] by [member function]. Returns a boolean scalar. Translates to [code]if[/code] instruction in shader code.
 */
 type Instance [1]gdclass.VisualShaderNodeCompare
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCompare() Instance

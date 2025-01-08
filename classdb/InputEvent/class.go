@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Abstract base class of all types of input events. See [method Node._input].
 */
 type Instance [1]gdclass.InputEvent
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEvent() Instance

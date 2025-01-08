@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 This node is only available in [code]Fragment[/code] and [code]Light[/code] visual shaders.
 */
 type Instance [1]gdclass.VisualShaderNodeDerivativeFunc
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeDerivativeFunc() Instance

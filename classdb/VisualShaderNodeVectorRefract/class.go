@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Translated to [code]refract(I, N, eta)[/code] in the shader language, where [code]I[/code] is the incident vector, [code]N[/code] is the normal vector and [code]eta[/code] is the ratio of the indices of the refraction.
 */
 type Instance [1]gdclass.VisualShaderNodeVectorRefract
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVectorRefract() Instance

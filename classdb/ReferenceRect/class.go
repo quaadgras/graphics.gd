@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A rectangle box that displays only a colored border around its rectangle. It is used to visualize the extents of a [Control].
 */
 type Instance [1]gdclass.ReferenceRect
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsReferenceRect() Instance

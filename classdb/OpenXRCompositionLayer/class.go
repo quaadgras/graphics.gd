@@ -26,6 +26,10 @@ Composition layers allow 2D viewports to be displayed inside of the headset by t
 [b]Note:[/b] If the OpenXR runtime doesn't support the given composition layer type, a fallback mesh can be generated with a [ViewportTexture], in order to emulate the composition layer.
 */
 type Instance [1]gdclass.OpenXRCompositionLayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRCompositionLayer() Instance

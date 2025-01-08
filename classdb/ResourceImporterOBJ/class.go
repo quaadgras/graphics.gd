@@ -23,6 +23,10 @@ Unlike [ResourceImporterScene], [ResourceImporterOBJ] will import a single [Mesh
 See also [ResourceImporterScene], which is used for more advanced 3D formats such as glTF.
 */
 type Instance [1]gdclass.ResourceImporterOBJ
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterOBJ() Instance

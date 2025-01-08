@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
 */
 type Instance [1]gdclass.GLTFMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFMesh() Instance

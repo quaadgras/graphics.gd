@@ -42,6 +42,10 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 %!(EXTRA string=Control)
 */
 type Instance [1]gdclass.Control
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsControl() Instance

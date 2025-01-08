@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Gives access to input variables (built-ins) available for the shader. See the shading reference for the list of available built-ins for each shader type (check [code]Tutorials[/code] section for link).
 */
 type Instance [1]gdclass.VisualShaderNodeInput
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeInput() Instance

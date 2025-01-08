@@ -27,6 +27,10 @@ Nodes attached to the frame will move with it when it is dragged and it can auto
 Its title, description and color can be customized.
 */
 type Instance [1]gdclass.VisualShaderNodeFrame
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeFrame() Instance

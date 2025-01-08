@@ -26,6 +26,10 @@ A [Material] resource that can be used by [FogVolume]s to draw volumetric effect
 If you need more advanced effects, use a custom [url=$DOCS_URL/tutorials/shaders/shader_reference/fog_shader.html]fog shader[/url].
 */
 type Instance [1]gdclass.FogMaterial
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFogMaterial() Instance

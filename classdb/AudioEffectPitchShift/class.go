@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Allows modulation of pitch independently of tempo. All frequencies can be increased/decreased with minimal effect on transients.
 */
 type Instance [1]gdclass.AudioEffectPitchShift
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectPitchShift() Instance

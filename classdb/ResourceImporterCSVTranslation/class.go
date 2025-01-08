@@ -30,6 +30,10 @@ QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」
 [/codeblock]
 */
 type Instance [1]gdclass.ResourceImporterCSVTranslation
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterCSVTranslation() Instance

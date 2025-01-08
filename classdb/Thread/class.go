@@ -26,6 +26,10 @@ To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s referen
 - [method wait_to_finish] should have been called on it.
 */
 type Instance [1]gdclass.Thread
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsThread() Instance

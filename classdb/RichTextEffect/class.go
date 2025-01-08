@@ -38,6 +38,10 @@ string bbcode = "example";
 %!(EXTRA string=RichTextEffect)
 */
 type Instance [1]gdclass.RichTextEffect
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRichTextEffect() Instance

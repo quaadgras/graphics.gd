@@ -25,6 +25,10 @@ This is the base class for all scripts and should not be used directly. Trying t
 The [code]new[/code] method of a script subclass creates a new instance. [method Object.set_script] extends an existing object, if that object's class matches one of the script's base classes.
 */
 type Instance [1]gdclass.Script
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsScript() Instance

@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
 type Instance [1]gdclass.GLTFPhysicsBody
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFPhysicsBody() Instance

@@ -25,6 +25,10 @@ As controllers are turned on and the [XRInterface] detects them, instances of th
 The [XRController3D] consumes objects of this type and should be used in your project.
 */
 type Instance [1]gdclass.XRControllerTracker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRControllerTracker() Instance

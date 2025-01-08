@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Automatically adapts its port type to the type of the incoming connection and ensures valid connections.
 */
 type Instance [1]gdclass.VisualShaderNodeReroute
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeReroute() Instance

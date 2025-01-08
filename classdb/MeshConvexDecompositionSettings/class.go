@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Parameters to be used with a [Mesh] convex decomposition operation.
 */
 type Instance [1]gdclass.MeshConvexDecompositionSettings
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMeshConvexDecompositionSettings() Instance

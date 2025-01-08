@@ -26,6 +26,10 @@ Has two output ports representing RGB and alpha channels of [Color].
 Translated to [code]vec3 rgb[/code] and [code]float alpha[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeColorConstant
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeColorConstant() Instance

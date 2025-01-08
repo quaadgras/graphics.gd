@@ -25,6 +25,10 @@ This controls the order of the modifications and how they are applied. Modificat
 This resource also controls how strongly all of the modifications are applied to the [Skeleton2D].
 */
 type Instance [1]gdclass.SkeletonModificationStack2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModificationStack2D() Instance

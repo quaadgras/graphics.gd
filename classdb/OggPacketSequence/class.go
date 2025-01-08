@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 A sequence of Ogg packets.
 */
 type Instance [1]gdclass.OggPacketSequence
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOggPacketSequence() Instance

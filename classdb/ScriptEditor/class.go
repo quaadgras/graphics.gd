@@ -27,6 +27,10 @@ Godot editor's script editor.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_script_editor].
 */
 type Instance [1]gdclass.ScriptEditor
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsScriptEditor() Instance

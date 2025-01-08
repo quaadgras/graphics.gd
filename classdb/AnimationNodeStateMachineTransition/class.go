@@ -24,6 +24,10 @@ The path generated when using [method AnimationNodeStateMachinePlayback.travel] 
 You can set the timing and conditions of the transition in detail.
 */
 type Instance [1]gdclass.AnimationNodeStateMachineTransition
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeStateMachineTransition() Instance

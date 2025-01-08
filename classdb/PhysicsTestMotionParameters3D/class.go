@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 By changing various properties of this object, such as the motion, you can configure the parameters for [method PhysicsServer3D.body_test_motion].
 */
 type Instance [1]gdclass.PhysicsTestMotionParameters3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsTestMotionParameters3D() Instance

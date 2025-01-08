@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Represents a camera as defined by the base GLTF spec.
 */
 type Instance [1]gdclass.GLTFCamera
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFCamera() Instance

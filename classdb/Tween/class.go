@@ -117,6 +117,10 @@ Some [Tweener]s use transitions and eases. The first accepts a [enum TransitionT
 [b]Note:[/b] The tween is processed after all of the nodes in the current frame, i.e. node's [method Node._process] method would be called before the tween (or [method Node._physics_process] depending on the value passed to [method set_process_mode]).
 */
 type Instance [1]gdclass.Tween
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTween() Instance

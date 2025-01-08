@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 An animation node used to combine, mix, or blend two or more animations together while keeping them synchronized within an [AnimationTree].
 */
 type Instance [1]gdclass.AnimationNodeSync
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeSync() Instance

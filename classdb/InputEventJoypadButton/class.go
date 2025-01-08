@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Input event type for gamepad buttons. For gamepad analog sticks and joysticks, see [InputEventJoypadMotion].
 */
 type Instance [1]gdclass.InputEventJoypadButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventJoypadButton() Instance

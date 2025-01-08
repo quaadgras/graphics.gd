@@ -27,6 +27,10 @@ A node that provides a polygon shape to a [CollisionObject2D] parent and allows 
 [b]Warning:[/b] A non-uniformly scaled [CollisionShape2D] will likely not behave as expected. Make sure to keep its scale the same on all axes and adjust its shape resource instead.
 */
 type Instance [1]gdclass.CollisionPolygon2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCollisionPolygon2D() Instance

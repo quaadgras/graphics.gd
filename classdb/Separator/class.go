@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Abstract base class for separators, used for separating other controls. [Separator]s are purely visual and normally drawn as a [StyleBoxLine].
 */
 type Instance [1]gdclass.Separator
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSeparator() Instance

@@ -27,6 +27,10 @@ You can iterate over all tiles exposed by a TileSetSource by first iterating ove
 [b]Warning:[/b] [TileSetSource] can only be added to one TileSet at the same time. Calling [method TileSet.add_source] on a second [TileSet] will remove the source from the first one.
 */
 type Instance [1]gdclass.TileSetSource
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTileSetSource() Instance

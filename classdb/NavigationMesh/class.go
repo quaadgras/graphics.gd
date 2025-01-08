@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A navigation mesh is a collection of polygons that define which areas of an environment are traversable to aid agents in pathfinding through complicated spaces.
 */
 type Instance [1]gdclass.NavigationMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNavigationMesh() Instance

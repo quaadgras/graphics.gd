@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 A multiplication operation on a transform (4×4 matrix) and a vector, with support for different multiplication operators.
 */
 type Instance [1]gdclass.VisualShaderNodeTransformVecMult
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTransformVecMult() Instance

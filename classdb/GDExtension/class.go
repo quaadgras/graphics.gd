@@ -23,6 +23,10 @@ The [GDExtension] resource type represents a [url=https://en.wikipedia.org/wiki/
 [b]Note:[/b] GDExtension itself is not a scripting language and has no relation to [GDScript] resources.
 */
 type Instance [1]gdclass.GDExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGDExtension() Instance

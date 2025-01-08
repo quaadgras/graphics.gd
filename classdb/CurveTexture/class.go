@@ -25,6 +25,10 @@ A 1D texture where pixel brightness corresponds to points on a [Curve] resource,
 If you need to store up to 3 curves within a single texture, use [CurveXYZTexture] instead. See also [GradientTexture1D] and [GradientTexture2D].
 */
 type Instance [1]gdclass.CurveTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCurveTexture() Instance

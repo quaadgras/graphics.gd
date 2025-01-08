@@ -23,6 +23,10 @@ Object holds scene data related to rendering a single frame of a viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]gdclass.RenderSceneDataRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneDataRD() Instance

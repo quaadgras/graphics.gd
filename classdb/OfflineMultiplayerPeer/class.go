@@ -24,6 +24,10 @@ This is the default [member MultiplayerAPI.multiplayer_peer] for the [member Nod
 This means that the [SceneTree] will act as the multiplayer authority by default. Calls to [method MultiplayerAPI.is_server] will return [code]true[/code], and calls to [method MultiplayerAPI.get_unique_id] will return [constant MultiplayerPeer.TARGET_PEER_SERVER].
 */
 type Instance [1]gdclass.OfflineMultiplayerPeer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOfflineMultiplayerPeer() Instance

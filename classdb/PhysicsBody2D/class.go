@@ -27,6 +27,10 @@ var _ = pointers.Cycle
 [PhysicsBody2D] is an abstract base class for 2D game objects affected by physics. All 2D physics bodies inherit from it.
 */
 type Instance [1]gdclass.PhysicsBody2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsBody2D() Instance

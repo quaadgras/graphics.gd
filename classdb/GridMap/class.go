@@ -33,6 +33,10 @@ Internally, a GridMap is split into a sparse collection of octants for efficient
 [b]Note:[/b] GridMap doesn't extend [VisualInstance3D] and therefore can't be hidden or cull masked based on [member VisualInstance3D.layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
 */
 type Instance [1]gdclass.GridMap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGridMap() Instance

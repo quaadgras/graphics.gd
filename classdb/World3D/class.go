@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Class that has everything pertaining to a world: A physics space, a visual scenario, and a sound space. 3D nodes register their resources into the current 3D world.
 */
 type Instance [1]gdclass.World3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWorld3D() Instance

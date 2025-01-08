@@ -24,6 +24,10 @@ Turning on the option [b]Load As Placeholder[/b] for an instantiated scene in th
 The [InstancePlaceholder] does not have a transform. This causes any child nodes to be positioned relatively to the [Viewport] from point (0,0), rather than their parent as displayed in the editor. Replacing the placeholder with a scene with a transform will transform children relatively to their parent again.
 */
 type Instance [1]gdclass.InstancePlaceholder
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInstancePlaceholder() Instance

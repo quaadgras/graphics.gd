@@ -28,6 +28,10 @@ See [VisibleOnScreenNotifier2D] if you only want to be notified when the region 
 [b]Note:[/b] [VisibleOnScreenEnabler2D] uses the render culling code to determine whether it's visible on screen, so it won't function unless [member CanvasItem.visible] is set to [code]true[/code].
 */
 type Instance [1]gdclass.VisibleOnScreenEnabler2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisibleOnScreenEnabler2D() Instance

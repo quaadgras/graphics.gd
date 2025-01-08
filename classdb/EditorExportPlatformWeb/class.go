@@ -23,6 +23,10 @@ The Web exporter customizes how a web build is handled. In the editor's "Export"
 [b]Note:[/b] Godot on Web is rendered inside a [code]<canvas>[/code] tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [Window] of the application.
 */
 type Instance [1]gdclass.EditorExportPlatformWeb
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorExportPlatformWeb() Instance

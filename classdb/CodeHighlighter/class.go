@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
 */
 type Instance [1]gdclass.CodeHighlighter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCodeHighlighter() Instance

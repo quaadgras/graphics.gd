@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 This node was replaced by [VisualShaderNodeFrame] and only exists to preserve compatibility. In the [VisualShader] editor it behaves exactly like [VisualShaderNodeFrame].
 */
 type Instance [1]gdclass.VisualShaderNodeComment
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeComment() Instance

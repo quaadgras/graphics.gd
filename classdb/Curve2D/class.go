@@ -26,6 +26,10 @@ This class describes a Bézier curve in 2D space. It is mainly used to give a sh
 It keeps a cache of precalculated points along the curve, to speed up further calculations.
 */
 type Instance [1]gdclass.Curve2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCurve2D() Instance

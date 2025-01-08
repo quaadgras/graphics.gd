@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 KHR_materials_pbrSpecularGlossiness is an archived GLTF extension. This means that it is deprecated and not recommended for new files. However, it is still supported for loading old files.
 */
 type Instance [1]gdclass.GLTFSpecGloss
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFSpecGloss() Instance

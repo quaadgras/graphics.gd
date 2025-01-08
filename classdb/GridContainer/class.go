@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 [b]Note:[/b] [GridContainer] only works with child nodes inheriting from [Control]. It won't rearrange child nodes inheriting from [Node2D].
 */
 type Instance [1]gdclass.GridContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGridContainer() Instance

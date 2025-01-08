@@ -24,6 +24,10 @@ Translates to [code]step(edge, x)[/code] in the shader language.
 Returns [code]0.0[/code] if [code]x[/code] is smaller than [code]edge[/code] and [code]1.0[/code] otherwise.
 */
 type Instance [1]gdclass.VisualShaderNodeStep
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeStep() Instance

@@ -27,6 +27,10 @@ The "normal" state must contain a texture ([member texture_normal]); other textu
 See also [BaseButton] which contains common properties and methods associated with this node.
 */
 type Instance [1]gdclass.TextureButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextureButton() Instance

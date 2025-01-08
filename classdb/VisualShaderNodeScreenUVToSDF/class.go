@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Translates to [code]screen_uv_to_sdf(uv)[/code] in the shader language. If the UV port isn't connected, [code]SCREEN_UV[/code] is used instead.
 */
 type Instance [1]gdclass.VisualShaderNodeScreenUVToSDF
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeScreenUVToSDF() Instance

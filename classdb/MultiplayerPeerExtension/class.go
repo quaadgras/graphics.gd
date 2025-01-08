@@ -27,6 +27,10 @@ This class is designed to be inherited from a GDExtension plugin to implement cu
 %!(EXTRA string=MultiplayerPeerExtension)
 */
 type Instance [1]gdclass.MultiplayerPeerExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiplayerPeerExtension() Instance

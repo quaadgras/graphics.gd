@@ -33,6 +33,10 @@ class_name VisualShaderNodeNoise
 %!(EXTRA string=VisualShaderNodeCustom)
 */
 type Instance [1]gdclass.VisualShaderNodeCustom
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeCustom() Instance

@@ -25,6 +25,10 @@ Once added to the scene tree and enabled using [method make_current], this node 
 If there is no active [AudioListener2D] in the current [Viewport], center of the screen will be used as a hearing point for the audio. [AudioListener2D] needs to be inside [SceneTree] to function.
 */
 type Instance [1]gdclass.AudioListener2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioListener2D() Instance

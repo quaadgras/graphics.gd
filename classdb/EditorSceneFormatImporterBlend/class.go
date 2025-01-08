@@ -26,6 +26,10 @@ Blend import requires Blender 3.0.
 Internally, the EditorSceneFormatImporterBlend uses the Blender glTF "Use Original" mode to reference external textures.
 */
 type Instance [1]gdclass.EditorSceneFormatImporterBlend
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSceneFormatImporterBlend() Instance

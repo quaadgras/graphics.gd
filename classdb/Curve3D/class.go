@@ -26,6 +26,10 @@ This class describes a Bézier curve in 3D space. It is mainly used to give a sh
 It keeps a cache of precalculated points along the curve, to speed up further calculations.
 */
 type Instance [1]gdclass.Curve3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCurve3D() Instance

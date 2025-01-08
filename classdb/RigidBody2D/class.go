@@ -37,6 +37,10 @@ If you need to override the default physics behavior, you can write a custom for
 %!(EXTRA string=RigidBody2D)
 */
 type Instance [1]gdclass.RigidBody2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRigidBody2D() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Varying values are shader variables that can be passed between shader functions, e.g. from Vertex shader to Fragment shader.
 */
 type Instance [1]gdclass.VisualShaderNodeVarying
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVarying() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Constrains a value to lie between [code]min[/code] and [code]max[/code] values.
 */
 type Instance [1]gdclass.VisualShaderNodeClamp
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeClamp() Instance

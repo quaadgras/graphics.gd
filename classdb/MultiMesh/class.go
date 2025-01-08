@@ -31,6 +31,10 @@ Since instances may have any behavior, the AABB used for visibility must be prov
 [b]Note:[/b] Blend Shapes will be ignored if used in a MultiMesh.
 */
 type Instance [1]gdclass.MultiMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiMesh() Instance

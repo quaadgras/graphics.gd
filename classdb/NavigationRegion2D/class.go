@@ -32,6 +32,10 @@ The pathfinding cost of traveling distances inside this region can be controlled
 [b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer2D], they will not be reflected in this node's properties.
 */
 type Instance [1]gdclass.NavigationRegion2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNavigationRegion2D() Instance

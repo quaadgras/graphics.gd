@@ -28,6 +28,10 @@ See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D
 %!(EXTRA string=AStar2D)
 */
 type Instance [1]gdclass.AStar2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAStar2D() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 The ScreenNormalWorldSpace node allows to create outline effects.
 */
 type Instance [1]gdclass.VisualShaderNodeScreenNormalWorldSpace
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeScreenNormalWorldSpace() Instance

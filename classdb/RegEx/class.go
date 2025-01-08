@@ -69,6 +69,10 @@ for result in regex.search_all("One  Two \n\tThree"):
 [b]Tip:[/b] You can use [url=https://regexr.com/]Regexr[/url] to test regular expressions online.
 */
 type Instance [1]gdclass.RegEx
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRegEx() Instance

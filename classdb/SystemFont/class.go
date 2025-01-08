@@ -28,6 +28,10 @@ You can create [FontVariation] of the system font for precise control over its f
 [b]Note:[/b] This class is implemented on iOS, Linux, macOS and Windows, on other platforms it will fallback to default theme font.
 */
 type Instance [1]gdclass.SystemFont
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSystemFont() Instance

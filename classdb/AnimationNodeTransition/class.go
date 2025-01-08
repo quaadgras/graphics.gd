@@ -55,6 +55,10 @@ animationTree.Get("parameters/Transition/current_index");
 [/codeblocks]
 */
 type Instance [1]gdclass.AnimationNodeTransition
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeTransition() Instance

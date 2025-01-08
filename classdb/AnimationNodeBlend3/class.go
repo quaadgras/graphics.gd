@@ -29,6 +29,10 @@ This animation node has three inputs:
 In general, the blend value should be in the [code][-1.0, 1.0][/code] range. Values outside of this range can blend amplified animations, however, [AnimationNodeAdd3] works better for this purpose.
 */
 type Instance [1]gdclass.AnimationNodeBlend3
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeBlend3() Instance

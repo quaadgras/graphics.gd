@@ -23,6 +23,10 @@ The X509Certificate class represents an X509 certificate. Certificates can be lo
 They can be used as the server certificate in [method StreamPeerTLS.accept_stream] (along with the proper [CryptoKey]), and to specify the only certificate that should be accepted when connecting to a TLS server via [method StreamPeerTLS.connect_to_stream].
 */
 type Instance [1]gdclass.X509Certificate
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsX509Certificate() Instance

@@ -26,6 +26,10 @@ Abstract scene data object, exists for the duration of rendering a single viewpo
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]gdclass.RenderSceneData
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderSceneData() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 An empty [StyleBox] that can be used to display nothing instead of the default style (e.g. it can "disable" [code]focus[/code] styles).
 */
 type Instance [1]gdclass.StyleBoxEmpty
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsStyleBoxEmpty() Instance

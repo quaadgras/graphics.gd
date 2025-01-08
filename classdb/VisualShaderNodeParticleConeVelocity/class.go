@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 This node can be used in "start" step of particle shader. It defines the initial velocity of the particles, making them move in cone shape starting from the center, with a given spread.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleConeVelocity
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleConeVelocity() Instance

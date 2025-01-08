@@ -25,6 +25,10 @@ A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a pa
 [b]Note:[/b] Each [ParallaxBackground] is drawn on one specific [Viewport] and cannot be shared between multiple [Viewport]s, see [member CanvasLayer.custom_viewport]. When using multiple [Viewport]s, for example in a split-screen game, you need create an individual [ParallaxBackground] for each [Viewport] you want it to be drawn on.
 */
 type Instance [1]gdclass.ParallaxBackground
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsParallaxBackground() Instance

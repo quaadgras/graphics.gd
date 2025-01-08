@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A container that accepts only two child controls, then arranges them horizontally and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
 */
 type Instance [1]gdclass.HSplitContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHSplitContainer() Instance

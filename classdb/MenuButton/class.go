@@ -27,6 +27,10 @@ A button that brings up a [PopupMenu] when clicked. To create new items inside t
 See also [BaseButton] which contains common properties and methods associated with this node.
 */
 type Instance [1]gdclass.MenuButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMenuButton() Instance

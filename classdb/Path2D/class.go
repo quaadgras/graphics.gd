@@ -25,6 +25,10 @@ Can have [PathFollow2D] child nodes moving along the [Curve2D]. See [PathFollow2
 [b]Note:[/b] The path is considered as relative to the moved nodes (children of [PathFollow2D]). As such, the curve should usually start with a zero vector ([code](0, 0)[/code]).
 */
 type Instance [1]gdclass.Path2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPath2D() Instance

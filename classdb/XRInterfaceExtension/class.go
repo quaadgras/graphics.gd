@@ -34,6 +34,10 @@ External XR interface plugins should inherit from this class.
 %!(EXTRA string=XRInterfaceExtension)
 */
 type Instance [1]gdclass.XRInterfaceExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRInterfaceExtension() Instance

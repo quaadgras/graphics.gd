@@ -47,6 +47,10 @@ mesh.SurfaceEnd();
 [b]Note:[/b] Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 type Instance [1]gdclass.ImmediateMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImmediateMesh() Instance

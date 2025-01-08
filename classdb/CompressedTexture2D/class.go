@@ -31,6 +31,10 @@ Only [b]VRAM Compressed[/b] actually reduces the memory usage on the GPU. The [b
 Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed textures are faster to load compared to textures using lossless or lossy compression. VRAM compression can exhibit noticeable artifacts and is intended to be used for 3D rendering, not 2D.
 */
 type Instance [1]gdclass.CompressedTexture2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompressedTexture2D() Instance

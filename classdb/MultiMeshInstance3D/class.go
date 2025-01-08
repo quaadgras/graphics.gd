@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 This is useful to optimize the rendering of a high number of instances of a given mesh (for example trees in a forest or grass strands).
 */
 type Instance [1]gdclass.MultiMeshInstance3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMultiMeshInstance3D() Instance

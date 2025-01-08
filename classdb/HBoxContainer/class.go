@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A variant of [BoxContainer] that can only arrange its child controls horizontally. Child controls are rearranged automatically when their minimum size changes.
 */
 type Instance [1]gdclass.HBoxContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHBoxContainer() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 A node created automatically in an [AnimationNodeBlendTree] that outputs the final animation.
 */
 type Instance [1]gdclass.AnimationNodeOutput
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeOutput() Instance

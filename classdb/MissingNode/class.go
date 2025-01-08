@@ -23,6 +23,10 @@ This is an internal editor class intended for keeping data of nodes of unknown t
 [b]Warning:[/b] Ignore missing nodes unless you know what you are doing. Existing properties on a missing node can be freely modified in code, regardless of the type they are intended to be.
 */
 type Instance [1]gdclass.MissingNode
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMissingNode() Instance

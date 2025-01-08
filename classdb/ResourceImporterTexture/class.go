@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 This importer imports [CompressedTexture2D] resources. If you need to process the image in scripts in a more convenient way, use [ResourceImporterImage] instead. See also [ResourceImporterLayeredTexture].
 */
 type Instance [1]gdclass.ResourceImporterTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterTexture() Instance

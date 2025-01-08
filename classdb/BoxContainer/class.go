@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A container that arranges its child controls horizontally or vertically, rearranging them automatically when their minimum size changes.
 */
 type Instance [1]gdclass.BoxContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBoxContainer() Instance

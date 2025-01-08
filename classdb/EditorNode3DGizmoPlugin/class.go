@@ -30,6 +30,10 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 %!(EXTRA string=EditorNode3DGizmoPlugin)
 */
 type Instance [1]gdclass.EditorNode3DGizmoPlugin
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorNode3DGizmoPlugin() Instance

@@ -49,6 +49,10 @@ To remove a point from the pathfinding grid, it must be set as "solid" with [met
 %!(EXTRA string=AStarGrid2D)
 */
 type Instance [1]gdclass.AStarGrid2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAStarGrid2D() Instance

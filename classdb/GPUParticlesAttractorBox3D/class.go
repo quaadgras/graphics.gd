@@ -28,6 +28,10 @@ Particle attractors work in real-time and can be moved, rotated and scaled durin
 [b]Note:[/b] Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
 */
 type Instance [1]gdclass.GPUParticlesAttractorBox3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGPUParticlesAttractorBox3D() Instance

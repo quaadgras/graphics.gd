@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 By changing various properties of this object, such as the point position, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_point].
 */
 type Instance [1]gdclass.PhysicsPointQueryParameters2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsPointQueryParameters2D() Instance

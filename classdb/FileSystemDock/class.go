@@ -28,6 +28,10 @@ This class is available only in [EditorPlugin]s and can't be instantiated. You c
 While [FileSystemDock] doesn't expose any methods for file manipulation, it can listen for various file-related signals.
 */
 type Instance [1]gdclass.FileSystemDock
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFileSystemDock() Instance

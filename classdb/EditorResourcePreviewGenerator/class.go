@@ -27,6 +27,10 @@ Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[
 %!(EXTRA string=EditorResourcePreviewGenerator)
 */
 type Instance [1]gdclass.EditorResourcePreviewGenerator
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorResourcePreviewGenerator() Instance

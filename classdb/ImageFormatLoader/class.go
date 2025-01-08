@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending [ImageFormatLoaderExtension].
 */
 type Instance [1]gdclass.ImageFormatLoader
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImageFormatLoader() Instance

@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Returns falloff based on the dot product of surface normal and view direction of camera (pass associated inputs to it).
 */
 type Instance [1]gdclass.VisualShaderNodeFresnel
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeFresnel() Instance

@@ -28,6 +28,10 @@ var _ = pointers.Cycle
 Base editor for editing scripts in the [ScriptEditor]. This does not include documentation items.
 */
 type Instance [1]gdclass.ScriptEditorBase
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsScriptEditorBase() Instance

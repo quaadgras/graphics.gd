@@ -26,6 +26,10 @@ A 3D cylinder shape, intended for use in physics. Usually used to provide a shap
 [b]Performance:[/b] [CylinderShape3D] is fast to check collisions against, but it is slower than [CapsuleShape3D], [BoxShape3D], and [SphereShape3D].
 */
 type Instance [1]gdclass.CylinderShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCylinderShape3D() Instance

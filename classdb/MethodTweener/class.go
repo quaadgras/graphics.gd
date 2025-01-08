@@ -25,6 +25,10 @@ The tweener will finish automatically if the callback's target object is freed.
 [b]Note:[/b] [method Tween.tween_method] is the only correct way to create [MethodTweener]. Any [MethodTweener] created manually will not function correctly.
 */
 type Instance [1]gdclass.MethodTweener
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMethodTweener() Instance

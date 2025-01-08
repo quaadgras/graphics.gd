@@ -32,6 +32,10 @@ Abstract base class for 3D physics objects. [CollisionObject3D] can hold any num
 %!(EXTRA string=CollisionObject3D)
 */
 type Instance [1]gdclass.CollisionObject3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCollisionObject3D() Instance

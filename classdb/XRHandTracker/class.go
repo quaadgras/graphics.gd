@@ -27,6 +27,10 @@ A hand tracking system will create an instance of this object and add it to the 
 Use [XRHandModifier3D] to animate a hand mesh using hand tracking data.
 */
 type Instance [1]gdclass.XRHandTracker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRHandTracker() Instance

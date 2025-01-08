@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
 */
 type Instance [1]gdclass.SkeletonModification2DPhysicalBones
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DPhysicalBones() Instance

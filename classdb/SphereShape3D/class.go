@@ -25,6 +25,10 @@ A 3D sphere shape, intended for use in physics. Usually used to provide a shape 
 [b]Performance:[/b] [SphereShape3D] is fast to check collisions against. It is faster than [BoxShape3D], [CapsuleShape3D], and [CylinderShape3D].
 */
 type Instance [1]gdclass.SphereShape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSphereShape3D() Instance

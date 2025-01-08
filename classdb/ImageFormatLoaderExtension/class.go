@@ -28,6 +28,10 @@ Be sure to respect the documented return types and values. You should create an 
 %!(EXTRA string=ImageFormatLoaderExtension)
 */
 type Instance [1]gdclass.ImageFormatLoaderExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImageFormatLoaderExtension() Instance

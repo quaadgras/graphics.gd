@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 RotationByAxis node will transform the vertices of a mesh with specified axis and angle in radians. It can be used to rotate an object in an arbitrary axis.
 */
 type Instance [1]gdclass.VisualShaderNodeRotationByAxis
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeRotationByAxis() Instance

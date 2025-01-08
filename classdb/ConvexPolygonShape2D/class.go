@@ -27,6 +27,10 @@ A 2D convex polygon shape, intended for use in physics. Used internally in [Coll
 [b]Performance:[/b] [ConvexPolygonShape2D] is faster to check collisions against compared to [ConcavePolygonShape2D], but it is slower than primitive collision shapes such as [CircleShape2D] and [RectangleShape2D]. Its use should generally be limited to medium-sized objects that cannot have their collision accurately represented by primitive shapes.
 */
 type Instance [1]gdclass.ConvexPolygonShape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsConvexPolygonShape2D() Instance

@@ -29,6 +29,10 @@ To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create
 [b]Note:[/b] The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from [code]-2147483648[/code] to [code]2147483647[/code].
 */
 type Instance [1]gdclass.TreeItem
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTreeItem() Instance

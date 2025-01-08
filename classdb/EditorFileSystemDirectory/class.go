@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 A more generalized, low-level variation of the directory concept.
 */
 type Instance [1]gdclass.EditorFileSystemDirectory
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorFileSystemDirectory() Instance

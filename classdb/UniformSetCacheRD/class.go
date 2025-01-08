@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Uniform set cache manager for Rendering Device based renderers. Provides a way to create a uniform set and reuse it in subsequent calls for as long as the uniform set exists. Uniform set will automatically be cleaned up when dependent objects are freed.
 */
 type Instance [1]gdclass.UniformSetCacheRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsUniformSetCacheRD() Instance

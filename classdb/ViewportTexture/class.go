@@ -28,6 +28,10 @@ To get a [ViewportTexture] in code, use the [method Viewport.get_texture] method
 [b]Note:[/b] Instantiating scenes containing a high-resolution [ViewportTexture] may cause noticeable stutter.
 */
 type Instance [1]gdclass.ViewportTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsViewportTexture() Instance

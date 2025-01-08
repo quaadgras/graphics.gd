@@ -28,6 +28,10 @@ Some methods and properties use a single key to reference an animation directly.
 Updating the target properties of animations occurs at the process frame.
 */
 type Instance [1]gdclass.AnimationPlayer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationPlayer() Instance

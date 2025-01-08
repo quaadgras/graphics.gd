@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Playback component of [AudioStreamInteractive]. Contains functions to change the currently played clip.
 */
 type Instance [1]gdclass.AudioStreamPlaybackInteractive
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamPlaybackInteractive() Instance

@@ -29,6 +29,10 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 %!(EXTRA string=EditorNode3DGizmo)
 */
 type Instance [1]gdclass.EditorNode3DGizmo
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorNode3DGizmo() Instance

@@ -26,6 +26,10 @@ PointMeshes, must be used with a material that has a point size. Point size can 
 When using PointMeshes, properties that normally alter vertices will be ignored, including billboard mode, grow, and cull face.
 */
 type Instance [1]gdclass.PointMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPointMesh() Instance

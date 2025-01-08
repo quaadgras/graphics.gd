@@ -87,6 +87,10 @@ Debug.Assert(data.ToUtf8Buffer() == decrypted);
 [/codeblocks]
 */
 type Instance [1]gdclass.Crypto
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCrypto() Instance

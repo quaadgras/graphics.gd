@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Abstract base class for scrollbars, typically used to navigate through content that extends beyond the visible area of a control. Scrollbars are [Range]-based controls.
 */
 type Instance [1]gdclass.ScrollBar
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsScrollBar() Instance

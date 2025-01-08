@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 [CanvasModulate] applies a color tint to all nodes on a canvas. Only one can be used to tint a canvas, but [CanvasLayer]s can be used to render things independently.
 */
 type Instance [1]gdclass.CanvasModulate
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCanvasModulate() Instance

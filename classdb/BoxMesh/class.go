@@ -27,6 +27,10 @@ The box's UV layout is arranged in a 3×2 layout that allows texturing each face
 [b]Note:[/b] When using a large textured [BoxMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth], [member subdivide_height] and [member subdivide_width] until you no longer notice UV jittering.
 */
 type Instance [1]gdclass.BoxMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsBoxMesh() Instance

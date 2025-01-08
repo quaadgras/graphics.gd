@@ -21,6 +21,10 @@ var _ = pointers.Cycle
 This object is the base of all XR trackers.
 */
 type Instance [1]gdclass.XRTracker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRTracker() Instance

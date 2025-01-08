@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Performs a lookup operation on the texture provided as a uniform for the shader.
 */
 type Instance [1]gdclass.VisualShaderNodeTextureParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTextureParameter() Instance

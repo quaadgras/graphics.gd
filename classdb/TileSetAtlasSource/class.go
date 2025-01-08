@@ -31,6 +31,10 @@ Each tile alternate has a set of properties that is defined by the source's [Til
 As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using [code]TileSetAtlasSource.set("<coords_x>:<coords_y>/<alternative_id>/<tile_data_property>")[/code].
 */
 type Instance [1]gdclass.TileSetAtlasSource
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTileSetAtlasSource() Instance

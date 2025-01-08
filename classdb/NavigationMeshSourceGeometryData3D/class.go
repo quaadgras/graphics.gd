@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 Container for parsed source geometry data used in navigation mesh baking.
 */
 type Instance [1]gdclass.NavigationMeshSourceGeometryData3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNavigationMeshSourceGeometryData3D() Instance

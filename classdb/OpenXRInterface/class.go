@@ -27,6 +27,10 @@ The OpenXR interface allows Godot to interact with OpenXR runtimes and make it p
 Due to the needs of OpenXR this interface works slightly different than other plugin based XR interfaces. It needs to be initialized when Godot starts. You need to enable OpenXR, settings for this can be found in your games project settings under the XR heading. You do need to mark a viewport for use with XR in order for Godot to know which render result should be output to the headset.
 */
 type Instance [1]gdclass.OpenXRInterface
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRInterface() Instance

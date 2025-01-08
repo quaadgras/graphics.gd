@@ -31,6 +31,10 @@ The [LightmapGI] node is used to compute and store baked lightmaps. Lightmaps ar
 [b]Note:[/b] If no custom lightmappers are installed, [LightmapGI] can only be baked from devices that support the Forward+ or Mobile rendering backends.
 */
 type Instance [1]gdclass.LightmapGI
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightmapGI() Instance

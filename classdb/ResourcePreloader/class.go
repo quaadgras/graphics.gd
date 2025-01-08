@@ -23,6 +23,10 @@ This node is used to preload sub-resources inside a scene, so when the scene is 
 GDScript has a simplified [method @GDScript.preload] built-in method which can be used in most situations, leaving the use of [ResourcePreloader] for more advanced scenarios.
 */
 type Instance [1]gdclass.ResourcePreloader
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourcePreloader() Instance

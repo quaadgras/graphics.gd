@@ -24,6 +24,10 @@ The parameters defined in the [WorldEnvironment] can be overridden by an [Enviro
 The [WorldEnvironment] allows the user to specify default lighting parameters (e.g. ambient lighting), various post-processing effects (e.g. SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, skybox). Usually, these are added in order to improve the realism/color balance of the scene.
 */
 type Instance [1]gdclass.WorldEnvironment
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWorldEnvironment() Instance

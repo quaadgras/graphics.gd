@@ -26,6 +26,10 @@ Defines the API that the editor uses to extract information from the underlying 
 %!(EXTRA string=EditorVCSInterface)
 */
 type Instance [1]gdclass.EditorVCSInterface
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorVCSInterface() Instance

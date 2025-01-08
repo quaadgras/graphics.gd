@@ -29,6 +29,10 @@ TextMesh can be generated only when using dynamic fonts with vector glyph contou
 The UV layout is arranged in 4 horizontal strips, top to bottom: 40% of the height for the front face, 40% for the back face, 10% for the outer edges and 10% for the inner edges.
 */
 type Instance [1]gdclass.TextMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTextMesh() Instance

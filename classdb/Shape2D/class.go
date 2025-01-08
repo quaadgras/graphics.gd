@@ -28,6 +28,10 @@ Abstract base class for all 2D shapes, intended for use in physics.
 [b]Performance:[/b] Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.
 */
 type Instance [1]gdclass.Shape2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShape2D() Instance

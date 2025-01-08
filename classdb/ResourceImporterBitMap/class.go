@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 [BitMap] resources are typically used as click masks in [TextureButton] and [TouchScreenButton].
 */
 type Instance [1]gdclass.ResourceImporterBitMap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterBitMap() Instance

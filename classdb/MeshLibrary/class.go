@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A library of meshes. Contains a list of [Mesh] resources, each with a name and ID. Each item can also include collision and navigation shapes. This resource is used in [GridMap].
 */
 type Instance [1]gdclass.MeshLibrary
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMeshLibrary() Instance

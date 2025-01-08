@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 A [VisualShaderNodeParameter] of type unsigned [int]. Offers additional customization for range of accepted values.
 */
 type Instance [1]gdclass.VisualShaderNodeUIntParameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeUIntParameter() Instance

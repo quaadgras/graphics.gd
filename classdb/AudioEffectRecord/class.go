@@ -26,6 +26,10 @@ Can be used (with an [AudioStreamMicrophone]) to record from a microphone.
 [b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
 type Instance [1]gdclass.AudioEffectRecord
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectRecord() Instance

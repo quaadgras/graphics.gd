@@ -28,6 +28,10 @@ This node is mapped to one of the anchors through its unique ID. When you receiv
 Keep in mind that, as long as plane detection is enabled, the size, placing and orientation of an anchor will be updated as the detection logic learns more about the real world out there especially if only part of the surface is in view.
 */
 type Instance [1]gdclass.XRAnchor3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRAnchor3D() Instance

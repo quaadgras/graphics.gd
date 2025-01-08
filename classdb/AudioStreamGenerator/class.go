@@ -86,6 +86,10 @@ See also [AudioEffectSpectrumAnalyzer] for performing real-time audio spectrum a
 [b]Note:[/b] Due to performance constraints, this class is best used from C# or from a compiled language via GDExtension. If you still want to use this class from GDScript, consider using a lower [member mix_rate] such as 11,025 Hz or 22,050 Hz.
 */
 type Instance [1]gdclass.AudioStreamGenerator
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamGenerator() Instance

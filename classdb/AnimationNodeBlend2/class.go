@@ -25,6 +25,10 @@ A resource to add to an [AnimationNodeBlendTree]. Blends two animations linearly
 In general, the blend value should be in the [code][0.0, 1.0][/code] range. Values outside of this range can blend amplified or inverted animations, however, [AnimationNodeAdd2] works better for this purpose.
 */
 type Instance [1]gdclass.AnimationNodeBlend2
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeBlend2() Instance

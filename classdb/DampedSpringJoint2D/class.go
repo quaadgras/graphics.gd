@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A physics joint that connects two 2D physics bodies with a spring-like force. This resembles a spring that always wants to stretch to a given length.
 */
 type Instance [1]gdclass.DampedSpringJoint2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsDampedSpringJoint2D() Instance

@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Stores position, muting, solo, bypass, effects, effect position, volume, and the connections between buses. See [AudioServer] for usage.
 */
 type Instance [1]gdclass.AudioBusLayout
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioBusLayout() Instance

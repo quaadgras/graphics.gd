@@ -27,6 +27,10 @@ A resource used by [AnimationNodeBlendTree].
 You can set the extents of the axis with [member min_space] and [member max_space].
 */
 type Instance [1]gdclass.AnimationNodeBlendSpace1D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeBlendSpace1D() Instance

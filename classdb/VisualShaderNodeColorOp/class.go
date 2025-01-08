@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Applies [member operator] to two color inputs.
 */
 type Instance [1]gdclass.VisualShaderNodeColorOp
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeColorOp() Instance

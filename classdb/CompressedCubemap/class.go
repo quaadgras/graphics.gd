@@ -33,6 +33,10 @@ Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed tex
 See [Cubemap] for a general description of cubemaps.
 */
 type Instance [1]gdclass.CompressedCubemap
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCompressedCubemap() Instance

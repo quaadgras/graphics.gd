@@ -26,6 +26,10 @@ This node inherits from [Node2D]. Unlike with [Control] nodes, you cannot set an
 You can configure TouchScreenButton to be visible only on touch devices, helping you develop your game both for desktop and mobile devices.
 */
 type Instance [1]gdclass.TouchScreenButton
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsTouchScreenButton() Instance

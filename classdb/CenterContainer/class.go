@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 [CenterContainer] is a container that keeps all of its child controls in its center at their minimum size.
 */
 type Instance [1]gdclass.CenterContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCenterContainer() Instance

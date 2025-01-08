@@ -76,6 +76,10 @@ public void HashFile(string path)
 [/codeblocks]
 */
 type Instance [1]gdclass.HashingContext
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsHashingContext() Instance

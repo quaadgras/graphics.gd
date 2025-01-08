@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Framebuffer cache manager for Rendering Device based renderers. Provides a way to create a framebuffer and reuse it in subsequent calls for as long as the used textures exists. Framebuffers will automatically be cleaned up when dependent objects are freed.
 */
 type Instance [1]gdclass.FramebufferCacheRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFramebufferCacheRD() Instance

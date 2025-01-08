@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 This primitive mesh is usually used for particle trails.
 */
 type Instance [1]gdclass.RibbonTrailMesh
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRibbonTrailMesh() Instance

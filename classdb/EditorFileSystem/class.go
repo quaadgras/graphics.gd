@@ -24,6 +24,10 @@ This object holds information of all resources in the filesystem, their types, e
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_resource_filesystem].
 */
 type Instance [1]gdclass.EditorFileSystem
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorFileSystem() Instance

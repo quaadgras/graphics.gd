@@ -24,6 +24,10 @@ Compared to [ResourceImporterImageFont], [ResourceImporterBMFont] supports bitma
 See also [ResourceImporterDynamicFont].
 */
 type Instance [1]gdclass.ResourceImporterBMFont
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterBMFont() Instance

@@ -26,6 +26,10 @@ Base resource type for all video streams. Classes that derive from [VideoStream]
 %!(EXTRA string=VideoStream)
 */
 type Instance [1]gdclass.VideoStream
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVideoStream() Instance

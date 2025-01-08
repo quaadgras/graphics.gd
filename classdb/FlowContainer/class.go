@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A container that arranges its child controls horizontally or vertically and wraps them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.
 */
 type Instance [1]gdclass.FlowContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFlowContainer() Instance

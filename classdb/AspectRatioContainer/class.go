@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A container type that arranges its child controls in a way that preserves their proportions automatically when the container is resized. Useful when a container has a dynamic size and the child nodes must adjust their sizes accordingly without losing their aspect ratios.
 */
 type Instance [1]gdclass.AspectRatioContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAspectRatioContainer() Instance

@@ -24,6 +24,10 @@ The FBXDocument handles FBX documents. It provides methods to append data from b
 When exporting FBX from Blender, use the "FBX Units Scale" option. The "FBX Units Scale" option sets the correct scale factor and avoids manual adjustments when re-importing into Blender, such as through glTF export.
 */
 type Instance [1]gdclass.FBXDocument
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFBXDocument() Instance

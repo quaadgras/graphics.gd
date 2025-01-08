@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 An OpenXR composition layer that allows rendering a [SubViewport] on a quad.
 */
 type Instance [1]gdclass.OpenXRCompositionLayerQuad
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRCompositionLayerQuad() Instance

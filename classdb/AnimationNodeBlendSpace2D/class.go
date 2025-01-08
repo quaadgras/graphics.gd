@@ -27,6 +27,10 @@ A resource used by [AnimationNodeBlendTree].
 You can add vertices to the blend space with [method add_blend_point] and automatically triangulate it by setting [member auto_triangles] to [code]true[/code]. Otherwise, use [method add_triangle] and [method remove_triangle] to triangulate the blend space by hand.
 */
 type Instance [1]gdclass.AnimationNodeBlendSpace2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeBlendSpace2D() Instance

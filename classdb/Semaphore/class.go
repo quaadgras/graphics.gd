@@ -25,6 +25,10 @@ A synchronization semaphore that can be used to synchronize multiple [Thread]s. 
 - When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not be waiting on any semaphore.
 */
 type Instance [1]gdclass.Semaphore
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSemaphore() Instance

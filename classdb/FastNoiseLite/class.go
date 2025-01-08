@@ -26,6 +26,10 @@ This class generates noise using the FastNoiseLite library, which is a collectio
 Most generated noise values are in the range of [code][-1, 1][/code], but not always. Some of the cellular noise algorithms return results above [code]1[/code].
 */
 type Instance [1]gdclass.FastNoiseLite
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsFastNoiseLite() Instance

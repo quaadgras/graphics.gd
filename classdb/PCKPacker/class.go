@@ -36,6 +36,10 @@ packer.Flush();
 The above [PCKPacker] creates package [code]test.pck[/code], then adds a file named [code]text.txt[/code] at the root of the package.
 */
 type Instance [1]gdclass.PCKPacker
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPCKPacker() Instance

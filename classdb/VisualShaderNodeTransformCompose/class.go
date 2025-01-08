@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Creates a 4×4 transform matrix using four vectors of type [code]vec3[/code]. Each vector is one row in the matrix and the last column is a [code]vec4(0, 0, 0, 1)[/code].
 */
 type Instance [1]gdclass.VisualShaderNodeTransformCompose
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeTransformCompose() Instance

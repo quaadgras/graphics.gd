@@ -27,6 +27,10 @@ Setting up a WebRTC connection between two peers may not seem a trivial task, bu
 After these steps, the connection should become connected. Keep on reading or look into the tutorial for more information.
 */
 type Instance [1]gdclass.WebRTCPeerConnection
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsWebRTCPeerConnection() Instance

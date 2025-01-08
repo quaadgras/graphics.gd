@@ -44,6 +44,10 @@ An [ImageTexture] is not meant to be operated from within the editor interface d
 [b]Note:[/b] The maximum texture size is 16384×16384 pixels due to graphics hardware limitations.
 */
 type Instance [1]gdclass.ImageTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImageTexture() Instance

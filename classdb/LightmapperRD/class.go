@@ -23,6 +23,10 @@ LightmapperRD ("RD" stands for [RenderingDevice]) is the built-in GPU-based ligh
 [b]Note:[/b] Only usable when using the Vulkan backend (Forward+ or Mobile), not OpenGL.
 */
 type Instance [1]gdclass.LightmapperRD
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsLightmapperRD() Instance

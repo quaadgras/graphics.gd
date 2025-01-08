@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 [RDPipelineMultisampleState] is used to control how multisample or supersample antialiasing is being performed when rendering using [RenderingDevice].
 */
 type Instance [1]gdclass.RDPipelineMultisampleState
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRDPipelineMultisampleState() Instance

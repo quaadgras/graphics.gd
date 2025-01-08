@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A container that keeps its child controls within the area of a [StyleBox]. Useful for giving controls an outline.
 */
 type Instance [1]gdclass.PanelContainer
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPanelContainer() Instance

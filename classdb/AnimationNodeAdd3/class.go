@@ -29,6 +29,10 @@ This animation node has three inputs:
 If the absolute value of the amount is greater than [code]1.0[/code], the animation connected to "in" port is blended with the amplified animation connected to "-add"/"+add" port.
 */
 type Instance [1]gdclass.AnimationNodeAdd3
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeAdd3() Instance

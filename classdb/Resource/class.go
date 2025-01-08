@@ -28,6 +28,10 @@ The engine keeps a global cache of all loaded resources, referenced by paths (se
 %!(EXTRA string=Resource)
 */
 type Instance [1]gdclass.Resource
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResource() Instance

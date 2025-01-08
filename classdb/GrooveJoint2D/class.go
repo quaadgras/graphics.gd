@@ -26,6 +26,10 @@ var _ = pointers.Cycle
 A physics joint that restricts the movement of two 2D physics bodies to a fixed axis. For example, a [StaticBody2D] representing a piston base can be attached to a [RigidBody2D] representing the piston head, moving up and down.
 */
 type Instance [1]gdclass.GrooveJoint2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGrooveJoint2D() Instance

@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 A vertical separator used for separating other controls that are arranged [b]horizontally[/b]. [VSeparator] is purely visual and normally drawn as a [StyleBoxLine].
 */
 type Instance [1]gdclass.VSeparator
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVSeparator() Instance

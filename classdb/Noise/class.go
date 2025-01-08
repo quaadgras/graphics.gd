@@ -27,6 +27,10 @@ A default [method get_seamless_image] implementation is provided for libraries t
 Inheriting noise classes can optionally override this function to provide a more optimal algorithm.
 */
 type Instance [1]gdclass.Noise
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsNoise() Instance

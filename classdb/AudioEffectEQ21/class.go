@@ -46,6 +46,10 @@ Band 21: 22000 Hz
 See also [AudioEffectEQ], [AudioEffectEQ6], [AudioEffectEQ10].
 */
 type Instance [1]gdclass.AudioEffectEQ21
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioEffectEQ21() Instance

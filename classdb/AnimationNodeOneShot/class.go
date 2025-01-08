@@ -70,6 +70,10 @@ animationTree.Get("parameters/OneShot/internal_active");
 [/codeblocks]
 */
 type Instance [1]gdclass.AnimationNodeOneShot
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAnimationNodeOneShot() Instance

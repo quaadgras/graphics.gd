@@ -29,6 +29,10 @@ Because of how FABRIK works, it often gives more natural results than those seen
 To help control how the FABRIK joints move, a magnet vector can be passed, which can nudge the bones in a certain direction prior to solving, giving a level of control over the final result.
 */
 type Instance [1]gdclass.SkeletonModification2DFABRIK
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeletonModification2DFABRIK() Instance

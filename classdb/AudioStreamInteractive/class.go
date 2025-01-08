@@ -25,6 +25,10 @@ This is an audio stream that can playback music interactively, combining clips a
 The way this is used is by filling a number of clips, then configuring the transition table. From there, clips are selected for playback and the music will smoothly go from the current to the new one while using the corresponding transition rule defined in the transition table.
 */
 type Instance [1]gdclass.AudioStreamInteractive
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamInteractive() Instance

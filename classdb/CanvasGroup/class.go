@@ -44,6 +44,10 @@ uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_n
 [b]Note:[/b] Since [CanvasGroup] and [member CanvasItem.clip_children] both utilize the backbuffer, children of a [CanvasGroup] who have their [member CanvasItem.clip_children] set to anything other than [constant CanvasItem.CLIP_CHILDREN_DISABLED] will not function correctly.
 */
 type Instance [1]gdclass.CanvasGroup
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCanvasGroup() Instance

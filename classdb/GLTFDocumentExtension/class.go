@@ -30,6 +30,10 @@ To use, make a new class extending GLTFDocumentExtension, override any methods y
 %!(EXTRA string=GLTFDocumentExtension)
 */
 type Instance [1]gdclass.GLTFDocumentExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGLTFDocumentExtension() Instance

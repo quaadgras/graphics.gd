@@ -25,6 +25,10 @@ var _ = pointers.Cycle
 Translated to [code]uniform vec2[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeVec2Parameter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeVec2Parameter() Instance

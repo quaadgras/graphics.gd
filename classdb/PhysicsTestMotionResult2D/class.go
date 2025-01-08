@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 Describes the motion and collision result from [method PhysicsServer2D.body_test_motion].
 */
 type Instance [1]gdclass.PhysicsTestMotionResult2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsTestMotionResult2D() Instance

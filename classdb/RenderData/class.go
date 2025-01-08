@@ -23,6 +23,10 @@ Abstract render data object, exists for the duration of rendering a single viewp
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
 type Instance [1]gdclass.RenderData
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsRenderData() Instance

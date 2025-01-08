@@ -28,6 +28,10 @@ Extending this class allows you to define your own loader. Be sure to respect th
 %!(EXTRA string=ResourceFormatLoader)
 */
 type Instance [1]gdclass.ResourceFormatLoader
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceFormatLoader() Instance

@@ -24,6 +24,10 @@ Abstract base class for all 3D shapes, intended for use in physics.
 [b]Performance:[/b] Primitive shapes, especially [SphereShape3D], are fast to check collisions against. [ConvexPolygonShape3D] and [HeightMapShape3D] are slower, and [ConcavePolygonShape3D] is the slowest.
 */
 type Instance [1]gdclass.Shape3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsShape3D() Instance

@@ -25,6 +25,10 @@ This texture gives access to the camera texture provided by a [CameraFeed].
 [b]Note:[/b] Many cameras supply YCbCr images which need to be converted in a shader.
 */
 type Instance [1]gdclass.CameraTexture
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCameraTexture() Instance

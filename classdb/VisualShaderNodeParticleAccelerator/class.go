@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Particle accelerator can be used in "process" step of particle shader. It will accelerate the particles. Connect it to the Velocity output port.
 */
 type Instance [1]gdclass.VisualShaderNodeParticleAccelerator
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeParticleAccelerator() Instance

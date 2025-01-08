@@ -23,6 +23,10 @@ This image-based workflow can be easier to use than [ResourceImporterBMFont], bu
 See also [ResourceImporterDynamicFont].
 */
 type Instance [1]gdclass.ResourceImporterImageFont
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsResourceImporterImageFont() Instance

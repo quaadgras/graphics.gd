@@ -25,6 +25,10 @@ This resource describes a color transition by defining a set of colored points a
 See also [Curve] which supports more complex easing methods, but does not support colors.
 */
 type Instance [1]gdclass.Gradient
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsGradient() Instance

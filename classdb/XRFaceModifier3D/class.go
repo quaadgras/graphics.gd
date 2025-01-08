@@ -26,6 +26,10 @@ The [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/uni
 The node attempts to identify blend shapes based on name matching. Blend shapes should match the names listed in the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Unified Expressions Compatibility[/url] chart.
 */
 type Instance [1]gdclass.XRFaceModifier3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXRFaceModifier3D() Instance

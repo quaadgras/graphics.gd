@@ -25,6 +25,10 @@ You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: ever
 [SceneTree] is the default [MainLoop] implementation used by the engine, and is thus in charge of the game loop.
 */
 type Instance [1]gdclass.SceneTree
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSceneTree() Instance

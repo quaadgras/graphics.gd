@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Random range node will output a pseudo-random scalar value in the specified range, based on the seed. The value is always the same for the given seed and range, so you should provide a changing input, e.g. by using time.
 */
 type Instance [1]gdclass.VisualShaderNodeRandomRange
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeRandomRange() Instance

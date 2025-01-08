@@ -27,6 +27,10 @@ Importantly, you can inherit from [Material] to create your own custom material 
 %!(EXTRA string=Material)
 */
 type Instance [1]gdclass.Material
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsMaterial() Instance

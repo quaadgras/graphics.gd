@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 Provides direct access to a physics space in the [PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
 */
 type Instance [1]gdclass.PhysicsDirectSpaceState2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectSpaceState2D() Instance

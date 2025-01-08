@@ -30,6 +30,10 @@ The overall transform of a bone with respect to the skeleton is determined by bo
 Note that "global pose" below refers to the overall transform of the bone with respect to skeleton, so it is not the actual global/world transform of the bone.
 */
 type Instance [1]gdclass.Skeleton3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSkeleton3D() Instance

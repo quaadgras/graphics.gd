@@ -23,6 +23,10 @@ var _ = pointers.Cycle
 Casts a ray against the screen SDF (signed-distance field) and returns the distance travelled.
 */
 type Instance [1]gdclass.VisualShaderNodeSDFRaymarch
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsVisualShaderNodeSDFRaymarch() Instance

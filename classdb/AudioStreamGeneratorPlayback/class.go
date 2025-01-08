@@ -24,6 +24,10 @@ var _ = pointers.Cycle
 This class is meant to be used with [AudioStreamGenerator] to play back the generated audio in real-time.
 */
 type Instance [1]gdclass.AudioStreamGeneratorPlayback
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsAudioStreamGeneratorPlayback() Instance

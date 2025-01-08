@@ -29,6 +29,10 @@ An [Image] cannot be assigned to a texture property of an object directly (such 
 [b]Note:[/b] The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
 */
 type Instance [1]gdclass.Image
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsImage() Instance

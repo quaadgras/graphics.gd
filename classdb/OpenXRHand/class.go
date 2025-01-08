@@ -27,6 +27,10 @@ If the hand bones are part of a full skeleton, then the root of the hand will ke
 By default the skeleton hand bones are repositioned to match the size of the tracked hand. To preserve the modeled bone sizes change [member bone_update] to apply rotation only.
 */
 type Instance [1]gdclass.OpenXRHand
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsOpenXRHand() Instance

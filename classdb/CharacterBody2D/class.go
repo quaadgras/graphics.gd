@@ -29,6 +29,10 @@ var _ = pointers.Cycle
 For game objects that don't require complex movement or collision detection, such as moving platforms, [AnimatableBody2D] is simpler to configure.
 */
 type Instance [1]gdclass.CharacterBody2D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsCharacterBody2D() Instance

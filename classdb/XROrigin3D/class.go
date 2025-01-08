@@ -27,6 +27,10 @@ It is the position of this node that you update when your character needs to mov
 For example, if your character is driving a car, the [XROrigin3D] node should be a child node of this car. Or, if you're implementing a teleport system to move your character, you should change the position of this node.
 */
 type Instance [1]gdclass.XROrigin3D
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsXROrigin3D() Instance

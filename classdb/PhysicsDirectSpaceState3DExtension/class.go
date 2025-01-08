@@ -31,6 +31,10 @@ Intended for use with GDExtension to create custom implementations of [PhysicsDi
 %!(EXTRA string=PhysicsDirectSpaceState3DExtension)
 */
 type Instance [1]gdclass.PhysicsDirectSpaceState3DExtension
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsPhysicsDirectSpaceState3DExtension() Instance

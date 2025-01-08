@@ -22,6 +22,10 @@ var _ = pointers.Cycle
 The [Sky] class uses a [Material] to render a 3D environment's background and the light it emits by updating the reflection/radiance cubemaps.
 */
 type Instance [1]gdclass.Sky
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsSky() Instance

@@ -27,6 +27,10 @@ To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.a
 %!(EXTRA string=EditorSceneFormatImporter)
 */
 type Instance [1]gdclass.EditorSceneFormatImporter
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsEditorSceneFormatImporter() Instance

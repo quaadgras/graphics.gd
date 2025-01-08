@@ -38,6 +38,10 @@ corner_radius_bottom_left: 20
 [/codeblock]
 */
 type Instance [1]gdclass.StyleBoxFlat
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsStyleBoxFlat() Instance

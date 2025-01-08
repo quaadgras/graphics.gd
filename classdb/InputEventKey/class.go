@@ -27,6 +27,10 @@ An input event for keys on a keyboard. Supports key presses, key releases and [m
 When events are compared, properties are checked in the following priority - [member keycode], [member physical_keycode] and [member unicode]. Events with the first matching value will be considered equal.
 */
 type Instance [1]gdclass.InputEventKey
+
+// Nil is a nil/null instance of the class. Equivalent to the zero value.
+var Nil Instance
+
 type Any interface {
 	gd.IsClass
 	AsInputEventKey() Instance
