@@ -393,32 +393,24 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if !field.CanSet() {
 		return false
 	}
-	val := value.Interface()
-	converted := reflect.ValueOf(val)
-	if !converted.IsValid() {
-		return false
+	if value.Type() == gd.TypeNil {
+		field.Set(reflect.Zero(field.Type()))
+		return true
 	}
-	if converted.Type().ConvertibleTo(field.Type()) {
-		converted = converted.Convert(field.Type())
-	}
-	if !converted.Type().AssignableTo(field.Type()) {
-		switch field.Type().Kind() {
-		case reflect.String:
-			s, ok := converted.Interface().(gd.String)
-			if ok {
-				field.SetString(s.String())
-				return true
-			}
-		}
+	converted, err := gd.ConvertToDesiredGoType(value, field.Type())
+	if err != nil {
 		return false
 	}
 	if converted.Kind() == reflect.Array {
 		if !field.IsZero() {
 			field.Interface().(interface{ Free() }).Free()
 		}
-		obj := converted.Interface().(interface {
+		obj, ok := converted.Interface().(interface {
 			AsObject() [1]gd.Object
 		})
+		if !ok {
+			return false
+		}
 		ref, ok := gd.As[gd.RefCounted](obj.AsObject()[0])
 		if ok {
 			ref.Reference()

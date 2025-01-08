@@ -13,9 +13,14 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = LetVariantAsPointerType[Object](value, TypeObject)
-			return obj.Elem(), nil
+			if value.Type() != TypeObject {
+				return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
+			}
+			object := [1]Object{LetVariantAsPointerType[Object](value, TypeObject)}
+			casted := Global.Object.CastTo(object, Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype))))
+			var result = reflect.New(rtype)
+			*(*[1]Object)(result.UnsafePointer()) = casted
+			return result.Elem(), nil
 		}
 		fallthrough
 	default:
