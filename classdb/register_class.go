@@ -458,6 +458,9 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 		if !field.IsValid() {
 			return gd.Variant{}, false
 		}
+		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+			return gd.Variant{}, false
+		}
 	}
 	return gd.NewVariant(field.Interface()), true
 }
@@ -476,6 +479,9 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 			continue
 		}
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
+			continue
+		}
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			continue
 		}
 		ptype, ok := propertyOf(field)
