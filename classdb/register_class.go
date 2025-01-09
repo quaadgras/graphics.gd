@@ -450,8 +450,8 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 
 func (instance *instanceImplementation) ToString() (gd.String, bool) {
 	switch onfree := instance.Value.(type) {
-	case interface{ ToString() gd.String }:
-		return onfree.ToString(), true
+	case interface{ ToString() string }:
+		return gd.NewString(onfree.ToString()), true
 	}
 	return gd.String{}, false
 }
