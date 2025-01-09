@@ -7,9 +7,17 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-type IsSignal interface{ signal() }
+type IsSignal interface{ setSignal(Signal) }
+
+func SetSignal(signal IsSignal, val Signal) {
+	signal.setSignal(val)
+}
 
 func (s Signal) signal() {}
+
+func (s *Signal) setSignal(val Signal) {
+	*s = val
+}
 
 func (s Signal) Free() {
 	if ptr, ok := pointers.End(s); ok {

@@ -275,6 +275,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 
 	// TODO cache this check
 	var signals []signalChan
+	var chSignals []signalChan
 	for i := 0; i < value.NumField(); i++ {
 		var field = value.Type().Field(i)
 		if !field.IsExported() || field.Name == "Object" {
@@ -288,6 +289,13 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 			name = tag
 		}
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
+			gd.SetSignal(rvalue.Interface().(gd.IsSignal), signal)
+			signals = append(signals, signalChan{
+				signal: signal,
+			})
+		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
 			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
 			ch := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, field.Type.Elem()), 0)
@@ -296,10 +304,14 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 				signal: signal,
 				rvalue: ch,
 			})
+			chSignals = append(chSignals, signalChan{
+				signal: signal,
+				rvalue: ch,
+			})
 		}
 	}
 	if len(signals) > 0 {
-		go manageSignals(super[0].AsObject()[0].GetInstanceId(), signals)
+		go manageSignals(super[0].AsObject()[0].GetInstanceId(), chSignals)
 	}
 	return &instanceImplementation{
 		object:   pointers.Get(super[0])[0],
@@ -573,7 +585,9 @@ func (instance *instanceImplementation) GetRID() gd.RID {
 
 func (instance *instanceImplementation) Free() {
 	for _, signal := range instance.signals {
-		signal.rvalue.Close()
+		if signal.rvalue.IsValid() {
+			signal.rvalue.Close()
+		}
 		signal.signal.Free()
 	}
 	rvalue := reflect.ValueOf(instance.Value).Elem()

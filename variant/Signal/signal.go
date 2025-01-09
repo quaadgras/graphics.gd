@@ -6,6 +6,7 @@ import (
 
 	"graphics.gd/classdb/Engine"
 	gd "graphics.gd/internal"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Callable"
 )
 
@@ -134,4 +135,43 @@ func (c *Chan[T]) Reset() {
 		c.proxy.Free()
 	}
 	*c = Chan[T]{}
+}
+
+// Pair of values that can be signaled, add this as a field inside a [classdb.Extension]
+// to register it as a signal.
+type Pair[A, B any] struct {
+	Any
+}
+
+// Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
+func (signal Pair[A, B]) Emit(a A, b B) {
+	Callable.New(func() {
+		signal.Any.Emit(variant.New(a), variant.New(b))
+	}).CallDeferred()
+}
+
+// Trio of values that can be signaled, add this as a field inside a [classdb.Extension]
+// to register it as a signal.
+type Trio[A, B, C any] struct {
+	Any
+}
+
+// Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
+func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
+	Callable.New(func() {
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c))
+	}).CallDeferred()
+}
+
+// Quad of values that can be signaled, add this as a field inside a [classdb.Extension]
+// to register it as a signal.
+type Quad[A, B, C, D any] struct {
+	Any
+}
+
+// Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
+func (signal Quad[A, B, C, D]) Emit(a A, b B, c C, d D) {
+	Callable.New(func() {
+		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d))
+	}).CallDeferred()
 }

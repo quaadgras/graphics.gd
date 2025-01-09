@@ -8,8 +8,8 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-// registerSignals registers [Signal[T]] fields as signals emittable by the class,
-// when the class is instantiated, the signal field needs to injected into the field
+// registerSignals registers [Signal.Any], [Signal.Pair], [Signal.Trio] and [Signal.Quad] fields as signals
+// emittable by the class, when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
 func registerSignals(class gd.StringName, rtype reflect.Type) {
 	for i := 0; i < rtype.NumField(); i++ {
@@ -21,9 +21,13 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 		if tag := field.Tag.Get("gd"); tag != "" {
 			name = tag
 		}
-		if field.Type.Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			var signalName = gd.NewStringName(name)
-			var ftype = field.Type.Field(1).Type
+			var emit, ok = field.Type.MethodByName("Emit")
+			if !ok {
+				panic("gdextension.RegisterClass: Signal[T] Emit method not found")
+			}
+			ftype := emit.Type
 			if ftype.Kind() != reflect.Func {
 				panic("gdextension.RegisterClass: Signal[T] Emit field must be a function")
 			}
@@ -32,7 +36,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					rtype.Name(), name))
 			}
 			var args []gd.PropertyInfo
-			for i := 0; i < ftype.NumIn(); i++ {
+			for i := 1; i < ftype.NumIn(); i++ {
 				vtype, ok := gd.VariantTypeOf(ftype.In(i))
 				if ok {
 					args = append(args, gd.PropertyInfo{
