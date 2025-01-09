@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/pointers"
 )
 
 // Link needs to be called once for the API to load in all of the
@@ -34,7 +35,8 @@ func (Godot *API) linkSingletons() {
 
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
-		rvalue.Field(i).Set(reflect.ValueOf(NewStringName(field.Name)))
+		raw := pointers.Get(NewStringName(field.Name))
+		rvalue.Field(i).Set(reflect.ValueOf(pointers.Raw[StringName](raw)))
 	}
 }
 
