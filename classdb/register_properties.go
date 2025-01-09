@@ -7,6 +7,7 @@ import (
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 )
 
 func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
@@ -57,14 +58,14 @@ func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 
 func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
 	if impl, ok := instance.Value.(interface {
-		Set(gd.StringName, gd.Variant) gd.Bool
+		Set(string, any) bool
 	}); ok {
-		ok := bool(impl.Set(name, value))
+		ok := bool(impl.Set(name.String(), value.Interface()))
 		if ok {
 			if impl, ok := instance.Value.(interface {
-				OnSet(gd.StringName, gd.Variant)
+				OnSet(string, any)
 			}); ok {
-				impl.OnSet(name, value)
+				impl.OnSet(name.String(), value.Interface())
 			}
 		}
 		return ok
@@ -121,9 +122,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 
 func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, bool) {
 	if impl, ok := instance.Value.(interface {
-		Get(gd.StringName) gd.Variant
+		Get(string) any
 	}); ok {
-		return impl.Get(name), true
+		return variant.New(impl.Get(name.String())), true
 	}
 	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
@@ -157,9 +158,9 @@ func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
 
 func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bool {
 	if impl, ok := instance.Value.(interface {
-		PropertyCanRevert(gd.StringName) gd.Bool
+		PropertyCanRevert(string) bool
 	}); ok {
-		return bool(impl.PropertyCanRevert(name))
+		return bool(impl.PropertyCanRevert(name.String()))
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(instance.Value).Elem()
@@ -181,9 +182,10 @@ func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bo
 }
 func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (gd.Variant, bool) {
 	if impl, ok := instance.Value.(interface {
-		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
+		PropertyGetRevert(string) (any, bool)
 	}); ok {
-		return impl.PropertyGetRevert(name)
+		val, ok := impl.PropertyGetRevert(name.String())
+		return variant.New(val), ok
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(instance.Value).Elem()
@@ -213,9 +215,9 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 func (instance *instanceImplementation) ValidateProperty(name gd.StringName, info *gd.PropertyInfo) bool {
 	switch validate := instance.Value.(type) {
 	case interface {
-		ValidateProperty(gd.StringName, *gd.PropertyInfo) gd.Bool
+		ValidateProperty(string, *gd.PropertyInfo) bool
 	}:
-		return bool(validate.ValidateProperty(name, info))
+		return bool(validate.ValidateProperty(name.String(), info))
 	}
 	return true
 }
