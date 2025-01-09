@@ -131,13 +131,3 @@ var (
 	resume_main func() (bool, bool)
 	stop_main   func()
 )
-
-// call_main_in_steps calls the main function on the main thread in steps,
-// so that we can yield control back to the engine every frame and before
-// and after startup.
-func call_main_in_steps() iter.Seq[bool] {
-	return func(yield func(bool) bool) {
-		pause_main = yield
-		main()
-	}
-}

@@ -39,7 +39,6 @@ func init() {
 			}
 			pointers.Cycle()
 			pointers.Cycle()
-			close(done)
 			return nil
 		}))
 		return 0
