@@ -171,6 +171,9 @@ type API struct {
 		Add    func(plugin StringName)
 		Remove func(plugin StringName)
 	}
+	EditorHelp struct {
+		Load func([]byte)
+	}
 
 	GetLibraryPath func(ExtensionToken) String
 

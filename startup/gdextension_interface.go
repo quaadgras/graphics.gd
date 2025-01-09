@@ -424,6 +424,9 @@ static inline void editor_remove_plugin(pointer fn, pointer p_name) {
 static inline void classdb_unregister_extension_class(pointer fn, pointer p_library, pointer p_class_name) {
 	((GDExtensionInterfaceClassdbUnregisterExtensionClass)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name);
 }
+static inline void editor_help_load_xml_from_utf8_chars_and_len(pointer fn, string p_xml, GDExtensionInt p_len) {
+	((GDExtensionsInterfaceEditorHelpLoadXmlFromUtf8CharsAndLen)fn)((const char *)p_xml, p_len);
+}
 
 */
 import "C"
@@ -1931,7 +1934,7 @@ func linkCGO(API *gd.API) {
 	API.Object.CastTo = func(o [1]gd.Object, ct gd.ClassTag) [1]gd.Object {
 		var self = pointers.Get(o[0])
 		if self[0] == 0 {
-			panic("nil gd.Object dereference")
+			return [1]gd.Object{}
 		}
 		if self[1] != 0 {
 			var ret = C.object_get_instance_from_id(
@@ -2048,8 +2051,8 @@ func linkCGO(API *gd.API) {
 		var frame = callframe.New()
 		var r_callable = callframe.Ret[[2]uintptr](frame)
 		var info C.GDExtensionCallableCustomInfo
-		info.token = C.uintptr_t(gd.Global.ExtensionToken)
-		info.callable_userdata = C.uintptr_t(cgo.NewHandle(fn))
+		*(*uintptr)(unsafe.Pointer(&info.token)) = uintptr(gd.Global.ExtensionToken)
+		*(*uintptr)(unsafe.Pointer(&info.callable_userdata)) = uintptr(cgo.NewHandle(fn))
 		C.callable_custom_create(
 			C.uintptr_t(uintptr(callable_custom_create)),
 			C.uintptr_t(r_callable.Uintptr()),
@@ -2096,11 +2099,11 @@ func linkCGO(API *gd.API) {
 			is_exposed = 1
 		}
 		var p_info = C.GDExtensionClassCreationInfo2{
-			is_virtual:     is_virtual,
-			is_abstract:    is_abstract,
-			is_exposed:     is_exposed,
-			class_userdata: C.uintptr_t(cgo.NewHandle(info)),
+			is_virtual:  is_virtual,
+			is_abstract: is_abstract,
+			is_exposed:  is_exposed,
 		}
+		*(*uintptr)(unsafe.Pointer(&p_info.class_userdata)) = uintptr(cgo.NewHandle(info))
 		C.classdb_register_extension_class2(
 			C.uintptr_t(uintptr(classdb_register_extension_class2)),
 			C.uintptr_t(uintptr(library)),
@@ -2293,7 +2296,6 @@ func linkCGO(API *gd.API) {
 		var p_class = callframe.Arg(frame, pointers.Get(class))
 		var p_info = C.GDExtensionClassMethodInfo{
 			name:                   (C.GDExtensionStringNamePtr)(unsafe.Pointer(&name)),
-			method_userdata:        C.uintptr_t(infoHandle), // FIXME leak
 			method_flags:           C.uint32_t(info.MethodFlags),
 			has_return_value:       has_return_value,
 			return_value_info:      returnInfo,
@@ -2304,6 +2306,7 @@ func linkCGO(API *gd.API) {
 			default_argument_count: C.uint32_t(len(info.DefaultArguments)),
 			default_arguments:      firstDefaultArgument,
 		}
+		*(*uintptr)(unsafe.Pointer(&p_info.method_userdata)) = uintptr(infoHandle) // FIXME leak
 		C.classdb_register_extension_class_method(
 			C.uintptr_t(uintptr(classdb_register_extension_class_method)),
 			C.uintptr_t(uintptr(library)),
@@ -2343,6 +2346,14 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_name.Uintptr()),
 		)
 		frame.Free()
+	}
+	editor_help_load_xml_from_utf8_chars_and_len := dlsymGD("editor_help_load_xml_from_utf8_chars_and_len")
+	API.EditorHelp.Load = func(data []byte) {
+		C.editor_help_load_xml_from_utf8_chars_and_len(
+			C.uintptr_t(uintptr(editor_help_load_xml_from_utf8_chars_and_len)),
+			(*C.char)(unsafe.Pointer(&data[0])),
+			C.GDExtensionInt(len(data)),
+		)
 	}
 }
 

@@ -1,6 +1,7 @@
 package classdb
 
 import (
+	"encoding/xml"
 	"fmt"
 	"reflect"
 	"strings"
@@ -18,6 +19,7 @@ import (
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
 	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/StringName"
 
@@ -182,6 +184,7 @@ func Register[T Class]() {
 	registered.Store(classType, impl)
 
 	gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
+	registerClassInformation(rename, nameOf(superType), classType)
 	gd.RegisterCleanup(func() {
 		gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
 		registered.Delete(classType)
@@ -216,6 +219,63 @@ func convertName(fnName string) string {
 		joins = append(joins, cases.Title(language.English).String(word))
 	}
 	return strings.Join(joins, "")
+}
+
+func registerClassInformation(className string, inherits string, rtype reflect.Type) {
+	var class xmlDocumentation
+	class.Name = className
+	class.Inherits = inherits
+	class.Version = "4.0"
+	extractDocTag := func(tag reflect.StructTag) string {
+		_, docs, _ := strings.Cut(string(tag), "\n")
+		docs = strings.Replace(docs, "\t", "", -1)
+		return strings.TrimSpace(docs)
+	}
+	if rtype.Field(0).Anonymous {
+		docs := extractDocTag(rtype.Field(0).Tag)
+		brief, whole, _ := strings.Cut(docs, "\n\n")
+		if brief != "" {
+			brief = className + " " + brief
+		}
+		class.BriefDescription = brief
+		class.Description = whole
+	}
+	for i := 1; i < rtype.NumField(); i++ {
+		field := rtype.Field(i)
+		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
+			continue
+		}
+		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
+			continue
+		}
+		name := field.Name
+		if field.Tag.Get("gd") != "" {
+			name = field.Tag.Get("gd")
+		}
+		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
+			var signal xmlSignal
+			name, _, _ = strings.Cut(name, "(")
+			signal.Name = name
+			signal.Description = extractDocTag(field.Tag)
+			class.Signals = append(class.Signals, signal)
+			continue
+		}
+		ptype, ok := propertyOf(field)
+		if ok {
+			var member xmlMember
+			member.Name = name
+			member.Description = extractDocTag(field.Tag)
+			member.Type = ptype.Type.String()
+			class.Members = append(class.Members, member)
+			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, gd.NewStringName(className), ptype, gd.NewStringName(""), gd.NewStringName(""))
+		}
+	}
+	Callable.New(func() {
+		if EngineClass.IsEditorHint() {
+			docs, _ := xml.Marshal(class)
+			gd.Global.EditorHelp.Load(docs)
+		}
+	}).CallDeferred()
 }
 
 type classImplementation struct {
@@ -288,6 +348,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		if tag := field.Tag.Get("gd"); tag != "" {
 			name = tag
 		}
+		name, _, _ = strings.Cut(name, "(")
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			signal := pointers.Pin(gd.NewSignalOf(super, gd.NewStringName(name)))
@@ -372,189 +433,6 @@ func (instance *instanceImplementation) OnCreate() {
 	}); ok {
 		impl.OnCreate()
 	}
-}
-
-func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
-	if impl, ok := instance.Value.(interface {
-		Set(gd.StringName, gd.Variant) gd.Bool
-	}); ok {
-		ok := bool(impl.Set(name, value))
-		if ok {
-			if impl, ok := instance.Value.(interface {
-				OnSet(gd.StringName, gd.Variant)
-			}); ok {
-				impl.OnSet(name, value)
-			}
-		}
-		return ok
-	}
-	sname := name.String()
-	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(sname)
-	if !field.IsValid() {
-		for i := 0; i < rvalue.NumField(); i++ {
-			if rvalue.Type().Field(i).Tag.Get("gd") == sname {
-				field = rvalue.Field(i)
-				break
-			}
-		}
-		if !field.IsValid() {
-			return false
-		}
-	}
-	if !field.CanSet() {
-		return false
-	}
-	if value.Type() == gd.TypeNil {
-		field.Set(reflect.Zero(field.Type()))
-		return true
-	}
-	converted, err := gd.ConvertToDesiredGoType(value, field.Type())
-	if err != nil {
-		return false
-	}
-	if converted.Kind() == reflect.Array {
-		if !field.IsZero() {
-			field.Interface().(interface{ Free() }).Free()
-		}
-		obj, ok := converted.Interface().(interface {
-			AsObject() [1]gd.Object
-		})
-		if !ok {
-			return false
-		}
-		ref, ok := gd.As[gd.RefCounted](obj.AsObject()[0])
-		if ok {
-			ref.Reference()
-		}
-		pointers.Pin(obj.AsObject()[0])
-	}
-	field.Set(converted)
-	if impl, ok := instance.Value.(interface {
-		OnSet(gd.StringName, gd.Variant)
-	}); ok {
-		impl.OnSet(name, value)
-	}
-	return true
-}
-
-func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, bool) {
-	if impl, ok := instance.Value.(interface {
-		Get(gd.StringName) gd.Variant
-	}); ok {
-		return impl.Get(name), true
-	}
-	sname := name.String()
-	rvalue := reflect.ValueOf(instance.Value).Elem()
-	field := rvalue.FieldByName(sname)
-	if !field.IsValid() {
-		for i := 0; i < rvalue.NumField(); i++ {
-			rfield := rvalue.Type().Field(i)
-			if !rfield.Anonymous && rfield.Tag.Get("gd") == sname {
-				field = rvalue.Field(i)
-				break
-			}
-		}
-		if !field.IsValid() {
-			return gd.Variant{}, false
-		}
-		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
-			return gd.Variant{}, false
-		}
-	}
-	return gd.NewVariant(field.Interface()), true
-}
-
-func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
-	if impl, ok := instance.Value.(interface {
-		GetPropertyList() []gd.PropertyInfo
-	}); ok {
-		return impl.GetPropertyList()
-	}
-	rtype := reflect.ValueOf(instance.Value).Elem().Type()
-	var list = make([]gd.PropertyInfo, 0, rtype.NumField())
-	for i := 0; i < rtype.NumField(); i++ {
-		field := rtype.Field(i)
-		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
-			continue
-		}
-		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
-			continue
-		}
-		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
-			continue
-		}
-		ptype, ok := propertyOf(field)
-		if ok {
-			list = append(list, ptype)
-		}
-	}
-	return list
-}
-
-func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bool {
-	if impl, ok := instance.Value.(interface {
-		PropertyCanRevert(gd.StringName) gd.Bool
-	}); ok {
-		return bool(impl.PropertyCanRevert(name))
-	}
-	sname := name.String()
-	rtype := reflect.TypeOf(instance.Value).Elem()
-	field, ok := rtype.FieldByName(sname)
-	if !ok {
-		for i := 0; i < rtype.NumField(); i++ {
-			if rtype.Field(i).Tag.Get("gd") == sname {
-				field = rtype.Field(i)
-				ok = true
-				break
-			}
-		}
-	}
-	if !ok {
-		return false
-	}
-	_, ok = field.Tag.Lookup("default")
-	return ok
-}
-func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (gd.Variant, bool) {
-	if impl, ok := instance.Value.(interface {
-		PropertyGetRevert(gd.StringName) (gd.Variant, bool)
-	}); ok {
-		return impl.PropertyGetRevert(name)
-	}
-	sname := name.String()
-	rtype := reflect.TypeOf(instance.Value).Elem()
-	field, ok := rtype.FieldByName(sname)
-	if !ok {
-		for i := 0; i < rtype.NumField(); i++ {
-			if rtype.Field(i).Tag.Get("gd") == sname {
-				field = rtype.Field(i)
-				ok = true
-				break
-			}
-		}
-	}
-	if !ok {
-		return gd.Variant{}, false
-	}
-	var value = reflect.New(field.Type)
-	if tag := field.Tag.Get("default"); tag != "" {
-		_, err := fmt.Sscanf(tag, "%v", value.Interface())
-		if err != nil {
-			return gd.Variant{}, false
-		}
-	}
-	return gd.NewVariant(value.Elem().Interface()), true
-}
-
-func (instance *instanceImplementation) ValidateProperty(name gd.StringName, info *gd.PropertyInfo) bool {
-	switch validate := instance.Value.(type) {
-	case interface {
-		ValidateProperty(gd.StringName, *gd.PropertyInfo) gd.Bool
-	}:
-		return bool(validate.ValidateProperty(name, info))
-	}
-	return true
 }
 
 func (instance *instanceImplementation) Notification(what int32, reversed bool) {

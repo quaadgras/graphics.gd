@@ -3,6 +3,7 @@ package classdb
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -21,6 +22,9 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 		if tag := field.Tag.Get("gd"); tag != "" {
 			name = tag
 		}
+		name = strings.TrimSuffix(name, ")")
+		name, args, _ := strings.Cut(name, "(")
+		argNames := strings.Split(args, ",")
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeOf([0]gd.IsSignal{}).Elem()) {
 			var signalName = gd.NewStringName(name)
 			var emit, ok = field.Type.MethodByName("Emit")
@@ -39,9 +43,13 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			for i := 1; i < ftype.NumIn(); i++ {
 				vtype, ok := gd.VariantTypeOf(ftype.In(i))
 				if ok {
+					name := fmt.Sprintf("arg%d", i)
+					if i-1 < len(argNames) {
+						name = argNames[i-1]
+					}
 					args = append(args, gd.PropertyInfo{
 						Type:      vtype,
-						Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+						Name:      gd.NewStringName(name),
 						ClassName: gd.NewStringName(nameOf(ftype.In(i))),
 					})
 				}
@@ -57,9 +65,13 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					arg := etype.Out(i)
 					vtype, ok := gd.VariantTypeOf(arg)
 					if ok {
+						name := fmt.Sprintf("arg%d", i)
+						if i-1 < len(argNames) {
+							name = argNames[i-1]
+						}
 						args = append(args, gd.PropertyInfo{
 							Type:      vtype,
-							Name:      gd.NewStringName(fmt.Sprintf("arg%d", i)),
+							Name:      gd.NewStringName(name),
 							ClassName: gd.NewStringName(nameOf(arg)),
 						})
 					}
@@ -67,9 +79,13 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
+					name := fmt.Sprintf("event", i)
+					if i-1 < len(argNames) {
+						name = argNames[i-1]
+					}
 					args = append(args, gd.PropertyInfo{
 						Type:      vtype,
-						Name:      gd.NewStringName("event"),
+						Name:      gd.NewStringName(name),
 						ClassName: gd.NewStringName(nameOf(etype)),
 					})
 				}
