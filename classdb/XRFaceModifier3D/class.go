@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This node applies weights from a [XRFaceTracker] to a mesh with supporting face blend shapes.
 The [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] blend shapes are supported, as well as ARKit and SRanipal blend shapes.

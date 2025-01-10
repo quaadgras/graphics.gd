@@ -185,7 +185,7 @@ func Posmod(x Int, y Int) Int {
 func Floor(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.floor(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -215,7 +215,7 @@ func Floori(x Float) Int {
 func Ceil(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.ceil(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -245,7 +245,7 @@ func Ceili(x Float) Int {
 func Round(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.round(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -275,7 +275,7 @@ func Roundi(x Float) Int {
 func Abs(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.abs(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -305,7 +305,7 @@ func Absi(x Int) Int {
 func Sign(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.sign(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -336,7 +336,7 @@ func Snapped(x Variant, step Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	callframe.Arg(frame, pointers.Get(step))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.snapped(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -473,7 +473,7 @@ func Lerp(from Variant, to Variant, weight Variant) Variant {
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, pointers.Get(weight))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.lerp(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -712,7 +712,7 @@ func Wrap(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.wrap(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -750,7 +750,7 @@ func Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.max(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -786,7 +786,7 @@ func Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.min(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -820,7 +820,7 @@ func Clamp(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.clamp(r_ret.Uintptr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -951,7 +951,7 @@ func RandFromSeed(seed Int) PackedInt64Array {
 func Weakref(obj Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.weakref(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -972,7 +972,7 @@ func TypeConvert(variant Variant, atype Int) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.type_convert(r_ret.Uintptr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1124,7 +1124,7 @@ func VarToStr(variable Variant) String {
 func StrToVar(s String) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.str_to_var(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1144,7 +1144,7 @@ func VarToBytes(variable Variant) PackedByteArray {
 func BytesToVar(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.bytes_to_var(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1164,7 +1164,7 @@ func VarToBytesWithObjects(variable Variant) PackedByteArray {
 func BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.utility.bytes_to_var_with_objects(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1184,7 +1184,7 @@ func Hash(variable Variant) Int {
 func InstanceFromId(instance_id Int) Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance_id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	Global.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
 	var ret Object = PointerMustAssertInstanceID[Object](r_ret.Get())
 	frame.Free()
@@ -5191,7 +5191,7 @@ func (self Callable) Create(variant Variant, method StringName) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	Global.builtin.Callable.create(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
@@ -5205,7 +5205,7 @@ Calls the method represented by this [Callable]. Unlike [method call], this meth
 func (self Callable) Callv(arguments Array) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.callv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5279,7 +5279,7 @@ Returns the object on which this [Callable] is called.
 //go:nosplit
 func (self Callable) GetObject() Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
@@ -5380,7 +5380,7 @@ Returns a copy of this [Callable] with one or more arguments bound, reading them
 func (self Callable) Bindv(arguments Array) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.bindv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5401,7 +5401,7 @@ func _ready():
 func (self Callable) Unbind(argcount Int) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, argcount)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.unbind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5418,7 +5418,7 @@ func (self Callable) Call(args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5496,7 +5496,7 @@ func (self Callable) Bind(args ...Variant) Callable {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5524,7 +5524,7 @@ Returns the object emitting this signal.
 //go:nosplit
 func (self Signal) GetObject() Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
@@ -5830,7 +5830,7 @@ Finds and returns the first key whose associated value is equal to [param value]
 func (self Dictionary) FindKey(value Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.find_key(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5936,7 +5936,7 @@ func (self Dictionary) Get(key Variant, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.get(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5952,7 +5952,7 @@ func (self Dictionary) GetOrAdd(key Variant, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.get_or_add(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6231,7 +6231,7 @@ Returns the first element of the array. If the array is empty, fails and returns
 //go:nosplit
 func (self Array) Front() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6246,7 +6246,7 @@ Returns the last element of the array. If the array is empty, fails and returns 
 //go:nosplit
 func (self Array) Back() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6271,7 +6271,7 @@ GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 //go:nosplit
 func (self Array) PickRandom() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pick_random(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6371,7 +6371,7 @@ Removes and returns the last element of the array. Returns [code]null[/code] if 
 //go:nosplit
 func (self Array) PopBack() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6386,7 +6386,7 @@ Removes and returns the first element of the array. Returns [code]null[/code] if
 //go:nosplit
 func (self Array) PopFront() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6402,7 +6402,7 @@ Removes and returns the element of the array at index [param position]. If negat
 func (self Array) PopAt(position Int) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6700,7 +6700,7 @@ func (self Array) Reduce(method Callable, accum Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(accum))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.reduce(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6802,7 +6802,7 @@ To find the maximum value using a custom comparator, you can use [method reduce]
 //go:nosplit
 func (self Array) Max() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.max(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6816,7 +6816,7 @@ Returns the minimum value contained in the array, if all elements can be compare
 //go:nosplit
 func (self Array) Min() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.min(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6892,7 +6892,7 @@ Returns the [Script] instance associated with this typed array, or [code]null[/c
 //go:nosplit
 func (self Array) GetTypedScript() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.get_typed_script(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -7634,7 +7634,7 @@ func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) V
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -11158,7 +11158,7 @@ var a = node.Get(Node2D.PropertyName.Rotation); // a is 1.5
 func (self Object) Get(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11217,7 +11217,7 @@ var b = node.GetIndexed("position:y"); // b is -10
 func (self Object) GetIndexed(property_path NodePath) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property_path))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11287,7 +11287,7 @@ Returns the custom default value of the given [param property]. Use [method prop
 func (self Object) PropertyGetRevert(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_get_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11376,7 +11376,7 @@ Returns the object's [Script] instance, or [code]null[/code] if no script is att
 //go:nosplit
 func (self Object) GetScript() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11423,7 +11423,7 @@ func (self Object) GetMeta(name StringName, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11576,7 +11576,7 @@ func (self Object) Callv(method StringName, arg_array Array) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(arg_array))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_callv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A 1D texture that obtains colors from a [Gradient] to fill the texture data. The texture is filled by sampling the gradient for each pixel. Therefore, the texture does not necessarily represent an exact copy of the gradient, as it may miss some colors if there are not enough pixels. See also [GradientTexture2D], [CurveTexture] and [CurveXYZTexture].
 */
@@ -84,7 +88,7 @@ func (self class) SetGradient(gradient [1]gdclass.Gradient) {
 //go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture1D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret.Get())}
 	frame.Free()

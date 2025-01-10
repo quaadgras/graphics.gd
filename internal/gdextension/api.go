@@ -8,10 +8,10 @@ import (
 )
 
 type API struct {
-	get_godot_version                                  func(*GodotVersion)
-	mem_alloc                                          func(uintptr) uintptr
-	mem_realloc                                        func(uintptr, uintptr) uintptr
-	mem_free                                           func(uintptr)
+	get_godot_version                                  func(Uninitialized[*GodotVersion])
+	mem_alloc                                          func(uintptr) unsafe.Pointer
+	mem_realloc                                        func(unsafe.Pointer, uintptr) unsafe.Pointer
+	mem_free                                           func(unsafe.Pointer)
 	print_error                                        func(string, string, string, int32, Bool)
 	print_error_with_message                           func(string, string, string, string, int32, Bool)
 	print_warning                                      func(string, string, string, int32, Bool)

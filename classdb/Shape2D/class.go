@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Abstract base class for all 2D shapes, intended for use in physics.
 [b]Performance:[/b] Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.

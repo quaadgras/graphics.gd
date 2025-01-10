@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Can have [PathFollow2D] child nodes moving along the [Curve2D]. See [PathFollow2D] for more information on usage.
 [b]Note:[/b] The path is considered as relative to the moved nodes (children of [PathFollow2D]). As such, the curve should usually start with a zero vector ([code](0, 0)[/code]).
@@ -72,7 +76,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve2D) {
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path2D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Curve2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve2D](r_ret.Get())}
 	frame.Free()

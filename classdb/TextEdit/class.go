@@ -27,6 +27,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
 [b]Note:[/b] Most viewport, caret, and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets in the order they were created.
@@ -3625,7 +3629,7 @@ Returns the [VScrollBar] of the [TextEdit].
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -3638,7 +3642,7 @@ Returns the [HScrollBar] used by [TextEdit].
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -4209,7 +4213,7 @@ func (self class) GetLineGutterMetadata(line gd.Int, gutter gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -4267,7 +4271,7 @@ func (self class) GetLineGutterIcon(line gd.Int, gutter gd.Int) [1]gdclass.Textu
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -4371,7 +4375,7 @@ func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighl
 //go:nosplit
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SyntaxHighlighter{gd.PointerWithOwnershipTransferredToGo[gdclass.SyntaxHighlighter](r_ret.Get())}
 	frame.Free()
@@ -4519,7 +4523,7 @@ public void OnItemPressed(int id)
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()

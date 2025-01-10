@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [CenterContainer] is a container that keeps all of its child controls in its center at their minimum size.
 */

@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A singleton used to load resource files from the filesystem.
 It uses the many [ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
@@ -204,7 +208,7 @@ If this is called before the loading thread is done (i.e. [method load_threaded_
 func (self class) LoadThreadedGet(path gd.String) [1]gdclass.Resource {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
@@ -227,7 +231,7 @@ func (self class) Load(path gd.String, type_hint gd.String, cache_mode gdclass.R
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(type_hint))
 	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()

@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The path generated when using [method AnimationNodeStateMachinePlayback.travel] is limited to the nodes connected by [AnimationNodeStateMachineTransition].
 You can set the timing and conditions of the transition in detail.
@@ -212,7 +216,7 @@ func (self class) SetXfadeCurve(curve [1]gdclass.Curve) {
 //go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
 	frame.Free()

@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
 
@@ -185,7 +189,7 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary b
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 2))
+		var restore = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
 		defer pointers.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -472,7 +476,7 @@ func (class) _commit_handle(impl func(ptr unsafe.Pointer, id gd.Int, secondary b
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 2))
+		var restore = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, id, secondary, restore, cancel)
@@ -653,7 +657,7 @@ Returns the [Node3D] node associated with this gizmo.
 //go:nosplit
 func (self class) GetNode3d() [1]gdclass.Node3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node3D{gd.PointerLifetimeBoundTo[gdclass.Node3D](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -666,7 +670,7 @@ Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retri
 //go:nosplit
 func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorNode3DGizmoPlugin{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorNode3DGizmoPlugin](r_ret.Get())}
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Abstract base class of all types of input events. See [method Node._input].
 */
@@ -364,7 +368,7 @@ func (self class) XformedBy(xform gd.Transform2D, local_ofs gd.Vector2) [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	callframe.Arg(frame, local_ofs)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_xformed_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret.Get())}
 	frame.Free()

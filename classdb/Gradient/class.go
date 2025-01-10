@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This resource describes a color transition by defining a set of colored points and how to interpolate between them.
 See also [Curve] which supports more complex easing methods, but does not support colors.

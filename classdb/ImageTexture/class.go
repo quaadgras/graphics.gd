@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A [Texture2D] based on an [Image]. For an image to be displayed, an [ImageTexture] has to be created from it using the [method create_from_image] method:
 [codeblock]
@@ -118,7 +122,7 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret.Get())}
 	frame.Free()

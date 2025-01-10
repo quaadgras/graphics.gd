@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A more generalized, low-level variation of the directory concept.
 */
@@ -166,7 +170,7 @@ Returns the subdirectory at index [param idx].
 func (self class) GetSubdir(idx gd.Int) [1]gdclass.EditorFileSystemDirectory {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_subdir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret.Get())}
 	frame.Free()
@@ -302,7 +306,7 @@ Returns the parent directory for this directory or [code]null[/code] if called o
 //go:nosplit
 func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret.Get())}
 	frame.Free()

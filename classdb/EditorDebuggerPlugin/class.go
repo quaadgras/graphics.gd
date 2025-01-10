@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [EditorDebuggerPlugin] provides functions related to the editor side of the debugger.
 To interact with the debugger, an instance of this class must be added to the editor via [method EditorPlugin.add_debugger_plugin].
@@ -294,7 +298,7 @@ Returns the [EditorDebuggerSession] with the given [param id].
 func (self class) GetSession(id gd.Int) [1]gdclass.EditorDebuggerSession {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorDebuggerSession{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorDebuggerSession](r_ret.Get())}
 	frame.Free()

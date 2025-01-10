@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
 */
@@ -320,7 +324,7 @@ Returns the interface registered at the given [param idx] index in the list of i
 func (self class) GetInterface(idx gd.Int) [1]gdclass.XRInterface {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
 	frame.Free()
@@ -347,7 +351,7 @@ Finds an interface by its [param name]. For example, if your project uses capabi
 func (self class) FindInterface(name gd.String) [1]gdclass.XRInterface {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
 	frame.Free()
@@ -399,7 +403,7 @@ Returns the positional tracker with the given [param tracker_name].
 func (self class) GetTracker(tracker_name gd.StringName) [1]gdclass.XRTracker {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret.Get())}
 	frame.Free()
@@ -409,7 +413,7 @@ func (self class) GetTracker(tracker_name gd.StringName) [1]gdclass.XRTracker {
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.XRInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
 	frame.Free()

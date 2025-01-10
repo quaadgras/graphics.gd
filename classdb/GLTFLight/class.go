@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
 */
@@ -144,7 +148,7 @@ Create a new GLTFLight instance from the given Godot [Light3D] node.
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(light_node[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
 	frame.Free()
@@ -157,7 +161,7 @@ Converts this GLTFLight instance into a Godot [Light3D] node.
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Light3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Light3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Light3D](r_ret.Get())}
 	frame.Free()
@@ -171,7 +175,7 @@ Creates a new GLTFLight instance by parsing the given [Dictionary].
 func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
 	frame.Free()
@@ -309,7 +313,7 @@ func (self class) SetOuterConeAngle(outer_cone_angle gd.Float) {
 func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

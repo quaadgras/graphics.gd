@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
 Affine operations (rotate, scale, translate) happen in parent's local coordinate system, unless the [Node3D] object is set as top-level. Affine operations in this coordinate system correspond to direct affine operations on the [Node3D]'s transform. The word local below refers to this coordinate system. The coordinate system that is attached to the [Node3D] object itself is referred to as object-local coordinate system.
@@ -727,7 +731,7 @@ Returns the parent [Node3D], or [code]null[/code] if no parent exists, the paren
 //go:nosplit
 func (self class) GetParentNode3d() [1]gdclass.Node3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_parent_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret.Get())}
 	frame.Free()
@@ -796,7 +800,7 @@ Returns the current [World3D] resource this [Node3D] node is registered to.
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret.Get())}
 	frame.Free()

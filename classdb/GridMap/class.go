@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 GridMap lets you place meshes on a grid interactively. It works both from the editor and from scripts, which can help you create in-game level editors.
 GridMaps use a [MeshLibrary] which contains a list of tiles. Each tile is a mesh with materials plus optional collision and navigation shapes.
@@ -443,7 +447,7 @@ func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) {
 //go:nosplit
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_physics_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
@@ -507,7 +511,7 @@ func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) {
 //go:nosplit
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_mesh_library, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.MeshLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.MeshLibrary](r_ret.Get())}
 	frame.Free()

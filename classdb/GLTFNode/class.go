@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Represents a GLTF node. GLTF nodes may have names, transforms, children (other GLTF nodes), and more specialized properties (represented by their own classes).
 GLTF nodes generally exist inside of [GLTFState] which represents all data of a GLTF file. Most of GLTFNode's properties are indices of other data in the GLTF file. You can extend a GLTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
@@ -429,7 +433,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 MeshInstance3D is a node that takes a [Mesh] resource and adds it to the current scenario by creating an instance of it. This is the class most often used render 3D geometry and can be used to instance a single [Mesh] in many places. This allows reusing geometry, which can save on resources. When a [Mesh] has to be instantiated more than thousands of times at close proximity, consider using a [MultiMesh] in a [MultiMeshInstance3D] instead.
 */
@@ -194,7 +198,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()
@@ -232,7 +236,7 @@ func (self class) SetSkin(skin [1]gdclass.Skin) {
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret.Get())}
 	frame.Free()
@@ -245,7 +249,7 @@ Returns the internal [SkinReference] containing the skeleton's [RID] attached to
 //go:nosplit
 func (self class) GetSkinReference() [1]gdclass.SkinReference {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret.Get())}
 	frame.Free()
@@ -287,7 +291,7 @@ Returns the override [Material] for the specified [param surface] of the [Mesh] 
 func (self class) GetSurfaceOverrideMaterial(surface gd.Int) [1]gdclass.Material {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -302,7 +306,7 @@ Returns [code]null[/code] if no material is active, including when [member mesh]
 func (self class) GetActiveMaterial(surface gd.Int) [1]gdclass.Material {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_active_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -420,7 +424,7 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_blend_shape_mix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()

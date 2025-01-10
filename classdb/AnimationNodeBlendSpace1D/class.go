@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A resource used by [AnimationNodeBlendTree].
 [AnimationNodeBlendSpace1D] represents a virtual axis on which any type of [AnimationRootNode]s can be added using [method add_blend_point]. Outputs the linear blend of the two [AnimationRootNode]s adjacent to the current value.
@@ -213,7 +217,7 @@ Returns the [AnimationNode] referenced by the point at index [param point].
 func (self class) GetBlendPointNode(point gd.Int) [1]gdclass.AnimationRootNode {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_get_blend_point_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationRootNode](r_ret.Get())}
 	frame.Free()

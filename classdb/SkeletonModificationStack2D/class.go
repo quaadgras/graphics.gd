@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This resource is used by the Skeleton and holds a stack of [SkeletonModification2D]s.
 This controls the order of the modifications and how they are applied. Modification order is especially important for full-body IK setups, as you need to execute the modifications in the correct order to get the desired results. For example, you want to execute a modification on the spine [i]before[/i] the arms on a humanoid skeleton.
@@ -185,7 +189,7 @@ Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 func (self class) GetModification(mod_idx gd.Int) [1]gdclass.SkeletonModification2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModification2D](r_ret.Get())}
 	frame.Free()
@@ -305,7 +309,7 @@ Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Skeleton2D{gd.PointerMustAssertInstanceID[gdclass.Skeleton2D](r_ret.Get())}
 	frame.Free()

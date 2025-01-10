@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
 Optionally, a viewport can have its own 2D or 3D world, so it doesn't share what it draws with other viewports.
@@ -660,7 +664,7 @@ func (self class) SetWorld2d(world_2d [1]gdclass.World2D) {
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret.Get())}
 	frame.Free()
@@ -673,7 +677,7 @@ Returns the first valid [World2D] for this viewport, searching the [member world
 //go:nosplit
 func (self class) FindWorld2d() [1]gdclass.World2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret.Get())}
 	frame.Free()
@@ -955,7 +959,7 @@ func _ready():
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ViewportTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ViewportTexture](r_ret.Get())}
 	frame.Free()
@@ -1131,7 +1135,7 @@ Returns the drag data from the GUI, that was previously returned by [method Cont
 //go:nosplit
 func (self class) GuiGetDragData() gd.Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_drag_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1182,7 +1186,7 @@ Returns the [Control] having the focus within this viewport. If no [Control] has
 //go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -1196,7 +1200,7 @@ Typically the leaf [Control] node or deepest level of the subtree which claims h
 //go:nosplit
 func (self class) GuiGetHoveredControl() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -1589,7 +1593,7 @@ Returns the currently active 2D camera. Returns null if there are no active came
 //go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Camera2D{gd.PointerMustAssertInstanceID[gdclass.Camera2D](r_ret.Get())}
 	frame.Free()
@@ -1608,7 +1612,7 @@ func (self class) SetWorld3d(world_3d [1]gdclass.World3D) {
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret.Get())}
 	frame.Free()
@@ -1621,7 +1625,7 @@ Returns the first valid [World3D] for this viewport, searching the [member world
 //go:nosplit
 func (self class) FindWorld3d() [1]gdclass.World3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret.Get())}
 	frame.Free()
@@ -1653,7 +1657,7 @@ Returns the currently active 3D camera.
 //go:nosplit
 func (self class) GetCamera3d() [1]gdclass.Camera3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Camera3D{gd.PointerMustAssertInstanceID[gdclass.Camera3D](r_ret.Get())}
 	frame.Free()
@@ -1843,7 +1847,7 @@ func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) {
 //go:nosplit
 func (self class) GetVrsTexture() [1]gdclass.Texture2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()

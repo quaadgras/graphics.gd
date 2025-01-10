@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class can be used to augment or replace the default [MultiplayerAPI] implementation via script or extensions.
 The following example augment the default implementation ([SceneMultiplayer]) by logging every RPC being made, and every object being configured for replication.
@@ -255,7 +259,7 @@ func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj Obje
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(obj[0])
-		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(configuration)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration.Interface())
@@ -270,7 +274,7 @@ func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj O
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(obj[0])
-		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(configuration)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration.Interface())
@@ -395,7 +399,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.O
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(obj[0])
-		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)
 		gd.UnsafeSet(p_back, ret)
@@ -409,7 +413,7 @@ func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]g
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(obj[0])
-		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)
 		gd.UnsafeSet(p_back, ret)

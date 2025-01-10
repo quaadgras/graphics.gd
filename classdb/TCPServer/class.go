@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] when it gets an incoming connection.
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
@@ -158,7 +162,7 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret.Get())}
 	frame.Free()

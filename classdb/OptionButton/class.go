@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [OptionButton] is a type of button that brings up a dropdown with selectable items when pressed. The item selected becomes the "current" item and is displayed as the button text.
 See also [BaseButton] which contains common properties and methods associated with this node.
@@ -404,7 +408,7 @@ Returns the icon of the item at index [param idx].
 func (self class) GetItemIcon(idx gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -446,7 +450,7 @@ Retrieves the metadata of an item. Metadata may be any type and can be used to s
 func (self class) GetItemMetadata(idx gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_item_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -560,7 +564,7 @@ Gets the metadata of the selected item. Metadata for items can be set using [met
 //go:nosplit
 func (self class) GetSelectedMetadata() gd.Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_selected_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -586,7 +590,7 @@ Returns the [PopupMenu] contained in this button.
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptionButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()

@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
 Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
@@ -220,7 +224,7 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret.Get())}
 	frame.Free()
@@ -254,7 +258,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 	callframe.Arg(frame, pointers.Get(issuer_name))
 	callframe.Arg(frame, pointers.Get(not_before))
 	callframe.Arg(frame, pointers.Get(not_after))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
 	frame.Free()

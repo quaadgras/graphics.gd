@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class is used to store the state of a DTLS server. Upon [method setup] it converts connected [PacketPeerUDP] to [PacketPeerDTLS] accepting them via [method take_connection] as DTLS clients. Under the hood, this class is used to store the DTLS state and cookies of the server. The reason of why the state and cookies are needed is outside of the scope of this documentation.
 Below a small example of how to use it:
@@ -236,7 +240,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(udp_peer[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret.Get())}
 	frame.Free()

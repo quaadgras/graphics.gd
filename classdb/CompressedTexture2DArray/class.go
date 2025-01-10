@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A texture array that is loaded from a [code].ctexarray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2DArray] can use one of 4 compression methods:
 - Lossless (WebP or PNG, uncompressed on the GPU)

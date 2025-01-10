@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Simple texture that uses a mesh to draw itself. It's limited because flags can't be changed and region drawing is not supported.
 */
@@ -89,7 +93,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshTexture.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()
@@ -127,7 +131,7 @@ func (self class) SetBaseTexture(texture [1]gdclass.Texture2D) {
 //go:nosplit
 func (self class) GetBaseTexture() [1]gdclass.Texture2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshTexture.Bind_get_base_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()

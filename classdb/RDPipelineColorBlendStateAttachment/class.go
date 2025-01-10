@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Controls how blending between source and destination fragments is performed when using [RenderingDevice].
 For reference, this is how common user-facing blend modes are implemented in Godot's 2D renderer:

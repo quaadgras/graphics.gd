@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Holds collision data from the movement of a [PhysicsBody3D], usually from [method PhysicsBody3D.move_and_collide]. When a [PhysicsBody3D] is moved, it stops if it detects a collision with another body. If a collision is detected, a [KinematicCollision3D] object is returned.
 The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
@@ -253,9 +257,9 @@ Returns the moving object's colliding shape given a collision index (the deepest
 func (self class) GetLocalShape(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }
@@ -267,9 +271,9 @@ Returns the colliding body's attached [Object] given a collision index (the deep
 func (self class) GetCollider(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }
@@ -309,9 +313,9 @@ Returns the colliding body's shape given a collision index (the deepest collisio
 func (self class) GetColliderShape(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }

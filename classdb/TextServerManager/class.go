@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [TextServerManager] is the API backend for loading, enumerating, and switching [TextServer]s.
 [b]Note:[/b] Switching text server at runtime is possible, but will invalidate all fonts and text buffers. Make sure to unload all controls, fonts, and themes before doing so.
@@ -148,7 +152,7 @@ Returns the interface registered at a given index.
 func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()
@@ -175,7 +179,7 @@ Finds an interface by its [param name].
 func (self class) FindInterface(name gd.String) [1]gdclass.TextServer {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()
@@ -200,7 +204,7 @@ Returns the primary [TextServer] interface currently in use.
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.TextServer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()

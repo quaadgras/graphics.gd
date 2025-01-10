@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Base class for audio streams. Audio streams are used for sound effects and music playback, and support WAV (via [AudioStreamWAV]) and Ogg (via [AudioStreamOggVorbis]) file formats.
 
@@ -340,7 +344,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
@@ -366,7 +370,7 @@ Generates an [AudioSample] based on the current stream.
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret.Get())}
 	frame.Free()

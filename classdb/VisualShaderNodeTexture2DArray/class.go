@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Translated to [code]uniform sampler2DArray[/code] in the shader language.
 */
@@ -72,7 +76,7 @@ func (self class) SetTextureArray(value [1]gdclass.Texture2DArray) {
 //go:nosplit
 func (self class) GetTextureArray() [1]gdclass.Texture2DArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2DArray{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2DArray](r_ret.Get())}
 	frame.Free()

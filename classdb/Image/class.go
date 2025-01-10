@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
 An [Image] cannot be assigned to a texture property of an object directly (such as [member Sprite2D.texture]), and has to be converted manually to an [ImageTexture] first.
@@ -858,7 +862,7 @@ func (self class) Create(width gd.Int, height gd.Int, use_mipmaps bool, format g
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -875,7 +879,7 @@ func (self class) CreateEmpty(width gd.Int, height gd.Int, use_mipmaps bool, for
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_empty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -893,7 +897,7 @@ func (self class) CreateFromData(width gd.Int, height gd.Int, use_mipmaps bool, 
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -952,7 +956,7 @@ Creates a new [Image] and loads data from the specified file.
 func (self class) LoadFromFile(path gd.String) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -1257,7 +1261,7 @@ Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 //go:nosplit
 func (self class) RgbeToSrgb() [1]gdclass.Image {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rgbe_to_srgb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -1395,7 +1399,7 @@ Returns a new [Image] that is a copy of this [Image]'s area specified with [para
 func (self class) GetRegion(region gd.Rect2i) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()

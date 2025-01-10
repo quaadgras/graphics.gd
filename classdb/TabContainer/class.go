@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
 [b]Note:[/b] The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
@@ -411,7 +415,7 @@ Returns the child [Control] node located at the active tab index.
 //go:nosplit
 func (self class) GetCurrentTabControl() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_current_tab_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -425,7 +429,7 @@ Returns the [TabBar] contained in this container.
 //go:nosplit
 func (self class) GetTabBar() [1]gdclass.TabBar {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TabBar{gd.PointerLifetimeBoundTo[gdclass.TabBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -439,7 +443,7 @@ Returns the [Control] node from the tab at index [param tab_idx].
 func (self class) GetTabControl(tab_idx gd.Int) [1]gdclass.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -616,7 +620,7 @@ Returns the [Texture2D] for the tab at index [param tab_idx] or [code]null[/code
 func (self class) GetTabIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -724,7 +728,7 @@ Returns the metadata value set to the tab at index [param tab_idx] using [method
 func (self class) GetTabMetadata(tab_idx gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -751,7 +755,7 @@ Returns the button icon from the tab at index [param tab_idx].
 func (self class) GetTabButtonIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_button_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -805,7 +809,7 @@ Returns the [Popup] node instance if one has been set already with [method set_p
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.Popup {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Popup{gd.PointerMustAssertInstanceID[gdclass.Popup](r_ret.Get())}
 	frame.Free()

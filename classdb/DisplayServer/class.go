@@ -28,6 +28,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
 [b]Headless mode:[/b] Starting the engine with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url] disables all rendering and window management functions. Most functions from [DisplayServer] will return dummy values in this case.
@@ -2343,7 +2347,7 @@ func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -2359,7 +2363,7 @@ func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -2375,7 +2379,7 @@ func (self class) GlobalMenuGetItemTag(menu_root gd.String, idx gd.Int) gd.Varia
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2521,7 +2525,7 @@ func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) [1]gdcl
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -3184,7 +3188,7 @@ Returns the user's clipboard as an image if possible.
 //go:nosplit
 func (self class) ClipboardGetImage() [1]gdclass.Image {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -3492,7 +3496,7 @@ Returns screenshot of the [param screen].
 func (self class) ScreenGetImage(screen gd.Int) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()

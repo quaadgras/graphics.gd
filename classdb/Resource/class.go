@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
 In GDScript, resources can loaded from disk by their [member resource_path] using [method @GDScript.load] or [method @GDScript.preload].
@@ -302,7 +306,7 @@ If [member resource_local_to_scene] is set to [code]true[/code] and the resource
 //go:nosplit
 func (self class) GetLocalScene() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_local_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -384,7 +388,7 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 func (self class) Duplicate(subresources bool) [1]gdclass.Resource {
 	var frame = callframe.New()
 	callframe.Arg(frame, subresources)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()

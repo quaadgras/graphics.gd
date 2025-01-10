@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 type Instance [1]gdclass.GLTFAnimation
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -125,7 +129,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAnimation.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

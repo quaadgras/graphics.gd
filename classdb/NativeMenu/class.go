@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [NativeMenu] handles low-level access to the OS native global menu bar and popup menus.
 [b]Note:[/b] This is low-level API, consider using [MenuBar] with [member MenuBar.prefer_global_menu] set to [code]true[/code], and [PopupMenu] with [member PopupMenu.prefer_native_menu] set to [code]true[/code].
@@ -883,7 +887,7 @@ b]Note:[/b] This method is implemented only on macOS.
 func (self class) GetPopupOpenCallback(rid gd.RID) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -913,7 +917,7 @@ b]Note:[/b] This method is implemented only on macOS.
 func (self class) GetPopupCloseCallback(rid gd.RID) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -1291,7 +1295,7 @@ func (self class) GetItemCallback(rid gd.RID, idx gd.Int) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -1307,7 +1311,7 @@ func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -1323,7 +1327,7 @@ func (self class) GetItemTag(rid gd.RID, idx gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1469,7 +1473,7 @@ func (self class) GetItemIcon(rid gd.RID, idx gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()

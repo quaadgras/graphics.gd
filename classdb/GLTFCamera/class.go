@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Represents a camera as defined by the base GLTF spec.
 */
@@ -129,7 +133,7 @@ Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_node[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret.Get())}
 	frame.Free()
@@ -142,7 +146,7 @@ Converts this GLTFCamera instance into a Godot [Camera3D] node.
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Camera3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Camera3D](r_ret.Get())}
 	frame.Free()
@@ -156,7 +160,7 @@ Creates a new GLTFCamera instance by parsing the given [Dictionary].
 func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFCamera {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret.Get())}
 	frame.Free()

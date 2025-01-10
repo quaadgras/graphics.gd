@@ -68,8 +68,8 @@ type API struct {
 		GetTypeName               func(self VariantType) String
 		CanConvert                func(self Variant, to VariantType) bool
 		CanConvertStrict          func(self Variant, to VariantType) bool
-		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[[3]uintptr], arg uintptr)
-		ToTypeConstructor         func(VariantType) func(ret uintptr, arg callframe.Ptr[[3]uintptr])
+		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg uintptr)
+		ToTypeConstructor         func(VariantType) func(ret uintptr, arg callframe.Ptr[VariantPointers])
 		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret uintptr)
 		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base uintptr, args callframe.Args, ret uintptr, c int32)
 		GetPointerConstructor     func(vtype VariantType, index int32) func(base uintptr, args callframe.Args)

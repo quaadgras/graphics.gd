@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
@@ -636,7 +640,7 @@ func (self class) SetTileset(tileset [1]gdclass.TileSet) {
 //go:nosplit
 func (self class) GetTileset() [1]gdclass.TileSet {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret.Get())}
 	frame.Free()
@@ -1114,7 +1118,7 @@ func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies 
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
@@ -1158,7 +1162,7 @@ func (self class) GetPattern(layer gd.Int, coords_array gd.Array) [1]gdclass.Til
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(coords_array))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()

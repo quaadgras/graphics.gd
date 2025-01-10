@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
 Setting up a WebRTC connection between two peers may not seem a trivial task, but it can be broken down into 3 main steps:
@@ -245,7 +249,7 @@ func (self class) CreateDataChannel(label gd.String, options gd.Dictionary) [1]g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, pointers.Get(options))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret.Get())}
 	frame.Free()

@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
 For more information on Godot's UI system, anchors, offsets, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from [Control] and [Container] nodes.
@@ -338,7 +342,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data.Interface())
@@ -378,7 +382,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data.Interface())
@@ -1593,7 +1597,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data)
 		gd.UnsafeSet(p_back, ret)
@@ -1632,7 +1636,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data)
 	}
@@ -2251,7 +2255,7 @@ Finds the previous (above in the tree) [Control] that can receive the focus.
 //go:nosplit
 func (self class) FindPrevValidFocus() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_prev_valid_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2264,7 +2268,7 @@ Finds the next (below in the tree) [Control] that can receive the focus.
 //go:nosplit
 func (self class) FindNextValidFocus() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_next_valid_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2279,7 +2283,7 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 func (self class) FindValidFocusNeighbor(side Side) [1]gdclass.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_valid_focus_neighbor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2355,7 +2359,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) {
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
 	frame.Free()
@@ -2612,7 +2616,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -2628,7 +2632,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
 	frame.Free()
@@ -2644,7 +2648,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -2924,7 +2928,7 @@ See [method get_theme_color] for details.
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -2951,7 +2955,7 @@ Returns the parent control node.
 //go:nosplit
 func (self class) GetParentControl() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_parent_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -3318,7 +3322,7 @@ func (self class) SetShortcutContext(node [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetShortcutContext() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_shortcut_context, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()

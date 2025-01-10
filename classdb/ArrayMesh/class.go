@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
 The most basic example is the creation of a single triangle:
@@ -552,7 +556,7 @@ func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) {
 //go:nosplit
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()

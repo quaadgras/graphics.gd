@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A container used to provide a child control with scrollbars when needed. Scrollbars will automatically be drawn at the right (for vertical) or bottom (for horizontal) and will enable dragging to move the viewable Control (and its children) within the ScrollContainer. Scrollbars will also automatically resize the grabber based on the [member Control.custom_minimum_size] of the Control relative to the ScrollContainer.
 */
@@ -305,7 +309,7 @@ Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -319,7 +323,7 @@ Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()

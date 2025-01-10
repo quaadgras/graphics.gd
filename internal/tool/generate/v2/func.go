@@ -397,7 +397,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else if strings.HasPrefix(result, "gd.ArrayOf") {
 				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
 			} else if result == "[1]gd.Object" {
-				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}\n")
+				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}\n")
 			} else {
 				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}

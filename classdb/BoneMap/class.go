@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class contains a dictionary that uses a list of bone names in [SkeletonProfile] as key names.
 By assigning the actual [Skeleton3D] bone name as the key value, it maps the [Skeleton3D] to the [SkeletonProfile].
@@ -86,7 +90,7 @@ func (self Instance) SetProfile(value [1]gdclass.SkeletonProfile) {
 //go:nosplit
 func (self class) GetProfile() [1]gdclass.SkeletonProfile {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret.Get())}
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
 Also supports custom node spawns through [method spawn], calling [member spawn_function] on all peers.
@@ -171,7 +175,7 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 func (self class) Spawn(data gd.Variant) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_spawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -219,7 +223,7 @@ func (self class) SetSpawnLimit(limit gd.Int) {
 //go:nosplit
 func (self class) GetSpawnFunction() gd.Callable {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()

@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This image-based workflow can be easier to use than [ResourceImporterBMFont], but it requires all glyphs to have the same width and height, glyph advances and drawing offsets can be customized. This makes [ResourceImporterImageFont] most suited to fixed-width fonts.
 See also [ResourceImporterDynamicFont].

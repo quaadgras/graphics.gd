@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
 This implementation supports RPCs via [method Node.rpc] and [method Node.rpc_id] and requires [method MultiplayerAPI.rpc] to be passed a [Node] (it will fail for other object types).
@@ -261,7 +265,7 @@ func (self class) SetAuthCallback(callback gd.Callable) {
 //go:nosplit
 func (self class) GetAuthCallback() gd.Callable {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()

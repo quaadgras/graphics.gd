@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Provides access to metadata stored for every available class.
 */
@@ -340,7 +344,7 @@ Creates an instance of [param class].
 func (self class) Instantiate(class_ gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -415,7 +419,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -446,7 +450,7 @@ func (self class) ClassGetPropertyDefaultValue(class_ gd.StringName, property gd
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

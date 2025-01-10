@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
 [codeblocks]
@@ -729,7 +733,7 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()

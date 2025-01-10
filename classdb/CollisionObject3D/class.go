@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
 [b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
@@ -595,9 +599,9 @@ Returns the parent object of the given shape owner.
 func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }
@@ -664,7 +668,7 @@ func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret.Get())}
 	frame.Free()

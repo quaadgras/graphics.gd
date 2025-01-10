@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
 */
@@ -386,7 +390,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -493,7 +497,7 @@ func (self class) GetOccluder(layer_id gd.Int, flip_h bool, flip_v bool, transpo
 	callframe.Arg(frame, flip_h)
 	callframe.Arg(frame, flip_v)
 	callframe.Arg(frame, transpose)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret.Get())}
 	frame.Free()
@@ -796,7 +800,7 @@ func (self class) GetNavigationPolygon(layer_id gd.Int, flip_h bool, flip_v bool
 	callframe.Arg(frame, flip_h)
 	callframe.Arg(frame, flip_v)
 	callframe.Arg(frame, transpose)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_navigation_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.NavigationPolygon{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPolygon](r_ret.Get())}
 	frame.Free()
@@ -842,7 +846,7 @@ Returns the custom data value for custom data layer named [param layer_name].
 func (self class) GetCustomData(layer_name gd.String) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(layer_name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -869,7 +873,7 @@ Returns the custom data value for custom data layer with index [param layer_id].
 func (self class) GetCustomDataByLayerId(layer_id gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_id)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileData.Bind_get_custom_data_by_layer_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This texture gives access to the camera texture provided by a [CameraFeed].
 [b]Note:[/b] Many cameras supply YCbCr images which need to be converted in a shader.

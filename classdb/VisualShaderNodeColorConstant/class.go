@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Has two output ports representing RGB and alpha channels of [Color].
 Translated to [code]vec3 rgb[/code] and [code]float alpha[/code] in the shader language.

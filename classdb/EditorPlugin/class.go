@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
 [b]Note:[/b] Some names in this class contain "left" or "right" (e.g. [constant DOCK_SLOT_LEFT_UL]). These APIs assume left-to-right layout, and would be backwards when using right-to-left layout. These names are kept for compatibility reasons.
@@ -1896,7 +1900,7 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title gd.S
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret.Get())}
 	frame.Free()
@@ -2014,7 +2018,7 @@ Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 //go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2120,7 +2124,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 //go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2407,7 +2411,7 @@ Returns the [EditorInterface] singleton instance.
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2422,7 +2426,7 @@ Gets the Editor's dialog used for making scripts.
 //go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret.Get())}
 	frame.Free()

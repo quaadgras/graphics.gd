@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class defines the interface for noise generation libraries to inherit from.
 A default [method get_seamless_image] implementation is provided for libraries that do not provide seamless noise. This function requests a larger image from the [method get_image] method, reverses the quadrants of the image, then uses the strips of extra width to blend over the seams.
@@ -207,7 +211,7 @@ func (self class) GetImage(width gd.Int, height gd.Int, invert bool, in_3d_space
 	callframe.Arg(frame, invert)
 	callframe.Arg(frame, in_3d_space)
 	callframe.Arg(frame, normalize)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -227,7 +231,7 @@ func (self class) GetSeamlessImage(width gd.Int, height gd.Int, invert bool, in_
 	callframe.Arg(frame, in_3d_space)
 	callframe.Arg(frame, skirt)
 	callframe.Arg(frame, normalize)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()

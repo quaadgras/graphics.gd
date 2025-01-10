@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Maintains a list of resources, nodes, exported and overridden properties, and built-in scripts associated with a scene. They cannot be modified from a [SceneState], only accessed. Useful for peeking into what a [PackedScene] contains without instantiating it.
 This class cannot be instantiated directly, it is retrieved for a given scene as the result of [method PackedScene.get_state].
@@ -310,7 +314,7 @@ Returns a [PackedScene] for the node at [param idx] (i.e. the whole branch start
 func (self class) GetNodeInstance(idx gd.Int) [1]gdclass.PackedScene {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PackedScene{gd.PointerWithOwnershipTransferredToGo[gdclass.PackedScene](r_ret.Get())}
 	frame.Free()
@@ -383,7 +387,7 @@ func (self class) GetNodePropertyValue(idx gd.Int, prop_idx gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, prop_idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

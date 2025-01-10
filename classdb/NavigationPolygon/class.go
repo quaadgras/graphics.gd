@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A navigation mesh can be created either by baking it with the help of the [NavigationServer2D], or by adding vertices and convex polygon indices arrays manually.
 To bake a navigation mesh at least one outline needs to be added that defines the outer bounds of the baked area.
@@ -362,7 +366,7 @@ Returns the [NavigationMesh] resulting from this navigation polygon. This naviga
 //go:nosplit
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPolygon.Bind_get_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret.Get())}
 	frame.Free()

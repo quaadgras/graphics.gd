@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 By default, [MultiplayerSynchronizer] synchronizes configured properties to all peers.
 Visibility can be handled directly with [method set_visibility_for] or as-needed with [method add_visibility_filter] and [method update_visibility].
@@ -209,7 +213,7 @@ func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig)
 //go:nosplit
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SceneReplicationConfig{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneReplicationConfig](r_ret.Get())}
 	frame.Free()

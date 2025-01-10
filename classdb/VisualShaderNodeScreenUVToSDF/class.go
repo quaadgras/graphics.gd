@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Translates to [code]screen_uv_to_sdf(uv)[/code] in the shader language. If the UV port isn't connected, [code]SCREEN_UV[/code] is used instead.
 */

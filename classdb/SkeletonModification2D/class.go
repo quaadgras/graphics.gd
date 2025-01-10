@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
 This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
@@ -225,7 +229,7 @@ Returns the [SkeletonModificationStack2D] that this modification is bound to. Th
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret.Get())}
 	frame.Free()

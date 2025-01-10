@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
 */
@@ -500,7 +504,7 @@ Returns the [VBoxContainer] used to display the file system.
 //go:nosplit
 func (self class) GetVbox() [1]gdclass.VBoxContainer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -514,7 +518,7 @@ Returns the LineEdit for the selected file.
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()

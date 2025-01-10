@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A resource used for styling/skinning [Control] and [Window] nodes. While individual controls can be styled using their local theme overrides (see [method Control.add_theme_color_override]), theme resources allow you to store and apply the same settings across all controls sharing the same type (e.g. style all [Button]s the same). One theme resource can be used for the entire project, but you can also set a separate theme resource to a branch of control nodes. A theme resource assigned to a control applies to the control itself, as well as all of its direct and indirect children (as long as a chain of controls is uninterrupted).
 Use [member ProjectSettings.gui/theme/custom] to set up a project-scope theme that will be available to every control in your project.
@@ -581,7 +585,7 @@ func (self class) GetIcon(name gd.StringName, theme_type gd.StringName) [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -683,7 +687,7 @@ func (self class) GetStylebox(name gd.StringName, theme_type gd.StringName) [1]g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
 	frame.Free()
@@ -786,7 +790,7 @@ func (self class) GetFont(name gd.StringName, theme_type gd.StringName) [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -1217,7 +1221,7 @@ func (self class) SetDefaultFont(font [1]gdclass.Font) {
 //go:nosplit
 func (self class) GetDefaultFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -1299,7 +1303,7 @@ func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name gd.StringNa
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_theme_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [MarginContainer] adds an adjustable margin on each side of its child controls. The margins are added around all children, not around each individual one. To control the [MarginContainer]'s margins, use the [code]margin_*[/code] theme properties listed below.
 [b]Note:[/b] The margin sizes are theme overrides, not normal properties. This is an example of how to change them in code:

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [SkeletonModifier3D] retrieves a target [Skeleton3D] by having a [Skeleton3D] parent.
 If there is [AnimationMixer], modification always performs after playback process of the [AnimationMixer].
@@ -118,7 +122,7 @@ Get parent [Skeleton3D] node if found.
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret.Get())}
 	frame.Free()

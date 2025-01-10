@@ -26,6 +26,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
 [b]Note:[/b] This is a low-level API, consider using [TextLine], [TextParagraph], and [Font] classes instead.
@@ -2760,7 +2764,7 @@ func (self class) FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_texture_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -3839,7 +3843,7 @@ func (self class) ShapedGetSpanMeta(shaped gd.RID, index gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_get_span_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

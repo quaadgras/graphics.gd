@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
 */
@@ -156,7 +160,7 @@ Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] 
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body_node[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret.Get())}
 	frame.Free()
@@ -169,7 +173,7 @@ Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 //go:nosplit
 func (self class) ToNode() [1]gdclass.CollisionObject3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.CollisionObject3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionObject3D](r_ret.Get())}
 	frame.Free()
@@ -183,7 +187,7 @@ Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the 
 func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysicsBody {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret.Get())}
 	frame.Free()

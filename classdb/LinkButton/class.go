@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
 See also [BaseButton] which contains common properties and methods associated with this node.

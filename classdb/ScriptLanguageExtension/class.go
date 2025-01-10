@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 type Instance [1]gdclass.ScriptLanguageExtension
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -505,7 +509,7 @@ func (Instance) _add_global_constant(impl func(ptr unsafe.Pointer, name string, 
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(name)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -515,7 +519,7 @@ func (Instance) _add_named_global_constant(impl func(ptr unsafe.Pointer, name st
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(name)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -1147,7 +1151,7 @@ func (class) _auto_indent_code(impl func(ptr unsafe.Pointer, code gd.String, fro
 func (class) _add_global_constant(impl func(ptr unsafe.Pointer, name gd.StringName, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
 	}
@@ -1156,7 +1160,7 @@ func (class) _add_global_constant(impl func(ptr unsafe.Pointer, name gd.StringNa
 func (class) _add_named_global_constant(impl func(ptr unsafe.Pointer, name gd.StringName, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
 	}

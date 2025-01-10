@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Encapsulates a [ColorPicker], making it accessible by pressing a button. Pressing the button will toggle the [ColorPicker]'s visibility.
 See also [BaseButton] which contains common properties and methods associated with this node.
@@ -114,7 +118,7 @@ Returns the [ColorPicker] that this node toggles.
 //go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_picker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -128,7 +132,7 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret.Get())}
 	frame.Free()

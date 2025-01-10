@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Shortcuts are commonly used for interacting with a [Control] element from an [InputEvent] (also known as hotkeys).
 One shortcut can contain multiple [InputEvent]'s, allowing the possibility of triggering one action with multiple different inputs.

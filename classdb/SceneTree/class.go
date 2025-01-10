@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
 You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: every node can be added to as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the nodes belonging to any given group.
@@ -327,7 +331,7 @@ func (self Instance) SetPhysicsInterpolation(value bool) {
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
@@ -455,7 +459,7 @@ func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -512,7 +516,7 @@ func (self class) CreateTimer(time_sec gd.Float, process_always bool, process_in
 	callframe.Arg(frame, process_always)
 	callframe.Arg(frame, process_in_physics)
 	callframe.Arg(frame, ignore_time_scale)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_create_timer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SceneTreeTimer{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneTreeTimer](r_ret.Get())}
 	frame.Free()
@@ -526,7 +530,7 @@ Creates and returns a new [Tween] processed in this tree. The Tween will start a
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
@@ -698,7 +702,7 @@ Returns the first [Node] found inside the tree, that has been added to the given
 func (self class) GetFirstNodeInGroup(group gd.StringName) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_first_node_in_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -731,7 +735,7 @@ func (self class) SetCurrentScene(child_node [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetCurrentScene() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_current_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -819,7 +823,7 @@ Searches for the [MultiplayerAPI] configured for the given path, if one does not
 func (self class) GetMultiplayer(for_path gd.NodePath) [1]gdclass.MultiplayerAPI {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(for_path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}
 	frame.Free()

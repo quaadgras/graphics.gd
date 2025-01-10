@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for store game save data or player configuration files.
 Here's a sample on how to write and read from a file:
@@ -604,7 +608,7 @@ func (self class) Open(path gd.String, flags gdclass.FileAccessModeFlags) [1]gdc
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
@@ -622,7 +626,7 @@ func (self class) OpenEncrypted(path gd.String, mode_flags gdclass.FileAccessMod
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
@@ -639,7 +643,7 @@ func (self class) OpenEncryptedWithPass(path gd.String, mode_flags gdclass.FileA
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, pointers.Get(pass))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
@@ -657,7 +661,7 @@ func (self class) OpenCompressed(path gd.String, mode_flags gdclass.FileAccessMo
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, compression_mode)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_compressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
@@ -1074,7 +1078,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 func (self class) GetVar(allow_objects bool) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_var, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

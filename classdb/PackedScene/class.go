@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
 Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [member Node.owner] property).
@@ -169,7 +173,7 @@ Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). 
 func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_state)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -195,7 +199,7 @@ Returns the [SceneState] representing the scene file contents.
 //go:nosplit
 func (self class) GetState() [1]gdclass.SceneState {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SceneState{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneState](r_ret.Get())}
 	frame.Free()

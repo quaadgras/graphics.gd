@@ -10,7 +10,6 @@ import (
 // is required for the pointers garbage collector to call the correct
 // Free method.
 
-type Variant pointers.Trio[Variant]
 type Object pointers.Trio[Object]
 type RefCounted pointers.Trio[Object]
 
@@ -20,8 +19,6 @@ type String pointers.Solo[String]
 type StringName pointers.Solo[StringName]
 type NodePath pointers.Solo[NodePath]
 
-type Signal pointers.Pair[Signal]
-type Callable pointers.Pair[Callable]
 type PackedByteArray pointers.Pair[PackedByteArray]
 type PackedInt32Array pointers.Pair[PackedInt32Array]
 type PackedInt64Array pointers.Pair[PackedInt64Array]
@@ -32,3 +29,7 @@ type PackedVector2Array pointers.Pair[PackedVector2Array]
 type PackedVector3Array pointers.Pair[PackedVector3Array]
 type PackedVector4Array pointers.Pair[PackedVector4Array]
 type PackedColorArray pointers.Pair[PackedColorArray]
+
+type variantPointers = VariantPointers
+type signalPointers = SignalPointers
+type callablePointers = CallablePointers

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton directly by its name.
@@ -544,7 +548,7 @@ Returns the editor's [EditorCommandPalette] instance.
 //go:nosplit
 func (self class) GetCommandPalette() [1]gdclass.EditorCommandPalette {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_command_palette, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorCommandPalette{gd.PointerLifetimeBoundTo[gdclass.EditorCommandPalette](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -557,7 +561,7 @@ Returns the editor's [EditorFileSystem] instance.
 //go:nosplit
 func (self class) GetResourceFilesystem() [1]gdclass.EditorFileSystem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_filesystem, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorFileSystem{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystem](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -570,7 +574,7 @@ Returns the [EditorPaths] singleton.
 //go:nosplit
 func (self class) GetEditorPaths() [1]gdclass.EditorPaths {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_paths, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorPaths{gd.PointerLifetimeBoundTo[gdclass.EditorPaths](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -583,7 +587,7 @@ Returns the editor's [EditorResourcePreview] instance.
 //go:nosplit
 func (self class) GetResourcePreviewer() [1]gdclass.EditorResourcePreview {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_previewer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorResourcePreview{gd.PointerLifetimeBoundTo[gdclass.EditorResourcePreview](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -596,7 +600,7 @@ Returns the editor's [EditorSelection] instance.
 //go:nosplit
 func (self class) GetSelection() [1]gdclass.EditorSelection {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorSelection{gd.PointerLifetimeBoundTo[gdclass.EditorSelection](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -609,7 +613,7 @@ Returns the editor's [EditorSettings] instance.
 //go:nosplit
 func (self class) GetEditorSettings() [1]gdclass.EditorSettings {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorSettings](r_ret.Get())}
 	frame.Free()
@@ -665,7 +669,7 @@ Returns the editor's [Theme].
 //go:nosplit
 func (self class) GetEditorTheme() [1]gdclass.Theme {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
 	frame.Free()
@@ -679,7 +683,7 @@ Returns the main container of Godot editor's window. For example, you can use it
 //go:nosplit
 func (self class) GetBaseControl() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_base_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -694,7 +698,7 @@ Returns the editor control responsible for main screen plugins and tools. Use it
 //go:nosplit
 func (self class) GetEditorMainScreen() [1]gdclass.VBoxContainer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_main_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -708,7 +712,7 @@ Returns the editor's [ScriptEditor] instance.
 //go:nosplit
 func (self class) GetScriptEditor() [1]gdclass.ScriptEditor {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_script_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ScriptEditor{gd.PointerLifetimeBoundTo[gdclass.ScriptEditor](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -721,7 +725,7 @@ Returns the 2D editor [SubViewport]. It does not have a camera. Instead, the vie
 //go:nosplit
 func (self class) GetEditorViewport2d() [1]gdclass.SubViewport {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -735,7 +739,7 @@ Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/c
 func (self class) GetEditorViewport3d(idx gd.Int) [1]gdclass.SubViewport {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -947,7 +951,7 @@ Returns the editor's [FileSystemDock] instance.
 //go:nosplit
 func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_file_system_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.FileSystemDock{gd.PointerLifetimeBoundTo[gdclass.FileSystemDock](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -1012,7 +1016,7 @@ Returns the editor's [EditorInspector] instance.
 //go:nosplit
 func (self class) GetInspector() [1]gdclass.EditorInspector {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_inspector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.EditorInspector{gd.PointerLifetimeBoundTo[gdclass.EditorInspector](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -1115,7 +1119,7 @@ Returns the edited (current) scene's root [Node].
 //go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()

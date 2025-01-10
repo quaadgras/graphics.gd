@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Provides data transformation and encoding utility functions.
 */
@@ -116,7 +120,7 @@ func (self class) Base64ToVariant(base64_str gd.String, allow_objects bool) gd.V
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base64_str))
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_variant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This is the control that implements property editing in the editor's Settings dialogs, the Inspector dock, etc. To get the [EditorInspector] used in the editor's Inspector dock, use [method EditorInterface.get_inspector].
 [EditorInspector] will show properties in the same order as the array returned by [method Object.get_property_list].
@@ -91,9 +95,9 @@ Returns the object currently selected in this inspector.
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Describes the motion and collision result from [method PhysicsServer2D.body_test_motion].
 */
@@ -240,9 +244,9 @@ Returns the colliding body's attached [Object], if a collision occurred.
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A resource to add to an [AnimationNodeBlendTree]. Blends two animations additively based on the amount value.
 If the amount is greater than [code]1.0[/code], the animation connected to "in" port is blended with the amplified animation connected to "add" port.

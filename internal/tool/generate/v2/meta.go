@@ -436,19 +436,24 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	case "String", "StringName", "NodePath",
 		"Dictionary", "Array":
 		return "[1]uintptr", true
-	case "Callable", "Signal",
-		"PackedByteArray", "PackedInt32Array",
+	case "Signal":
+		return "signalPointers", true
+	case "Callable":
+		return "callablePointers", true
+	case "PackedByteArray", "PackedInt32Array",
 		"PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedStringArray",
 		"PackedVector2Array", "PackedVector3Array",
 		"PackedVector4Array",
 		"PackedColorArray":
 		return "[2]uintptr", true
-	case "Variant", "Object":
-		return "[3]uintptr", true
+	case "Variant":
+		return "variantPointers", true
+	case "Object":
+		return "uintptr", true
 	default:
 		if entry, ok := db[t]; ok && !entry.IsEnum {
-			return "[1]uintptr", true
+			return "uintptr", true
 		}
 		return "", false
 	}

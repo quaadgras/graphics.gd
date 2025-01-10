@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The server that manages all language translations. Translations can be added to or removed from it.
 */
@@ -450,7 +454,7 @@ It will return [code]null[/code] if there is no [Translation] instance that matc
 func (self class) GetTranslationObject(locale gd.String) [1]gdclass.Translation {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_translation_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret.Get())}
 	frame.Free()

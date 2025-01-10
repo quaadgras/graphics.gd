@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
 
@@ -357,9 +361,9 @@ Gets the edited object.
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }

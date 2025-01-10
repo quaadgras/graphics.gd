@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 MultiMesh provides low-level mesh instancing. Drawing thousands of [MeshInstance3D] nodes can be slow, since each object is submitted to the GPU then drawn individually.
 MultiMesh is much faster as it can draw thousands of instances with a single draw call, resulting in less API overhead.
@@ -203,7 +207,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()

@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
 Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
@@ -750,7 +754,7 @@ Returns the [TileSetSource] with ID [param source_id].
 func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileSetSource{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSetSource](r_ret.Get())}
 	frame.Free()
@@ -1082,7 +1086,7 @@ Returns the physics material of bodies on the given TileSet's physics layer.
 func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) [1]gdclass.PhysicsMaterial {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
@@ -1749,7 +1753,7 @@ Returns the [TileMapPattern] at the given [param index].
 func (self class) GetPattern(index gd.Int) [1]gdclass.TileMapPattern {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()

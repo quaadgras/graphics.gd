@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
 Use [FontVariation] to access specific OpenType variation of the font, create simulated bold / slanted version, and draw lines of text.
@@ -1488,7 +1492,7 @@ func (self class) GetTextureImage(cache_index gd.Int, size gd.Vector2i, texture_
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()

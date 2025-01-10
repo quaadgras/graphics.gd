@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Abstract render data object, exists for the duration of rendering a single viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
@@ -84,7 +88,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret.Get())}
 	frame.Free()
@@ -97,7 +101,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret.Get())}
 	frame.Free()

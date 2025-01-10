@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [CallbackTweener] is used to call a method in a tweening sequence. See [method Tween.tween_callback] for more usage information.
 The tweener will finish automatically if the callback's target object is freed.
@@ -77,7 +81,7 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 func (self class) SetDelay(delay gd.Float) [1]gdclass.CallbackTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret.Get())}
 	frame.Free()

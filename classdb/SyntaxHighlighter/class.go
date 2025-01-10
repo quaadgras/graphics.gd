@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Base class for syntax highlighters. Provides syntax highlighting data to a [TextEdit]. The associated [TextEdit] will call into the [SyntaxHighlighter] on an as-needed basis.
 [b]Note:[/b] A [SyntaxHighlighter] instance should not be used across multiple [TextEdit] nodes.
@@ -248,7 +252,7 @@ Returns the associated [TextEdit] node.
 //go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TextEdit{gd.PointerMustAssertInstanceID[gdclass.TextEdit](r_ret.Get())}
 	frame.Free()

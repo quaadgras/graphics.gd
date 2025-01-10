@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
 At runtime, [Window]s will not close automatically when requested. You need to handle it manually using the [signal close_requested] signal (this applies both to pressing the close button and clicking outside of a popup).
@@ -1567,7 +1571,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) {
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
 	frame.Free()
@@ -1780,7 +1784,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -1796,7 +1800,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
 	frame.Free()
@@ -1812,7 +1816,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -2074,7 +2078,7 @@ See [method Control.get_theme_color] for details.
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()

@@ -13,8 +13,6 @@ import (
 	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
 	"graphics.gd/startup"
-
-	_ "graphics.gd/startup"
 )
 
 func TestMain(m *testing.M) {

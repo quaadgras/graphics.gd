@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Base node for geometry-based visual instances. Shares some common functionality like visibility and custom materials.
 */
@@ -202,7 +206,7 @@ func (self class) SetMaterialOverride(material [1]gdclass.Material) {
 //go:nosplit
 func (self class) GetMaterialOverride() [1]gdclass.Material {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -221,7 +225,7 @@ func (self class) SetMaterialOverlay(material [1]gdclass.Material) {
 //go:nosplit
 func (self class) GetMaterialOverlay() [1]gdclass.Material {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_material_overlay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -403,7 +407,7 @@ Get the value of a shader parameter as set on this instance.
 func (self class) GetInstanceShaderParameter(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [Skeleton3D] provides an interface for managing a hierarchy of bones, including pose, rest and animation (see [Animation]). It can also use ragdoll physics.
 The overall transform of a bone with respect to the skeleton is determined by bone pose. Bone rest defines the initial transform of the bone pose.
@@ -610,7 +614,7 @@ func (self class) GetBoneGlobalRest(bone_idx gd.Int) gd.Transform3D {
 //go:nosplit
 func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret.Get())}
 	frame.Free()
@@ -624,7 +628,7 @@ Binds the given Skin to the Skeleton.
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skin[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_register_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret.Get())}
 	frame.Free()

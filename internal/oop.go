@@ -15,12 +15,12 @@ var ExtensionInstances sync.Map
 
 type NotificationType int32
 
-func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
-	return pointers.New[T]([3]uintptr{ptr[0]})
+func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
+	return pointers.New[T]([3]uintptr{ptr})
 }
 
-func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
-	return pointers.Let[T]([3]uintptr{ptr[0]})
+func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
+	return pointers.Let[T]([3]uintptr{ptr})
 }
 
 func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](ptr T) uintptr {
@@ -33,15 +33,15 @@ func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](p
 	return raw[0]
 }
 
-func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr [1]uintptr) T {
-	if ptr == ([1]uintptr{}) {
+func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
+	if ptr == 0 {
 		return T{}
 	}
-	return pointers.Let[T]([3]uintptr{ptr[0], uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{ptr[0]})}))})
+	return pointers.Let[T]([3]uintptr{ptr, uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{ptr})}))})
 }
 
-func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj [1]Object, ptr [1]uintptr) T {
-	return pointers.Let[T]([3]uintptr{ptr[0], 0})
+func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj [1]Object, ptr uintptr) T {
+	return pointers.Let[T]([3]uintptr{ptr, 0})
 }
 
 func (self Object) AsObject() [1]Object {

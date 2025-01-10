@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
 */
@@ -250,7 +254,7 @@ func (self class) ConnectToHost(address gd.String, port gd.Int, channels gd.Int,
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, channels)
 	callframe.Arg(frame, data)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret.Get())}
 	frame.Free()

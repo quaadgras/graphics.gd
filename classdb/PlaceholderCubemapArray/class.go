@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class replaces a [CubemapArray] or a [CubemapArray]-derived class in 2 conditions:
 - In dedicated server mode, where the image data shouldn't affect game logic. This allows reducing the exported PCK's size significantly.

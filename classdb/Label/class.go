@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
 */
@@ -320,7 +324,7 @@ func (self class) SetLabelSettings(settings [1]gdclass.LabelSettings) {
 //go:nosplit
 func (self class) GetLabelSettings() [1]gdclass.LabelSettings {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label.Bind_get_label_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.LabelSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.LabelSettings](r_ret.Get())}
 	frame.Free()

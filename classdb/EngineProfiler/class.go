@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
 See [EngineDebugger] and [EditorDebuggerPlugin] for more information.

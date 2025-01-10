@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Node for 2D tile-based maps. A [TileMapLayer] uses a [TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [TileMap] node, which is deprecated, [TileMapLayer] has only one layer of tiles. You can use several [TileMapLayer] to achieve the same result as a [TileMap] node.
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
@@ -548,7 +552,7 @@ func get_clicked_tile_power():
 func (self class) GetCellTileData(coords gd.Vector2i) [1]gdclass.TileData {
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
@@ -606,7 +610,7 @@ Creates and returns a new [TileMapPattern] from the given array of cells. See al
 func (self class) GetPattern(coords_array gd.Array) [1]gdclass.TileMapPattern {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(coords_array))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()
@@ -838,7 +842,7 @@ func (self class) SetTileSet(tile_set [1]gdclass.TileSet) {
 //go:nosplit
 func (self class) GetTileSet() [1]gdclass.TileSet {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret.Get())}
 	frame.Free()

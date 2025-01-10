@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A mesh type optimized for creating geometry manually, similar to OpenGL 1.x immediate mode.
 Here's a sample on how to generate a triangular face:

@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A node for displaying plain text in 3D space. By adjusting various properties of this node, you can configure things such as the text's appearance and whether it always faces the camera.
 */
@@ -559,7 +563,7 @@ func (self class) SetFont(font [1]gdclass.Font) {
 //go:nosplit
 func (self class) GetFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -884,7 +888,7 @@ Returns a [TriangleMesh] with the label's vertices following its current configu
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret.Get())}
 	frame.Free()

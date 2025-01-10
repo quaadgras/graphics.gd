@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A node that displays 2D texture information in a 3D environment. See also [Sprite3D] where many other properties are defined.
 */
@@ -561,7 +565,7 @@ Returns a [TriangleMesh] with the sprite's vertices following its current config
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret.Get())}
 	frame.Free()

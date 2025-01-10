@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
 To begin, the RegEx object needs to be compiled with the search pattern using [method compile] before it can be used.
@@ -178,7 +182,7 @@ Creates and compiles a new [RegEx] object.
 func (self class) CreateFromString(pattern gd.String) [1]gdclass.RegEx {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_create_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RegEx{gd.PointerWithOwnershipTransferredToGo[gdclass.RegEx](r_ret.Get())}
 	frame.Free()
@@ -220,7 +224,7 @@ func (self class) Search(subject gd.String, offset gd.Int, end gd.Int) [1]gdclas
 	callframe.Arg(frame, pointers.Get(subject))
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_search, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RegExMatch{gd.PointerWithOwnershipTransferredToGo[gdclass.RegExMatch](r_ret.Get())}
 	frame.Free()

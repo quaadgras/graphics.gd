@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 By changing various properties of this object, such as the point position, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_point].
 */

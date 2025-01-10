@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
 A tree of nodes is called a [i]scene[/i]. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
@@ -1568,7 +1572,7 @@ func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1625,7 +1629,7 @@ GetNode("/root/MyGame");
 func (self class) GetNode(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1639,7 +1643,7 @@ Fetches a node by [NodePath]. Similar to [method get_node], but does not generat
 func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1652,7 +1656,7 @@ Returns this node's parent node, or [code]null[/code] if the node doesn't have a
 //go:nosplit
 func (self class) GetParent() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1672,7 +1676,7 @@ func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gd
 	callframe.Arg(frame, pointers.Get(pattern))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1709,7 +1713,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 func (self class) FindParent(pattern gd.String) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1967,7 +1971,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetOwner() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -2599,7 +2603,7 @@ Returns the [Window] that contains this node. If the node is in the main window,
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
@@ -2612,7 +2616,7 @@ Returns the [Window] that contains this node, or the last exclusive child in a c
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
@@ -2625,7 +2629,7 @@ Returns the [SceneTree] that contains this node. If this node is not inside the 
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SceneTree{gd.PointerMustAssertInstanceID[gdclass.SceneTree](r_ret.Get())}
 	frame.Free()
@@ -2649,7 +2653,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
@@ -2664,7 +2668,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 func (self class) Duplicate(flags gd.Int) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -2744,7 +2748,7 @@ Returns the node's closest [Viewport] ancestor, if the node is inside the tree. 
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Viewport{gd.PointerMustAssertInstanceID[gdclass.Viewport](r_ret.Get())}
 	frame.Free()
@@ -2834,7 +2838,7 @@ func (self class) IsMultiplayerAuthority() bool {
 //go:nosplit
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}
 	frame.Free()

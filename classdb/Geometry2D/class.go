@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
 */
@@ -295,7 +299,7 @@ func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, f
 	callframe.Arg(frame, to_a)
 	callframe.Arg(frame, from_b)
 	callframe.Arg(frame, to_b)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_segment_intersects_segment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -313,7 +317,7 @@ func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b
 	callframe.Arg(frame, dir_a)
 	callframe.Arg(frame, from_b)
 	callframe.Arg(frame, dir_b)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_line_intersects_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

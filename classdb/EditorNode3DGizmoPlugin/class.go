@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [EditorNode3DGizmoPlugin] allows you to define a new type of Gizmo. There are two main ways to do so: extending [EditorNode3DGizmoPlugin] for the simpler gizmos, or creating a new [EditorNode3DGizmo] type. See the tutorial in the documentation for more info.
 To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add_node_3d_gizmo_plugin] method first.
@@ -318,7 +322,7 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Ed
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[gd.Int](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 3))
+		var restore = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 3))
 		defer pointers.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -652,7 +656,7 @@ func (class) _commit_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Edito
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[gd.Int](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 3))
+		var restore = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 3))
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, handle_id, secondary, restore, cancel)
@@ -806,7 +810,7 @@ func (self class) GetMaterial(name gd.String, gizmo [1]gdclass.EditorNode3DGizmo
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StandardMaterial3D{gd.PointerWithOwnershipTransferredToGo[gdclass.StandardMaterial3D](r_ret.Get())}
 	frame.Free()

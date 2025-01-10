@@ -192,6 +192,42 @@ func Cycle() {
 									page[i+offsetPointers+2].Load(),
 								},
 							})
+						case 4:
+							type Quad struct {
+								sentinal uintptr
+								revision revision
+								checksum [4]uintptr
+							}
+							free := *(*func(Quad))(unsafe.Pointer(&jump))
+							free(Quad{
+								sentinal: j*pageSize + i,
+								revision: revision(page[i+offsetRevision].Load()),
+								checksum: [4]uintptr{
+									page[i+offsetPointers].Load(),
+									page[i+offsetPointers+1].Load(),
+									page[i+offsetPointers+2].Load(),
+									page[i+offsetPointers+3].Load(),
+								},
+							})
+						case 6:
+							type Hexa struct {
+								sentinal uintptr
+								revision revision
+								checksum [6]uintptr
+							}
+							free := *(*func(Hexa))(unsafe.Pointer(&jump))
+							free(Hexa{
+								sentinal: j*pageSize + i,
+								revision: revision(page[i+offsetRevision].Load()),
+								checksum: [6]uintptr{
+									page[i+offsetPointers].Load(),
+									page[i+offsetPointers+1].Load(),
+									page[i+offsetPointers+2].Load(),
+									page[i+offsetPointers+3].Load(),
+									page[i+offsetPointers+4].Load(),
+									page[i+offsetPointers+5].Load(),
+								},
+							})
 						}
 						// TODO confirm that [End] was called?
 					}
@@ -485,7 +521,7 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 
 // Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
 type Size interface {
-	[1]uintptr | [2]uintptr | [3]uintptr
+	[1]uintptr | [2]uintptr | [3]uintptr | [4]uintptr | [6]uintptr
 }
 
 // Generic pointer.
@@ -565,4 +601,36 @@ type Trio[T Generic[T, [3]uintptr]] struct {
 	sentinal uintptr
 	revision revision
 	checksum [3]uintptr
+}
+
+// Quad pointer value that safely wraps four uintptr-sized values.
+type Quad[T Generic[T, [4]uintptr]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uintptr
+	revision revision
+	checksum [4]uintptr
+}
+
+// Hexa pointer value that safely wraps six uintptr-sized values.
+type Hexa[T Generic[T, [6]uintptr]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uintptr
+	revision revision
+	checksum [6]uintptr
 }

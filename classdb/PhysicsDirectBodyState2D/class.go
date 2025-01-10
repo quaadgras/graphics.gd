@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Provides direct access to a physics body in the [PhysicsServer2D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody2D], and is intended for changing the direct state of that body. See [method RigidBody2D._integrate_forces].
 */
@@ -783,9 +787,9 @@ Returns the collider object. This depends on how it was created (will return a s
 func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }
@@ -859,7 +863,7 @@ Returns the current state of the space, useful for queries.
 //go:nosplit
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()

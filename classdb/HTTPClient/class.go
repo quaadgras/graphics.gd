@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
 See the [HTTPRequest] node for a higher-level alternative.
@@ -291,7 +295,7 @@ func (self class) SetConnection(connection [1]gdclass.StreamPeer) {
 //go:nosplit
 func (self class) GetConnection() [1]gdclass.StreamPeer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret.Get())}
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This node can be bound to a specific pose of a [XRPositionalTracker] and will automatically have its [member Node3D.transform] updated by the [XRServer]. Nodes of this type must be added as children of the [XROrigin3D] node.
 */
@@ -197,7 +201,7 @@ Returns the [XRPose] containing the current state of the pose being tracked. Thi
 //go:nosplit
 func (self class) GetPose() [1]gdclass.XRPose {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
 	frame.Free()

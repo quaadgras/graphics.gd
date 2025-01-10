@@ -27,6 +27,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 External [TextServer] implementations should inherit from this class.
 
@@ -3264,7 +3268,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped Res
 		defer pointers.End(opentype_features)
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 5))
 		defer pointers.End(language)
-		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 6))
+		var meta = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 6))
 		defer pointers.End(meta)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, text.String(), fonts, int(size), opentype_features, language.String(), meta.Interface())
@@ -3279,7 +3283,7 @@ Adds inline object to the text buffer, [param key] must be unique. In the text, 
 func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(key)
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
@@ -3298,7 +3302,7 @@ Sets new size and alignment of embedded object.
 func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(key)
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
@@ -3671,7 +3675,7 @@ Returns bounding rectangle of the inline object.
 func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -3686,7 +3690,7 @@ Returns the character range of the inline object.
 func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -3701,7 +3705,7 @@ Returns the glyph index of the inline object.
 func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped Resource.ID, key any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(key)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key.Interface())
@@ -6416,7 +6420,7 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 		var opentype_features = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 4))
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 5))
-		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 6))
+		var meta = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 6))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, text, fonts, size, opentype_features, language, meta)
 		gd.UnsafeSet(p_back, ret)
@@ -6430,7 +6434,7 @@ Adds inline object to the text buffer, [param key] must be unique. In the text, 
 func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var length = gd.UnsafeGet[gd.Int](p_args, 4)
@@ -6448,7 +6452,7 @@ Sets new size and alignment of embedded object.
 func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		var size = gd.UnsafeGet[gd.Vector2](p_args, 2)
 		var inline_align = gd.UnsafeGet[InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[gd.Float](p_args, 4)
@@ -6816,7 +6820,7 @@ Returns bounding rectangle of the inline object.
 func (class) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Rect2) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
@@ -6830,7 +6834,7 @@ Returns the character range of the inline object.
 func (class) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Vector2i) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
@@ -6844,7 +6848,7 @@ Returns the glyph index of the inline object.
 func (class) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped gd.RID, key gd.Variant) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shaped = gd.UnsafeGet[gd.RID](p_args, 0)
-		var key = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var key = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)

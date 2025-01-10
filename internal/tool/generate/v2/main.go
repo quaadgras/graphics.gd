@@ -189,6 +189,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Cycle")
+	fmt.Fprintln(file, "type variantPointers = gd.VariantPointers")
+	fmt.Fprintln(file, "type signalPointers = gd.SignalPointers")
+	fmt.Fprintln(file, "type callablePointers = gd.CallablePointers")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool

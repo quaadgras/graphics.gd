@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [BaseButton] is an abstract base class for GUI buttons. It doesn't display anything by itself.
 
@@ -414,7 +418,7 @@ func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) {
 //go:nosplit
 func (self class) GetShortcut() [1]gdclass.Shortcut {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_shortcut, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret.Get())}
 	frame.Free()
@@ -433,7 +437,7 @@ func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) {
 //go:nosplit
 func (self class) GetButtonGroup() [1]gdclass.ButtonGroup {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_button_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[gdclass.ButtonGroup](r_ret.Get())}
 	frame.Free()

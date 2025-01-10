@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
 
@@ -947,7 +951,7 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 //go:nosplit
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret.Get())}
 	frame.Free()

@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Occlusion culling can improve rendering performance in closed/semi-open areas by hiding geometry that is occluded by other objects.
 The occlusion culling system is mostly static. [OccluderInstance3D]s can be moved or hidden at run-time, but doing so will trigger a background recomputation that can take several frames. It is recommended to only move [OccluderInstance3D]s sporadically (e.g. for procedural generation purposes), rather than doing so every frame.
@@ -172,7 +176,7 @@ func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) {
 //go:nosplit
 func (self class) GetOccluder() [1]gdclass.Occluder3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Occluder3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Occluder3D](r_ret.Get())}
 	frame.Free()

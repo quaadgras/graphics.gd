@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
 */
@@ -523,7 +527,7 @@ Returns the vertical box container of the dialog, custom controls can be added t
 //go:nosplit
 func (self class) GetVbox() [1]gdclass.VBoxContainer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -537,7 +541,7 @@ Returns the LineEdit for the selected file.
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()

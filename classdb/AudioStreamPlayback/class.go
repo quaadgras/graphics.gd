@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOggVorbis] for usage.
 
@@ -169,7 +173,7 @@ func (Instance) _set_parameter(impl func(ptr unsafe.Pointer, name string, value 
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
 		defer pointers.End(name)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -322,7 +326,7 @@ Set the current value of a playback parameter by name (see [method AudioStream._
 func (class) _set_parameter(impl func(ptr unsafe.Pointer, name gd.StringName, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
 	}
@@ -362,7 +366,7 @@ Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for
 //go:nosplit
 func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioSamplePlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSamplePlayback](r_ret.Get())}
 	frame.Free()

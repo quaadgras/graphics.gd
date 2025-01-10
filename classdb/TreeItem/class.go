@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
 To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create_child]. To remove a [TreeItem], use [method Object.free].
@@ -1176,7 +1180,7 @@ Returns the given column's icon [Texture2D]. Error if no icon is set.
 func (self class) GetIcon(column gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -1342,7 +1346,7 @@ Returns the metadata value that was set for the given column using [method set_m
 func (self class) GetMetadata(column gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1385,7 +1389,7 @@ Returns the custom callback of column [param column].
 func (self class) GetCustomDrawCallback(column gd.Int) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[callablePointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
@@ -1651,7 +1655,7 @@ Returns custom font used to draw text in the column [param column].
 func (self class) GetCustomFont(column gd.Int) [1]gdclass.Font {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -1850,7 +1854,7 @@ func (self class) GetButton(column gd.Int, button_index gd.Int) [1]gdclass.Textu
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -2049,7 +2053,7 @@ The new item will be inserted as position [param index] (the default value [code
 func (self class) CreateChild(index gd.Int) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_create_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2087,7 +2091,7 @@ Returns the [Tree] that owns this TreeItem.
 //go:nosplit
 func (self class) GetTree() [1]gdclass.Tree {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Tree{gd.PointerMustAssertInstanceID[gdclass.Tree](r_ret.Get())}
 	frame.Free()
@@ -2100,7 +2104,7 @@ Returns the next sibling TreeItem in the tree or a null object if there is none.
 //go:nosplit
 func (self class) GetNext() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2113,7 +2117,7 @@ Returns the previous sibling TreeItem in the tree or a null object if there is n
 //go:nosplit
 func (self class) GetPrev() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2126,7 +2130,7 @@ Returns the parent TreeItem or a null object if there is none.
 //go:nosplit
 func (self class) GetParent() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2139,7 +2143,7 @@ Returns the TreeItem's first child.
 //go:nosplit
 func (self class) GetFirstChild() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_first_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2154,7 +2158,7 @@ If [param wrap] is enabled, the method will wrap around to the first element in 
 func (self class) GetNextInTree(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2169,7 +2173,7 @@ If [param wrap] is enabled, the method will wrap around to the last element in t
 func (self class) GetPrevInTree(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2184,7 +2188,7 @@ If [param wrap] is enabled, the method will wrap around to the first visible ele
 func (self class) GetNextVisible(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2199,7 +2203,7 @@ If [param wrap] is enabled, the method will wrap around to the last visible elem
 func (self class) GetPrevVisible(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -2214,7 +2218,7 @@ Negative indices access the children from the last one.
 func (self class) GetChild(index gd.Int) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()

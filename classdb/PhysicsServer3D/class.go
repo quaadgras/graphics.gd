@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects:
 - A [i]space[/i] is a self-contained world for a physics simulation. It contains bodies, areas, and joints. Its state can be queried for collision and intersection information, and several parameters of the simulation can be modified.
@@ -1511,7 +1515,7 @@ Returns the shape data.
 func (self class) ShapeGetData(shape gd.RID) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1609,7 +1613,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be 
 func (self class) SpaceGetDirectState(space gd.RID) [1]gdclass.PhysicsDirectSpaceState3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret.Get())}
 	frame.Free()
@@ -1869,7 +1873,7 @@ func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer3DAreaPar
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2327,7 +2331,7 @@ func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer3DBodyPar
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2368,7 +2372,7 @@ func (self class) BodyGetState(body gd.RID, state gdclass.PhysicsServer3DBodySta
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2751,7 +2755,7 @@ Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if
 func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodyState3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsDirectBodyState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState3D](r_ret.Get())}
 	frame.Free()
@@ -2942,7 +2946,7 @@ func (self class) SoftBodyGetState(body gd.RID, state gdclass.PhysicsServer3DBod
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

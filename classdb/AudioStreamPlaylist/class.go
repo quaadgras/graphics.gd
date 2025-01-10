@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 type Instance [1]gdclass.AudioStreamPlaylist
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -652,7 +656,7 @@ Returns the stream at playback position index.
 func (self class) GetListStream(stream_index gd.Int) [1]gdclass.AudioStream {
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_list_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret.Get())}
 	frame.Free()

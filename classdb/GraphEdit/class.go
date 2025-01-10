@@ -25,6 +25,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
 [GraphEdit] by itself is only an empty container, representing an infinite grid where [GraphNode]s can be placed. Each [GraphNode] represents a node in the graph, a single unit of data in the connected scheme. [GraphEdit], in turn, helps to control various interactions with nodes and between nodes. When the user attempts to connect, disconnect, or delete a [GraphNode], a signal is emitted in the [GraphEdit], but no action is taken by default. It is the responsibility of the programmer utilizing this control to implement the necessary logic to determine how each request should be handled.
@@ -991,7 +995,7 @@ Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(element))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_element_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -1437,7 +1441,7 @@ Gets the [HBoxContainer] that contains the zooming and grid snap controls in the
 //go:nosplit
 func (self class) GetMenuHbox() [1]gdclass.HBoxContainer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()

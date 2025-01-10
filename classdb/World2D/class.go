@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Class that has everything pertaining to a 2D world: A physics space, a canvas, and a sound space. 2D nodes register their resources into the current 2D world.
 */
@@ -99,7 +103,7 @@ func (self class) GetNavigationMap() gd.RID {
 //go:nosplit
 func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_direct_space_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()

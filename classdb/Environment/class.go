@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Resource for environment nodes (like [WorldEnvironment]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
 - Depth of Field Blur
@@ -830,7 +834,7 @@ func (self class) SetSky(sky [1]gdclass.Sky) {
 //go:nosplit
 func (self class) GetSky() [1]gdclass.Sky {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Sky{gd.PointerWithOwnershipTransferredToGo[gdclass.Sky](r_ret.Get())}
 	frame.Free()
@@ -1959,7 +1963,7 @@ func (self class) SetGlowMap(mode [1]gdclass.Texture) {
 //go:nosplit
 func (self class) GetGlowMap() [1]gdclass.Texture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret.Get())}
 	frame.Free()
@@ -2548,7 +2552,7 @@ func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Textu
 //go:nosplit
 func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret.Get())}
 	frame.Free()

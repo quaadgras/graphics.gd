@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class is used to manage directories and their content, even outside of the project folder.
 [DirAccess] can't be instantiated directly. Instead it is created with a static method that takes a path for which it will be opened.
@@ -405,7 +409,7 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 func (self class) Open(path gd.String) [1]gdclass.DirAccess {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
 	frame.Free()

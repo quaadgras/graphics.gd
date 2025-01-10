@@ -17,6 +17,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
 When an object is edited, the [method _can_handle] function is called and must return [code]true[/code] if the object type is supported.

@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 By changing various properties of this object, such as the ray position, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_ray].
 */
@@ -132,7 +136,7 @@ func (self class) Create(from gd.Vector2, to gd.Vector2, collision_mask gd.Int, 
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, collision_mask)
 	callframe.Arg(frame, pointers.Get(exclude))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters2D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.PhysicsRayQueryParameters2D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters2D](r_ret.Get())}
 	frame.Free()

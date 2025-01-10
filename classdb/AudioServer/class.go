@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
 */
@@ -701,7 +705,7 @@ func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) [1]gdclass.Aud
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioEffect{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffect](r_ret.Get())}
 	frame.Free()
@@ -717,7 +721,7 @@ func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channe
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
 	callframe.Arg(frame, channel)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioEffectInstance{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffectInstance](r_ret.Get())}
 	frame.Free()
@@ -988,7 +992,7 @@ Generates an [AudioBusLayout] using the available buses and effects.
 //go:nosplit
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_generate_bus_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AudioBusLayout{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioBusLayout](r_ret.Get())}
 	frame.Free()

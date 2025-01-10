@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
 */
@@ -235,7 +239,7 @@ func (self class) GetNode(atype gdclass.VisualShaderType, id gd.Int) [1]gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.VisualShaderNode{gd.PointerWithOwnershipTransferredToGo[gdclass.VisualShaderNode](r_ret.Get())}
 	frame.Free()

@@ -1695,7 +1695,7 @@ func linkCGO(API *gd.API) {
 		if ret == 0 {
 			return [1]gd.Object{}
 		}
-		return [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object]([1]uintptr{uintptr(ret)})}
+		return [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](uintptr(ret))}
 	}
 	object_method_bind_call := dlsymGD("object_method_bind_call")
 	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {

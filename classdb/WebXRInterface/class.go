@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
 As such, this interface is only available when running in Web exports.
@@ -389,7 +393,7 @@ Use this method to get information about the input source that triggered one of 
 func (self class) GetInputSourceTracker(input_source_id gd.Int) [1]gdclass.XRControllerTracker {
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_input_source_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.XRControllerTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRControllerTracker](r_ret.Get())}
 	frame.Free()

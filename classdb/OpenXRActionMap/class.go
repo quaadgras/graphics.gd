@@ -19,6 +19,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
 Another important distinction is that OpenXR offers no control over these bindings. The bindings we register are suggestions, it is up to the XR runtime to offer users the ability to change these bindings. This allows the XR runtime to fill in the gaps if new hardware becomes available.
@@ -185,7 +189,7 @@ Retrieve an action set by name.
 func (self class) FindActionSet(name gd.String) [1]gdclass.OpenXRActionSet {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_action_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
 	frame.Free()
@@ -199,7 +203,7 @@ Retrieve the action set at this index.
 func (self class) GetActionSet(idx gd.Int) [1]gdclass.OpenXRActionSet {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
 	frame.Free()
@@ -269,7 +273,7 @@ Find an interaction profile by its name (path).
 func (self class) FindInteractionProfile(name gd.String) [1]gdclass.OpenXRInteractionProfile {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret.Get())}
 	frame.Free()
@@ -283,7 +287,7 @@ Get the interaction profile at this index.
 func (self class) GetInteractionProfile(idx gd.Int) [1]gdclass.OpenXRInteractionProfile {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret.Get())}
 	frame.Free()

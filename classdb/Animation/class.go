@@ -24,6 +24,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This resource holds data that can be used to animate anything in the engine. Animations are divided into tracks and each track must be linked to a node. The state of that node can be changed through time, by adding timed keys (events) to the track.
 [codeblocks]
@@ -1038,7 +1042,7 @@ func (self class) TrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Variant 
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1186,7 +1190,7 @@ func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[variantPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1415,7 +1419,7 @@ func (self class) AudioTrackGetKeyStream(track_idx gd.Int, key_idx gd.Int) [1]gd
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()

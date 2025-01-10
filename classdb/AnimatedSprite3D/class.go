@@ -23,6 +23,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [AnimatedSprite3D] is similar to the [Sprite3D] node, except it carries multiple textures as animation [member sprite_frames]. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
 */
@@ -178,7 +182,7 @@ func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) {
 //go:nosplit
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[gdclass.SpriteFrames](r_ret.Get())}
 	frame.Free()

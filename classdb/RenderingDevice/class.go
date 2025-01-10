@@ -21,6 +21,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
 On startup, Godot creates a global [RenderingDevice] which can be retrieved using [method RenderingServer.get_rendering_device]. This global [RenderingDevice] performs drawing to the screen.
@@ -1077,7 +1081,7 @@ Returns the data format used to create this texture.
 func (self class) TextureGetFormat(texture gd.RID) [1]gdclass.RDTextureFormat {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret.Get())}
 	frame.Free()
@@ -1362,7 +1366,7 @@ func (self class) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShader
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shader_source[0])[0])
 	callframe.Arg(frame, allow_cache)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_shader_compile_spirv_from_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret.Get())}
 	frame.Free()
@@ -2258,7 +2262,7 @@ Create a new local [RenderingDevice]. This is most useful for performing compute
 //go:nosplit
 func (self class) CreateLocalDevice() [1]gdclass.RenderingDevice {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_create_local_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret.Get())}
 	frame.Free()

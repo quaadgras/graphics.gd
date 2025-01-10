@@ -22,6 +22,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 Base class for [AnimationPlayer] and [AnimationTree] to manage animation lists. It also has general properties and methods for playback and blending.
 After instantiating the playback information data within the extended class, the blending is processed by the [AnimationMixer].
@@ -59,7 +63,7 @@ func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation 
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
 		defer pointers.End(value)
 		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
 		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
@@ -439,7 +443,7 @@ func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uintptr](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
 		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
 		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -521,7 +525,7 @@ To get the [AnimationMixer]'s global animation library, use [code]get_animation_
 func (self class) GetAnimationLibrary(name gd.StringName) [1]gdclass.AnimationLibrary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationLibrary](r_ret.Get())}
 	frame.Free()
@@ -562,7 +566,7 @@ Returns the [Animation] with the key [param name]. If the animation does not exi
 func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret.Get())}
 	frame.Free()

@@ -20,6 +20,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
 */
@@ -672,7 +676,7 @@ Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and
 //go:nosplit
 func (self class) GetMainLoop() [1]gdclass.MainLoop {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_main_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.MainLoop{gd.PointerLifetimeBoundTo[gdclass.MainLoop](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -882,9 +886,9 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 func (self class) GetSingleton(name gd.StringName) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[[3]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
-	var ret = [1]gd.Object{pointers.New[gd.Object](r_ret.Get())}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
 }
@@ -982,7 +986,7 @@ Returns an instance of a [ScriptLanguage] with the given [param index].
 func (self class) GetScriptLanguage(index gd.Int) [1]gdclass.ScriptLanguage {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_script_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.ScriptLanguage{gd.PointerMustAssertInstanceID[gdclass.ScriptLanguage](r_ret.Get())}
 	frame.Free()

@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 type Instance [1]gdclass.EditorExportPlatformMacOS
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

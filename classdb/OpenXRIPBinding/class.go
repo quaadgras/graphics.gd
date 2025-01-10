@@ -18,6 +18,10 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
+type variantPointers = gd.VariantPointers
+type signalPointers = gd.SignalPointers
+type callablePointers = gd.CallablePointers
+
 /*
 This binding resource binds an [OpenXRAction] to inputs or outputs. As most controllers have left hand and right versions that are handled by the same interaction profile we can specify multiple bindings. For instance an action "Fire" could be bound to both "/user/hand/left/input/trigger" and "/user/hand/right/input/trigger".
 */
@@ -106,7 +110,7 @@ func (self class) SetAction(action [1]gdclass.OpenXRAction) {
 //go:nosplit
 func (self class) GetAction() [1]gdclass.OpenXRAction {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[uintptr](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
 	var ret = [1]gdclass.OpenXRAction{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAction](r_ret.Get())}
 	frame.Free()

@@ -19,7 +19,7 @@ func NewVariant(v any) Variant {
 		return Global.Variants.NewNil()
 	}
 	var frame = callframe.New()
-	var ret = callframe.Ret[[3]uintptr](frame)
+	var ret = callframe.Ret[VariantPointers](frame)
 	rtype := reflect.TypeOf(v)
 	value := reflect.ValueOf(v)
 	switch rtype.Kind() {
@@ -195,13 +195,13 @@ func NewVariant(v any) Variant {
 			var arg = callframe.Arg(frame, pointers.Get(val))
 			Global.variant.FromType[TypeObject](ret, arg.Uintptr())
 		case Callable:
-			if pointers.Get(val) == ([2]uintptr{}) {
+			if pointers.Get(val) == (CallablePointers{}) {
 				return Global.Variants.NewNil()
 			}
 			var arg = callframe.Arg(frame, pointers.Get(val))
 			Global.variant.FromType[TypeCallable](ret, arg.Uintptr())
 		case Signal:
-			if pointers.Get(val) == ([2]uintptr{}) {
+			if pointers.Get(val) == (SignalPointers{}) {
 				return Global.Variants.NewNil()
 			}
 			var arg = callframe.Arg(frame, pointers.Get(val))
