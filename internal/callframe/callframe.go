@@ -19,14 +19,13 @@ var frames sync.Pool
 // frame has a fixed size, if it runs out of space, arguments will be
 // allocated onto the Go heap as usual.
 type Frame struct {
-	len uint8
-	idx uint8
-	//oom bool
+	arg uint8
+	ret uint8
 
 	pin runtime.Pinner
-	ptr [16]*uintptr
+	ptr [16]*[8]uintptr
 	typ [16]reflect.Type
-	buf [16 * 6]uintptr
+	buf [20][8]uintptr
 }
 
 // Nil implements [Any].
@@ -40,6 +39,12 @@ func New() *Frame {
 	frame, ok := frames.Get().(*Frame)
 	if !ok {
 		frame = new(Frame)
+		frame.ptr = [16]*[8]uintptr{
+			&frame.buf[0], &frame.buf[1], &frame.buf[2], &frame.buf[3],
+			&frame.buf[4], &frame.buf[5], &frame.buf[6], &frame.buf[7],
+			&frame.buf[8], &frame.buf[9], &frame.buf[10], &frame.buf[11],
+			&frame.buf[12], &frame.buf[13], &frame.buf[14], &frame.buf[15],
+		}
 	}
 	frame.pin.Pin(frame)
 	return frame
@@ -67,8 +72,8 @@ func (frame *Frame) Array(i int) Args {
 // Free recycles the [Frame]. Do not reuse the frame after
 // calling this method.
 func (frame *Frame) Free() {
-	frame.len = 0
-	frame.idx = 0
+	frame.arg = 0
+	frame.ret = 0
 	frame.pin.Unpin()
 	frames.Put(frame)
 }
@@ -80,17 +85,17 @@ func (frame *Frame) Free() {
 // freed.
 type Ptr[T comparable] struct {
 	_    [0]T
-	void unsafe.Pointer
+	void *[8]uintptr
 }
 
 // Uintptr returns the uintptr value of the pointer. Useful for passing to C code.
 func (ptr Ptr[T]) Uintptr() uintptr {
-	return uintptr(ptr.void)
+	return uintptr(unsafe.Pointer(ptr.void))
 }
 
 // UnsafePoiner returns the unsafe.Pointer value of the pointer.
 func (ptr Ptr[T]) UnsafePointer() unsafe.Pointer {
-	return ptr.void
+	return unsafe.Pointer(ptr.void)
 }
 
 // Get returns the value of the pointer.
@@ -100,23 +105,12 @@ func (ptr Ptr[T]) Get() T {
 
 // Arg adds a new argument to the call frame.
 func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
-	size := Align(unsafe.Sizeof(arg), unsafe.Sizeof(uintptr(0)))
-	if uintptr(frame.idx)+size >= uintptr(len(frame.buf)) {
-		copy := arg
-		ptr := Ptr[T]{void: unsafe.Pointer(&copy)}
-		frame.pin.Pin(ptr)
-		return ptr
+	if unsafe.Sizeof([1]T{}) > 8*unsafe.Sizeof(uintptr(0)) {
+		panic("callframe: argument too large")
 	}
-	if frame.len >= uint8(len(frame.ptr)) {
-		// FIXME when frame.len is too big, we still need a continous set of pointers for the Array method.
-		panic("too many arguments for call.Frame FIXME")
-	}
-	copy(frame.buf[frame.idx:], unsafe.Slice((*uintptr)(unsafe.Pointer(&arg)), size))
-	frame.typ[frame.len] = reflect.TypeOf(arg)
-	frame.ptr[frame.len] = &frame.buf[frame.idx]
-	frame.len++
-	frame.idx += uint8(size)
-	return Ptr[T]{void: unsafe.Pointer(frame.ptr[frame.len-1])}
+	*(*T)(unsafe.Pointer(&frame.buf[frame.arg])) = arg
+	frame.arg++
+	return Ptr[T]{void: &frame.buf[frame.arg-1]}
 }
 
 // Align a size to the next multiple of alignment (rounding up).
@@ -127,14 +121,9 @@ func Align(size uintptr, alignment uintptr) uintptr {
 // Ret prepares an expected return value that will be available after the call has been
 // made.
 func Ret[T comparable](frame *Frame) Ptr[T] {
-	var zero T
-	size := Align(unsafe.Sizeof(zero), unsafe.Sizeof(uintptr(0)))
-	if uintptr(frame.idx)+size >= uintptr(len(frame.buf)) || frame.len >= uint8(len(frame.ptr)) {
-		ptr := Ptr[T]{void: unsafe.Pointer(new(T))}
-		frame.pin.Pin(ptr)
-		return ptr
+	if unsafe.Sizeof([1]T{}) > 8*unsafe.Sizeof(uintptr(0)) {
+		panic("callframe: return value too large")
 	}
-	*(*T)(unsafe.Pointer(&frame.buf[frame.idx])) = zero
-	frame.idx += uint8(size)
-	return Ptr[T]{void: unsafe.Pointer(&frame.buf[frame.idx-uint8(size)])}
+	frame.ret++
+	return Ptr[T]{void: &frame.buf[frame.ret+15]}
 }

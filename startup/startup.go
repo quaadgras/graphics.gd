@@ -15,6 +15,8 @@ import (
 
 var mainloop MainLoopClass.Interface
 
+var intialized = make(chan struct{})
+
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
 func MainLoop(loop MainLoopClass.Interface) {
@@ -32,6 +34,7 @@ func MainLoop(loop MainLoopClass.Interface) {
 
 // Wait until the engine has been fully started up.
 func Wait() {
+	<-intialized
 	gd.NewCallable(func() {
 		resume_main()
 	}).CallDeferred()

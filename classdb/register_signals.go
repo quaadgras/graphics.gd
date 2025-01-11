@@ -66,8 +66,8 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					vtype, ok := gd.VariantTypeOf(arg)
 					if ok {
 						name := fmt.Sprintf("arg%d", i)
-						if i-1 < len(argNames) {
-							name = argNames[i-1]
+						if i < len(argNames) {
+							name = argNames[i]
 						}
 						args = append(args, gd.PropertyInfo{
 							Type:      vtype,

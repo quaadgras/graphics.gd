@@ -155,12 +155,12 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 				val := [1]gd.Object{pointers.Let[gd.Object](ptr)}
 				value = val
 			case gd.TypeCallable:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.CallablePointers](p_args, i-offset)
 				val := pointers.Let[gd.Callable](ptr)
 				defer val.Free()
 				value = val
 			case gd.TypeSignal:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.SignalPointers](p_args, i-offset)
 				val := pointers.Let[gd.Signal](ptr)
 				value = val
 			case gd.TypeDictionary:
@@ -290,10 +290,10 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 				pointers.End(val[0])
 			}
 		case gd.Callable:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.CallablePointers](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Signal:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.SignalPointers](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Dictionary:
 			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))

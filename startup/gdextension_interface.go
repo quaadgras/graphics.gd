@@ -465,6 +465,7 @@ func initialize(_ unsafe.Pointer, level initializationLevel) {
 		for _, fn := range internal.StartupFunctions {
 			fn()
 		}
+		close(intialized)
 		resume_main, stop_main = iter.Pull(call_main_in_steps())
 		resume_main()
 		for _, fn := range internal.PostStartupFunctions {

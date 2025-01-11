@@ -142,7 +142,7 @@ type API struct {
 	object_call_script_method                          func(Const[ObjectPtr], Const[StringNamePtr], UnsafeArray[Const[VariantPtr]], Int, Uninitialized[VariantPtr], *CallError)
 	ref_get_object                                     func(Const[RefPtr]) ObjectPtr
 	ref_set_object                                     func(RefPtr, ObjectPtr)
-	script_instance_create3                            func(ScriptInstanceInfo3, ScriptInstanceDataPtr) ScriptInstancePtr
+	script_instance_create3                            func(Const[*ScriptInstanceInfo3], ScriptInstanceDataPtr) ScriptInstancePtr
 	placeholder_script_instance_create                 func(ObjectPtr, ObjectPtr, ObjectPtr) ScriptInstancePtr
 	placeholder_script_instance_update                 func(ScriptInstancePtr, Const[ArrayPtr], Const[DictionaryPtr])
 	object_get_script_instance                         func(Const[ObjectPtr], ObjectPtr) ScriptInstanceDataPtr
@@ -151,12 +151,12 @@ type API struct {
 	classdb_construct_object2                          func(StringNamePtr) ObjectPtr
 	classdb_get_method_bind                            func(StringNamePtr, StringNamePtr, Int) MethodBindPtr
 	classdb_get_class_tag                              func(StringNamePtr) ClassTag
-	classdb_register_extension_class4                  func(ClassLibraryPtr, Const[StringNamePtr], Const[StringNamePtr], *ClassCreationInfo4)
-	classdb_register_extension_class_method            func(ClassLibraryPtr, StringNamePtr, *ClassMethodInfo)
-	classdb_register_extension_class_virtual_method    func(ClassLibraryPtr, StringNamePtr, *ClassVirtualMethodInfo)
+	classdb_register_extension_class4                  func(ClassLibraryPtr, Const[StringNamePtr], Const[StringNamePtr], Const[*ClassCreationInfo4])
+	classdb_register_extension_class_method            func(ClassLibraryPtr, StringNamePtr, Const[*ClassMethodInfo])
+	classdb_register_extension_class_virtual_method    func(ClassLibraryPtr, StringNamePtr, Const[*ClassVirtualMethodInfo])
 	classdb_register_extension_class_integer_constant  func(ClassLibraryPtr, StringNamePtr, StringNamePtr, StringNamePtr, Int, Bool)
-	classdb_register_extension_class_property          func(ClassLibraryPtr, StringNamePtr, *PropertyInfo, StringNamePtr, StringNamePtr)
-	classdb_register_extension_class_property_indexed  func(ClassLibraryPtr, StringNamePtr, *PropertyInfo, StringNamePtr, StringNamePtr, Int)
+	classdb_register_extension_class_property          func(ClassLibraryPtr, StringNamePtr, Const[*PropertyInfo], StringNamePtr, StringNamePtr)
+	classdb_register_extension_class_property_indexed  func(ClassLibraryPtr, StringNamePtr, Const[*PropertyInfo], StringNamePtr, StringNamePtr, Int)
 	classdb_register_extension_class_property_group    func(ClassLibraryPtr, StringNamePtr, StringPtr, StringPtr)
 	classdb_register_extension_class_property_subgroup func(ClassLibraryPtr, StringNamePtr, StringPtr, StringPtr)
 	classdb_register_extension_class_signal            func(ClassLibraryPtr, StringNamePtr, StringNamePtr, []PropertyInfo, Int)
