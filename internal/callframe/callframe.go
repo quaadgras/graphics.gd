@@ -1,4 +1,3 @@
-// Package callframe provides a way to create Godot-compatible callframes.
 package callframe
 
 import (
@@ -23,9 +22,9 @@ type Frame struct {
 	ret uint8
 
 	pin runtime.Pinner
-	ptr [16]*[8]uintptr
+	ptr [16]*[maxValueSizeInUintptrs]uintptr
 	typ [16]reflect.Type
-	buf [20][8]uintptr
+	buf [20][maxValueSizeInUintptrs]uintptr
 }
 
 // Nil implements [Any].
@@ -36,7 +35,7 @@ func New() *Frame {
 	frame, ok := frames.Get().(*Frame)
 	if !ok {
 		frame = new(Frame)
-		frame.ptr = [16]*[8]uintptr{
+		frame.ptr = [16]*[maxValueSizeInUintptrs]uintptr{
 			&frame.buf[0], &frame.buf[1], &frame.buf[2], &frame.buf[3],
 			&frame.buf[4], &frame.buf[5], &frame.buf[6], &frame.buf[7],
 			&frame.buf[8], &frame.buf[9], &frame.buf[10], &frame.buf[11],
@@ -51,18 +50,30 @@ type array struct{}
 
 // Array of arguments.
 type Args struct {
-	_    [0]array
-	void unsafe.Pointer
+	_     [0]array
+	slice []*[maxValueSizeInUintptrs]uintptr
+}
+
+func (array Args) Len() int {
+	return len(array.slice)
+}
+
+func (array Args) Index(i int) Addr {
+	return Addr{pointer: array.slice[i]}
 }
 
 func (array Args) Uintptr() uintptr {
-	return uintptr(array.void)
+	return uintptr(unsafe.Pointer(&array.slice[0]))
+}
+
+func (array Args) UnsafePointer() unsafe.Pointer {
+	return unsafe.Pointer(&array.slice[0])
 }
 
 // Array returns a pointer to array of arguments offset by i.
 func (frame *Frame) Array(i int) Args {
 	return Args{
-		void: unsafe.Pointer(&frame.ptr[i]),
+		slice: frame.ptr[i:],
 	}
 }
 
@@ -82,7 +93,7 @@ func (frame *Frame) Free() {
 // freed.
 type Ptr[T comparable] struct {
 	_    [0]T
-	void *[8]uintptr
+	void *[maxValueSizeInUintptrs]uintptr
 }
 
 // Uintptr returns the uintptr value of the pointer. Useful for passing to C code.
@@ -115,11 +126,6 @@ func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
 	return Ptr[T]{void: &frame.buf[frame.arg-1]}
 }
 
-// Align a size to the next multiple of alignment (rounding up).
-func Align(size uintptr, alignment uintptr) uintptr {
-	return (size + alignment - 1) &^ (alignment - 1)
-}
-
 // Ret prepares an expected return value that will be available after the call has been
 // made.
 func Ret[T comparable](frame *Frame) Ptr[T] {
@@ -132,7 +138,7 @@ func Ret[T comparable](frame *Frame) Ptr[T] {
 }
 
 type Addr struct {
-	pointer *[8]uintptr
+	pointer *[maxValueSizeInUintptrs]uintptr
 }
 
 func (addr Addr) Addr() Addr {
@@ -145,4 +151,8 @@ func (addr Addr) UnsafePointer() unsafe.Pointer {
 
 func (addr Addr) Uintptr() uintptr {
 	return uintptr(unsafe.Pointer(addr.pointer))
+}
+
+func (addr Addr) Pointer() *[maxValueSizeInUintptrs]uintptr {
+	return addr.pointer
 }

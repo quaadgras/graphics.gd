@@ -16,21 +16,6 @@ func TestFrame(t *testing.T) {
 	}
 }
 
-func TestAlign(t *testing.T) {
-	if callframe.Align(12, 8) != 16 {
-		t.Fatal("Align(12, 8) != 16")
-	}
-	if callframe.Align(8, 8) != 8 {
-		t.Fatal("Align(8, 8) != 8")
-	}
-	if callframe.Align(0, 8) != 0 {
-		t.Fatal("Align(0, 8) != 0")
-	}
-	if callframe.Align(1, 8) != 8 {
-		t.Fatal("Align(1, 8) != 8")
-	}
-}
-
 var TestEscape = func(a, b, c *int, ret *int) { *ret = 22 }
 
 func BenchmarkFrame(b *testing.B) {

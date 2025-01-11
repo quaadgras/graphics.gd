@@ -5,6 +5,7 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"runtime"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -95,6 +96,9 @@ func (Godot *API) linkMethods(editor bool) {
 		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase":
 			isEditorMethod = true
 		case "JavaClassWrapper", "JavaScriptBridge":
+			continue
+		}
+		if runtime.GOOS == "js" && (strings.HasPrefix(class.Name, "OpenXR") || class.Name == "ResourceImporterOggVorbis") {
 			continue
 		}
 		if editor != isEditorMethod {
