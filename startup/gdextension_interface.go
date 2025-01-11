@@ -363,7 +363,6 @@ extern void reference_func(pointer p_instance);
 extern void unreference_func(pointer p_instance);
 extern pointer create_instance_func(pointer p_class);
 extern void free_instance_func(pointer p_class, pointer p_instance);
-extern uintptr_t recreate_instance_func(uintptr_t p_class, uintptr_t p_instance);
 extern pointer get_virtual_call_data_func(pointer p_class, void* name);
 extern void call_virtual_with_data_func(pointer p_instance, void* name, pointer userdata, void* args, void* ret);
 extern uint64_t get_rid_func(pointer p_instance);
@@ -382,7 +381,7 @@ static inline void classdb_register_extension_class2(pointer fn, pointer p_libra
 	p_extension_funcs->unreference_func = (void*)unreference_func;
 	p_extension_funcs->create_instance_func = (void*)create_instance_func;
 	p_extension_funcs->free_instance_func = (void*)free_instance_func;
-	p_extension_funcs->recreate_instance_func = (void*)recreate_instance_func;
+	p_extension_funcs->recreate_instance_func = 0;
 	p_extension_funcs->get_virtual_call_data_func = (void*)get_virtual_call_data_func;
 	p_extension_funcs->call_virtual_with_data_func = (void*)call_virtual_with_data_func;
 	p_extension_funcs->get_rid_func = (void*)get_rid_func;
@@ -2530,12 +2529,6 @@ func create_instance_func(p_class uintptr) uintptr {
 //export free_instance_func
 func free_instance_func(_, p_instance uintptr) {
 	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Free()
-}
-
-//export recreate_instance_func
-func recreate_instance_func(p_class, p_super uintptr) uintptr {
-	var super [1]gd.Object = [1]gd.Object{pointers.Let[gd.Object]([3]uintptr{p_super})}
-	return uintptr(cgo.NewHandle(cgo.Handle(p_class).Value().(gd.ClassInterface).ReloadInstance(super)))
 }
 
 //export get_virtual_call_data_func

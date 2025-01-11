@@ -3,8 +3,6 @@
 entry_symbol = "loadExtension"
 compatibility_minimum = "4.2.2"
 
-reloadable = true
-
 [libraries]
 
 linux.x86_64   = "linux_amd64.so"

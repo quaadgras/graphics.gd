@@ -131,77 +131,84 @@ If the Struct implements an OnRegister(Lifetime) method, it will
 be called on a temporary instance when the class is registered.
 */
 func Register[T Class]() {
-	var classType = reflect.TypeFor[T]()
-	var base = classType
-	for base.Field(0).Anonymous {
-		if base.Field(0).Name == "Class" {
-			break
+	register := func() {
+		var classType = reflect.TypeFor[T]()
+		var base = classType
+		for base.Field(0).Anonymous {
+			if base.Field(0).Name == "Class" {
+				break
+			}
+			base = base.Field(0).Type
 		}
-		base = base.Field(0).Type
-	}
-	if !base.Implements(reflect.TypeFor[Class]()) {
-		panic("gdextension.RegisterClass: Class type must embed a gd.Extension field as the first field")
-	}
-	var superType = ([1]T{})[0].superType()
-	if classType.Kind() != reflect.Struct || classType.Name() == "" {
-		panic("gdextension.RegisterClass: Class type must be a named struct")
-	}
-	var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
-	var tool = false
-	var super = reflect.New(superType).Elem().Interface()
-	switch super.(type) {
-	case interface{ AsScript() ScriptClass.Instance },
-		interface {
-			AsEditorPlugin() EditorPluginClass.Instance
-		},
-		interface {
-			AsScriptLanguage() ScriptLanguageClass.Instance
+		if !base.Implements(reflect.TypeFor[Class]()) {
+			panic("gdextension.RegisterClass: Class type must embed a gd.Extension field as the first field")
+		}
+		var superType = ([1]T{})[0].superType()
+		if classType.Kind() != reflect.Struct || classType.Name() == "" {
+			panic("gdextension.RegisterClass: Class type must be a named struct")
+		}
+		var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
+		var tool = false
+		var super = reflect.New(superType).Elem().Interface()
+		switch super.(type) {
+		case interface{ AsScript() ScriptClass.Instance },
+			interface {
+				AsEditorPlugin() EditorPluginClass.Instance
+			},
+			interface {
+				AsScriptLanguage() ScriptLanguageClass.Instance
+			}:
+			tool = true
+		}
+		var reference T
+		var className = pointers.Pin(StringName.New(rename))
+		var superName = pointers.Pin(StringName.New(nameOf(superType)))
+
+		var isMainLoop = false
+		if _, ok := any(super).(interface {
+			AsMainLoop() MainLoopClass.Instance
+		}); ok {
+			main_loop_type := gd.NewString("application/run/main_loop_type")
+			ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
+			ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
+			isMainLoop = true
+		}
+
+		var impl = &classImplementation{
+			Name:           className,
+			Super:          superName,
+			Type:           classType,
+			Tool:           tool,
+			IsMainLoop:     isMainLoop,
+			VirtualMethods: reference.Virtual,
+		}
+		registered.Store(classType, impl)
+
+		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
+		registerClassInformation(rename, nameOf(superType), classType)
+		gd.RegisterCleanup(func() {
+			gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
+			registered.Delete(classType)
+			className.Free()
+			superName.Free()
+		})
+		switch super.(type) {
+		case interface {
+			AsShaderMaterial() ShaderMaterialClass.Instance
 		}:
-		tool = true
-	}
-	var reference T
-	var className = pointers.Pin(StringName.New(rename))
-	var superName = pointers.Pin(StringName.New(nameOf(superType)))
+		default:
+			registerSignals(className, classType)
+			registerMethods(className, classType)
+		}
 
-	var isMainLoop = false
-	if _, ok := any(super).(interface {
-		AsMainLoop() MainLoopClass.Instance
-	}); ok {
-		main_loop_type := gd.NewString("application/run/main_loop_type")
-		ProjectSettingsClass.Advanced().SetInitialValue(main_loop_type, gd.NewVariant(className))
-		ProjectSettingsClass.Advanced().SetSetting(main_loop_type, gd.NewVariant(className))
-		isMainLoop = true
+		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
+			registrator.OnRegister()
+		}
 	}
-
-	var impl = &classImplementation{
-		Name:           className,
-		Super:          superName,
-		Type:           classType,
-		Tool:           tool,
-		IsMainLoop:     isMainLoop,
-		VirtualMethods: reference.Virtual,
-	}
-	registered.Store(classType, impl)
-
-	gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
-	registerClassInformation(rename, nameOf(superType), classType)
-	gd.RegisterCleanup(func() {
-		gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
-		registered.Delete(classType)
-		className.Free()
-		superName.Free()
-	})
-	switch super.(type) {
-	case interface {
-		AsShaderMaterial() ShaderMaterialClass.Instance
-	}:
-	default:
-		registerSignals(className, classType)
-		registerMethods(className, classType)
-	}
-
-	if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
-		registrator.OnRegister()
+	if gd.Linked {
+		register()
+	} else {
+		gd.StartupFunctions = append(gd.StartupFunctions, register)
 	}
 }
 
@@ -316,10 +323,6 @@ func (class classImplementation) createInstance(reuse reflect.Value) [1]gd.Objec
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
 	instance.OnCreate()
 	return super
-}
-
-func (class classImplementation) ReloadInstance(super [1]gd.Object) gd.ObjectInterface {
-	return class.reloadInstance(reflect.Value{}, super)
 }
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) gd.ObjectInterface {

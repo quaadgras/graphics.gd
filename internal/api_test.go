@@ -17,7 +17,7 @@ import (
 
 func TestMain(m *testing.M) {
 	classdb.Register[Converter]()
-	startup.Wait()
+	startup.Loader()
 	os.Exit(m.Run())
 }
 

@@ -1,7 +1,6 @@
 package startup
 
 import (
-	"fmt"
 	"syscall/js"
 	"unsafe"
 
@@ -43,6 +42,7 @@ func init() {
 			}
 			pointers.Cycle()
 			pointers.Cycle()
+			close(shutdown)
 			return nil
 		}))
 		return 0
@@ -69,6 +69,9 @@ func writeCallFrameArgument(buffer int, argn int, arg callframe.Addr) {
 }
 
 func readCallFrameResult(buffer int, addr callframe.Addr) {
+	if addr.Uintptr() == 0 {
+		return
+	}
 	result := addr.Pointer()
 	for i := range result {
 		result[i] = uintptr(read_result_buffer.Invoke(buffer, 0, i).Int())
@@ -81,11 +84,38 @@ func linkJS(API *gd.API, dlsym func(string) js.Value) {
 
 	string_name_new := dlsym("string_name_new")
 	API.StringNames.New = func(s string) gd.StringName {
-		return pointers.New[gd.StringName]([1]uintptr{uintptr(string_name_new.Invoke(s).Float())})
+		return pointers.New[gd.StringName]([1]uintptr{uintptr(string_name_new.Invoke(s).Int())})
+	}
+	string_new := dlsym("string_new")
+	API.Strings.New = func(s string) gd.String {
+		return pointers.New[gd.String]([1]uintptr{uintptr(string_new.Invoke(s).Int())})
+	}
+	string_get := dlsym("string_get")
+	API.Strings.Get = func(s gd.String) string {
+		return string_get.Invoke(pointers.Get(s)[0]).String()
+	}
+	get_godot_version := dlsym("get_godot_version")
+	API.GetGodotVersion = func() gd.Version {
+		version := js.Global().Get("Object").New()
+		get_godot_version.Invoke(version)
+		return gd.Version{
+			Major: uint32(version.Get("major").Int()),
+			Minor: uint32(version.Get("minor").Int()),
+			Patch: uint32(version.Get("patch").Int()),
+			Value: version.Get("string").String(),
+		}
+	}
+	get_native_struct_size := dlsym("get_native_struct_size")
+	API.GetNativeStructSize = func(name gd.StringName) uintptr {
+		return uintptr(get_native_struct_size.Invoke(pointers.Get(name)[0]).Int())
+	}
+	get_library_path := dlsym("get_library_path")
+	API.GetLibraryPath = func(token gd.ExtensionToken) gd.String {
+		return pointers.New[gd.String]([1]uintptr{uintptr(get_library_path.Invoke(uint32(token)).Int())})
 	}
 	get_class_tag := dlsym("classdb_get_class_tag")
 	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
-		return gd.ClassTag(get_class_tag.Invoke(pointers.Get(name)[0]).Float())
+		return gd.ClassTag(get_class_tag.Invoke(pointers.Get(name)[0]).Int())
 	}
 	callable_custom_create2 := dlsym("callable_custom_create2")
 	API.Callables.Create = func(fn func(...gd.Variant) (gd.Variant, error)) gd.Callable {
@@ -177,6 +207,10 @@ func linkJS(API *gd.API, dlsym func(string) js.Value) {
 			readCallFrameResult(0, ret)
 		}
 	}
+	variant_get_type_name := dlsym("variant_get_type_name")
+	API.Variants.GetTypeName = func(vt gd.VariantType) gd.String {
+		return pointers.New[gd.String]([1]uintptr{uintptr(variant_get_type_name.Invoke(uint32(vt)).Int())})
+	}
 	variant_get_ptr_builtin_method := dlsym("variant_get_ptr_builtin_method")
 	call_variant_get_ptr_builtin_method := dlsym("call_variant_get_ptr_builtin_method")
 	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, i gd.Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
@@ -188,8 +222,38 @@ func linkJS(API *gd.API, dlsym func(string) js.Value) {
 		}
 	}
 	classdb_get_method_bind := dlsym("classdb_get_method_bind")
-	fmt.Println(classdb_get_method_bind)
 	API.ClassDB.GetMethodBind = func(class, method gd.StringName, hash gd.Int) gd.MethodBind {
 		return gd.MethodBind(classdb_get_method_bind.Invoke(pointers.Get(class)[0], pointers.Get(method)[0], *(*float64)(unsafe.Pointer(&hash))).Int())
 	}
+	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
+	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
+		info := js.Global().Get("Object").New()
+		info.Set("is_virtual", info_go.IsVirtual())
+		info.Set("is_abstract", info_go.IsAbstract())
+		info.Set("is_exposed", info_go.IsExposed())
+		info.Set("is_runtime", false)
+		info.Set("create_instance_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
+			return pointers.Get(info_go.CreateInstance()[0])[0]
+		}))
+		info.Set("get_virtual_call_data_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
+			p_class := args[0].Int()
+			p_name := args[1].Int()
+			var name = pointers.Let[gd.StringName]([1]uintptr{uintptr(p_name)})
+			virtual := cgoHandle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
+			if virtual == nil {
+				return 0
+			}
+			return uintptr(cgoNewHandle(virtual))
+		}))
+		info.Set("call_virtual_with_data_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
+			/*p_instance := args[0].Int()
+			p_name := args[1].Int()
+			p_data := args[2].Int()
+			var name = pointers.Let[gd.StringName]([1]uintptr{uintptr(p_name)})*/
+			panic("not supported")
+			//cgoHandle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgoHandle(p_data).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
+		}))
+		classdb_register_extension_class3.Invoke(uint32(library), pointers.Get(name)[0], pointers.Get(extends)[0], info)
+	}
+	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {}
 }

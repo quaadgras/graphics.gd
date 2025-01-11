@@ -16,6 +16,7 @@ import (
 var mainloop MainLoopClass.Interface
 
 var intialized = make(chan struct{})
+var shutdown = make(chan struct{})
 
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
@@ -32,24 +33,32 @@ func MainLoop(loop MainLoopClass.Interface) {
 	pause_main(false) // We pause here until the engine has fully started up.
 }
 
-// Wait until the engine has been fully started up.
-func Wait() {
-	<-intialized
-	gd.NewCallable(func() {
-		resume_main()
-	}).CallDeferred()
-	pause_main(false)
-	if EngineClass.IsEditorHint() {
-		stop_main()
-	}
-}
-
 var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
 // Engine starts up the engine and blocks until it shuts down.
 func Engine() {
-	theMainFunctionIsWaitingForTheEngineToShutDown = true
-	pause_main(false)
+	if pause_main != nil {
+		theMainFunctionIsWaitingForTheEngineToShutDown = true
+		pause_main(false)
+	} else {
+		<-shutdown
+	}
+}
+
+// Loader starts up the loading and initialization process of the graphics engine.
+// After this function is called, all graphics functions will be available to use.
+// A subsequent call to [Engine] is required to continue to the default main loop.
+func Loader() {
+	<-intialized
+	if pause_main != nil {
+		gd.NewCallable(func() {
+			resume_main()
+		}).CallDeferred()
+		pause_main(false)
+		if EngineClass.IsEditorHint() {
+			stop_main()
+		}
+	}
 }
 
 type goMainLoop struct {

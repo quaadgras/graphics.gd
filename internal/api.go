@@ -334,11 +334,6 @@ type ClassInterface interface {
 	IsExposed() bool
 
 	CreateInstance() [1]Object
-
-	// ReloadInstance is used to reload an existing object instance
-	// when the Go shared library is reloaded from the editor.
-	ReloadInstance([1]Object) ObjectInterface
-
 	GetVirtual(StringName) any
 }
 

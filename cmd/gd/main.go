@@ -290,6 +290,8 @@ func wrap() error {
 		args = []string{"test", "-c", "-o", libraryPath}
 		if GOOS != "js" {
 			args = append(args, "-buildmode=c-shared")
+		} else {
+			os.Args[1] = "run"
 		}
 	default:
 		copy(args, os.Args[1:])

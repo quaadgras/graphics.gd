@@ -6,6 +6,8 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+type gdptr uint64
+
 type Variant pointers.Trio[Variant]
 type Signal pointers.Pair[Signal]
 type Callable pointers.Pair[Callable]

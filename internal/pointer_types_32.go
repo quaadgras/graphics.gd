@@ -6,6 +6,8 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+type gdptr uint32
+
 type Variant pointers.Hexa[Variant]
 type Signal pointers.Quad[Signal]
 type Callable pointers.Quad[Callable]

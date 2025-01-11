@@ -63,6 +63,9 @@ func (array Args) Index(i int) Addr {
 }
 
 func (array Args) Uintptr() uintptr {
+	if array.slice == nil {
+		return 0
+	}
 	return uintptr(unsafe.Pointer(&array.slice[0]))
 }
 

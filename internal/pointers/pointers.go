@@ -43,7 +43,7 @@ import (
 )
 
 const pageSize = 3 * 4 * 5 * 20
-const shapesMax = 4
+const shapesMax = 7
 
 // tables stores the pointers that are managed by the pointers package.
 // there is one table for each pointer shape, followed by the pointers
